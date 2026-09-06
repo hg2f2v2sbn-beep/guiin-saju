@@ -1,0 +1,474 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <meta name="theme-color" content="#6b1d2a" />
+  <title>귀인사주 — 사주 · 궁합</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+KR:wght@400;600;700&family=Pretendard:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --bg: #1a0f10;
+      --bg2: #2a1518;
+      --card: #3a1c21;
+      --ink: #f7efe6;
+      --muted: #cbb7ae;
+      --gold: #e0b75a;
+      --gold2: #f0d392;
+      --wine: #8b2a36;
+      --wine2: #6b1d2a;
+      --line: rgba(224, 183, 90, 0.28);
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    html, body { min-height: 100%; }
+    body {
+      font-family: Pretendard, "Apple SD Gothic Neo", sans-serif;
+      background:
+        radial-gradient(1200px 600px at 50% -10%, #5a2430 0%, transparent 55%),
+        var(--bg);
+      color: var(--ink);
+      padding: 0 0 calc(72px + env(safe-area-inset-bottom));
+    }
+    .wrap { max-width: 430px; margin: 0 auto; padding: 20px 18px 28px; }
+    header.app {
+      display: flex; align-items: baseline; justify-content: space-between;
+      padding: 8px 2px 18px;
+    }
+    .brand { font-family: "Noto Serif KR", serif; font-weight: 700; font-size: 22px; letter-spacing: .04em; }
+    .brand span { color: var(--gold); }
+    .sub { color: var(--muted); font-size: 12px; }
+    .hero {
+      background: linear-gradient(160deg, #7a2d38, #3d161c 70%);
+      border: 1px solid var(--line);
+      border-radius: 22px;
+      padding: 22px 20px 20px;
+      margin-bottom: 16px;
+    }
+    .hero h1 { font-family: "Noto Serif KR", serif; font-size: 24px; line-height: 1.35; }
+    .hero p { color: #ecdcc8; margin-top: 8px; font-size: 14px; line-height: 1.6; }
+    .grid2 { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 16px; }
+    .btn {
+      display: block; width: 100%; text-align: center; border: 0; cursor: pointer;
+      border-radius: 14px; padding: 14px 12px; font-weight: 600; font-size: 15px;
+      font-family: inherit;
+    }
+    .btn-gold { background: linear-gradient(180deg, var(--gold2), var(--gold)); color: #3a2410; }
+    .btn-ghost { background: rgba(255,255,255,.08); color: var(--ink); border: 1px solid var(--line); }
+    .btn:active { transform: scale(.98); }
+    .card {
+      background: rgba(58, 28, 33, .82);
+      border: 1px solid var(--line);
+      border-radius: 18px;
+      padding: 16px;
+      margin-bottom: 12px;
+    }
+    .card h3 { font-family: "Noto Serif KR", serif; font-size: 16px; margin-bottom: 10px; }
+    label { display: block; font-size: 12px; color: var(--muted); margin: 10px 0 6px; }
+    input, select {
+      width: 100%; background: #241316; color: var(--ink); border: 1px solid var(--line);
+      border-radius: 12px; padding: 12px 12px; font-size: 15px; font-family: inherit;
+    }
+    .row { display: grid; gap: 8px; }
+    .row.y3 { grid-template-columns: 1.2fr .8fr .8fr; }
+    .row.y2 { grid-template-columns: 1fr 1fr; }
+    .seg { display: flex; background: #241316; border-radius: 12px; padding: 4px; border: 1px solid var(--line); }
+    .seg button {
+      flex: 1; border: 0; background: transparent; color: var(--muted); padding: 8px;
+      border-radius: 9px; font-family: inherit; font-weight: 600; cursor: pointer;
+    }
+    .seg button.on { background: var(--wine); color: #fff; }
+    .chk { display: flex; gap: 8px; align-items: center; margin-top: 10px; color: var(--muted); font-size: 13px; }
+    .chk input { width: auto; }
+    nav.tabbar {
+      position: fixed; left: 0; right: 0; bottom: 0;
+      background: rgba(18, 8, 10, .94);
+      border-top: 1px solid var(--line);
+      display: flex; justify-content: center;
+      padding: 8px 10px calc(8px + env(safe-area-inset-bottom));
+      z-index: 20;
+    }
+    nav.tabbar .inner { width: 430px; display: grid; grid-template-columns: repeat(3, 1fr); }
+    nav.tabbar button {
+      background: none; border: 0; color: var(--muted); font-size: 11px; font-family: inherit;
+      padding: 6px 0; cursor: pointer;
+    }
+    nav.tabbar button.on { color: var(--gold); font-weight: 700; }
+    .icon { font-size: 18px; display: block; margin-bottom: 2px; }
+    .screen { display: none; }
+    .screen.on { display: block; }
+    .pillars {
+      display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; text-align: center;
+    }
+    .pillar {
+      background: #241316; border-radius: 14px; padding: 10px 4px 12px;
+      border: 1px solid var(--line);
+    }
+    .pillar .who { font-size: 11px; color: var(--muted); margin-bottom: 6px; }
+    .pillar .hanja { font-family: "Noto Serif KR", serif; font-size: 26px; line-height: 1.15; color: var(--gold2); }
+    .pillar .ko { font-size: 12px; margin-top: 4px; }
+    .pillar .god { font-size: 11px; color: #e8c9a0; margin-top: 4px; }
+    .bars { margin-top: 8px; }
+    .bar-row { display: grid; grid-template-columns: 42px 1fr 36px; gap: 8px; align-items: center; margin: 7px 0; font-size: 13px; }
+    .bar { height: 8px; background: #241316; border-radius: 99px; overflow: hidden; }
+    .bar > i { display: block; height: 100%; border-radius: 99px; }
+    .prose { font-size: 14.5px; line-height: 1.75; color: #f3e7da; }
+    .prose p + p { margin-top: 10px; }
+    .tag {
+      display: inline-block; background: rgba(224,183,90,.12); color: var(--gold2);
+      border: 1px solid var(--line); border-radius: 999px; padding: 4px 10px; font-size: 12px; margin: 0 6px 6px 0;
+    }
+    .score-wrap { text-align: center; padding: 8px 0 14px; }
+    .score {
+      font-family: "Noto Serif KR", serif; font-size: 56px; color: var(--gold);
+      line-height: 1;
+    }
+    .muted { color: var(--muted); font-size: 13px; line-height: 1.55; }
+    .list-item {
+      display: flex; justify-content: space-between; align-items: center;
+      padding: 12px 0; border-bottom: 1px solid rgba(224,183,90,.12);
+    }
+    .list-item:last-child { border-bottom: 0; }
+    .tiny { font-size: 11px; color: var(--muted); margin-top: 16px; line-height: 1.5; }
+    .luck { display: flex; gap: 8px; overflow-x: auto; padding-bottom: 4px; }
+    .luck .pillar { min-width: 76px; }
+    h2.sec { font-family: "Noto Serif KR", serif; font-size: 18px; margin: 6px 0 12px; }
+    .back { background: none; border: 0; color: var(--gold); font-family: inherit; cursor: pointer; font-size: 14px; }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <header class="app">
+      <div class="brand">귀인<span>사주</span></div>
+      <div class="sub">사주 · 궁합 MVP</div>
+    </header>
+
+    <section id="home" class="screen on">
+      <div class="hero">
+        <h1>생년월일시로<br>나를 읽습니다</h1>
+        <p>사주팔자, 오행, 성격·재물·직업 해설과 두 사람의 궁합까지. 점집 말투가 아니라 원국을 기준으로 풀이합니다.</p>
+        <div class="grid2">
+          <button class="btn btn-gold" onclick="go('form')">사주 보기</button>
+          <button class="btn btn-ghost" onclick="go('match')">궁합 보기</button>
+        </div>
+      </div>
+      <div class="card">
+        <h3>저장된 사주</h3>
+        <div id="savedList" class="muted">아직 저장된 사주가 없습니다.</div>
+      </div>
+      <p class="tiny">본 서비스는 명리학 원국 계산과 규칙 기반 해설을 제공하는 참고용입니다. 의료·법률·투자 결정을 대신하지 않습니다. 사주아이 등과 무관한 별도 서비스입니다.</p>
+    </section>
+
+    <section id="form" class="screen">
+      <button class="back" onclick="go('home')">← 홈</button>
+      <h2 class="sec">사주 입력</h2>
+      <div class="card">
+        <label>이름 / 별명</label>
+        <input id="name" placeholder="예: 지은" maxlength="12" />
+        <label>성별</label>
+        <div class="seg" id="genderSeg">
+          <button type="button" class="on" data-v="여">여</button>
+          <button type="button" data-v="남">남</button>
+        </div>
+        <label>달력</label>
+        <div class="seg"><button class="on">양력</button><button disabled>음력(준비중)</button></div>
+        <label>생년월일</label>
+        <div class="row y3">
+          <input id="year" type="number" min="1920" max="2026" placeholder="1995" />
+          <input id="month" type="number" min="1" max="12" placeholder="월" />
+          <input id="day" type="number" min="1" max="31" placeholder="일" />
+        </div>
+        <label>태어난 시각 (한국시간)</label>
+        <div class="row y2">
+          <input id="hour" type="number" min="0" max="23" placeholder="시 0-23" />
+          <input id="minute" type="number" min="0" max="59" placeholder="분" />
+        </div>
+        <label class="chk"><input type="checkbox" id="hourUnknown" /> 시간 모름 (시주 제외)</label>
+        <div style="height:14px"></div>
+        <button class="btn btn-gold" onclick="submitSaju()">사주 풀이</button>
+      </div>
+    </section>
+
+    <section id="result" class="screen">
+      <button class="back" onclick="go('form')">← 다시 입력</button>
+      <h2 class="sec" id="resultTitle">사주</h2>
+      <div id="resultBody"></div>
+    </section>
+
+    <section id="match" class="screen">
+      <button class="back" onclick="go('home')">← 홈</button>
+      <h2 class="sec">궁합</h2>
+      <div class="card">
+        <p class="muted" style="margin-bottom:10px">두 사람의 양력 생년월일시를 넣으면 일간·지지 관계로 점수를 냅니다. 연인, 친구, 동료 모두 가능합니다.</p>
+        <label>나</label>
+        <input id="aName" placeholder="이름" />
+        <div class="row y3" style="margin-top:8px">
+          <input id="aYear" type="number" placeholder="년" />
+          <input id="aMonth" type="number" placeholder="월" />
+          <input id="aDay" type="number" placeholder="일" />
+        </div>
+        <div class="row y2" style="margin-top:8px">
+          <input id="aHour" type="number" placeholder="시" />
+          <input id="aMin" type="number" placeholder="분" />
+        </div>
+        <label>상대</label>
+        <input id="bName" placeholder="이름" />
+        <div class="row y3" style="margin-top:8px">
+          <input id="bYear" type="number" placeholder="년" />
+          <input id="bMonth" type="number" placeholder="월" />
+          <input id="bDay" type="number" placeholder="일" />
+        </div>
+        <div class="row y2" style="margin-top:8px">
+          <input id="bHour" type="number" placeholder="시" />
+          <input id="bMin" type="number" placeholder="분" />
+        </div>
+        <div style="height:14px"></div>
+        <button class="btn btn-gold" onclick="submitMatch()">궁합 보기</button>
+      </div>
+      <div id="matchBody"></div>
+    </section>
+  </div>
+
+  <nav class="tabbar">
+    <div class="inner">
+      <button class="on" id="tab-home" onclick="go('home')"><span class="icon">⌂</span>홈</button>
+      <button id="tab-form" onclick="go('form')"><span class="icon">✦</span>사주</button>
+      <button id="tab-match" onclick="go('match')"><span class="icon">⚭</span>궁합</button>
+    </div>
+  </nav>
+
+  <script src="./saju-engine.js"></script>
+  <script>
+    const $ = (id) => document.getElementById(id);
+    let gender = "여";
+    document.querySelectorAll("#genderSeg button").forEach((b) => {
+      b.onclick = () => {
+        document.querySelectorAll("#genderSeg button").forEach((x) => x.classList.remove("on"));
+        b.classList.add("on");
+        gender = b.dataset.v;
+      };
+    });
+
+    function go(id) {
+      document.querySelectorAll(".screen").forEach((s) => s.classList.remove("on"));
+      $(id).classList.add("on");
+      document.querySelectorAll("nav.tabbar button").forEach((b) => b.classList.remove("on"));
+      const tab = $("tab-" + (id === "result" ? "form" : id));
+      if (tab) tab.classList.add("on");
+      window.scrollTo(0, 0);
+      if (id === "home") renderSaved();
+    }
+
+    function loadSaved() {
+      try { return JSON.parse(localStorage.getItem("guiin-saju") || "[]"); }
+      catch { return []; }
+    }
+    function savePerson(input, chart) {
+      const list = loadSaved().filter((x) => x.name !== input.name);
+      list.unshift({ name: input.name, gender: input.gender, year: input.year, month: input.month, day: input.day, hour: input.hour, minute: input.minute, hourUnknown: input.hourUnknown, dayMaster: chart.dayMaster.stem });
+      localStorage.setItem("guiin-saju", JSON.stringify(list.slice(0, 12)));
+    }
+    function renderSaved() {
+      const list = loadSaved();
+      if (!list.length) {
+        $("savedList").innerHTML = '<span class="muted">아직 저장된 사주가 없습니다.</span>';
+        return;
+      }
+      $("savedList").innerHTML = list.map((p, i) =>
+        `<div class="list-item"><div><b>${esc(p.name)}</b><div class="muted">${p.year}.${p.month}.${p.day} · ${p.gender} · 일간 ${p.dayMaster}</div></div>
+         <button class="btn btn-ghost" style="width:auto;padding:8px 12px" onclick="openSaved(${i})">보기</button></div>`
+      ).join("");
+    }
+    function openSaved(i) {
+      const p = loadSaved()[i];
+      if (!p) return;
+      $("name").value = p.name;
+      $("year").value = p.year; $("month").value = p.month; $("day").value = p.day;
+      $("hour").value = p.hour ?? ""; $("minute").value = p.minute ?? "";
+      $("hourUnknown").checked = !!p.hourUnknown;
+      gender = p.gender;
+      document.querySelectorAll("#genderSeg button").forEach((b) => b.classList.toggle("on", b.dataset.v === gender));
+      submitSaju();
+    }
+
+    function esc(s){ return String(s||"").replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c])); }
+
+    const DAY_TEXT = {
+      갑: { title: "큰 나무를 세우는 사람", body: "갑목 일간은 곧게 자라는 나무처럼 방향이 분명합니다. 시작과 기획에 강하고, 한번 정한 뜻을 잘 굽히지 않습니다. 다만 고집이 길을 좁힐 수 있어, 곁의 의견을 고르는 힘이 운을 바꿉니다." },
+      을: { title: "바람에 휘어도 뿌리는 남는 사람", body: "을목 일간은 덩굴처럼 유연합니다. 사람 사이를 읽고 분위기를 맞추는 재주가 있습니다. 적응력이 곧 무기지만, 눈치를 너무 보면 본뜻이 흐려집니다." },
+      병: { title: "해를 켜는 사람", body: "병화 일간은 밝고 드러나는 불입니다. 존재감과 추진력이 크고, 자리를 밝히면 사람도 모입니다. 과한 노출과 소진만 조심하면 평판이 따라옵니다." },
+      정: { title: "촛불처럼 오래 가는 사람", body: "정화 일간은 작은 불이되 온기가 깊습니다. 섬세한 취향, 미감, 한 사람을 오래 살피는 힘이 있습니다. 감정 기복이 일을 흔들지 않게 리듬을 지키는 것이 핵심입니다." },
+      무: { title: "산처럼 자리를 지키는 사람", body: "무토 일간은 큼직한 땅입니다. 책임과 신뢰를 먹고 자라고, 한 번 맡은 판을 잘 지킵니다. 움직임이 느릴 수 있으니 결단의 타이밍만 놓치지 않으면 됩니다." },
+      기: { title: "밭을 일구는 사람", body: "기토 일간은 가꾸는 땅입니다. 실무, 돌봄, 디테일에서 빛이 납니다. 남을 먼저 챙기다 나를 비우지 않도록, 경계와 휴식을 명시하는 편이 좋습니다." },
+      경: { title: "쇠를 벼리는 사람", body: "경금 일간은 단단하고 예리합니다. 원칙, 성과, 승부에서 강합니다. 날이 너무 서 있으면 사람도 베니, 강도를 조절할 줄 알 때 리더가 됩니다." },
+      신: { title: "보석을 깎는 사람", body: "신금 일간은 세공된 금속입니다. 미감, 기술, 말의 결이 섬세합니다. 예민함이 재능이자 피로이므로, 환경과 사람을 가려 쓰는 것이 재물이 됩니다." },
+      임: { title: "큰 물을 흐르게 하는 사람", body: "임수 일간은 강과 바다입니다. 스케일, 지혜, 흐름을 읽는 눈이 있습니다. 정처 없이 흐르면 흩어지니, 한 시기의 목표만 고정해도 운이 모입니다." },
+      계: { title: "이슬처럼 스며드는 사람", body: "계수 일간은 가늘고 깊은 물입니다. 직관, 학습, 조용한 통찰이 강점입니다. 겉으로 약해 보여도 속은 깁니다. 드러낼 자리를 고르면 평가가 따라옵니다." }
+    };
+
+    function interpret(chart) {
+      const dm = chart.dayMaster.stem;
+      const el = GuiinSaju.normalizeEl(chart.elCount);
+      const weak = Object.entries(el).sort((a,b)=>a[1]-b[1])[0][0];
+      const strong = Object.entries(el).sort((a,b)=>b[1]-a[1])[0][0];
+      const gods = [chart.pillars.year.god, chart.pillars.month.god, chart.pillars.hour && chart.pillars.hour.god].filter(Boolean);
+      const hasWealth = gods.some(g => g.includes("재"));
+      const hasOfficer = gods.some(g => g.includes("관"));
+      const hasOutput = gods.some(g => g.includes("식") || g.includes("상관"));
+      const t = DAY_TEXT[dm];
+      const wealth = hasWealth
+        ? "원국에 재성이 보여 돈의 감각이 아예 없지는 않습니다. 들어오는 돈보다 ‘새는 구멍’을 막는 해가 재물이 큽니다. 한 가지 소득원을 깊게 판 뒤 두 번째를 여는 순서가 맞습니다."
+        : "재성이 드러나지 않아도 식상으로 재물을 만드는 타입이 있습니다. 재능을 상품으로 바꾸는 일—콘텐츠, 기술, 서비스—이 월급만 기다리는 길보다 잘 맞을 수 있습니다.";
+      const job = hasOfficer
+        ? "관성이 있어 조직, 자격, 공적 역할과 잘 맞습니다. 이름 있는 자리보다 ‘내가 결정을 얼마나 쥐는가’를 기준으로 직을 고르면 오래 갑니다."
+        : hasOutput
+        ? "식신·상관이 강해 창작, 기획, 말과 손끝으로 성과를 내는 일이 유리합니다. 반복만 있는 자리는 빨리 지칩니다."
+        : "비겁이 두드러지면 혼자 개척하거나 동업의 지분을 분명히 하는 편이 낫습니다. 애매한 공동 작업은 에너지를 깎습니다.";
+      const yearLuck = chart.luck[0];
+      return {
+        tags: [chart.dayMaster.yin + chart.dayMaster.el, t.title, "신 " + strong + " 과 / 신 " + weak + " 부족"],
+        person: t.body,
+        wealth,
+        job,
+        year: `대운은 ${yearLuck.fromAge}세부터 ${yearLuck.ko}(${yearLuck.hanja})로 열립니다. 십신은 ${yearLuck.god}. 이 구간의 키워드는 ‘${yearLuck.god}의 쓰임’입니다. 흐름이 와도 원국의 약한 ${weak}을 보충하는 사람·환경과 붙이면 성과가 남습니다.`,
+        weak, strong
+      };
+    }
+
+    function pillarCard(title, p) {
+      if (!p) return `<div class="pillar"><div class="who">${title}</div><div class="hanja">?</div><div class="ko">시간 모름</div></div>`;
+      return `<div class="pillar"><div class="who">${title}</div><div class="hanja">${p.hanja[0]}<br>${p.hanja[1]}</div><div class="ko">${p.ko}</div><div class="god">${p.god}</div></div>`;
+    }
+
+    function renderChart(chart) {
+      const el = GuiinSaju.normalizeEl(chart.elCount);
+      const it = interpret(chart);
+      const inp = chart.input;
+      $("resultTitle").textContent = inp.name + "의 사주";
+      $("resultBody").innerHTML = `
+        <div class="card">
+          <div class="muted" style="margin-bottom:10px">${inp.year}년 ${inp.month}월 ${inp.day}일 ${inp.hourUnknown ? "시간 모름" : inp.hour+"시 "+(inp.minute||0)+"분"} · ${inp.gender} · 일간 ${chart.dayMaster.hanja}${chart.dayMaster.stem}</div>
+          <div class="pillars">
+            ${pillarCard("시주", chart.pillars.hour)}
+            ${pillarCard("일주", chart.pillars.day)}
+            ${pillarCard("월주", chart.pillars.month)}
+            ${pillarCard("년주", chart.pillars.year)}
+          </div>
+        </div>
+        <div class="card">
+          <h3>오행 균형</h3>
+          <div class="bars">
+            ${["목","화","토","금","수"].map(k => `
+              <div class="bar-row"><span>${k}</span><div class="bar"><i style="width:${el[k]}%;background:${GuiinSaju.EL_COLOR[k]}"></i></div><span>${el[k]}%</span></div>
+            `).join("")}
+          </div>
+        </div>
+        <div class="card">
+          ${(it.tags.map(t=>`<span class="tag">${t}</span>`).join(""))}
+          <h3 style="margin-top:10px">성격</h3>
+          <div class="prose"><p>${it.person}</p></div>
+        </div>
+        <div class="card">
+          <h3>재물운</h3>
+          <div class="prose"><p>${it.wealth}</p></div>
+        </div>
+        <div class="card">
+          <h3>직업운</h3>
+          <div class="prose"><p>${it.job}</p></div>
+        </div>
+        <div class="card">
+          <h3>대운</h3>
+          <div class="luck">
+            ${chart.luck.map(p => `<div class="pillar"><div class="who">${p.fromAge}–${p.toAge}세</div><div class="hanja" style="font-size:20px">${p.hanja}</div><div class="god">${p.god}</div></div>`).join("")}
+          </div>
+          <div class="prose" style="margin-top:12px"><p>${it.year}</p></div>
+        </div>
+        <p class="tiny">연주는 입춘, 월주는 절입 시각 기준입니다. 절기 시각은 근사치이며 진태양시·출생지 경도 보정은 다음 버전에 넣을 수 있습니다.</p>
+      `;
+    }
+
+    function submitSaju() {
+      const input = {
+        name: $("name").value.trim() || "이름 없음",
+        gender,
+        year: +$("year").value,
+        month: +$("month").value,
+        day: +$("day").value,
+        hour: +$("hour").value,
+        minute: +$("minute").value || 0,
+        hourUnknown: $("hourUnknown").checked,
+      };
+      if (!input.year || !input.month || !input.day) return alert("생년월일을 입력해 주세요.");
+      if (!input.hourUnknown && ($("hour").value === "" || input.hour < 0 || input.hour > 23))
+        return alert("시간을 입력하거나 ‘시간 모름’을 선택해 주세요.");
+      const chart = GuiinSaju.calculate(input);
+      savePerson(input, chart);
+      renderChart(chart);
+      go("result");
+    }
+
+    const STEM_HAP = { 갑:"기", 을:"경", 병:"신", 정:"임", 무:"계", 기:"갑", 경:"을", 신:"병", 임:"정", 계:"무" };
+    const BRANCH_HAP = { 자:"축", 인:"해", 묘:"술", 진:"유", 사:"신", 오:"미", 축:"자", 해:"인", 술:"묘", 유:"진", 신:"사", 미:"오" };
+    const BRANCH_CHUNG = { 자:"오", 축:"미", 인:"신", 묘:"유", 진:"술", 사:"해", 오:"자", 미:"축", 신:"인", 유:"묘", 술:"진", 해:"사" };
+
+    function matchScore(a, b) {
+      let score = 62;
+      const notes = [];
+      if (STEM_HAP[a.dayMaster.stem] === b.dayMaster.stem) { score += 14; notes.push("일간 천간합 — 끌림과 이해가 빠르게 붙습니다."); }
+      else if (a.dayMaster.el === b.dayMaster.el) { score += 6; notes.push("일간 오행이 같아 닮은 점이 많습니다. 경쟁이 될 수도 있습니다."); }
+      const ab = a.pillars.day.branch, bb = b.pillars.day.branch;
+      if (BRANCH_HAP[ab] === bb) { score += 12; notes.push("일지 육합 — 생활 리듬이 맞기 쉽습니다."); }
+      if (BRANCH_CHUNG[ab] === bb) { score -= 14; notes.push("일지 충 — 부딪치는 지점이 분명합니다. 규칙을 정하면 관계가 버팁니다."); }
+      const ea = GuiinSaju.normalizeEl(a.elCount);
+      const eb = GuiinSaju.normalizeEl(b.elCount);
+      const cycle = ["목","화","토","금","수"];
+      const gen = { 목:"화", 화:"토", 토:"금", 금:"수", 수:"목" };
+      if (gen[a.dayMaster.el] === b.dayMaster.el) { score += 8; notes.push("내가 상대를 생하는 흐름 — 내가 더 주게 됩니다."); }
+      if (gen[b.dayMaster.el] === a.dayMaster.el) { score += 8; notes.push("상대가 나를 생하는 흐름 — 상대의 지원이 크게 느껴집니다."); }
+      const complement = Math.abs((ea[a.dayMaster.el]||0) - (eb[b.dayMaster.el]||0));
+      if (complement > 25) { score += 4; notes.push("서로 부족한 오행을 메우는 조합입니다."); }
+      score = Math.max(28, Math.min(96, score));
+      if (!notes.length) notes.push("극단적인 합·충보다 담백한 조합입니다. 관계의 질은 태도에서 갈립니다.");
+      return { score, notes };
+    }
+
+    function miniChart(title, c) {
+      return `<div class="muted" style="margin-bottom:8px"><b>${esc(title)}</b> · 일간 ${c.dayMaster.hanja}${c.dayMaster.stem} · ${c.pillars.year.ko}년 ${c.pillars.month.ko}월 ${c.pillars.day.ko}일 ${c.pillars.hour ? c.pillars.hour.ko+"시" : ""}</div>`;
+    }
+
+    function submitMatch() {
+      const make = (prefix, fallback) => ({
+        name: $(prefix+"Name").value.trim() || fallback,
+        gender: "여",
+        year: +$(prefix+"Year").value,
+        month: +$(prefix+"Month").value,
+        day: +$(prefix+"Day").value,
+        hour: $(prefix+"Hour").value === "" ? 12 : +$(prefix+"Hour").value,
+        minute: +$(prefix+"Min").value || 0,
+        hourUnknown: $(prefix+"Hour").value === "",
+      });
+      const ia = make("a", "나");
+      const ib = make("b", "상대");
+      if (!ia.year || !ib.year) return alert("두 사람 생년월일을 모두 입력해 주세요.");
+      const a = GuiinSaju.calculate(ia);
+      const b = GuiinSaju.calculate(ib);
+      const m = matchScore(a, b);
+      $("matchBody").innerHTML = `
+        <div class="card">
+          <div class="score-wrap">
+            <div class="muted">${esc(ia.name)} × ${esc(ib.name)}</div>
+            <div class="score">${m.score}</div>
+            <div class="muted">궁합 지수</div>
+          </div>
+          ${miniChart(ia.name, a)}
+          ${miniChart(ib.name, b)}
+          <div class="prose">${m.notes.map(n=>"<p>"+n+"</p>").join("")}</div>
+        </div>`;
+      $("matchBody").scrollIntoView({ behavior: "smooth" });
+    }
+
+    renderSaved();
+  </script>
+</body>
+</html>
