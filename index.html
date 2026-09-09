@@ -92,6 +92,9 @@ body.home-mode nav{background:rgba(255,255,255,.97);border-top:1px solid #eee8de
 .calc-note[open] summary:after{content:"−"}.calc-note .calc-body{padding:0 12px 11px;color:#a99590;font-size:9px;line-height:1.7}
 .boundary-note{margin-top:7px;padding:8px 10px;border-radius:11px;background:rgba(225,184,92,.07);border:1px solid rgba(225,184,92,.14);font-size:9px;line-height:1.6;color:#bda9a4}
 
+
+.qa-strip{display:flex;gap:5px;flex-wrap:wrap;margin:8px 0 10px}.qa-strip span{font-size:8.5px;padding:4px 7px;border-radius:999px;background:rgba(225,184,92,.07);border:1px solid rgba(225,184,92,.16);color:#bfa9a2}
+
 </style>
 </head>
 <body class="home-mode">
@@ -338,6 +341,16 @@ function currentLuckOf(c){
  return list.find(x=>a>=x.fromAge&&a<=x.toAge) || list.find(x=>a>=x.fromAge&&a<x.toAge) || list[0];
 }
 
+
+function interpretationFingerprint(c){
+ const s=chartSignature(c), p=elPct(c), luck=currentLuckOf(c);
+ return [s.dm,s.monthGod,s.hi,s.lo,luck?.god||"",Math.round(p.목/5),Math.round(p.화/5),Math.round(p.토/5),Math.round(p.금/5),Math.round(p.수/5)].join("-");
+}
+function qaStrip(c){
+ const cur=currentLuckOf(c), b=nearBoundary(c.input);
+ return `<div class="qa-strip"><span>원국 ${c.dayMaster.stem}일간</span><span>월주 ${c.pillars.month.god||"—"}</span><span>현재 대운 ${cur?.god||"—"}</span><span>${b.length?"경계 입력 확인 필요":"일반 입력 구간"}</span></div>`;
+}
+
 function chartSignature(c){
  const pct=elPct(c),hi=strongest(pct),lo=weakest(pct),g=godCounts(c),rels=natalRelations(c);
  const topGod=Object.entries(g).sort((a,b)=>b[1]-a[1])[0]?.[0]||c.pillars.month.god||"비견";
@@ -355,7 +368,7 @@ function personalizedOpening(c){
   임:"큰 흐름을 읽고 이동하며 연결하는 힘",계:"세밀하게 관찰하고 틈을 찾아 대응하는 힘"
  }[s.dm]||"자기 방식으로 상황을 처리하는 힘";
  const godTone={비견:"자기 기준",겁재:"경쟁과 분배",식신:"생산과 생활",상관:"표현과 개선",편재:"기회와 거래",정재:"관리와 안정",편관:"압박 속 실행",정관:"책임과 신뢰",편인:"탐색과 전문성",정인:"학습과 정리"}[s.monthGod];
- return `<div class="personal-summary"><b>${c.input.name}님의 명식에서 먼저 볼 세 가지</b>${basisBadges(c)}<p>첫째, ${s.dm}일간의 ${dmTone}. 둘째, 사회 자리인 월주에서 보이는 ${godTone}. 셋째, 오행 비교에서 ${s.hi}가 상대적으로 높고 ${s.lo}가 낮다는 점입니다. 아래 해설은 이 세 축과 원국의 합·충을 함께 비교해서 읽습니다. 하나의 단어로 성격이나 미래를 확정하지 않습니다.</p></div>`;
+ return `<div class="personal-summary"><b>${c.input.name}님의 명식에서 먼저 볼 세 가지</b>${qaStrip(c)}${basisBadges(c)}<p>첫째, ${s.dm}일간의 ${dmTone}. 둘째, 사회 자리인 월주에서 보이는 ${godTone}. 셋째, 오행 비교에서 ${s.hi}가 상대적으로 높고 ${s.lo}가 낮다는 점입니다. 아래 해설은 이 세 축과 원국의 합·충을 함께 비교해서 읽습니다. 하나의 단어로 성격이나 미래를 확정하지 않습니다.</p></div>`;
 }
 function variantPick(seed,arr){
  let n=0;for(const ch of String(seed))n=(n*31+ch.charCodeAt(0))>>>0;
