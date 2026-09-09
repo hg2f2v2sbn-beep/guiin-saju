@@ -297,6 +297,20 @@ nav.tabbar .inner{max-width:430px!important;height:72px!important}
 .v14-card{background:#fff;border:1px solid #ebe3d7;border-radius:20px;padding:17px;margin:8px 0}.v14-card h3{font-size:16px;margin:0 0 8px}.v14-card p{font-size:11px;line-height:1.75;color:#666}.v14-actions{display:grid;gap:7px;margin-top:11px}.v14-actions button{border:0;border-radius:14px;background:#f5efe3;padding:13px;text-align:left;font-weight:800}.v14-actions button.primary{background:#ffd55f}
 .v14-dategrid{display:grid;grid-template-columns:repeat(2,1fr);gap:7px}.v14-date{border:1px solid #e9e0d4;border-radius:14px;padding:11px;background:#faf7f0}.v14-date b{font-size:11px}.v14-date span{display:block;font-size:9px;color:#666;margin-top:4px;line-height:1.5}
 </style>
+
+<style id="v15-real-results">
+.v15-select{display:grid;grid-template-columns:1fr 1fr;gap:7px;margin-top:10px}
+.v15-select button{border:1px solid #e7dfd3;background:#faf7ef;border-radius:14px;padding:12px;font-weight:800}
+.v15-select button.on{background:#123f37;color:#fff;border-color:#123f37}
+.v15-result{background:#fff;border:1px solid #e9e1d5;border-radius:21px;padding:17px;margin:9px 0}
+.v15-result h3{font-size:16px;margin:0 0 9px}.v15-result h4{font-size:12px;color:#16483d;margin:14px 0 5px}
+.v15-result p{font-size:11px;line-height:1.85;color:#60645f;margin:0}
+.v15-score{display:flex;align-items:center;gap:13px;background:#f7f1e4;border-radius:17px;padding:13px;margin:10px 0}
+.v15-score strong{font-size:27px;color:#174a3f}.v15-score span{font-size:9px;line-height:1.5;color:#666}
+.v15-years{display:flex;gap:6px;overflow-x:auto;margin:8px 0}.v15-years button{min-width:70px;border:1px solid #e7dfd3;border-radius:999px;background:#fff;padding:9px;font-size:10px}.v15-years button.on{background:#173f37;color:#fff}
+.v15-month-detail{background:#faf7f0;border-radius:14px;padding:12px;margin-top:7px}.v15-month-detail b{font-size:11px}.v15-month-detail span{display:block;font-size:9.5px;line-height:1.7;color:#666;margin-top:4px}
+.v15-profilepick{display:grid;gap:6px}.v15-profilepick button{border:1px solid #e8e0d4;border-radius:13px;background:#faf8f2;padding:11px;text-align:left}.v15-profilepick b{display:block}.v15-profilepick span{font-size:9px;color:#777}
+</style>
 </head>
 <body>
 <div class="wrap">
@@ -484,9 +498,9 @@ nav.tabbar .inner{max-width:430px!important;height:72px!important}
 
 </div>
 
-<section id="v14-newyear" class="screen"><div class="v14-page"><div class="v14-pagehead"><small>YEARLY FORTUNE</small><h2>신년운세</h2><p>원국과 장기 흐름을 참고해 한 해의 일·돈·연애·관계와 월별 흐름을 살펴봅니다.</p></div><div class="v14-card"><h3>보고 싶은 연도</h3><div class="v14-actions"><button class="primary" onclick="v14NeedProfile('2026 신년운세')">2026년 전체운 보기</button><button onclick="v14NeedProfile('2027 신년운세')">2027년 미리보기</button></div></div><div class="v14-card"><h3>포함되는 내용</h3><p>올해 핵심 요약 · 직업/사업 · 재물 · 연애 · 인간관계 · 변화 · 1~12월 흐름 · 올해 활용법</p></div></div></section>
-<section id="v14-luck" class="screen"><div class="v14-page"><div class="v14-pagehead"><small>10 YEAR FLOW</small><h2>대운</h2><p>10년 단위로 바뀌는 큰 환경과 현재 내가 지나고 있는 대운을 한눈에 확인합니다.</p></div><div class="v14-card"><h3>대운 리포트</h3><p>대운 시작 나이 · 현재 대운 · 다음 대운 · 직업 · 재물 · 관계 · 변화 포인트를 함께 보여줍니다.</p><div class="v14-actions"><button class="primary" onclick="v14NeedProfile('대운')">내 대운 전체보기</button></div></div></div></section>
-<section id="v14-date" class="screen"><div class="v14-page"><div class="v14-pagehead"><small>DATE SELECTION</small><h2>택일</h2><p>중요한 일을 계획할 때 후보 날짜를 비교하는 참고 서비스입니다.</p></div><div class="v14-card"><h3>무슨 날짜를 찾으세요?</h3><div class="v14-dategrid"><button class="v14-date" onclick="v14Date('결혼')"><b>💍 결혼</b><span>예식·혼인 일정</span></button><button class="v14-date" onclick="v14Date('이사')"><b>🏠 이사</b><span>입주·이동 일정</span></button><button class="v14-date" onclick="v14Date('계약')"><b>✍️ 계약</b><span>계약·개업 일정</span></button><button class="v14-date" onclick="v14Date('중요 일정')"><b>⭐ 중요 일정</b><span>개인 일정 비교</span></button></div></div><div class="v14-card"><p>택일은 결과를 보장하는 날짜 추천이 아니라 전통 명리 기준을 참고하는 기능으로 제공합니다.</p></div></div></section>
+<section id="v14-newyear" class="screen"><div class="v14-page"><div class="v14-pagehead"><small>YEARLY FORTUNE</small><h2>신년운세</h2><p>원국과 장기 흐름을 참고해 한 해의 일·돈·연애·관계와 월별 흐름을 살펴봅니다.</p></div><div class="v14-card"><h3>보고 싶은 연도</h3><div class="v14-actions"><button class="primary" onclick="v15OpenYear(2026)">2026년 전체운 보기</button><button onclick="v15OpenYear(2027)">2027년 미리보기</button></div></div><div class="v14-card"><h3>포함되는 내용</h3><p>올해 핵심 요약 · 직업/사업 · 재물 · 연애 · 인간관계 · 변화 · 1~12월 흐름 · 올해 활용법</p></div><div id="v15YearResult"></div></div></section>
+<section id="v14-luck" class="screen"><div class="v14-page"><div class="v14-pagehead"><small>10 YEAR FLOW</small><h2>대운</h2><p>10년 단위로 바뀌는 큰 환경과 현재 내가 지나고 있는 대운을 한눈에 확인합니다.</p></div><div class="v14-card"><h3>대운 리포트</h3><p>대운 시작 나이 · 현재 대운 · 다음 대운 · 직업 · 재물 · 관계 · 변화 포인트를 함께 보여줍니다.</p><div class="v14-actions"><button class="primary" onclick="v15OpenLuck()">내 대운 전체보기</button></div></div><div id="v15LuckResult"></div></div></section>
+<section id="v14-date" class="screen"><div class="v14-page"><div class="v14-pagehead"><small>DATE SELECTION</small><h2>택일</h2><p>중요한 일을 계획할 때 후보 날짜를 비교하는 참고 서비스입니다.</p></div><div class="v14-card"><h3>무슨 날짜를 찾으세요?</h3><div class="v14-dategrid"><button class="v14-date" onclick="v15DateResult('결혼')"><b>💍 결혼</b><span>예식·혼인 일정</span></button><button class="v14-date" onclick="v15DateResult('이사')"><b>🏠 이사</b><span>입주·이동 일정</span></button><button class="v14-date" onclick="v15DateResult('계약')"><b>✍️ 계약</b><span>계약·개업 일정</span></button><button class="v14-date" onclick="v15DateResult('중요 일정')"><b>⭐ 중요 일정</b><span>개인 일정 비교</span></button></div></div><div class="v14-card"><p>택일은 결과를 보장하는 날짜 추천이 아니라 전통 명리 기준을 참고하는 기능으로 제공합니다.</p></div><div id="v15DateResult"></div></div></section>
 <section id="v14-profiles" class="screen"><div class="v14-page"><div class="v14-pagehead"><small>MY PROFILES</small><h2>사주 프로필</h2><p>내 사주뿐 아니라 가족·연인·친구의 정보를 저장해 다시 입력하지 않고 사용할 수 있습니다.</p></div><div class="v14-card" id="v14ProfileList"></div><div class="v14-actions"><button class="primary" onclick="go('form')">+ 새 프로필 등록</button></div></div></section>
 <section id="v14-history" class="screen"><div class="v14-page"><div class="v14-pagehead"><small>MY CONTENT</small><h2>이용내역</h2><p>구매한 운세와 AI 상담 이용권을 확인하는 자리입니다.</p></div><div class="v14-card"><h3>아직 실제 결제 연결 전이에요</h3><p>PG와 데이터베이스가 연결되면 이곳에 평생사주·궁합·신년운세 구매내역과 이용기간이 표시됩니다.</p></div></div></section>
 
@@ -2152,5 +2166,68 @@ function v14Profiles(){
 }
 </script>
 
+
+<script id="v15-results-js">
+let v15Year=new Date().getFullYear();
+
+function v15Saved(){
+ return typeof loadSaved==="function"?loadSaved():[];
+}
+function v15PickProfile(title,cb){
+ const list=v15Saved();
+ if(!list.length){alert(title+"을 보려면 먼저 사주 프로필을 등록해 주세요.");go("form");return;}
+ if(list.length===1){cb(list[0]);return;}
+ const names=list.map((p,i)=>(i+1)+". "+(p.name||"프로필")).join("\n");
+ const n=Number(prompt(title+"\n프로필 번호를 선택하세요.\n\n"+names));
+ if(n>=1&&n<=list.length)cb(list[n-1]);
+}
+function v15Chart(p){
+ try{
+  if(typeof calculate==="function") return calculate(p);
+  if(window.GuiinSaju&&typeof window.GuiinSaju.calculate==="function") return window.GuiinSaju.calculate(p);
+ }catch(e){console.error(e)}
+ return null;
+}
+function v15OpenYear(year){
+ v15Year=year;
+ v15PickProfile(year+"년 신년운세",p=>{
+   const c=v15Chart(p);
+   if(!c){alert("사주 계산 정보를 불러오지 못했습니다.");return;}
+   const el=document.getElementById("v15YearResult"); if(!el)return;
+   const strong=c.elements?.strong||"강점", weak=c.elements?.weak||"보완";
+   const dm=c.dayMaster?.stem||"일간";
+   const themes=["정리와 방향 설정","관계와 소통","실행과 결과","재정 점검","변화와 이동","휴식과 재정비","새로운 기회","확장보다 선택","성과 점검","관계 재조정","마무리 준비","다음 해 설계"];
+   el.innerHTML=`<div class="v15-result"><h3>${esc(p.name)}님의 ${year}년 운세</h3>
+   <div class="v15-score"><strong>${dm}</strong><span>일간을 중심으로 원국의 강한 ${strong}과 약한 ${weak} 기운을 함께 참고합니다.</span></div>
+   <h4>올해의 핵심</h4><p>${strong}의 장점을 실제 성과로 연결하면서 ${weak}과 관련된 기능을 의식적으로 보완하는 해로 활용해보세요. 한 해의 길흉을 확정하기보다 일·돈·관계에서 반복되는 선택을 점검하는 데 초점을 둡니다.</p>
+   <h4>직업 · 사업</h4><p>새로운 기회가 보일 때 규모부터 키우기보다 실제 수익성, 지속 가능성, 역할과 책임 범위를 확인하세요. 이직이나 창업은 운세만으로 결정하지 않고 계약 조건과 현금흐름을 함께 판단하는 것이 중요합니다.</p>
+   <h4>재물</h4><p>들어오는 돈보다 남는 구조를 확인하세요. 큰 구매, 투자, 대출은 손실 가능성과 상환 계획을 먼저 계산하고 운세는 참고 정보로만 활용하세요.</p>
+   <h4>연애 · 인간관계</h4><p>강한 끌림보다 약속을 지키는지, 책임을 나누는지, 서로의 경계를 존중하는지를 살펴보세요. 관계의 변화가 생기더라도 그것을 특정 사건의 확정 예언으로 해석하지 않습니다.</p>
+   <h4>1~12월 흐름</h4>${themes.map((t,i)=>`<div class="v15-month-detail"><b>${i+1}월 · ${t}</b><span>중요한 결정은 현재 상황과 현실 조건을 함께 확인하세요. ${strong}의 장점을 과하게 밀어붙이지 않고 ${weak}의 관점을 보완하는 것이 포인트입니다.</span></div>`).join("")}
+   </div>`;
+   el.scrollIntoView({behavior:"smooth"});
+ });
+}
+function v15OpenLuck(){
+ v15PickProfile("대운",p=>{
+  const c=v15Chart(p); if(!c){alert("사주 계산 정보를 불러오지 못했습니다.");return;}
+  const el=document.getElementById("v15LuckResult"), arr=c.luckPillars||c.luck||[];
+  const age=Math.max(0,new Date().getFullYear()-Number(p.year));
+  el.innerHTML=`<div class="v15-result"><h3>${esc(p.name)}님의 대운 전체 흐름</h3><p>대운은 약 10년 단위의 큰 배경을 참고하는 전통 명리 체계입니다. 아래에서 현재 나이에 해당하는 구간을 확인할 수 있습니다.</p>
+  ${(arr.length?arr.slice(0,10):[]).map((x,i)=>{const st=Math.round(Number(x.startAge??x.age??i*10+1)), en=st+9, now=age>=st&&age<=en, pil=x.pillar||((x.stem||"")+(x.branch||""))||"대운";return `<div class="v15-month-detail" style="${now?"outline:2px solid #173f37":""}"><b>${pil} · ${st}~${en}세 ${now?"· 현재":""}</b><span>직업·재물·관계·변화의 장기 배경으로 참고하세요. 이 시기의 실제 결과는 선택과 환경에 따라 달라집니다.</span></div>`}).join("")||"<p>대운 자료가 없습니다.</p>"}</div>`;
+  el.scrollIntoView({behavior:"smooth"});
+ });
+}
+function v15DateResult(kind){
+ v15PickProfile(kind+" 택일",p=>{
+  const el=document.getElementById("v15DateResult");
+  const today=new Date(), rows=[];
+  // This is explicitly a planning/reference shortlist, not a claimed precision auspicious-date engine.
+  for(let i=7;i<=42;i+=7){let d=new Date(today);d.setDate(today.getDate()+i);rows.push(d);}
+  el.innerHTML=`<div class="v15-result"><h3>${esc(p.name)}님의 ${kind} 일정 비교</h3><p>현재 버전에서는 정밀 택일 확정이 아니라 일정 계획용 후보일 비교 화면을 제공합니다. 실제 길일 계산 엔진은 절기·일진·충합·목적별 규칙을 검증한 뒤 연결합니다.</p>${rows.map((d,i)=>`<div class="v15-month-detail"><b>후보 ${i+1} · ${d.getFullYear()}.${d.getMonth()+1}.${d.getDate()}</b><span>${kind} 일정 후보로 저장해 비교할 수 있습니다. 현재는 길일로 확정된 날짜가 아닙니다.</span></div>`).join("")}</div>`;
+  el.scrollIntoView({behavior:"smooth"});
+ });
+}
+</script>
 </body>
 </html>
