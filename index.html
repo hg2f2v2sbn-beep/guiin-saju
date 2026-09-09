@@ -4,471 +4,926 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
   <meta name="theme-color" content="#6b1d2a" />
-  <title>귀인사주 — 사주 · 궁합</title>
+  <title>귀인사주 — 명식 분석</title>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+KR:wght@400;600;700&family=Pretendard:wght@400;500;600;700&display=swap" rel="stylesheet" />
   <style>
-    :root {
-      --bg: #1a0f10;
-      --bg2: #2a1518;
-      --card: #3a1c21;
-      --ink: #f7efe6;
-      --muted: #cbb7ae;
-      --gold: #e0b75a;
-      --gold2: #f0d392;
-      --wine: #8b2a36;
-      --wine2: #6b1d2a;
-      --line: rgba(224, 183, 90, 0.28);
-    }
-    * { box-sizing: border-box; margin: 0; padding: 0; }
-    html, body { min-height: 100%; }
-    body {
-      font-family: Pretendard, "Apple SD Gothic Neo", sans-serif;
-      background:
-        radial-gradient(1200px 600px at 50% -10%, #5a2430 0%, transparent 55%),
-        var(--bg);
-      color: var(--ink);
-      padding: 0 0 calc(72px + env(safe-area-inset-bottom));
-    }
-    .wrap { max-width: 430px; margin: 0 auto; padding: 20px 18px 28px; }
-    header.app {
-      display: flex; align-items: baseline; justify-content: space-between;
-      padding: 8px 2px 18px;
-    }
-    .brand { font-family: "Noto Serif KR", serif; font-weight: 700; font-size: 22px; letter-spacing: .04em; }
-    .brand span { color: var(--gold); }
-    .sub { color: var(--muted); font-size: 12px; }
-    .hero {
-      background: linear-gradient(160deg, #7a2d38, #3d161c 70%);
-      border: 1px solid var(--line);
-      border-radius: 22px;
-      padding: 22px 20px 20px;
-      margin-bottom: 16px;
-    }
-    .hero h1 { font-family: "Noto Serif KR", serif; font-size: 24px; line-height: 1.35; }
-    .hero p { color: #ecdcc8; margin-top: 8px; font-size: 14px; line-height: 1.6; }
-    .grid2 { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 16px; }
-    .btn {
-      display: block; width: 100%; text-align: center; border: 0; cursor: pointer;
-      border-radius: 14px; padding: 14px 12px; font-weight: 600; font-size: 15px;
-      font-family: inherit;
-    }
-    .btn-gold { background: linear-gradient(180deg, var(--gold2), var(--gold)); color: #3a2410; }
-    .btn-ghost { background: rgba(255,255,255,.08); color: var(--ink); border: 1px solid var(--line); }
-    .btn:active { transform: scale(.98); }
-    .card {
-      background: rgba(58, 28, 33, .82);
-      border: 1px solid var(--line);
-      border-radius: 18px;
-      padding: 16px;
-      margin-bottom: 12px;
-    }
-    .card h3 { font-family: "Noto Serif KR", serif; font-size: 16px; margin-bottom: 10px; }
-    label { display: block; font-size: 12px; color: var(--muted); margin: 10px 0 6px; }
-    input, select {
-      width: 100%; background: #241316; color: var(--ink); border: 1px solid var(--line);
-      border-radius: 12px; padding: 12px 12px; font-size: 15px; font-family: inherit;
-    }
-    .row { display: grid; gap: 8px; }
-    .row.y3 { grid-template-columns: 1.2fr .8fr .8fr; }
-    .row.y2 { grid-template-columns: 1fr 1fr; }
-    .seg { display: flex; background: #241316; border-radius: 12px; padding: 4px; border: 1px solid var(--line); }
-    .seg button {
-      flex: 1; border: 0; background: transparent; color: var(--muted); padding: 8px;
-      border-radius: 9px; font-family: inherit; font-weight: 600; cursor: pointer;
-    }
-    .seg button.on { background: var(--wine); color: #fff; }
-    .chk { display: flex; gap: 8px; align-items: center; margin-top: 10px; color: var(--muted); font-size: 13px; }
-    .chk input { width: auto; }
-    nav.tabbar {
-      position: fixed; left: 0; right: 0; bottom: 0;
-      background: rgba(18, 8, 10, .94);
-      border-top: 1px solid var(--line);
-      display: flex; justify-content: center;
-      padding: 8px 10px calc(8px + env(safe-area-inset-bottom));
-      z-index: 20;
-    }
-    nav.tabbar .inner { width: 430px; display: grid; grid-template-columns: repeat(3, 1fr); }
-    nav.tabbar button {
-      background: none; border: 0; color: var(--muted); font-size: 11px; font-family: inherit;
-      padding: 6px 0; cursor: pointer;
-    }
-    nav.tabbar button.on { color: var(--gold); font-weight: 700; }
-    .icon { font-size: 18px; display: block; margin-bottom: 2px; }
-    .screen { display: none; }
-    .screen.on { display: block; }
-    .pillars {
-      display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; text-align: center;
-    }
-    .pillar {
-      background: #241316; border-radius: 14px; padding: 10px 4px 12px;
-      border: 1px solid var(--line);
-    }
-    .pillar .who { font-size: 11px; color: var(--muted); margin-bottom: 6px; }
-    .pillar .hanja { font-family: "Noto Serif KR", serif; font-size: 26px; line-height: 1.15; color: var(--gold2); }
-    .pillar .ko { font-size: 12px; margin-top: 4px; }
-    .pillar .god { font-size: 11px; color: #e8c9a0; margin-top: 4px; }
-    .bars { margin-top: 8px; }
-    .bar-row { display: grid; grid-template-columns: 42px 1fr 36px; gap: 8px; align-items: center; margin: 7px 0; font-size: 13px; }
-    .bar { height: 8px; background: #241316; border-radius: 99px; overflow: hidden; }
-    .bar > i { display: block; height: 100%; border-radius: 99px; }
-    .prose { font-size: 14.5px; line-height: 1.75; color: #f3e7da; }
-    .prose p + p { margin-top: 10px; }
-    .tag {
-      display: inline-block; background: rgba(224,183,90,.12); color: var(--gold2);
-      border: 1px solid var(--line); border-radius: 999px; padding: 4px 10px; font-size: 12px; margin: 0 6px 6px 0;
-    }
-    .score-wrap { text-align: center; padding: 8px 0 14px; }
-    .score {
-      font-family: "Noto Serif KR", serif; font-size: 56px; color: var(--gold);
-      line-height: 1;
-    }
-    .muted { color: var(--muted); font-size: 13px; line-height: 1.55; }
-    .list-item {
-      display: flex; justify-content: space-between; align-items: center;
-      padding: 12px 0; border-bottom: 1px solid rgba(224,183,90,.12);
-    }
-    .list-item:last-child { border-bottom: 0; }
-    .tiny { font-size: 11px; color: var(--muted); margin-top: 16px; line-height: 1.5; }
-    .luck { display: flex; gap: 8px; overflow-x: auto; padding-bottom: 4px; }
-    .luck .pillar { min-width: 76px; }
-    h2.sec { font-family: "Noto Serif KR", serif; font-size: 18px; margin: 6px 0 12px; }
-    .back { background: none; border: 0; color: var(--gold); font-family: inherit; cursor: pointer; font-size: 14px; }
+    :root{--bg:#1a0f10;--ink:#f7efe6;--muted:#cbb7ae;--gold:#e0b75a;--gold2:#f0d392;--wine:#8b2a36;--line:rgba(224,183,90,.28)}
+    *{box-sizing:border-box;margin:0;padding:0}
+    body{font-family:Pretendard,"Apple SD Gothic Neo",sans-serif;background:radial-gradient(1200px 600px at 50% -10%,#5a2430 0%,transparent 55%),var(--bg);color:var(--ink);padding:0 0 calc(72px + env(safe-area-inset-bottom))}
+    .wrap{max-width:430px;margin:0 auto;padding:20px 18px 28px}
+    header.app{display:flex;align-items:baseline;justify-content:space-between;padding:8px 2px 18px}
+    .brand{font-family:"Noto Serif KR",serif;font-weight:700;font-size:22px}
+    .brand span{color:var(--gold)}
+    .sub{color:var(--muted);font-size:12px}
+    .hero{background:linear-gradient(160deg,#7a2d38,#3d161c 70%);border:1px solid var(--line);border-radius:22px;padding:22px 20px;margin-bottom:16px}
+    .hero h1{font-family:"Noto Serif KR",serif;font-size:24px;line-height:1.35}
+    .hero p{color:#ecdcc8;margin-top:8px;font-size:14px;line-height:1.6}
+    .grid2{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:16px}
+    .btn{display:block;width:100%;text-align:center;border:0;cursor:pointer;border-radius:14px;padding:14px 12px;font-weight:600;font-size:15px;font-family:inherit}
+    .btn-gold{background:linear-gradient(180deg,var(--gold2),var(--gold));color:#3a2410}
+    .btn-ghost{background:rgba(255,255,255,.08);color:var(--ink);border:1px solid var(--line)}
+    .card{background:rgba(58,28,33,.82);border:1px solid var(--line);border-radius:18px;padding:16px;margin-bottom:12px}
+    .card h3{font-family:"Noto Serif KR",serif;font-size:16px;margin-bottom:10px}
+    label{display:block;font-size:12px;color:var(--muted);margin:10px 0 6px}
+    input,select{width:100%;background:#241316;color:var(--ink);border:1px solid var(--line);border-radius:12px;padding:12px;font-size:15px;font-family:inherit}
+    .row{display:grid;gap:8px}.row.y3{grid-template-columns:1.2fr .8fr .8fr}.row.y2{grid-template-columns:1fr 1fr}
+    .seg{display:flex;background:#241316;border-radius:12px;padding:4px;border:1px solid var(--line)}
+    .seg button{flex:1;border:0;background:transparent;color:var(--muted);padding:8px;border-radius:9px;font-family:inherit;font-weight:600;cursor:pointer}
+    .seg button.on{background:var(--wine);color:#fff}
+    .chk{display:flex;gap:8px;align-items:center;margin-top:10px;color:var(--muted);font-size:13px}.chk input{width:auto}
+    nav.tabbar{position:fixed;left:0;right:0;bottom:0;background:rgba(18,8,10,.94);border-top:1px solid var(--line);display:flex;justify-content:center;padding:8px 10px calc(8px + env(safe-area-inset-bottom));z-index:20}
+    nav.tabbar .inner{width:430px;display:grid;grid-template-columns:repeat(3,1fr)}
+    nav.tabbar button{background:none;border:0;color:var(--muted);font-size:11px;font-family:inherit;padding:6px 0;cursor:pointer}
+    nav.tabbar button.on{color:var(--gold);font-weight:700}
+    .icon{font-size:18px;display:block;margin-bottom:2px}
+    .screen{display:none}.screen.on{display:block}
+    .pillars{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;text-align:center}
+    .pillar{background:#241316;border-radius:14px;padding:10px 4px 12px;border:1px solid var(--line)}
+    .pillar .who{font-size:11px;color:var(--muted);margin-bottom:6px}
+    .pillar .hanja{font-family:"Noto Serif KR",serif;font-size:26px;line-height:1.15;color:var(--gold2)}
+    .pillar .ko{font-size:12px;margin-top:4px}
+    .pillar .god{font-size:11px;color:#e8c9a0;margin-top:4px}
+    .bars{margin-top:8px}
+    .bar-row{display:grid;grid-template-columns:42px 1fr 36px;gap:8px;align-items:center;margin:7px 0;font-size:13px}
+    .bar{height:8px;background:#241316;border-radius:99px;overflow:hidden}.bar>i{display:block;height:100%;border-radius:99px}
+    .prose{font-size:14.5px;line-height:1.8;color:#f3e7da}.prose p+p{margin-top:10px}
+    .tag{display:inline-block;background:rgba(224,183,90,.12);color:var(--gold2);border:1px solid var(--line);border-radius:999px;padding:4px 10px;font-size:12px;margin:0 6px 6px 0}
+    .score-wrap{text-align:center;padding:8px 0 14px}
+    .score{font-family:"Noto Serif KR",serif;font-size:56px;color:var(--gold);line-height:1}
+    .muted{color:var(--muted);font-size:13px;line-height:1.55}
+    .list-item{display:flex;justify-content:space-between;align-items:center;padding:12px 0;border-bottom:1px solid rgba(224,183,90,.12)}
+    .tiny{font-size:11px;color:var(--muted);margin-top:16px;line-height:1.5}
+    .luck{display:flex;gap:8px;overflow-x:auto;padding-bottom:4px}.luck .pillar{min-width:76px}
+    h2.sec{font-family:"Noto Serif KR",serif;font-size:18px;margin:6px 0 12px}
+    .back{background:none;border:0;color:var(--gold);font-family:inherit;cursor:pointer;font-size:14px}
+    .rtabs{display:flex;gap:6px;overflow-x:auto;margin:8px 0 14px}
+    .rtabs button{flex:0 0 auto;border:1px solid var(--line);background:#241316;color:var(--muted);border-radius:999px;padding:8px 12px;font-size:12px;font-family:inherit;cursor:pointer}
+    .rtabs button.on{background:var(--wine);color:#fff;border-color:transparent}
+    .rel{display:flex;flex-wrap:wrap;gap:6px}
+    .rel span{background:#241316;border:1px solid var(--line);border-radius:999px;padding:5px 10px;font-size:12px}
+    .yybar{display:flex;height:10px;border-radius:99px;overflow:hidden;background:#241316;margin:8px 0}
+    .yybar i{display:block;height:100%}
+    .badge{display:inline-block;font-size:10px;border:1px solid var(--line);color:var(--gold2);border-radius:999px;padding:2px 8px;margin-left:6px}
+    .godgrid{display:grid;grid-template-columns:1fr 1fr;gap:6px;font-size:13px}
+    .godgrid div{background:#241316;border-radius:10px;padding:8px 10px;border:1px solid var(--line)}
+    .hidden-line{font-size:11px;color:var(--muted);margin-top:6px;line-height:1.45}
+    .monthlist{display:grid;gap:8px}
+    .monthlist div{background:#241316;border:1px solid var(--line);border-radius:12px;padding:10px 12px;font-size:13px}
   </style>
 </head>
 <body>
-  <div class="wrap">
-    <header class="app">
-      <div class="brand">귀인<span>사주</span></div>
-      <div class="sub">사주 · 궁합 MVP</div>
-    </header>
-
-    <section id="home" class="screen on">
-      <div class="hero">
-        <h1>생년월일시로<br>나를 읽습니다</h1>
-        <p>사주팔자, 오행, 성격·재물·직업 해설과 두 사람의 궁합까지. 점집 말투가 아니라 원국을 기준으로 풀이합니다.</p>
-        <div class="grid2">
-          <button class="btn btn-gold" onclick="go('form')">사주 보기</button>
-          <button class="btn btn-ghost" onclick="go('match')">궁합 보기</button>
-        </div>
+<div class="wrap">
+  <header class="app"><div class="brand">귀인<span>사주</span></div><div class="sub">명식 분석</div></header>
+  <section id="home" class="screen on">
+    <div class="hero">
+      <h1>만세력으로 명식을<br>먼저 세웁니다</h1>
+      <p>생년월일시를 넣으면 원국·십성·지장간·오행·음양·신강약·합충형파해·대운·세운을 계산한 뒤, 그 데이터로만 해석합니다.</p>
+      <div class="grid2">
+        <button class="btn btn-gold" onclick="go('form')">사주 분석</button>
+        <button class="btn btn-ghost" onclick="go('match')">궁합 보기</button>
       </div>
-      <div class="card">
-        <h3>저장된 사주</h3>
-        <div id="savedList" class="muted">아직 저장된 사주가 없습니다.</div>
-      </div>
-      <p class="tiny">본 서비스는 명리학 원국 계산과 규칙 기반 해설을 제공하는 참고용입니다. 의료·법률·투자 결정을 대신하지 않습니다. 사주아이 등과 무관한 별도 서비스입니다.</p>
-    </section>
-
-    <section id="form" class="screen">
-      <button class="back" onclick="go('home')">← 홈</button>
-      <h2 class="sec">사주 입력</h2>
-      <div class="card">
-        <label>이름 / 별명</label>
-        <input id="name" placeholder="예: 지은" maxlength="12" />
-        <label>성별</label>
-        <div class="seg" id="genderSeg">
-          <button type="button" class="on" data-v="여">여</button>
-          <button type="button" data-v="남">남</button>
-        </div>
-        <label>달력</label>
-        <div class="seg"><button class="on">양력</button><button disabled>음력(준비중)</button></div>
-        <label>생년월일</label>
-        <div class="row y3">
-          <input id="year" type="number" min="1920" max="2026" placeholder="1995" />
-          <input id="month" type="number" min="1" max="12" placeholder="월" />
-          <input id="day" type="number" min="1" max="31" placeholder="일" />
-        </div>
-        <label>태어난 시각 (한국시간)</label>
-        <div class="row y2">
-          <input id="hour" type="number" min="0" max="23" placeholder="시 0-23" />
-          <input id="minute" type="number" min="0" max="59" placeholder="분" />
-        </div>
-        <label class="chk"><input type="checkbox" id="hourUnknown" /> 시간 모름 (시주 제외)</label>
-        <div style="height:14px"></div>
-        <button class="btn btn-gold" onclick="submitSaju()">사주 풀이</button>
-      </div>
-    </section>
-
-    <section id="result" class="screen">
-      <button class="back" onclick="go('form')">← 다시 입력</button>
-      <h2 class="sec" id="resultTitle">사주</h2>
-      <div id="resultBody"></div>
-    </section>
-
-    <section id="match" class="screen">
-      <button class="back" onclick="go('home')">← 홈</button>
-      <h2 class="sec">궁합</h2>
-      <div class="card">
-        <p class="muted" style="margin-bottom:10px">두 사람의 양력 생년월일시를 넣으면 일간·지지 관계로 점수를 냅니다. 연인, 친구, 동료 모두 가능합니다.</p>
-        <label>나</label>
-        <input id="aName" placeholder="이름" />
-        <div class="row y3" style="margin-top:8px">
-          <input id="aYear" type="number" placeholder="년" />
-          <input id="aMonth" type="number" placeholder="월" />
-          <input id="aDay" type="number" placeholder="일" />
-        </div>
-        <div class="row y2" style="margin-top:8px">
-          <input id="aHour" type="number" placeholder="시" />
-          <input id="aMin" type="number" placeholder="분" />
-        </div>
-        <label>상대</label>
-        <input id="bName" placeholder="이름" />
-        <div class="row y3" style="margin-top:8px">
-          <input id="bYear" type="number" placeholder="년" />
-          <input id="bMonth" type="number" placeholder="월" />
-          <input id="bDay" type="number" placeholder="일" />
-        </div>
-        <div class="row y2" style="margin-top:8px">
-          <input id="bHour" type="number" placeholder="시" />
-          <input id="bMin" type="number" placeholder="분" />
-        </div>
-        <div style="height:14px"></div>
-        <button class="btn btn-gold" onclick="submitMatch()">궁합 보기</button>
-      </div>
-      <div id="matchBody"></div>
-    </section>
-  </div>
-
-  <nav class="tabbar">
-    <div class="inner">
-      <button class="on" id="tab-home" onclick="go('home')"><span class="icon">⌂</span>홈</button>
-      <button id="tab-form" onclick="go('form')"><span class="icon">✦</span>사주</button>
-      <button id="tab-match" onclick="go('match')"><span class="icon">⚭</span>궁합</button>
     </div>
-  </nav>
+    <div class="card"><h3>저장된 사주</h3><div id="savedList" class="muted">아직 저장된 사주가 없습니다.</div></div>
+    <p class="tiny">계산 엔진과 해석 엔진이 분리되어 있습니다. 참고용이며 의료·법률·투자를 대체하지 않습니다.</p>
+  </section>
+  <section id="form" class="screen">
+    <button class="back" onclick="go('home')">← 홈</button>
+    <h2 class="sec">사주 입력</h2>
+    <div class="card">
+      <label>이름</label><input id="name" placeholder="예: 지은" maxlength="12" />
+      <label>성별</label>
+      <div class="seg" id="genderSeg"><button class="on" data-v="여">여</button><button data-v="남">남</button></div>
+      <label>달력</label>
+      <div class="seg" id="calSeg"><button class="on" data-v="양력">양력</button><button data-v="음력">음력</button></div>
+      <label class="chk" id="leapWrap" style="display:none"><input type="checkbox" id="leap" /> 윤달</label>
+      <label>생년월일</label>
+      <div class="row y3">
+        <input id="year" type="number" min="1900" max="2100" placeholder="1995" />
+        <input id="month" type="number" min="1" max="12" placeholder="월" />
+        <input id="day" type="number" min="1" max="31" placeholder="일" />
+      </div>
+      <label>출생 시각 (한국시간)</label>
+      <div class="row y2">
+        <input id="hour" type="number" min="0" max="23" placeholder="시" />
+        <input id="minute" type="number" min="0" max="59" placeholder="분" />
+      </div>
+      <label class="chk"><input type="checkbox" id="hourUnknown" /> 출생시간 모름</label>
+      <label>출생 지역 (진태양시 보정)</label>
+      <select id="city"></select>
+      <div style="height:14px"></div>
+      <button class="btn btn-gold" onclick="submitSaju()">명식 계산</button>
+    </div>
+  </section>
+  <section id="result" class="screen">
+    <button class="back" onclick="go('form')">← 다시 입력</button>
+    <h2 class="sec" id="resultTitle">사주</h2>
+    <div id="resultBody"></div>
+  </section>
+  <section id="match" class="screen">
+    <button class="back" onclick="go('home')">← 홈</button>
+    <h2 class="sec">궁합</h2>
+    <div class="card">
+      <p class="muted" style="margin-bottom:10px">두 사람의 양력 생년월일시를 넣습니다.</p>
+      <label>나</label><input id="aName" placeholder="이름" />
+      <div class="row y3" style="margin-top:8px"><input id="aYear" type="number" placeholder="년" /><input id="aMonth" type="number" placeholder="월" /><input id="aDay" type="number" placeholder="일" /></div>
+      <div class="row y2" style="margin-top:8px"><input id="aHour" type="number" placeholder="시" /><input id="aMin" type="number" placeholder="분" /></div>
+      <label>상대</label><input id="bName" placeholder="이름" />
+      <div class="row y3" style="margin-top:8px"><input id="bYear" type="number" placeholder="년" /><input id="bMonth" type="number" placeholder="월" /><input id="bDay" type="number" placeholder="일" /></div>
+      <div class="row y2" style="margin-top:8px"><input id="bHour" type="number" placeholder="시" /><input id="bMin" type="number" placeholder="분" /></div>
+      <div style="height:14px"></div>
+      <button class="btn btn-gold" onclick="submitMatch()">궁합 보기</button>
+    </div>
+    <div id="matchBody"></div>
+  </section>
+</div>
+<nav class="tabbar"><div class="inner">
+  <button class="on" id="tab-home" onclick="go('home')"><span class="icon">⌂</span>홈</button>
+  <button id="tab-form" onclick="go('form')"><span class="icon">✦</span>사주</button>
+  <button id="tab-match" onclick="go('match')"><span class="icon">⚭</span>궁합</button>
+</div></nav>
+<script>
+/**
+ * 귀인사주 — 만세력 계산 엔진 (해석 문장 없음)
+ * 출력: 구조화된 명식 JSON
+ */
+(function (root, factory) {
+  if (typeof module === "object" && module.exports) module.exports = factory();
+  else root.GuiinSaju = factory();
+})(typeof self !== "undefined" ? self : this, function () {
+  const STEMS = ["갑", "을", "병", "정", "무", "기", "경", "신", "임", "계"];
+  const STEMS_H = ["甲", "乙", "丙", "丁", "戊", "己", "庚", "辛", "壬", "癸"];
+  const BRANCHES = ["자", "축", "인", "묘", "진", "사", "오", "미", "신", "유", "술", "해"];
+  const BRANCHES_H = ["子", "丑", "寅", "卯", "辰", "巳", "午", "未", "申", "酉", "戌", "亥"];
+  const ANIMALS = ["쥐", "소", "호랑이", "토끼", "용", "뱀", "말", "양", "원숭이", "닭", "개", "돼지"];
+  const STEM_EL = ["목", "목", "화", "화", "토", "토", "금", "금", "수", "수"];
+  const BRANCH_EL = ["수", "토", "목", "목", "토", "화", "화", "토", "금", "금", "토", "수"];
+  const STEM_YIN = [false, true, false, true, false, true, false, true, false, true];
+  const BRANCH_YIN = [false, true, false, true, false, true, false, true, false, true, false, true];
+  const EL_KO = { 목: "목(木)", 화: "화(火)", 토: "토(土)", 금: "금(金)", 수: "수(水)" };
+  const EL_COLOR = { 목: "#2f7d4a", 화: "#c23b2e", 토: "#c4a035", 금: "#8a8f99", 수: "#2b6cb0" };
+  const TEN_GODS = ["비견", "겁재", "식신", "상관", "편재", "정재", "편관", "정관", "편인", "정인"];
+  const MONTH_STEM_START = [2, 4, 6, 8, 0, 2, 4, 6, 8, 0];
+  const HOUR_STEM_START = [0, 2, 4, 6, 8, 0, 2, 4, 6, 8];
 
-  <script src="./saju-engine.js"></script>
-  <script>
-    const $ = (id) => document.getElementById(id);
-    let gender = "여";
-    document.querySelectorAll("#genderSeg button").forEach((b) => {
-      b.onclick = () => {
-        document.querySelectorAll("#genderSeg button").forEach((x) => x.classList.remove("on"));
-        b.classList.add("on");
-        gender = b.dataset.v;
-      };
+  const CITIES = [
+    { id: "none", name: "보정 안 함", lon: null },
+    { id: "seoul", name: "서울", lon: 126.978 },
+    { id: "incheon", name: "인천", lon: 126.705 },
+    { id: "suwon", name: "수원", lon: 127.029 },
+    { id: "chuncheon", name: "춘천", lon: 127.73 },
+    { id: "gangneung", name: "강릉", lon: 128.876 },
+    { id: "cheongju", name: "청주", lon: 127.489 },
+    { id: "daejeon", name: "대전", lon: 127.385 },
+    { id: "jeonju", name: "전주", lon: 127.148 },
+    { id: "gwangju", name: "광주", lon: 126.853 },
+    { id: "daegu", name: "대구", lon: 128.602 },
+    { id: "busan", name: "부산", lon: 129.075 },
+    { id: "ulsan", name: "울산", lon: 129.311 },
+    { id: "changwon", name: "창원", lon: 128.682 },
+    { id: "jeju", name: "제주", lon: 126.531 },
+  ];
+
+  // 지장간: 여기 / 중기 / 정기 (가중 = 전통 일수 근사)
+  const HIDDEN = [
+    [{ s: 8, w: 10, k: "여기" }, { s: 9, w: 20, k: "정기" }],
+    [{ s: 9, w: 9, k: "여기" }, { s: 7, w: 3, k: "중기" }, { s: 5, w: 18, k: "정기" }],
+    [{ s: 4, w: 7, k: "여기" }, { s: 2, w: 7, k: "중기" }, { s: 0, w: 16, k: "정기" }],
+    [{ s: 0, w: 10, k: "여기" }, { s: 1, w: 20, k: "정기" }],
+    [{ s: 1, w: 9, k: "여기" }, { s: 9, w: 3, k: "중기" }, { s: 4, w: 18, k: "정기" }],
+    [{ s: 4, w: 7, k: "여기" }, { s: 6, w: 7, k: "중기" }, { s: 2, w: 16, k: "정기" }],
+    [{ s: 2, w: 10, k: "여기" }, { s: 5, w: 9, k: "중기" }, { s: 3, w: 11, k: "정기" }],
+    [{ s: 3, w: 9, k: "여기" }, { s: 1, w: 3, k: "중기" }, { s: 5, w: 18, k: "정기" }],
+    [{ s: 4, w: 7, k: "여기" }, { s: 8, w: 7, k: "중기" }, { s: 6, w: 16, k: "정기" }],
+    [{ s: 6, w: 10, k: "여기" }, { s: 7, w: 20, k: "정기" }],
+    [{ s: 7, w: 9, k: "여기" }, { s: 3, w: 3, k: "중기" }, { s: 4, w: 18, k: "정기" }],
+    [{ s: 4, w: 7, k: "여기" }, { s: 0, w: 7, k: "중기" }, { s: 8, w: 16, k: "정기" }],
+  ];
+
+  // 1900-2100 음력 비트 (윤달/대소월). 고전 calendar.js 계열
+  const LUNAR_INFO = [
+    0x04bd8,0x04ae0,0x0a570,0x054d5,0x0d260,0x0d950,0x16554,0x056a0,0x09ad0,0x055d2,
+    0x04ae0,0x0a5b6,0x0a4d0,0x0d250,0x1d255,0x0b540,0x0d6a0,0x0ada2,0x095b0,0x14977,
+    0x04970,0x0a4b0,0x0b4b5,0x06a50,0x06d40,0x1ab54,0x02b60,0x09570,0x052f2,0x04970,
+    0x06566,0x0d4a0,0x0ea50,0x06e95,0x05ad0,0x02b60,0x186e3,0x092e0,0x1c8d7,0x0c950,
+    0x0d4a0,0x1d8a6,0x0b550,0x056a0,0x1a5b4,0x025d0,0x092d0,0x0d2b2,0x0a950,0x0b557,
+    0x06ca0,0x0b550,0x15355,0x04da0,0x0a5b0,0x14573,0x052b0,0x0a9a8,0x0e950,0x06aa0,
+    0x0aea6,0x0ab50,0x04b60,0x0aae4,0x0a570,0x05260,0x0f263,0x0d950,0x05b57,0x056a0,
+    0x096d0,0x04dd5,0x04ad0,0x0a4d0,0x0d4d4,0x0d250,0x0d558,0x0b540,0x0b6a0,0x195a6,
+    0x095b0,0x049b0,0x0a974,0x0a4b0,0x0b27a,0x06a50,0x06d40,0x0af46,0x0ab60,0x09570,
+    0x04af5,0x04970,0x064b0,0x074a3,0x0ea50,0x06b58,0x055c0,0x0ab60,0x096d5,0x092e0,
+    0x0c960,0x0d954,0x0d4a0,0x0da50,0x07552,0x056a0,0x0abb7,0x025d0,0x092d0,0x0cab5,
+    0x0a950,0x0b4a0,0x0baa4,0x0ad50,0x055d9,0x04ba0,0x0a5b0,0x15176,0x052b0,0x0a930,
+    0x07954,0x06aa0,0x0ad50,0x05b52,0x04b60,0x0a6e6,0x0a4e0,0x0d260,0x0ea65,0x0d530,
+    0x05aa0,0x076a3,0x096d0,0x04afb,0x04ad0,0x0a4d0,0x1d0b6,0x0d250,0x0d520,0x0dd45,
+    0x0b5a0,0x056d0,0x055b2,0x049b0,0x0a577,0x0a4b0,0x0aa50,0x1b255,0x06d20,0x0ada0,
+    0x14b63,0x09370,0x049f8,0x04970,0x064b0,0x168a6,0x0ea50,0x06b20,0x1a6c4,0x0aae0,
+    0x0a2e0,0x0d2e3,0x0c960,0x0d557,0x0d4a0,0x0da50,0x05d55,0x056a0,0x0a6d0,0x055d4,
+    0x052d0,0x0a9b8,0x0a950,0x0b4a0,0x0b6a6,0x0ad50,0x055a0,0x0aba4,0x0a5b0,0x052b0,
+    0x0b273,0x06930,0x07337,0x06aa0,0x0ad50,0x14b55,0x04b60,0x0a570,0x054e4,0x0d160,
+    0x0e968,0x0d520,0x0daa0,0x16aa6,0x056d0,0x04ae0,0x0a9d4,0x0a2d0,0x0d150,0x0f252,
+    0x0d520
+  ];
+
+  function leapMonth(y) {
+    return LUNAR_INFO[y - 1900] & 0xf;
+  }
+  function leapDays(y) {
+    return leapMonth(y) ? ((LUNAR_INFO[y - 1900] & 0x10000) ? 30 : 29) : 0;
+  }
+  function monthDays(y, m) {
+    return LUNAR_INFO[y - 1900] & (0x10000 >> m) ? 30 : 29;
+  }
+  function yearDays(y) {
+    let s = 348;
+    for (let i = 0x8000; i > 0x8; i >>= 1) s += LUNAR_INFO[y - 1900] & i ? 1 : 0;
+    return s + leapDays(y);
+  }
+  function lunarToSolar(ly, lm, ld, leap) {
+    if (ly < 1900 || ly > 2100) throw new Error("음력 1900-2100만 지원");
+    let offset = 0;
+    for (let y = 1900; y < ly; y++) offset += yearDays(y);
+    const leapM = leapMonth(ly);
+    if (leap && leapM !== lm) throw new Error("해당 해에 그 윤달이 없습니다");
+    for (let m = 1; m < lm; m++) {
+      offset += monthDays(ly, m);
+      if (leapM && m === leapM) offset += leapDays(ly);
+    }
+    if (leap) offset += monthDays(ly, lm);
+    offset += ld - 1;
+    const base = Date.UTC(1900, 0, 31);
+    const dt = new Date(base + offset * 86400000);
+    return { year: dt.getUTCFullYear(), month: dt.getUTCMonth() + 1, day: dt.getUTCDate() };
+  }
+
+  function julianDay(y, m, d) {
+    const a = Math.floor((14 - m) / 12);
+    const yy = y + 4800 - a;
+    const mm = m + 12 * a - 3;
+    return d + Math.floor((153 * mm + 2) / 5) + 365 * yy + Math.floor(yy / 4) - Math.floor(yy / 100) + Math.floor(yy / 400) - 32045;
+  }
+
+  function solarTermMs(year, n) {
+    const termInfo = [
+      0, 21208, 42467, 63836, 85337, 107014, 128867, 150921, 173149, 195551,
+      218072, 240693, 263343, 285989, 308563, 331033, 353350, 375494, 397447,
+      419210, 440795, 462224, 483532, 504758,
+    ];
+    return Date.UTC(1900, 0, 6, 2, 5) + 31556925974.7 * (year - 1900) + termInfo[n] * 60000;
+  }
+  function birthMsKst(y, m, d, h, mi) {
+    return Date.UTC(y, m - 1, d, h, mi, 0) - 9 * 3600000;
+  }
+
+  function applySolarTime(h, mi, lon) {
+    if (lon == null) return { hour: h, minute: mi, correctionMin: 0 };
+    const corr = 4 * (lon - 135);
+    let total = h * 60 + mi + corr;
+    let extraDay = 0;
+    while (total < 0) { total += 1440; extraDay -= 1; }
+    while (total >= 1440) { total -= 1440; extraDay += 1; }
+    return { hour: Math.floor(total / 60), minute: Math.round(total % 60), correctionMin: Math.round(corr), extraDay };
+  }
+
+  function jieMonthAndYear(y, m, d, h, mi) {
+    const t = birthMsKst(y, m, d, h, mi);
+    const JIE = [2, 4, 6, 8, 10, 12, 14, 16, 18, 20, 22];
+    function monthStartMs(yearFor, monthIndex) {
+      if (monthIndex <= 10) return solarTermMs(yearFor, JIE[monthIndex]);
+      return solarTermMs(yearFor + 1, 0);
+    }
+    const lichunThis = solarTermMs(y, 2);
+    const sohanThis = solarTermMs(y, 0);
+    let yearForPillar = t >= lichunThis ? y : y - 1;
+    let monthIndex = 11;
+    if (t >= sohanThis && t < lichunThis) {
+      yearForPillar = y - 1;
+      monthIndex = 11;
+    } else {
+      for (let i = 0; i < 12; i++) {
+        const start = monthStartMs(yearForPillar, i);
+        const end = i === 11 ? solarTermMs(yearForPillar + 1, 2) : monthStartMs(yearForPillar, i + 1);
+        if (t >= start && t < end) { monthIndex = i; break; }
+      }
+    }
+    return { yearForPillar, monthIndex };
+  }
+
+  function hourBranchIndex(h, mi) {
+    const minutes = h * 60 + mi;
+    if (minutes >= 23 * 60 || minutes < 60) return 0;
+    return Math.floor((minutes - 60) / 120) + 1;
+  }
+
+  function tenGod(dayStem, otherStem) {
+    const dEl = STEM_EL[dayStem];
+    const oEl = STEM_EL[otherStem];
+    const samePolarity = STEM_YIN[dayStem] === STEM_YIN[otherStem];
+    const cycle = ["목", "화", "토", "금", "수"];
+    const diff = (cycle.indexOf(oEl) - cycle.indexOf(dEl) + 5) % 5;
+    const base = [0, 2, 4, 6, 8][diff];
+    return TEN_GODS[base + (samePolarity ? 0 : 1)];
+  }
+
+  function pillarName(si, bi) {
+    return {
+      ko: STEMS[si] + BRANCHES[bi],
+      hanja: STEMS_H[si] + BRANCHES_H[bi],
+      stem: STEMS[si],
+      stemH: STEMS_H[si],
+      branch: BRANCHES[bi],
+      branchH: BRANCHES_H[bi],
+      stemIndex: si,
+      branchIndex: bi,
+      stemEl: STEM_EL[si],
+      branchEl: BRANCH_EL[bi],
+      stemYin: STEM_YIN[si] ? "음" : "양",
+      branchYin: BRANCH_YIN[bi] ? "음" : "양",
+      animal: ANIMALS[bi],
+    };
+  }
+
+  function hiddenStems(bi, dayStem) {
+    return HIDDEN[bi].map((h) => ({
+      stem: STEMS[h.s],
+      stemH: STEMS_H[h.s],
+      el: STEM_EL[h.s],
+      yin: STEM_YIN[h.s] ? "음" : "양",
+      kind: h.k,
+      weight: h.w,
+      god: tenGod(dayStem, h.s),
+    }));
+  }
+
+  function enrichPillar(p, dayStem) {
+    if (!p) return null;
+    p.god = p.god || tenGod(dayStem, p.stemIndex);
+    p.hidden = hiddenStems(p.branchIndex, dayStem);
+    p.mainHidden = p.hidden[p.hidden.length - 1];
+    return p;
+  }
+
+  function relations(pillars) {
+    const list = [];
+    const hapStem = { 0: 5, 1: 6, 2: 7, 3: 8, 4: 9, 5: 0, 6: 1, 7: 2, 8: 3, 9: 4 };
+    const chungStem = { 0: 6, 1: 7, 2: 8, 3: 9, 6: 0, 7: 1, 8: 2, 9: 3 };
+    const hapBr = { 0: 1, 1: 0, 2: 11, 11: 2, 3: 10, 10: 3, 4: 9, 9: 4, 5: 8, 8: 5, 6: 7, 7: 6 };
+    const chungBr = { 0: 6, 6: 0, 1: 7, 7: 1, 2: 8, 8: 2, 3: 9, 9: 3, 4: 10, 10: 4, 5: 11, 11: 5 };
+    const pa = { 0: 9, 9: 0, 1: 4, 4: 1, 2: 11, 11: 2, 3: 6, 6: 3, 5: 8, 8: 5, 7: 10, 10: 7 };
+    const hae = { 0: 7, 7: 0, 1: 6, 6: 1, 2: 5, 5: 2, 3: 4, 4: 3, 8: 11, 11: 8, 9: 10, 10: 9 };
+    const keys = ["hour", "day", "month", "year"].filter((k) => pillars[k]);
+    const label = { hour: "시", day: "일", month: "월", year: "년" };
+
+    for (let i = 0; i < keys.length; i++) {
+      for (let j = i + 1; j < keys.length; j++) {
+        const a = pillars[keys[i]], b = pillars[keys[j]];
+        const pair = label[keys[i]] + "·" + label[keys[j]];
+        if (hapStem[a.stemIndex] === b.stemIndex) list.push({ type: "천간합", pair, text: a.stem + b.stem + " 합 (" + pair + ")" });
+        if (chungStem[a.stemIndex] === b.stemIndex) list.push({ type: "천간충", pair, text: a.stem + b.stem + " 충 (" + pair + ")" });
+        if (hapBr[a.branchIndex] === b.branchIndex) list.push({ type: "육합", pair, text: a.branch + b.branch + " 육합 (" + pair + ")" });
+        if (chungBr[a.branchIndex] === b.branchIndex) list.push({ type: "충", pair, text: a.branch + b.branch + " 충 (" + pair + ")" });
+        if (pa[a.branchIndex] === b.branchIndex) list.push({ type: "파", pair, text: a.branch + b.branch + " 파 (" + pair + ")" });
+        if (hae[a.branchIndex] === b.branchIndex) list.push({ type: "해", pair, text: a.branch + b.branch + " 해 (" + pair + ")" });
+      }
+    }
+    const brs = keys.map((k) => pillars[k].branchIndex);
+    const has = (arr) => arr.every((x) => brs.includes(x));
+    const sam = [
+      [[8, 0, 4], "신자진 수국"],
+      [[2, 6, 10], "인오술 화국"],
+      [[5, 9, 1], "사유축 금국"],
+      [[11, 3, 7], "해묘미 목국"],
+    ];
+    sam.forEach(([arr, name]) => {
+      if (has(arr)) list.push({ type: "삼합", pair: name, text: name + " 삼합" });
+    });
+    const bang = [
+      [[2, 3, 4], "인묘진 목방"],
+      [[5, 6, 7], "사오미 화방"],
+      [[8, 9, 10], "신유술 금방"],
+      [[11, 0, 1], "해자축 수방"],
+    ];
+    bang.forEach(([arr, name]) => {
+      if (has(arr)) list.push({ type: "방합", pair: name, text: name + " 방합" });
+    });
+    const hyung3 = [[2, 5, 8], [1, 10, 7]];
+    hyung3.forEach((arr) => {
+      const hit = arr.filter((x) => brs.includes(x));
+      if (hit.length >= 2) {
+        list.push({ type: "형", pair: hit.map((i) => BRANCHES[i]).join(""), text: hit.map((i) => BRANCHES[i]).join("·") + " 형" });
+      }
+    });
+    if (brs.includes(0) && brs.includes(3)) list.push({ type: "형", pair: "자묘", text: "자·묘 무례지형" });
+    ["진", "오", "유", "해"].forEach((b) => {
+      if (brs.filter((i) => BRANCHES[i] === b).length >= 2) list.push({ type: "형", pair: b + b, text: b + " 자형" });
+    });
+    return list;
+  }
+
+  function strength(dayStem, pillars) {
+    const dEl = STEM_EL[dayStem];
+    const gen = { 목: "수", 화: "목", 토: "화", 금: "토", 수: "금" };
+    const ke = { 목: "금", 화: "수", 토: "목", 금: "화", 수: "토" };
+    let score = 50;
+    const reasons = [];
+    const month = pillars.month;
+    if (month) {
+      if (month.branchEl === dEl) { score += 22; reasons.push("월지 득령(같은 오행)"); }
+      else if (month.branchEl === gen[dEl]) { score += 12; reasons.push("월지가 일간을 생함"); }
+      else if (month.branchEl === ke[dEl]) { score -= 12; reasons.push("월지가 일간을 극함"); }
+      const rootM = month.hidden.some((h) => STEM_EL[STEMS.indexOf(h.stem)] === dEl && h.kind === "정기");
+      const rootAny = month.hidden.some((h) => h.el === dEl);
+      if (rootM) { score += 16; reasons.push("월지 본기 통근"); }
+      else if (rootAny) { score += 8; reasons.push("월지 지장간 통근"); }
+    }
+    ["day", "year", "hour"].forEach((k, i) => {
+      const p = pillars[k];
+      if (!p) return;
+      if (p.hidden.some((h) => h.el === dEl)) {
+        const add = k === "day" ? 10 : 6;
+        score += add;
+        reasons.push((k === "day" ? "일지" : k === "year" ? "년지" : "시지") + " 통근");
+      }
+    });
+    ["year", "month", "hour"].forEach((k) => {
+      const p = pillars[k];
+      if (!p) return;
+      if (p.stemEl === dEl) { score += 8; reasons.push(p.stem + "간 비겁 득세"); }
+      else if (p.stemEl === gen[dEl]) { score += 5; reasons.push(p.stem + "간 인성 생조"); }
+      else if (p.stemEl === ke[dEl]) { score -= 5; reasons.push(p.stem + "간 관성 극설"); }
+    });
+    score = Math.max(8, Math.min(92, score));
+    let label = "중화";
+    if (score >= 62) label = "신강";
+    else if (score <= 38) label = "신약";
+    return { score: Math.round(score), label, reasons };
+  }
+
+  function elBalance(pillars) {
+    const raw = { 목: 0, 화: 0, 토: 0, 금: 0, 수: 0 };
+    Object.values(pillars).forEach((p) => {
+      if (!p) return;
+      raw[p.stemEl] += 1.15;
+      raw[p.branchEl] += 0.7;
+      p.hidden.forEach((h) => { raw[h.el] += h.weight / 80; });
+    });
+    const total = Object.values(raw).reduce((a, b) => a + b, 0) || 1;
+    const pct = {};
+    ["목", "화", "토", "금", "수"].forEach((k) => { pct[k] = Math.round((raw[k] / total) * 100); });
+    const sorted = Object.entries(pct).sort((a, b) => b[1] - a[1]);
+    return { raw, pct, strong: sorted[0][0], weak: sorted[4][0] };
+  }
+
+  function yinYang(pillars) {
+    let yang = 0, yin = 0;
+    Object.values(pillars).forEach((p) => {
+      if (!p) return;
+      if (p.stemYin === "양") yang++; else yin++;
+      if (p.branchYin === "양") yang++; else yin++;
+    });
+    const t = yang + yin || 1;
+    return {
+      yang, yin,
+      yangPct: Math.round((yang / t) * 100),
+      yinPct: Math.round((yin / t) * 100),
+      label: yang > yin + 1 ? "양 편중" : yin > yang + 1 ? "음 편중" : "음양 균형",
+    };
+  }
+
+  function seunFor(year, dayStem) {
+    const s = ((year - 4) % 10 + 10) % 10;
+    const b = ((year - 4) % 12 + 12) % 12;
+    const p = pillarName(s, b);
+    p.god = tenGod(dayStem, s);
+    p.hidden = hiddenStems(b, dayStem);
+    return p;
+  }
+
+  function monthLuck(year, monthIndex0, yearStem, dayStem) {
+    const mb = (monthIndex0 + 2) % 12;
+    const ms = (MONTH_STEM_START[yearStem] + monthIndex0) % 10;
+    const p = pillarName(ms, mb);
+    p.god = tenGod(dayStem, ms);
+    return p;
+  }
+
+  function calculate(input) {
+    let year = +input.year;
+    let month = +input.month;
+    let day = +input.day;
+    const calendar = input.calendar === "음력" ? "음력" : "양력";
+    let lunarMeta = null;
+    if (calendar === "음력") {
+      const sol = lunarToSolar(year, month, day, !!input.leap);
+      lunarMeta = { lunarYear: year, lunarMonth: month, lunarDay: day, leap: !!input.leap, solar: sol };
+      year = sol.year; month = sol.month; day = sol.day;
+    }
+
+    let hour = input.hourUnknown ? 12 : +input.hour;
+    let minute = input.hourUnknown ? 0 : +(input.minute || 0);
+    const gender = input.gender === "여" ? "여" : "남";
+    const city = CITIES.find((c) => c.id === input.city) || CITIES[0];
+    let extraDay = 0;
+    let solarCorr = { hour, minute, correctionMin: 0, extraDay: 0 };
+    if (!input.hourUnknown && city.lon != null) {
+      solarCorr = applySolarTime(hour, minute, city.lon);
+      hour = solarCorr.hour;
+      minute = solarCorr.minute;
+      extraDay = solarCorr.extraDay || 0;
+      if (extraDay) {
+        const dt = new Date(Date.UTC(year, month - 1, day + extraDay));
+        year = dt.getUTCFullYear(); month = dt.getUTCMonth() + 1; day = dt.getUTCDate();
+      }
+    }
+
+    const { yearForPillar, monthIndex } = jieMonthAndYear(year, month, day, hour, minute);
+    const yearStem = ((yearForPillar - 4) % 10 + 10) % 10;
+    const yearBranch = ((yearForPillar - 4) % 12 + 12) % 12;
+    const monthBranch = (monthIndex + 2) % 12;
+    const monthStem = (MONTH_STEM_START[yearStem] + monthIndex) % 10;
+    const jdn = julianDay(year, month, day);
+    const dayIndex = ((jdn + 49) % 60 + 60) % 60;
+    let dayStem = dayIndex % 10;
+    let dayBranch = dayIndex % 12;
+    if (!input.hourUnknown && hour >= 23) {
+      const next = (dayIndex + 1) % 60;
+      dayStem = next % 10;
+      dayBranch = next % 12;
+    }
+    const hBranch = input.hourUnknown ? null : hourBranchIndex(hour, minute);
+    const hStem = input.hourUnknown ? null : (HOUR_STEM_START[dayStem] + hBranch) % 10;
+
+    const yearP = enrichPillar(pillarName(yearStem, yearBranch), dayStem);
+    const monthP = enrichPillar(pillarName(monthStem, monthBranch), dayStem);
+    const dayP = enrichPillar(pillarName(dayStem, dayBranch), dayStem);
+    dayP.god = "일간";
+    const hourP = hStem == null ? null : enrichPillar(pillarName(hStem, hBranch), dayStem);
+    const pillars = { year: yearP, month: monthP, day: dayP, hour: hourP };
+
+    const yangYear = !STEM_YIN[yearStem];
+    const forward = (yangYear && gender === "남") || (!yangYear && gender === "여");
+    const JIE = [2, 4, 6, 8, 10, 12, 14, 16, 18, 20, 22];
+    function monthStartMs(yfp, mi) {
+      if (mi <= 10) return solarTermMs(yfp, JIE[mi]);
+      if (mi === 11) return solarTermMs(yfp + 1, 0);
+      return solarTermMs(yfp + 1, 2);
+    }
+    const birth = birthMsKst(year, month, day, hour, minute);
+    let startAge = 1;
+    if (forward) {
+      const days = Math.max(1, (monthStartMs(yearForPillar, monthIndex + 1) - birth) / 86400000);
+      startAge = Math.max(1, Math.round(days / 3));
+    } else {
+      const days = Math.max(1, (birth - monthStartMs(yearForPillar, monthIndex)) / 86400000);
+      startAge = Math.max(1, Math.round(days / 3));
+    }
+    const luck = [];
+    let ls = monthStem, lb = monthBranch;
+    for (let i = 0; i < 8; i++) {
+      if (forward) { ls = (ls + 1) % 10; lb = (lb + 1) % 12; }
+      else { ls = (ls + 9) % 10; lb = (lb + 11) % 12; }
+      const p = enrichPillar(pillarName(ls, lb), dayStem);
+      p.fromAge = startAge + i * 10;
+      p.toAge = p.fromAge + 9;
+      luck.push(p);
+    }
+
+    const nowY = input.nowYear || new Date().getFullYear();
+    const age = nowY - year + 1;
+    const currentLuck = luck.find((p) => age >= p.fromAge && age <= p.toAge) || luck[0];
+    const months = [];
+    for (let i = 0; i < 12; i++) {
+      const mp = monthLuck(nowY, i, ((nowY - 4) % 10 + 10) % 10, dayStem);
+      mp.monthLabel = i + 1;
+      months.push(mp);
+    }
+
+    const godsCount = {};
+    TEN_GODS.forEach((g) => { godsCount[g] = 0; });
+    [yearP, monthP, hourP].forEach((p) => { if (p) godsCount[p.god] += 1; });
+    Object.values(pillars).forEach((p) => {
+      if (!p) return;
+      p.hidden.forEach((h) => { godsCount[h.god] += h.kind === "정기" ? 0.8 : 0.3; });
     });
 
-    function go(id) {
-      document.querySelectorAll(".screen").forEach((s) => s.classList.remove("on"));
-      $(id).classList.add("on");
-      document.querySelectorAll("nav.tabbar button").forEach((b) => b.classList.remove("on"));
-      const tab = $("tab-" + (id === "result" ? "form" : id));
-      if (tab) tab.classList.add("on");
-      window.scrollTo(0, 0);
-      if (id === "home") renderSaved();
-    }
-
-    function loadSaved() {
-      try { return JSON.parse(localStorage.getItem("guiin-saju") || "[]"); }
-      catch { return []; }
-    }
-    function savePerson(input, chart) {
-      const list = loadSaved().filter((x) => x.name !== input.name);
-      list.unshift({ name: input.name, gender: input.gender, year: input.year, month: input.month, day: input.day, hour: input.hour, minute: input.minute, hourUnknown: input.hourUnknown, dayMaster: chart.dayMaster.stem });
-      localStorage.setItem("guiin-saju", JSON.stringify(list.slice(0, 12)));
-    }
-    function renderSaved() {
-      const list = loadSaved();
-      if (!list.length) {
-        $("savedList").innerHTML = '<span class="muted">아직 저장된 사주가 없습니다.</span>';
-        return;
-      }
-      $("savedList").innerHTML = list.map((p, i) =>
-        `<div class="list-item"><div><b>${esc(p.name)}</b><div class="muted">${p.year}.${p.month}.${p.day} · ${p.gender} · 일간 ${p.dayMaster}</div></div>
-         <button class="btn btn-ghost" style="width:auto;padding:8px 12px" onclick="openSaved(${i})">보기</button></div>`
-      ).join("");
-    }
-    function openSaved(i) {
-      const p = loadSaved()[i];
-      if (!p) return;
-      $("name").value = p.name;
-      $("year").value = p.year; $("month").value = p.month; $("day").value = p.day;
-      $("hour").value = p.hour ?? ""; $("minute").value = p.minute ?? "";
-      $("hourUnknown").checked = !!p.hourUnknown;
-      gender = p.gender;
-      document.querySelectorAll("#genderSeg button").forEach((b) => b.classList.toggle("on", b.dataset.v === gender));
-      submitSaju();
-    }
-
-    function esc(s){ return String(s||"").replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c])); }
-
-    const DAY_TEXT = {
-      갑: { title: "큰 나무를 세우는 사람", body: "갑목 일간은 곧게 자라는 나무처럼 방향이 분명합니다. 시작과 기획에 강하고, 한번 정한 뜻을 잘 굽히지 않습니다. 다만 고집이 길을 좁힐 수 있어, 곁의 의견을 고르는 힘이 운을 바꿉니다." },
-      을: { title: "바람에 휘어도 뿌리는 남는 사람", body: "을목 일간은 덩굴처럼 유연합니다. 사람 사이를 읽고 분위기를 맞추는 재주가 있습니다. 적응력이 곧 무기지만, 눈치를 너무 보면 본뜻이 흐려집니다." },
-      병: { title: "해를 켜는 사람", body: "병화 일간은 밝고 드러나는 불입니다. 존재감과 추진력이 크고, 자리를 밝히면 사람도 모입니다. 과한 노출과 소진만 조심하면 평판이 따라옵니다." },
-      정: { title: "촛불처럼 오래 가는 사람", body: "정화 일간은 작은 불이되 온기가 깊습니다. 섬세한 취향, 미감, 한 사람을 오래 살피는 힘이 있습니다. 감정 기복이 일을 흔들지 않게 리듬을 지키는 것이 핵심입니다." },
-      무: { title: "산처럼 자리를 지키는 사람", body: "무토 일간은 큼직한 땅입니다. 책임과 신뢰를 먹고 자라고, 한 번 맡은 판을 잘 지킵니다. 움직임이 느릴 수 있으니 결단의 타이밍만 놓치지 않으면 됩니다." },
-      기: { title: "밭을 일구는 사람", body: "기토 일간은 가꾸는 땅입니다. 실무, 돌봄, 디테일에서 빛이 납니다. 남을 먼저 챙기다 나를 비우지 않도록, 경계와 휴식을 명시하는 편이 좋습니다." },
-      경: { title: "쇠를 벼리는 사람", body: "경금 일간은 단단하고 예리합니다. 원칙, 성과, 승부에서 강합니다. 날이 너무 서 있으면 사람도 베니, 강도를 조절할 줄 알 때 리더가 됩니다." },
-      신: { title: "보석을 깎는 사람", body: "신금 일간은 세공된 금속입니다. 미감, 기술, 말의 결이 섬세합니다. 예민함이 재능이자 피로이므로, 환경과 사람을 가려 쓰는 것이 재물이 됩니다." },
-      임: { title: "큰 물을 흐르게 하는 사람", body: "임수 일간은 강과 바다입니다. 스케일, 지혜, 흐름을 읽는 눈이 있습니다. 정처 없이 흐르면 흩어지니, 한 시기의 목표만 고정해도 운이 모입니다." },
-      계: { title: "이슬처럼 스며드는 사람", body: "계수 일간은 가늘고 깊은 물입니다. 직관, 학습, 조용한 통찰이 강점입니다. 겉으로 약해 보여도 속은 깁니다. 드러낼 자리를 고르면 평가가 따라옵니다." }
+    return {
+      engine: "guiin-saju-manseryeok",
+      version: "2.0",
+      input: {
+        name: input.name || "이름 없음",
+        gender, calendar,
+        year: +input.year, month: +input.month, day: +input.day,
+        hour: input.hourUnknown ? null : +input.hour,
+        minute: input.hourUnknown ? null : +(input.minute || 0),
+        hourUnknown: !!input.hourUnknown,
+        city: city.name, cityId: city.id,
+        leap: !!input.leap,
+      },
+      solarUsed: { year, month, day, hour: input.hourUnknown ? null : hour, minute: input.hourUnknown ? null : minute },
+      lunarMeta,
+      solarCorrection: city.lon == null ? null : solarCorr,
+      yearForPillar,
+      pillars,
+      dayMaster: {
+        stem: STEMS[dayStem], hanja: STEMS_H[dayStem],
+        el: STEM_EL[dayStem], yin: STEM_YIN[dayStem] ? "음" : "양", index: dayStem,
+      },
+      elements: elBalance(pillars),
+      yinYang: yinYang(pillars),
+      strength: strength(dayStem, pillars),
+      relations: relations(pillars),
+      godsCount,
+      luck, startAge, forward,
+      currentLuck,
+      seun: seunFor(nowY, dayStem),
+      seunYear: nowY,
+      months,
+      age,
     };
+  }
 
-    function interpret(chart) {
-      const dm = chart.dayMaster.stem;
-      const el = GuiinSaju.normalizeEl(chart.elCount);
-      const weak = Object.entries(el).sort((a,b)=>a[1]-b[1])[0][0];
-      const strong = Object.entries(el).sort((a,b)=>b[1]-a[1])[0][0];
-      const gods = [chart.pillars.year.god, chart.pillars.month.god, chart.pillars.hour && chart.pillars.hour.god].filter(Boolean);
-      const hasWealth = gods.some(g => g.includes("재"));
-      const hasOfficer = gods.some(g => g.includes("관"));
-      const hasOutput = gods.some(g => g.includes("식") || g.includes("상관"));
-      const t = DAY_TEXT[dm];
-      const wealth = hasWealth
-        ? "원국에 재성이 보여 돈의 감각이 아예 없지는 않습니다. 들어오는 돈보다 ‘새는 구멍’을 막는 해가 재물이 큽니다. 한 가지 소득원을 깊게 판 뒤 두 번째를 여는 순서가 맞습니다."
-        : "재성이 드러나지 않아도 식상으로 재물을 만드는 타입이 있습니다. 재능을 상품으로 바꾸는 일—콘텐츠, 기술, 서비스—이 월급만 기다리는 길보다 잘 맞을 수 있습니다.";
-      const job = hasOfficer
-        ? "관성이 있어 조직, 자격, 공적 역할과 잘 맞습니다. 이름 있는 자리보다 ‘내가 결정을 얼마나 쥐는가’를 기준으로 직을 고르면 오래 갑니다."
-        : hasOutput
-        ? "식신·상관이 강해 창작, 기획, 말과 손끝으로 성과를 내는 일이 유리합니다. 반복만 있는 자리는 빨리 지칩니다."
-        : "비겁이 두드러지면 혼자 개척하거나 동업의 지분을 분명히 하는 편이 낫습니다. 애매한 공동 작업은 에너지를 깎습니다.";
-      const yearLuck = chart.luck[0];
-      return {
-        tags: [chart.dayMaster.yin + chart.dayMaster.el, t.title, "신 " + strong + " 과 / 신 " + weak + " 부족"],
-        person: t.body,
-        wealth,
-        job,
-        year: `대운은 ${yearLuck.fromAge}세부터 ${yearLuck.ko}(${yearLuck.hanja})로 열립니다. 십신은 ${yearLuck.god}. 이 구간의 키워드는 ‘${yearLuck.god}의 쓰임’입니다. 흐름이 와도 원국의 약한 ${weak}을 보충하는 사람·환경과 붙이면 성과가 남습니다.`,
-        weak, strong
-      };
-    }
+  function normalizeEl(elCountOrElements) {
+    if (elCountOrElements && elCountOrElements.pct) return elCountOrElements.pct;
+    const total = Object.values(elCountOrElements).reduce((a, b) => a + b, 0) || 1;
+    const out = {};
+    ["목", "화", "토", "금", "수"].forEach((k) => { out[k] = Math.round((elCountOrElements[k] / total) * 100); });
+    return out;
+  }
 
-    function pillarCard(title, p) {
-      if (!p) return `<div class="pillar"><div class="who">${title}</div><div class="hanja">?</div><div class="ko">시간 모름</div></div>`;
-      return `<div class="pillar"><div class="who">${title}</div><div class="hanja">${p.hanja[0]}<br>${p.hanja[1]}</div><div class="ko">${p.ko}</div><div class="god">${p.god}</div></div>`;
-    }
+  return {
+    STEMS, STEMS_H, BRANCHES, BRANCHES_H, ANIMALS, STEM_EL, BRANCH_EL,
+    STEM_YIN, EL_KO, EL_COLOR, TEN_GODS, CITIES,
+    calculate, normalizeEl, tenGod, pillarName, lunarToSolar, seunFor,
+  };
+});
 
-    function renderChart(chart) {
-      const el = GuiinSaju.normalizeEl(chart.elCount);
-      const it = interpret(chart);
-      const inp = chart.input;
-      $("resultTitle").textContent = inp.name + "의 사주";
-      $("resultBody").innerHTML = `
-        <div class="card">
-          <div class="muted" style="margin-bottom:10px">${inp.year}년 ${inp.month}월 ${inp.day}일 ${inp.hourUnknown ? "시간 모름" : inp.hour+"시 "+(inp.minute||0)+"분"} · ${inp.gender} · 일간 ${chart.dayMaster.hanja}${chart.dayMaster.stem}</div>
-          <div class="pillars">
-            ${pillarCard("시주", chart.pillars.hour)}
-            ${pillarCard("일주", chart.pillars.day)}
-            ${pillarCard("월주", chart.pillars.month)}
-            ${pillarCard("년주", chart.pillars.year)}
-          </div>
-        </div>
-        <div class="card">
-          <h3>오행 균형</h3>
-          <div class="bars">
-            ${["목","화","토","금","수"].map(k => `
-              <div class="bar-row"><span>${k}</span><div class="bar"><i style="width:${el[k]}%;background:${GuiinSaju.EL_COLOR[k]}"></i></div><span>${el[k]}%</span></div>
-            `).join("")}
-          </div>
-        </div>
-        <div class="card">
-          ${(it.tags.map(t=>`<span class="tag">${t}</span>`).join(""))}
-          <h3 style="margin-top:10px">성격</h3>
-          <div class="prose"><p>${it.person}</p></div>
-        </div>
-        <div class="card">
-          <h3>재물운</h3>
-          <div class="prose"><p>${it.wealth}</p></div>
-        </div>
-        <div class="card">
-          <h3>직업운</h3>
-          <div class="prose"><p>${it.job}</p></div>
-        </div>
-        <div class="card">
-          <h3>대운</h3>
-          <div class="luck">
-            ${chart.luck.map(p => `<div class="pillar"><div class="who">${p.fromAge}–${p.toAge}세</div><div class="hanja" style="font-size:20px">${p.hanja}</div><div class="god">${p.god}</div></div>`).join("")}
-          </div>
-          <div class="prose" style="margin-top:12px"><p>${it.year}</p></div>
-        </div>
-        <p class="tiny">연주는 입춘, 월주는 절입 시각 기준입니다. 절기 시각은 근사치이며 진태양시·출생지 경도 보정은 다음 버전에 넣을 수 있습니다.</p>
-      `;
-    }
+</script>
+<script>
+/**
+ * 귀인사주 — 해석 엔진
+ * 생년월일을 직접 쓰지 않고, 만세력 JSON만 받아 문장을 만든다.
+ */
+(function (root, factory) {
+  if (typeof module === "object" && module.exports) module.exports = factory();
+  else root.GuiinInterpret = factory();
+})(typeof self !== "undefined" ? self : this, function () {
+  const DAY = {
+    갑: { core: "갑목은 큰 나무입니다. 방향이 분명하고 시작과 기획에 강합니다.", plus: "결단력, 리더십, 초심을 지키는 힘", minus: "고집, 융통성 부족, 주변 의견을 늦게 듣는 점", love: "먼저 방향을 제시합니다. 속도 차이를 합의해야 오래 갑니다.", marry: "배우자궁(일지)과 월주의 관성·재성 배치가 혼기의 결을 좌우합니다.", job: "기획·창업·교육·큰 판의 허브", biz: "새 판을 여는 힘이 큽니다. 동업은 지분을 문서화하세요.", money: "목돈이 들어오면 새 일을 벌리기 쉽습니다.", health: "간·근골·눈의 긴장. 저녁에 몸을 펴는 습관.", family: "가장 역할을 빨리 맡는 편입니다.", noble: "인성·정관이 귀인 역할을 합니다." },
+    을: { core: "을목은 덩굴입니다. 유연하고 사람 사이를 읽습니다.", plus: "적응력, 센스, 조율", minus: "눈치 과다, 본뜻 희석", love: "먼저 맞춥니다. 원하는 것을 작게라도 말해야 합니다.", marry: "관계를 돌보는 힘이 혼인을 지탱합니다.", job: "디자인·상담·브랜딩·세일즈", biz: "제휴와 네트워크형 사업.", money: "작은 수입을 모으는 재주. 한 통장으로 모을 것.", health: "소화와 긴장.", family: "중간에서 집안 분위기를 맞춥니다.", noble: "식신·정인이 귀인입니다." },
+    병: { core: "병화는 태양입니다. 드러나고 사람을 모읍니다.", plus: "추진력, 존재감, 낙관", minus: "과노출, 소진", love: "표현이 빠릅니다. 상대의 침묵을 거절로 읽지 마세요.", marry: "밝은 자리가 배우자운을 키웁니다.", job: "강의·영업·브랜드·무대", biz: "노출이 매출입니다. 체력이 리스크.", money: "들어오고 나가는 속도가 빠릅니다.", health: "심장·수면.", family: "집안을 밝히는 역할.", noble: "식상과 재성이 귀인." },
+    정: { core: "정화는 촛불입니다. 온기가 깊고 취향이 분명합니다.", plus: "섬세함, 지속성, 미감", minus: "감정 기복, 예민", love: "깊은 관계를 원합니다. 일관된 온기가 핵심.", marry: "정재·정관이 있으면 안정 혼인이 잘 맞습니다.", job: "콘텐츠·연구·케어·공예", biz: "단골과 반복 수익.", money: "한 상품을 다듬을수록 붙습니다.", health: "혈·온도.", family: "정을 깊게 줍니다.", noble: "정인·정재." },
+    무: { core: "무토는 산입니다. 책임과 신뢰를 지킵니다.", plus: "신뢰, 지속, 포용", minus: "결단 지연, 무거움", love: "한번 정하면 오래 갑니다. 감정을 말로 풀어야 합니다.", marry: "안정된 울타리를 원합니다.", job: "관리·운영·공공·부동산", biz: "한 판을 오래 운영하는 사업.", money: "모이면 잘 안 흔들립니다.", health: "비위·습.", family: "기둥 역할.", noble: "편재보다 정관·인성." },
+    기: { core: "기토는 밭입니다. 실무와 돌봄에서 빛납니다.", plus: "꼼꼼함, 조력, 현실감각", minus: "과잉 책임, 자기 소진", love: "챙김이 사랑입니다. 받는 연습이 필요합니다.", marry: "생활 궁합이 연애 궁합보다 중요합니다.", job: "행정·회계·교육·현장 실무", biz: "운영 효율이 이익.", money: "새는 구멍을 막는 재주.", health: "소화·피로.", family: "실무형 효.", noble: "정인·식신." },
+    경: { core: "경금은 쇠입니다. 원칙과 성과에 강합니다.", plus: "결단, 분석, 승부", minus: "날선 말, 경직", love: "솔직함이 매력이자 상처입니다.", marry: "조건을 분명히 할수록 갈등이 줄어듭니다.", job: "법률·금융·기술·품질", biz: "칼같은 원가와 계약.", money: "목표 금액이 있을 때 모입니다.", health: "폐·피부·관절.", family: "기준을 세우는 사람.", noble: "정관·정재." },
+    신: { core: "신금은 보석입니다. 미감과 정밀함이 재능입니다.", plus: "섬세한 기술, 안목", minus: "예민, 까다로움", love: "취향으로 사람을 고릅니다.", marry: "생활 품격이 혼인 만족과 연결됩니다.", job: "디자인·분석·전문직", biz: "소수 고객·고가 포지션.", money: "질을 따지다 지출이 늘 수 있습니다.", health: "호흡기·수면.", family: "거리와 예의를 중시.", noble: "식신·편인." },
+    임: { core: "임수는 강과 바다입니다. 흐름과 스케일을 읽습니다.", plus: "지혜, 포용, 기획", minus: "산만, 정처 없음", love: "깊고 넓은 감정. 핵심만 공유하세요.", marry: "자유와 울타리의 타협이 혼인운.", job: "유통·투자·네트워크·연구", biz: "물길형 사업. 현금흐름 관리가 생명.", money: "고인 물을 만들어야 목돈.", health: "신장·과로.", family: "멀리서 크게 돕습니다.", noble: "식신·편재." },
+    계: { core: "계수는 이슬입니다. 직관과 학습이 깊습니다.", plus: "통찰, 학습, 섬세한 관찰", minus: "소극, 안개처럼 흩어짐", love: "천천히 스며듭니다. 안전한 리듬이 필요합니다.", marry: "조용한 안정이 맞습니다.", job: "글·연구·상담·데이터", biz: "지식 상품, 소규모 정밀.", money: "기록하면 모입니다.", health: "냉증·수면.", family: "말수보다 마음으로 돕습니다.", noble: "정인·식신." },
+  };
 
-    function submitSaju() {
-      const input = {
-        name: $("name").value.trim() || "이름 없음",
-        gender,
-        year: +$("year").value,
-        month: +$("month").value,
-        day: +$("day").value,
-        hour: +$("hour").value,
-        minute: +$("minute").value || 0,
-        hourUnknown: $("hourUnknown").checked,
-      };
-      if (!input.year || !input.month || !input.day) return alert("생년월일을 입력해 주세요.");
-      if (!input.hourUnknown && ($("hour").value === "" || input.hour < 0 || input.hour > 23))
-        return alert("시간을 입력하거나 ‘시간 모름’을 선택해 주세요.");
-      const chart = GuiinSaju.calculate(input);
-      savePerson(input, chart);
-      renderChart(chart);
-      go("result");
-    }
+  const GOD = {
+    비견: "자립과 동료, 동시에 경쟁",
+    겁재: "순발력과 나눔, 동시에 손실 위험",
+    식신: "재능·여유·창작이 흐르는 길",
+    상관: "표현과 개혁, 구설 주의",
+    편재: "움직이는 재물, 사업과 바쁨",
+    정재: "안정 재물, 월급과 관리",
+    편관: "압박과 도전, 자리와 스트레스",
+    정관: "규율과 명예, 직장과 체면",
+    편인: "영감과 변칙, 생각이 많음",
+    정인: "보호와 학습, 문서와 어른의 도움",
+    일간: "나의 중심",
+  };
 
-    const STEM_HAP = { 갑:"기", 을:"경", 병:"신", 정:"임", 무:"계", 기:"갑", 경:"을", 신:"병", 임:"정", 계:"무" };
-    const BRANCH_HAP = { 자:"축", 인:"해", 묘:"술", 진:"유", 사:"신", 오:"미", 축:"자", 해:"인", 술:"묘", 유:"진", 신:"사", 미:"오" };
-    const BRANCH_CHUNG = { 자:"오", 축:"미", 인:"신", 묘:"유", 진:"술", 사:"해", 오:"자", 미:"축", 신:"인", 유:"묘", 술:"진", 해:"사" };
+  function hasRel(chart, type) {
+    return (chart.relations || []).filter((r) => r.type === type);
+  }
 
-    function matchScore(a, b) {
-      let score = 62;
-      const notes = [];
-      if (STEM_HAP[a.dayMaster.stem] === b.dayMaster.stem) { score += 14; notes.push("일간 천간합 — 끌림과 이해가 빠르게 붙습니다."); }
-      else if (a.dayMaster.el === b.dayMaster.el) { score += 6; notes.push("일간 오행이 같아 닮은 점이 많습니다. 경쟁이 될 수도 있습니다."); }
-      const ab = a.pillars.day.branch, bb = b.pillars.day.branch;
-      if (BRANCH_HAP[ab] === bb) { score += 12; notes.push("일지 육합 — 생활 리듬이 맞기 쉽습니다."); }
-      if (BRANCH_CHUNG[ab] === bb) { score -= 14; notes.push("일지 충 — 부딪치는 지점이 분명합니다. 규칙을 정하면 관계가 버팁니다."); }
-      const ea = GuiinSaju.normalizeEl(a.elCount);
-      const eb = GuiinSaju.normalizeEl(b.elCount);
-      const cycle = ["목","화","토","금","수"];
-      const gen = { 목:"화", 화:"토", 토:"금", 금:"수", 수:"목" };
-      if (gen[a.dayMaster.el] === b.dayMaster.el) { score += 8; notes.push("내가 상대를 생하는 흐름 — 내가 더 주게 됩니다."); }
-      if (gen[b.dayMaster.el] === a.dayMaster.el) { score += 8; notes.push("상대가 나를 생하는 흐름 — 상대의 지원이 크게 느껴집니다."); }
-      const complement = Math.abs((ea[a.dayMaster.el]||0) - (eb[b.dayMaster.el]||0));
-      if (complement > 25) { score += 4; notes.push("서로 부족한 오행을 메우는 조합입니다."); }
-      score = Math.max(28, Math.min(96, score));
-      if (!notes.length) notes.push("극단적인 합·충보다 담백한 조합입니다. 관계의 질은 태도에서 갈립니다.");
-      return { score, notes };
-    }
+  function interpret(chart) {
+    const dm = chart.dayMaster.stem;
+    const d = DAY[dm];
+    const monthGod = chart.pillars.month.god;
+    const hourGod = chart.pillars.hour ? chart.pillars.hour.god : null;
+    const st = chart.strength;
+    const el = chart.elements;
+    const yy = chart.yinYang;
+    const seun = chart.seun;
+    const luck = chart.currentLuck;
+    const chung = hasRel(chart, "충");
+    const hap = hasRel(chart, "천간합").concat(hasRel(chart, "육합"), hasRel(chart, "삼합"));
+    const premium = {
+      기본성향: `${d.core} 월주 십신은 ${monthGod}(${GOD[monthGod]}). 신강약은 ${st.label}(지수 ${st.score}). ${st.reasons.slice(0, 3).join(", ")}.`,
+      성격: `${d.core} 음양 비율은 양 ${yy.yangPct}% / 음 ${yy.yinPct}% (${yy.label}).`,
+      장점: d.plus + (st.label === "신강" ? " 추진과 자기 주장이 현장에서 힘이 됩니다." : st.label === "신약" ? " 환경을 고르는 안목과 배움의 속도가 강점입니다." : " 상황에 따라 밀고 당기기를 조절할 수 있습니다."),
+      단점: d.minus + (chung.length ? " 원국 충(" + chung.map((r) => r.text).join(", ") + ")이 있어 일정·관계가 갑자기 흔들릴 수 있습니다." : ""),
+      재물운: d.money + " 원국 재성(편재·정재) 비중과 월주 " + monthGod + "을 함께 봅니다. 강한 오행 " + el.strong + ", 약한 오행 " + el.weak + ".",
+      직업운: d.job + " 월지가 직업의 판입니다. 월주 " + chart.pillars.month.ko + " / " + monthGod + ".",
+      사업운: d.biz + (chart.godsCount["편재"] > 0.8 ? " 편재가 보여 변동 소득·사업 체질이 있습니다." : " 먼저 안정 현금흐름을 만든 뒤 확장하는 편이 낫습니다."),
+      연애운: d.love + (hap.length ? " 합이 있어 인연이 붙기 쉬운 구조입니다." : " 합이 적으면 인연은 태도에서 만들어집니다."),
+      결혼운: d.marry + " 일주 " + chart.pillars.day.ko + "가 배우자궁입니다.",
+      인간관계: "년주 " + chart.pillars.year.god + ", 월주 " + monthGod + "이 바깥과 일터의 태도입니다. " + (chung.length ? "충이 있으면 규칙을 정한 관계가 버팁니다." : "충돌보다 지속형 관계가 잘 맞습니다."),
+      건강: d.health + " 약한 오행 " + el.weak + "이 몸과 생활 리듬의 빈칸입니다. 전통 명리의 참고이며 진료를 대체하지 않습니다.",
+      가족운: d.family + " 년주는 조상·부모 배경, 시주는 자녀·결과입니다." + (chart.pillars.hour ? " 시주 " + chart.pillars.hour.ko + " / " + hourGod + "." : " 시주가 없어 자녀궁은 월·일로 보조 해석합니다."),
+      귀인운: d.noble + (chart.godsCount["정인"] + chart.godsCount["편인"] > 1 ? " 인성이 있어 문서·스승·도움이 들어오는 해가 있습니다." : " 귀인은 사람보다 ‘정확한 정보’ 형태로 오는 경우가 많습니다."),
+      주의시기: chung.length
+        ? "원국 충과 같은 글자가 세운·대운에 겹치는 해를 주의하세요. 현재 세운 " + seun.ko + " / " + seun.god + "."
+        : "세운 십신이 편관·겁재로 들어오는 해에 계약·감정 소모를 줄이세요. 올해 " + seun.god + ".",
+      현재대운: luck
+        ? luck.fromAge + "–" + luck.toAge + "세 " + luck.ko + " 대운, 십신 " + luck.god + " (" + GOD[luck.god] + "). 이 물길 위에서 세운이 사건을 겉으로 드러냅니다."
+        : "대운 구간을 계산하지 못했습니다.",
+      올해운세: chart.seunYear + "년 세운 " + seun.ko + " / " + seun.god + ". " + GOD[seun.god] + ". 원국 합충과 겹치면 체감이 커집니다.",
+      월별운세: chart.months.map((m) => ({
+        month: m.monthLabel,
+        pillar: m.ko,
+        god: m.god,
+        line: m.monthLabel + "월 " + m.ko + " (" + m.god + ") — " + GOD[m.god],
+      })),
+    };
+    return {
+      tags: [chart.dayMaster.yin + chart.dayMaster.el, st.label, "신" + el.strong + "과", "신" + el.weak + "약"],
+      free: {
+        summary: d.core,
+        strength: st,
+        elements: el,
+        yinYang: yy,
+      },
+      premium,
+    };
+  }
 
-    function miniChart(title, c) {
-      return `<div class="muted" style="margin-bottom:8px"><b>${esc(title)}</b> · 일간 ${c.dayMaster.hanja}${c.dayMaster.stem} · ${c.pillars.year.ko}년 ${c.pillars.month.ko}월 ${c.pillars.day.ko}일 ${c.pillars.hour ? c.pillars.hour.ko+"시" : ""}</div>`;
-    }
+  return { interpret, DAY, GOD };
+});
 
-    function submitMatch() {
-      const make = (prefix, fallback) => ({
-        name: $(prefix+"Name").value.trim() || fallback,
-        gender: "여",
-        year: +$(prefix+"Year").value,
-        month: +$(prefix+"Month").value,
-        day: +$(prefix+"Day").value,
-        hour: $(prefix+"Hour").value === "" ? 12 : +$(prefix+"Hour").value,
-        minute: +$(prefix+"Min").value || 0,
-        hourUnknown: $(prefix+"Hour").value === "",
-      });
-      const ia = make("a", "나");
-      const ib = make("b", "상대");
-      if (!ia.year || !ib.year) return alert("두 사람 생년월일을 모두 입력해 주세요.");
-      const a = GuiinSaju.calculate(ia);
-      const b = GuiinSaju.calculate(ib);
-      const m = matchScore(a, b);
-      $("matchBody").innerHTML = `
-        <div class="card">
-          <div class="score-wrap">
-            <div class="muted">${esc(ia.name)} × ${esc(ib.name)}</div>
-            <div class="score">${m.score}</div>
-            <div class="muted">궁합 지수</div>
-          </div>
-          ${miniChart(ia.name, a)}
-          ${miniChart(ib.name, b)}
-          <div class="prose">${m.notes.map(n=>"<p>"+n+"</p>").join("")}</div>
-        </div>`;
-      $("matchBody").scrollIntoView({ behavior: "smooth" });
-    }
+</script>
+<script>
+const PREMIUM_UNLOCKED = true; // 결제 연동 시 false로 바꾸고 결제 후 true
+const $ = (id) => document.getElementById(id);
+let gender = "여", calendar = "양력", LAST = null, TAB = "성격";
 
-    renderSaved();
-  </script>
+GuiinSaju.CITIES.forEach((c) => {
+  const o = document.createElement("option");
+  o.value = c.id; o.textContent = c.name;
+  $("city").appendChild(o);
+});
+$("city").value = "seoul";
+
+document.querySelectorAll("#genderSeg button").forEach((b) => {
+  b.onclick = () => { document.querySelectorAll("#genderSeg button").forEach((x)=>x.classList.remove("on")); b.classList.add("on"); gender = b.dataset.v; };
+});
+document.querySelectorAll("#calSeg button").forEach((b) => {
+  b.onclick = () => {
+    document.querySelectorAll("#calSeg button").forEach((x)=>x.classList.remove("on"));
+    b.classList.add("on"); calendar = b.dataset.v;
+    $("leapWrap").style.display = calendar === "음력" ? "flex" : "none";
+  };
+});
+
+function go(id){
+  document.querySelectorAll(".screen").forEach((s)=>s.classList.remove("on"));
+  $(id).classList.add("on");
+  document.querySelectorAll("nav.tabbar button").forEach((b)=>b.classList.remove("on"));
+  const tab = $("tab-" + (id==="result"?"form":id));
+  if (tab) tab.classList.add("on");
+  window.scrollTo(0,0);
+  if (id==="home") renderSaved();
+}
+function loadSaved(){ try{return JSON.parse(localStorage.getItem("guiin-saju")||"[]")}catch{return[]} }
+function savePerson(input, chart){
+  const list = loadSaved().filter((x)=>x.name!==input.name);
+  list.unshift({...input, dayMaster: chart.dayMaster.stem});
+  localStorage.setItem("guiin-saju", JSON.stringify(list.slice(0,12)));
+}
+function renderSaved(){
+  const list=loadSaved();
+  if(!list.length){$("savedList").innerHTML='<span class="muted">아직 저장된 사주가 없습니다.</span>';return;}
+  $("savedList").innerHTML=list.map((p,i)=>`<div class="list-item"><div><b>${esc(p.name)}</b><div class="muted">${p.year}.${p.month}.${p.day} · ${p.gender} · 일간 ${p.dayMaster}</div></div><button class="btn btn-ghost" style="width:auto;padding:8px 12px" onclick="openSaved(${i})">보기</button></div>`).join("");
+}
+function openSaved(i){
+  const p=loadSaved()[i]; if(!p)return;
+  $("name").value=p.name; $("year").value=p.year; $("month").value=p.month; $("day").value=p.day;
+  $("hour").value=p.hour??""; $("minute").value=p.minute??""; $("hourUnknown").checked=!!p.hourUnknown;
+  $("city").value=p.city||"seoul"; $("leap").checked=!!p.leap;
+  gender=p.gender||"여"; calendar=p.calendar||"양력";
+  document.querySelectorAll("#genderSeg button").forEach((b)=>b.classList.toggle("on", b.dataset.v===gender));
+  document.querySelectorAll("#calSeg button").forEach((b)=>b.classList.toggle("on", b.dataset.v===calendar));
+  $("leapWrap").style.display=calendar==="음력"?"flex":"none";
+  submitSaju();
+}
+function esc(s){return String(s||"").replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));}
+
+function pillarCard(title,p){
+  if(!p) return `<div class="pillar"><div class="who">${title}</div><div class="hanja">?</div><div class="ko">시간 모름</div></div>`;
+  return `<div class="pillar"><div class="who">${title}</div><div class="hanja">${p.hanja[0]}<br>${p.hanja[1]}</div><div class="ko">${p.stemYin}${p.stemEl} / ${p.branchYin}${p.branchEl}</div><div class="god">${p.god}</div>
+    <div class="hidden-line">${p.hidden.map(h=>h.stem+"("+h.kind+"·"+h.god+")").join("<br>")}</div></div>`;
+}
+
+function switchTab(n){ TAB=n; renderAll(LAST); }
+
+function renderAll(chart){
+  LAST=chart;
+  const it=GuiinInterpret.interpret(chart);
+  const inp=chart.input, el=chart.elements, yy=chart.yinYang, st=chart.strength;
+  $("resultTitle").textContent=inp.name+"의 명식";
+  const tabs=["성격","재물","직업","연애","결혼","건강","대운","올해","월별"];
+  const tabMap={성격:"성격",재물:"재물운",직업:"직업운",연애:"연애운",결혼:"결혼운",건강:"건강",대운:"현재대운",올해:"올해운세",월별:"월별운세"};
+  const prem = (key, html) => PREMIUM_UNLOCKED ? html : `<div class="card" data-tier="premium"><h3>${key}<span class="badge">PREMIUM</span></h3><p class="muted">결제 후 원국 데이터 기반 상세 해석이 열립니다.</p></div>`;
+
+  const detailBody = TAB==="월별"
+    ? `<div class="monthlist">${it.premium.월별운세.map(m=>`<div><b>${m.month}월</b> ${m.pillar} · ${m.god}<br><span class="muted">${m.line}</span></div>`).join("")}</div>`
+    : `<div class="prose"><p>${it.premium[tabMap[TAB]]||it.premium.기본성향}</p></div>`;
+
+  $("resultBody").innerHTML = `
+    <div class="card">
+      <h3>사주 원국</h3>
+      <div class="muted" style="margin-bottom:10px">${inp.calendar} ${inp.year}.${inp.month}.${inp.day} ${inp.hourUnknown?"시간 모름":inp.hour+":"+String(inp.minute).padStart(2,"0")} · ${inp.gender} · ${inp.city}${chart.solarCorrection? " · 진태양시 "+chart.solarCorrection.correctionMin+"분":""}${chart.lunarMeta? " · 양력 "+chart.lunarMeta.solar.year+"."+chart.lunarMeta.solar.month+"."+chart.lunarMeta.solar.day:""}</div>
+      <div class="pillars">
+        ${pillarCard("시주", chart.pillars.hour)}
+        ${pillarCard("일주", chart.pillars.day)}
+        ${pillarCard("월주", chart.pillars.month)}
+        ${pillarCard("년주", chart.pillars.year)}
+      </div>
+    </div>
+    <div class="card">
+      <h3>오행 분석</h3>
+      <div class="bars">${["목","화","토","금","수"].map(k=>`<div class="bar-row"><span>${k}</span><div class="bar"><i style="width:${el.pct[k]}%;background:${GuiinSaju.EL_COLOR[k]}"></i></div><span>${el.pct[k]}%</span></div>`).join("")}</div>
+      <p class="muted" style="margin-top:8px">강한 오행 ${el.strong} · 약한 오행 ${el.weak}</p>
+    </div>
+    <div class="card">
+      <h3>음양 분석</h3>
+      <div class="yybar"><i style="width:${yy.yangPct}%;background:#e0b75a"></i><i style="width:${yy.yinPct}%;background:#5b7fb8"></i></div>
+      <p class="muted">양 ${yy.yangPct}% · 음 ${yy.yinPct}% · ${yy.label}</p>
+    </div>
+    <div class="card">
+      <h3>십성 분석</h3>
+      <div class="godgrid">${GuiinSaju.TEN_GODS.map(g=>`<div><b>${g}</b><br><span class="muted">${(chart.godsCount[g]||0).toFixed(1)}</span></div>`).join("")}</div>
+      <p class="muted" style="margin-top:8px">천간 십성 + 지장간 가중. 일간 ${chart.dayMaster.hanja}${chart.dayMaster.stem}</p>
+    </div>
+    <div class="card">
+      <h3>신강 / 신약</h3>
+      <p><b>${st.label}</b> · 지수 ${st.score}</p>
+      <p class="muted" style="margin-top:8px">${st.reasons.join(" · ")}</p>
+    </div>
+    <div class="card">
+      <h3>합·충·형·파·해</h3>
+      <div class="rel">${chart.relations.length?chart.relations.map(r=>`<span>${r.text}</span>`).join(""):'<span>뚜렷한 합충형파해가 없습니다</span>'}</div>
+    </div>
+    <div class="card">
+      <h3>대운 타임라인</h3>
+      <p class="muted" style="margin-bottom:8px">${chart.forward?"순행":"역행"} · 시작 ${chart.startAge}세 · 현재 ${chart.currentLuck?chart.currentLuck.ko:""}</p>
+      <div class="luck">${chart.luck.map(p=>`<div class="pillar"><div class="who">${p.fromAge}–${p.toAge}세</div><div class="hanja" style="font-size:20px">${p.hanja}</div><div class="god">${p.god}</div></div>`).join("")}</div>
+    </div>
+    <div class="card">
+      <h3>세운 ${chart.seunYear}</h3>
+      <p>${chart.seun.ko} (${chart.seun.hanja}) · 십성 ${chart.seun.god}</p>
+    </div>
+    <div class="rtabs">${tabs.map(n=>`<button class="${n===TAB?"on":""}" onclick="switchTab('${n}')">${n}</button>`).join("")}</div>
+    ${prem(TAB, `<div class="card" data-tier="premium"><h3>${TAB} 상세<span class="badge">PREMIUM</span></h3>
+      <div class="prose"><p>${it.premium.기본성향}</p><p>${it.premium.장점}</p><p>${it.premium.단점}</p></div>
+      ${detailBody}
+    </div>`)}
+    <p class="tiny">연주 입춘 · 월주 절입 · 23시 야자시. 절기는 근사치입니다. 진태양시는 동경 135° 기준입니다.</p>
+  `;
+}
+
+function submitSaju(){
+  const input={
+    name:$("name").value.trim()||"이름 없음", gender, calendar,
+    year:+$("year").value, month:+$("month").value, day:+$("day").value,
+    hour:+$("hour").value, minute:+$("minute").value||0,
+    hourUnknown:$("hourUnknown").checked, city:$("city").value, leap:$("leap").checked
+  };
+  if(!input.year||!input.month||!input.day) return alert("생년월일을 입력해 주세요.");
+  if(!input.hourUnknown && ($("hour").value===""||input.hour<0||input.hour>23)) return alert("시간을 입력하거나 모름을 선택해 주세요.");
+  try{
+    const chart=GuiinSaju.calculate(input);
+    savePerson(input, chart);
+    TAB="성격";
+    renderAll(chart);
+    go("result");
+  }catch(e){ alert(e.message||"계산 오류"); }
+}
+
+const STEM_HAP={갑:"기",을:"경",병:"신",정:"임",무:"계",기:"갑",경:"을",신:"병",임:"정",계:"무"};
+const BRANCH_HAP={자:"축",인:"해",묘:"술",진:"유",사:"신",오:"미",축:"자",해:"인",술:"묘",유:"진",신:"사",미:"오"};
+const BRANCH_CHUNG={자:"오",축:"미",인:"신",묘:"유",진:"술",사:"해",오:"자",미:"축",신:"인",유:"묘",술:"진",해:"사"};
+function matchScore(a,b){
+  let score=62; const notes=[];
+  if(STEM_HAP[a.dayMaster.stem]===b.dayMaster.stem){score+=14;notes.push("일간 천간합");}
+  else if(a.dayMaster.el===b.dayMaster.el){score+=6;notes.push("일간 오행이 같음");}
+  if(BRANCH_HAP[a.pillars.day.branch]===b.pillars.day.branch){score+=12;notes.push("일지 육합");}
+  if(BRANCH_CHUNG[a.pillars.day.branch]===b.pillars.day.branch){score-=14;notes.push("일지 충");}
+  score=Math.max(28,Math.min(96,score));
+  if(!notes.length) notes.push("담백한 조합. 태도에서 갈립니다.");
+  return {score,notes};
+}
+function submitMatch(){
+  const make=(p,f)=>({name:$(p+"Name").value.trim()||f,gender:"여",year:+$(p+"Year").value,month:+$(p+"Month").value,day:+$(p+"Day").value,hour:$(p+"Hour").value===""?12:+$(p+"Hour").value,minute:+$(p+"Min").value||0,hourUnknown:$(p+"Hour").value==="",city:"none",calendar:"양력"});
+  const ia=make("a","나"), ib=make("b","상대");
+  if(!ia.year||!ib.year) return alert("두 사람 생년월일을 입력해 주세요.");
+  const a=GuiinSaju.calculate(ia), b=GuiinSaju.calculate(ib), m=matchScore(a,b);
+  $("matchBody").innerHTML=`<div class="card"><div class="score-wrap"><div class="muted">${esc(ia.name)} × ${esc(ib.name)}</div><div class="score">${m.score}</div></div><div class="prose">${m.notes.map(n=>"<p>"+n+"</p>").join("")}</div></div>`;
+}
+renderSaved();
+</script>
 </body>
 </html>
