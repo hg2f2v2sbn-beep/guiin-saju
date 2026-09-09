@@ -81,6 +81,10 @@ body.home-mode nav{background:rgba(255,255,255,.97);border-top:1px solid #eee8de
 .today-focus{display:grid;grid-template-columns:repeat(3,1fr);gap:6px;margin-top:10px}.today-focus div{background:#190c10;border:1px solid var(--line);border-radius:12px;padding:9px 5px;text-align:center}.today-focus b{display:block;color:var(--gold2);font-size:10px}.today-focus span{font-size:9px;color:#aa9691}
 @media(max-width:370px){.home-title{font-size:18px}.product-card h3{font-size:14px}.report h2{font-size:18px}}
 
+
+.basis-row{display:flex;flex-wrap:wrap;gap:5px;margin:8px 0 2px}.basis-row span{font-size:9px;padding:4px 7px;border-radius:999px;border:1px solid rgba(225,184,92,.2);background:rgba(225,184,92,.06);color:#cdb9b3}
+.personal-summary{background:linear-gradient(145deg,#271016,#1b0c10);border:1px solid rgba(225,184,92,.24);border-radius:17px;padding:14px;margin:10px 0}.personal-summary b{color:var(--gold2);font-size:13px}.personal-summary p{font-size:11px;line-height:1.75;color:#d7c6c0;margin:7px 0 0}
+
 </style>
 </head>
 <body class="home-mode">
@@ -308,16 +312,64 @@ function annualOverview(c,yr){
  return `<div class="summarybox"><b>${yr}년 · ${stem}${branch} · ${god}</b><p>${annualGodText(god,c.dayMaster.stem)} ${rel.length?`원국과는 ${[...new Set(rel)].slice(0,3).join("·")} 신호가 연결됩니다. 합은 연결, 충은 재조정 신호로만 참고합니다.`:"원국과 두드러진 합·충이 적어 특정 사건보다 그 해의 십신 주제를 중심으로 보는 편이 적절합니다."}</p></div>`;
 }
 
+
+function chartSignature(c){
+ const pct=elPct(c),hi=strongest(pct),lo=weakest(pct),g=godCounts(c),rels=natalRelations(c);
+ const topGod=Object.entries(g).sort((a,b)=>b[1]-a[1])[0]?.[0]||c.pillars.month.god||"비견";
+ return {dm:c.dayMaster.stem,dmEl:c.dayMaster.el,monthGod:c.pillars.month.god||"비견",hi,lo,topGod,rels};
+}
+function basisBadges(c){
+ const s=chartSignature(c);
+ return `<div class="basis-row"><span>${s.dm}일간</span><span>월주 ${s.monthGod}</span><span>${s.hi} 강</span><span>${s.lo} 약</span>${s.rels.slice(0,2).map(x=>`<span>${x}</span>`).join("")}</div>`;
+}
+function personalizedOpening(c){
+ const s=chartSignature(c);
+ const dmTone={
+  갑:"방향을 세우면 밀고 나가려는 힘",을:"환경을 읽으며 유연하게 이어가는 힘",병:"빠르게 드러내고 분위기를 움직이는 힘",정:"필요한 곳에 집중해서 온도를 만드는 힘",
+  무:"기준을 잡고 버티며 현실화하는 힘",기:"세부를 돌보고 조율하며 쌓아가는 힘",경:"기준을 분명히 하고 결단하는 힘",신:"정교하게 다듬고 완성도를 높이는 힘",
+  임:"큰 흐름을 읽고 이동하며 연결하는 힘",계:"세밀하게 관찰하고 틈을 찾아 대응하는 힘"
+ }[s.dm]||"자기 방식으로 상황을 처리하는 힘";
+ const godTone={비견:"자기 기준",겁재:"경쟁과 분배",식신:"생산과 생활",상관:"표현과 개선",편재:"기회와 거래",정재:"관리와 안정",편관:"압박 속 실행",정관:"책임과 신뢰",편인:"탐색과 전문성",정인:"학습과 정리"}[s.monthGod];
+ return `<div class="personal-summary"><b>${c.input.name}님의 명식에서 먼저 볼 세 가지</b>${basisBadges(c)}<p>첫째, ${s.dm}일간의 ${dmTone}. 둘째, 사회 자리인 월주에서 보이는 ${godTone}. 셋째, 오행 비교에서 ${s.hi}가 상대적으로 높고 ${s.lo}가 낮다는 점입니다. 아래 해설은 이 세 축과 원국의 합·충을 함께 비교해서 읽습니다. 하나의 단어로 성격이나 미래를 확정하지 않습니다.</p></div>`;
+}
+function variantPick(seed,arr){
+ let n=0;for(const ch of String(seed))n=(n*31+ch.charCodeAt(0))>>>0;
+ return arr[n%arr.length];
+}
+function workAdvice(c){
+ const s=chartSignature(c), seed=[s.dm,s.monthGod,s.hi,s.lo].join("");
+ const byGod={
+  비견:["내 기준이 분명한 만큼 독립적으로 책임질 수 있는 범위를 정하면 강점이 살아납니다.","혼자 빠르게 처리하는 능력과 협업에서 공유해야 할 정보를 구분하는 것이 중요합니다."],
+  겁재:["경쟁 자체보다 자원과 역할을 어떻게 나누는지가 성과에 영향을 줄 수 있습니다.","비교가 동력이 될 수 있지만 내 시간과 비용의 상한선을 먼저 정하는 편이 안정적입니다."],
+  식신:["반복 가능한 기술과 결과물을 쌓을수록 강점이 선명해질 수 있습니다.","아이디어보다 실제 산출물과 루틴을 남기는 방식이 잘 맞는지 경험과 대조해 보세요."],
+  상관:["문제를 발견하고 개선하는 힘을 결과물로 연결하는 것이 핵심입니다.","표현력이 강점이 될 수 있으나 조직에서는 전달 방식과 타이밍을 함께 조정할 필요가 있습니다."],
+  편재:["사람·기회·거래를 넓게 보는 힘을 실제 수익 구조와 연결할 수 있는지 확인해 보세요.","외부 기회를 잡는 속도와 계약·비용을 검토하는 속도를 분리하는 편이 좋습니다."],
+  정재:["꾸준한 관리와 예측 가능한 구조를 만드는 능력이 성과로 연결되는지 살펴볼 만합니다.","가격·시간·반복 비용을 숫자로 관리할수록 판단이 선명해질 수 있습니다."],
+  편관:["압박 속 실행력이 장점이 될 수 있지만 지속 가능한 업무량을 넘지 않는 기준이 필요합니다.","빠른 대응이 필요한 역할과 회복 시간을 확보하는 구조를 함께 설계하는 편이 좋습니다."],
+  정관:["책임과 신뢰를 쌓는 방식이 강점으로 작동할 수 있습니다.","규칙이 분명한 환경에서 성과가 나는지, 아니면 규칙을 직접 만드는 위치가 맞는지 실제 경력과 비교해 보세요."],
+  편인:["새로운 방식과 전문 정보를 빠르게 탐색하는 힘을 실제 적용까지 이어가는 것이 중요합니다.","관심 분야가 넓어질수록 무엇을 끝까지 상품·성과로 만들지 선택하는 기준이 필요합니다."],
+  정인:["배우고 정리한 것을 체계로 만드는 방식이 강점이 될 수 있습니다.","전문성을 문서·자격·프로세스처럼 반복 가능한 형태로 남기는 것이 도움이 될 수 있습니다."]
+ };
+ return variantPick(seed,byGod[s.monthGod]||["실제 경력에서 반복적으로 성과가 난 환경을 기준으로 직업 선택을 검토하세요."]);
+}
+function relationshipAdvice(c){
+ const s=chartSignature(c), hasClash=s.rels.some(x=>x.includes("충")), hasComb=s.rels.some(x=>x.includes("합"));
+ if(hasClash&&hasComb)return "원국에 연결 신호와 재조정 신호가 함께 보여, 가까워지는 힘과 기준을 다시 맞추는 과정이 동시에 나타날 수 있습니다. 관계에서는 감정보다 시간·비용·역할처럼 반복되는 현실 항목을 구체화해 보세요.";
+ if(hasClash)return "원국의 충은 관계 파탄을 뜻하지 않습니다. 다만 가까운 관계에서 속도나 생활 기준을 다시 맞추는 일이 반복되는지 실제 경험과 비교해 볼 만합니다.";
+ if(hasComb)return "원국의 합은 연결과 협력의 가능성을 보는 신호입니다. 상대에게 맞추는 것과 서로 합의하는 것을 구분하면 장점이 더 안정적으로 작동할 수 있습니다.";
+ return "강한 합·충 신호 하나로 관계를 설명하기보다, 연락·돈·시간·돌봄·개인공간에서 반복되는 패턴을 관찰하는 편이 더 유용합니다.";
+}
+
 function lifetime(c){
  const pct=elPct(c),hi=strongest(pct),lo=weakest(pct),dm=c.dayMaster.stem,monthGod=c.pillars.month.god||"비견", yin=c.dayMaster.yin;
  const nature={목:"성장·방향성",화:"표현·확산",토:"안정·축적",금:"기준·정리",수:"정보·유연성"}[STEM_EL[dm]];
  const monthMeaning={비견:"자기 기준과 독립",겁재:"경쟁과 자원 분배",식신:"생산성과 생활력",상관:"표현과 개선",편재:"외부 기회와 거래",정재:"관리와 안정",편관:"압박 속 실행",정관:"책임과 신뢰",편인:"탐색과 전문성",정인:"학습과 문서"}[monthGod]||"사회적 역할";
- return `
+ return `${personalizedOpening(c)}
  <div class="report-section"><h3 class="subhead">1. 사주의 중심 · ${dm}일간</h3><p>${dm}일간은 ${STEM_EL[dm]}의 ${nature}을 중심 이미지로 읽습니다. ${yin==="양"?"반응을 보며 먼저 움직이고 방향을 잡는 쪽":"조건을 세밀하게 살핀 뒤 필요한 만큼 조정하는 쪽"}이 자연스럽게 나타날 수 있습니다. 이것은 성격을 고정하는 판정이 아니라 일간이 보여주는 기본 작동 방식입니다. 실제 성격은 월주·다른 천간지지·환경과 함께 달라집니다.</p></div>
  <div class="report-section"><h3 class="subhead">2. 오행 균형</h3><p>${elementBalanceText(c)}</p></div>
- <div class="report-section"><h3 class="subhead">3. 사회생활과 일하는 방식</h3><p>월주 천간의 십신은 ${monthGod}입니다. 이 리포트에서는 이를 사회생활에서 반복되기 쉬운 ‘${monthMeaning}’의 주제로 참고합니다. 원국에서 확인되는 흐름을 묶으면 ${careerBranch(c)}을 실제 경력과 대조해 볼 만합니다. 직업명을 사주로 하나 정하기보다, 어떤 환경에서 성과가 반복됐는지·혼자 할 때와 조직에서 할 때 어느 쪽이 지속 가능한지·수입과 시간의 교환비가 어떤지를 함께 확인하는 것이 더 현실적입니다.</p></div>
+ <div class="report-section"><h3 class="subhead">3. 사회생활과 일하는 방식</h3><p>월주 천간의 십신은 ${monthGod}입니다. 이 리포트에서는 이를 사회생활에서 반복되기 쉬운 ‘${monthMeaning}’의 주제로 참고합니다. 원국에서 확인되는 흐름을 묶으면 ${careerBranch(c)}을 실제 경력과 대조해 볼 만합니다. ${workAdvice(c)} 직업명을 사주로 하나 정하기보다, 어떤 환경에서 성과가 반복됐는지·혼자 할 때와 조직에서 할 때 어느 쪽이 지속 가능한지·수입과 시간의 교환비가 어떤지를 함께 확인하는 것이 더 현실적입니다.</p></div>
  <div class="report-section"><h3 class="subhead">4. 재물과 자원 관리</h3><p>${moneyBranch(c)} ${hi}가 상대적으로 강하고 ${lo}가 낮다는 점 역시 투자 종목이나 수익 시기를 뜻하지 않습니다. 실제 재무 판단에서는 통장 잔액, 월 고정비, 부채, 계약 조건, 세금, 현금흐름이 사주 해석보다 우선입니다. 명리 해설은 ‘돈을 벌고 쓰는 방식에서 무엇을 점검할지’ 정도의 질문을 만드는 데 사용하는 것이 적절합니다.</p></div>
- <div class="report-section"><h3 class="subhead">5. 연애와 인간관계</h3><p>${relationBranch(c)} 일지는 가까운 관계와 생활 리듬을 살피는 참고 자리로 보되, 특정 배우자상이나 결혼 시기를 단정하지 않습니다. ${dm}일간에게 중요한 것은 자신의 ${nature}을 지키면서도 상대의 결정권과 생활 속도를 함께 인정하는 것입니다. 관계가 흔들릴 때는 ‘누가 맞는가’보다 비용·시간·연락·돌봄·미래 계획처럼 실제 합의가 필요한 항목을 분리해 보는 편이 도움이 됩니다.</p></div>
+ <div class="report-section"><h3 class="subhead">5. 연애와 인간관계</h3><p>${relationBranch(c)} 일지는 가까운 관계와 생활 리듬을 살피는 참고 자리로 보되, 특정 배우자상이나 결혼 시기를 단정하지 않습니다. ${relationshipAdvice(c)} ${dm}일간에게 중요한 것은 자신의 ${nature}을 지키면서도 상대의 결정권과 생활 속도를 함께 인정하는 것입니다. 관계가 흔들릴 때는 ‘누가 맞는가’보다 비용·시간·연락·돌봄·미래 계획처럼 실제 합의가 필요한 항목을 분리해 보는 편이 도움이 됩니다.</p></div>
  <div class="report-section"><h3 class="subhead">6. 강점이 과해질 때</h3><p>${hi}의 비중이 높다는 것은 그 기능을 자주 쓰기 쉽다는 비교 신호입니다. 강점은 익숙해서 빠르게 쓸 수 있지만 상황에 따라 과사용될 수도 있습니다. 반대로 ${lo}가 낮다고 해서 결핍이나 불운을 뜻하지 않습니다. 익숙하지 않은 방식이 필요할 때 체크리스트·일정·주변 피드백처럼 외부 도구로 보완할 수 있다는 정도로 읽는 것이 안전합니다.</p></div>
  <div class="report-section"><h3 class="subhead">7. 생활 리듬과 건강 참고</h3><p>오행 강약은 의료 진단이 아니며 ${lo}가 낮다는 이유로 특정 장기나 질환을 연결하지 않습니다. 이 부분은 수면, 식사, 활동, 휴식, 스트레스 관리처럼 실제로 기록하고 조절할 수 있는 생활 리듬을 점검하는 참고 문장입니다. 지속되는 증상이나 건강 우려가 있다면 명리 해석이 아니라 의료 전문가의 평가를 기준으로 해야 합니다.</p></div>
  <div class="report-section"><h3 class="subhead">8. 이 명식을 읽는 핵심</h3><p>${dm}일간의 ${nature}, 월주의 ${monthGod}, 오행의 ${hi} 우세와 ${lo} 상대적 약세를 하나의 ‘운명 결론’으로 묶지 않는 것이 중요합니다. 이 리포트의 목적은 원국에서 반복되는 주제를 찾아 실제 선택을 점검하는 것입니다. 잘 맞는 부분은 현실의 경험으로 확인하고, 맞지 않는 부분은 억지로 끼워 맞추지 않는 방식으로 활용하세요.</p></div>`;
