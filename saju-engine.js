@@ -240,6 +240,42 @@
       startAge = Math.max(1, Math.round(days / 3));
     }
 
+    const STAGES = ["장생","목욕","관대","건록","제왕","쇠","병","사","묘","절","태","양"];
+    // 양간 장생 지지, 음간은 역행
+    const CHANGSAENG = [11, 6, 2, 9, 2, 9, 5, 0, 8, 3];
+    function stageOf(stemIdx, branchIdx) {
+      const start = CHANGSAENG[stemIdx];
+      const yin = STEM_YIN[stemIdx];
+      const diff = yin ? (start - branchIdx + 12) % 12 : (branchIdx - start + 12) % 12;
+      return STAGES[diff];
+    }
+    function triadKey(bi) {
+      if ([2, 6, 10].includes(bi)) return "인오술";
+      if ([5, 9, 1].includes(bi)) return "사유축";
+      if ([8, 0, 4].includes(bi)) return "신자진";
+      return "해묘미";
+    }
+    const DOHWA = { 인오술: 3, 사유축: 6, 신자진: 9, 해묘미: 0 };
+    const YEOKMA = { 인오술: 8, 사유축: 11, 신자진: 2, 해묘미: 5 };
+    const HWAGAE = { 인오술: 10, 사유축: 1, 신자진: 4, 해묘미: 7 };
+    const YANGIN = [3, 4, 6, 7, 6, 5, 9, 10, 0, 1];
+    const CHEONEUL = { 0: [1, 7], 1: [0, 8], 2: [11, 9], 3: [11, 9], 4: [1, 7], 5: [0, 8], 6: [5, 3], 7: [2, 6], 8: [2, 6], 9: [5, 3] };
+    const branchSet = pillars.map((p) => p.branchIndex);
+    function hasBr(idx) { return branchSet.includes(idx); }
+    const yearTri = triadKey(yearBranch);
+    const dayTri = triadKey(dayBranch);
+    const extras = [];
+    const cheon = CHEONEUL[dayStem] || [];
+    if (cheon.some(hasBr)) extras.push({ key: "천을귀인", easy: "막힌 일이 풀리거나 도움을 받기 쉬운 글자" });
+    if (hasBr(DOHWA[yearTri]) || hasBr(DOHWA[dayTri])) extras.push({ key: "도화", easy: "눈에 잘 띄고 호감·관심과 연결되는 글자" });
+    if (hasBr(YEOKMA[yearTri]) || hasBr(YEOKMA[dayTri])) extras.push({ key: "역마", easy: "이동·바쁨·환경 변화가 잦아질 수 있는 글자" });
+    if (hasBr(HWAGAE[yearTri]) || hasBr(HWAGAE[dayTri])) extras.push({ key: "화개", easy: "혼자 있는 시간, 공부·취향이 깊어지는 글자" });
+    if (hasBr(YANGIN[dayStem])) extras.push({ key: "양인", easy: "추진력이 세고, 과하면 부딪히기 쉬운 글자" });
+    yearP.stage = stageOf(dayStem, yearBranch);
+    monthP.stage = stageOf(dayStem, monthBranch);
+    dayP.stage = stageOf(dayStem, dayBranch);
+    if (hourP) hourP.stage = stageOf(dayStem, hBranch);
+
     const luck = [];
     let ls = monthStem;
     let lb = monthBranch;
@@ -255,6 +291,7 @@
       p.fromAge = startAge + i * 10;
       p.toAge = p.fromAge + 9;
       p.god = tenGod(dayStem, ls);
+      p.stage = stageOf(dayStem, lb);
       luck.push(p);
     }
 
@@ -282,6 +319,13 @@
       luck,
       startAge,
       forward,
+      extras,
+      stages: {
+        year: yearP.stage,
+        month: monthP.stage,
+        day: dayP.stage,
+        hour: hourP ? hourP.stage : null,
+      },
     };
   }
 
@@ -293,7 +337,7 @@
   }
 
   return {
-    version: "1.1.0",
+    version: "2.0.0",
     STEMS,
     STEMS_H,
     BRANCHES,
