@@ -107,7 +107,11 @@ function saveProfile(inp,c){let x=loadSaved().filter(p=>p.name!==inp.name);x.uns
 function renderSaved(){const x=loadSaved();$("savedList").innerHTML=x.length?x.map((p,i)=>`<div class="saveditem"><div><b>${esc(p.name)}</b><div class="muted">${p.year}.${p.month}.${p.day} · ${p.gender} · ${p.dayMaster}일간</div></div><button class="btn ghost" onclick="openSaved(${i})">보기</button></div>`).join(""):"아직 저장된 프로필이 없습니다.";const hp=$("homeProfileText");if(hp)hp.textContent=x.length?`${x[0].name} · ${x[0].year}.${String(x[0].month).padStart(2,"0")}.${String(x[0].day).padStart(2,"0")} · ${x[0].dayMaster}일간`:"저장된 프로필을 선택해 보세요"}
 function openSaved(i){const p=loadSaved()[i];if(!p)return;go("saju");["name","year","month","day","hour","minute"].forEach(k=>$(k).value=p[k]??"");$("hourUnknown").checked=!!p.hourUnknown;gender=p.gender||"여";document.querySelectorAll("#genderSeg button").forEach(b=>b.classList.toggle("on",b.dataset.v===gender));submitSaju()}
 function esc(s){return String(s||"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]))}
-function calc(inp){return GuiinSaju.calculate(inp)}
+function calc(inp){
+ const c=GuiinSaju.calculate(inp);
+ if(!c||!c.pillars||!c.pillars.year||!c.pillars.month||!c.pillars.day||!c.dayMaster||!Array.isArray(c.luck)||!c.luck.length)throw new Error("사주 계산 결과가 완전하지 않습니다.");
+ return c;
+}
 function age(c){return Math.max(0,yearNow-c.input.year)}
 function currentLuck(c){const a=age(c);return c.luck.find(x=>a>=x.fromAge&&a<=x.toAge)||c.luck[0]}
 function elPct(c){return GuiinSaju.normalizeEl(c.elCount)}
@@ -150,7 +154,12 @@ function luckSix(c,p){
   ["선택",`${map[4]} 현재 조건에서 감당 가능한 비용과 시간을 계산하고, 결과를 확인한 뒤 다음 선택을 조정하는 방식이 이 대운을 현실적으로 쓰는 방법입니다.`]
  ];
 }
-function luckSummary(c,p){const rel=relationSignals(c,p);return `${p.fromAge}–${p.toAge}세 ${p.ko} 대운은 ${c.dayMaster.stem}일간 기준 ${p.god}의 주제가 전면에 놓입니다. ${dmVoice(c.dayMaster.stem,p.god)} ${rel.length?`${rel.join("·")}은 관계·환경의 연결 또는 재조정 신호로 참고합니다.`:"강한 합·충보다 생활 선택의 누적이 체감 차이를 만들 가능성이 큽니다."} 실제 판단은 당시의 일·돈·관계 조건과 함께 보세요.`}
+function luckSummary(c,p){
+ const rel=relationSignals(c,p), dm=c.dayMaster.stem, el=STEM_EL[dm];
+ const focus={비견:"독립성과 자기 기준",겁재:"경쟁과 자원 배분",식신:"생산성과 생활의 안정",상관:"표현과 방식의 변화",편재:"외부 기회와 거래",정재:"현금흐름과 기반",편관:"압박과 책임",정관:"자리와 신뢰",편인:"전문성 탐색",정인:"학습과 문서"}[p.god]||"생활의 우선순위";
+ const move=rel.length?`${rel.slice(0,2).join("·")}은 특정 사건의 예고가 아니라 사람·환경·역할을 다시 연결하거나 조정할 가능성을 살피는 신호입니다.`:"원국과 강한 합·충이 두드러지지 않아 사건 하나보다 선택의 누적이 체감 차이를 만들기 쉽습니다.";
+ return `${p.fromAge}–${p.toAge}세 ${p.ko} 대운은 ${dm}일간에게 ${p.god}, 즉 ${focus}의 주제가 강조되는 10년 흐름입니다. ${el}의 기본 성향을 유지하면서도 이 시기에는 익숙한 방식만 반복하기보다 실제 성과와 비용을 확인하며 조정하는 편이 좋습니다. ${move} 재물·직업·관계 판단은 사주만으로 확정하지 말고 당시의 소득, 계약, 경력, 생활 조건과 함께 보세요.`;
+}
 function lifetime(c){
  const pct=elPct(c),hi=strongest(pct),lo=weakest(pct),dm=c.dayMaster.stem,monthGod=c.pillars.month.god||"비견";
  return `
@@ -166,8 +175,9 @@ function yearReport(c){
  return `<h3>${yearNow}년 ${y.ko} · ${g}</h3><p>${dmVoice(c.dayMaster.stem,g)} 현재 ${cur.ko} 대운(${cur.god}) 위에 올해의 ${g} 주제가 겹칩니다. 경쟁·성과·관계 같은 주제의 강약은 현실의 일정과 조건에 따라 달라지므로 사건을 확정하지 않고 선택의 우선순위를 보는 참고로 사용하세요.</p><div>${months}</div>`;
 }
 function paidBlock(c){
- const unlocked=localStorage.getItem(PREMIUM)==="1",cur=currentLuck(c),six=luckSix(c,cur);
- const luckAll=c.luck.map(p=>p===cur?`<h3 class="subhead">현재 대운 · ${p.ko} ${p.god}</h3><div class="six">${six.map(x=>`<div class="detail"><b>${x[0]}</b><p>${x[1]}</p></div>`).join("")}</div>`:`<h3 class="subhead">${p.fromAge}–${p.toAge}세 · ${p.ko} ${p.god}</h3><p>${luckSummary(c,p)}</p>`).join("");
+ const unlocked=localStorage.getItem(PREMIUM)==="1",cur=currentLuck(c),six=luckSix(c,cur),idx=c.luck.indexOf(cur);
+ const prev=idx>0?c.luck[idx-1]:null,next=idx<c.luck.length-1?c.luck[idx+1]:null;
+ const luckAll=`<h3 class="subhead">현재 대운 · ${cur.ko} ${cur.god}</h3><p class="muted">${cur.fromAge}–${cur.toAge}세 · 현재 흐름은 아래 6가지 관점으로 길게 읽습니다.</p><div class="six">${six.map(x=>`<div class="detail"><b>${x[0]}</b><p>${x[1]}</p></div>`).join("")}</div>${prev?`<h3 class="subhead">지난 대운 · ${prev.ko} ${prev.god}</h3><p>${luckSummary(c,prev)}</p>`:""}${next?`<h3 class="subhead">다음 대운 · ${next.ko} ${next.god}</h3><p>${luckSummary(c,next)}</p>`:""}`;
  const body=`<div class="paidbody report"><h2>평생사주 상세 리포트</h2>${lifetime(c)}<h2 style="margin-top:24px">대운 상세</h2>${luckAll}<h2 style="margin-top:24px">올해 신년 · 월별 요약</h2>${yearReport(c)}</div>`;
  return `<div class="card paid ${unlocked?"":"locked"}">${body}${unlocked?"":`<div class="unlock"><b>990원 · 전체 보기</b><small>실제 결제는 발생하지 않습니다.</small><button class="btn gold" onclick="unlockPremium()">990원 · 데모 잠금 해제</button></div>`}</div>`;
 }
