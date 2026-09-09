@@ -85,6 +85,13 @@ body.home-mode nav{background:rgba(255,255,255,.97);border-top:1px solid #eee8de
 .basis-row{display:flex;flex-wrap:wrap;gap:5px;margin:8px 0 2px}.basis-row span{font-size:9px;padding:4px 7px;border-radius:999px;border:1px solid rgba(225,184,92,.2);background:rgba(225,184,92,.06);color:#cdb9b3}
 .personal-summary{background:linear-gradient(145deg,#271016,#1b0c10);border:1px solid rgba(225,184,92,.24);border-radius:17px;padding:14px;margin:10px 0}.personal-summary b{color:var(--gold2);font-size:13px}.personal-summary p{font-size:11px;line-height:1.75;color:#d7c6c0;margin:7px 0 0}
 
+
+.calc-note{margin:10px 0;border:1px solid rgba(225,184,92,.16);border-radius:14px;overflow:hidden;background:#190c10}
+.calc-note summary{cursor:pointer;list-style:none;padding:10px 12px;color:#d7c4bd;font-size:10px;font-weight:800}
+.calc-note summary::-webkit-details-marker{display:none}.calc-note summary:after{content:"＋";float:right;color:var(--gold)}
+.calc-note[open] summary:after{content:"−"}.calc-note .calc-body{padding:0 12px 11px;color:#a99590;font-size:9px;line-height:1.7}
+.boundary-note{margin-top:7px;padding:8px 10px;border-radius:11px;background:rgba(225,184,92,.07);border:1px solid rgba(225,184,92,.14);font-size:9px;line-height:1.6;color:#bda9a4}
+
 </style>
 </head>
 <body class="home-mode">
@@ -162,7 +169,7 @@ function calc(inp){
  return c;
 }
 function age(c){const n=new Date(), y=n.getFullYear()-c.input.year, passed=(n.getMonth()+1>c.input.month)||((n.getMonth()+1===c.input.month)&&n.getDate()>=c.input.day);return Math.max(0,y-(passed?0:1))}
-function currentLuck(c){const a=age(c);return c.luck.find(x=>a>=x.fromAge&&a<=x.toAge)||c.luck[0]}
+function currentLuck(c){const a=age(c);return currentLuckOf(c)}
 function elPct(c){return GuiinSaju.normalizeEl(c.elCount)}
 function strongest(p){return Object.keys(p).sort((a,b)=>p[b]-p[a])[0]}
 function weakest(p){return Object.keys(p).sort((a,b)=>p[a]-p[b])[0]}
@@ -313,6 +320,24 @@ function annualOverview(c,yr){
 }
 
 
+
+function nearBoundary(inp){
+ const notes=[];
+ if(inp.month===2 && inp.day>=2 && inp.day<=6)notes.push("입춘 경계");
+ const jieDays={1:[4,8],3:[4,8],4:[3,7],5:[4,8],6:[4,8],7:[5,9],8:[5,9],9:[6,10],10:[6,10],11:[6,10],12:[5,9]};
+ const r=jieDays[inp.month];if(r&&inp.day>=r[0]&&inp.day<=r[1])notes.push("절기 경계");
+ if(!inp.hourUnknown && (inp.hour===22||inp.hour===23||inp.hour===0))notes.push("자시 경계");
+ return [...new Set(notes)];
+}
+function calculationBasis(c){
+ const b=nearBoundary(c.input), hour=c.input.hourUnknown?"출생시간 미상":`${String(c.input.hour).padStart(2,"0")}:${String(c.input.minute).padStart(2,"0")}`;
+ return `<details class="calc-note"><summary>이 결과의 계산 기준 보기</summary><div class="calc-body">양력 입력 · 출생시간 ${hour} · 연주는 입춘, 월주는 절기 기준의 근사 계산 · 대운 방향은 양남음녀 순행/음남양녀 역행 · 대운 시작 나이는 절기까지의 일수를 3일=1년으로 환산한 근사치입니다.${b.length?`<div class="boundary-note">${b.join(" · ")}에 가까운 입력입니다. 이 구간은 정확한 절입 시각·출생지 보정에 따라 정밀 만세력과 결과가 달라질 수 있습니다.</div>`:""}</div></details>`;
+}
+function currentLuckOf(c){
+ const a=age(c), list=(c.luck||[]);
+ return list.find(x=>a>=x.fromAge&&a<=x.toAge) || list.find(x=>a>=x.fromAge&&a<x.toAge) || list[0];
+}
+
 function chartSignature(c){
  const pct=elPct(c),hi=strongest(pct),lo=weakest(pct),g=godCounts(c),rels=natalRelations(c);
  const topGod=Object.entries(g).sort((a,b)=>b[1]-a[1])[0]?.[0]||c.pillars.month.god||"비견";
@@ -409,8 +434,9 @@ function renderAll(c){
  <div class="card"><div class="previewline"><b>오늘의 운세</b><div class="muted">${dailyReport(c)}</div></div><div class="previewline"><b>일간 한 줄</b><div class="muted">${dmVoice(c.dayMaster.stem,c.pillars.month.god||"비견")}</div></div><div class="previewline"><b>현재 대운</b><div class="muted">${cur.fromAge}–${cur.toAge}세 · ${cur.ko} · ${cur.god}<br>${dmVoice(c.dayMaster.stem,cur.god)}</div></div></div>
  <div class="card"><h3>대운 타임라인</h3><div class="luckstrip">${c.luck.map(p=>`<div class="luckpill ${p===cur?"now":""}"><b>${p.ko}</b><span>${p.fromAge}–${p.toAge}세 · ${p.god}</span></div>`).join("")}</div><p class="muted">${c.forward?"순행":"역행"} · 시작 약 ${c.startAge}세 · 3일=1년 근사 규칙</p></div>
  ${paidBlock(c)}
- <div class="disclaimer">본 서비스는 명리학 원국 계산과 규칙 기반 해설을 제공하는 참고용입니다. 의료·법률·투자·결혼 결정을 대신하지 않습니다. 절기 시각은 근사치이며 진태양시·출생지 경도 보정은 다음 버전에 넣을 수 있습니다.</div>`;
+ <div class="disclaimer">본 서비스는 명리학 원국 계산과 규칙 기반 해설을 제공하는 참고용입니다. 의료·법률·투자·결혼 결정을 대신하지 않습니다. 절기 시각은 근사치이며 진태양시·출생지 경도 보정은 다음 버전에 넣을 수 있습니다.<br>명리학은 전통적 해석 체계이며 과학적으로 미래를 예측하는 방법으로 검증된 것은 아닙니다.</div>`;
  if($("result"))$("result").insertAdjacentHTML("afterbegin",`<div class="result-actions"><button class="btn ghost" onclick="copyResultText(\'result\')">결과 복사</button><button class="btn ghost" onclick="go(\'home\')">홈으로</button></div>`);
+ if($("result"))$("result").insertAdjacentHTML("afterbegin",calculationBasis(c));
 }
 function validBirth(i){
  if(!Number.isInteger(i.year)||i.year<1900||i.year>yearNow)return "출생연도는 1900년부터 현재 연도 사이로 입력해 주세요.";
@@ -462,7 +488,7 @@ function submitMatch(){
   const detail=compatDetail(a,b,score,rel);
   $("matchResult").innerHTML=`<div class="card"><span class="eyebrow">무료 궁합</span><h3>${esc(ai.name)} × ${esc(bi.name)}</h3><div class="score">${score}<small style="font-size:15px">점</small></div><p class="muted">${tone}으로 읽힙니다. 점수는 관계의 성공률이 아니라 현재 엔진이 비교하는 오행·천간합·육합·충을 숫자로 단순화한 참고 지표입니다.</p><div class="scoreparts"><div class="scorepart"><b>${same?"+8":"0"}</b><span>일간 오행</span></div><div class="scorepart"><b>+${combineBonus}</b><span>합 신호</span></div><div class="scorepart"><b>-${clashPenalty}</b><span>충 신호</span></div></div><div class="relchips">${rel.length?rel.slice(0,6).map(x=>`<span>${x}</span>`).join(""):"<span>두드러진 합·충 신호 적음</span>"}</div><div class="previewline"><b>합·충 메모</b><div class="muted">${combines?"합 신호는 서로 연결되고 보완하려는 지점으로 참고할 수 있습니다.":"강한 합 신호보다 생활 속 합의 방식이 더 중요할 수 있습니다."}<br>${clashes?"충 신호는 갈등 확정이 아니라 속도·기준을 재조정할 필요가 생길 수 있다는 표시입니다.":"두드러진 충 신호가 적더라도 실제 관계의 대화와 경계가 우선입니다."}</div></div></div>
   <div class="card"><span class="eyebrow">상세 궁합 리포트</span><h3>관계를 8개 영역으로 읽기</h3><div id="compatLock" class="detail-lock"><div class="locked-content">${detail}</div><div class="lock-cover"><div class="lock-panel"><b>2,900원 · 상세 궁합</b><p>현재는 결제 연결 전 단계입니다. 아래 버튼은 상세 리포트 구조를 확인하기 위한 데모 잠금 해제입니다.</p><button class="btn gold" onclick="unlockCompat()">2,900원 · 데모 잠금 해제</button><p style="margin-top:7px">실제 결제는 발생하지 않습니다.</p></div></div></div></div>
-  <div class="disclaimer">본 서비스는 명리학 원국 계산과 규칙 기반 해설을 제공하는 참고용입니다. 의료·법률·투자·결혼 결정을 대신하지 않습니다. 절기 시각은 근사치이며 진태양시·출생지 경도 보정은 다음 버전에 넣을 수 있습니다.</div>`;
+  <div class="disclaimer">본 서비스는 명리학 원국 계산과 규칙 기반 해설을 제공하는 참고용입니다. 의료·법률·투자·결혼 결정을 대신하지 않습니다. 절기 시각은 근사치이며 진태양시·출생지 경도 보정은 다음 버전에 넣을 수 있습니다.<br>명리학은 전통적 해석 체계이며 과학적으로 미래를 예측하는 방법으로 검증된 것은 아닙니다.</div>`;
  }catch(e){showError("matchError","궁합 계산 중 문제가 생겼습니다. 입력값을 다시 확인해 주세요.");console.error(e)}
 }
 function unlockCompat(){const x=$("compatLock");if(x&&!x.classList.contains("unlocked")){x.classList.add("unlocked");toastMsg("상세 궁합 데모가 열렸어요")}}
