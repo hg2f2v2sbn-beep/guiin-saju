@@ -95,6 +95,13 @@ body.home-mode nav{background:rgba(255,255,255,.97);border-top:1px solid #eee8de
 
 .qa-strip{display:flex;gap:5px;flex-wrap:wrap;margin:8px 0 10px}.qa-strip span{font-size:8.5px;padding:4px 7px;border-radius:999px;background:rgba(225,184,92,.07);border:1px solid rgba(225,184,92,.16);color:#bfa9a2}
 
+
+.flow-head{background:linear-gradient(145deg,#2b1018,#1a0b0f);border:1px solid rgba(225,184,92,.24);border-radius:17px;padding:14px;margin:10px 0}
+.flow-head strong{color:var(--gold2);font-size:14px}.flow-head p{font-size:10.5px;line-height:1.7;color:#cfbbb5;margin:6px 0 0}
+.flow-tags{display:flex;gap:5px;flex-wrap:wrap;margin-top:8px}.flow-tags span{font-size:8.5px;border:1px solid rgba(225,184,92,.18);border-radius:999px;padding:4px 7px;color:#bda8a2}
+.month-card.current-month{border-color:rgba(225,184,92,.55);box-shadow:0 0 0 1px rgba(225,184,92,.08) inset}
+.month-card .month-meta{font-size:8.5px;color:#a99590;margin-top:3px}
+
 </style>
 </head>
 <body class="home-mode">
@@ -309,6 +316,43 @@ function annualGodText(god,dm){
  };
  return map[god]||"한 가지 사건을 예언하기보다 그 시기에 반복되는 선택의 주제를 점검하는 참고 흐름입니다.";
 }
+
+function flowCrossText(c,yearGod,monthGod){
+ const cur=currentLuckOf(c), cg=cur?.god||"비견";
+ const group=g=>["비견","겁재"].includes(g)?"자기·경쟁":["식신","상관"].includes(g)?"표현·생산":["편재","정재"].includes(g)?"재물·현실":["편관","정관"].includes(g)?"책임·규칙":"학습·정리";
+ const a=group(cg),b=group(yearGod),d=group(monthGod);
+ if(a===b&&b===d)return `대운·세운·월운에서 ${a} 주제가 겹칩니다. 같은 주제가 반복될수록 사건을 단정하기보다 실제 일정·돈·역할에서 무엇이 늘어나는지 확인하는 편이 좋습니다.`;
+ if(a===d)return `현재 대운의 ${a} 주제가 이번 달에도 다시 강조됩니다. 올해의 ${b} 흐름과 함께 보면서 우선순위를 좁혀 보세요.`;
+ if(b===d)return `올해의 ${b} 주제와 이번 달 흐름이 겹칩니다. 단기 선택이 연간 계획과 맞는지 확인하기 좋은 구간입니다.`;
+ return `대운의 ${a}, 올해의 ${b}, 이번 달의 ${d} 주제가 서로 다릅니다. 한꺼번에 모두 잡기보다 지금 가장 현실적인 한 항목을 선택하는 편이 좋습니다.`;
+}
+function monthAction(god){
+ const m={
+  비견:["내 일정 먼저 정리","비교보다 내 기준 확인"],겁재:["공동비용·역할 확인","충동 경쟁 피하기"],
+  식신:["루틴 하나 완성","과로 전 휴식 확보"],상관:["개선안 구체화","말투와 타이밍 확인"],
+  편재:["기회 조건 확인","계약·가격 먼저 보기"],정재:["예산과 고정비 점검","반복 지출 줄이기"],
+  편관:["할 일 우선순위 축소","무리한 책임 떠안지 않기"],정관:["약속·문서 정리","지킬 수 있는 범위만 약속"],
+  편인:["새 정보 선별","아이디어만 늘리지 않기"],정인:["배운 것 정리","도움·지원 체계 활용"]
+ };return m[god]||["현실 항목 확인","성급한 단정 피하기"];
+}
+function enhancedYearFlow(c,yr){
+ let yc;try{yc=GuiinSaju.calculate({name:"연운",gender:c.input.gender,calendar:"양력",year:yr,month:7,day:1,hour:12,minute:0,hourUnknown:false})}catch(e){return ""}
+ const yg=GuiinSaju.tenGod(c.dayMaster.stem,yc.pillars.year.stem),cur=currentLuckOf(c);
+ return `<div class="flow-head"><strong>${yr}년의 세운 · ${yc.pillars.year.stem}${yc.pillars.year.branch} · ${yg}</strong><p>${annualGodText(yg,c.dayMaster.stem)} 현재 대운의 ${cur?.god||"—"} 흐름과 함께 읽어야 같은 세운이라도 사람마다 의미가 달라집니다.</p><div class="flow-tags"><span>일간 ${c.dayMaster.stem}</span><span>대운 ${cur?.god||"—"}</span><span>세운 ${yg}</span><span>${strongest(elPct(c))} 강</span></div></div>`;
+}
+function enhancedMonths(c,yr){
+ const now=new Date(), cards=[];
+ let yc;try{yc=GuiinSaju.calculate({name:"Y",gender:c.input.gender,calendar:"양력",year:yr,month:7,day:1,hour:12,minute:0,hourUnknown:false})}catch(e){return ""}
+ const yg=GuiinSaju.tenGod(c.dayMaster.stem,yc.pillars.year.stem);
+ for(let m=1;m<=12;m++){
+  let mc;try{mc=GuiinSaju.calculate({name:"M",gender:c.input.gender,calendar:"양력",year:yr,month:m,day:15,hour:12,minute:0,hourUnknown:false})}catch(e){continue}
+  const mg=GuiinSaju.tenGod(c.dayMaster.stem,mc.pillars.month.stem),act=monthAction(mg);
+  const current=now.getFullYear()===yr&&now.getMonth()+1===m?" current-month":"";
+  cards.push(`<div class="month-card${current}"><b>${m}월 · ${mc.pillars.month.stem}${mc.pillars.month.branch} · ${mg}</b><div class="month-meta">현재 대운 ${currentLuckOf(c)?.god||"—"} × ${yr} 세운 ${yg} × 월운 ${mg}</div><p>${flowCrossText(c,yg,mg)}<br><strong style="color:#cdb8b1">활용:</strong> ${act[0]} · <strong style="color:#cdb8b1">주의:</strong> ${act[1]}</p></div>`);
+ }
+ return `<div class="month-grid">${cards.join("")}</div><p class="premium-note">월운은 각 달 15일 정오의 월주를 대표값으로 사용한 규칙 기반 요약입니다. 실제 절입일 전후에는 월주가 달라질 수 있으므로 경계일의 특정 사건을 예측하는 용도로 사용하지 않습니다.</p>`;
+}
+
 function annualOverview(c,yr){
  let ac;
  try{ac=GuiinSaju.calculate({name:"연운",gender:c.input.gender,calendar:"양력",year:yr,month:7,day:1,hour:12,minute:0,hourUnknown:false})}catch(e){return ""}
@@ -435,7 +479,7 @@ function paidBlock(c){
  const unlocked=localStorage.getItem(PREMIUM)==="1",cur=currentLuck(c),six=luckSix(c,cur),idx=c.luck.indexOf(cur);
  const prev=idx>0?c.luck[idx-1]:null,next=idx<c.luck.length-1?c.luck[idx+1]:null;
  const luckAll=`<h3 class="subhead">현재 대운 · ${cur.ko} ${cur.god}</h3><p class="muted">${cur.fromAge}–${cur.toAge}세 · 현재 흐름은 아래 6가지 관점으로 길게 읽습니다.</p><div class="six">${six.map(x=>`<div class="detail"><b>${x[0]}</b><p>${x[1]}</p></div>`).join("")}</div>${prev?`<h3 class="subhead">지난 대운 · ${prev.ko} ${prev.god}</h3><p>${luckSummary(c,prev)}</p>`:""}${next?`<h3 class="subhead">다음 대운 · ${next.ko} ${next.god}</h3><p>${luckSummary(c,next)}</p>`:""}`;
- const body=`<div class="paidbody report"><h2>평생사주 상세 리포트</h2>${lifetime(c)}<h2 style="margin-top:24px">대운 상세</h2>${luckAll}<h2 style="margin-top:24px">올해 신년 · 월별 요약</h2>${yearReport(c)}</div>`;
+ const body=`<div class="paidbody report"><h2>평생사주 상세 리포트</h2>${lifetime(c)}<h2 style="margin-top:24px">대운 상세</h2>${luckAll}<h2 style="margin-top:24px">올해 신년 · 월별 요약</h2>${yearReport(c)}${enhancedMonths(c,yearNow)}</div>`;
  return `<div class="card paid ${unlocked?"":"locked"}">${body}${unlocked?"":`<div class="unlock"><b>990원 · 전체 보기</b><small>실제 결제는 발생하지 않습니다.</small><button class="btn gold" onclick="unlockPremium()">990원 · 데모 잠금 해제</button></div>`}</div>`;
 }
 function unlockPremium(){localStorage.setItem(PREMIUM,"1");if(LAST)renderAll(LAST)}
