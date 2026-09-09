@@ -87,6 +87,32 @@
 .luck-detail-card .mini{font-size:12px;color:#8b7b73}
 </style>
 
+
+<style>
+.year-picker{display:flex;align-items:center;justify-content:space-between;gap:10px;background:#fff;border:1px solid #eee5df;border-radius:18px;padding:12px;margin:10px 0 14px}
+.year-picker button{border:0;background:#f6eee8;border-radius:12px;width:42px;height:42px;font-size:20px;cursor:pointer}
+.year-picker strong{font-size:20px}
+.year-story{display:grid;gap:12px}
+.year-story .story{background:#fff;border:1px solid #eee5df;border-radius:20px;padding:18px}
+.year-story .story .eyebrow{font-size:11px;letter-spacing:.08em;color:#a07d63;margin-bottom:6px}
+.year-story .story h4{font-size:18px;line-height:1.45;margin:0 0 10px}
+.year-story .story p{font-size:14px;line-height:1.9;color:#554b46;margin:0}
+.year-score{display:grid;grid-template-columns:repeat(4,1fr);gap:7px;margin:12px 0}
+.year-score div{background:#faf6f2;border-radius:14px;padding:10px 5px;text-align:center}
+.year-score b{display:block;font-size:17px;margin-top:3px}
+.month-fortune-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:9px}
+.month-fortune{background:#fff;border:1px solid #eee5df;border-radius:17px;padding:13px;cursor:pointer}
+.month-fortune b{display:block;font-size:14px;margin-bottom:4px}
+.month-fortune span{font-size:11px;color:#8f7b70}
+.month-fortune.good{box-shadow:inset 0 0 0 1px #e4c48e}
+.month-detail{margin-top:12px;background:#fffaf4;border-radius:18px;padding:16px;line-height:1.8;font-size:13px}
+.lock-preview{position:relative;overflow:hidden;max-height:180px}
+.lock-preview:after{content:"";position:absolute;left:0;right:0;bottom:0;height:100px;background:linear-gradient(transparent,#fff)}
+.paywall{background:linear-gradient(145deg,#2f2522,#4a3831);color:#fff;border-radius:22px;padding:20px;text-align:center;margin-top:12px}
+.paywall h4{font-size:18px;margin:0 0 7px}.paywall p{font-size:12px;opacity:.8;line-height:1.65}
+.paywall button{margin-top:10px;border:0;border-radius:14px;padding:12px 18px;background:#f0d39c;color:#352820;font-weight:800}
+</style>
+
 </head>
 <body>
 <div class="wrap">
@@ -895,6 +921,134 @@ function renderLuckDetails(chart){
   }).join("")}</div>`;
 }
 
+
+let SELECTED_YEAR = new Date().getFullYear();
+let SELECTED_MONTH = 1;
+
+function annualPillarFor(y, dayStem){
+  if(typeof GuiinSaju.seunFor==="function") return GuiinSaju.seunFor(y,dayStem);
+  const stems=["갑","을","병","정","무","기","경","신","임","계"];
+  const branches=["자","축","인","묘","진","사","오","미","신","유","술","해"];
+  const si=((y-4)%10+10)%10, bi=((y-4)%12+12)%12;
+  let god="";
+  try{
+    const tg=GuiinSaju.tenGod || window.tenGod;
+    god=tg ? tg(GuiinSaju.STEMS.indexOf(dayStem),si) : "";
+  }catch(e){}
+  return {stem:stems[si],branch:branches[bi],ko:stems[si]+branches[bi],hanja:(GuiinSaju.STEMS?.[si]?.hanja||"")+(GuiinSaju.BRANCHES?.[bi]?.hanja||""),god};
+}
+function godTheme(g){
+ const x={
+  비견:["내가 중심이 되는 해","독립·결정·동료"],
+  겁재:["사람과 돈의 경계를 다시 세우는 해","경쟁·변동·관계"],
+  식신:["꾸준히 만든 것이 결과가 되는 해","성과·생활·표현"],
+  상관:["답답한 틀을 벗어나고 싶은 해","변화·표현·이동"],
+  편재:["밖으로 움직일수록 기회가 보이는 해","사업·거래·활동"],
+  정재:["돈과 생활의 기반을 다지는 해","현금흐름·저축·안정"],
+  편관:["압박이 실력을 시험하는 해","책임·경쟁·긴장"],
+  정관:["자리와 관계가 공식화되기 쉬운 해","직업·약속·신뢰"],
+  편인:["새 기술과 관점을 깊게 파는 해","전문성·연구·변화"],
+  정인:["배움과 도움으로 기반을 만드는 해","문서·학습·보호"]
+ };
+ return x[g]||["방향을 조율하는 해","선택·정리·균형"];
+}
+function annualRelations(chart, a){
+ const rel=[];
+ const H={갑:"기",을:"경",병:"신",정:"임",무:"계",기:"갑",경:"을",신:"병",임:"정",계:"무"};
+ const B={자:"축",축:"자",인:"해",해:"인",묘:"술",술:"묘",진:"유",유:"진",사:"신",신:"사",오:"미",미:"오"};
+ const C={자:"오",오:"자",축:"미",미:"축",인:"신",신:"인",묘:"유",유:"묘",진:"술",술:"진",사:"해",해:"사"};
+ Object.values(chart.pillars).filter(Boolean).forEach(p=>{
+   if(H[a.stem]===p.stem) rel.push(`${a.stem}${p.stem} 합`);
+   if(B[a.branch]===p.branch) rel.push(`${a.branch}${p.branch} 육합`);
+   if(C[a.branch]===p.branch) rel.push(`${a.branch}${p.branch} 충`);
+ });
+ return [...new Set(rel)];
+}
+function currentLuckForYear(chart,y){
+ const birth=chart.input.year;
+ const age=y-birth+1;
+ return chart.luck.find(p=>age>=p.fromAge&&age<=p.toAge)||chart.currentLuck;
+}
+function yearScores(chart,a,rel){
+ let base=62;
+ const g=a.god||"";
+ const plus={식신:7,정재:6,정관:5,정인:5,편재:5,비견:2};
+ const minus={겁재:-5,편관:-3,상관:-1};
+ base+=(plus[g]||0)+(minus[g]||0);
+ const hasChung=rel.some(x=>x.includes("충")), hasHap=rel.some(x=>x.includes("합"));
+ if(hasHap) base+=4;if(hasChung) base-=5;
+ const clamp=n=>Math.max(35,Math.min(92,Math.round(n)));
+ return {
+   전체:clamp(base),
+   재물:clamp(base+(["정재","편재","식신"].includes(g)?9:0)-(g==="겁재"?8:0)),
+   일:clamp(base+(["정관","편관","식신","상관"].includes(g)?7:0)),
+   관계:clamp(base+(["정관","정재","비견"].includes(g)?5:0)-(hasChung?5:0))
+ };
+}
+function annualAnalysis(chart,y){
+ const a=annualPillarFor(y,chart.dayMaster.stem);
+ if(!a.god){
+   try{ a.god=GuiinSaju.calculate({...chart.input,year:chart.input.year}).seunFor?.(y)?.god||""; }catch(e){}
+ }
+ // Fall back to the chart's known seun god when selected year equals current engine year.
+ if(!a.god && y===chart.seunYear) a.god=chart.seun.god;
+ const rel=annualRelations(chart,a), luck=currentLuckForYear(chart,y), th=godTheme(a.god), scores=yearScores(chart,a,rel);
+ const relText=rel.length?`원국과 ${rel.join("·")} 작용이 겹칩니다. 합은 연결과 결속, 충은 이동과 재조정의 신호로 참고하세요.`:"원국과 강하게 겹치는 합·충 신호가 적어 이 해의 십성 성향이 비교적 담백하게 드러납니다.";
+ const luckText=luck?`${luck.fromAge}–${luck.toAge}세 ${luck.ko} 대운 위에 ${a.ko} 세운이 들어옵니다.`:"대운과 함께 비교하면 흐름을 더 정확하게 읽을 수 있습니다.";
+ return {a,rel,luck,th,scores,
+  summary:`${y}년은 ${th[0]}로 읽을 수 있습니다. ${luckText} ${relText}`,
+  work:`일에서는 ${th[1]}가 핵심입니다. ${a.god==="정관"||a.god==="편관"?"책임이나 역할이 커질 때 무조건 버티기보다 권한과 보상의 균형을 확인하는 것이 중요합니다.":a.god==="식신"||a.god==="상관"?"내가 가진 기술과 표현을 실제 결과물로 꺼낼수록 흐름을 활용하기 좋습니다.":"한 번에 크게 바꾸기보다 반복되는 선택이 어떤 결과를 만드는지 보는 해입니다."}`,
+  money:`재물은 ${a.god==="정재"||a.god==="편재"?"돈의 이동이 평소보다 눈에 띄기 쉬운 흐름입니다. 수입뿐 아니라 지출·계약·회수까지 같이 관리하는 편이 좋습니다.":a.god==="겁재"?"사람과 돈이 섞일 때 경계를 분명히 하는 편이 좋습니다. 빌려주기·공동지출·충동적인 확장은 특히 현실 조건을 먼저 확인하세요.":"운세의 좋고 나쁨보다 현금흐름과 지출 구조를 정리할수록 안정감을 만들기 좋은 시기입니다."}`,
+  love:`관계에서는 ${rel.some(x=>x.includes("충"))?"익숙한 관계의 방식이 흔들리거나 거리 조절이 필요한 순간이 생길 수 있습니다. 충은 반드시 이별을 뜻하지 않고 관계 방식을 바꾸라는 신호로 읽습니다.":rel.some(x=>x.includes("합"))?"사람과의 연결이 강해지는 장면이 생길 수 있습니다. 다만 합이 있다고 모든 인연이 좋은 것은 아니므로 실제 태도와 약속을 함께 보세요.":"극적인 사건보다 누구와 시간을 쓰고 어떤 관계를 유지하는지가 더 중요하게 작용할 수 있습니다."}`
+ };
+}
+function monthFortunesForYear(chart,y){
+ const names=["1월","2월","3월","4월","5월","6월","7월","8월","9월","10월","11월","12월"];
+ const branch=["축","인","묘","진","사","오","미","신","유","술","해","자"];
+ const els={자:"수",축:"토",인:"목",묘:"목",진:"토",사:"화",오:"화",미:"토",신:"금",유:"금",술:"토",해:"수"};
+ const fav=chart.useful?.favorable||[chart.elements.weak];
+ return names.map((n,i)=>{
+   const e=els[branch[i]], good=fav.includes(e);
+   return {month:i+1,name:n,branch:branch[i],el:e,good,
+    line:good?`${e} 기운이 보완 후보와 맞물리는 달입니다. 무리한 확정보다 기회를 실제 행동으로 연결해 보세요.`:`${e} 기운이 들어오는 달입니다. 큰 길흉보다 일정·지출·관계의 균형을 확인하는 달로 활용하세요.`};
+ });
+}
+function renderAnnualDeep(chart,y){
+ const x=annualAnalysis(chart,y), months=monthFortunesForYear(chart,y);
+ SELECTED_YEAR=y;
+ return `
+ <div class="year-picker">
+   <button onclick="changeYear(-1)">‹</button>
+   <div style="text-align:center"><strong>${y}년</strong><div class="muted">${x.a.ko}${x.a.hanja?` · ${x.a.hanja}`:""} ${x.a.god?`· ${x.a.god}`:""}</div></div>
+   <button onclick="changeYear(1)">›</button>
+ </div>
+ <div class="year-score">
+   ${Object.entries(x.scores).map(([k,v])=>`<div><span class="muted">${k}</span><b>${v}</b></div>`).join("")}
+ </div>
+ <div class="year-story">
+   <div class="story"><div class="eyebrow">올해 한마디</div><h4>${x.th[0]}</h4><p>${x.summary}</p></div>
+   <div class="story"><div class="eyebrow">일과 방향</div><h4>내가 움직여야 할 곳</h4><p>${x.work}</p></div>
+   <div class="story"><div class="eyebrow">재물</div><h4>버는 것보다 흐름을 읽는 돈</h4><p>${x.money}</p></div>
+   <div class="story"><div class="eyebrow">연애와 사람</div><h4>올해 관계가 가르쳐 주는 것</h4><p>${x.love}</p></div>
+ </div>
+ <div class="section-title">${y} 월별 흐름</div>
+ <div class="month-fortune-grid">${months.map(m=>`<div class="month-fortune ${m.good?"good":""}" onclick="showMonthDetail(${m.month})"><b>${m.name} · ${m.branch}</b><span>${m.el} 기운 ${m.good?"· 보완 흐름":""}</span></div>`).join("")}</div>
+ <div id="monthDeepDetail" class="month-detail">${months[0].line}<br><span class="muted">※ 월운은 현재 버전에서 달력 월을 이용한 참고 흐름이며, 정밀 절입 월운은 다음 계산 엔진 고도화 대상입니다.</span></div>`;
+}
+function changeYear(d){
+ if(!LAST)return;
+ SELECTED_YEAR+=d;
+ const box=document.getElementById("annualDeepBox");
+ if(box) box.innerHTML=renderAnnualDeep(LAST,SELECTED_YEAR);
+}
+function showMonthDetail(m){
+ if(!LAST)return;
+ SELECTED_MONTH=m;
+ const arr=monthFortunesForYear(LAST,SELECTED_YEAR), x=arr[m-1];
+ const box=document.getElementById("monthDeepDetail");
+ if(box) box.innerHTML=`<b>${x.name} · ${x.branch}월 (${x.el})</b><br>${x.line}<br><br><span class="muted">이 월운은 전통 명리의 참고 해석이며 실제 사건을 확정하지 않습니다.</span>`;
+}
+
 function renderAll(chart){
   LAST=chart;
   const it=GuiinInterpret.interpret(chart);
@@ -962,7 +1116,14 @@ function renderAll(chart){
       <div class="prose"><p>${it.premium.기본성향}</p><p>${it.premium.장점}</p><p>${it.premium.단점}</p></div>
       ${detailBody}
     </div>`)}
-    <p class="tiny">연주 입춘 · 월주 절입 · 23시 야자시. 절기는 근사치입니다. 진태양시는 동경 135° 기준입니다.</p>
+    
+    <div class="section-title">해마다 달라지는 나의 운</div>
+    <div class="card">
+      <h3>연도별 상세운세</h3>
+      <p class="muted">좌우 버튼으로 연도를 바꾸면 대운과 원국을 함께 비교해 풀이합니다.</p>
+      <div id="annualDeepBox">${renderAnnualDeep(chart, SELECTED_YEAR)}</div>
+    </div>
+<p class="tiny">연주 입춘 · 월주 절입 · 23시 야자시. 절기는 근사치입니다. 진태양시는 동경 135° 기준입니다.</p>
   `;
 }
 
@@ -978,7 +1139,7 @@ function submitSaju(){
   try{
     const chart=GuiinSaju.calculate(input);
     savePerson(input, chart);
-    TAB="성격";
+    TAB="성격"; SELECTED_YEAR=chart.seunYear || new Date().getFullYear();
     renderAll(chart);
     go("result");
   }catch(e){ alert(e.message||"계산 오류"); }
