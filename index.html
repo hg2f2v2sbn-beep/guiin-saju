@@ -342,6 +342,13 @@ nav.tabbar .inner{max-width:430px!important;height:72px!important}
 .v19-intro b{font-size:15px}.v19-intro p{font-size:10px;line-height:1.7;color:#6d6b65;margin:6px 0 0}
 @media(max-width:380px){#home .v14-svc{min-height:122px;padding:14px}}
 </style>
+
+<style id="v20-final-site">
+.v20-menu{position:fixed;inset:0;z-index:999;background:rgba(0,0,0,.28);display:none}.v20-menu.on{display:block}.v20-panel{width:min(82%,330px);height:100%;background:#fffdf8;padding:24px 18px;box-shadow:8px 0 30px rgba(0,0,0,.12)}.v20-panel h2{color:#16483d;margin:4px 0 20px}.v20-panel button{display:block;width:100%;border:0;border-bottom:1px solid #eee5d8;background:none;text-align:left;padding:14px 4px;font-weight:800}.v20-close{font-size:24px!important;border:0!important;width:auto!important}
+.v20-guideStep{display:flex;gap:12px;align-items:flex-start;padding:13px 0;border-bottom:1px solid #eee7dc}.v20-guideStep i{font-style:normal;min-width:28px;height:28px;border-radius:50%;background:#f5d66d;display:grid;place-items:center;font-size:10px;font-weight:900}.v20-guideStep b{font-size:11px}.v20-guideStep p{font-size:9.5px;line-height:1.65;color:#777;margin:4px 0}
+.v20-legal h3{font-size:14px;margin:15px 0 5px}.v20-legal p{font-size:9.5px;line-height:1.75;color:#666}
+.v20-homebottom{margin:16px 0 80px;text-align:center;font-size:8.5px;line-height:1.8;color:#999}.v20-homebottom button{border:0;background:none;text-decoration:underline;color:#777;font-size:8.5px}
+</style>
 </head>
 <body>
 <div class="wrap">
@@ -438,7 +445,8 @@ nav.tabbar .inner{max-width:430px!important;height:72px!important}
     </div>
   </main>
 </section>
-  <section id="form" class="screen">
+  <div class="v20-homebottom">귀인사주 · 전통 명리 기반 참고 콘텐츠<br><button onclick="v20Open('policy')">서비스 안내 · 개인정보 · 환불정책 준비사항</button></div>
+<section id="form" class="screen">
     <button class="back" onclick="go('home')">← 홈</button>
     <h2 class="sec">사주 입력</h2>
     <div class="card">
@@ -551,6 +559,23 @@ nav.tabbar .inner{max-width:430px!important;height:72px!important}
   </div>
  </div>
 </section>
+
+<div id="v20Menu" class="v20-menu" onclick="if(event.target===this)v20Menu(false)"><div class="v20-panel"><button class="v20-close" onclick="v20Menu(false)">×</button><h2>♣ 귀인사주</h2><button onclick="v20Nav('home')">홈</button><button onclick="v20Nav('form')">평생사주</button><button onclick="v14Open('newyear');v20Menu(false)">신년운세</button><button onclick="v20Nav('match')">우리 궁합</button><button onclick="v14Open('luck');v20Menu(false)">대운</button><button onclick="v14Open('date');v20Menu(false)">택일</button><button onclick="v14Open('ai');v20Menu(false)">AI 사주상담</button><button onclick="v14Open('profiles');v20Menu(false)">프로필 관리</button><button onclick="v18MyPage();v20Menu(false)">마이페이지</button><button onclick="v20Open('guide')">이용가이드</button></div></div>
+
+<section id="v20-guide" class="screen"><div class="v14-page"><div class="v14-pagehead"><small>GUIDE</small><h2>귀인사주 이용가이드</h2><p>처음 방문해도 어렵지 않게 이용할 수 있어요.</p></div><div class="v14-card">
+<div class="v20-guideStep"><i>1</i><div><b>프로필 등록</b><p>이름, 생년월일, 출생시간을 입력해 사주 프로필을 만들어요.</p></div></div>
+<div class="v20-guideStep"><i>2</i><div><b>원하는 서비스 선택</b><p>평생사주, 신년운세, 궁합, 대운, 택일 중 궁금한 서비스를 선택해요.</p></div></div>
+<div class="v20-guideStep"><i>3</i><div><b>결과 확인</b><p>명식과 오행, 성향, 직업, 재물, 연애 등 준비된 상세 해석을 확인해요.</p></div></div>
+<div class="v20-guideStep"><i>4</i><div><b>AI 상담</b><p>정식 오픈 후에는 저장된 프로필을 바탕으로 궁금한 내용을 이어서 질문할 수 있어요.</p></div></div>
+</div><div class="v14-actions"><button class="primary" onclick="go('form')">프로필 등록하고 시작하기</button></div></div></section>
+
+<section id="v20-policy" class="screen"><div class="v14-page"><div class="v14-pagehead"><small>SERVICE INFO</small><h2>서비스 안내</h2><p>정식 오픈 전 사업자 정보와 결제 정책을 최종 반영할 예정입니다.</p></div><div class="v14-card v20-legal">
+<h3>서비스 성격</h3><p>귀인사주는 전통 명리학을 기반으로 한 참고·콘텐츠 서비스입니다. 해석은 미래의 사건이나 결과를 보장하지 않습니다.</p>
+<h3>유료 콘텐츠</h3><p>평생사주, 궁합, 신년운세 및 AI 상담 이용권 등 유료 상품은 실제 결제 시스템 연결 후 판매됩니다.</p>
+<h3>환불 및 청약철회</h3><p>디지털 콘텐츠의 제공 시점과 이용 여부에 따라 적용 기준이 달라질 수 있으므로 정식 오픈 전에 판매 방식과 관련 법령에 맞춘 최종 정책을 게시합니다.</p>
+<h3>개인정보</h3><p>회원·데이터베이스 기능 연결 후 수집 항목, 이용 목적, 보관기간, 삭제 방법, 처리 위탁 사항을 포함한 개인정보처리방침을 별도로 게시합니다.</p>
+</div></div></section>
+
 <nav class="tabbar"><div class="inner g6-nav-inner">
   <button class="on" id="tab-home" onclick="go('home')"><span class="icon">⌂</span>홈</button>
   <button id="tab-form" onclick="go('form')"><span class="icon">☯</span>사주</button>
@@ -2348,6 +2373,16 @@ function v18DeleteProfile(i){
 }
 const _v14Profiles=window.v14Profiles;
 window.v14Profiles=function(){ if(typeof _v14Profiles==="function")_v14Profiles(); v18ProfileCards(); };
+</script>
+
+<script id="v20-final-js">
+function v20Menu(on){document.getElementById("v20Menu")?.classList.toggle("on",!!on)}
+function v20Nav(id){v20Menu(false);if(typeof go==="function")go(id)}
+function v20Open(id){v20Menu(false);document.querySelectorAll(".screen").forEach(x=>x.classList.remove("on"));document.getElementById("v20-"+id)?.classList.add("on");window.scrollTo({top:0,behavior:"smooth"})}
+document.addEventListener("DOMContentLoaded",()=>{
+ const menuCandidates=[...document.querySelectorAll("button")].filter(b=>{const t=(b.textContent||"").trim();return t==="☰"||t==="≡"||b.classList.contains("hamb")||b.classList.contains("menu")});
+ if(menuCandidates[0])menuCandidates[0].onclick=()=>v20Menu(true);
+});
 </script>
 </body>
 </html>
