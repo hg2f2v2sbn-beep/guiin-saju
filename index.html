@@ -76,8 +76,8 @@ body.home-mode nav{background:rgba(255,255,255,.97);border-top:1px solid #eee8de
  <button class="back" onclick="go('home')">← 홈</button><h2 class="sec">궁합</h2>
  <div class="card">
   <p class="muted">두 사람의 양력 생년월일시를 비교합니다. 출생시간을 모르면 비워도 됩니다.</p>
-  <label>나</label><input id="aName" placeholder="이름"><div class="row y3"><input id="aYear" type="number" placeholder="년"><input id="aMonth" type="number" placeholder="월"><input id="aDay" type="number" placeholder="일"></div><div class="row y2" style="margin-top:8px"><input id="aHour" type="number" placeholder="시"><input id="aMin" type="number" placeholder="분"></div>
-  <label>상대</label><input id="bName" placeholder="이름"><div class="row y3"><input id="bYear" type="number" placeholder="년"><input id="bMonth" type="number" placeholder="월"><input id="bDay" type="number" placeholder="일"></div><div class="row y2" style="margin-top:8px"><input id="bHour" type="number" placeholder="시"><input id="bMin" type="number" placeholder="분"></div>
+  <label>나</label><input id="aName" placeholder="이름"><div class="seg" id="aGender" style="margin-top:8px"><button class="on" type="button" data-v="여">여성</button><button type="button" data-v="남">남성</button></div><div class="row y3"><input id="aYear" type="number" placeholder="년"><input id="aMonth" type="number" placeholder="월"><input id="aDay" type="number" placeholder="일"></div><div class="row y2" style="margin-top:8px"><input id="aHour" type="number" placeholder="시"><input id="aMin" type="number" placeholder="분"></div>
+  <label>상대</label><input id="bName" placeholder="이름"><div class="seg" id="bGender" style="margin-top:8px"><button class="on" type="button" data-v="여">여성</button><button type="button" data-v="남">남성</button></div><div class="row y3"><input id="bYear" type="number" placeholder="년"><input id="bMonth" type="number" placeholder="월"><input id="bDay" type="number" placeholder="일"></div><div class="row y2" style="margin-top:8px"><input id="bHour" type="number" placeholder="시"><input id="bMin" type="number" placeholder="분"></div>
   <div style="height:14px"></div><button class="btn gold" onclick="submitMatch()">무료 궁합 보기</button>
  </div>
  <div id="matchResult"></div>
@@ -89,7 +89,7 @@ body.home-mode nav{background:rgba(255,255,255,.97);border-top:1px solid #eee8de
 <script>
 const $=id=>document.getElementById(id);
 const STORE="guiin-saju", PREMIUM="guiin-saju-premium";
-let gender="여", LAST=null;
+let gender="여", matchGender={a:"여",b:"여"}, LAST=null;
 const STEM_EL={갑:"목",을:"목",병:"화",정:"화",무:"토",기:"토",경:"금",신:"금",임:"수",계:"수"};
 const BR_EL={자:"수",축:"토",인:"목",묘:"목",진:"토",사:"화",오:"화",미:"토",신:"금",유:"금",술:"토",해:"수"};
 const STEM_YANG=new Set(["갑","병","무","경","임"]);
@@ -99,6 +99,7 @@ const BR_CLASH={자:"오",오:"자",축:"미",미:"축",인:"신",신:"인",묘:
 const yearNow=new Date().getFullYear();
 
 document.querySelectorAll("#genderSeg button").forEach(b=>b.onclick=()=>{document.querySelectorAll("#genderSeg button").forEach(x=>x.classList.remove("on"));b.classList.add("on");gender=b.dataset.v});
+["a","b"].forEach(p=>document.querySelectorAll(`#${p}Gender button`).forEach(b=>b.onclick=()=>{document.querySelectorAll(`#${p}Gender button`).forEach(x=>x.classList.remove("on"));b.classList.add("on");matchGender[p]=b.dataset.v}));
 $("hourUnknown").onchange=()=>{$("hour").disabled=$("minute").disabled=$("hourUnknown").checked};
 
 function go(id){document.body.classList.toggle("home-mode",id==="home");document.querySelectorAll(".screen").forEach(s=>s.classList.remove("on"));$(id).classList.add("on");document.querySelectorAll("nav button").forEach(b=>b.classList.remove("on"));$("tab-"+id)?.classList.add("on");window.scrollTo(0,0);if(id==="home")renderSaved()}
@@ -169,10 +170,23 @@ function lifetime(c){
  <h3 class="subhead">연애</h3><p>연애는 배우자궁인 일지와 원국의 합·충, 재성·관성의 배치를 함께 보지만 특정 만남이나 이별을 확정하지 않습니다. ${dm}일간의 기본 리듬을 존중하면서 상대의 생활 속도와 결정권을 함께 지키는 관계가 오래가기 쉽습니다. 합은 연결의 힘, 충은 관계를 다시 조정해야 하는 압력으로 읽는 편이 안전합니다.</p>
  <h3 class="subhead">건강</h3><p>오행 강약은 의료 진단이 아닙니다. ${lo}가 약하다는 이유로 특정 장기나 질환을 단정하지 않고, 생활 리듬을 점검하는 상징적 참고로만 사용합니다. 수면·식사·활동·휴식처럼 실제로 조절 가능한 습관을 우선하고, 증상이나 건강 우려가 있다면 의료 전문가의 평가가 기준입니다.</p>`;
 }
+function dailyReport(c){
+ const now=new Date(), today={name:"오늘",gender:c.input.gender||"여",calendar:"양력",year:now.getFullYear(),month:now.getMonth()+1,day:now.getDate(),hour:12,minute:0,hourUnknown:false};
+ let tc;try{tc=calc(today)}catch(e){return "오늘의 흐름을 계산하지 못했습니다."}
+ const dayGod=GuiinSaju.tenGod(GuiinSaju.STEMS.indexOf(c.dayMaster.stem),GuiinSaju.STEMS.indexOf(tc.pillars.day.stem));
+ const guide={비견:"내 페이스를 지키되 혼자 결정하기 전 한 번 확인하세요.",겁재:"경쟁·공동비용·역할 분담에서 경계를 분명히 하세요.",식신:"작게라도 결과물을 끝내는 데 좋은 초점을 둘 수 있습니다.",상관:"말과 표현이 빨라질 수 있어 결론보다 근거를 먼저 보여주세요.",편재:"새 제안과 외부 기회는 넓게 보되 비용을 먼저 확인하세요.",정재:"지출·일정·반복 업무를 정리하면 안정감이 커집니다.",편관:"급한 요구에 끌려가기보다 우선순위와 마감선을 정하세요.",정관:"약속·문서·정해진 절차를 지키는 일이 신뢰로 이어집니다.",편인:"새 정보는 흥미보다 검증 가능성을 먼저 살피세요.",정인:"배우고 정리하는 흐름을 실제 행동 하나로 연결해 보세요."}[dayGod]||"오늘은 현실 조건을 확인하며 한 가지씩 정리하세요.";
+ return `<b>${now.getMonth()+1}월 ${now.getDate()}일 · ${tc.pillars.day.ko}일 · ${dayGod}</b><br>${guide} 오늘 운세는 일진과 원국을 비교한 짧은 참고 문장으로, 특정 사건을 예언하지 않습니다.`;
+}
 function yearReport(c){
- const y=GuiinSaju.pillarName((yearNow-4)%10,(yearNow-4)%12), g=GuiinSaju.tenGod(GuiinSaju.STEMS.indexOf(c.dayMaster.stem),(yearNow-4)%10), cur=currentLuck(c);
- const months=Array.from({length:12},(_,i)=>`<div class="previewline"><b>${i+1}월</b> · ${g}의 주제를 ${i%3===0?"일과 실행":i%3===1?"재물과 관계":"정리와 선택"} 쪽에서 점검하세요. 월별 문장은 정밀 절입 월운이 아닌 규칙 기반 요약입니다.</div>`).join("");
- return `<h3>${yearNow}년 ${y.ko} · ${g}</h3><p>${dmVoice(c.dayMaster.stem,g)} 현재 ${cur.ko} 대운(${cur.god}) 위에 올해의 ${g} 주제가 겹칩니다. 경쟁·성과·관계 같은 주제의 강약은 현실의 일정과 조건에 따라 달라지므로 사건을 확정하지 않고 선택의 우선순위를 보는 참고로 사용하세요.</p><div>${months}</div>`;
+ const y=GuiinSaju.pillarName((yearNow-4)%10,(yearNow-4)%12), yg=GuiinSaju.tenGod(GuiinSaju.STEMS.indexOf(c.dayMaster.stem),(yearNow-4)%10), cur=currentLuck(c);
+ const themes={비견:"내 기준·독립",겁재:"경쟁·분담",식신:"생산·생활",상관:"표현·변화",편재:"기회·거래",정재:"현금흐름·관리",편관:"책임·압박",정관:"규칙·신뢰",편인:"탐색·전문성",정인:"학습·문서"};
+ const advice={비견:"혼자 밀어붙이기보다 역할 경계를 정하세요.",겁재:"공동비용과 경쟁 상황에서 한도를 숫자로 정하세요.",식신:"반복 가능한 결과물을 꾸준히 완성하세요.",상관:"바꾸기 전에 효과를 측정할 기준부터 세우세요.",편재:"기회 수보다 실제 회수 구조를 확인하세요.",정재:"고정비와 현금흐름을 정리하는 데 초점을 두세요.",편관:"압박이 클수록 기한과 중단 조건을 먼저 정하세요.",정관:"약속·계약·절차를 꼼꼼히 확인하세요.",편인:"정보를 깊게 보되 작은 실험으로 검증하세요.",정인:"배운 것을 문서나 결과물로 남기세요."};
+ const months=Array.from({length:12},(_,i)=>{
+   let mc=null;try{mc=calc({name:"월운",gender:c.input.gender||"여",calendar:"양력",year:yearNow,month:i+1,day:15,hour:12,minute:0,hourUnknown:false})}catch(e){}
+   const stem=mc?.pillars?.month?.stem, mg=stem?GuiinSaju.tenGod(GuiinSaju.STEMS.indexOf(c.dayMaster.stem),GuiinSaju.STEMS.indexOf(stem)):yg;
+   return `<div class="previewline"><b>${i+1}월 · ${mg}</b><div class="muted">${themes[mg]||"우선순위"}의 주제가 상대적으로 드러나는 달로 봅니다. ${advice[mg]||"현실 조건을 확인하며 조정하세요."}</div></div>`;
+ }).join("");
+ return `<h3>${yearNow}년 ${y.ko} · ${yg}</h3><p>${dmVoice(c.dayMaster.stem,yg)} 현재 ${cur.ko} 대운(${cur.god}) 위에 올해 ${yg}의 주제가 겹칩니다. 아래 월별 해설은 각 달의 월주 천간을 일간과 비교한 규칙 기반 요약이며, 절입 경계일의 정밀 월운이나 사건 예측으로 사용하지 않습니다.</p><div>${months}</div>`;
 }
 function paidBlock(c){
  const unlocked=localStorage.getItem(PREMIUM)==="1",cur=currentLuck(c),six=luckSix(c,cur),idx=c.luck.indexOf(cur);
@@ -187,7 +201,7 @@ function renderAll(c){
  LAST=c;const pct=elPct(c),cur=currentLuck(c);
  $("result").innerHTML=`<div class="card"><span class="eyebrow">무료 명식</span><h2>${esc(c.input.name)}님의 사주</h2><div class="pillars">${pillarHTML("시주",c.pillars.hour)}${pillarHTML("일주",c.pillars.day)}${pillarHTML("월주",c.pillars.month)}${pillarHTML("년주",c.pillars.year)}</div></div>
  <div class="card"><h3>오행</h3><div class="bars">${["목","화","토","금","수"].map(k=>`<div class="barrow"><span>${k}</span><div class="bar"><i style="width:${pct[k]}%"></i></div><span>${pct[k]}%</span></div>`).join("")}</div></div>
- <div class="card"><div class="previewline"><b>일간 한 줄</b><div class="muted">${dmVoice(c.dayMaster.stem,c.pillars.month.god||"비견")}</div></div><div class="previewline"><b>현재 대운</b><div class="muted">${cur.fromAge}–${cur.toAge}세 · ${cur.ko} · ${cur.god} — ${luckSummary(c,cur).slice(0,105)}…</div></div></div>
+ <div class="card"><div class="previewline"><b>오늘의 운세</b><div class="muted">${dailyReport(c)}</div></div><div class="previewline"><b>일간 한 줄</b><div class="muted">${dmVoice(c.dayMaster.stem,c.pillars.month.god||"비견")}</div></div><div class="previewline"><b>현재 대운</b><div class="muted">${cur.fromAge}–${cur.toAge}세 · ${cur.ko} · ${cur.god} — ${luckSummary(c,cur).slice(0,105)}…</div></div></div>
  <div class="card"><h3>대운 타임라인</h3><div class="luckstrip">${c.luck.map(p=>`<div class="luckpill ${p===cur?"now":""}"><b>${p.ko}</b><span>${p.fromAge}–${p.toAge}세 · ${p.god}</span></div>`).join("")}</div><p class="muted">${c.forward?"순행":"역행"} · 시작 약 ${c.startAge}세 · 3일=1년 근사 규칙</p></div>
  ${paidBlock(c)}
  <div class="disclaimer">본 서비스는 명리학 원국 계산과 규칙 기반 해설을 제공하는 참고용입니다. 의료·법률·투자·결혼 결정을 대신하지 않습니다. 절기 시각은 근사치이며 진태양시·출생지 경도 보정은 다음 버전에 넣을 수 있습니다.</div>`;
@@ -203,7 +217,7 @@ function compatRelations(a,b){
  return [...new Set(out)];
 }
 function submitMatch(){
- const get=(p)=>({name:$(p+"Name").value.trim()||"이름 없음",gender:"여",calendar:"양력",year:+$(p+"Year").value,month:+$(p+"Month").value,day:+$(p+"Day").value,hour:+$(p+"Hour").value||0,minute:+$(p+"Min").value||0,hourUnknown:!$(p+"Hour").value});
+ const get=(p)=>({name:$(p+"Name").value.trim()||"이름 없음",gender:matchGender[p]||"여",calendar:"양력",year:+$(p+"Year").value,month:+$(p+"Month").value,day:+$(p+"Day").value,hour:+$(p+"Hour").value||0,minute:+$(p+"Min").value||0,hourUnknown:!$(p+"Hour").value});
  const ai=get("a"),bi=get("b");if(!ai.year||!ai.month||!ai.day||!bi.year||!bi.month||!bi.day)return alert("두 사람의 생년월일을 입력해 주세요.");
  try{
   const a=calc(ai),b=calc(bi),rel=compatRelations(a,b),same=a.dayMaster.el===b.dayMaster.el;
