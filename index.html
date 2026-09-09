@@ -4,7 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
   <meta name="theme-color" content="#6b1d2a" />
-  <title>귀인사주 — 명식 분석</title>
+  <title>귀인사주 3.0 — 정밀 명식 분석</title>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+KR:wght@400;600;700&family=Pretendard:wght@400;500;600;700&display=swap" rel="stylesheet" />
@@ -71,11 +71,19 @@
     .hidden-line{font-size:11px;color:var(--muted);margin-top:6px;line-height:1.45}
     .monthlist{display:grid;gap:8px}
     .monthlist div{background:#241316;border:1px solid var(--line);border-radius:12px;padding:10px 12px;font-size:13px}
+    .summarybox{background:linear-gradient(145deg,rgba(139,42,54,.28),rgba(36,19,22,.92));border:1px solid var(--line);border-radius:18px;padding:18px;margin-bottom:12px}
+    .summarybox h3{font-family:"Noto Serif KR",serif;font-size:18px;margin-bottom:8px}
+    .metric{display:grid;grid-template-columns:1fr auto;gap:8px;padding:9px 0;border-bottom:1px solid rgba(224,183,90,.12);font-size:13px}
+    .metric:last-child{border-bottom:0}
+    .reason{margin-top:8px;padding:10px 12px;border-left:2px solid var(--gold);background:rgba(224,183,90,.06);border-radius:0 10px 10px 0;font-size:12px;line-height:1.65;color:var(--muted)}
+    .section-title{font-family:"Noto Serif KR",serif;font-size:17px;margin:18px 2px 10px}
+    .luck-now{outline:2px solid rgba(240,211,146,.55)}
+    .twelve{font-size:11px;color:var(--gold2);margin-top:5px}
   </style>
 </head>
 <body>
 <div class="wrap">
-  <header class="app"><div class="brand">귀인<span>사주</span></div><div class="sub">명식 분석</div></header>
+  <header class="app"><div class="brand">귀인<span>사주</span></div><div class="sub">정밀 명식 3.0</div></header>
   <section id="home" class="screen on">
     <div class="hero">
       <h1>만세력으로 명식을<br>먼저 세웁니다</h1>
@@ -491,6 +499,45 @@
     };
   }
 
+
+  // 12운성: 일간 기준 지지의 생왕묘절 흐름
+  const TWELVE_NAMES = ["장생","목욕","관대","건록","제왕","쇠","병","사","묘","절","태","양"];
+  // 각 천간의 장생 지지 index. 음간은 역행.
+  const CHANGSHENG_START = [11,6,2,9,2,9,5,0,8,3];
+  function twelveStage(dayStem, branchIndex){
+    const start = CHANGSHENG_START[dayStem];
+    const forward = !STEM_YIN[dayStem];
+    const idx = forward ? (branchIndex-start+12)%12 : (start-branchIndex+12)%12;
+    return TWELVE_NAMES[idx];
+  }
+
+  function usefulElements(dayStem, strengthObj, elements){
+    const dEl = STEM_EL[dayStem];
+    const cycle = ["목","화","토","금","수"];
+    const idx = cycle.indexOf(dEl);
+    const output = cycle[(idx+1)%5];      // 식상
+    const wealth = cycle[(idx+2)%5];      // 재성
+    const officer = cycle[(idx+3)%5];     // 관성
+    const resource = cycle[(idx+4)%5];    // 인성
+    let favorable=[], caution=[], note="";
+    if(strengthObj.label==="신강"){
+      favorable=[output,wealth,officer];
+      caution=[dEl,resource];
+      note="신강 판정에서는 일간의 힘을 흘려 보내거나 제어하는 식상·재성·관성 계열을 우선 참고합니다.";
+    }else if(strengthObj.label==="신약"){
+      favorable=[resource,dEl];
+      caution=[wealth,officer];
+      note="신약 판정에서는 일간을 생조하거나 같은 편이 되는 인성·비겁 계열을 우선 참고합니다.";
+    }else{
+      const sorted=Object.entries(elements.pct).sort((a,b)=>a[1]-b[1]);
+      favorable=[sorted[0][0],sorted[1][0]];
+      caution=[sorted[sorted.length-1][0]];
+      note="중화 판정에서는 부족한 오행을 보완하는 방향을 우선 참고합니다.";
+    }
+    return {favorable:[...new Set(favorable)], caution:[...new Set(caution)], note,
+      disclaimer:"용신은 조후·격국·통관·합화 성립 등을 함께 보는 학파별 판단이 필요하므로 이 값은 '보완 오행 후보'입니다."};
+  }
+
   function seunFor(year, dayStem) {
     const s = ((year - 4) % 10 + 10) % 10;
     const b = ((year - 4) % 12 + 12) % 12;
@@ -560,6 +607,7 @@
     dayP.god = "일간";
     const hourP = hStem == null ? null : enrichPillar(pillarName(hStem, hBranch), dayStem);
     const pillars = { year: yearP, month: monthP, day: dayP, hour: hourP };
+    Object.values(pillars).forEach((p)=>{ if(p) p.twelveStage=twelveStage(dayStem,p.branchIndex); });
 
     const yangYear = !STEM_YIN[yearStem];
     const forward = (yangYear && gender === "남") || (!yangYear && gender === "여");
@@ -607,6 +655,10 @@
       p.hidden.forEach((h) => { godsCount[h.god] += h.kind === "정기" ? 0.8 : 0.3; });
     });
 
+    const elementsObj = elBalance(pillars);
+    const strengthObj = strength(dayStem, pillars);
+    const usefulObj = usefulElements(dayStem, strengthObj, elementsObj);
+
     return {
       engine: "guiin-saju-manseryeok",
       version: "2.0",
@@ -629,9 +681,10 @@
         stem: STEMS[dayStem], hanja: STEMS_H[dayStem],
         el: STEM_EL[dayStem], yin: STEM_YIN[dayStem] ? "음" : "양", index: dayStem,
       },
-      elements: elBalance(pillars),
+      elements: elementsObj,
       yinYang: yinYang(pillars),
-      strength: strength(dayStem, pillars),
+      strength: strengthObj,
+      useful: usefulObj,
       relations: relations(pillars),
       godsCount,
       luck, startAge, forward,
@@ -813,78 +866,103 @@ function esc(s){return String(s||"").replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&l
 
 function pillarCard(title,p){
   if(!p) return `<div class="pillar"><div class="who">${title}</div><div class="hanja">?</div><div class="ko">시간 모름</div></div>`;
-  return `<div class="pillar"><div class="who">${title}</div><div class="hanja">${p.hanja[0]}<br>${p.hanja[1]}</div><div class="ko">${p.stemYin}${p.stemEl} / ${p.branchYin}${p.branchEl}</div><div class="god">${p.god}</div>
+  return `<div class="pillar"><div class="who">${title}</div><div class="hanja">${p.hanja[0]}<br>${p.hanja[1]}</div><div class="ko">${p.stemYin}${p.stemEl} / ${p.branchYin}${p.branchEl}</div><div class="god">${p.god}</div><div class="twelve">${p.twelveStage||""}</div>
     <div class="hidden-line">${p.hidden.map(h=>h.stem+"("+h.kind+"·"+h.god+")").join("<br>")}</div></div>`;
 }
 
 function switchTab(n){ TAB=n; renderAll(LAST); }
 
+function topGods(chart){
+  return Object.entries(chart.godsCount).sort((a,b)=>b[1]-a[1]).slice(0,3);
+}
+function domainText(chart,key){
+  const dm=chart.dayMaster.stem, st=chart.strength, el=chart.elements, u=chart.useful;
+  const gods=topGods(chart).map(x=>x[0]);
+  const rel=(chart.relations||[]).map(x=>x.type);
+  const map={
+    "성격":`${dm}일간을 중심으로 보면 ${st.label} 흐름이며, 십성에서는 ${gods.join("·")}의 비중이 두드러집니다. 강한 오행은 ${el.strong}, 상대적으로 약한 오행은 ${el.weak}입니다. 성향은 일간 하나가 아니라 월령·통근·십성·합충을 함께 보아야 하므로 아래 근거를 같이 확인하세요.`,
+    "재물":`재물은 재성의 유무만으로 단정하지 않습니다. 현재 명식의 보완 후보는 ${u.favorable.join("·")}이며, 재성의 흐름과 대운·세운이 겹칠 때 실제 체감이 커질 수 있습니다. 큰 지출이나 투자 판단은 사주가 아니라 현실의 현금흐름과 계약 조건을 우선하세요.`,
+    "직업":`직업은 월주와 식상·관성·재성의 연결을 중심으로 봅니다. 현재 상위 십성은 ${gods.join("·")}이고 월주 십성은 ${chart.pillars.month.god}입니다. 반복 업무보다 어떤 방식으로 성과를 내는지, 조직형인지 독립형인지까지 대운과 함께 읽는 편이 적절합니다.`,
+    "연애":`연애는 일지(배우자궁), 합·충, 재성·관성의 배치를 함께 봅니다. 원국에서 확인되는 관계 작용은 ${chart.relations.length?chart.relations.map(r=>r.text).join(", "):"뚜렷한 합충형파해가 적은 편"}입니다. 이것은 관계의 '경향'이지 특정 상대나 사건을 확정하는 예언은 아닙니다.`,
+    "결혼":`결혼운은 특정 나이를 한 줄로 찍기보다 배우자궁과 대운·세운이 만나는 구간을 비교해야 합니다. 일주는 ${chart.pillars.day.ko}, 일지 12운성은 ${chart.pillars.day.twelveStage}입니다. 아래 대운에서 일지와 합·충이 강해지는 시기를 별도로 살펴보는 구조로 확장할 수 있습니다.`,
+    "건강":`명리에서 오행의 과부족은 생활 리듬을 살피는 전통적 참고 자료로만 사용해야 합니다. 현재 계산상 강한 오행은 ${el.strong}, 약한 오행은 ${el.weak}입니다. 질병·진단·치료 판단에는 사용할 수 없습니다.`,
+    "대운":`대운은 ${chart.forward?"순행":"역행"}이며 약 ${chart.startAge}세부터 시작하도록 계산되었습니다. 현재 나이 기준 대운은 ${chart.currentLuck?chart.currentLuck.fromAge+"–"+chart.currentLuck.toAge+"세 "+chart.currentLuck.ko:"확인 불가"}입니다. 절입 시각이 근사치이므로 대운 시작 나이는 경계 출생에서 오차가 날 수 있습니다.`,
+    "올해":`${chart.seunYear}년 세운은 ${chart.seun.ko}(${chart.seun.hanja}), 천간 십성은 ${chart.seun.god}입니다. 원국과의 실제 작용은 단순 십성 한 글자보다 합·충과 현재 대운을 함께 비교해야 합니다.`,
+  };
+  return map[key]||map["성격"];
+}
 function renderAll(chart){
   LAST=chart;
-  const it=GuiinInterpret.interpret(chart);
-  const inp=chart.input, el=chart.elements, yy=chart.yinYang, st=chart.strength;
-  $("resultTitle").textContent=inp.name+"의 명식";
+  const inp=chart.input, el=chart.elements, yy=chart.yinYang, st=chart.strength, u=chart.useful;
+  $("resultTitle").textContent=inp.name+"의 정밀 명식";
   const tabs=["성격","재물","직업","연애","결혼","건강","대운","올해","월별"];
-  const tabMap={성격:"성격",재물:"재물운",직업:"직업운",연애:"연애운",결혼:"결혼운",건강:"건강",대운:"현재대운",올해:"올해운세",월별:"월별운세"};
-  const prem = (key, html) => PREMIUM_UNLOCKED ? html : `<div class="card" data-tier="premium"><h3>${key}<span class="badge">PREMIUM</span></h3><p class="muted">결제 후 원국 데이터 기반 상세 해석이 열립니다.</p></div>`;
+  const top=topGods(chart);
 
-  const detailBody = TAB==="월별"
-    ? `<div class="monthlist">${it.premium.월별운세.map(m=>`<div><b>${m.month}월</b> ${m.pillar} · ${m.god}<br><span class="muted">${m.line}</span></div>`).join("")}</div>`
-    : `<div class="prose"><p>${it.premium[tabMap[TAB]]||it.premium.기본성향}</p></div>`;
+  const monthly = chart.months.map(m=>{
+    const tone = u.favorable.includes(m.stemEl) ? "보완 오행" : u.caution.includes(m.stemEl) ? "과다 주의" : "중립";
+    return `<div><b>${m.monthLabel}월 · ${m.ko}</b> <span class="badge">${m.god}</span><br><span class="muted">${m.stemEl} 기운 · ${tone}. 월운은 절기 월 기준의 간지 흐름을 참고합니다.</span></div>`;
+  }).join("");
+
+  const detail = TAB==="월별" ? `<div class="monthlist">${monthly}</div>` :
+    `<div class="prose"><p>${domainText(chart,TAB)}</p></div>
+     <div class="reason"><b>판단 근거</b><br>일간 ${chart.dayMaster.hanja}${chart.dayMaster.stem} · 월주 ${chart.pillars.month.ko}/${chart.pillars.month.god} · ${st.label} ${st.score} · 상위 십성 ${top.map(x=>x[0]).join("·")} · 보완 후보 ${u.favorable.join("·")}</div>`;
 
   $("resultBody").innerHTML = `
+    <div class="summarybox">
+      <h3>${inp.name}님의 사주 핵심</h3>
+      <div class="prose"><p><b>${chart.dayMaster.hanja}${chart.dayMaster.stem} 일간</b> · ${chart.dayMaster.yin}${chart.dayMaster.el} · ${st.label}</p>
+      <p>원국에서 <b>${el.strong}</b> 기운이 상대적으로 강하고 <b>${el.weak}</b> 기운이 약하게 계산됩니다. 보완 오행 후보는 <b>${u.favorable.join("·")}</b>입니다.</p></div>
+      <div class="reason">${u.note}<br>${u.disclaimer}</div>
+    </div>
+
     <div class="card">
-      <h3>사주 원국</h3>
+      <h3>원국 · 십성 · 지장간 · 12운성</h3>
       <div class="muted" style="margin-bottom:10px">${inp.calendar} ${inp.year}.${inp.month}.${inp.day} ${inp.hourUnknown?"시간 모름":inp.hour+":"+String(inp.minute).padStart(2,"0")} · ${inp.gender} · ${inp.city}${chart.solarCorrection? " · 진태양시 "+chart.solarCorrection.correctionMin+"분":""}${chart.lunarMeta? " · 양력 "+chart.lunarMeta.solar.year+"."+chart.lunarMeta.solar.month+"."+chart.lunarMeta.solar.day:""}</div>
-      <div class="pillars">
-        ${pillarCard("시주", chart.pillars.hour)}
-        ${pillarCard("일주", chart.pillars.day)}
-        ${pillarCard("월주", chart.pillars.month)}
-        ${pillarCard("년주", chart.pillars.year)}
-      </div>
+      <div class="pillars">${pillarCard("시주",chart.pillars.hour)}${pillarCard("일주",chart.pillars.day)}${pillarCard("월주",chart.pillars.month)}${pillarCard("년주",chart.pillars.year)}</div>
     </div>
-    <div class="card">
-      <h3>오행 분석</h3>
+
+    <div class="card"><h3>오행의 분포</h3>
       <div class="bars">${["목","화","토","금","수"].map(k=>`<div class="bar-row"><span>${k}</span><div class="bar"><i style="width:${el.pct[k]}%;background:${GuiinSaju.EL_COLOR[k]}"></i></div><span>${el.pct[k]}%</span></div>`).join("")}</div>
-      <p class="muted" style="margin-top:8px">강한 오행 ${el.strong} · 약한 오행 ${el.weak}</p>
+      <div class="reason">이 퍼센트는 천간·지지·지장간에 내부 가중치를 적용한 <b>상대 분포 지표</b>입니다. 전통 명리의 절대적인 '오행 점수'가 아닙니다.</div>
     </div>
-    <div class="card">
-      <h3>음양 분석</h3>
-      <div class="yybar"><i style="width:${yy.yangPct}%;background:#e0b75a"></i><i style="width:${yy.yinPct}%;background:#5b7fb8"></i></div>
-      <p class="muted">양 ${yy.yangPct}% · 음 ${yy.yinPct}% · ${yy.label}</p>
+
+    <div class="card"><h3>신강 · 신약 판단</h3>
+      <div class="metric"><span>판정</span><b>${st.label}</b></div><div class="metric"><span>내부 지수</span><b>${st.score}</b></div>
+      <div class="reason">${st.reasons.length?st.reasons.join(" · "):"판단 근거가 충분하지 않습니다."}<br><br>현재 버전의 신강약은 월지·통근·천간 생조를 점수화한 휴리스틱입니다. 격국·조후까지 포함한 확정 판정으로 표시하지 않습니다.</div>
     </div>
-    <div class="card">
-      <h3>십성 분석</h3>
+
+    <div class="card"><h3>십성 구조</h3>
       <div class="godgrid">${GuiinSaju.TEN_GODS.map(g=>`<div><b>${g}</b><br><span class="muted">${(chart.godsCount[g]||0).toFixed(1)}</span></div>`).join("")}</div>
-      <p class="muted" style="margin-top:8px">천간 십성 + 지장간 가중. 일간 ${chart.dayMaster.hanja}${chart.dayMaster.stem}</p>
+      <div class="reason">상위 비중: ${top.map(x=>x[0]+" "+x[1].toFixed(1)).join(" · ")}. 천간과 지장간을 함께 반영한 내부 비교값입니다.</div>
     </div>
-    <div class="card">
-      <h3>신강 / 신약</h3>
-      <p><b>${st.label}</b> · 지수 ${st.score}</p>
-      <p class="muted" style="margin-top:8px">${st.reasons.join(" · ")}</p>
+
+    <div class="card"><h3>보완 오행 후보</h3>
+      <p>${u.favorable.map(x=>`<span class="tag">${x}</span>`).join("")} ${u.caution.map(x=>`<span class="tag">${x} 과다 주의</span>`).join("")}</p>
+      <div class="reason">${u.note}<br>${u.disclaimer}</div>
     </div>
-    <div class="card">
-      <h3>합·충·형·파·해</h3>
-      <div class="rel">${chart.relations.length?chart.relations.map(r=>`<span>${r.text}</span>`).join(""):'<span>뚜렷한 합충형파해가 없습니다</span>'}</div>
+
+    <div class="card"><h3>합 · 충 · 형 · 파 · 해</h3>
+      <div class="rel">${chart.relations.length?chart.relations.map(r=>`<span>${r.text}</span>`).join(""):'<span>현재 탐지 규칙에서 뚜렷한 작용 없음</span>'}</div>
     </div>
-    <div class="card">
-      <h3>대운 타임라인</h3>
-      <p class="muted" style="margin-bottom:8px">${chart.forward?"순행":"역행"} · 시작 ${chart.startAge}세 · 현재 ${chart.currentLuck?chart.currentLuck.ko:""}</p>
-      <div class="luck">${chart.luck.map(p=>`<div class="pillar"><div class="who">${p.fromAge}–${p.toAge}세</div><div class="hanja" style="font-size:20px">${p.hanja}</div><div class="god">${p.god}</div></div>`).join("")}</div>
+
+    <div class="card"><h3>대운 전체 흐름</h3>
+      <p class="muted" style="margin-bottom:8px">${chart.forward?"순행":"역행"} · 시작 약 ${chart.startAge}세 · 현재 나이 ${chart.age}세</p>
+      <div class="luck">${chart.luck.map(p=>`<div class="pillar ${chart.currentLuck&&p.fromAge===chart.currentLuck.fromAge?"luck-now":""}"><div class="who">${p.fromAge}–${p.toAge}세</div><div class="hanja" style="font-size:20px">${p.hanja}</div><div class="god">${p.god}</div><div class="twelve">${p.twelveStage||""}</div></div>`).join("")}</div>
     </div>
-    <div class="card">
-      <h3>세운 ${chart.seunYear}</h3>
-      <p>${chart.seun.ko} (${chart.seun.hanja}) · 십성 ${chart.seun.god}</p>
+
+    <div class="card"><h3>${chart.seunYear} 세운</h3>
+      <div class="metric"><span>세운 간지</span><b>${chart.seun.ko} ${chart.seun.hanja}</b></div>
+      <div class="metric"><span>천간 십성</span><b>${chart.seun.god}</b></div>
+      <div class="reason">세운 하나만으로 길흉을 확정하지 않고 현재 대운과 원국의 관계를 함께 보도록 설계했습니다.</div>
     </div>
+
+    <div class="section-title">분야별 상세 풀이</div>
     <div class="rtabs">${tabs.map(n=>`<button class="${n===TAB?"on":""}" onclick="switchTab('${n}')">${n}</button>`).join("")}</div>
-    ${prem(TAB, `<div class="card" data-tier="premium"><h3>${TAB} 상세<span class="badge">PREMIUM</span></h3>
-      <div class="prose"><p>${it.premium.기본성향}</p><p>${it.premium.장점}</p><p>${it.premium.단점}</p></div>
-      ${detailBody}
-    </div>`)}
-    <p class="tiny">연주 입춘 · 월주 절입 · 23시 야자시. 절기는 근사치입니다. 진태양시는 동경 135° 기준입니다.</p>
+    <div class="card"><h3>${TAB} 상세</h3>${detail}</div>
+
+    <p class="tiny">귀인사주 3.0 · 연주는 입춘, 월주는 절입 기준. 현재 절기 시각과 진태양시 보정은 근사 계산을 사용합니다. 사주는 전통 명리 해석을 위한 참고 정보이며 의료·법률·투자 판단을 대신하지 않습니다.</p>
   `;
 }
-
 function submitSaju(){
   const input={
     name:$("name").value.trim()||"이름 없음", gender, calendar,
@@ -907,13 +985,17 @@ const STEM_HAP={갑:"기",을:"경",병:"신",정:"임",무:"계",기:"갑",경:
 const BRANCH_HAP={자:"축",인:"해",묘:"술",진:"유",사:"신",오:"미",축:"자",해:"인",술:"묘",유:"진",신:"사",미:"오"};
 const BRANCH_CHUNG={자:"오",축:"미",인:"신",묘:"유",진:"술",사:"해",오:"자",미:"축",신:"인",유:"묘",술:"진",해:"사"};
 function matchScore(a,b){
-  let score=62; const notes=[];
-  if(STEM_HAP[a.dayMaster.stem]===b.dayMaster.stem){score+=14;notes.push("일간 천간합");}
-  else if(a.dayMaster.el===b.dayMaster.el){score+=6;notes.push("일간 오행이 같음");}
-  if(BRANCH_HAP[a.pillars.day.branch]===b.pillars.day.branch){score+=12;notes.push("일지 육합");}
-  if(BRANCH_CHUNG[a.pillars.day.branch]===b.pillars.day.branch){score-=14;notes.push("일지 충");}
-  score=Math.max(28,Math.min(96,score));
-  if(!notes.length) notes.push("담백한 조합. 태도에서 갈립니다.");
+  let score=55; const notes=[];
+  if(STEM_HAP[a.dayMaster.stem]===b.dayMaster.stem){score+=12;notes.push("두 일간이 천간합 관계입니다.");}
+  if(a.dayMaster.el===b.dayMaster.el){score+=4;notes.push("일간 오행이 같아 기본 리듬이 비슷합니다.");}
+  if(BRANCH_HAP[a.pillars.day.branch]===b.pillars.day.branch){score+=12;notes.push("배우자궁인 일지가 육합 관계입니다.");}
+  if(BRANCH_CHUNG[a.pillars.day.branch]===b.pillars.day.branch){score-=12;notes.push("일지가 충 관계라 생활 리듬의 조율이 중요합니다.");}
+  const favA=a.useful?.favorable||[], favB=b.useful?.favorable||[];
+  if(favA.includes(b.dayMaster.el)){score+=7;notes.push(`${b.input.name}의 일간 오행이 ${a.input.name}의 보완 후보에 들어옵니다.`);}
+  if(favB.includes(a.dayMaster.el)){score+=7;notes.push(`${a.input.name}의 일간 오행이 ${b.input.name}의 보완 후보에 들어옵니다.`);}
+  score=Math.max(25,Math.min(95,score));
+  if(!notes.length) notes.push("강한 합·충 신호가 적어 실제 관계 방식과 대화 패턴의 영향이 큰 조합입니다.");
+  notes.push("궁합 점수는 전통 명리 요소를 비교하기 위한 내부 지표이며 관계의 성공·실패를 예측하는 확률이 아닙니다.");
   return {score,notes};
 }
 function submitMatch(){
@@ -921,7 +1003,9 @@ function submitMatch(){
   const ia=make("a","나"), ib=make("b","상대");
   if(!ia.year||!ib.year) return alert("두 사람 생년월일을 입력해 주세요.");
   const a=GuiinSaju.calculate(ia), b=GuiinSaju.calculate(ib), m=matchScore(a,b);
-  $("matchBody").innerHTML=`<div class="card"><div class="score-wrap"><div class="muted">${esc(ia.name)} × ${esc(ib.name)}</div><div class="score">${m.score}</div></div><div class="prose">${m.notes.map(n=>"<p>"+n+"</p>").join("")}</div></div>`;
+  $("matchBody").innerHTML=`<div class="summarybox"><h3>${esc(ia.name)} × ${esc(ib.name)} 궁합</h3><div class="score-wrap"><div class="score">${m.score}</div><div class="muted">내부 비교 지수 / 100</div></div></div>
+  <div class="card"><h3>두 사람의 중심</h3><div class="metric"><span>${esc(ia.name)}</span><b>${a.pillars.day.ko} · ${a.strength.label}</b></div><div class="metric"><span>${esc(ib.name)}</span><b>${b.pillars.day.ko} · ${b.strength.label}</b></div></div>
+  <div class="card"><h3>관계 분석</h3><div class="prose">${m.notes.map(n=>"<p>"+n+"</p>").join("")}</div></div>`;
 }
 renderSaved();
 </script>
