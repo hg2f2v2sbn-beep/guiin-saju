@@ -4,7 +4,8 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
   <meta name="theme-color" content="#6b1d2a" />
-  <title>귀인사주 — 사주 · 운세 · 궁합 · AI 상담</title>
+  <title>귀인사주 | 나를 이해하는 사주 서비스</title>
+<meta name="description" content="평생사주, 신년운세, 궁합, 대운, 택일과 AI 사주상담을 한곳에서 만나보세요.">
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+KR:wght@400;600;700&family=Pretendard:wght@400;500;600;700&display=swap" rel="stylesheet" />
@@ -319,6 +320,28 @@ nav.tabbar .inner{max-width:430px!important;height:72px!important}
 .v16-chat{background:#f5f1e8;border-radius:19px;padding:12px}.v16-msg{max-width:86%;border-radius:16px;padding:10px 12px;font-size:10.5px;line-height:1.65;margin:6px 0;background:#fff}.v16-msg.me{margin-left:auto;background:#ffe39a}.v16-chatbar{display:grid;grid-template-columns:1fr auto;gap:6px;margin-top:8px}.v16-chatbar input{border:1px solid #ddd4c7;border-radius:999px;padding:11px 13px;background:#fff}.v16-chatbar button{border:0;border-radius:999px;background:#173f37;color:#fff;padding:0 15px;font-weight:800}
 .v16-account{display:grid;gap:7px}.v16-row{display:flex;justify-content:space-between;align-items:center;border-bottom:1px solid #eee7dc;padding:10px 1px}.v16-row b{font-size:11px}.v16-row span{font-size:9px;color:#777}
 </style>
+
+<style id="v18-polish">
+.v18-note{font-size:9px;color:#777;line-height:1.65;margin-top:8px}
+.v18-tabs{display:flex;gap:6px;overflow:auto;margin:8px 0 12px}.v18-tabs button{white-space:nowrap;border:1px solid #e7dfd4;background:#fff;border-radius:999px;padding:9px 11px;font-size:9px;font-weight:800}.v18-tabs button.on{background:#173f37;color:#fff}
+.v18-empty{text-align:center;padding:24px 10px}.v18-empty i{font-style:normal;font-size:28px}.v18-empty b{display:block;margin:8px 0 5px}.v18-empty span{font-size:9.5px;color:#777;line-height:1.6}
+.v18-policy{background:#faf7f0;border-radius:16px;padding:13px;margin:8px 0}.v18-policy b{font-size:11px}.v18-policy p{font-size:9.5px;line-height:1.7;color:#666;margin:5px 0 0}
+.v18-chip{display:inline-block;padding:5px 8px;border-radius:999px;background:#edf3ef;color:#18483e;font-size:8px;font-weight:900;margin:2px}
+</style>
+
+<style id="v19-home-cleanup">
+/* V19: one clean home service catalog only */
+#home .v11-products{display:none!important}
+#home .v11-popular{margin-top:18px}
+#home .v14-hub{margin-top:18px}
+#home .v14-grid{gap:10px}
+#home .v14-svc{min-height:132px;padding:16px;border-radius:20px;box-shadow:0 2px 10px rgba(60,45,20,.025)}
+#home .v14-svc b{color:#111}
+#home .v14-svc span{color:#70706c}
+.v19-intro{margin:16px 0 8px;padding:18px;border-radius:22px;background:#f7f2e8;border:1px solid #ebe1d2}
+.v19-intro b{font-size:15px}.v19-intro p{font-size:10px;line-height:1.7;color:#6d6b65;margin:6px 0 0}
+@media(max-width:380px){#home .v14-svc{min-height:122px;padding:14px}}
+</style>
 </head>
 <body>
 <div class="wrap">
@@ -354,7 +377,7 @@ nav.tabbar .inner{max-width:430px!important;height:72px!important}
   </section>
 
 <section class="v14-hub">
- <div class="v14-hubtitle"><b>귀인사주 전체 서비스</b><span>원하는 운세를 선택하세요</span></div>
+ <div class="v14-hubtitle"><b>운세를 골라보세요</b><span>내가 궁금한 운세부터 시작하세요</span></div>
  <div class="v14-grid">
   <button class="v14-svc" onclick="go('form')"><i>📜</i><em>990원</em><b>평생사주</b><span>성격·직업·재물·연애·결혼·대운 전체풀이</span></button>
   <button class="v14-svc" onclick="v14Open('newyear')"><i>🌅</i><em>990원</em><b>신년운세</b><span>올해 총운부터 12개월의 흐름까지</span></button>
@@ -516,6 +539,18 @@ nav.tabbar .inner{max-width:430px!important;height:72px!important}
 <section id="v16-checkout" class="screen"><div class="v14-page"><div class="v14-pagehead"><small>CHECKOUT</small><h2 id="v16PayTitle">결제하기</h2><p>선택한 운세 상품을 확인하고 결제를 진행하는 화면입니다.</p></div><div class="v14-card"><div class="v16-row"><b>상품</b><span id="v16PayProduct"></span></div><div class="v16-row"><b>결제금액</b><span id="v16PayPrice"></span></div><div class="v16-row"><b>결제수단</b><span>카드 · 간편결제 연결 예정</span></div><div class="v14-actions"><button class="primary" onclick="v16DemoPay()">결제 진행하기</button><button onclick="v14Open('history')">이용내역 보기</button></div><p style="font-size:9px;color:#777;line-height:1.6;margin-top:12px">현재 GitHub Pages 버전에는 실제 PG 서버가 연결되어 있지 않아 결제가 발생하지 않습니다. 실제 서비스 전환 시 서버 승인 검증과 구매내역 저장을 연결해야 합니다.</p></div></div></section>
 <section id="v16-ai" class="screen"><div class="v14-page"><div class="v14-pagehead"><small>AI SAJU CHAT</small><h2>귀인 AI 사주상담</h2><p>저장된 사주 프로필을 기준으로 질문을 이어가는 상담 화면입니다.</p></div><div class="v14-card"><span class="v16-badge">30일 이용권 19,900원</span><h3 style="margin-top:10px">무엇이 궁금하세요?</h3><div class="v16-chat" id="v16Chat"><div class="v16-msg">안녕하세요. 프로필을 선택하면 사주 정보를 바탕으로 연애, 직업, 재물, 인간관계 등에 대해 질문할 수 있어요.</div></div><div class="v16-chatbar"><input id="v16ChatInput" placeholder="예: 올해 이직 흐름은 어때?"><button onclick="v16ChatSend()">전송</button></div><p style="font-size:9px;color:#777;line-height:1.6">현재는 UI 데모 응답입니다. 실제 AI 모델과 대화기억은 백엔드/API 연결 후 활성화됩니다.</p></div><div class="v14-actions"><button class="primary" onclick="v16Checkout('AI 사주상담 30일 이용권','19,900원')">30일 이용권 구매</button></div></div></section>
 
+
+<section id="v18-mypage" class="screen">
+ <div class="v14-page">
+  <div class="v14-pagehead"><small>MY GUIIN</small><h2>마이페이지</h2><p>프로필, 구매내역, AI 이용권과 서비스 안내를 한곳에서 관리합니다.</p></div>
+  <div class="v14-card"><h3>내 정보</h3><div id="v18MySummary"></div><div class="v14-actions"><button onclick="v14Open('profiles')">사주 프로필 관리</button><button onclick="v14Open('history')">구매·이용내역</button></div></div>
+  <div class="v14-card"><h3>서비스 안내</h3>
+   <div class="v18-policy"><b>사주 해석 안내</b><p>귀인사주의 명리 해석은 전통 명리학을 바탕으로 한 참고·콘텐츠 서비스이며 미래의 특정 결과를 보장하지 않습니다.</p></div>
+   <div class="v18-policy"><b>결제·환불 안내</b><p>실제 PG 연결 전의 개발 화면입니다. 정식 오픈 전 전자상거래 고지사항과 환불 기준을 사업자 정보에 맞춰 최종 반영합니다.</p></div>
+   <div class="v18-policy"><b>개인정보 안내</b><p>생년월일·출생시간 등 프로필 정보의 수집 목적, 보관기간, 삭제 방법은 실제 회원·DB 구조가 확정된 뒤 개인정보처리방침에 명시합니다.</p></div>
+  </div>
+ </div>
+</section>
 <nav class="tabbar"><div class="inner g6-nav-inner">
   <button class="on" id="tab-home" onclick="go('home')"><span class="icon">⌂</span>홈</button>
   <button id="tab-form" onclick="go('form')"><span class="icon">☯</span>사주</button>
@@ -2273,6 +2308,46 @@ function v16EnhanceLocks(){
  });
 }
 document.addEventListener("DOMContentLoaded",v16EnhanceLocks);
+</script>
+
+<script id="v18-polish-js">
+function v18MyPage(){
+ document.querySelectorAll(".screen").forEach(x=>x.classList.remove("on"));
+ document.getElementById("v18-mypage")?.classList.add("on");
+ const el=document.getElementById("v18MySummary");
+ const list=typeof loadSaved==="function"?loadSaved():[];
+ if(el) el.innerHTML=list.length
+   ? `<span class="v18-chip">저장 프로필 ${list.length}개</span><span class="v18-chip">결제 연결 준비중</span><p class="v18-note">대표 프로필: ${esc(list[0].name||"프로필")}</p>`
+   : `<div class="v18-empty"><i>👤</i><b>아직 등록된 프로필이 없어요</b><span>프로필을 등록하면 여러 운세 서비스에서 다시 사용할 수 있어요.</span></div>`;
+ window.scrollTo({top:0,behavior:"smooth"});
+}
+function v18ProfileCards(){
+ const el=document.getElementById("v14ProfileList"); if(!el)return;
+ const list=typeof loadSaved==="function"?loadSaved():[];
+ if(!list.length)return;
+ el.innerHTML="<h3>저장된 프로필</h3>"+list.map((p,i)=>`
+ <div style="padding:12px 0;border-bottom:1px solid #eee7dc">
+  <div style="display:flex;justify-content:space-between;gap:8px;align-items:center">
+   <div><b>${esc(p.name||"프로필")}</b><div style="font-size:9px;color:#777;margin-top:4px">${p.year}.${p.month}.${p.day} ${p.hour??""}:${p.minute??"00"}</div></div>
+   <button style="border:0;border-radius:999px;padding:8px 10px;background:#f5efe3;font-size:8px;font-weight:800" onclick="v18DeleteProfile(${i})">삭제</button>
+  </div>
+ </div>`).join("");
+}
+function v18DeleteProfile(i){
+ const list=typeof loadSaved==="function"?loadSaved():[];
+ if(!list[i]||!confirm((list[i].name||"이 프로필")+"을 삭제할까요?"))return;
+ list.splice(i,1);
+ try{
+   // Reuse the same localStorage key discovered from the existing loadSaved implementation when possible.
+   const fn=String(loadSaved);
+   const m=fn.match(/localStorage\.getItem\(["']([^"']+)["']\)/);
+   if(m) localStorage.setItem(m[1],JSON.stringify(list));
+   else localStorage.setItem("guiin_profiles",JSON.stringify(list));
+ }catch(e){}
+ v18ProfileCards();
+}
+const _v14Profiles=window.v14Profiles;
+window.v14Profiles=function(){ if(typeof _v14Profiles==="function")_v14Profiles(); v18ProfileCards(); };
 </script>
 </body>
 </html>
