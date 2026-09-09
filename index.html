@@ -72,6 +72,21 @@
     .monthlist{display:grid;gap:8px}
     .monthlist div{background:#241316;border:1px solid var(--line);border-radius:12px;padding:10px 12px;font-size:13px}
   </style>
+
+<style>
+.luck-detail-grid{display:grid;gap:12px;margin-top:12px}
+.luck-detail-card{background:#fff;border:1px solid #eee7e2;border-radius:20px;padding:18px;box-shadow:0 5px 18px rgba(66,45,34,.05)}
+.luck-detail-card.current{border:2px solid #d9a55b;background:linear-gradient(180deg,#fffdf8,#fff)}
+.luck-detail-card .age{font-size:12px;color:#9a8174;margin-bottom:5px}
+.luck-detail-card h4{font-size:18px;margin:0 0 9px;line-height:1.45}
+.luck-detail-card p{font-size:14px;line-height:1.85;margin:8px 0;color:#554b46}
+.luck-detail-card .chips{display:flex;flex-wrap:wrap;gap:6px;margin:8px 0 12px}
+.luck-detail-card .chips span{font-size:11px;padding:5px 8px;border-radius:999px;background:#f7f0e8;color:#80654f}
+.luck-detail-card details{margin-top:10px;border-top:1px dashed #e7ddd6;padding-top:10px}
+.luck-detail-card summary{cursor:pointer;font-weight:700;font-size:13px}
+.luck-detail-card .mini{font-size:12px;color:#8b7b73}
+</style>
+
 </head>
 <body>
 <div class="wrap">
@@ -819,6 +834,67 @@ function pillarCard(title,p){
 
 function switchTab(n){ TAB=n; renderAll(LAST); }
 
+
+function luckRelationText(chart,p){
+  const natal=Object.values(chart.pillars).filter(Boolean);
+  const rel=[];
+  const SH={갑:"기",을:"경",병:"신",정:"임",무:"계",기:"갑",경:"을",신:"병",임:"정",계:"무"};
+  const BH={자:"축",축:"자",인:"해",해:"인",묘:"술",술:"묘",진:"유",유:"진",사:"신",신:"사",오:"미",미:"오"};
+  const BC={자:"오",오:"자",축:"미",미:"축",인:"신",신:"인",묘:"유",유:"묘",진:"술",술:"진",사:"해",해:"사"};
+  natal.forEach(n=>{
+    if(SH[p.stem]===n.stem) rel.push(`${p.stem}${n.stem} 천간합`);
+    if(BH[p.branch]===n.branch) rel.push(`${p.branch}${n.branch} 육합`);
+    if(BC[p.branch]===n.branch) rel.push(`${p.branch}${n.branch} 충`);
+  });
+  return [...new Set(rel)];
+}
+function luckTheme(god){
+  const themes={
+    비견:["내 힘으로 방향을 정하는 시기","독립·자기결정·동료 관계가 전면에 나옵니다."],
+    겁재:["경쟁 속에서 판을 다시 짜는 시기","사람·돈의 경계와 선택이 중요해집니다."],
+    식신:["실력을 결과로 만드는 시기","생산성·표현·꾸준한 성과가 커지는 흐름입니다."],
+    상관:["틀을 깨고 표현하는 시기","변화 욕구와 말·표현의 힘이 커질 수 있습니다."],
+    편재:["움직일수록 기회가 보이는 시기","사업·외부활동·변동성 있는 재물 흐름을 살핍니다."],
+    정재:["생활과 재정을 다지는 시기","현금흐름·저축·책임 있는 선택이 중심이 됩니다."],
+    편관:["압박을 실력으로 바꾸는 시기","책임·경쟁·규칙과 부딪히며 성장하는 흐름입니다."],
+    정관:["자리와 책임이 선명해지는 시기","직업적 위치·공식 관계·신뢰가 중요한 흐름입니다."],
+    편인:["새 관점과 전문성을 얻는 시기","연구·기술·혼자 깊게 파고드는 힘이 커집니다."],
+    정인:["배우고 보호받으며 기반을 만드는 시기","문서·학습·자격·도움의 흐름을 살펴볼 수 있습니다."]
+  };
+  return themes[god]||["인생의 방향을 조정하는 시기","원국과 세운이 만나는 방식에 따라 체감이 달라집니다."];
+}
+function luckLongText(chart,p){
+  const t=luckTheme(p.god), rel=luckRelationText(chart,p);
+  const dm=chart.dayMaster.stem, el=chart.elements;
+  const current=chart.currentLuck && chart.currentLuck.fromAge===p.fromAge;
+  const relationSentence=rel.length
+    ? `원국과는 ${rel.join("·")} 작용이 잡힙니다. 합은 연결과 결속, 충은 이동·재조정의 신호로 읽되 실제 사건을 확정하지는 않습니다.`
+    : `원국과 강하게 겹치는 합·충 신호는 비교적 적어, 이 시기의 ${p.god} 성향이 비교적 담백하게 드러나는 편으로 읽습니다.`;
+  return {
+    title:t[0],
+    intro:`${p.fromAge}세부터 ${p.toAge}세까지의 ${p.ko} 대운은 ${dm}일간에게 천간 기준 ${p.god}의 성격을 띱니다. ${t[1]}`,
+    work:`일과 돈에서는 현재 원국의 강한 오행 ${el.strong}, 약한 오행 ${el.weak}과 이 대운의 기운이 어떻게 섞이는지가 핵심입니다. ${p.god==="정재"||p.god==="편재"?"재물과 거래의 흐름이 눈에 띄기 쉬우므로 버는 힘과 지키는 힘을 함께 보는 편이 좋습니다.":p.god==="정관"||p.god==="편관"?"책임과 직업적 역할이 커질 수 있어 무리한 확장보다 감당 가능한 범위를 정하는 것이 중요합니다.":"한 번의 큰 사건보다 반복되는 선택과 생활 패턴에서 운의 성격이 드러날 가능성이 큽니다."}`,
+    relation:`관계에서는 ${p.god==="비견"||p.god==="겁재"?"나와 비슷한 위치의 사람, 동료·친구·경쟁자와의 경계가 중요합니다.":p.god==="정관"||p.god==="편관"?"책임 있는 관계와 약속의 무게가 커질 수 있습니다.":"새로운 인연 자체보다 기존 관계가 어떤 방향으로 재편되는지를 함께 보는 편이 좋습니다."} ${relationSentence}`,
+    note: current ? "현재 지나고 있는 대운입니다. 올해 세운과 월운을 겹쳐 보면 지금 체감하는 변화의 시점을 더 세밀하게 볼 수 있습니다." : "아직 오지 않았거나 이미 지난 대운은 인생 전체의 흐름을 비교하는 용도로 보는 것이 좋습니다.",
+    rel
+  };
+}
+function renderLuckDetails(chart){
+  return `<div class="luck-detail-grid">${chart.luck.map(p=>{
+    const x=luckLongText(chart,p);
+    const cur=chart.currentLuck&&chart.currentLuck.fromAge===p.fromAge;
+    return `<article class="luck-detail-card ${cur?"current":""}">
+      <div class="age">${p.fromAge}–${p.toAge}세 ${cur?"· 현재 대운":""}</div>
+      <h4>${p.ko} 대운 — ${x.title}</h4>
+      <div class="chips"><span>${p.hanja}</span><span>${p.god}</span>${x.rel.map(r=>`<span>${r}</span>`).join("")}</div>
+      <p>${x.intro}</p>
+      <details ${cur?"open":""}><summary>일 · 재물 흐름</summary><p>${x.work}</p></details>
+      <details ${cur?"open":""}><summary>연애 · 인간관계</summary><p>${x.relation}</p></details>
+      <p class="mini">${x.note}</p>
+    </article>`;
+  }).join("")}</div>`;
+}
+
 function renderAll(chart){
   LAST=chart;
   const it=GuiinInterpret.interpret(chart);
@@ -870,7 +946,12 @@ function renderAll(chart){
     <div class="card">
       <h3>대운 타임라인</h3>
       <p class="muted" style="margin-bottom:8px">${chart.forward?"순행":"역행"} · 시작 ${chart.startAge}세 · 현재 ${chart.currentLuck?chart.currentLuck.ko:""}</p>
-      <div class="luck">${chart.luck.map(p=>`<div class="pillar"><div class="who">${p.fromAge}–${p.toAge}세</div><div class="hanja" style="font-size:20px">${p.hanja}</div><div class="god">${p.god}</div></div>`).join("")}</div>
+      <div class="luck">${chart.luck.map(p=>`<div class="pillar"><div class="who">${p.fromAge}–${p.toAge}세</div><div class="hanja" style="font-size:20px">${p.hanja}</div><div class="god">${p.god}</div></div>
+    <div class="section-title">10년마다 달라지는 인생의 물길</div>
+    <div class="card"><h3>대운 상세해설</h3>
+      <p class="muted">각 대운을 눌러 일·재물·연애·인간관계의 흐름을 자세히 볼 수 있습니다.</p>
+      ${renderLuckDetails(chart)}
+    </div>`).join("")}</div>
     </div>
     <div class="card">
       <h3>세운 ${chart.seunYear}</h3>
