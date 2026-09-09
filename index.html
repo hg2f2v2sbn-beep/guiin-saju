@@ -17,21 +17,45 @@ button,input,select{font:inherit}.app{max-width:430px;margin:auto;min-height:100
 .score{font-size:48px;color:var(--gold2);font-weight:900}.relchips{display:flex;gap:6px;flex-wrap:wrap}.relchips span{border:1px solid var(--line);border-radius:999px;padding:7px 9px;color:#d7c4bf;font-size:10px}.saveditem{display:flex;justify-content:space-between;align-items:center;border-top:1px solid var(--line);padding:12px 0}.saveditem button{width:auto;padding:8px 11px}
 .lockonly{opacity:.65}.lockonly h3:before{content:"🔒 ";font-size:14px}
 nav{position:fixed;bottom:0;left:0;right:0;background:rgba(15,7,9,.96);border-top:1px solid var(--line);z-index:20;padding-bottom:env(safe-area-inset-bottom)}nav .inner{max-width:430px;margin:auto;display:grid;grid-template-columns:repeat(3,1fr)}nav button{border:0;background:none;color:#8f7d7a;padding:10px 0 8px;font-size:11px}nav button.on{color:var(--gold2)}nav button i{display:block;font-style:normal;font-size:19px;margin-bottom:2px}
+
+/* Bright app-style home; report screens remain wine + gold dark */
+body.home-mode{background:#f7f3ea;color:#182034}
+body.home-mode .app{background:#fbf8f1}
+body.home-mode .top{color:#162033}
+body.home-mode .brand b{font-family:inherit;color:#174d3c;font-weight:900}
+body.home-mode .brand small{color:#9c8f7c;letter-spacing:.08em}
+body.home-mode .top .mark{color:#b9912d}
+.home-profile{display:flex;align-items:center;gap:11px;background:#f3ede1;border:1px solid #ece3d3;border-radius:18px;padding:11px 13px;margin-bottom:11px;color:#182034}
+.home-avatar{width:46px;height:46px;border-radius:50%;display:grid;place-items:center;background:linear-gradient(145deg,#fff7d7,#ead08a);color:#856818;font-size:24px;font-weight:900;flex:0 0 auto}
+.home-profile b{font-size:14px}.home-profile small{display:block;color:#7d7569;margin-top:3px}.home-profile .choose{margin-left:auto;font-size:11px;font-weight:800;color:#4e4a43}
+body.home-mode .hero{position:relative;background:linear-gradient(135deg,#0e5748,#0b3e35);border:0;border-radius:22px;padding:22px 20px;box-shadow:none;overflow:hidden}
+body.home-mode .hero:after{content:"☘";position:absolute;right:18px;bottom:-12px;font-size:105px;color:rgba(237,205,103,.16);transform:rotate(-10deg)}
+body.home-mode .hero small{color:#e9cc78}body.home-mode .hero h1{font-family:Georgia,"Noto Serif KR",serif;color:#fff8dc;font-size:26px}body.home-mode .hero p{color:#d7ebe4;max-width:270px}
+body.home-mode .hero .cta{width:auto;padding:12px 17px;background:#f2cf62;color:#233328;position:relative;z-index:2}
+.home-products{display:grid;grid-template-columns:repeat(3,1fr);gap:9px;margin-top:12px}
+.product-card{border:0;border-radius:20px;padding:16px 12px 12px;min-height:164px;text-align:left;color:#202537;position:relative}.product-card:nth-child(1){background:#fff0bd}.product-card:nth-child(2){background:#f8dfe2}.product-card:nth-child(3){background:#e9dcfa}.product-card i{font-style:normal;font-size:25px}.product-card b{display:block;font-size:16px;margin:14px 0 5px}.product-card span{display:block;color:#686878;font-size:10px;line-height:1.5}.product-card em{position:absolute;right:9px;top:10px;background:rgba(255,255,255,.62);border-radius:999px;padding:5px 7px;font-style:normal;font-size:10px;color:#b07878;font-weight:900}.product-card .mini{position:absolute;left:10px;right:10px;bottom:10px;text-align:center;background:rgba(255,255,255,.68);border-radius:999px;padding:7px 4px;font-size:10px;font-weight:900}
+body.home-mode #home>.card{background:#fffdf8;border:1px solid #eee7db;color:#202537;box-shadow:none}body.home-mode #home .muted{color:#817b72}body.home-mode #home .lockonly{display:none}
+.home-note{margin-top:12px;background:#f3eee4;border-radius:16px;padding:12px 14px;color:#6e6048;font-size:11px;line-height:1.55;border:1px solid #ece2d1}.home-note b{color:#8a6d20}
+body.home-mode nav{background:rgba(255,255,255,.97);border-top:1px solid #eee8de}body.home-mode nav button{color:#9b9a96}body.home-mode nav button.on{color:#b98c16}
+@media(max-width:370px){.home-products{grid-template-columns:1fr}.product-card{min-height:120px}}
+
 @media(max-width:370px){.app{padding-left:11px;padding-right:11px}.six{grid-template-columns:1fr}.hero h1{font-size:25px}}
 </style>
 </head>
-<body>
+<body class="home-mode">
 <div class="app">
 <header class="top"><div class="mark">✦</div><div class="brand"><b>귀인사주</b><small>GUIIN SAJU</small></div><div class="mark">☾</div></header>
 
 <section id="home" class="screen on">
- <div class="hero"><small>GUIIN SAJU</small><h1>내 명식은 무료로,<br>깊은 풀이는 필요한 만큼.</h1><p>원국·대운·세운의 구조를 바탕으로 과장 없이 읽는 명리 리포트입니다.</p><button class="btn gold cta" onclick="go('saju')">무료 명식 보기</button></div>
- <div class="grid">
-  <button class="menu" onclick="go('saju')"><i>命</i><b>사주</b><span>네 기둥 · 오행 · 현재 대운 무료</span></button>
-  <button class="menu" onclick="go('match')"><i>合</i><b>궁합</b><span>점수 · 합충 메모 무료</span></button>
+ <div class="home-profile"><div class="home-avatar">☘</div><div><b>귀인사주 프로필</b><small id="homeProfileText">저장된 프로필을 선택해 보세요</small></div><div class="choose">프로필 ›</div></div>
+ <div class="hero"><small>내 사주를 알고, 현실의 선택을 읽는 리포트</small><h1>귀인사주</h1><p>무료 명식부터 990원 상세 리포트까지. 원국·대운·세운의 근거를 과장 없이 풀어드립니다.</p><button class="btn gold cta" onclick="go('saju')">무료 명식 보기 ›</button></div>
+ <div class="home-products">
+  <button class="product-card" onclick="go('saju')"><i>☀️</i><b>오늘의 운세</b><span>명식과 올해 흐름에서 오늘의 체크포인트를 짧게</span><div class="mini">무료 명식부터 ›</div></button>
+  <button class="product-card" onclick="go('saju')"><em>990원</em><i>📜</i><b>평생사주</b><span>성격·직업·재물·연애·건강과 대운 상세</span><div class="mini">내 사주 전체 보기 ›</div></button>
+  <button class="product-card" onclick="go('match')"><em>2,900원 예정</em><i>💜</i><b>우리 궁합</b><span>두 명식의 점수와 합·충 신호를 먼저 무료로</span><div class="mini">궁합 보기 ›</div></button>
  </div>
+ <div class="home-note"><b>☘ 좋은 인연이, 좋은 운을 만듭니다.</b><br>지금은 실제 결제 없이 990원 상세 리포트의 데모 잠금 해제까지 테스트할 수 있습니다.</div>
  <div class="card"><h3>저장 프로필</h3><div id="savedList" class="muted">아직 저장된 프로필이 없습니다.</div></div>
- <div class="card lockonly"><h3>990원 상세 리포트</h3><p class="muted">평생사주 · 대운 상세 · 올해 신년과 월별 요약. 현재는 실제 결제 없이 데모 잠금 해제만 지원합니다.</p></div>
 </section>
 
 <section id="saju" class="screen">
@@ -77,10 +101,10 @@ const yearNow=new Date().getFullYear();
 document.querySelectorAll("#genderSeg button").forEach(b=>b.onclick=()=>{document.querySelectorAll("#genderSeg button").forEach(x=>x.classList.remove("on"));b.classList.add("on");gender=b.dataset.v});
 $("hourUnknown").onchange=()=>{$("hour").disabled=$("minute").disabled=$("hourUnknown").checked};
 
-function go(id){document.querySelectorAll(".screen").forEach(s=>s.classList.remove("on"));$(id).classList.add("on");document.querySelectorAll("nav button").forEach(b=>b.classList.remove("on"));$("tab-"+id)?.classList.add("on");window.scrollTo(0,0);if(id==="home")renderSaved()}
+function go(id){document.body.classList.toggle("home-mode",id==="home");document.querySelectorAll(".screen").forEach(s=>s.classList.remove("on"));$(id).classList.add("on");document.querySelectorAll("nav button").forEach(b=>b.classList.remove("on"));$("tab-"+id)?.classList.add("on");window.scrollTo(0,0);if(id==="home")renderSaved()}
 function loadSaved(){try{return JSON.parse(localStorage.getItem(STORE)||"[]")}catch(e){return[]}}
 function saveProfile(inp,c){let x=loadSaved().filter(p=>p.name!==inp.name);x.unshift({...inp,dayMaster:c.dayMaster.stem});localStorage.setItem(STORE,JSON.stringify(x.slice(0,12)));renderSaved()}
-function renderSaved(){const x=loadSaved();$("savedList").innerHTML=x.length?x.map((p,i)=>`<div class="saveditem"><div><b>${esc(p.name)}</b><div class="muted">${p.year}.${p.month}.${p.day} · ${p.gender} · ${p.dayMaster}일간</div></div><button class="btn ghost" onclick="openSaved(${i})">보기</button></div>`).join(""):"아직 저장된 프로필이 없습니다."}
+function renderSaved(){const x=loadSaved();$("savedList").innerHTML=x.length?x.map((p,i)=>`<div class="saveditem"><div><b>${esc(p.name)}</b><div class="muted">${p.year}.${p.month}.${p.day} · ${p.gender} · ${p.dayMaster}일간</div></div><button class="btn ghost" onclick="openSaved(${i})">보기</button></div>`).join(""):"아직 저장된 프로필이 없습니다.";const hp=$("homeProfileText");if(hp)hp.textContent=x.length?`${x[0].name} · ${x[0].year}.${String(x[0].month).padStart(2,"0")}.${String(x[0].day).padStart(2,"0")} · ${x[0].dayMaster}일간`:"저장된 프로필을 선택해 보세요"}
 function openSaved(i){const p=loadSaved()[i];if(!p)return;go("saju");["name","year","month","day","hour","minute"].forEach(k=>$(k).value=p[k]??"");$("hourUnknown").checked=!!p.hourUnknown;gender=p.gender||"여";document.querySelectorAll("#genderSeg button").forEach(b=>b.classList.toggle("on",b.dataset.v===gender));submitSaju()}
 function esc(s){return String(s||"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]))}
 function calc(inp){return GuiinSaju.calculate(inp)}
