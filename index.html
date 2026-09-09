@@ -113,6 +113,55 @@
 .paywall button{margin-top:10px;border:0;border-radius:14px;padding:12px 18px;background:#f0d39c;color:#352820;font-weight:800}
 </style>
 
+
+<style>
+.match-hero{background:linear-gradient(145deg,#fff8f2,#f8eee8);border:1px solid #eaded6;border-radius:24px;padding:22px;text-align:center;margin-bottom:12px}
+.match-hero .names{font-size:13px;color:#92786a;margin-bottom:5px}
+.match-hero .bigscore{font-size:48px;font-weight:900;line-height:1;color:#6e4e40}
+.match-hero .caption{font-size:12px;color:#9a8478;margin-top:6px}
+.match-chips{display:flex;justify-content:center;flex-wrap:wrap;gap:6px;margin-top:12px}
+.match-chips span{background:#fff;border:1px solid #eaded6;border-radius:999px;padding:6px 9px;font-size:11px}
+.match-story{background:#fff;border:1px solid #eee5df;border-radius:21px;padding:18px;margin:10px 0}
+.match-story .eyebrow{font-size:11px;color:#a47c64;letter-spacing:.08em;margin-bottom:5px}
+.match-story h4{font-size:18px;line-height:1.45;margin:0 0 9px}
+.match-story p{font-size:14px;line-height:1.9;color:#554b46;margin:0}
+.match-bars{display:grid;gap:9px;margin-top:12px}
+.match-bar{display:grid;grid-template-columns:70px 1fr 34px;align-items:center;gap:8px;font-size:12px}
+.match-bar .track{height:8px;background:#f2ece8;border-radius:999px;overflow:hidden}
+.match-bar .track i{display:block;height:100%;background:#b98a6c;border-radius:999px}
+.match-persons{display:grid;grid-template-columns:1fr 1fr;gap:9px;margin:12px 0}
+.match-person{background:#faf6f2;border-radius:17px;padding:13px;text-align:center}
+.match-person b{display:block;font-size:15px}.match-person span{font-size:11px;color:#907b70}
+.match-note{font-size:11px;color:#9a8980;line-height:1.65;margin-top:12px}
+</style>
+
+
+<style id="complete5-style">
+:root{--g5-bg:#fffaf6;--g5-card:#fff;--g5-ink:#332a26;--g5-sub:#8d7b72;--g5-line:#eee3dc;--g5-yellow:#ffd95a;--g5-green:#164f42;--g5-pink:#fff0ef}
+.g5-home{margin:0 -2px 20px}
+.g5-cover{background:linear-gradient(145deg,#ffd95a,#ffe991);border-radius:28px;padding:24px 20px;margin-bottom:14px;position:relative;overflow:hidden}
+.g5-cover:after{content:"命";position:absolute;right:12px;bottom:-24px;font-size:112px;font-weight:900;color:rgba(255,255,255,.35)}
+.g5-cover small{font-size:11px;font-weight:800;letter-spacing:.12em}.g5-cover h2{font-size:27px;line-height:1.3;margin:7px 0}.g5-cover p{font-size:13px;line-height:1.7;margin:0;max-width:75%}
+.g5-products{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.g5-product{border:1px solid var(--g5-line);background:var(--g5-card);border-radius:22px;padding:17px;text-align:left;cursor:pointer;min-height:135px}
+.g5-product .emoji{font-size:25px}.g5-product b{display:block;font-size:16px;margin:9px 0 5px}.g5-product span{font-size:11px;line-height:1.55;color:var(--g5-sub)}
+.g5-product.primary{background:var(--g5-green);color:#fff;border-color:var(--g5-green)}.g5-product.primary span{color:#d8e6e1}
+.g5-price{display:inline-block;margin-top:9px;background:#fff5ce;color:#6b5312;padding:5px 8px;border-radius:999px;font-size:10px;font-weight:900}
+.g5-profile-panel{margin-top:14px;background:#fff;border:1px solid var(--g5-line);border-radius:22px;padding:17px}
+.g5-profile-row{display:flex;gap:8px;overflow:auto;padding-bottom:3px}.g5-profile-chip{white-space:nowrap;border:1px solid var(--g5-line);background:#faf6f3;border-radius:999px;padding:8px 11px;font-size:11px;cursor:pointer}
+.g5-profile-chip button{border:0;background:transparent;color:#a78f83;padding-left:5px}
+.g5-section{background:#fff;border:1px solid var(--g5-line);border-radius:24px;padding:20px;margin:12px 0}
+.g5-section .tag{font-size:11px;color:#a47c64;letter-spacing:.08em;margin-bottom:6px}.g5-section h3{font-size:20px;line-height:1.45;margin:0 0 11px}.g5-section p{font-size:14px;line-height:1.92;color:#554b46;margin:0}
+.g5-evidence{margin-top:12px;padding:11px 12px;background:#faf6f2;border-radius:14px;font-size:11px;line-height:1.65;color:#8d786e}
+.g5-accordion{border-top:1px dashed #e9ddd5;margin-top:12px;padding-top:11px}.g5-accordion summary{font-size:13px;font-weight:800;cursor:pointer}.g5-accordion p{margin-top:9px!important}
+.g5-premium{position:relative}.g5-premium.locked .g5-lockbody{max-height:150px;overflow:hidden;filter:blur(3px);user-select:none}.g5-premium.locked:after{content:"";position:absolute;left:0;right:0;bottom:0;height:120px;background:linear-gradient(transparent,#fff)}
+.g5-unlock{position:relative;z-index:3;margin-top:-25px;background:#342a26;color:#fff;border-radius:20px;padding:18px;text-align:center}.g5-unlock b{display:block;font-size:17px;margin-bottom:5px}.g5-unlock span{font-size:11px;color:#d8cbc5}.g5-unlock button{display:block;width:100%;border:0;border-radius:13px;background:#ffd95a;padding:12px;margin-top:11px;font-weight:900;color:#332a26}
+.g5-badge-row{display:flex;flex-wrap:wrap;gap:6px;margin:10px 0}.g5-badge{background:#f7f0eb;border-radius:999px;padding:6px 9px;font-size:11px;color:#735e52}
+.g5-service-note{font-size:10px;line-height:1.65;color:#9a8980;margin:16px 4px}
+.g5-hidden{display:none!important}
+@media(max-width:380px){.g5-products{grid-template-columns:1fr}.g5-cover p{max-width:100%}}
+</style>
+
 </head>
 <body>
 <div class="wrap">
@@ -797,7 +846,7 @@
 
 </script>
 <script>
-const PREMIUM_UNLOCKED = true; // 결제 연동 시 false로 바꾸고 결제 후 true
+const PREMIUM_UNLOCKED = true; // 기존 4.x 영역 호환용. COMPLETE 유료영역은 별도 잠금 구조 사용. // 결제 연동 시 false로 바꾸고 결제 후 true
 const $ = (id) => document.getElementById(id);
 let gender = "여", calendar = "양력", LAST = null, TAB = "성격";
 
@@ -1049,6 +1098,135 @@ function showMonthDetail(m){
  if(box) box.innerHTML=`<b>${x.name} · ${x.branch}월 (${x.el})</b><br>${x.line}<br><br><span class="muted">이 월운은 전통 명리의 참고 해석이며 실제 사건을 확정하지 않습니다.</span>`;
 }
 
+
+const G5_VERSION="5.0 COMPLETE";
+const G5_PROFILE_KEY="guiin_saju_profiles_v5";
+const G5_UNLOCK_KEY="guiin_saju_demo_unlock_v5";
+
+function g5Profiles(){
+  try{return JSON.parse(localStorage.getItem(G5_PROFILE_KEY)||"[]");}catch(e){return []}
+}
+function g5SaveCurrentProfile(){
+  const n=$("name")?.value?.trim(); if(!n) return alert("이름을 입력한 뒤 저장해 주세요.");
+  const p={name:n,gender:$("gender").value,calendar:$("calendar").value,year:+$("year").value,month:+$("month").value,day:+$("day").value,hour:$("hour").value,minute:+$("minute").value||0,hourUnknown:$("hourUnknown").checked,city:$("city").value};
+  if(!p.year||!p.month||!p.day)return alert("생년월일을 먼저 입력해 주세요.");
+  let arr=g5Profiles(); const i=arr.findIndex(x=>x.name===p.name&&x.year===p.year&&x.month===p.month&&x.day===p.day);
+  if(i>=0)arr[i]=p;else arr.unshift(p); arr=arr.slice(0,12);
+  localStorage.setItem(G5_PROFILE_KEY,JSON.stringify(arr)); g5RenderProfiles(); alert("프로필을 이 기기에 저장했어요.");
+}
+function g5LoadProfile(i){
+  const p=g5Profiles()[i]; if(!p)return;
+  ["name","gender","calendar","year","month","day","hour","minute","city"].forEach(k=>{if($(k)&&p[k]!==undefined)$(k).value=p[k]});
+  if($("hourUnknown"))$("hourUnknown").checked=!!p.hourUnknown;
+  if(typeof toggleTime==="function")toggleTime();
+  window.scrollTo({top:0,behavior:"smooth"});
+}
+function g5DeleteProfile(i){
+  const arr=g5Profiles();arr.splice(i,1);localStorage.setItem(G5_PROFILE_KEY,JSON.stringify(arr));g5RenderProfiles();
+}
+function g5RenderProfiles(){
+  const box=document.getElementById("g5Profiles"); if(!box)return;
+  const arr=g5Profiles();
+  box.innerHTML=arr.length?arr.map((p,i)=>`<span class="g5-profile-chip" onclick="g5LoadProfile(${i})">${esc(p.name)} · ${p.year}.${p.month}.${p.day}<button onclick="event.stopPropagation();g5DeleteProfile(${i})">×</button></span>`).join(""):`<span class="muted">아직 저장한 프로필이 없습니다.</span>`;
+}
+function g5Scroll(id){document.getElementById(id)?.scrollIntoView({behavior:"smooth",block:"start"});}
+function g5IsUnlocked(){return window.PREMIUM_UNLOCKED===true || localStorage.getItem(G5_UNLOCK_KEY)==="1";}
+function g5UnlockInfo(){
+  alert("실제 990원 결제는 아직 연결되지 않았습니다. PG사 가입 후 결제 승인 콜백에서 잠금을 해제하도록 연결해야 합니다. 현재 파일은 결제 UI와 잠금 구조까지만 포함합니다.");
+}
+function g5FiveElementStory(chart){
+  const e=chart.elements, dm=chart.dayMaster;
+  return `${dm.stem}${dm.el} 일간을 중심으로 보면 현재 명식에서 ${e.strong} 기운이 상대적으로 두드러지고 ${e.weak} 기운이 약하게 잡힙니다. 강한 기운은 익숙하게 쓰는 재능이 되기 쉽지만 과하면 같은 방식만 반복하게 만들 수 있습니다. 반대로 약한 기운은 '없다'는 뜻이 아니라 의식적으로 보완해야 균형이 좋아지는 영역으로 봅니다. 오행의 비율은 이 사이트의 가중 모델이므로 절대적인 수치가 아니라 비교용 지표로 사용하세요.`;
+}
+function g5TenGodStory(chart){
+  const tops=godTop(chart,4), mg=chart.pillars.month?.god||"";
+  return `십성은 나와 세상의 관계를 역할 언어로 바꿔 보는 방식입니다. 이 명식에서는 ${tops.join("·")||"여러 십성"}의 반복이 눈에 띄며 월주에서는 ${mg||"십성"}의 성격을 함께 봅니다. 같은 십성도 신강·신약과 계절, 다른 글자와의 관계에 따라 표현이 달라지므로 하나의 키워드만으로 성격을 단정하지 않습니다.`;
+}
+function g5UsefulStory(chart){
+  const e=chart.elements, s=chart.strength;
+  const fav=chart.useful?.favorable?.join("·")||e.weak;
+  return `현재 계산 모델에서는 ${s.label} 쪽으로 분류되며 보완 후보는 ${fav} 기운을 우선 참고합니다. 다만 전통 명리의 용신은 억부·조후·격국 등 학파와 판단법에 따라 달라질 수 있습니다. 그래서 귀인사주는 '이 오행이 무조건 용신'이라고 단정하기보다, 현재 명식의 강약과 계절성을 설명하고 생활에서 활용할 수 있는 보완 방향으로 제시합니다.`;
+}
+function g5HiddenStory(chart){
+  const rows=Object.values(chart.pillars).filter(Boolean).map(p=>`${p.ko}의 ${p.branch} 지장간`).join(", ");
+  return `지장간은 지지 안에 숨어 있는 천간의 성질을 보는 층입니다. ${rows}을 함께 보면 겉으로 드러난 천간만 볼 때보다 내면의 동기와 반복되는 반응을 더 세밀하게 읽을 수 있습니다. 현재 버전은 지장간을 오행·십성 집계에 반영하지만, 지장간만으로 사건을 확정하지 않습니다.`;
+}
+function g5RelationStory(chart){
+  const r=chart.relations||[];
+  return r.length?`원국에서 확인되는 주요 합·충 관계는 ${r.map(x=>typeof x==="string"?x:(x.text||x.name||"관계")).join("·")}입니다. 합은 무조건 좋은 것, 충은 무조건 나쁜 것으로 보지 않습니다. 합은 붙고 얽히는 힘, 충은 움직이고 재조정되는 힘으로 보고 실제 삶에서는 어느 궁에 걸리는지와 운의 시기를 함께 봐야 합니다.`:`원국에서 강하게 표시되는 합·충 신호가 비교적 적습니다. 이런 경우 특정 관계 하나보다 오행의 균형, 십성의 반복, 대운·세운에서 새로 들어오는 글자의 작용을 더 중요하게 살펴봅니다.`;
+}
+function g5CareerStory(chart){
+  const top=godTop(chart,3), s=chart.strength.label;
+  return `${s} 흐름과 ${top.join("·")||"십성"}의 반복을 함께 보면 직업 이름 하나를 정해 주기보다 '어떤 방식으로 일할 때 오래 버티는가'가 더 중요합니다. 사람을 상대하는 일, 결과물을 만드는 일, 관리와 책임을 맡는 일 중 어느 쪽이 맞는지는 실제 경력과 능력에 맞춰 선택해야 하며, 사주는 그 선택에서 반복되는 성향을 점검하는 참고자료로 쓰는 편이 좋습니다.`;
+}
+function g5MoneyStory(chart){
+  const top=godTop(chart,4);
+  return `재물은 재성만 보는 것이 아니라 내가 재성을 감당할 힘, 식상의 생산성, 비겁의 경쟁·분산까지 함께 봅니다. 현재 명식의 주요 십성 ${top.join("·")||"구성"}을 기준으로 보면 '많이 버는 운' 같은 한 문장보다 돈이 들어올 때 지키는 구조를 만드는 것이 중요합니다. 투자·대출·사업 결정은 운세가 아니라 실제 현금흐름과 계약 조건을 우선하세요.`;
+}
+function g5LoveStory(chart){
+  const r=chart.relations||[], dm=chart.dayMaster;
+  return `${dm.stem} 일간의 관계 방식은 좋아하는 감정만큼 '어떤 거리에서 편안한가'를 같이 보는 것이 중요합니다. 원국의 합·충과 관성·재성의 배치를 참고해 끌림과 유지 방식을 나눠 보되, 특정 시기에 반드시 연애·결혼·이별이 생긴다고 단정하지 않습니다. 실제 관계에서는 존중, 안전, 책임 분담, 갈등 후 회복 방식이 사주보다 훨씬 중요합니다.`;
+}
+function g5FamilyStory(chart){
+  return `가족운은 년주·월주만으로 부모나 가족의 성격을 단정하지 않고, 내가 가족 안에서 반복해서 맡는 역할과 독립의 경계를 보는 방식으로 풀이합니다. 책임감이 강하게 작동하는 사람은 사랑과 의무를 혼동하기 쉬울 수 있고, 반대로 독립성이 강한 사람은 도움을 받는 것 자체를 부담스러워할 수 있습니다. 실제 가족관계의 맥락과 함께 읽어야 합니다.`;
+}
+function g5PlaceStory(chart){
+  const weak=chart.elements.weak;
+  return `부족한 ${weak} 기운을 보완한다는 이유만으로 특정 도시나 방향을 '무조건 좋다'고 정하지 않습니다. 대신 생활 리듬, 공간의 밝기·습도·활동량·자연환경처럼 현실적으로 조절 가능한 요소를 오행의 상징과 연결해 참고할 수 있습니다. 이사나 부동산 결정은 비용·통근·안전·계약조건을 우선하세요.`;
+}
+function g5FinalStory(chart){
+  const dm=chart.dayMaster, e=chart.elements;
+  return `이 명식의 핵심은 ${dm.stem}${dm.el}라는 중심을 잃지 않으면서 강한 ${e.strong} 기운을 장점으로 쓰고, 약한 ${e.weak} 기운을 생활 속에서 의식적으로 보완하는 것입니다. 사주는 정답지를 주는 도구라기보다 내가 반복하는 선택을 다른 언어로 바라보게 하는 참고 지도에 가깝습니다. 좋은 운을 기다리기보다 좋은 시기에 준비한 것을 꺼낼 수 있도록 현실의 기반을 만드는 것이 가장 중요합니다.`;
+}
+function g5ExtraSections(chart){
+ const unlocked=g5IsUnlocked();
+ const premium=(tag,title,body)=>`<section class="g5-section g5-premium ${unlocked?"":"locked"}"><div class="g5-lockbody"><div class="tag">${tag}</div><h3>${title}</h3><p>${body}</p><div class="g5-evidence">해석 근거 · ${evidence(chart)}</div></div>${unlocked?"":`<div class="g5-unlock"><b>990원 상세해설</b><span>결제 연동 전 미리보기 화면입니다.</span><button onclick="g5UnlockInfo()">결제 준비중</button></div>`}</section>`;
+ return `
+ <div id="g5DeepStart"></div>
+ <section class="g5-section"><div class="tag">오행 심층</div><h3>강한 기운은 재능, 약한 기운은 숙제</h3><p>${g5FiveElementStory(chart)}</p><div class="g5-evidence">${evidence(chart)}</div></section>
+ <section class="g5-section"><div class="tag">십성 심층</div><h3>내가 세상과 관계 맺는 방식</h3><p>${g5TenGodStory(chart)}</p><div class="g5-evidence">${evidence(chart)}</div></section>
+ ${premium("용신·희신 참고","균형을 맞추는 기운은 무엇일까",g5UsefulStory(chart))}
+ ${premium("지장간","겉으로 보이지 않는 내면의 기운",g5HiddenStory(chart))}
+ ${premium("합·충 관계","내 사주 안에서 부딪히고 이어지는 힘",g5RelationStory(chart))}
+ ${premium("직업운","직업 이름보다 중요한 나의 일하는 방식",g5CareerStory(chart))}
+ ${premium("재물운","돈이 들어올 때보다 남을 때를 보세요",g5MoneyStory(chart))}
+ ${premium("연애운","끌리는 사람과 오래 가는 사람은 다를 수 있습니다",g5LoveStory(chart))}
+ ${premium("가족운","사랑과 책임 사이의 경계",g5FamilyStory(chart))}
+ ${premium("환경운","내가 오래 머물기 편한 환경",g5PlaceStory(chart))}
+ ${premium("마지막 한마디","이 사주를 현실에서 가장 잘 쓰는 방법",g5FinalStory(chart))}
+ `;
+}
+function g5HomeMarkup(){
+ return `<section class="g5-home" id="g5Home">
+  <div class="g5-cover"><small>GUIIN SAJU · COMPLETE</small><h2>내 사주를<br>끝까지 읽어보세요</h2><p>만세력부터 대운·연운·월운·궁합까지 한곳에서 보는 귀인사주.</p></div>
+  <div class="g5-products">
+    <button class="g5-product primary" onclick="g5Scroll('formCard')"><div class="emoji">☯</div><b>나의 사주</b><span>원국 · 오행 · 십성 · 상세해설</span><i class="g5-price">상세 990원 구조</i></button>
+    <button class="g5-product" onclick="g5Scroll('matchCard')"><div class="emoji">♡</div><b>우리 궁합</b><span>끌림 · 대화 · 생활 · 재물 · 장기궁합</span><i class="g5-price">궁합 분석</i></button>
+    <button class="g5-product" onclick="g5Scroll('formCard')"><div class="emoji">↗</div><b>대운</b><span>10년마다 달라지는 인생의 큰 흐름</span><i class="g5-price">전체 대운</i></button>
+    <button class="g5-product" onclick="g5Scroll('formCard')"><div class="emoji">◷</div><b>연운 · 월운</b><span>연도 선택과 12개월 흐름</span><i class="g5-price">연도 선택</i></button>
+  </div>
+  <div class="g5-profile-panel"><b>저장한 프로필</b><p class="muted">자주 보는 생년월일을 이 기기에 저장할 수 있어요.</p><div id="g5Profiles" class="g5-profile-row"></div></div>
+ </section>`;
+}
+function g5InitComplete(){
+ const firstCard=document.querySelector(".card");
+ if(firstCard&&!document.getElementById("g5Home")) firstCard.insertAdjacentHTML("beforebegin",g5HomeMarkup());
+ const form=document.querySelector("form")||document.querySelector(".card");
+ if(form && !document.getElementById("formCard")) form.id="formCard";
+ const matchBody=document.getElementById("matchBody");
+ if(matchBody){
+   const mc=matchBody.closest(".card")||matchBody.parentElement;
+   if(mc&&!mc.id)mc.id="matchCard";
+ }
+ // Save-profile button near calculate controls
+ if($("calcBtn")&&!document.getElementById("g5SaveBtn")){
+   const b=document.createElement("button");b.type="button";b.id="g5SaveBtn";b.className="secondary";b.textContent="프로필 저장";b.onclick=g5SaveCurrentProfile;
+   $("calcBtn").insertAdjacentElement("afterend",b);
+ }
+ g5RenderProfiles();
+}
+document.addEventListener("DOMContentLoaded",g5InitComplete);
+
 function renderAll(chart){
   LAST=chart;
   const it=GuiinInterpret.interpret(chart);
@@ -1117,6 +1295,7 @@ function renderAll(chart){
       ${detailBody}
     </div>`)}
     
+    ${g5ExtraSections(chart)}
     <div class="section-title">해마다 달라지는 나의 운</div>
     <div class="card">
       <h3>연도별 상세운세</h3>
@@ -1149,21 +1328,82 @@ const STEM_HAP={갑:"기",을:"경",병:"신",정:"임",무:"계",기:"갑",경:
 const BRANCH_HAP={자:"축",인:"해",묘:"술",진:"유",사:"신",오:"미",축:"자",해:"인",술:"묘",유:"진",신:"사",미:"오"};
 const BRANCH_CHUNG={자:"오",축:"미",인:"신",묘:"유",진:"술",사:"해",오:"자",미:"축",신:"인",유:"묘",술:"진",해:"사"};
 function matchScore(a,b){
-  let score=62; const notes=[];
-  if(STEM_HAP[a.dayMaster.stem]===b.dayMaster.stem){score+=14;notes.push("일간 천간합");}
-  else if(a.dayMaster.el===b.dayMaster.el){score+=6;notes.push("일간 오행이 같음");}
-  if(BRANCH_HAP[a.pillars.day.branch]===b.pillars.day.branch){score+=12;notes.push("일지 육합");}
-  if(BRANCH_CHUNG[a.pillars.day.branch]===b.pillars.day.branch){score-=14;notes.push("일지 충");}
-  score=Math.max(28,Math.min(96,score));
-  if(!notes.length) notes.push("담백한 조합. 태도에서 갈립니다.");
-  return {score,notes};
+  let score=58, notes=[], signals=[];
+  const dayA=a.pillars.day, dayB=b.pillars.day;
+  if(STEM_HAP[a.dayMaster.stem]===b.dayMaster.stem){
+    score+=13; signals.push("일간 천간합"); notes.push("두 사람의 중심 기운이 서로 맞물리는 천간합이 있습니다.");
+  }else if(a.dayMaster.el===b.dayMaster.el){
+    score+=5; signals.push("같은 일간 오행"); notes.push("기본적인 에너지의 결이 비슷해 서로를 빠르게 이해할 수 있는 부분이 있습니다.");
+  }
+  if(BRANCH_HAP[dayA.branch]===dayB.branch){
+    score+=13; signals.push("배우자궁 육합"); notes.push("배우자궁인 일지가 육합이라 가까워질수록 서로에게 자연스럽게 붙는 힘을 참고할 수 있습니다.");
+  }
+  if(BRANCH_CHUNG[dayA.branch]===dayB.branch){
+    score-=13; signals.push("배우자궁 충"); notes.push("일지가 충이라 생활 리듬이나 감정 처리 방식에서 강한 차이가 드러날 수 있습니다.");
+  }
+  const favA=a.useful?.favorable||[a.elements.weak], favB=b.useful?.favorable||[b.elements.weak];
+  if(favA.includes(b.dayMaster.el)){score+=7;signals.push(`${b.input.name}→${a.input.name} 보완`);}
+  if(favB.includes(a.dayMaster.el)){score+=7;signals.push(`${a.input.name}→${b.input.name} 보완`);}
+  const sameStrong=a.elements.strong===b.elements.strong;
+  if(sameStrong){score-=2;signals.push("강한 오행 중첩");}
+  score=Math.max(28,Math.min(96,Math.round(score)));
+  if(!notes.length) notes.push("강한 합·충 신호가 적어 실제 대화 방식과 생활 습관이 관계의 질을 더 크게 좌우하는 조합입니다.");
+  return {score,notes,signals};
+}
+function matchSubScores(a,b,m){
+  const hap=m.signals.some(x=>x.includes("합")), chung=m.signals.some(x=>x.includes("충"));
+  const comp=m.signals.some(x=>x.includes("보완"));
+  const clamp=n=>Math.max(30,Math.min(95,Math.round(n)));
+  return {
+    끌림:clamp(m.score+(hap?9:0)),
+    대화:clamp(m.score-(chung?9:0)+(a.dayMaster.el===b.dayMaster.el?5:0)),
+    생활:clamp(m.score-(chung?12:0)),
+    재물:clamp(m.score+(comp?6:0)-(a.elements.strong===b.elements.strong?3:0)),
+    장기:clamp(m.score+(hap?6:0)-(chung?4:0))
+  };
+}
+function compatibilityStories(a,b,m){
+  const sa=matchSubScores(a,b,m), hap=m.signals.some(x=>x.includes("합")), chung=m.signals.some(x=>x.includes("충"));
+  const comp=m.signals.filter(x=>x.includes("보완"));
+  const names=`${a.input.name}님과 ${b.input.name}님`;
+  return {
+    scores:sa,
+    one:`${names}의 궁합은 ${hap?"서로를 자연스럽게 당기는 연결점이 눈에 띄는":"서로의 차이를 알아가면서 관계의 모양을 만들어 가는"} 조합입니다. ${chung?"다만 배우자궁의 충이 있어 좋아하는 마음과 별개로 생활 속 속도·표현 방식이 부딪힐 수 있습니다.":"강한 충돌 신호가 적어 관계를 어떻게 운영하느냐에 따라 안정감이 커질 수 있습니다."}`,
+    attraction:`${a.input.name}님은 ${a.dayMaster.stem}${a.dayMaster.el} 일간, ${b.input.name}님은 ${b.dayMaster.stem}${b.dayMaster.el} 일간입니다. ${hap?"명식의 합 작용은 처음부터 설명하기 어려운 친밀감이나 서로에게 시선이 가는 힘으로 읽을 수 있습니다.":"합 하나만으로 강한 끌림을 단정하기보다는 서로의 십성과 오행이 실제 관계에서 어떤 역할을 하는지 보는 편이 좋습니다."} ${comp.length?`특히 ${comp.join("·")} 흐름이 있어 한쪽의 기운이 다른 쪽의 부족한 부분을 채우는 구조가 잡힙니다.`:"오행 보완은 강하지 않아 상대에게 없는 것을 채우기보다 비슷한 부분을 어떻게 조율하는지가 중요합니다."}`,
+    conflict:`${chung?"두 사람에게 가장 중요한 숙제는 '다름을 틀림으로 만들지 않는 것'입니다. 일지 충은 함께 있을수록 생활 방식, 연락 빈도, 쉬는 방식처럼 아주 현실적인 부분에서 차이를 드러낼 수 있습니다. 싸움 자체를 피하기보다 각자 양보할 수 없는 기준을 미리 말하는 편이 좋습니다.":"큰 충 신호가 적다고 갈등이 없는 관계는 아닙니다. 오히려 불편함을 오래 참다가 한 번에 꺼내는 패턴을 조심하고, 작은 불만일 때 말하는 습관이 관계를 오래 가게 합니다."}`,
+    love:`연애에서는 끌림 지수 ${sa.끌림}, 대화 지수 ${sa.대화}로 계산됩니다. 이 숫자는 확률이 아니라 명리 요소를 비교하기 위한 내부 지표입니다. ${hap?"감정적으로 가까워지는 속도는 빠를 수 있지만 익숙함이 생긴 뒤에도 서로를 독립된 사람으로 대하는 것이 중요합니다.":"서로의 표현법을 배우는 시간이 필요할 수 있으며, 말보다 행동으로 애정을 확인하는 방식도 함께 살펴보세요."}`,
+    marriage:`결혼과 동거처럼 생활을 공유할수록 생활 궁합 ${sa.생활}의 의미가 커집니다. ${chung?"돈, 집안일, 개인시간, 가족 문제처럼 반복되는 현실 영역에서 규칙을 정해두는 것이 특히 중요합니다.":"기본 생활 리듬은 비교적 조율하기 쉬운 편으로 볼 수 있지만, 책임을 한 사람에게 몰아주지 않는 것이 중요합니다."} 결혼 시기나 성패를 사주만으로 확정할 수는 없습니다.`,
+    money:`재물 궁합은 ${sa.재물}로 계산됩니다. ${a.elements.strong===b.elements.strong?"두 사람의 강한 오행이 겹치기 때문에 돈을 쓰거나 결정하는 방식이 비슷해 장점이 될 수도 있지만, 같은 약점을 함께 키울 수도 있습니다.":"서로 다른 기운이 있어 한 사람이 추진하고 다른 사람이 점검하는 식으로 역할을 나누면 도움이 될 수 있습니다."} 공동자금은 운세보다 실제 수입·부채·지출 기준을 먼저 합의하세요.`,
+    long:`이 관계를 오래 가져가는 핵심은 ${chung?"상대를 바꾸는 것보다 서로 다른 생활 리듬에 규칙을 만드는 것":"익숙함 속에서도 각자의 요구를 말로 확인하는 것"}입니다. ${comp.length?"서로 보완되는 지점은 분명 장점이지만, 한 사람이 계속 돌보고 다른 사람이 계속 기대는 구조로 굳지 않도록 균형을 확인하세요.":"궁합의 점수보다 실제로 갈등 후 회복이 가능한 관계인지가 훨씬 중요합니다."}`
+  };
 }
 function submitMatch(){
   const make=(p,f)=>({name:$(p+"Name").value.trim()||f,gender:"여",year:+$(p+"Year").value,month:+$(p+"Month").value,day:+$(p+"Day").value,hour:$(p+"Hour").value===""?12:+$(p+"Hour").value,minute:+$(p+"Min").value||0,hourUnknown:$(p+"Hour").value==="",city:"none",calendar:"양력"});
   const ia=make("a","나"), ib=make("b","상대");
-  if(!ia.year||!ib.year) return alert("두 사람 생년월일을 입력해 주세요.");
-  const a=GuiinSaju.calculate(ia), b=GuiinSaju.calculate(ib), m=matchScore(a,b);
-  $("matchBody").innerHTML=`<div class="card"><div class="score-wrap"><div class="muted">${esc(ia.name)} × ${esc(ib.name)}</div><div class="score">${m.score}</div></div><div class="prose">${m.notes.map(n=>"<p>"+n+"</p>").join("")}</div></div>`;
+  if(!ia.year||!ia.month||!ia.day||!ib.year||!ib.month||!ib.day) return alert("두 사람의 생년월일을 모두 입력해 주세요.");
+  try{
+    const a=GuiinSaju.calculate(ia), b=GuiinSaju.calculate(ib), m=matchScore(a,b), s=compatibilityStories(a,b,m);
+    $("matchBody").innerHTML=`
+      <div class="match-hero">
+        <div class="names">${esc(ia.name)} × ${esc(ib.name)}</div>
+        <div class="bigscore">${m.score}</div>
+        <div class="caption">명리 요소 내부 비교 지수 / 100</div>
+        <div class="match-chips">${m.signals.length?m.signals.map(x=>`<span>${x}</span>`).join(""):"<span>강한 합·충 신호 적음</span>"}</div>
+      </div>
+      <div class="match-persons">
+        <div class="match-person"><b>${esc(ia.name)}</b><span>${a.pillars.day.ko} · ${a.strength.label}<br>강 ${a.elements.strong} / 약 ${a.elements.weak}</span></div>
+        <div class="match-person"><b>${esc(ib.name)}</b><span>${b.pillars.day.ko} · ${b.strength.label}<br>강 ${b.elements.strong} / 약 ${b.elements.weak}</span></div>
+      </div>
+      <div class="card"><h3>두 사람의 궁합 지도</h3><div class="match-bars">${Object.entries(s.scores).map(([k,v])=>`<div class="match-bar"><span>${k}</span><div class="track"><i style="width:${v}%"></i></div><b>${v}</b></div>`).join("")}</div></div>
+      <div class="match-story"><div class="eyebrow">한마디로</div><h4>이 관계의 중심</h4><p>${s.one}</p></div>
+      <div class="match-story"><div class="eyebrow">서로 끌리는 이유</div><h4>왜 자꾸 마음이 가는 걸까</h4><p>${s.attraction}</p></div>
+      <div class="match-story"><div class="eyebrow">싸우는 이유</div><h4>좋아하는데 왜 자꾸 부딪힐까</h4><p>${s.conflict}</p></div>
+      <div class="match-story"><div class="eyebrow">연애 궁합</div><h4>사랑을 주고받는 방식</h4><p>${s.love}</p></div>
+      <div class="match-story"><div class="eyebrow">결혼 · 동거</div><h4>함께 살면 보이는 것들</h4><p>${s.marriage}</p></div>
+      <div class="match-story"><div class="eyebrow">돈 궁합</div><h4>같이 벌고 같이 쓸 때</h4><p>${s.money}</p></div>
+      <div class="match-story"><div class="eyebrow">오래 가는 방법</div><h4>이 관계를 지키는 열쇠</h4><p>${s.long}</p></div>
+      <div class="match-note">궁합은 전통 명리 관점의 참고 해석입니다. 점수는 관계 성공 확률이 아니며, 실제 관계의 안전성·존중·대화·생활 조건을 대신하지 않습니다.</div>`;
+  }catch(e){alert(e.message||"궁합 계산 오류");}
 }
 renderSaved();
 </script>
@@ -1230,6 +1470,13 @@ window.renderAll=function(chart){
 };
 })();
 </script>
+
+
+<div class="g5-service-note">
+귀인사주는 전통 명리 해석을 참고 콘텐츠로 제공합니다. 현재 만세력 엔진의 절기 계산과 출생지 시간 보정에는 근사 계산이 포함되어 있으며,
+학파에 따라 자시 기준·용신 판단·대운 시작 시점 등이 달라질 수 있습니다. 건강·재정·법률·관계의 중요한 결정은 실제 정보와 전문가 판단을 우선하세요.
+실제 990원 결제는 PG 연동 전이며 이 파일은 결제 화면과 잠금 구조만 제공합니다.
+</div>
 
 </body>
 </html>
