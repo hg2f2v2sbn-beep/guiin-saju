@@ -163,7 +163,7 @@ const STEM_COMB={갑:"기",기:"갑",을:"경",경:"을",병:"신",신:"병",정
 const BR_COMB={자:"축",축:"자",인:"해",해:"인",묘:"술",술:"묘",진:"유",유:"진",사:"신",신:"사",오:"미",미:"오"};
 const BR_CLASH={자:"오",오:"자",축:"미",미:"축",인:"신",신:"인",묘:"유",유:"묘",진:"술",술:"진",사:"해",해:"사"};
 const yearNow=new Date().getFullYear();
-const DEMO_VERSION="1.1.0";
+const DEMO_VERSION="1.2.0-research";
 let activeService="saju", matchLast=null, matchUnlocked=false;
 
 document.querySelectorAll("#genderSeg button").forEach(b=>b.onclick=()=>{document.querySelectorAll("#genderSeg button").forEach(x=>x.classList.remove("on"));b.classList.add("on");gender=b.dataset.v});
@@ -249,7 +249,7 @@ function luckSix(c,p){
  return [
   ["성격",`${base} 강한 ${hi} 기운은 익숙한 방식으로 힘을 쓰게 하고, 약한 ${lo} 기운은 의식적으로 보완할 영역을 보여주는 비교 지표로만 봅니다.`],
   ["직업",`${map[0]} ${dm}일간에게 ${g}이 들어오는 방식은 다른 일간의 같은 ${g}과 같지 않으며, ${STEM_EL[dm]}의 기본 작동 방식과 함께 읽습니다.`],
-  ["재물",`${map[1]} 명리의 재성 신호만으로 수익을 단정하지 않고 실제 통장 잔액, 부채, 계약 조건, 현금흐름을 우선 기준으로 삼아야 합니다.`],
+  ["재물",`${map[1]} 명리의 재물·관리 흐름만으로 수익을 단정하지 않고 실제 통장 잔액, 부채, 계약 조건, 현금흐름을 우선 기준으로 삼아야 합니다.`],
   ["관계",`${map[2]} ${sig}`],
   ["주의",`${map[3]} 합은 붙이고 연결하는 힘, 충은 움직임과 재조정 압력으로 참고할 뿐 결혼·이별·퇴사 같은 사건을 예언하지 않습니다.`],
   ["선택",`${map[4]} 현재 조건에서 감당 가능한 비용과 시간을 계산하고, 결과를 확인한 뒤 다음 선택을 조정하는 방식이 이 대운을 현실적으로 쓰는 방법입니다.`]
@@ -280,22 +280,22 @@ function natalRelations(c){
 function elementBalanceText(c){
  const pct=elPct(c), sorted=Object.entries(pct).sort((a,b)=>b[1]-a[1]), hi=sorted[0], lo=sorted[sorted.length-1];
  const use={목:"계획을 성장시키고 방향을 잡는 힘",화:"표현하고 속도를 내는 힘",토:"유지하고 현실화하는 힘",금:"기준을 세우고 정리하는 힘",수:"정보를 읽고 유연하게 대응하는 힘"};
- return `오행 비중에서는 ${hi[0]} ${hi[1]}%가 상대적으로 높고 ${lo[0]} ${lo[1]}%가 낮게 계산됩니다. ${hi[0]}의 ${use[hi[0]]}이 익숙한 자원으로 나타날 수 있고, ${lo[0]}의 ${use[lo[0]]}은 상황에 따라 의식적으로 보완할 영역으로 참고할 수 있습니다. 다만 이 수치는 천간·지지의 단순 가중치 비교이며 계절 세력·지장간·조후를 완전하게 반영한 용신 판정이 아닙니다.`;
+ return `오행 비중에서는 ${hi[0]} ${hi[1]}%가 상대적으로 높고 ${lo[0]} ${lo[1]}%가 낮게 계산됩니다. ${hi[0]}의 ${use[hi[0]]}이 익숙한 자원으로 나타날 수 있고, ${lo[0]}의 ${use[lo[0]]}은 상황에 따라 의식적으로 보완할 영역으로 참고할 수 있습니다. 다만 이 수치는 천간·지지의 단순 가중치 비교이며 계절 세력·지장간·조후를 완전하게 반영한 특정 기운의 길흉 확정이 아닙니다.`;
 }
 function careerBranch(c){
  const g=godCounts(c), parts=[];
- if(g.식신+g.상관)parts.push("식상 신호가 있어 결과물·표현·기술을 밖으로 꺼내는 방식");
- if(g.편재+g.정재)parts.push("재성 신호가 있어 자원·가격·거래를 관리하는 방식");
- if(g.편관+g.정관)parts.push("관성 신호가 있어 책임·규칙·역할을 맡는 방식");
- if(g.편인+g.정인)parts.push("인성 신호가 있어 학습·문서·전문성을 쌓는 방식");
+ if(g.식신+g.상관)parts.push("표현·생산 흐름가 있어 결과물·표현·기술을 밖으로 꺼내는 방식");
+ if(g.편재+g.정재)parts.push("재물·관리 흐름가 있어 자원·가격·거래를 관리하는 방식");
+ if(g.편관+g.정관)parts.push("책임·규칙 흐름가 있어 책임·규칙·역할을 맡는 방식");
+ if(g.편인+g.정인)parts.push("학습·정리 흐름가 있어 학습·문서·전문성을 쌓는 방식");
  return parts.length?parts.join(", "):"한 가지 십신에 치우치기보다 실제 경력에서 반복적으로 성과가 난 방식";
 }
 function moneyBranch(c){
  const g=godCounts(c), wealth=g.편재+g.정재, output=g.식신+g.상관, officer=g.편관+g.정관;
  if(wealth&&output)return "생산한 결과를 가격·거래·매출 구조로 연결하는 흐름을 점검하기 좋습니다.";
- if(wealth)return "재성 신호는 돈 자체의 보장이 아니라 가격·소유·지출·거래를 다루는 습관을 보는 지표입니다.";
- if(output)return "재성보다 식상 신호가 먼저 보이므로 수입 예측보다 기술·서비스·결과물을 어떻게 수익 구조에 연결할지 보는 편이 현실적입니다.";
- if(officer)return "재성보다 관성 신호가 먼저 보이므로 안정적인 역할·계약·책임 구조가 수입 기반과 어떻게 연결되는지 확인하는 편이 좋습니다.";
+ if(wealth)return "재물·관리 흐름는 돈 자체의 보장이 아니라 가격·소유·지출·거래를 다루는 습관을 보는 지표입니다.";
+ if(output)return "재성보다 표현·생산 흐름가 먼저 보이므로 수입 예측보다 기술·서비스·결과물을 어떻게 수익 구조에 연결할지 보는 편이 현실적입니다.";
+ if(officer)return "재성보다 책임·규칙 흐름가 먼저 보이므로 안정적인 역할·계약·책임 구조가 수입 기반과 어떻게 연결되는지 확인하는 편이 좋습니다.";
  return "재물은 명식의 한 글자보다 실제 소득 구조와 지출 습관을 우선해서 확인하는 것이 좋습니다.";
 }
 function relationBranch(c){
@@ -319,23 +319,23 @@ function dmRelationText(a,b){
  return "오행 관계 하나만으로 관계의 좋고 나쁨을 정하기 어렵습니다. 실제 생활 리듬과 대화 방식이 더 중요한 확인 기준입니다.";
 }
 function compatDetail(a,b,score,rel){
- const ac=elPct(a),bc=elPct(b),ahi=strongest(ac),bhi=strongest(bc);
- const combines=rel.filter(x=>x.includes("합")).length,clashes=rel.filter(x=>x.includes("충")).length;
- const common=Object.keys(ac).sort((x,y)=>(ac[y]+bc[y])-(ac[x]+bc[x]))[0];
- const tension=clashes?`충 신호가 ${clashes}개 확인됩니다. 충은 이별이나 사건을 뜻하지 않고 서로 다른 속도·기준·생활 패턴을 재조정해야 할 가능성을 표시하는 참고 신호입니다.`:"두드러진 충 신호가 적습니다. 그렇다고 갈등이 없다는 뜻은 아니며 실제 경계와 합의가 우선입니다.";
- const bond=combines?`합 신호가 ${combines}개 있어 연결·협력·서로에게 익숙하게 끌리는 지점을 참고할 수 있습니다. 합이 많아도 관계의 지속을 보장하지는 않습니다.`:"강한 합 신호가 많지 않아도 관계의 질이 낮다는 뜻은 아닙니다. 실제로 함께 만든 경험과 신뢰를 더 중요하게 보세요.";
- return `
- <div class="section-index"><span>기본 결</span><span>끌림</span><span>대화</span><span>생활</span><span>돈</span><span>갈등</span><span>장기 관계</span><span>실천</span></div>
- <div class="compat-grid"><div class="compat-person"><b>${esc(a.input.name)} · ${a.dayMaster.stem}일간</b><span>강한 오행 ${ahi} · 월주 ${a.pillars.month.god||"—"}</span></div><div class="compat-person"><b>${esc(b.input.name)} · ${b.dayMaster.stem}일간</b><span>강한 오행 ${bhi} · 월주 ${b.pillars.month.god||"—"}</span></div></div>
- <div class="report-section"><h3 class="subhead">1. 두 사람의 기본 결</h3><p>${dmRelationText(a,b)} 두 명식에서 합산 비중이 큰 오행은 ${common}입니다. 이것은 두 사람이 반드시 같은 성향이라는 뜻이 아니라 관계 안에서 ${common}의 주제가 자주 사용될 수 있다는 비교 지표입니다.</p></div>
- <div class="report-section"><h3 class="subhead">2. 끌림과 연결</h3><p>${bond} 점수 ${score}점은 성공 확률이 아니라 현재 규칙이 비교한 일간 오행·천간합·육합·충을 단순화한 내부 지표입니다.</p></div>
- <div class="report-section"><h3 class="subhead">3. 대화 방식</h3><p>${a.dayMaster.stem}일간과 ${b.dayMaster.stem}일간은 같은 말을 들어도 처리 속도와 표현 방식이 다를 수 있습니다. 중요한 이야기는 감정이 올라온 순간 결론내기보다 사실·요청·기한을 나눠 말하는 편이 좋습니다. 특히 ‘알아서 해주길 바라는 것’과 ‘명확히 합의한 것’을 구분하면 오해를 줄이는 데 도움이 됩니다.</p></div>
- <div class="report-section"><h3 class="subhead">4. 생활과 역할 분담</h3><p>궁합에서 실제 만족도를 크게 좌우하는 것은 생활비, 집안일, 이동, 반려동물·가족 돌봄, 개인시간 같은 반복 항목입니다. 명식의 합은 협력 가능성으로만 보고, 실제 역할은 누가 무엇을 얼마나 맡는지 구체적으로 정하는 편이 좋습니다. 한 사람이 계속 조정자 역할을 맡는 구조가 되는지도 확인해 보세요.</p></div>
- <div class="report-section"><h3 class="subhead">5. 돈과 현실 계획</h3><p>재성이나 오행 관계만으로 두 사람의 재정 궁합을 확정할 수 없습니다. 공동지출 한도, 각자의 고정비와 부채, 저축 목표, 큰 지출을 결정하는 기준을 먼저 확인하세요. 관계의 안정은 ‘누가 돈복이 있는가’보다 실제 현금흐름과 약속을 지키는 방식에 더 크게 좌우됩니다.</p></div>
- <div class="report-section"><h3 class="subhead">6. 갈등이 생길 때</h3><p>${tension} 갈등 시에는 관계 전체를 평가하기보다 지금 다투는 항목 하나만 다루고, 해결되지 않은 과거 문제를 한꺼번에 섞지 않는 방식이 유리합니다.</p></div>
- <div class="report-section"><h3 class="subhead">7. 장기 관계</h3><p>결혼·동거 가능성을 사주로 단정하지 않습니다. 장기 관계를 생각한다면 거주지, 돈, 일, 가족, 돌봄, 개인시간, 갈등 후 회복 방식이 실제로 합의 가능한지를 확인해야 합니다. 명식에서 보이는 연결 신호는 그 대화를 시작하는 참고 자료로만 활용하세요.</p></div>
- <div class="report-section"><h3 class="subhead">8. 오래 가기 위한 실천</h3><p>두 사람에게 필요한 것은 점수를 높이는 행동이 아니라 반복되는 불편을 발견했을 때 수정 가능한 관계를 만드는 것입니다. 한 달에 한 번 정도 비용·시간·서운했던 점·다음 달 계획을 짧게 점검하면 막연한 궁합 해석보다 훨씬 구체적인 데이터를 얻을 수 있습니다.</p></div>`;
+ const ac=elPct(a),bc=elPct(b),ahi=strongest(ac),bhi=strongest(bc),combines=rel.filter(x=>x.includes("합")).length,clashes=rel.filter(x=>x.includes("충")).length;
+ const ag=guiinGod(a.pillars.month.god||"비견"),bg=guiinGod(b.pillars.month.god||"비견");
+ const bond=combines?`두 명식 사이에 연결 신호가 ${combines}개 보여요. 서로에게 자연스럽게 관심이 가거나 협력 포인트를 찾기 쉬울 수 있지만, 이것만으로 관계의 지속을 보장하지는 않아요.`:"강한 연결 신호가 적더라도 관계가 나쁘다는 뜻은 아니에요. 실제로 약속을 지키고 서로의 생활을 존중하는지가 더 중요합니다.";
+ const tension=clashes?`기준이나 속도를 다시 맞춰야 하는 신호가 ${clashes}개 보여요. 다툼이나 이별을 예고한다기보다, 서로 다른 방식을 그냥 넘기지 말고 합의해야 한다는 뜻으로 참고하세요.`:"두드러진 충 신호는 적어요. 그래도 실제 갈등은 사주보다 돈·시간·연락·가족·생활 습관에서 생길 수 있으니 현실 기준을 함께 보세요.";
+ return `<div class="section-index"><span>기본 성향</span><span>끌림</span><span>대화</span><span>생활</span><span>돈</span><span>갈등</span><span>장기 관계</span><span>실천</span></div>
+ <div class="compat-grid"><div class="compat-person"><b>${esc(a.input.name)}</b><span>${GUIIN_DM_PLAIN[a.dayMaster.stem]} · ${ag.name}</span></div><div class="compat-person"><b>${esc(b.input.name)}</b><span>${GUIIN_DM_PLAIN[b.dayMaster.stem]} · ${bg.name}</span></div></div>
+ <div class="report-section"><h3 class="subhead">1. 처음부터 다른 두 사람의 기본 성향</h3><p>${esc(a.input.name)}님은 ${GUIIN_DM_PLAIN[a.dayMaster.stem]}이고, ${esc(b.input.name)}님은 ${GUIIN_DM_PLAIN[b.dayMaster.stem]}이에요. ${dmRelationText(a,b)} 한 사람을 다른 사람 방식에 맞추기보다, 결정 속도와 표현 방식이 어디서 다른지 알아두는 것이 먼저예요.</p></div>
+ <div class="report-section"><h3 class="subhead">2. 서로 끌리고 연결되는 지점</h3><p>${bond} ${esc(a.input.name)}님은 관계에서 ‘${ag.love}’이, ${esc(b.input.name)}님은 ‘${bg.love}’이 편안함을 만드는 데 도움이 될 수 있어요. 두 조건이 실제 생활에서 동시에 가능한지 확인해 보세요.</p></div>
+ <div class="report-section"><h3 class="subhead">3. 대화가 꼬일 때 확인할 것</h3><p>같은 말을 해도 한 사람은 해결책을 먼저 찾고 다른 사람은 감정을 먼저 확인하고 싶을 수 있어요. 중요한 이야기는 “무슨 일이 있었는지 → 내가 어떻게 느꼈는지 → 무엇을 원하는지”를 나눠 말하면 오해를 줄이는 데 도움이 됩니다. 상대가 알아서 눈치채길 기다리는 것과 실제로 합의한 것은 구분하세요.</p></div>
+ <div class="report-section"><h3 class="subhead">4. 같이 지낼수록 중요한 생활 궁합</h3><p>${ahi}를 자주 쓰는 ${esc(a.input.name)}님과 ${bhi}를 자주 쓰는 ${esc(b.input.name)}님은 생활 우선순위가 다르게 느껴질 수 있어요. 집안일, 이동, 개인시간, 가족·반려동물 돌봄처럼 반복되는 일을 누가 얼마나 맡는지 구체적으로 정하면 관계 피로를 줄이는 데 도움이 됩니다.</p></div>
+ <div class="report-section"><h3 class="subhead">5. 돈 문제는 궁합 점수보다 현실 숫자</h3><p>공동지출 한도, 각자의 고정비와 부채, 저축 목표, 큰돈을 쓸 때 의사결정 방식을 먼저 맞춰보세요. 사주에서 보이는 재물 성향은 대화를 시작하는 소재일 뿐, 실제 재정 상태나 신용·계약을 대신 판단하지 않습니다.</p></div>
+ <div class="report-section"><h3 class="subhead">6. 갈등이 생겼을 때</h3><p>${tension} 다툴 때 관계 전체를 평가하지 말고 지금 해결할 문제 하나만 다루는 편이 좋아요. 감정이 너무 올라오면 결론을 미루고, 다시 이야기할 시간을 구체적으로 정하는 방법도 도움이 됩니다.</p></div>
+ <div class="report-section"><h3 class="subhead">7. 오래 만날 수 있는지는 여기서 확인</h3><p>결혼이나 동거 여부를 사주로 확정하지 않아요. 거주지, 일, 돈, 가족, 돌봄, 개인시간, 갈등 뒤 회복 방식처럼 실제 삶의 조건을 함께 결정할 수 있는지가 더 중요합니다. 서로 바뀌어야만 유지되는 관계인지, 지금 모습에서도 존중할 수 있는지도 살펴보세요.</p></div>
+ <div class="report-section"><h3 class="subhead">8. 두 사람이 바로 해볼 수 있는 것</h3><p>한 달에 한 번 20분 정도만 정해 “이번 달에 좋았던 것 1개 · 힘들었던 것 1개 · 돈과 일정 · 다음 달에 바꿀 것 1개”를 확인해 보세요. 궁합 점수보다 두 사람이 실제로 문제를 수정할 수 있는지가 관계의 중요한 데이터가 됩니다.</p></div>
+ <details class="calc-note"><summary>궁합 풀이 근거 보기</summary><div class="calc-body">${esc(a.input.name)}: ${a.dayMaster.stem}일간 · 월주 ${a.pillars.month.god||"—"} · ${ahi} 우세 / ${esc(b.input.name)}: ${b.dayMaster.stem}일간 · 월주 ${b.pillars.month.god||"—"} · ${bhi} 우세. 교차 관계 신호 ${rel.length?rel.slice(0,8).join(" · "):"두드러진 합·충 적음"}. 궁합 점수는 관계 성공률이 아니라 현재 규칙의 비교 지표입니다.</div></details>`;
 }
+
 function annualGodText(god,dm){
  const map={
   비견:`${dm}일간의 자기 기준과 독립성이 강조되는 흐름입니다. 혼자 결정하기 쉬운 만큼 협업에서는 역할과 책임을 먼저 나누는 편이 좋습니다.`,
@@ -412,9 +412,12 @@ function nearBoundary(inp){
  return [...new Set(notes)];
 }
 function calculationBasis(c){
- const b=nearBoundary(c.input), hour=c.input.hourUnknown?"출생시간 미상":`${String(c.input.hour).padStart(2,"0")}:${String(c.input.minute).padStart(2,"0")}`;
- return `<details class="calc-note"><summary>이 결과의 계산 기준 보기</summary><div class="calc-body">양력 입력 · 출생시간 ${hour} · 연주는 입춘, 월주는 절기 기준의 근사 계산 · 대운 방향은 양남음녀 순행/음남양녀 역행 · 대운 시작 나이는 절기까지의 일수를 3일=1년으로 환산한 세는나이 기준 근사치입니다.${b.length?`<div class="boundary-note">${b.join(" · ")}에 가까운 입력입니다. 이 구간은 정확한 절입 시각·출생지 보정에 따라 정밀 만세력과 결과가 달라질 수 있습니다.</div>`:""}</div></details>`;
+ const b=nearBoundary(c.input), hour=c.input.hourUnknown?"출생시간 미상 · 시주 제외":`${String(c.input.hour).padStart(2,"0")}:${String(c.input.minute).padStart(2,"0")}`;
+ const hidden=Object.entries(c.pillars).filter(([k,v])=>v&&v.hidden).map(([k,v])=>`${({year:"년주",month:"월주",day:"일주",hour:"시주"}[k])} ${v.hidden.map(h=>h.stem).join("·")}`).join(" / ");
+ const rel=(c.relations||[]).slice(0,6).map(r=>`${r.a}${r.b} ${r.type}`).join(" · ");
+ return `<details class="calc-note"><summary>이 결과의 계산 기준 · 신뢰 안내</summary><div class="calc-body"><b>입력</b> · 양력 · KST(UTC+9) · ${hour}<br><b>사주 계산</b> · 연주는 입춘, 월주는 절기 경계의 근사 시각을 사용합니다. 23:00 이후는 다음 일주로 처리하는 규칙을 사용합니다.<br><b>대운</b> · 양남음녀 순행/음남양녀 역행 · 절기까지의 일수를 3일=1년으로 환산한 근사 시작 나이입니다.<br><b>오행</b> · 겉으로 드러난 천간뿐 아니라 지지 속 지장간을 가중해 비교합니다. 이는 용신·신강신약의 확정 판정이 아닙니다.${hidden?`<br><b>지장간</b> · ${hidden}`:""}${rel?`<br><b>원국 관계</b> · ${rel}`:""}<br><b>현재 미적용</b> · 출생지 경도·진태양시·균시차·역사적 서머타임의 정밀 보정. 따라서 시주·절기 경계에 가까운 출생은 전문 만세력과 차이가 날 수 있습니다.${b.length?`<div class="boundary-note">⚠ ${b.join(" · ")}에 가까운 입력입니다. 이 경우 정밀 절입 시각과 출생지 보정에 따라 결과가 달라질 수 있어요.</div>`:""}</div></details>`;
 }
+
 function currentLuckOf(c){
  const a=luckAge(c),list=c.luck||[];
  return list.find(x=>a>=x.fromAge&&a<=x.toAge)||null;

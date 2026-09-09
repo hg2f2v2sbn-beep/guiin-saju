@@ -154,6 +154,50 @@
     };
   }
 
+
+  // 지장간: 지지 안에 포함된 천간을 전통적 비중으로 단순 가중합니다.
+  // 이 비중은 오행 분포를 더 세밀하게 보여주기 위한 규칙 기반 값이며 용신 판정이 아닙니다.
+  const HIDDEN_STEMS = [
+    [[9,1.0]],                         // 자 癸
+    [[5,0.6],[9,0.3],[7,0.1]],       // 축 己癸辛
+    [[0,0.6],[2,0.3],[4,0.1]],       // 인 甲丙戊
+    [[1,1.0]],                         // 묘 乙
+    [[4,0.6],[1,0.3],[9,0.1]],       // 진 戊乙癸
+    [[2,0.6],[6,0.3],[4,0.1]],       // 사 丙庚戊
+    [[3,0.7],[5,0.3]],               // 오 丁己
+    [[5,0.6],[3,0.3],[1,0.1]],       // 미 己丁乙
+    [[6,0.6],[8,0.3],[4,0.1]],       // 신 庚壬戊
+    [[7,1.0]],                         // 유 辛
+    [[4,0.6],[7,0.3],[3,0.1]],       // 술 戊辛丁
+    [[8,0.7],[0,0.3]]                // 해 壬甲
+  ];
+  const BRANCH_COMBINE = {0:1,1:0,2:11,11:2,3:10,10:3,4:9,9:4,5:8,8:5,6:7,7:6};
+  const BRANCH_CLASH = {0:6,6:0,1:7,7:1,2:8,8:2,3:9,9:3,4:10,10:4,5:11,11:5};
+  const BRANCH_HARM = {0:7,7:0,1:6,6:1,2:5,5:2,3:4,4:3,8:11,11:8,9:10,10:9};
+  const BRANCH_BREAK = {0:9,9:0,1:4,4:1,2:11,11:2,3:6,6:3,5:8,8:5,7:10,10:7};
+  const STEM_COMBINE = {0:5,5:0,1:6,6:1,2:7,7:2,3:8,8:3,4:9,9:4};
+
+  function enrichHidden(p, dayStem) {
+    p.hidden = HIDDEN_STEMS[p.branchIndex].map(([si,w],idx)=>({
+      stem: STEMS[si], stemH: STEMS_H[si], stemIndex: si, element: STEM_EL[si],
+      god: tenGod(dayStem, si), weight: w, role: idx===0 ? "본기" : "여기"
+    }));
+    return p;
+  }
+
+  function chartRelations(ps) {
+    const arr = ps.filter(Boolean), out=[];
+    for(let i=0;i<arr.length;i++) for(let j=i+1;j<arr.length;j++){
+      const a=arr[i], b=arr[j];
+      if(STEM_COMBINE[a.stemIndex]===b.stemIndex) out.push({type:"천간합",a:a.stem,b:b.stem});
+      if(BRANCH_COMBINE[a.branchIndex]===b.branchIndex) out.push({type:"육합",a:a.branch,b:b.branch});
+      if(BRANCH_CLASH[a.branchIndex]===b.branchIndex) out.push({type:"충",a:a.branch,b:b.branch});
+      if(BRANCH_HARM[a.branchIndex]===b.branchIndex) out.push({type:"해",a:a.branch,b:b.branch});
+      if(BRANCH_BREAK[a.branchIndex]===b.branchIndex) out.push({type:"파",a:a.branch,b:b.branch});
+    }
+    return out;
+  }
+
   function calculate(input) {
     const year = +input.year;
     const month = +input.month;
@@ -200,6 +244,7 @@
 
     const pillars = [yearP, monthP, dayP];
     if (hourP) pillars.push(hourP);
+    pillars.forEach(p => enrichHidden(p, dayStem));
 
     yearP.god = tenGod(dayStem, yearStem);
     monthP.god = tenGod(dayStem, monthStem);
@@ -208,8 +253,9 @@
 
     const elCount = { 목: 0, 화: 0, 토: 0, 금: 0, 수: 0 };
     pillars.forEach((p) => {
-      elCount[p.stemEl] += 1.2;
-      elCount[p.branchEl] += 0.8;
+      // 겉으로 드러난 천간 + 지지 내부 지장간을 함께 반영
+      elCount[p.stemEl] += 1.0;
+      p.hidden.forEach(h => { elCount[h.element] += h.weight; });
     });
 
     // 대운: 양남음여 순행
@@ -274,6 +320,16 @@
         yin: STEM_YIN[dayStem] ? "음" : "양",
       },
       elCount,
+      relations: chartRelations(pillars),
+      calculation: {
+        engineVersion: "1.2.0-research",
+        solarTerms: "근사 절기식",
+        timezone: "KST UTC+9",
+        trueSolarTime: false,
+        longitudeCorrection: false,
+        dayBoundary: "23:00 다음 일주 적용",
+        elementMethod: "천간 + 지장간 가중"
+      },
       luck,
       startAge,
       forward,
@@ -298,6 +354,7 @@
     EL_KO,
     EL_COLOR,
     TEN_GODS,
+    HIDDEN_STEMS,
     calculate,
     normalizeEl,
     tenGod,
