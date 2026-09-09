@@ -321,8 +321,9 @@
       },
       elCount,
       relations: chartRelations(pillars),
+      stars: specialStars({year:yearP,month:monthP,day:dayP,hour:hourP}, dayStem),
       calculation: {
-        engineVersion: "1.2.0-research",
+        engineVersion: "1.3.0-stars",
         solarTerms: "근사 절기식",
         timezone: "KST UTC+9",
         trueSolarTime: false,
@@ -334,6 +335,100 @@
       startAge,
       forward,
     };
+  }
+
+  // 신살/귀인 보조 계산층.
+  // 신살은 유파별 기준 차이가 있어 원국의 핵심 판단보다 낮은 우선순위의 참고 정보로 제공합니다.
+  const SINSAL_META = {
+    "도화살": {group:"매력·표현", tone:"popular", short:"사람의 시선과 호감을 끄는 힘", good:"표현·서비스·영업·콘텐츠처럼 사람과 만나는 장면에서 매력으로 쓰기 좋습니다.", watch:"인기나 관심을 관계의 확신으로 바로 해석하지 않는 것이 좋아요."},
+    "역마살": {group:"변화·이동", tone:"move", short:"움직임과 변화에 반응하는 힘", good:"이동·출장·여행·새 환경처럼 변화가 있는 자리에서 활력이 살아날 수 있어요.", watch:"변화 자체가 목적이 되어 자주 방향을 바꾸지는 않는지 확인해 보세요."},
+    "화개살": {group:"몰입·감성", tone:"deep", short:"혼자 깊게 파고드는 몰입과 감성", good:"예술·연구·전문기술·취향처럼 한 분야를 깊게 파는 힘으로 쓰기 좋아요.", watch:"생각이 깊어질수록 혼자만의 결론에 갇히지 않도록 바깥 피드백도 받아보세요."},
+    "천을귀인": {group:"귀인·도움", tone:"good", short:"도움과 해결의 연결을 상징하는 귀인", good:"어려울 때 사람·정보·제도를 통해 해결 실마리를 찾는 상징으로 읽습니다.", watch:"귀인이 있다고 기다리기보다 먼저 도움을 요청하고 관계를 관리하는 행동이 중요해요."},
+    "문창귀인": {group:"배움·표현", tone:"good", short:"배움·글·정리·표현의 재능을 상징", good:"공부한 것을 글·말·기술·문서로 정리할 때 장점이 살아날 수 있어요.", watch:"아는 것을 실제 결과로 옮기는 단계까지 연결해 보세요."},
+    "태극귀인": {group:"통찰·배움", tone:"good", short:"이해력과 탐구 성향을 상징하는 귀인", good:"복잡한 것을 이해하고 자기 방식으로 정리하는 힘을 살펴볼 때 참고합니다.", watch:"상징 하나만으로 총명함이나 성공을 확정하지 않아요."},
+    "홍염살": {group:"매력·표현", tone:"popular", short:"개성 있는 매력과 감정 표현을 상징", good:"자기 취향과 분위기를 드러내는 장면에서 존재감으로 쓰일 수 있어요.", watch:"강한 호감과 오래가는 관계는 다른 문제라는 점을 기억하세요."},
+    "양인살": {group:"추진·결단", tone:"power", short:"결단력과 밀어붙이는 힘을 상징", good:"책임이 분명하고 결단이 필요한 상황에서 추진력으로 활용할 수 있어요.", watch:"급한 결정이나 힘으로 밀어붙이는 방식은 한 번 더 점검하세요."},
+    "괴강살": {group:"주도·기준", tone:"power", short:"강한 기준과 주도성을 상징", good:"자기 기준을 세우고 책임지는 자리에서 강점으로 읽을 수 있어요.", watch:"강한 기준이 타인에게는 압박으로 느껴질 수 있어 전달 방식을 조절해 보세요."},
+    "귀문관살": {group:"감각·몰입", tone:"deep", short:"예민한 감각과 깊은 몰입을 상징", good:"세밀한 관찰과 독특한 관점이 필요한 분야에서 장점으로 바꿀 수 있어요.", watch:"불안이나 질환을 뜻한다고 단정하지 않습니다. 실제 어려움은 전문가의 평가가 기준입니다."},
+    "원진살": {group:"관계·조정", tone:"relation", short:"가까운 관계에서 감정의 엇갈림을 상징", good:"서로 다른 기대를 말로 확인해야 한다는 관계 체크포인트로 활용할 수 있어요.", watch:"특정 사람과의 악연을 뜻하지 않습니다."},
+    "공망": {group:"비움·재정비", tone:"deep", short:"비어 있음과 재정비의 상징", good:"계획을 고정하기보다 여지를 두고 다시 점검하는 신호로 읽을 수 있어요.", watch:"재물·결혼·가족이 사라진다는 식으로 해석하지 않습니다."},
+    "건록": {group:"자립·기반", tone:"good", short:"자기 힘으로 기반을 세우는 상징", good:"꾸준히 실력과 생활 기반을 쌓는 힘을 살펴볼 때 참고합니다.", watch:"독립심이 모든 일을 혼자 해야 한다는 뜻은 아니에요."}
+  };
+
+  function starHit(name, pillarKey, basis, extra) {
+    return Object.assign({name, pillar:pillarKey, basis, meta:SINSAL_META[name]||{group:"특별한 기운",short:"명식의 보조 상징",good:"원국과 함께 참고합니다.",watch:"단독으로 길흉을 정하지 않습니다."}}, extra||{});
+  }
+  function uniqStarHits(hits) {
+    const seen=new Set();
+    return hits.filter(h=>{const k=[h.name,h.pillar,h.basis].join("|"); if(seen.has(k)) return false; seen.add(k); return true;});
+  }
+  function voidBranches(dayStem, dayBranch) {
+    const cycleIndex = Array.from({length:60},(_,i)=>i).find(i=>i%10===dayStem && i%12===dayBranch);
+    const xunStart = cycleIndex - (cycleIndex%10);
+    const used = new Set(Array.from({length:10},(_,i)=>(xunStart+i)%12));
+    return Array.from({length:12},(_,i)=>i).filter(i=>!used.has(i));
+  }
+  function specialStars(pillars, dayStem) {
+    const entries=[["year",pillars.year],["month",pillars.month],["day",pillars.day],["hour",pillars.hour]].filter(x=>x[1]);
+    const dayBranch=pillars.day.branchIndex, yearBranch=pillars.year.branchIndex, hits=[];
+    const peach={8:9,0:9,4:9,2:3,6:3,10:3,5:6,9:6,1:6,11:0,3:0,7:0};
+    const horse={8:2,0:2,4:2,2:8,6:8,10:8,5:11,9:11,1:11,11:5,3:5,7:5};
+    const canopy={8:4,0:4,4:4,2:10,6:10,10:10,5:1,9:1,1:1,11:7,3:7,7:7};
+    const noble={
+      0:[1,7],4:[1,7],6:[1,7], 1:[0,8],5:[0,8], 2:[11,9],3:[11,9],
+      7:[2,6], 8:[3,5],9:[3,5]
+    };
+    const literary={0:5,1:6,2:8,3:9,4:8,5:9,6:11,7:0,8:2,9:3};
+    const taiji={0:[0,6],1:[0,6],2:[3,9],3:[3,9],4:[4,10,1,7],5:[4,10,1,7],6:[2,11],7:[2,11],8:[5,8],9:[5,8]};
+    const hongyeom={0:6,1:8,2:2,3:6,4:4,5:4,6:10,7:9,8:0,9:8};
+    const blade={0:3,1:2,2:6,3:5,4:6,5:5,6:9,7:8,8:0,9:11};
+    const guimenPairs=[[0,9],[1,6],[2,7],[3,8],[4,11],[5,10]];
+    const wonjinPairs=[[0,7],[1,6],[2,9],[3,8],[4,11],[5,10]];
+    const guigang=new Set(["경진","경술","임진","무술"]);
+    const geonrok={0:2,1:3,2:5,3:6,4:5,5:6,6:8,7:9,8:11,9:0};
+
+    function addByBranch(name,target,basis,excludeBasisSelf=false){
+      entries.forEach(([k,p])=>{
+        if(p.branchIndex===target && !(excludeBasisSelf && ((basis==="년지"&&k==="year")||(basis==="일지"&&k==="day"))))
+          hits.push(starHit(name,k,basis));
+      });
+    }
+    // 년지·일지 두 기준을 모두 보여주되 같은 위치/이름/기준 중복은 제거합니다.
+    addByBranch("도화살",peach[yearBranch],"년지");
+    addByBranch("도화살",peach[dayBranch],"일지");
+    addByBranch("역마살",horse[yearBranch],"년지");
+    addByBranch("역마살",horse[dayBranch],"일지");
+    addByBranch("화개살",canopy[yearBranch],"년지");
+    addByBranch("화개살",canopy[dayBranch],"일지");
+
+    (noble[dayStem]||[]).forEach(b=>addByBranch("천을귀인",b,"일간"));
+    addByBranch("문창귀인",literary[dayStem],"일간");
+    (taiji[dayStem]||[]).forEach(b=>addByBranch("태극귀인",b,"일간"));
+    addByBranch("홍염살",hongyeom[dayStem],"일간");
+    addByBranch("양인살",blade[dayStem],"일간");
+    addByBranch("건록",geonrok[dayStem],"일간");
+
+    entries.forEach(([k,p])=>{
+      if(guigang.has(p.ko)) hits.push(starHit("괴강살",k,"일주·간지"));
+    });
+    function addPairStars(name,pairs){
+      for(let i=0;i<entries.length;i++) for(let j=i+1;j<entries.length;j++){
+        const [ka,a]=entries[i],[kb,b]=entries[j];
+        if(pairs.some(([x,y])=>(a.branchIndex===x&&b.branchIndex===y)||(a.branchIndex===y&&b.branchIndex===x))){
+          hits.push(starHit(name,ka,`${ka}↔${kb}`));
+          hits.push(starHit(name,kb,`${ka}↔${kb}`));
+        }
+      }
+    }
+    addPairStars("귀문관살",guimenPairs);
+    addPairStars("원진살",wonjinPairs);
+
+    const voids=voidBranches(dayStem,dayBranch);
+    entries.forEach(([k,p])=>{if(voids.includes(p.branchIndex))hits.push(starHit("공망",k,"일주旬"));});
+
+    const clean=uniqStarHits(hits);
+    const counts={}; clean.forEach(h=>counts[h.name]=(counts[h.name]||0)+1);
+    return {hits:clean, counts, total:clean.length, voidBranches:voids.map(i=>BRANCHES[i])};
   }
 
   function normalizeEl(elCount) {
@@ -355,6 +450,8 @@
     EL_COLOR,
     TEN_GODS,
     HIDDEN_STEMS,
+    SINSAL_META,
+    specialStars,
     calculate,
     normalizeEl,
     tenGod,
