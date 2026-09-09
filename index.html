@@ -102,6 +102,10 @@ body.home-mode nav{background:rgba(255,255,255,.97);border-top:1px solid #eee8de
 .month-card.current-month{border-color:rgba(225,184,92,.55);box-shadow:0 0 0 1px rgba(225,184,92,.08) inset}
 .month-card .month-meta{font-size:8.5px;color:#a99590;margin-top:3px}
 
+
+.picker{display:none;position:fixed;inset:0;z-index:90;background:rgba(10,5,7,.66);padding:20px;align-items:center;justify-content:center;backdrop-filter:blur(4px)}.picker.on{display:flex}.picker-card{width:100%;max-width:390px;max-height:80vh;overflow:auto;background:#281218;border:1px solid rgba(225,184,92,.3);border-radius:23px;padding:18px;box-shadow:0 20px 60px rgba(0,0,0,.35)}.picker-head{display:flex;justify-content:space-between;align-items:center}.picker-head b{color:var(--gold2);font-size:16px}.picker-head button{width:auto;border:0;background:none;color:var(--gold2);font-size:20px}.picker-item{display:block;width:100%;text-align:left;background:#190c10;color:#f7efe8;border:1px solid var(--line);border-radius:13px;padding:12px;margin:7px 0}.picker-item b{display:block;font-size:13px}.picker-item span{display:block;color:#bca9a4;font-size:10px;margin-top:4px}.result-actions{position:relative;z-index:1}.result-actions .btn{font-size:11px;padding:11px 5px}.report-section,.detail{scroll-margin-top:16px}
+@media print{body{background:white!important;color:#222!important;padding:0}.app{max-width:none;padding:0}nav,.top,.back,.result-actions,.unlock,.lock-cover,.home-products,.picker,.loading-mask{display:none!important}.screen:not(.on){display:none!important}.card,.detail,.summarybox,.flow-head,.month-card{break-inside:avoid;box-shadow:none!important}.paid.locked .paidbody,.detail-lock:not(.unlocked) .locked-content{display:none!important}.report p{color:#333!important}}
+.home-privacy{font-size:9px;color:#897f70;text-align:center;margin:18px 0;line-height:1.7}.home-privacy button{display:block;margin:5px auto;border:0;background:none;color:#786d5c;text-decoration:underline;font-size:10px}
 </style>
 </head>
 <body class="home-mode">
@@ -109,24 +113,24 @@ body.home-mode nav{background:rgba(255,255,255,.97);border-top:1px solid #eee8de
 <header class="top"><div class="mark">✦</div><div class="brand"><b>귀인사주</b><small>GUIIN SAJU</small></div><div class="mark">☾</div></header>
 
 <section id="home" class="screen on">
- <div class="home-profile" role="button" tabindex="0" onclick="openLatestProfile()"><div class="home-avatar">☘</div><div><b>귀인사주 프로필</b><small id="homeProfileText">저장된 프로필을 선택해 보세요</small></div><div class="choose">프로필 ›</div></div>
- <div class="hero"><small>내 사주를 알고, 현실의 선택을 읽는 리포트</small><h1>귀인사주</h1><p>무료 명식부터 990원 상세 리포트까지. 원국·대운·세운의 근거를 과장 없이 풀어드립니다.</p><button class="btn gold cta" onclick="go('saju')">무료 명식 보기 ›</button></div>
+ <div class="home-profile" role="button" tabindex="0" onclick="openLatestProfile()" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();openLatestProfile()}"><div class="home-avatar">☘</div><div><b>귀인사주 프로필</b><small id="homeProfileText">저장된 프로필을 선택해 보세요</small></div><div class="choose">프로필 ›</div></div>
+ <div class="hero"><small>내 사주를 알고, 현실의 선택을 읽는 리포트</small><h1>귀인사주</h1><p>무료 명식부터 990원 상세 리포트까지. 원국·대운·세운의 근거를 과장 없이 풀어드립니다.</p><button class="btn gold cta" onclick="openService('saju')">무료 명식 보기 ›</button></div>
  <div class="home-products">
-  <button class="product-card" onclick="go('saju')"><i>☀️</i><b>오늘의 운세</b><span>명식과 올해 흐름에서 오늘의 체크포인트를 짧게</span><div class="mini">무료 명식부터 ›</div></button>
-  <button class="product-card" onclick="go('saju')"><em>990원</em><i>📜</i><b>평생사주</b><span>성격·직업·재물·연애·건강과 대운 상세</span><div class="mini">내 사주 전체 보기 ›</div></button>
-  <button class="product-card" onclick="go('match')"><em>2,900원 예정</em><i>💜</i><b>우리 궁합</b><span>두 명식의 점수와 합·충 신호를 먼저 무료로</span><div class="mini">궁합 보기 ›</div></button>
+  <button class="product-card" onclick="openService('today')"><i>☀️</i><b>오늘의 운세</b><span>명식과 올해 흐름에서 오늘의 체크포인트를 짧게</span><div class="mini">무료 명식부터 ›</div></button>
+  <button class="product-card" onclick="openService('lifetime')"><em>990원</em><i>📜</i><b>평생사주</b><span>성격·직업·재물·연애·건강과 대운 상세</span><div class="mini">내 사주 전체 보기 ›</div></button>
+  <button class="product-card" onclick="go('match')"><em>2,900원 데모</em><i>💜</i><b>우리 궁합</b><span>두 명식의 점수와 합·충 신호를 먼저 무료로</span><div class="mini">궁합 보기 ›</div></button>
  </div>
- <div class="home-note"><b>☘ 좋은 인연이, 좋은 운을 만듭니다.</b><br>지금은 실제 결제 없이 990원 상세 리포트의 데모 잠금 해제까지 테스트할 수 있습니다.</div>
- <div class="card"><h3>저장 프로필</h3><div id="savedList" class="muted">아직 저장된 프로필이 없습니다.</div></div>
+ <div class="home-note"><b>☘ 좋은 인연이, 좋은 운을 만듭니다.</b><br>현재 990원 평생사주와 2,900원 상세궁합은 데모입니다. 실제 결제는 발생하지 않습니다.</div>
+ <div class="card"><h3>저장 프로필</h3><p class="input-help">프로필은 이 브라우저의 저장 공간에만 보관됩니다. 다른 기기와 동기화되지 않으며 브라우저 데이터를 지우면 사라질 수 있습니다.</p><div id="savedList" class="muted">아직 저장된 프로필이 없습니다.</div></div><div class="home-privacy"><span>귀인사주 데모 v1.1 · 양력/KST 근사 계산</span><button type="button" onclick="clearLocalData()">이 기기 데이터 삭제</button></div>
 </section>
 
 <section id="saju" class="screen">
- <button class="back" onclick="go('home')">← 홈</button><h2 class="sec">사주 입력</h2>
+ <button class="back" onclick="goBack()">← 뒤로</button><h2 id="sajuTitle" class="sec">사주 입력</h2>
  <div class="card">
   <label>이름</label><input id="name" placeholder="이름">
   <label>성별</label><div class="seg" id="genderSeg"><button class="on" data-v="여">여성</button><button data-v="남">남성</button></div>
   <label>달력</label><div class="seg"><button class="on">양력</button><button disabled style="opacity:.35">음력 정밀판 준비중</button></div>
-  <label>생년월일</label><div class="row y3"><input id="year" type="number" min="1900" max="2026" inputmode="numeric" placeholder="1991"><input id="month" type="number" min="1" max="12" inputmode="numeric" placeholder="11"><input id="day" type="number" min="1" max="31" inputmode="numeric" placeholder="23"></div>
+  <label>생년월일</label><div class="row y3"><input id="year" type="number" min="1900" max="2100" inputmode="numeric" placeholder="1991"><input id="month" type="number" min="1" max="12" inputmode="numeric" placeholder="11"><input id="day" type="number" min="1" max="31" inputmode="numeric" placeholder="23"></div>
   <label>출생 시각</label><div class="row y2"><input id="hour" type="number" min="0" max="23" inputmode="numeric" placeholder="시"><input id="minute" type="number" min="0" max="59" inputmode="numeric" placeholder="분"></div>
   <label class="check"><input id="hourUnknown" type="checkbox"> 출생시간 모름</label><div class="input-help">출생시간을 모르면 시주는 제외하고 계산합니다. 절기 경계일은 근사 계산이라 정밀 만세력과 차이가 날 수 있습니다.</div><div id="sajuError" class="errorbox"></div>
   <div style="height:14px"></div><button class="btn gold" onclick="submitSaju()">무료 명식 계산</button>
@@ -135,8 +139,8 @@ body.home-mode nav{background:rgba(255,255,255,.97);border-top:1px solid #eee8de
 </section>
 
 <section id="match" class="screen">
- <button class="back" onclick="go('home')">← 홈</button><h2 class="sec">궁합</h2>
- <div class="card">
+ <button class="back" onclick="goBack()">← 뒤로</button><h2 class="sec">궁합</h2>
+ <div class="card"><div class="result-actions"><button class="btn ghost" onclick="chooseProfile('match-a')">나 프로필</button><button class="btn ghost" onclick="chooseProfile('match-b')">상대 프로필</button></div>
   <p class="muted">두 사람의 양력 생년월일시를 비교합니다. 출생시간을 모르면 비워도 됩니다.</p>
   <label>나</label><input id="aName" placeholder="이름"><div class="seg" id="aGender" style="margin-top:8px"><button class="on" type="button" data-v="여">여성</button><button type="button" data-v="남">남성</button></div><div class="row y3"><input id="aYear" type="number" inputmode="numeric" placeholder="년"><input id="aMonth" type="number" inputmode="numeric" placeholder="월"><input id="aDay" type="number" inputmode="numeric" placeholder="일"></div><div class="row y2" style="margin-top:8px"><input id="aHour" type="number" inputmode="numeric" placeholder="시"><input id="aMin" type="number" inputmode="numeric" placeholder="분"></div>
   <label>상대</label><input id="bName" placeholder="이름"><div class="seg" id="bGender" style="margin-top:8px"><button class="on" type="button" data-v="여">여성</button><button type="button" data-v="남">남성</button></div><div class="row y3"><input id="bYear" type="number" inputmode="numeric" placeholder="년"><input id="bMonth" type="number" inputmode="numeric" placeholder="월"><input id="bDay" type="number" inputmode="numeric" placeholder="일"></div><div class="row y2" style="margin-top:8px"><input id="bHour" type="number" inputmode="numeric" placeholder="시"><input id="bMin" type="number" inputmode="numeric" placeholder="분"></div>
@@ -159,26 +163,57 @@ const STEM_COMB={갑:"기",기:"갑",을:"경",경:"을",병:"신",신:"병",정
 const BR_COMB={자:"축",축:"자",인:"해",해:"인",묘:"술",술:"묘",진:"유",유:"진",사:"신",신:"사",오:"미",미:"오"};
 const BR_CLASH={자:"오",오:"자",축:"미",미:"축",인:"신",신:"인",묘:"유",유:"묘",진:"술",술:"진",사:"해",해:"사"};
 const yearNow=new Date().getFullYear();
+const DEMO_VERSION="1.1.0";
+let activeService="saju", matchLast=null, matchUnlocked=false;
 
 document.querySelectorAll("#genderSeg button").forEach(b=>b.onclick=()=>{document.querySelectorAll("#genderSeg button").forEach(x=>x.classList.remove("on"));b.classList.add("on");gender=b.dataset.v});
 ["a","b"].forEach(p=>document.querySelectorAll(`#${p}Gender button`).forEach(b=>b.onclick=()=>{document.querySelectorAll(`#${p}Gender button`).forEach(x=>x.classList.remove("on"));b.classList.add("on");matchGender[p]=b.dataset.v}));
 $("hourUnknown").onchange=()=>{$("hour").disabled=$("minute").disabled=$("hourUnknown").checked};
 
-function go(id){document.body.classList.toggle("home-mode",id==="home");document.querySelectorAll(".screen").forEach(s=>s.classList.remove("on"));$(id).classList.add("on");document.querySelectorAll("nav button").forEach(b=>b.classList.remove("on"));$("tab-"+id)?.classList.add("on");window.scrollTo(0,0);if(id==="home")renderSaved()}
-function loadSaved(){try{return JSON.parse(localStorage.getItem(STORE)||"[]")}catch(e){return[]}}
+function showScreen(id,options={}){
+ if(!["home","saju","match"].includes(id))id="home";
+ document.body.classList.toggle("home-mode",id==="home");
+ document.querySelectorAll(".screen").forEach(s=>s.classList.toggle("on",s.id===id));
+ document.querySelectorAll("nav button").forEach(b=>b.classList.toggle("on",b.id==="tab-"+id));
+ if(id==="home")renderSaved();
+ if(options.scroll!==false)window.scrollTo(0,0);
+}
+function go(id){if(id==="saju"||id==="match")activeService=id;showScreen(id);if(location.protocol!=="about:"&&location.hash!=="#"+id)history.pushState({screen:id},"","#"+id)}
+window.addEventListener("popstate",()=>showScreen(location.hash.slice(1)||"home"));
+function goBack(){if(location.hash==="#home")return;if(location.protocol!=="about:"&&history.state&&history.length>1)history.back();else go("home")}
+function clearLocalData(){if(!confirm("이 기기에 저장된 귀인사주 프로필과 데모 잠금 상태를 모두 삭제할까요?"))return;localStorage.removeItem(STORE);localStorage.removeItem(PREMIUM);LAST=null;matchLast=null;$("result").innerHTML="";$("matchResult").innerHTML="";document.querySelectorAll("#saju input,#match input").forEach(el=>{if(el.type==="checkbox")el.checked=false;else el.value="";el.disabled=false});gender="여";matchGender={a:"여",b:"여"};document.querySelectorAll(".seg button[data-v]").forEach(b=>b.classList.toggle("on",b.dataset.v==="여"));renderSaved();go("home");toastMsg("이 기기의 귀인사주 데이터를 삭제했어요")}
+function loadSaved(){try{const v=JSON.parse(localStorage.getItem(STORE)||"[]");return Array.isArray(v)?v:[]}catch(e){return []}}
 function profileKey(p){return [p.name,p.gender,p.year,p.month,p.day,p.hourUnknown?"?":p.hour,p.hourUnknown?"?":p.minute].join("|")}
-function saveProfile(inp,c){let x=loadSaved().filter(p=>profileKey(p)!==profileKey(inp));x.unshift({...inp,dayMaster:c.dayMaster.stem});localStorage.setItem(STORE,JSON.stringify(x.slice(0,12)));renderSaved()}
-function renderSaved(){const x=loadSaved();$("savedList").innerHTML=x.length?x.map((p,i)=>`<div class="saveditem"><div><b>${esc(p.name)}</b><div class="muted">${p.year}.${p.month}.${p.day} · ${p.gender} · ${p.dayMaster}일간</div></div><div class="savedactions"><button class="btn ghost" onclick="openSaved(${i})">보기</button><button class="btn ghost delete" onclick="deleteSaved(${i},event)">삭제</button></div></div>`).join(""):"아직 저장된 프로필이 없습니다.";const hp=$("homeProfileText");if(hp)hp.textContent=x.length?`${x[0].name} · ${x[0].year}.${String(x[0].month).padStart(2,"0")}.${String(x[0].day).padStart(2,"0")} · ${x[0].dayMaster}일간`:"저장된 프로필을 선택해 보세요"}
-function openSaved(i){const p=loadSaved()[i];if(!p)return;go("saju");["name","year","month","day","hour","minute"].forEach(k=>$(k).value=p[k]??"");$("hourUnknown").checked=!!p.hourUnknown;$("hour").disabled=$("minute").disabled=!!p.hourUnknown;gender=p.gender||"여";document.querySelectorAll("#genderSeg button").forEach(b=>b.classList.toggle("on",b.dataset.v===gender));submitSaju()}
-function openLatestProfile(){const x=loadSaved();if(x.length)openSaved(0);else go("saju")}
-function deleteSaved(i,e){e?.stopPropagation();const x=loadSaved();x.splice(i,1);localStorage.setItem(STORE,JSON.stringify(x));renderSaved()}
+function saveProfile(inp,c){let x=loadSaved().filter(p=>profileKey(p)!==profileKey(inp));x.unshift({...inp,dayMaster:c.dayMaster.stem});try{localStorage.setItem(STORE,JSON.stringify(x.slice(0,12)))}catch(e){toastMsg("저장 공간이 부족해 프로필을 저장하지 못했어요")}renderSaved()}
+function renderSaved(){
+ const x=loadSaved();
+ $("savedList").innerHTML=x.length?x.map((p,i)=>`<div class="saveditem"><div><b>${esc(p.name)}</b><div class="muted">${p.year}.${p.month}.${p.day} · ${p.gender} · ${p.dayMaster||""}일간</div></div><div class="savedactions"><button class="btn ghost" onclick="openSaved(${i})">보기</button><button class="btn ghost delete" onclick="deleteSaved(${i},event)">삭제</button></div></div>`).join(""):`<div class="empty-state">아직 저장된 프로필이 없어요.<br>생년월일을 입력하면 이 기기에 저장됩니다.</div>`;
+ const hp=$("homeProfileText");if(hp)hp.textContent=x.length?`${x[0].name} · ${x[0].year}.${String(x[0].month).padStart(2,"0")}.${String(x[0].day).padStart(2,"0")} · ${x[0].dayMaster||""}일간`:"저장된 프로필을 선택해 보세요";
+}
+function fillSaju(p){["name","year","month","day","hour","minute"].forEach(k=>$(k).value=p[k]??"");$("hourUnknown").checked=!!p.hourUnknown;$("hour").disabled=$("minute").disabled=!!p.hourUnknown;gender=p.gender||"여";document.querySelectorAll("#genderSeg button").forEach(b=>b.classList.toggle("on",b.dataset.v===gender));}
+function openSaved(i,service="saju"){
+ const p=loadSaved()[i];if(!p)return;
+ if(service==="match-a"||service==="match-b"){fillMatch(service.slice(-1),p);go("match");return}
+ fillSaju(p);go("saju");activeService=service;submitSaju();
+}
+function openLatestProfile(){const x=loadSaved();if(x.length)chooseProfile("saju");else go("saju")}
+function deleteSaved(i,e){e?.stopPropagation();const x=loadSaved();const p=x[i];if(!p)return;if(!confirm(`${p.name} 프로필을 삭제할까요? 이 기기에 저장된 정보가 삭제됩니다.`))return;x.splice(i,1);try{localStorage.setItem(STORE,JSON.stringify(x))}catch(e){toastMsg("프로필을 삭제하지 못했어요");return}renderSaved()}
+function chooseProfile(service="saju"){
+ const x=loadSaved();if(!x.length){if(service.startsWith("match"))go("match");else{go("saju");showError("sajuError","저장된 프로필이 없어요. 생년월일을 먼저 입력해 주세요.")}return}
+ const picker=$("profilePicker");picker.innerHTML=`<div class="picker-card"><div class="picker-head"><b>프로필 선택</b><button type="button" onclick="closePicker()" aria-label="닫기">✕</button></div><p class="muted">이 기기에 저장된 사람을 선택하세요.</p>${x.map((p,i)=>`<button class="picker-item" onclick="closePicker();openSaved(${i},'${service}')"><b>${esc(p.name)}</b><span>${p.year}.${p.month}.${p.day} · ${p.gender} · ${p.dayMaster||""}일간</span></button>`).join("")}<button class="btn ghost" onclick="closePicker();${service.startsWith("match")?"go('match')":"go('saju')"}">새로 입력하기</button></div>`;picker.classList.add("on");picker.setAttribute("aria-hidden","false");
+}
+function closePicker(){const p=$("profilePicker");p.classList.remove("on");p.setAttribute("aria-hidden","true")}
+function openService(service){if(service==="match"){go("match");return}activeService=service;chooseProfile(service)}
+function fillMatch(prefix,p){["Name","Year","Month","Day","Hour","Min"].forEach((k,i)=>$(prefix+k).value=p[["name","year","month","day","hour","minute"][i]]??"");matchGender[prefix]=p.gender||"여";document.querySelectorAll(`#${prefix}Gender button`).forEach(b=>b.classList.toggle("on",b.dataset.v===matchGender[prefix]));}
+
 function esc(s){return String(s||"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]))}
 function calc(inp){
  const c=GuiinSaju.calculate(inp);
  if(!c||!c.pillars||!c.pillars.year||!c.pillars.month||!c.pillars.day||!c.dayMaster||!Array.isArray(c.luck)||!c.luck.length)throw new Error("사주 계산 결과가 완전하지 않습니다.");
  return c;
 }
-function age(c){const n=new Date(), y=n.getFullYear()-c.input.year, passed=(n.getMonth()+1>c.input.month)||((n.getMonth()+1===c.input.month)&&n.getDate()>=c.input.day);return Math.max(0,y-(passed?0:1))}
+function age(c){const n=new Date(),y=n.getFullYear()-c.input.year,passed=(n.getMonth()+1>c.input.month)||((n.getMonth()+1===c.input.month)&&n.getDate()>=c.input.day);return Math.max(0,y-(passed?0:1))}
+function luckAge(c){return Math.max(0,new Date().getFullYear()-c.input.year+1)}
 function currentLuck(c){const a=age(c);return currentLuckOf(c)}
 function elPct(c){return GuiinSaju.normalizeEl(c.elCount)}
 function strongest(p){return Object.keys(p).sort((a,b)=>p[b]-p[a])[0]}
@@ -196,7 +231,7 @@ function dmVoice(dm,god){
  return `${dm}일간의 ${nature} 성향에 ${godText} 흐름이 겹칩니다. ${yang?"먼저 움직여 반응을 확인하는 방식":"조건을 살피고 정교하게 조정하는 방식"}이 더 자연스럽지만, 원국 전체와 현실 조건을 함께 봐야 합니다.`;
 }
 function luckSix(c,p){
- const dm=c.dayMaster.stem,g=p.god,pct=elPct(c),hi=strongest(pct),lo=weakest(pct),rel=relationSignals(c,p);
+ const dm=c.dayMaster.stem,g=p?.god||"비견",pct=elPct(c),hi=strongest(pct),lo=weakest(pct),rel=p?relationSignals(c,p):[];
  const base=dmVoice(dm,g);
  const map={
   비견:["내 방식으로 일의 범위를 정할수록 효율이 납니다.","수입보다 지출의 독립성과 공동비용 경계를 먼저 정리하세요.","비슷한 위치의 사람과 비교가 잦아질 수 있어 역할 구분이 중요합니다.","고집이 강해지면 협업 비용이 커질 수 있습니다.","혼자 할 일과 함께 할 일을 구분하는 선택이 유리합니다."],
@@ -337,18 +372,18 @@ function monthAction(god){
 }
 function enhancedYearFlow(c,yr){
  let yc;try{yc=GuiinSaju.calculate({name:"연운",gender:c.input.gender,calendar:"양력",year:yr,month:7,day:1,hour:12,minute:0,hourUnknown:false})}catch(e){return ""}
- const yg=GuiinSaju.tenGod(c.dayMaster.stem,yc.pillars.year.stem),cur=currentLuckOf(c);
- return `<div class="flow-head"><strong>${yr}년의 세운 · ${yc.pillars.year.stem}${yc.pillars.year.branch} · ${yg}</strong><p>${annualGodText(yg,c.dayMaster.stem)} 현재 대운의 ${cur?.god||"—"} 흐름과 함께 읽어야 같은 세운이라도 사람마다 의미가 달라집니다.</p><div class="flow-tags"><span>일간 ${c.dayMaster.stem}</span><span>대운 ${cur?.god||"—"}</span><span>세운 ${yg}</span><span>${strongest(elPct(c))} 강</span></div></div>`;
+ const yg=GuiinSaju.tenGod(GuiinSaju.STEMS.indexOf(c.dayMaster.stem),GuiinSaju.STEMS.indexOf(yc.pillars.year.stem)),cur=currentLuckOf(c);
+ return `<div class="flow-head"><strong>${yr}년의 세운 · ${yc.pillars.year.stem}${yc.pillars.year.branch} · ${yg}</strong><p>${annualGodText(yg,c.dayMaster.stem)} 현재 대운의 ${cur?.god||"미시작/범위 밖"} 흐름과 함께 읽어야 같은 세운이라도 사람마다 의미가 달라집니다.</p><div class="flow-tags"><span>일간 ${c.dayMaster.stem}</span><span>대운 ${cur?.god||"미시작/범위 밖"}</span><span>세운 ${yg}</span><span>${strongest(elPct(c))} 강</span></div></div>`;
 }
 function enhancedMonths(c,yr){
  const now=new Date(), cards=[];
  let yc;try{yc=GuiinSaju.calculate({name:"Y",gender:c.input.gender,calendar:"양력",year:yr,month:7,day:1,hour:12,minute:0,hourUnknown:false})}catch(e){return ""}
- const yg=GuiinSaju.tenGod(c.dayMaster.stem,yc.pillars.year.stem);
+ const yg=GuiinSaju.tenGod(GuiinSaju.STEMS.indexOf(c.dayMaster.stem),GuiinSaju.STEMS.indexOf(yc.pillars.year.stem));
  for(let m=1;m<=12;m++){
   let mc;try{mc=GuiinSaju.calculate({name:"M",gender:c.input.gender,calendar:"양력",year:yr,month:m,day:15,hour:12,minute:0,hourUnknown:false})}catch(e){continue}
-  const mg=GuiinSaju.tenGod(c.dayMaster.stem,mc.pillars.month.stem),act=monthAction(mg);
+  const mg=GuiinSaju.tenGod(GuiinSaju.STEMS.indexOf(c.dayMaster.stem),GuiinSaju.STEMS.indexOf(mc.pillars.month.stem)),act=monthAction(mg);
   const current=now.getFullYear()===yr&&now.getMonth()+1===m?" current-month":"";
-  cards.push(`<div class="month-card${current}"><b>${m}월 · ${mc.pillars.month.stem}${mc.pillars.month.branch} · ${mg}</b><div class="month-meta">현재 대운 ${currentLuckOf(c)?.god||"—"} × ${yr} 세운 ${yg} × 월운 ${mg}</div><p>${flowCrossText(c,yg,mg)}<br><strong style="color:#cdb8b1">활용:</strong> ${act[0]} · <strong style="color:#cdb8b1">주의:</strong> ${act[1]}</p></div>`);
+  cards.push(`<div class="month-card${current}"><b>${m}월 · ${mc.pillars.month.stem}${mc.pillars.month.branch} · ${mg}</b><div class="month-meta">현재 대운 ${currentLuckOf(c)?.god||"미시작/범위 밖"} × ${yr} 세운 ${yg} × 월운 ${mg}</div><p>${flowCrossText(c,yg,mg)}<br><strong style="color:#cdb8b1">활용:</strong> ${act[0]} · <strong style="color:#cdb8b1">주의:</strong> ${act[1]}</p></div>`);
  }
  return `<div class="month-grid">${cards.join("")}</div><p class="premium-note">월운은 각 달 15일 정오의 월주를 대표값으로 사용한 규칙 기반 요약입니다. 실제 절입일 전후에는 월주가 달라질 수 있으므로 경계일의 특정 사건을 예측하는 용도로 사용하지 않습니다.</p>`;
 }
@@ -356,7 +391,7 @@ function enhancedMonths(c,yr){
 function annualOverview(c,yr){
  let ac;
  try{ac=GuiinSaju.calculate({name:"연운",gender:c.input.gender,calendar:"양력",year:yr,month:7,day:1,hour:12,minute:0,hourUnknown:false})}catch(e){return ""}
- const stem=ac.pillars.year.stem,branch=ac.pillars.year.branch,god=GuiinSaju.tenGod(c.dayMaster.stem,stem);
+ const stem=ac.pillars.year.stem,branch=ac.pillars.year.branch,god=GuiinSaju.tenGod(GuiinSaju.STEMS.indexOf(c.dayMaster.stem),GuiinSaju.STEMS.indexOf(stem));
  const rel=[];
  Object.values(c.pillars).filter(Boolean).forEach(p=>{
   if(STEM_COMB[p.stem]===stem)rel.push(`${p.stem}${stem} 천간합`);
@@ -378,21 +413,19 @@ function nearBoundary(inp){
 }
 function calculationBasis(c){
  const b=nearBoundary(c.input), hour=c.input.hourUnknown?"출생시간 미상":`${String(c.input.hour).padStart(2,"0")}:${String(c.input.minute).padStart(2,"0")}`;
- return `<details class="calc-note"><summary>이 결과의 계산 기준 보기</summary><div class="calc-body">양력 입력 · 출생시간 ${hour} · 연주는 입춘, 월주는 절기 기준의 근사 계산 · 대운 방향은 양남음녀 순행/음남양녀 역행 · 대운 시작 나이는 절기까지의 일수를 3일=1년으로 환산한 근사치입니다.${b.length?`<div class="boundary-note">${b.join(" · ")}에 가까운 입력입니다. 이 구간은 정확한 절입 시각·출생지 보정에 따라 정밀 만세력과 결과가 달라질 수 있습니다.</div>`:""}</div></details>`;
+ return `<details class="calc-note"><summary>이 결과의 계산 기준 보기</summary><div class="calc-body">양력 입력 · 출생시간 ${hour} · 연주는 입춘, 월주는 절기 기준의 근사 계산 · 대운 방향은 양남음녀 순행/음남양녀 역행 · 대운 시작 나이는 절기까지의 일수를 3일=1년으로 환산한 세는나이 기준 근사치입니다.${b.length?`<div class="boundary-note">${b.join(" · ")}에 가까운 입력입니다. 이 구간은 정확한 절입 시각·출생지 보정에 따라 정밀 만세력과 결과가 달라질 수 있습니다.</div>`:""}</div></details>`;
 }
 function currentLuckOf(c){
- const a=age(c), list=(c.luck||[]);
- return list.find(x=>a>=x.fromAge&&a<=x.toAge) || list.find(x=>a>=x.fromAge&&a<x.toAge) || list[0];
+ const a=luckAge(c),list=c.luck||[];
+ return list.find(x=>a>=x.fromAge&&a<=x.toAge)||null;
 }
-
-
 function interpretationFingerprint(c){
  const s=chartSignature(c), p=elPct(c), luck=currentLuckOf(c);
- return [s.dm,s.monthGod,s.hi,s.lo,luck?.god||"",Math.round(p.목/5),Math.round(p.화/5),Math.round(p.토/5),Math.round(p.금/5),Math.round(p.수/5)].join("-");
+ return [s.dm,s.monthGod,s.hi,s.lo,luck?.god||"미시작",Math.round(p.목/5),Math.round(p.화/5),Math.round(p.토/5),Math.round(p.금/5),Math.round(p.수/5)].join("-");
 }
 function qaStrip(c){
  const cur=currentLuckOf(c), b=nearBoundary(c.input);
- return `<div class="qa-strip"><span>원국 ${c.dayMaster.stem}일간</span><span>월주 ${c.pillars.month.god||"—"}</span><span>현재 대운 ${cur?.god||"—"}</span><span>${b.length?"경계 입력 확인 필요":"일반 입력 구간"}</span></div>`;
+ return `<div class="qa-strip"><span>원국 ${c.dayMaster.stem}일간</span><span>월주 ${c.pillars.month.god||"—"}</span><span>현재 대운 ${cur?.god||"미시작/범위 밖"}</span><span>${b.length?"경계 입력 확인 필요":"일반 입력 구간"}</span></div>`;
 }
 
 function chartSignature(c){
@@ -461,60 +494,62 @@ function dailyReport(c){
  let tc;try{tc=calc(today)}catch(e){return "오늘의 흐름을 계산하지 못했습니다."}
  const dayGod=GuiinSaju.tenGod(GuiinSaju.STEMS.indexOf(c.dayMaster.stem),GuiinSaju.STEMS.indexOf(tc.pillars.day.stem));
  const guide={비견:"내 페이스를 지키되 혼자 결정하기 전 한 번 확인하세요.",겁재:"경쟁·공동비용·역할 분담에서 경계를 분명히 하세요.",식신:"작게라도 결과물을 끝내는 데 좋은 초점을 둘 수 있습니다.",상관:"말과 표현이 빨라질 수 있어 결론보다 근거를 먼저 보여주세요.",편재:"새 제안과 외부 기회는 넓게 보되 비용을 먼저 확인하세요.",정재:"지출·일정·반복 업무를 정리하면 안정감이 커집니다.",편관:"급한 요구에 끌려가기보다 우선순위와 마감선을 정하세요.",정관:"약속·문서·정해진 절차를 지키는 일이 신뢰로 이어집니다.",편인:"새 정보는 흥미보다 검증 가능성을 먼저 살피세요.",정인:"배우고 정리하는 흐름을 실제 행동 하나로 연결해 보세요."}[dayGod]||"오늘은 현실 조건을 확인하며 한 가지씩 정리하세요.";
- const focusMap={비견:["내 기준","협업","과소비"],겁재:["경쟁","분배","충동"],식신:["루틴","생산","휴식"],상관:["표현","개선","말투"],편재:["기회","거래","확인"],정재:["정리","예산","반복"],편관:["우선순위","책임","무리"],정관:["약속","문서","신뢰"],편인:["탐색","아이디어","선택"],정인:["학습","정리","회복"]};const f=focusMap[god]||["관찰","정리","선택"];
- return `<b>${now.getMonth()+1}월 ${now.getDate()}일 · ${tc.pillars.day.ko}일 · ${dayGod}</b><br>${guide} 오늘 운세는 일진과 원국을 비교한 짧은 참고 문장으로, 특정 사건을 예언하지 않습니다.`;
+ const focusMap={비견:["내 기준","협업","과소비"],겁재:["경쟁","분배","충동"],식신:["루틴","생산","휴식"],상관:["표현","개선","말투"],편재:["기회","거래","확인"],정재:["정리","예산","반복"],편관:["우선순위","책임","무리"],정관:["약속","문서","신뢰"],편인:["탐색","아이디어","선택"],정인:["학습","정리","회복"]};const f=focusMap[dayGod]||["관찰","정리","선택"];
+ return `<b>${now.getMonth()+1}월 ${now.getDate()}일 · ${tc.pillars.day.ko}일 · ${dayGod}</b><br>${guide} 오늘 운세는 일진과 원국을 비교한 짧은 참고 문장으로, 특정 사건을 예언하지 않습니다.<div class="today-focus">${f.map((x,i)=>`<div><b>${x}</b><span>${["오늘의 초점","활용 포인트","주의 포인트"][i]}</span></div>`).join("")}</div>`;
 }
-function yearReport(c){
- const y=GuiinSaju.pillarName((yearNow-4)%10,(yearNow-4)%12), yg=GuiinSaju.tenGod(GuiinSaju.STEMS.indexOf(c.dayMaster.stem),(yearNow-4)%10), cur=currentLuck(c);
- const themes={비견:"내 기준·독립",겁재:"경쟁·분담",식신:"생산·생활",상관:"표현·변화",편재:"기회·거래",정재:"현금흐름·관리",편관:"책임·압박",정관:"규칙·신뢰",편인:"탐색·전문성",정인:"학습·문서"};
- const advice={비견:"혼자 밀어붙이기보다 역할 경계를 정하세요.",겁재:"공동비용과 경쟁 상황에서 한도를 숫자로 정하세요.",식신:"반복 가능한 결과물을 꾸준히 완성하세요.",상관:"바꾸기 전에 효과를 측정할 기준부터 세우세요.",편재:"기회 수보다 실제 회수 구조를 확인하세요.",정재:"고정비와 현금흐름을 정리하는 데 초점을 두세요.",편관:"압박이 클수록 기한과 중단 조건을 먼저 정하세요.",정관:"약속·계약·절차를 꼼꼼히 확인하세요.",편인:"정보를 깊게 보되 작은 실험으로 검증하세요.",정인:"배운 것을 문서나 결과물로 남기세요."};
- const months=Array.from({length:12},(_,i)=>{
-   let mc=null;try{mc=calc({name:"월운",gender:c.input.gender||"여",calendar:"양력",year:yearNow,month:i+1,day:15,hour:12,minute:0,hourUnknown:false})}catch(e){}
-   const stem=mc?.pillars?.month?.stem, mg=stem?GuiinSaju.tenGod(GuiinSaju.STEMS.indexOf(c.dayMaster.stem),GuiinSaju.STEMS.indexOf(stem)):yg;
-   return `<div class="previewline"><b>${i+1}월 · ${mg}</b><div class="muted">${themes[mg]||"우선순위"}의 주제가 상대적으로 드러나는 달로 봅니다. ${advice[mg]||"현실 조건을 확인하며 조정하세요."}</div></div>`;
- }).join("");
- return `<h3>${yearNow}년 ${y.ko} · ${yg}</h3><p>${dmVoice(c.dayMaster.stem,yg)} 현재 ${cur.ko} 대운(${cur.god}) 위에 올해 ${yg}의 주제가 겹칩니다. 아래 월별 해설은 각 달의 월주 천간을 일간과 비교한 규칙 기반 요약이며, 절입 경계일의 정밀 월운이나 사건 예측으로 사용하지 않습니다.</p><div>${months}</div>`;
-}
+function yearReport(c){return enhancedYearFlow(c,yearNow)+enhancedMonths(c,yearNow)}
 function paidBlock(c){
- const unlocked=localStorage.getItem(PREMIUM)==="1",cur=currentLuck(c),six=luckSix(c,cur),idx=c.luck.indexOf(cur);
- const prev=idx>0?c.luck[idx-1]:null,next=idx<c.luck.length-1?c.luck[idx+1]:null;
- const luckAll=`<h3 class="subhead">현재 대운 · ${cur.ko} ${cur.god}</h3><p class="muted">${cur.fromAge}–${cur.toAge}세 · 현재 흐름은 아래 6가지 관점으로 길게 읽습니다.</p><div class="six">${six.map(x=>`<div class="detail"><b>${x[0]}</b><p>${x[1]}</p></div>`).join("")}</div>${prev?`<h3 class="subhead">지난 대운 · ${prev.ko} ${prev.god}</h3><p>${luckSummary(c,prev)}</p>`:""}${next?`<h3 class="subhead">다음 대운 · ${next.ko} ${next.god}</h3><p>${luckSummary(c,next)}</p>`:""}`;
- const body=`<div class="paidbody report"><h2>평생사주 상세 리포트</h2>${lifetime(c)}<h2 style="margin-top:24px">대운 상세</h2>${luckAll}<h2 style="margin-top:24px">올해 신년 · 월별 요약</h2>${yearReport(c)}${enhancedMonths(c,yearNow)}</div>`;
- return `<div class="card paid ${unlocked?"":"locked"}">${body}${unlocked?"":`<div class="unlock"><b>990원 · 전체 보기</b><small>실제 결제는 발생하지 않습니다.</small><button class="btn gold" onclick="unlockPremium()">990원 · 데모 잠금 해제</button></div>`}</div>`;
+ const unlocked=isDemoUnlocked("lifetime",c),cur=currentLuck(c),six=cur?luckSix(c,cur):[],idx=c.luck.indexOf(cur);
+ const prev=idx>0?c.luck[idx-1]:null,next=idx>=0&&idx<c.luck.length-1?c.luck[idx+1]:c.luck[0];
+ const luckAll=cur?`<h3 class="subhead">현재 대운 · ${cur.ko} ${cur.god}</h3><p class="muted">${cur.fromAge}–${cur.toAge}세 · 대운 표기 나이는 전통적 세는나이 기준의 근사 구간입니다.</p><div class="six">${six.map(x=>`<div class="detail"><b>${x[0]}</b><p>${x[1]}</p></div>`).join("")}</div>${prev?`<h3 class="subhead">지난 대운 · ${prev.ko} ${prev.god}</h3><p>${luckSummary(c,prev)}</p>`:""}${next?`<h3 class="subhead">다음 대운 · ${next.ko} ${next.god}</h3><p>${luckSummary(c,next)}</p>`:""}`:`<div class="summarybox"><b>대운 구간 안내</b><p>현재 세는나이 ${luckAge(c)}세는 제공된 대운 구간에 포함되지 않습니다. 첫 대운은 약 ${c.startAge}세부터 시작합니다. 아래에서는 원국과 연운을 중심으로 읽습니다.</p></div>`;
+ const body=`<div class="paidbody report"><h2>평생사주 상세 리포트</h2>${lifetime(c)}<h2 style="margin-top:24px">대운 상세</h2>${luckAll}<h2 style="margin-top:24px">올해 신년 · 월별 요약</h2>${enhancedYearFlow(c,yearNow)}${enhancedMonths(c,yearNow)}</div>`;
+ return `<div id="lifetimeReport" class="card paid ${unlocked?"":"locked"}">${body}${unlocked?"":`<div class="unlock"><b>990원 · 전체 보기</b><small>실제 결제는 발생하지 않습니다.</small><button class="btn gold" onclick="unlockPremium()">990원 · 데모 잠금 해제</button></div>`}</div>`;
 }
-function unlockPremium(){localStorage.setItem(PREMIUM,"1");if(LAST)renderAll(LAST)}
+function demoState(){try{const v=JSON.parse(localStorage.getItem(PREMIUM)||"{}");return v&&typeof v==="object"&&!Array.isArray(v)?v:{}}catch(e){return {}}}
+function chartKey(c){return profileKey(c.input)}
+function isDemoUnlocked(product,c){return !!c&&!!demoState()[product+"|"+chartKey(c)]}
+function setDemoUnlocked(product,c){const v=demoState();v[product+"|"+chartKey(c)]=true;try{localStorage.setItem(PREMIUM,JSON.stringify(v))}catch(e){toastMsg("저장 공간이 부족해 데모 상태를 저장하지 못했어요")}}
+function unlockPremium(){if(!LAST)return;setDemoUnlocked("lifetime",LAST);renderAll(LAST);toastMsg("평생사주 데모가 열렸어요")}
 
 function renderAll(c){
  LAST=c;const pct=elPct(c),cur=currentLuck(c);
  $("result").innerHTML=`<div class="card"><span class="eyebrow">무료 명식</span><h2>${esc(c.input.name)}님의 사주</h2><div class="pillars">${pillarHTML("시주",c.pillars.hour)}${pillarHTML("일주",c.pillars.day)}${pillarHTML("월주",c.pillars.month)}${pillarHTML("년주",c.pillars.year)}</div></div>
  <div class="card"><h3>오행</h3><div class="bars">${["목","화","토","금","수"].map(k=>`<div class="barrow"><span>${k}</span><div class="bar"><i style="width:${pct[k]}%"></i></div><span>${pct[k]}%</span></div>`).join("")}</div></div>
- <div class="card"><div class="previewline"><b>오늘의 운세</b><div class="muted">${dailyReport(c)}</div></div><div class="previewline"><b>일간 한 줄</b><div class="muted">${dmVoice(c.dayMaster.stem,c.pillars.month.god||"비견")}</div></div><div class="previewline"><b>현재 대운</b><div class="muted">${cur.fromAge}–${cur.toAge}세 · ${cur.ko} · ${cur.god}<br>${dmVoice(c.dayMaster.stem,cur.god)}</div></div></div>
- <div class="card"><h3>대운 타임라인</h3><div class="luckstrip">${c.luck.map(p=>`<div class="luckpill ${p===cur?"now":""}"><b>${p.ko}</b><span>${p.fromAge}–${p.toAge}세 · ${p.god}</span></div>`).join("")}</div><p class="muted">${c.forward?"순행":"역행"} · 시작 약 ${c.startAge}세 · 3일=1년 근사 규칙</p></div>
+ <div id="todaySection" class="card"><div class="previewline"><b>오늘의 운세</b><div class="muted">${dailyReport(c)}</div></div><div class="previewline"><b>일간 한 줄</b><div class="muted">${dmVoice(c.dayMaster.stem,c.pillars.month.god||"비견")}</div></div><div class="previewline"><b>현재 대운</b><div class="muted">${cur?`${cur.fromAge}–${cur.toAge}세 · ${cur.ko} · ${cur.god}<br>${dmVoice(c.dayMaster.stem,cur.god)}`:`첫 대운 시작 약 ${c.startAge}세 · 현재 세는나이 ${luckAge(c)}세는 제공된 구간 밖입니다.`}</div></div></div>
+ <div id="luckTimeline" class="card"><h3>대운 타임라인</h3><div class="luckstrip">${c.luck.map(p=>`<div class="luckpill ${p===cur?"now":""}"><b>${p.ko}</b><span>${p.fromAge}–${p.toAge}세 · ${p.god}</span></div>`).join("")}</div><p class="muted">${c.forward?"순행":"역행"} · 시작 약 ${c.startAge}세 · 세는나이 기준 · 3일=1년 근사 규칙</p></div>
  ${paidBlock(c)}
- <div class="disclaimer">본 서비스는 명리학 원국 계산과 규칙 기반 해설을 제공하는 참고용입니다. 의료·법률·투자·결혼 결정을 대신하지 않습니다. 절기 시각은 근사치이며 진태양시·출생지 경도 보정은 다음 버전에 넣을 수 있습니다.<br>명리학은 전통적 해석 체계이며 과학적으로 미래를 예측하는 방법으로 검증된 것은 아닙니다.</div>`;
+ <div class="disclaimer">본 서비스는 명리학 원국 계산과 규칙 기반 해설을 제공하는 참고용입니다. 의료·법률·투자·결혼 결정을 대신하지 않습니다. 절기 시각은 근사치이며 진태양시·출생지 경도 보정은 적용하지 않았습니다.<br>명리학은 전통적 해석 체계이며 과학적으로 미래를 예측하는 방법으로 검증된 것은 아닙니다.</div>`;
  if($("result"))$("result").insertAdjacentHTML("afterbegin",`<div class="result-actions"><button class="btn ghost" onclick="copyResultText(\'result\')">결과 복사</button><button class="btn ghost" onclick="go(\'home\')">홈으로</button></div>`);
  if($("result"))$("result").insertAdjacentHTML("afterbegin",calculationBasis(c));
+ applyResultFocus();
 }
 function validBirth(i){
- if(!Number.isInteger(i.year)||i.year<1900||i.year>yearNow)return "출생연도는 1900년부터 현재 연도 사이로 입력해 주세요.";
+ if(!Number.isInteger(i.year)||i.year<1900||i.year>new Date().getFullYear())return "출생연도는 1900년부터 현재 연도 사이로 입력해 주세요.";
  if(!Number.isInteger(i.month)||i.month<1||i.month>12)return "출생월은 1~12 사이로 입력해 주세요.";
  const max=new Date(i.year,i.month,0).getDate();if(!Number.isInteger(i.day)||i.day<1||i.day>max)return `${i.month}월의 날짜를 다시 확인해 주세요.`;
  if(!i.hourUnknown&&(!Number.isInteger(i.hour)||i.hour<0||i.hour>23))return "출생 시는 0~23 사이로 입력해 주세요.";
  if(!i.hourUnknown&&(!Number.isInteger(i.minute)||i.minute<0||i.minute>59))return "출생 분은 0~59 사이로 입력해 주세요.";
+ if(new Date(i.year,i.month-1,i.day)>new Date())return "미래의 생년월일은 입력할 수 없어요.";
  return "";
 }
+function readBirth(prefix=""){
+ const id=(k)=>prefix?prefix+(k==="minute"?"Min":k[0].toUpperCase()+k.slice(1)):k;
+ const val=k=>$(id(k)).value.trim();
+ const unknown=prefix?!val("hour")&&!val("minute"):$("hourUnknown").checked;
+ if(!unknown&&(!val("hour")||!val("minute")))throw new Error("출생 시각은 시와 분을 모두 입력하거나 ‘출생시간 모름’을 선택해 주세요.");
+ return {name:val("name")||"이름 없음",gender:prefix?matchGender[prefix]:gender,calendar:"양력",year:val("year")?Number(val("year")):NaN,month:val("month")?Number(val("month")):NaN,day:val("day")?Number(val("day")):NaN,hour:unknown?0:Number(val("hour")),minute:unknown?0:Number(val("minute")),hourUnknown:unknown};
+}
+
 function showError(id,msg){const el=$(id);if(!el)return;if(msg){el.textContent=msg;el.style.display="block"}else{el.textContent="";el.style.display="none"}}
 
-function withLoading(fn){
- const m=$("loadingMask");if(m)m.classList.add("on");
- requestAnimationFrame(()=>requestAnimationFrame(()=>{try{fn()}finally{if(m)m.classList.remove("on")}}));
-}
+function withLoading(fn){const m=$("loadingMask");if(m)m.classList.add("on");requestAnimationFrame(()=>requestAnimationFrame(()=>{try{fn()}finally{if(m)m.classList.remove("on")}}))}
 function scrollTopSoft(){window.scrollTo({top:0,behavior:"smooth"})}
 function copyResultText(id){
  const el=$(id);if(!el)return;
- const text=el.innerText.replace(/990원 · 데모 잠금 해제|2,900원 · 데모 잠금 해제/g,"").trim();
- if(navigator.clipboard?.writeText){navigator.clipboard.writeText(text).then(()=>toastMsg("결과를 복사했어요")).catch(()=>fallbackCopy(text))}
- else fallbackCopy(text);
+ const clone=el.cloneNode(true);clone.querySelectorAll("button,.unlock,.lock-cover,details,.result-actions").forEach(x=>x.remove());
+ clone.querySelectorAll(".paid.locked .paidbody,.detail-lock:not(.unlocked) .locked-content").forEach(x=>x.remove());
+ const text=clone.innerText||clone.textContent;if(!text.trim())return;
+ if(navigator.clipboard?.writeText)navigator.clipboard.writeText(text.trim()).then(()=>toastMsg("결과를 복사했어요")).catch(()=>fallbackCopy(text));else fallbackCopy(text);
 }
 function fallbackCopy(text){
  const t=document.createElement("textarea");t.value=text;document.body.appendChild(t);t.select();try{document.execCommand("copy");toastMsg("결과를 복사했어요")}catch(e){toastMsg("복사하지 못했어요")}t.remove();
@@ -523,32 +558,41 @@ function toastMsg(msg){
  let t=document.getElementById("guiinToast");if(!t){t=document.createElement("div");t.id="guiinToast";t.style.cssText="position:fixed;left:50%;bottom:82px;transform:translateX(-50%);z-index:120;background:#2b1018;color:#f0dfd8;border:1px solid rgba(225,184,92,.3);border-radius:999px;padding:9px 13px;font-size:10px;box-shadow:0 8px 30px rgba(0,0,0,.25)";document.body.appendChild(t)}t.textContent=msg;t.style.display="block";clearTimeout(t._tm);t._tm=setTimeout(()=>t.style.display="none",1600);
 }
 
-function submitSaju(){
- const inp={name:$("name").value.trim()||"이름 없음",gender,calendar:"양력",year:+$("year").value,month:+$("month").value,day:+$("day").value,hour:+$("hour").value||0,minute:+$("minute").value||0,hourUnknown:$("hourUnknown").checked};
- const err=validBirth(inp);showError("sajuError",err);if(err)return;
- withLoading(()=>{try{const c=calc(inp);saveProfile(inp,c);renderAll(c);setTimeout(scrollTopSoft,0)}catch(e){showError("sajuError","계산 중 문제가 생겼습니다. 입력값을 다시 확인해 주세요.");console.error(e)}})
+function applyResultFocus(){
+ const title=$("sajuTitle");if(title)title.textContent=activeService==="today"?"오늘의 운세":activeService==="lifetime"?"평생사주":"사주 입력";
+ if(activeService==="today")setTimeout(()=>$("todaySection")?.scrollIntoView({behavior:"smooth",block:"start"}),40);
+ if(activeService==="lifetime")setTimeout(()=>$("lifetimeReport")?.scrollIntoView({behavior:"smooth",block:"start"}),40);
 }
+function submitSaju(){
+ let inp;try{inp=readBirth()}catch(e){showError("sajuError",e.message);return}
+ const err=validBirth(inp);showError("sajuError",err);if(err)return;
+ withLoading(()=>{try{const c=calc(inp);saveProfile(inp,c);renderAll(c);if(activeService==="saju")setTimeout(scrollTopSoft,0)}catch(e){showError("sajuError","계산 중 문제가 생겼습니다. 입력값을 다시 확인해 주세요.");console.error(e)}});
+}
+
 function compatRelations(a,b){
  const out=[];const pa=Object.values(a.pillars).filter(Boolean),pb=Object.values(b.pillars).filter(Boolean);
  for(const x of pa)for(const y of pb){if(STEM_COMB[x.stem]===y.stem)out.push(`${x.stem}${y.stem} 천간합`);if(BR_COMB[x.branch]===y.branch)out.push(`${x.branch}${y.branch} 육합`);if(BR_CLASH[x.branch]===y.branch)out.push(`${x.branch}${y.branch} 충`)}
  return [...new Set(out)];
 }
 function submitMatch(){
- const get=(p)=>({name:$(p+"Name").value.trim()||"이름 없음",gender:matchGender[p]||"여",calendar:"양력",year:+$(p+"Year").value,month:+$(p+"Month").value,day:+$(p+"Day").value,hour:+$(p+"Hour").value||0,minute:+$(p+"Min").value||0,hourUnknown:!$(p+"Hour").value});
- const ai=get("a"),bi=get("b"),ea=validBirth(ai),eb=validBirth(bi);const err=ea?`나: ${ea}`:eb?`상대: ${eb}`:"";showError("matchError",err);if(err)return;
+ let ai,bi;try{ai=readBirth("a");bi=readBirth("b")}catch(e){showError("matchError",e.message);return}
+ const ea=validBirth(ai),eb=validBirth(bi);const err=ea?`나: ${ea}`:eb?`상대: ${eb}`:"";showError("matchError",err);if(err)return;
  try{
   const a=calc(ai),b=calc(bi),rel=compatRelations(a,b),same=a.dayMaster.el===b.dayMaster.el;
   const combines=rel.filter(x=>x.includes("합")).length,clashes=rel.filter(x=>x.includes("충")).length;
   const base=62,elementBonus=same?8:0,combineBonus=Math.min(20,combines*6),clashPenalty=Math.min(16,clashes*5);
   const score=Math.max(35,Math.min(95,base+elementBonus+combineBonus-clashPenalty));
   const tone=score>=80?"연결 신호가 비교적 많은 편":score>=65?"보완과 조정이 함께 필요한 편":"차이를 확인하며 합의 방식을 만드는 편";
-  const detail=compatDetail(a,b,score,rel);
-  $("matchResult").innerHTML=`<div class="card"><span class="eyebrow">무료 궁합</span><h3>${esc(ai.name)} × ${esc(bi.name)}</h3><div class="score">${score}<small style="font-size:15px">점</small></div><p class="muted">${tone}으로 읽힙니다. 점수는 관계의 성공률이 아니라 현재 엔진이 비교하는 오행·천간합·육합·충을 숫자로 단순화한 참고 지표입니다.</p><div class="scoreparts"><div class="scorepart"><b>${same?"+8":"0"}</b><span>일간 오행</span></div><div class="scorepart"><b>+${combineBonus}</b><span>합 신호</span></div><div class="scorepart"><b>-${clashPenalty}</b><span>충 신호</span></div></div><div class="relchips">${rel.length?rel.slice(0,6).map(x=>`<span>${x}</span>`).join(""):"<span>두드러진 합·충 신호 적음</span>"}</div><div class="previewline"><b>합·충 메모</b><div class="muted">${combines?"합 신호는 서로 연결되고 보완하려는 지점으로 참고할 수 있습니다.":"강한 합 신호보다 생활 속 합의 방식이 더 중요할 수 있습니다."}<br>${clashes?"충 신호는 갈등 확정이 아니라 속도·기준을 재조정할 필요가 생길 수 있다는 표시입니다.":"두드러진 충 신호가 적더라도 실제 관계의 대화와 경계가 우선입니다."}</div></div></div>
-  <div class="card"><span class="eyebrow">상세 궁합 리포트</span><h3>관계를 8개 영역으로 읽기</h3><div id="compatLock" class="detail-lock"><div class="locked-content">${detail}</div><div class="lock-cover"><div class="lock-panel"><b>2,900원 · 상세 궁합</b><p>현재는 결제 연결 전 단계입니다. 아래 버튼은 상세 리포트 구조를 확인하기 위한 데모 잠금 해제입니다.</p><button class="btn gold" onclick="unlockCompat()">2,900원 · 데모 잠금 해제</button><p style="margin-top:7px">실제 결제는 발생하지 않습니다.</p></div></div></div></div>
-  <div class="disclaimer">본 서비스는 명리학 원국 계산과 규칙 기반 해설을 제공하는 참고용입니다. 의료·법률·투자·결혼 결정을 대신하지 않습니다. 절기 시각은 근사치이며 진태양시·출생지 경도 보정은 다음 버전에 넣을 수 있습니다.<br>명리학은 전통적 해석 체계이며 과학적으로 미래를 예측하는 방법으로 검증된 것은 아닙니다.</div>`;
+  const detail=compatDetail(a,b,score,rel);matchLast={a,b,score,rel};matchUnlocked=isDemoUnlocked("compat",a)&&isDemoUnlocked("compat-pair",b)&&demoState()["pair|"+chartKey(a)+"|"+chartKey(b)]===true;
+  $("matchResult").innerHTML=`<div class="result-actions"><button class="btn ghost" onclick="copyResultText('matchResult')">결과 복사</button><button class="btn ghost" onclick="go('home')">홈으로</button></div><div class="card"><span class="eyebrow">무료 궁합</span><h3>${esc(ai.name)} × ${esc(bi.name)}</h3><div class="score">${score}<small style="font-size:15px">점</small></div><p class="muted">${tone}으로 읽힙니다. 점수는 관계의 성공률이 아니라 현재 엔진이 비교하는 오행·천간합·육합·충을 숫자로 단순화한 참고 지표입니다.</p><div class="scoreparts"><div class="scorepart"><b>${same?"+8":"0"}</b><span>일간 오행</span></div><div class="scorepart"><b>+${combineBonus}</b><span>합 신호</span></div><div class="scorepart"><b>-${clashPenalty}</b><span>충 신호</span></div></div><div class="relchips">${rel.length?rel.slice(0,6).map(x=>`<span>${x}</span>`).join(""):"<span>두드러진 합·충 신호 적음</span>"}</div><div class="previewline"><b>합·충 메모</b><div class="muted">${combines?"합 신호는 서로 연결되고 보완하려는 지점으로 참고할 수 있습니다.":"강한 합 신호보다 생활 속 합의 방식이 더 중요할 수 있습니다."}<br>${clashes?"충 신호는 갈등 확정이 아니라 속도·기준을 재조정할 필요가 생길 수 있다는 표시입니다.":"두드러진 충 신호가 적더라도 실제 관계의 대화와 경계가 우선입니다."}</div></div></div>
+  <div class="card"><span class="eyebrow">상세 궁합 리포트</span><h3>관계를 8개 영역으로 읽기</h3><div id="compatLock" class="detail-lock ${matchUnlocked?"unlocked":""}"><div class="locked-content">${detail}</div><div class="lock-cover"><div class="lock-panel"><b>2,900원 · 상세 궁합</b><p>현재는 결제 연결 전 단계입니다. 아래 버튼은 상세 리포트 구조를 확인하기 위한 데모 잠금 해제입니다.</p><button class="btn gold" onclick="unlockCompat()">2,900원 · 데모 잠금 해제</button><p style="margin-top:7px">실제 결제는 발생하지 않습니다.</p></div></div></div></div>
+  <div class="disclaimer">본 서비스는 명리학 원국 계산과 규칙 기반 해설을 제공하는 참고용입니다. 의료·법률·투자·결혼 결정을 대신하지 않습니다. 절기 시각은 근사치이며 진태양시·출생지 경도 보정은 적용하지 않았습니다.<br>명리학은 전통적 해석 체계이며 과학적으로 미래를 예측하는 방법으로 검증된 것은 아닙니다.</div>`;
  }catch(e){showError("matchError","궁합 계산 중 문제가 생겼습니다. 입력값을 다시 확인해 주세요.");console.error(e)}
 }
-function unlockCompat(){const x=$("compatLock");if(x&&!x.classList.contains("unlocked")){x.classList.add("unlocked");toastMsg("상세 궁합 데모가 열렸어요")}}
+function unlockCompat(){const x=$("compatLock");if(!x||!matchLast)return;matchUnlocked=true;setDemoUnlocked("compat",matchLast.a);setDemoUnlocked("compat-pair",matchLast.b);const v=demoState();v["pair|"+chartKey(matchLast.a)+"|"+chartKey(matchLast.b)]=true;try{localStorage.setItem(PREMIUM,JSON.stringify(v))}catch(e){}x.classList.add("unlocked");toastMsg("상세 궁합 데모가 열렸어요")}
+document.querySelectorAll("input[type=number]").forEach(input=>{if(/(?:Year|year)$/.test(input.id))input.max=new Date().getFullYear()});
+if(!history.state&&location.protocol!=="about:")history.replaceState({screen:"home"},"",location.pathname+location.search+"#home");
+showScreen(location.hash.slice(1)||"home");
 renderSaved();
 </script>
-<div id="loadingMask" class="loading-mask"><div class="loading-card"><div class="loading-dot"></div><b>명식을 읽고 있어요</b><div style="font-size:10px;margin-top:5px;color:#bda9a4">원국과 운의 흐름을 정리합니다.</div></div></div></body></html>
+<div id="loadingMask" class="loading-mask"><div class="loading-card"><div class="loading-dot"></div><b>명식을 읽고 있어요</b><div style="font-size:10px;margin-top:5px;color:#bda9a4">원국과 운의 흐름을 정리합니다.</div></div></div><div id="profilePicker" class="picker" aria-hidden="true" onclick="if(event.target===this)closePicker()"></div></body></html>
