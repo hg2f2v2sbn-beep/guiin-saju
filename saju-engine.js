@@ -82,25 +82,20 @@
 
   function jieMonthAndYear(y, m, d, h, mi) {
     const t = birthMsKst(y, m, d, h, mi);
-    const JIE = [2, 4, 6, 8, 10, 12, 14, 16, 18, 20, 22];
-
+    const lichunThis = solarTermMs(y, 2);
+    const sohanThis = solarTermMs(y, 0);
+    const yearForPillar = t >= lichunThis ? y : y - 1;
     function monthStartMs(yearFor, monthIndex) {
       if (monthIndex <= 10) return solarTermMs(yearFor, 2 + monthIndex * 2);
       if (monthIndex === 11) return solarTermMs(yearFor + 1, 0);
       return solarTermMs(yearFor + 1, 2);
     }
-
-    const lichunThis = solarTermMs(y, 2);
-    const sohanThis = solarTermMs(y, 0);
-    const yearForPillar = t >= lichunThis ? y : y - 1;
     let monthIndex = 11;
     for (let i = 0; i < 12; i++) {
-      if (t >= monthStartMs(yearForPillar, i) && t < monthStartMs(yearForPillar, i + 1)) {
-        monthIndex = i;
-        break;
-      }
+      const start = monthStartMs(yearForPillar, i);
+      const end = monthStartMs(yearForPillar, i + 1);
+      if (t >= start && t < end) { monthIndex = i; break; }
     }
-
     return { yearForPillar, monthIndex, lichunThis, sohanThis };
   }
 
@@ -175,14 +170,14 @@
     const monthBranch = (monthIndex + 2) % 12; // 0 -> 인(2)
     const monthStem = (MONTH_STEM_START[yearStem] + monthIndex) % 10;
 
-    // 일주: JDN. 1984-02-02 = 甲子일? 실제 1984-02-02는 목요일.
-    // 율리우스 정수일 기준 60갑자 순환.
+    // 일주: JDN. 1984-02-02 = 丙寅일 실제 1984-02-02는 목요일.
+    // 표준: AJD 0.0 = 음... 갑자일 = JDN 11 이 정씨 공식
     // (jdn + 49) % 60 === 0 → 甲子  is common for noon-based
     const jdn = julianDay(year, month, day);
-    // 검증용 날짜: 1990-10-10 = 戊申
+    // 검증용 상수: 1990-10-10 = 戊申
     // JDN 1990-10-10 = 2448175
-    // 戊=4, 申=8 → index 60 cycle: stem = idx%10, branch=idx%12
-    // 날짜 상수는 1984-02-02 丙寅 및 1990-10-10 戊申과 대조함.
+    // 己=5, 未=7 → index 60 cycle: stem = idx%10, branch=idx%12, 己未 idx where 5,7
+    // idx ≡ 5 (mod 10), idx ≡ 7 (mod 12)
     // Use: dayIndex = jdn + OFFSET
     const dayIndex = ((jdn + 49) % 60 + 60) % 60;
     let dayStem = dayIndex % 10;
@@ -224,9 +219,9 @@
     // 대운 시작 나이: 절입까지 남은 날 / 3
     const JIE = [2, 4, 6, 8, 10, 12, 14, 16, 18, 20, 22];
     function monthStartMs(yfp, mi) {
-      if (mi <= 10) return solarTermMs(yfp, 2 + mi * 2);
+      if (mi <= 10) return solarTermMs(yfp, JIE[mi]);
       if (mi === 11) return solarTermMs(yfp + 1, 0);
-      return solarTermMs(yfp + 1, 2);
+      return solarTermMs(yfp + 1, 2); // next 인월 = 다음 입춘
     }
     const birth = birthMsKst(year, month, day, hour, minute);
     let startAge = 1;
@@ -293,7 +288,6 @@
   }
 
   return {
-    version: "1.1.0",
     STEMS,
     STEMS_H,
     BRANCHES,
