@@ -70,6 +70,17 @@ body.home-mode nav{background:rgba(255,255,255,.97);border-top:1px solid #eee8de
 .section-index::-webkit-scrollbar{display:none}
 .section-index span{white-space:nowrap;border:1px solid var(--line);border-radius:999px;padding:5px 8px;color:#cbb7b2;font-size:9px}
 
+
+/* final product polish */
+.loading-mask{position:fixed;inset:0;z-index:99;display:none;align-items:center;justify-content:center;background:rgba(25,10,14,.58);backdrop-filter:blur(5px)}
+.loading-mask.on{display:flex}.loading-card{background:#2b1018;border:1px solid rgba(225,184,92,.3);border-radius:18px;padding:18px 22px;text-align:center;color:#ead9d2;box-shadow:0 18px 55px rgba(0,0,0,.3)}
+.loading-dot{width:24px;height:24px;border-radius:50%;border:2px solid rgba(225,184,92,.25);border-top-color:var(--gold);margin:0 auto 9px;animation:spin .7s linear infinite}@keyframes spin{to{transform:rotate(360deg)}}
+.result-actions{display:flex;gap:7px;margin:10px 0}.result-actions .btn{flex:1}
+.mini-badge{display:inline-flex;align-items:center;border-radius:999px;padding:4px 7px;background:rgba(225,184,92,.1);border:1px solid rgba(225,184,92,.2);font-size:9px;color:var(--gold2)}
+.empty-state{text-align:center;padding:20px 12px;color:#9e8984;font-size:11px;line-height:1.7}
+.today-focus{display:grid;grid-template-columns:repeat(3,1fr);gap:6px;margin-top:10px}.today-focus div{background:#190c10;border:1px solid var(--line);border-radius:12px;padding:9px 5px;text-align:center}.today-focus b{display:block;color:var(--gold2);font-size:10px}.today-focus span{font-size:9px;color:#aa9691}
+@media(max-width:370px){.home-title{font-size:18px}.product-card h3{font-size:14px}.report h2{font-size:18px}}
+
 </style>
 </head>
 <body class="home-mode">
@@ -94,8 +105,8 @@ body.home-mode nav{background:rgba(255,255,255,.97);border-top:1px solid #eee8de
   <label>이름</label><input id="name" placeholder="이름">
   <label>성별</label><div class="seg" id="genderSeg"><button class="on" data-v="여">여성</button><button data-v="남">남성</button></div>
   <label>달력</label><div class="seg"><button class="on">양력</button><button disabled style="opacity:.35">음력 정밀판 준비중</button></div>
-  <label>생년월일</label><div class="row y3"><input id="year" type="number" inputmode="numeric" placeholder="1991"><input id="month" type="number" inputmode="numeric" placeholder="11"><input id="day" type="number" inputmode="numeric" placeholder="23"></div>
-  <label>출생 시각</label><div class="row y2"><input id="hour" type="number" inputmode="numeric" placeholder="시"><input id="minute" type="number" inputmode="numeric" placeholder="분"></div>
+  <label>생년월일</label><div class="row y3"><input id="year" type="number" min="1900" max="2026" inputmode="numeric" placeholder="1991"><input id="month" type="number" min="1" max="12" inputmode="numeric" placeholder="11"><input id="day" type="number" min="1" max="31" inputmode="numeric" placeholder="23"></div>
+  <label>출생 시각</label><div class="row y2"><input id="hour" type="number" min="0" max="23" inputmode="numeric" placeholder="시"><input id="minute" type="number" min="0" max="59" inputmode="numeric" placeholder="분"></div>
   <label class="check"><input id="hourUnknown" type="checkbox"> 출생시간 모름</label><div class="input-help">출생시간을 모르면 시주는 제외하고 계산합니다. 절기 경계일은 근사 계산이라 정밀 만세력과 차이가 날 수 있습니다.</div><div id="sajuError" class="errorbox"></div>
   <div style="height:14px"></div><button class="btn gold" onclick="submitSaju()">무료 명식 계산</button>
  </div>
@@ -316,6 +327,7 @@ function dailyReport(c){
  let tc;try{tc=calc(today)}catch(e){return "오늘의 흐름을 계산하지 못했습니다."}
  const dayGod=GuiinSaju.tenGod(GuiinSaju.STEMS.indexOf(c.dayMaster.stem),GuiinSaju.STEMS.indexOf(tc.pillars.day.stem));
  const guide={비견:"내 페이스를 지키되 혼자 결정하기 전 한 번 확인하세요.",겁재:"경쟁·공동비용·역할 분담에서 경계를 분명히 하세요.",식신:"작게라도 결과물을 끝내는 데 좋은 초점을 둘 수 있습니다.",상관:"말과 표현이 빨라질 수 있어 결론보다 근거를 먼저 보여주세요.",편재:"새 제안과 외부 기회는 넓게 보되 비용을 먼저 확인하세요.",정재:"지출·일정·반복 업무를 정리하면 안정감이 커집니다.",편관:"급한 요구에 끌려가기보다 우선순위와 마감선을 정하세요.",정관:"약속·문서·정해진 절차를 지키는 일이 신뢰로 이어집니다.",편인:"새 정보는 흥미보다 검증 가능성을 먼저 살피세요.",정인:"배우고 정리하는 흐름을 실제 행동 하나로 연결해 보세요."}[dayGod]||"오늘은 현실 조건을 확인하며 한 가지씩 정리하세요.";
+ const focusMap={비견:["내 기준","협업","과소비"],겁재:["경쟁","분배","충동"],식신:["루틴","생산","휴식"],상관:["표현","개선","말투"],편재:["기회","거래","확인"],정재:["정리","예산","반복"],편관:["우선순위","책임","무리"],정관:["약속","문서","신뢰"],편인:["탐색","아이디어","선택"],정인:["학습","정리","회복"]};const f=focusMap[god]||["관찰","정리","선택"];
  return `<b>${now.getMonth()+1}월 ${now.getDate()}일 · ${tc.pillars.day.ko}일 · ${dayGod}</b><br>${guide} 오늘 운세는 일진과 원국을 비교한 짧은 참고 문장으로, 특정 사건을 예언하지 않습니다.`;
 }
 function yearReport(c){
@@ -346,6 +358,7 @@ function renderAll(c){
  <div class="card"><h3>대운 타임라인</h3><div class="luckstrip">${c.luck.map(p=>`<div class="luckpill ${p===cur?"now":""}"><b>${p.ko}</b><span>${p.fromAge}–${p.toAge}세 · ${p.god}</span></div>`).join("")}</div><p class="muted">${c.forward?"순행":"역행"} · 시작 약 ${c.startAge}세 · 3일=1년 근사 규칙</p></div>
  ${paidBlock(c)}
  <div class="disclaimer">본 서비스는 명리학 원국 계산과 규칙 기반 해설을 제공하는 참고용입니다. 의료·법률·투자·결혼 결정을 대신하지 않습니다. 절기 시각은 근사치이며 진태양시·출생지 경도 보정은 다음 버전에 넣을 수 있습니다.</div>`;
+ if($("result"))$("result").insertAdjacentHTML("afterbegin",`<div class="result-actions"><button class="btn ghost" onclick="copyResultText(\'result\')">결과 복사</button><button class="btn ghost" onclick="go(\'home\')">홈으로</button></div>`);
 }
 function validBirth(i){
  if(!Number.isInteger(i.year)||i.year<1900||i.year>yearNow)return "출생연도는 1900년부터 현재 연도 사이로 입력해 주세요.";
@@ -356,10 +369,29 @@ function validBirth(i){
  return "";
 }
 function showError(id,msg){const el=$(id);if(!el)return;if(msg){el.textContent=msg;el.style.display="block"}else{el.textContent="";el.style.display="none"}}
+
+function withLoading(fn){
+ const m=$("loadingMask");if(m)m.classList.add("on");
+ requestAnimationFrame(()=>requestAnimationFrame(()=>{try{fn()}finally{if(m)m.classList.remove("on")}}));
+}
+function scrollTopSoft(){window.scrollTo({top:0,behavior:"smooth"})}
+function copyResultText(id){
+ const el=$(id);if(!el)return;
+ const text=el.innerText.replace(/990원 · 데모 잠금 해제|2,900원 · 데모 잠금 해제/g,"").trim();
+ if(navigator.clipboard?.writeText){navigator.clipboard.writeText(text).then(()=>toastMsg("결과를 복사했어요")).catch(()=>fallbackCopy(text))}
+ else fallbackCopy(text);
+}
+function fallbackCopy(text){
+ const t=document.createElement("textarea");t.value=text;document.body.appendChild(t);t.select();try{document.execCommand("copy");toastMsg("결과를 복사했어요")}catch(e){toastMsg("복사하지 못했어요")}t.remove();
+}
+function toastMsg(msg){
+ let t=document.getElementById("guiinToast");if(!t){t=document.createElement("div");t.id="guiinToast";t.style.cssText="position:fixed;left:50%;bottom:82px;transform:translateX(-50%);z-index:120;background:#2b1018;color:#f0dfd8;border:1px solid rgba(225,184,92,.3);border-radius:999px;padding:9px 13px;font-size:10px;box-shadow:0 8px 30px rgba(0,0,0,.25)";document.body.appendChild(t)}t.textContent=msg;t.style.display="block";clearTimeout(t._tm);t._tm=setTimeout(()=>t.style.display="none",1600);
+}
+
 function submitSaju(){
  const inp={name:$("name").value.trim()||"이름 없음",gender,calendar:"양력",year:+$("year").value,month:+$("month").value,day:+$("day").value,hour:+$("hour").value||0,minute:+$("minute").value||0,hourUnknown:$("hourUnknown").checked};
  const err=validBirth(inp);showError("sajuError",err);if(err)return;
- try{const c=calc(inp);saveProfile(inp,c);renderAll(c)}catch(e){showError("sajuError","계산 중 문제가 생겼습니다. 입력값을 다시 확인해 주세요.");console.error(e)}
+ withLoading(()=>{try{const c=calc(inp);saveProfile(inp,c);renderAll(c);setTimeout(scrollTopSoft,0)}catch(e){showError("sajuError","계산 중 문제가 생겼습니다. 입력값을 다시 확인해 주세요.");console.error(e)}})
 }
 function compatRelations(a,b){
  const out=[];const pa=Object.values(a.pillars).filter(Boolean),pb=Object.values(b.pillars).filter(Boolean);
@@ -381,7 +413,7 @@ function submitMatch(){
   <div class="disclaimer">본 서비스는 명리학 원국 계산과 규칙 기반 해설을 제공하는 참고용입니다. 의료·법률·투자·결혼 결정을 대신하지 않습니다. 절기 시각은 근사치이며 진태양시·출생지 경도 보정은 다음 버전에 넣을 수 있습니다.</div>`;
  }catch(e){showError("matchError","궁합 계산 중 문제가 생겼습니다. 입력값을 다시 확인해 주세요.");console.error(e)}
 }
-function unlockCompat(){const x=$("compatLock");if(x)x.classList.add("unlocked")}
+function unlockCompat(){const x=$("compatLock");if(x&&!x.classList.contains("unlocked")){x.classList.add("unlocked");toastMsg("상세 궁합 데모가 열렸어요")}}
 renderSaved();
 </script>
-</body></html>
+<div id="loadingMask" class="loading-mask"><div class="loading-card"><div class="loading-dot"></div><b>명식을 읽고 있어요</b><div style="font-size:10px;margin-top:5px;color:#bda9a4">원국과 운의 흐름을 정리합니다.</div></div></div></body></html>
