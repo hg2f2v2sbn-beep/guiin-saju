@@ -185,6 +185,83 @@ nav{background:#fffffff5!important;border-top:1px solid #ece6d9!important;backdr
 @media(max-width:370px){.mascot-row span{width:42px;height:42px;font-size:25px}.product-card b{font-size:15px!important}}
 </style>
 
+
+<style id="guiin-release-report-v1">
+/* RELEASE REPORT UI — keeps the approved cream/green/gold/pastel identity */
+:root{
+  --rr-ink:#26332d;--rr-sub:#6f756f;--rr-cream:#fffaf0;--rr-line:#eee4d5;
+  --rr-green:#0d6a4d;--rr-green2:#155f49;--rr-gold:#d8a72d;
+  --rr-pink:#fff0f3;--rr-purple:#f5efff;--rr-blue:#eef8ff;--rr-mint:#eefaf3;
+}
+#result,#matchResult{color:var(--rr-ink)}
+#result .card,#matchResult .card{
+  background:rgba(255,255,255,.96)!important;color:var(--rr-ink)!important;
+  border:1px solid var(--rr-line)!important;border-radius:22px!important;
+  box-shadow:0 8px 28px rgba(55,45,30,.055)!important;
+}
+#result .muted,#matchResult .muted,#result small,#matchResult small{color:var(--rr-sub)!important}
+#result .eyebrow,#matchResult .eyebrow{
+  display:inline-flex!important;align-items:center;gap:5px;
+  color:#9a7421!important;background:#fff6d9!important;border:1px solid #f3df9c!important;
+  border-radius:999px!important;padding:5px 9px!important;font-size:11px!important;font-weight:800!important;
+}
+#result h2,#result h3,#matchResult h2,#matchResult h3{color:#26332d!important;letter-spacing:-.03em}
+.result-hero{
+  position:relative;overflow:hidden;padding:23px 20px!important;
+  background:linear-gradient(135deg,#0d6a4d,#145c48)!important;color:white!important;border:0!important;
+}
+.result-hero:after{content:"☘";position:absolute;right:12px;bottom:-25px;font-size:112px;opacity:.14;transform:rotate(-10deg)}
+.result-hero .eyebrow{background:rgba(255,255,255,.14)!important;color:#ffe599!important;border-color:rgba(255,255,255,.2)!important}
+.result-hero h2,.result-hero h3,.result-hero p,.result-hero .muted{color:white!important}
+.result-hero .hero-name{font-size:29px;font-weight:900;line-height:1.15;margin:10px 0 7px}
+.result-hero .hero-pillars{font-size:15px;line-height:1.75;opacity:.96;position:relative;z-index:1}
+.result-hero .hero-keywords{display:flex;gap:7px;flex-wrap:wrap;margin-top:14px;position:relative;z-index:1}
+.result-hero .hero-keywords span{background:rgba(255,255,255,.13);border:1px solid rgba(255,255,255,.2);padding:7px 10px;border-radius:999px;font-size:12px;font-weight:800}
+.report-guide{padding:17px!important}
+.report-guide h3{font-size:18px!important;margin:5px 0 12px!important}
+.guide-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
+.guide-grid button{border:0;border-radius:15px;padding:12px 6px;background:#f8f5ee;color:#3b433f;font-size:11px;font-weight:800}
+.guide-grid button:nth-child(2){background:var(--rr-pink)}
+.guide-grid button:nth-child(3){background:var(--rr-purple)}
+.guide-grid button:nth-child(4){background:var(--rr-mint)}
+.guide-grid button:nth-child(5){background:var(--rr-blue)}
+.guide-grid button:nth-child(6){background:#fff7dd}
+.report-section,.topic-card,.previewline,.calc-body,.confidence-note{
+  background:#fff!important;color:var(--rr-ink)!important;border-color:var(--rr-line)!important;
+}
+.report-section{border:1px solid var(--rr-line)!important;border-radius:18px!important;padding:16px!important;margin:10px 0!important}
+.report-section .subhead{font-size:17px!important;margin:0 0 8px!important}
+.topic-grid{gap:9px!important}
+.topic-card{border:1px solid var(--rr-line)!important;border-radius:17px!important;padding:14px!important}
+.topic-card:nth-child(4n+1){background:#fff8e8!important}.topic-card:nth-child(4n+2){background:#f0faf4!important}
+.topic-card:nth-child(4n+3){background:#fff1f4!important}.topic-card:nth-child(4n){background:#f4efff!important}
+.topic-card b{color:#2d3a34!important}.topic-card p{color:#68716c!important}
+.calc-note{background:#faf8f3!important;border:1px solid var(--rr-line)!important;color:#4c554f!important}
+.calc-note summary{color:#59625c!important}
+.score{color:#9a55d1!important}
+.scoreparts{gap:8px!important}.scorepart{background:#faf7ff!important;border:1px solid #eee4f6!important;border-radius:15px!important}
+.relchips span{background:#f4efff!important;color:#755394!important;border-color:#e8dafa!important}
+.detail-lock{border-radius:20px!important;overflow:hidden}
+.lock-cover{background:linear-gradient(to bottom,rgba(255,255,255,.1),rgba(255,250,242,.96) 28%,#fffaf2 60%)!important}
+.lock-panel{background:white!important;color:var(--rr-ink)!important;border:1px solid var(--rr-line)!important;border-radius:20px!important}
+.result-actions{display:flex!important;gap:7px!important;overflow-x:auto!important;scrollbar-width:none;padding:0 1px 8px!important;background:transparent!important;border:0!important;box-shadow:none!important}
+.result-actions::-webkit-scrollbar{display:none}.result-actions .btn{white-space:nowrap!important;min-width:max-content!important;border-radius:999px!important;padding:9px 12px!important;font-size:11px!important}
+.premium-value{background:linear-gradient(135deg,#fff7dc,#fff1f4)!important;border:1px solid #f0dfc5!important;border-radius:18px!important;color:var(--rr-ink)!important}
+.audit-grid>div{background:#faf8f2!important;border-color:var(--rr-line)!important}
+.audit-grid b{color:#355146!important}.proof-badges span{background:#eef8f2!important;color:#3d6a56!important}
+.boundary-note{background:#fff7e5!important;color:#785d24!important}
+.road-year{background:#fff!important;border-color:var(--rr-line)!important}.road-year.now{background:#fff8df!important}
+.trust-card{background:linear-gradient(145deg,#f3fbf6,#fffaf0)!important}
+.match-hero{background:linear-gradient(135deg,#f8efff,#fff2f6)!important;border:1px solid #eadcf5!important}
+.match-hero .eyebrow{background:white!important;color:#8b5ab4!important;border-color:#eadcf5!important}
+.match-hero .pair-title{font-size:24px;font-weight:900;margin:10px 0 4px}
+.match-hero .pair-sub{color:#776d7e!important;font-size:13px;line-height:1.65}
+.match-hero .score{font-size:58px!important;line-height:1;margin:17px 0 6px!important}
+.result-divider{display:flex;align-items:center;gap:9px;margin:20px 4px 10px;color:#7a817c;font-size:12px;font-weight:800}
+.result-divider:before,.result-divider:after{content:"";height:1px;background:#eadfce;flex:1}
+@media(max-width:390px){.guide-grid{grid-template-columns:repeat(2,1fr)}.result-hero .hero-name{font-size:26px}}
+</style>
+
 </head>
 <body class="home-mode">
 <div class="app">
@@ -697,7 +774,7 @@ function aiPromptTemplatesHTML(c){
  "내 신살과 귀인을 무섭게 단정하지 말고 원국의 어느 자리에서 어떤 보조 의미가 있는지 설명해줘.",
  "궁합을 볼 때 합충 하나로 결론내리지 말고 서로의 일간·오행·십성·대운을 함께 비교해줘."
  ];
- return `<div class="card"><span class="eyebrow">AI 상담용</span><h3>질문 템플릿 10개</h3><p class="muted">가짜 AI 상담 기능이 아니라, 다른 AI 상담에 붙여넣어 더 구체적으로 질문할 수 있는 복사용 문장입니다.</p>${qs.map((q,i)=>`<details class="calc-note"><summary>${i+1}. ${["평생 총론","직업·사업","재물","연애","결혼·장기관계","올해","이번 달","대운 전환","신살·귀인","궁합"][i]}</summary><div class="calc-body">${base}<br><br>${q}</div></details>`).join("")}</div>`;
+ return `<div class="card"><span class="eyebrow">더 물어보기</span><h3>사주를 더 깊게 물어볼 질문 10개</h3><p class="muted">가짜 AI 상담 기능이 아니라, 다른 AI 상담에 붙여넣어 더 구체적으로 질문할 수 있는 복사용 문장입니다.</p>${qs.map((q,i)=>`<details class="calc-note"><summary>${i+1}. ${["평생 총론","직업·사업","재물","연애","결혼·장기관계","올해","이번 달","대운 전환","신살·귀인","궁합"][i]}</summary><div class="calc-body">${base}<br><br>${q}</div></details>`).join("")}</div>`;
 }
 
 function selectedDateFlowHTML(c){
@@ -727,7 +804,7 @@ function renderSolarPreview(){
 
 function engineAuditHTML(c){
  const calc=c.calculation||{},boundaries=nearBoundary(c.input),supported=c.stars?.supportedCount||0,total=c.stars?.catalogCount||50;
- return `<div class="card engine-audit"><span class="eyebrow">계산 엔진 상태</span><h3>계산한 것과 계산하지 않은 것을 구분합니다</h3><div class="audit-grid"><div><b>${calc.engineVersion||"—"}</b><span>엔진 버전</span></div><div><b>${supported}/${total}</b><span>신살 실제 계산</span></div><div><b>${c.startAgeExact!=null?c.startAgeExact.toFixed(3)+"세":"—"}</b><span>대운 시작 원값</span></div><div><b>${boundaries.length?"경계 주의":"일반 구간"}</b><span>정밀도 안내</span></div></div><div class="proof-badges"><span>${calc.solarTerms}</span><span>${calc.dayBoundary}</span><span>진태양시 ${calc.trueSolarTime?"적용":"미적용"}</span></div><p class="muted">원국·십성·지장간·12운성·합충형파해·10개 대운·세운·월운·일운·인생 타임라인·궁합 교차흐름을 한 엔진에서 계산합니다. 24절기는 태양의 겉보기 황경을 이용한 독립 천문 근사 계산이며, 경계 출생은 정밀 역서와 교차확인이 필요합니다. 역사적 DST/표준시 변경은 자동 적용하지 않습니다. 신살은 현재 ${supported}/${total}종만 실제 계산하고 나머지는 유파차이로 남깁니다.</p></div>`;
+ return `<div class="card engine-audit"><span class="eyebrow">계산 정보</span><h3>어떤 기준으로 계산했는지 확인할 수 있어요</h3><div class="audit-grid"><div><b>${calc.engineVersion||"—"}</b><span>엔진 버전</span></div><div><b>${supported}/${total}</b><span>신살 실제 계산</span></div><div><b>${c.startAgeExact!=null?c.startAgeExact.toFixed(3)+"세":"—"}</b><span>대운 시작 원값</span></div><div><b>${boundaries.length?"경계 주의":"일반 구간"}</b><span>정밀도 안내</span></div></div><div class="proof-badges"><span>${calc.solarTerms}</span><span>${calc.dayBoundary}</span><span>진태양시 ${calc.trueSolarTime?"적용":"미적용"}</span></div><p class="muted">원국·십성·지장간·12운성·합충형파해·10개 대운·세운·월운·일운·인생 타임라인·궁합 교차흐름을 한 엔진에서 계산합니다. 24절기는 태양의 겉보기 황경을 이용한 독립 천문 근사 계산이며, 경계 출생은 정밀 역서와 교차확인이 필요합니다. 역사적 DST/표준시 변경은 자동 적용하지 않습니다. 신살은 현재 ${supported}/${total}종만 실제 계산하고 나머지는 유파차이로 남깁니다.</p></div>`;
 }
 
 function all50StarsHTML(c){
@@ -770,11 +847,11 @@ function loadProfile(id){const p=savedProfiles().find(x=>x.id===id);if(!p)return
 function renderSavedProfiles(){const root=$("savedProfilesList");if(!root)return;const a=savedProfiles();root.innerHTML=a.length?a.map(p=>`<div class="saved-profile"><div><b>${esc(p.name)}</b><small>${p.year}.${p.month}.${p.day} · ${p.calendar}</small></div><div><button class="btn ghost" onclick="loadProfile(${p.id})">불러오기</button><button class="btn ghost" onclick="deleteProfile(${p.id})">삭제</button></div></div>`).join(""):`<p class="muted">아직 저장한 명식이 없습니다. 서버 전송 없이 이 브라우저에만 저장됩니다.</p>`}
 
 function foundationalHTML(c){const e=c.extras||{},n=e.nayin||{},v=e.void||{},roots=e.roots||[];const names={year:"년주",month:"월주",day:"일주",hour:"시주"};return `<div class="card"><span class="eyebrow">원국 심화 기초</span><h3>공망 · 납음 · 통근 표식</h3><div class="foundation-grid"><div class="foundation-item"><b>일주 공망</b><span>${(v.day||[]).join(" · ")||"—"}<br>60갑자 순 기준의 빈 지지 표식</span></div><div class="foundation-item"><b>년주 공망</b><span>${(v.year||[]).join(" · ")||"—"}<br>보조 기준으로 함께 표시</span></div>${Object.entries(n).filter(([k,x])=>x).map(([k,x])=>`<div class="foundation-item"><b>${names[k]} 납음</b><span>${x}</span></div>`).join("")}<div class="foundation-item"><b>일간 통근 기초</b><span>${roots.length?roots.map(x=>names[x.pillar]+" "+x.branch).join(" · "):"지장간에서 동일 천간 뿌리 표식 없음"}</span></div></div><p class="muted">공망·납음·통근은 보조 재료입니다. 이 항목 하나만으로 좋고 나쁨을 결정하지 않습니다. 특히 격국·용신은 월령·투출·통근·조후 등 판단법과 유파가 갈리므로 이 버전에서 자동 확정하지 않습니다.</p></div>`}
-function topicInterpretationHTML(c){const dm=c.dayMaster,dom=(c.elementSummary?.sorted||[])[0],weak=(c.elementSummary?.sorted||[]).slice(-1)[0];const current=activeLuckForYear(c,new Date().getFullYear());const topics=[["성격·강점",`${dm.stem} 일간을 중심으로 십성과 오행 배치를 읽습니다. 한 단어 성격유형으로 고정하지 않습니다.`],["일·직업",`관성·재성·식상의 배치와 현재 대운을 함께 확인합니다${current?` · 현재 대운 ${current.ko}`:""}. 특정 직업 성공을 보장하지 않습니다.`],["재물",`재성만 보지 않고 식상→재성의 흐름과 비겁·관성의 관계를 같이 봅니다. 투자 수익률을 예측하지 않습니다.`],["연애·관계",`일지와 배우자성, 합충형파해를 함께 봅니다. 특정 연도의 결혼·이별을 확정하지 않습니다.`],["생활 리듬",`오행 과부족은 생활 습관을 돌아보는 상징적 참고로만 사용합니다. 질병이나 의학적 상태를 진단하지 않습니다.`],["현재 흐름",`대운을 배경으로 올해 세운·월운·일운을 겹쳐 읽습니다. 짧은 운일수록 판단 비중을 낮춥니다.`]];return `<div class="card"><span class="eyebrow">분야별 종합 읽기</span><h3>한 항목이 아니라 구조를 함께 봅니다</h3><div class="topic-grid">${topics.map(x=>`<div class="topic-card"><b>${x[0]}</b><p>${x[1]}</p></div>`).join("")}</div></div>`}
+function topicInterpretationHTML(c){const dm=c.dayMaster,dom=(c.elementSummary?.sorted||[])[0],weak=(c.elementSummary?.sorted||[]).slice(-1)[0];const current=activeLuckForYear(c,new Date().getFullYear());const topics=[["성격·강점",`${dm.stem} 일간을 중심으로 십성과 오행 배치를 읽습니다. 한 단어 성격유형으로 고정하지 않습니다.`],["일·직업",`관성·재성·식상의 배치와 현재 대운을 함께 확인합니다${current?` · 현재 대운 ${current.ko}`:""}. 특정 직업 성공을 보장하지 않습니다.`],["재물",`재성만 보지 않고 식상→재성의 흐름과 비겁·관성의 관계를 같이 봅니다. 투자 수익률을 예측하지 않습니다.`],["연애·관계",`일지와 배우자성, 합충형파해를 함께 봅니다. 특정 연도의 결혼·이별을 확정하지 않습니다.`],["생활 리듬",`오행 과부족은 생활 습관을 돌아보는 상징적 참고로만 사용합니다. 질병이나 의학적 상태를 진단하지 않습니다.`],["현재 흐름",`대운을 배경으로 올해 세운·월운·일운을 겹쳐 읽습니다. 짧은 운일수록 판단 비중을 낮춥니다.`]];return `<div class="card"><span class="eyebrow">내 사주를 분야별로 보면</span><h3>성격부터 관계까지 한 흐름으로 읽어요</h3><div class="topic-grid">${topics.map(x=>`<div class="topic-card"><b>${x[0]}</b><p>${x[1]}</p></div>`).join("")}</div></div>`}
 function printGuiinResult(){window.print()}
 
 function calcReceiptHTML(c){const x=c.calculation||{},inp=c.input||{};const receipt=[`ENGINE ${x.engineVersion||"—"}`,`원국 ${c.pillars.year.ko} ${c.pillars.month.ko} ${c.pillars.day.ko}${c.pillars.hour?" "+c.pillars.hour.ko:""}`,`달력 ${inp.calendar} / ${inp.year}-${inp.month}-${inp.day}`,`일주경계 ${x.dayBoundary}`,`진태양시 ${x.trueSolarTime?"적용":"미적용"}${x.trueSolarCorrection!=null?" / "+Number(x.trueSolarCorrection).toFixed(2)+"분":""}`,`절기 ${x.solarTerms}`,`대운시작 ${c.startAgeText||("약 "+c.startAge+"세")} / 원값 ${c.startAgeExact!=null?c.startAgeExact.toFixed(4):"—"}세`,`신살 ${c.stars?.supportedCount||0}/${c.stars?.catalogCount||50} 실제 계산`].join("\n");return `<div class="card"><span class="eyebrow">계산 영수증</span><h3>같은 조건으로 다시 검증할 수 있습니다</h3><div class="receipt">${esc(receipt)}</div><p class="muted">이 영수증은 계산 기준 공개용이며 과학적 예측 정확도를 의미하지 않습니다.</p></div>`}
-function interpretationConfidenceHTML(c){const notes=[];if(nearBoundary(c.input).length)notes.push("절기·일주 경계에 가까워 외부 정밀 역서와 교차 확인을 권장합니다.");if(c.input.hourUnknown)notes.push("출생시간 미상이라 시주 기반 해석은 제외하거나 낮은 비중으로 봅니다.");if(!c.calculation.trueSolarTime)notes.push("진태양시를 적용하지 않은 표준시 기준 결과입니다.");return `<div class="card"><span class="eyebrow">해석 신뢰도 안내</span><h3>${notes.length?"확인할 조건이 있습니다":"입력·경계상 큰 주의 표식 없음"}</h3><div class="confidence-note">${notes.length?notes.map(x=>`• ${x}`).join("<br>"):"• 현재 입력값 기준으로 계산했습니다.<br>• 신살·12운성·합충형파해는 전통 명리의 해석 보조 지표이며 사건 확률이 아닙니다."}</div></div>`}
+function interpretationConfidenceHTML(c){const notes=[];if(nearBoundary(c.input).length)notes.push("절기·일주 경계에 가까워 외부 정밀 역서와 교차 확인을 권장합니다.");if(c.input.hourUnknown)notes.push("출생시간 미상이라 시주 기반 해석은 제외하거나 낮은 비중으로 봅니다.");if(!c.calculation.trueSolarTime)notes.push("진태양시를 적용하지 않은 표준시 기준 결과입니다.");return `<div class="card"><span class="eyebrow">결과 확인 안내</span><h3>${notes.length?"확인할 조건이 있습니다":"입력·경계상 큰 주의 표식 없음"}</h3><div class="confidence-note">${notes.length?notes.map(x=>`• ${x}`).join("<br>"):"• 현재 입력값 기준으로 계산했습니다.<br>• 신살·12운성·합충형파해는 전통 명리의 해석 보조 지표이며 사건 확률이 아닙니다."}</div></div>`}
 function jumpResult(id){document.getElementById(id)?.scrollIntoView({behavior:"smooth",block:"start"})}
 
 let GUIIN_CAL_YEAR=new Date().getFullYear(),GUIIN_CAL_MONTH=new Date().getMonth()+1;
@@ -799,6 +876,17 @@ function decadeRoadmapHTML(c){return lifeTimelineProHTML(c)}
 const GUIIN_GLOSSARY={"일간":"사주에서 ‘나’를 읽을 때 중심으로 보는 태어난 날의 천간이에요.","오행":"목·화·토·금·수 다섯 범주로 기운의 분포를 비교하는 전통적 분류예요.","십성":"나와 다른 글자의 관계를 비견·식신·재성·관성·인성 등으로 나눈 이름이에요.","지장간":"지지 안에 포함되어 있다고 보는 천간의 구성입니다.","12운성":"일간과 지지의 관계를 12단계 이름으로 표현한 전통적 분류예요. 점수표가 아닙니다.","대운":"약 10년 단위로 보는 큰 흐름이에요. 시작 나이는 절기와 성별·음양 규칙으로 계산합니다.","세운":"한 해의 간지를 원국과 비교해 보는 연간 흐름이에요.","합·충":"합은 연결, 충은 부딪힘·재조정의 표식으로 참고합니다. 사건을 확정하지 않습니다.","신살":"도화·역마·화개·귀인처럼 특정 조건을 이름 붙인 보조 지표예요. 유파 차이가 큽니다.","공망":"일주가 속한 旬에서 비어 있는 두 지지를 보는 전통 규칙이에요. 불운 확정 표시가 아닙니다."};
 function glossaryHTML(){return `<div class="card"><span class="eyebrow">초보자 사전</span><h3>어려운 말은 여기서 바로 확인</h3><div class="glossary-grid">${Object.entries(GUIIN_GLOSSARY).map(([k,v])=>`<details><summary>${k}</summary><p>${v}</p></details>`).join("")}</div></div>`}
 function personalizedFaqHTML(c){const mg=c.pillars.month.god||"비견",g=guiinGod(mg),cur=currentLuckOf(c),hi=strongest(elPct(c)),lo=weakest(elPct(c)),rels=natalRelations(c);const qs=[["제 사주에서 가장 먼저 봐야 하는 건 뭔가요?",`${c.dayMaster.stem}일간의 기본 성향, 월주에서 반복되는 ${g.name}, 그리고 현재 대운을 순서대로 보세요. 신살 하나보다 이 세 가지를 함께 보는 편이 정보량이 많아요.`],["오행이 적으면 나쁜 건가요?",`아니에요. ${lo}가 상대적으로 낮지만 결핍이나 불운 판정이 아닙니다. ${hi}의 익숙한 방식에 치우쳤을 때 ${guiinElement(lo)}도 선택지로 챙겨보라는 비교 지표에 가까워요.`],["돈복이 있나요?",`${moneyBranch(c)} 다만 실제 재물 판단은 수입, 지출, 부채, 저축, 계약 같은 현실 숫자가 기준이에요.`],["어떤 일이 잘 맞나요?",`${careerBranch(c)}이 계산상 눈에 띕니다. 직업명을 맞히기보다 어떤 업무 방식에서 성과가 반복되는지 확인하는 게 더 유용해요.`],["연애나 인간관계는 어떤 편인가요?",`${relationBranch(c)} 합·충이나 도화 같은 표식 하나로 좋은 인연·나쁜 인연을 정하지 않습니다.`],["지금 운이 좋은 건가요?",cur?`현재 ${cur.fromAge}–${cur.toAge}세 ${cur.ko} 대운은 ‘${guiinGod(cur.god).name}’이 주요 주제예요. 좋다/나쁘다보다 ${guiinGod(cur.god).core}을 어떻게 현실에서 쓰는지가 핵심입니다.`:"현재 나이는 제공된 대운 구간 밖이라 원국과 올해 흐름을 중심으로 보세요."],["신살이 많으면 센 사주인가요?",`신살 개수만으로 사주가 세다/약하다를 정하지 않아요. 현재 표시되는 신살은 원국 해석을 보조하는 체크표에 가깝습니다.`],["합이나 충이 있으면 큰일이 생기나요?",rels.length?`원국에 ${rels.slice(0,3).join(" · ")} 같은 관계 표식이 보이지만 사건 예고가 아닙니다. 합은 연결, 충·형·파·해는 차이와 재조정 가능성을 읽는 참고값이에요.`:"두드러진 관계 표식이 적더라도 실제 삶의 변화 가능성이 없다는 뜻은 아닙니다."]];return `<div class="card"><span class="eyebrow">내 사주 FAQ</span><h3>사람들이 가장 많이 궁금해하는 질문</h3><div class="faq-list">${qs.map(([q,a])=>`<details><summary>${q}</summary><p>${a}</p></details>`).join("")}</div></div>`}
+
+function releaseResultHero(c){
+ const el=(c.elementSummary?.sorted||[])[0]?.name||"오행";
+ const god=(c.pillars?.month?.god||"나만의 흐름");
+ const hour=c.pillars.hour?` · ${c.pillars.hour.ko}`:"";
+ return `<div class="card result-hero"><span class="eyebrow">나의 명식 요약</span><div class="hero-name">${esc(c.input.name)}님의 사주</div><div class="hero-pillars">${c.pillars.year.ko} · ${c.pillars.month.ko} · ${c.pillars.day.ko}${hour}<br>${c.dayMaster.stem}(${c.dayMaster.hanja}) 일간을 중심으로 타고난 구조와 현재 흐름을 함께 읽습니다.</div><div class="hero-keywords"><span>${c.dayMaster.stem}일간</span><span>${el} 흐름</span><span>${god}</span></div></div>`;
+}
+function releaseGuideHTML(){
+ return `<div class="card report-guide"><span class="eyebrow">결과 읽는 순서</span><h3>어려운 용어보다 내 이야기부터 보세요</h3><div class="guide-grid"><button onclick="document.getElementById('plainSummary')?.scrollIntoView({behavior:'smooth'})">① 한눈에 보기</button><button onclick="document.getElementById('lifetimeReport')?.scrollIntoView({behavior:'smooth'})">② 성격·직업</button><button onclick="document.getElementById('luckTimeline')?.scrollIntoView({behavior:'smooth'})">③ 대운 흐름</button><button onclick="document.getElementById('todaySection')?.scrollIntoView({behavior:'smooth'})">④ 올해·오늘</button><button onclick="document.getElementById('specialStars')?.scrollIntoView({behavior:'smooth'})">⑤ 신살·귀인</button><button onclick="document.querySelector('.calc-note')?.scrollIntoView({behavior:'smooth'})">⑥ 계산 근거</button></div></div>`;
+}
+
 function reportTocHTML(){return `<div class="card"><span class="eyebrow">결과 길잡이</span><div class="toc"><button onclick="document.getElementById('specialStars')?.scrollIntoView({behavior:'smooth'})">신살·귀인</button><button onclick="document.getElementById('todaySection')?.scrollIntoView({behavior:'smooth'})">오늘</button><button onclick="document.getElementById('luckTimeline')?.scrollIntoView({behavior:'smooth'})">대운</button><button onclick="document.getElementById('lifetimeReport')?.scrollIntoView({behavior:'smooth'})">평생사주</button></div></div>`}
 
 function yearReport(c){return enhancedYearFlow(c,yearNow)+enhancedMonths(c,yearNow)}
@@ -844,7 +932,7 @@ function renderAll(c){
  ${paidBlock(c)}
  ${foundationalHTML(c)}${topicInterpretationHTML(c)}${interpretationConfidenceHTML(c)}${calcReceiptHTML(c)}${dailyCalendarHTML(c)}${calendarConversionHTML(c)}<div class="card result-actions"><button class="btn ghost" onclick="saveCurrentProfile()">명식 저장</button><button class="btn ghost" onclick="copyResultSummary()">결과 요약 복사</button><button class="btn ghost" onclick="exportResultJSON()">계산 데이터 저장</button><button class="btn ghost" onclick="printGuiinResult()">인쇄/PDF</button></div><div class="card trust-card"><span class="eyebrow">귀인사주의 원칙</span><h3>맞히는 척보다, 왜 그렇게 읽었는지 보여드려요.</h3><p class="muted">같은 문장을 누구에게나 붙이지 않고 입력된 명식의 기본 성향, 사회생활의 반복 주제, 오행 분포, 지지 속 기운, 원국의 관계, 10년 흐름과 올해 흐름을 함께 비교합니다. 본문은 일·돈·관계·생활처럼 이해하기 쉬운 말로 풀고, 전문 명리 용어는 ‘풀이 근거 보기’에서 확인할 수 있게 분리했습니다.</p></div>
  <div class="disclaimer">본 서비스는 명리학 원국 계산과 규칙 기반 해설을 제공하는 참고용입니다. 의료·법률·투자·결혼 결정을 대신하지 않습니다. 절기 시각은 근사치입니다. 진태양시·출생지 경도 보정은 비교 기능으로 제공하며 기본 원국에는 자동 적용하지 않습니다.<br>명리학은 전통적 해석 체계이며 과학적으로 미래를 예측하는 방법으로 검증된 것은 아닙니다.</div>`;
- if($("result"))$("result").insertAdjacentHTML("afterbegin",`<div class="result-actions"><button class="btn ghost" onclick="copyResultText(\'result\')">결과 복사</button><button class="btn ghost" onclick="go(\'home\')">홈으로</button></div>`);
+ if($("result"))$("result").insertAdjacentHTML("afterbegin",`${releaseResultHero(c)}${releaseGuideHTML()}<div class="result-actions"><button class="btn ghost" onclick="copyResultText(\'result\')">결과 복사</button><button class="btn ghost" onclick="go(\'home\')">홈으로</button></div>`);
  if($("result"))$("result").insertAdjacentHTML("afterbegin",calculationBasis(c));
  applyResultFocus();
  setTimeout(()=>{try{renderSelectedFlow()}catch(e){}},0);
@@ -926,8 +1014,8 @@ function submitMatch(){
   const score=Math.max(35,Math.min(95,base+elementBonus+combineBonus-clashPenalty));
   const tone=score>=80?"연결 신호가 비교적 많은 편":score>=65?"보완과 조정이 함께 필요한 편":"차이를 확인하며 합의 방식을 만드는 편";
   const detail=compatDetail(a,b,score,rel)+compatTimingHTML(a,b);matchLast={a,b,score,rel};matchUnlocked=isDemoUnlocked("compat",a)&&isDemoUnlocked("compat-pair",b)&&demoState()["pair|"+chartKey(a)+"|"+chartKey(b)]===true;
-  $("matchResult").innerHTML=`<div class="result-actions"><button class="btn ghost" onclick="copyResultText('matchResult')">결과 복사</button><button class="btn ghost" onclick="go('home')">홈으로</button></div><div class="card"><span class="eyebrow">무료 궁합</span><h3>${esc(ai.name)} × ${esc(bi.name)}</h3><div class="score">${score}<small style="font-size:15px">점</small></div><p class="muted">${tone}으로 읽힙니다. 점수는 관계의 성공률이 아니라 현재 엔진이 비교하는 일간 오행과 교차 합·충·형·파·해·삼합을 숫자로 단순화한 참고 지표입니다.</p><div class="scoreparts"><div class="scorepart"><b>${same?"+8":"0"}</b><span>일간 오행</span></div><div class="scorepart"><b>+${combineBonus}</b><span>합 신호</span></div><div class="scorepart"><b>-${clashPenalty}</b><span>조정 신호</span></div></div><div class="relchips">${rel.length?rel.slice(0,6).map(x=>`<span>${x}</span>`).join(""):"<span>두드러진 합·충 신호 적음</span>"}</div><div class="previewline"><b>합·충 메모</b><div class="muted">${combines?"합 신호는 서로 연결되고 보완하려는 지점으로 참고할 수 있습니다.":"강한 합 신호보다 생활 속 합의 방식이 더 중요할 수 있습니다."}<br>${clashes?"충 신호는 갈등 확정이 아니라 속도·기준을 재조정할 필요가 생길 수 있다는 표시입니다.":"두드러진 충 신호가 적더라도 실제 관계의 대화와 경계가 우선입니다."}</div></div></div>
-  <div class="card"><span class="eyebrow">상세 궁합 리포트</span><h3>관계를 10개 영역으로 읽기</h3><div id="compatLock" class="detail-lock ${matchUnlocked?"unlocked":""}"><div class="locked-content">${detail}</div><div class="lock-cover"><div class="lock-panel"><b>2,900원 · 상세 궁합</b><p>현재는 결제 연결 전 단계입니다. 아래 버튼은 상세 리포트 구조를 확인하기 위한 데모 잠금 해제입니다.</p><button class="btn gold" onclick="unlockCompat()">2,900원 · 데모 잠금 해제</button><p style="margin-top:7px">실제 결제는 발생하지 않습니다.</p></div></div></div></div>
+  $("matchResult").innerHTML=`<div class="result-actions"><button class="btn ghost" onclick="copyResultText('matchResult')">결과 복사</button><button class="btn ghost" onclick="go('home')">홈으로</button></div><div class="card match-hero"><span class="eyebrow">우리 궁합 요약</span><div class="pair-title">${esc(ai.name)} × ${esc(bi.name)}</div><div class="pair-sub">두 사람의 명식을 겹쳐 보며 잘 맞는 지점과 조율이 필요한 지점을 함께 봅니다.</div><div class="score">${score}<small style="font-size:15px">점</small></div><p class="muted">${tone}으로 읽힙니다. 점수 하나로 관계를 단정하지 않고 아래에서 합·충과 생활 차이를 차례로 설명해드려요.</p><div class="scoreparts"><div class="scorepart"><b>${same?"+8":"0"}</b><span>일간 오행</span></div><div class="scorepart"><b>+${combineBonus}</b><span>합 신호</span></div><div class="scorepart"><b>-${clashPenalty}</b><span>조정 신호</span></div></div><div class="relchips">${rel.length?rel.slice(0,6).map(x=>`<span>${x}</span>`).join(""):"<span>두드러진 합·충 신호 적음</span>"}</div><div class="previewline"><b>합·충 메모</b><div class="muted">${combines?"합 신호는 서로 연결되고 보완하려는 지점으로 참고할 수 있습니다.":"강한 합 신호보다 생활 속 합의 방식이 더 중요할 수 있습니다."}<br>${clashes?"충 신호는 갈등 확정이 아니라 속도·기준을 재조정할 필요가 생길 수 있다는 표시입니다.":"두드러진 충 신호가 적더라도 실제 관계의 대화와 경계가 우선입니다."}</div></div></div>
+  <div class="result-divider">두 사람을 더 자세히 보면</div><div class="card"><span class="eyebrow">상세 궁합 리포트</span><h3>관계를 10개 영역으로 차근차근 읽어요</h3><div id="compatLock" class="detail-lock ${matchUnlocked?"unlocked":""}"><div class="locked-content">${detail}</div><div class="lock-cover"><div class="lock-panel"><b>2,900원 · 상세 궁합</b><p>현재는 결제 연결 전 단계입니다. 아래 버튼은 상세 리포트 구조를 확인하기 위한 데모 잠금 해제입니다.</p><button class="btn gold" onclick="unlockCompat()">2,900원 · 데모 잠금 해제</button><p style="margin-top:7px">실제 결제는 발생하지 않습니다.</p></div></div></div></div>
   <div class="card trust-card"><span class="eyebrow">귀인사주의 원칙</span><h3>맞히는 척보다, 왜 그렇게 읽었는지 보여드려요.</h3><p class="muted">같은 문장을 누구에게나 붙이지 않고 입력된 명식의 기본 성향, 사회생활의 반복 주제, 오행 분포, 지지 속 기운, 원국의 관계, 10년 흐름과 올해 흐름을 함께 비교합니다. 본문은 일·돈·관계·생활처럼 이해하기 쉬운 말로 풀고, 전문 명리 용어는 ‘풀이 근거 보기’에서 확인할 수 있게 분리했습니다.</p></div>
  <div class="disclaimer">본 서비스는 명리학 원국 계산과 규칙 기반 해설을 제공하는 참고용입니다. 의료·법률·투자·결혼 결정을 대신하지 않습니다. 절기 시각은 근사치입니다. 진태양시·출생지 경도 보정은 비교 기능으로 제공하며 기본 원국에는 자동 적용하지 않습니다.<br>명리학은 전통적 해석 체계이며 과학적으로 미래를 예측하는 방법으로 검증된 것은 아닙니다.</div>`;
  }catch(e){showError("matchError","궁합 계산 중 문제가 생겼습니다. 입력값을 다시 확인해 주세요.");console.error(e)}
