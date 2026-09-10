@@ -175,7 +175,7 @@ const STEM_COMB={갑:"기",기:"갑",을:"경",경:"을",병:"신",신:"병",정
 const BR_COMB={자:"축",축:"자",인:"해",해:"인",묘:"술",술:"묘",진:"유",유:"진",사:"신",신:"사",오:"미",미:"오"};
 const BR_CLASH={자:"오",오:"자",축:"미",미:"축",인:"신",신:"인",묘:"유",유:"묘",진:"술",술:"진",사:"해",해:"사"};
 const yearNow=new Date().getFullYear();
-const GUIIN_RELEASE="2026.09-relations";const DEMO_VERSION="1.2.0-research";
+const GUIIN_RELEASE="2026.09-flow";const DEMO_VERSION="1.2.0-research";
 let activeService="saju", matchLast=null, matchUnlocked=false;
 
 document.querySelectorAll("#genderSeg button").forEach(b=>b.onclick=()=>{document.querySelectorAll("#genderSeg button").forEach(x=>x.classList.remove("on"));b.classList.add("on");gender=b.dataset.v});
@@ -581,7 +581,7 @@ function twelveStageHTML(c){
 }
 function annualPillarSimple(y){
  const si=((y-4)%10+10)%10, bi=((y-4)%12+12)%12;
- return {stemIndex:si,branchIndex:bi,ko:(GuiinSaju.STEMS_KO?GuiinSaju.STEMS_KO[si]:"")+ (GuiinSaju.BRANCHES_KO?GuiinSaju.BRANCHES_KO[bi]:"")};
+ return GuiinSaju.pillarName(si,bi);
 }
 function annualStarTimeline(c){
  const now=new Date().getFullYear(), years=[];
@@ -589,7 +589,7 @@ function annualStarTimeline(c){
    const p=annualPillarSimple(y);
    const pseudo={year:p,month:c.pillars.month,day:c.pillars.day,hour:c.pillars.hour};
    let hits=[];
-   try{hits=GuiinSaju.specialStars(pseudo,c.dayMaster.stemIndex).filter(h=>h.pillar==="year");}catch(e){}
+   try{hits=GuiinSaju.specialStars(pseudo,GuiinSaju.STEMS.indexOf(c.dayMaster.stem)).filter(h=>h.pillar==="year");}catch(e){}
    const names=[...new Set(hits.map(h=>h.name))].filter(n=>["도화살","홍염살","역마살","화개살","천을귀인","문창귀인","태극귀인","장성살","반안살"].includes(n));
    years.push({y,p,names});
  }
@@ -603,15 +603,47 @@ function lifeManualHTML(c){
  <div><b>일할 때</b><p>${careerBranch(c)}</p></div>
  <div><b>돈을 다룰 때</b><p>${moneyBranch(c)}</p></div>
  <div><b>사람을 만날 때</b><p>${relationBranch(c)}</p></div>
- <div><b>내가 잘 쓰는 힘</b><p>${hiPlain.name} 쪽이 상대적으로 잘 드러나요. ${hiPlain.plain}</p></div>
- <div><b>의식해서 보완할 부분</b><p>${loPlain.name} 쪽은 숫자가 낮게 보이지만 부족=나쁨은 아니에요. ${loPlain.plain}을 생활 습관으로 보완해 보는 정도가 적당해요.</p></div>
+ <div><b>내가 잘 쓰는 힘</b><p>${hi} 기운이 상대적으로 잘 드러나요. ${hiPlain}</p></div>
+ <div><b>의식해서 보완할 부분</b><p>${lo} 기운은 숫자가 낮게 보이지만 부족=나쁨은 아니에요. ${loPlain}을 생활 습관으로 보완해 보는 정도가 적당해요.</p></div>
  <div><b>특별한 기운</b><p>${top?`${top.name}이 ${top.count}개 보여요. ${top.meta.short||""}`:"대표 신살보다 원국 전체의 균형을 먼저 보는 편이 좋아요."}</p></div>
  <div><b>지금의 흐름</b><p>${cur?`${guiinGod(cur.god).name}이 중심 주제인 10년이에요. ${guiinGod(cur.god).core}`:"현재 10년 운 구간보다 원국과 올해 흐름을 중심으로 읽어요."}</p></div>
  </div></div>`;
 }
 function shareCardHTML(c){
  const rows=starSummary(c).slice(0,3), pct=elPct(c), hi=strongest(pct);
- return `<div class="card share-saju"><span class="eyebrow">캡처용 · 나의 사주 카드</span><h3>${esc(c.input.name||"나")}의 귀인사주</h3><div class="share-main"><b>${c.pillars.day.ko} 일주</b><span>${guiinElement(hi).name}</span></div><div class="share-tags">${rows.length?rows.map(x=>`<span>${x.name} ${x.count}</span>`).join(""):"<span>원국 균형형</span>"}</div><p>${dmVoice(c.dayMaster.stem,c.pillars.month.god||"비견")}</p><small>전통 명리 해석을 쉽게 풀어본 참고용 카드</small></div>`;
+ return `<div class="card share-saju"><span class="eyebrow">캡처용 · 나의 사주 카드</span><h3>${esc(c.input.name||"나")}의 귀인사주</h3><div class="share-main"><b>${c.pillars.day.ko} 일주</b><span>${hi} · ${guiinElement(hi)}</span></div><div class="share-tags">${rows.length?rows.map(x=>`<span>${x.name} ${x.count}</span>`).join(""):"<span>원국 균형형</span>"}</div><p>${dmVoice(c.dayMaster.stem,c.pillars.month.god||"비견")}</p><small>전통 명리 해석을 쉽게 풀어본 참고용 카드</small></div>`;
+}
+
+
+function flowLayerCard(title,p,dayStemIdx,caption){
+ const god=GuiinSaju.tenGod(dayStemIdx,p.stemIndex), g=guiinGod(god), stage=GuiinSaju.twelveStage(dayStemIdx,p.branchIndex);
+ return `<div class="detail"><b>${title} · ${p.ko}</b><p><strong>${g.name}</strong> · ${caption}<br>${g.core}<br><small>12운성 ${stage} · 좋고 나쁨의 점수가 아니라 이 시기 기운의 작동 단계로 참고해요.</small></p></div>`;
+}
+function currentFlowHTML(c){
+ const now=new Date(), dayStemIdx=GuiinSaju.STEMS.indexOf(c.dayMaster.stem), cur=currentLuckOf(c);
+ let tc;try{tc=calc({name:"흐름",gender:c.input.gender||"여",calendar:"양력",year:now.getFullYear(),month:now.getMonth()+1,day:now.getDate(),hour:12,minute:0,hourUnknown:false});}catch(e){return "";}
+ const cards=[];
+ if(cur)cards.push(flowLayerCard("10년 흐름",cur,dayStemIdx,"지금 삶의 큰 배경"));
+ cards.push(flowLayerCard("올해",tc.pillars.year,dayStemIdx,"올해 반복해서 의식할 주제"));
+ cards.push(flowLayerCard("이번 달",tc.pillars.month,dayStemIdx,"이번 달의 실행 리듬"));
+ cards.push(flowLayerCard("오늘",tc.pillars.day,dayStemIdx,"하루 컨디션과 일정 조율"));
+ return `<div class="card"><span class="eyebrow">대운 → 세운 → 월운 → 일운</span><h3>큰 흐름부터 오늘까지</h3><p class="muted">10년 배경을 먼저 보고, 올해와 이번 달을 좁혀 본 뒤 오늘은 작은 날씨처럼 참고해요. 하루 운만으로 큰 결정을 단정하지 않습니다.</p><div class="six">${cards.join("")}</div><p class="tiny-note">절기 경계 시각은 현재 엔진의 근사 계산을 사용하므로 경계일에는 전문 만세력과 차이가 날 수 있습니다.</p></div>`;
+}
+function aiPromptTemplatesHTML(c){
+ const cur=currentLuckOf(c), base=`내 사주: ${c.pillars.year.ko}년주 / ${c.pillars.month.ko}월주 / ${c.pillars.day.ko}일주${c.pillars.hour?` / ${c.pillars.hour.ko}시주`:" / 출생시간 미상"}. 일간 ${c.dayMaster.stem}, 현재 대운 ${cur?cur.ko+"("+cur.god+")":"범위 밖"}.`;
+ const qs=[
+ "평생 전체 흐름을 성격·강점·주의할 습관 순서로 쉬운 말로 설명해줘.",
+ "내 사주에서 직업과 사업을 볼 때 근거가 되는 오행·십성·대운을 나눠 설명해줘.",
+ "재물운을 수입·지출·저축·사업 현금흐름 관점으로 과장 없이 설명해줘.",
+ "연애에서 반복되기 쉬운 관계 패턴과 소통할 때 주의할 점을 설명해줘.",
+ "결혼이나 장기 관계를 단정하지 말고 내가 확인해야 할 현실 조건과 사주상 관계 성향을 구분해줘.",
+ "올해 세운이 현재 대운과 만날 때 어떤 생활 주제가 강조되는지 설명해줘.",
+ "이번 달 흐름을 일·돈·관계·컨디션 네 영역으로 짧고 실용적으로 정리해줘.",
+ "현재 대운이 이전 대운과 무엇이 달라졌는지, 전환기에 체감할 수 있는 변화를 설명해줘.",
+ "내 신살과 귀인을 무섭게 단정하지 말고 원국의 어느 자리에서 어떤 보조 의미가 있는지 설명해줘.",
+ "궁합을 볼 때 합충 하나로 결론내리지 말고 서로의 일간·오행·십성·대운을 함께 비교해줘."
+ ];
+ return `<div class="card"><span class="eyebrow">AI 상담용</span><h3>질문 템플릿 10개</h3><p class="muted">가짜 AI 상담 기능이 아니라, 다른 AI 상담에 붙여넣어 더 구체적으로 질문할 수 있는 복사용 문장입니다.</p>${qs.map((q,i)=>`<details class="calc-note"><summary>${i+1}. ${["평생 총론","직업·사업","재물","연애","결혼·장기관계","올해","이번 달","대운 전환","신살·귀인","궁합"][i]}</summary><div class="calc-body">${base}<br><br>${q}</div></details>`).join("")}</div>`;
 }
 
 function all50StarsHTML(c){
@@ -665,7 +697,9 @@ function renderAll(c){
  ${hiddenStemHTML(c)}
  ${relationMapHTML(c)}
  ${annualStarTimeline(c)}
+ ${currentFlowHTML(c)}
  ${lifeManualHTML(c)}
+ ${aiPromptTemplatesHTML(c)}
  ${shareCardHTML(c)}
  <div id="todaySection" class="card"><div class="previewline"><b>오늘의 운세</b><div class="muted">${dailyReport(c)}</div></div><div class="previewline"><b>나를 이해하는 한 줄</b><div class="muted">${dmVoice(c.dayMaster.stem,c.pillars.month.god||"비견")}</div></div><div class="previewline"><b>지금의 10년 흐름</b><div class="muted">${cur?`${cur.fromAge}–${cur.toAge}세 · ${guiinGod(cur.god).name}<br>${dmVoice(c.dayMaster.stem,cur.god)}`:`첫 10년 운은 약 ${c.startAge}세부터 시작합니다. 현재 나이는 제공된 구간 밖이라 원국과 올해 흐름을 중심으로 읽습니다.`}</div></div></div>
  <div id="luckTimeline" class="card"><h3>대운 타임라인</h3><div class="luckstrip">${c.luck.map(p=>`<div class="luckpill ${p===cur?"now":""}"><b>${guiinGod(p.god).name}</b><span>${p.fromAge}–${p.toAge}세</span></div>`).join("")}</div><p class="muted">약 ${c.startAge}세부터 10년 단위로 흐름을 봅니다. 계산 방향과 간지는 위의 ‘계산 기준 · 신뢰 안내’에서 확인할 수 있어요.</p></div>

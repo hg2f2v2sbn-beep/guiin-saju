@@ -346,7 +346,7 @@
       stars: specialStars({year:yearP,month:monthP,day:dayP,hour:hourP}, dayStem),
       twelveStages: twelveStagesForPillars({year:yearP,month:monthP,day:dayP,hour:hourP}, dayStem),
       calculation: {
-        engineVersion: "1.6.0-relations",
+        engineVersion: "1.7.0-flow",
         solarTerms: "근사 절기식",
         timezone: "KST UTC+9",
         trueSolarTime: false,
