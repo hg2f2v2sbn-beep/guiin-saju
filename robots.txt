@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+# 전용 도메인을 연결한 뒤 아래 Sitemap 주소를 실제 도메인으로 바꿔주세요.
+Sitemap: https://hg2f2v2sbn-beep.github.io/guiin-saju/sitemap.xml
