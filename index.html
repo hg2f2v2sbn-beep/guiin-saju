@@ -135,6 +135,16 @@ html{background:#efe7d7}.app{background:linear-gradient(180deg,#fffaf0 0%,#fff6e
 .tabs button.on{background:#cf9e3d}.tabs.green button.on{background:#285d32}.summaryHero{background:linear-gradient(145deg,#f4f8df,#fff0cd)}
 .readingCard{border-color:#eee1c8!important;background:#fffdf8!important}.readingCard .readingHead{color:#285d32}.starCard{background:linear-gradient(145deg,#fff9e8,#fffdf8)!important}
 .bottom .flower{background:linear-gradient(135deg,#e4bb58,#a8781f)}.bottom button.active{color:#9b7225}
+.creditBar{display:flex;justify-content:space-between;align-items:center;background:linear-gradient(135deg,#285d32,#3d7a48);color:#fff;border-radius:18px;padding:14px 16px;margin:10px 0}
+.creditBar b{font-size:22px}
+.msgs{min-height:280px;max-height:48vh;overflow:auto;padding:6px 2px 10px}
+.bubble{max-width:84%;padding:10px 12px;border-radius:16px;margin:8px 0;font-size:14px;line-height:1.55}
+.bubble.me{margin-left:auto;background:#285d32;color:#fff;border-bottom-right-radius:4px}
+.bubble.bot{background:#fff;border:1px solid var(--line);border-bottom-left-radius:4px}
+.sysnote{text-align:center;font-size:11px;color:#8a8378;margin:8px 0}
+.composer{display:flex;gap:8px}.composer input{flex:1}
+.qchip{display:inline-block;background:#f5f0e4;border-radius:999px;padding:6px 10px;font-size:12px;margin:3px 4px 3px 0;border:0}
+.adminNote{font-size:12px;color:#7a7368;line-height:1.5}
 </style>
 </head>
 <body>
@@ -158,7 +168,7 @@ html{background:#efe7d7}.app{background:linear-gradient(180deg,#fffaf0 0%,#fff6e
     <h1>귀인사주</h1>
     <div class="copy">지금의 고민이<br>더 좋은 내일로 이어지길.</div>
     <div class="heroArt"><img src="brand-home.jpg" alt="귀인사주"></div>
-    <button class="ctaGreen" onclick="go('saju')">사주상담 시작하기 ›</button>
+    <button class="ctaGreen" onclick="go('ask')">사주상담 시작하기 ›</button>
   </div>
 
   <div class="tiles">
@@ -167,7 +177,7 @@ html{background:#efe7d7}.app{background:linear-gradient(180deg,#fffaf0 0%,#fff6e
     <div class="tile"><div class="ico"><svg viewBox="0 0 24 24"><path d="M12 20s-8-4.8-8-10a4.5 4.5 0 018-2.8A4.5 4.5 0 0120 10c0 5.2-8 10-8 10z" fill="currentColor"/></svg></div><span class="badge">2,900원 · 결제 준비중</span><b>우리 궁합</b><p>두 사람의 인연과 갈등, 결혼 흐름까지</p><button onclick="go('match')">궁합 보기 ›</button></div>
     <div class="tile"><div class="ico"><svg viewBox="0 0 24 24"><path d="M4 20V10h3v10H4zm6 0V5h3v15h-3zm6 0V2h3v18h-3z" fill="currentColor"/></svg></div><b>대운·세운·연운</b><p>10년 단위 대운과 올해의 흐름</p><button onclick="openResultTab('flow')">운의 흐름 보기 ›</button></div>
     <div class="tile"><div class="ico"><svg viewBox="0 0 24 24"><path d="M12 21V10M12 10C6 10 4 7 4 3c5 0 8 2 8 7zm0 0c6 0 8-3 8-7-5 0-8 2-8 7z" fill="currentColor"/></svg></div><b>내 사주관리</b><p>저장한 프로필로 더 빠르고 편리하게</p><button onclick="go('mypage')">내 프로필 보기 ›</button></div>
-    <div class="tile"><div class="ico"><svg viewBox="0 0 24 24"><path d="M12 2l3 6 6 .8-4.5 4.4 1.2 6.2L12 16.5 6.3 19.4l1.2-6.2L3 8.8 9 8z" fill="currentColor"/></svg></div><b>이용가이드</b><p>처음 오셨나요? 귀인사주 이용법</p><button onclick="window.location='cheon-eul-gwiin.html'">가이드 보기 ›</button></div>
+    <div class="tile"><div class="ico"><svg viewBox="0 0 24 24"><path d="M12 2l3 6 6 .8-4.5 4.4 1.2 6.2L12 16.5 6.3 19.4l1.2-6.2L3 8.8 9 8z" fill="currentColor"/></svg></div><b>사주에게 묻기</b><p>질문 1회 990원 · 사주아이로 차감되며 이어서 대화</p><button onclick="go('ask')">질문하러 가기 ›</button></div>
   </div>
 
   <div class="slogan card"><b>좋은 인연이, 좋은 운을 만듭니다.</b><br>귀인사주는 당신의 오늘이 조금 더 빛나길 응원합니다.</div>
@@ -277,12 +287,73 @@ html{background:#efe7d7}.app{background:linear-gradient(180deg,#fffaf0 0%,#fff6e
   </div>
   <div class="slogan card"><b>좋은 인연이, 좋은 하루를 만듭니다.</b><br>귀인사주와 함께할게요.</div>
   <div class="footerArt"><img src="mypage-animals.jpg" alt=""></div>
+  <button class="ctaGold" onclick="go('admin')">홈 문구 수정하기 ›</button>
+</section>
+
+<section id="ask" class="screen">
+  <div class="topbar">
+    <button class="ghost" onclick="go('home')" aria-label="뒤로"><svg viewBox="0 0 24 24" width="20" height="20"><path d="M15 5l-7 7 7 7" fill="none" stroke="currentColor" stroke-width="2"/></svg></button>
+    <div class="brand"><div class="brandline">사주에게 묻기</div></div>
+    <button class="ghost" onclick="go('wallet')">사주아이</button>
+  </div>
+  <div class="creditBar"><div><div style="font-size:12px;opacity:.85">보유 사주아이</div><b id="coinView">0</b><span style="font-size:13px"> 개</span></div><button class="ctaGold" style="width:auto;margin:0;padding:10px 14px" onclick="go('wallet')">충전하기</button></div>
+  <p class="adminNote">질문 1회마다 사주아이 1개(990원)가 차감됩니다. 같은 대화에서 이어서 물어볼 수 있어요. 실제 PG 결제는 아직 연결 전이며, 충전은 데모입니다.</p>
+  <div class="msgs" id="msgs">
+    <div class="sysnote">귀인사주 상담이 시작되었습니다</div>
+    <div class="bubble bot" id="welcomeBot">사주를 먼저 계산해 두면 원국 기준으로 답합니다. 직업, 연애, 올해 흐름 중 무엇이 궁금한가요?</div>
+  </div>
+  <div>
+    <button class="qchip" type="button" onclick="sendQ('올해 재물운이 어떤가요?')">올해 재물운</button>
+    <button class="qchip" type="button" onclick="sendQ('지금 이직해도 될까요?')">이직 타이밍</button>
+    <button class="qchip" type="button" onclick="sendQ('연애운이 언제 들어올까요?')">연애 시기</button>
+  </div>
+  <div class="composer" style="margin-top:8px">
+    <input id="askQ" placeholder="궁금한 점을 물어보세요" onkeydown="if(event.key==='Enter')sendQ()">
+    <button class="ctaGreen" style="min-width:88px" onclick="sendQ()">보내기</button>
+  </div>
+</section>
+
+<section id="wallet" class="screen">
+  <div class="topbar">
+    <button class="ghost" onclick="go('ask')" aria-label="뒤로"><svg viewBox="0 0 24 24" width="20" height="20"><path d="M15 5l-7 7 7 7" fill="none" stroke="currentColor" stroke-width="2"/></svg></button>
+    <div class="brand"><div class="brandline">사주아이 충전</div></div>
+    <span></span>
+  </div>
+  <div class="formCard card">
+    <p class="adminNote">1 사주아이 = 990원. 평생사주와 같은 단위입니다. 지금은 결제 준비중이라 데모 충전만 됩니다.</p>
+    <div class="row2">
+      <button class="ctaGold" onclick="charge(1)">1개 · 990원</button>
+      <button class="ctaGold" onclick="charge(3)">3개 · 2,970원</button>
+      <button class="ctaGold" onclick="charge(5)">5개 · 4,950원</button>
+      <button class="ctaGold" onclick="charge(10)">10개 · 9,900원</button>
+    </div>
+    <p id="payMsg" class="adminNote"></p>
+  </div>
+  <div class="infoCard card"><h3>이용 내역</h3><div id="ledger" class="adminNote">아직 내역이 없습니다.</div></div>
+</section>
+
+<section id="admin" class="screen">
+  <div class="topbar">
+    <button class="ghost" onclick="go('mypage')" aria-label="뒤로"><svg viewBox="0 0 24 24" width="20" height="20"><path d="M15 5l-7 7 7 7" fill="none" stroke="currentColor" stroke-width="2"/></svg></button>
+    <div class="brand"><div class="brandline">콘텐츠 수정</div></div>
+    <span></span>
+  </div>
+  <div class="formCard card">
+    <p class="adminNote">여기서 고친 문구는 이 기기 홈·상담 화면에 바로 반영됩니다. 서버 배포용이 아니라 브라우저 저장입니다.</p>
+    <label>브랜드 한 줄</label><input id="fSub">
+    <label>오늘의 운세 설명</label><input id="fDaily">
+    <label>평생사주 설명</label><input id="fLife">
+    <label>궁합 설명</label><input id="fGung">
+    <label>상담 첫 인사</label><textarea id="fWelcome" style="width:100%;min-height:88px;border:1px solid #e4dccd;border-radius:13px;padding:10px"></textarea>
+    <button class="ctaGold" onclick="saveCopy()">저장하고 홈에 반영</button>
+    <p id="saveMsg" class="adminNote"></p>
+  </div>
 </section>
 
 <nav class="bottom">
   <button id="navHome" class="active" onclick="go('home')"><svg viewBox="0 0 24 24"><path d="M4 11l8-7 8 7v9H6v-9" fill="none" stroke="currentColor" stroke-width="1.7"/><path d="M9 20v-6h6v6" fill="none" stroke="currentColor" stroke-width="1.7"/></svg>홈</button>
   <button id="navSaju" onclick="go('saju')"><svg viewBox="0 0 24 24"><circle cx="12" cy="8" r="3" fill="none" stroke="currentColor" stroke-width="1.7"/><path d="M6 21c0-4 2.5-7 6-7s6 3 6 7" fill="none" stroke="currentColor" stroke-width="1.7"/></svg>내 사주</button>
-  <button class="flower" onclick="go('saju')" aria-label="사주 보기"><svg viewBox="0 0 24 24"><g fill="currentColor"><ellipse cx="12" cy="6.8" rx="3" ry="4.5"/><ellipse cx="17.2" cy="12" rx="4.5" ry="3"/><ellipse cx="12" cy="17.2" rx="3" ry="4.5"/><ellipse cx="6.8" cy="12" rx="4.5" ry="3"/></g><circle cx="12" cy="12" r="2.1" fill="#fff8dc"/></svg></button>
+  <button class="flower" onclick="go('ask')" aria-label="사주에게 묻기"><svg viewBox="0 0 24 24"><g fill="currentColor"><ellipse cx="12" cy="6.8" rx="3" ry="4.5"/><ellipse cx="17.2" cy="12" rx="4.5" ry="3"/><ellipse cx="12" cy="17.2" rx="3" ry="4.5"/><ellipse cx="6.8" cy="12" rx="4.5" ry="3"/></g><circle cx="12" cy="12" r="2.1" fill="#fff8dc"/></svg></button>
   <button onclick="go('today')"><svg viewBox="0 0 24 24"><rect x="5" y="4" width="14" height="16" rx="2" fill="none" stroke="currentColor" stroke-width="1.7"/><path d="M8 8h8M8 12h8M8 16h5" stroke="currentColor" stroke-width="1.7"/></svg>이용내역</button>
   <button id="navMy" onclick="go('mypage')"><svg viewBox="0 0 24 24"><circle cx="12" cy="8" r="3" fill="none" stroke="currentColor" stroke-width="1.7"/><path d="M6 21c0-4 2.5-7 6-7s6 3 6 7" fill="none" stroke="currentColor" stroke-width="1.7"/></svg>마이페이지</button>
 </nav>
@@ -551,7 +622,57 @@ function renderToday(){
   <div class="slogan card"><b>오늘의 조언</b><br>좋은 사람들과의 소중한 시간을 더 만들어 보세요.</div><button class="ctaGold">상세 운세 보기 ›</button>`;
 }
 restoreProfile();renderToday();
-const h=location.hash.replace('#','');if(['home','saju','result','match','matchResult','today','mypage'].includes(h))go(h);
+const COPY_KEY='guiin_copy_v1', COIN_KEY='guiin_coins_v1';
+const defaultCopy={sub:'좋은 인연이, 좋은 운을 만듭니다.',daily:'오늘 나에게 들어오는 기운과 주의할 점',life:'성격, 직업, 재물, 연애, 대운까지',gung:'두 사람의 인연과 갈등, 결혼 흐름까지',welcome:'사주를 먼저 계산해 두면 원국 기준으로 답합니다. 직업, 연애, 올해 흐름 중 무엇이 궁금한가요?'};
+function loadCopy(){try{return Object.assign({},defaultCopy,JSON.parse(localStorage.getItem(COPY_KEY)||'{}'))}catch(e){return Object.assign({},defaultCopy)}}
+function loadWallet(){try{return JSON.parse(localStorage.getItem(COIN_KEY)||'{"coins":0,"ledger":[]}')}catch(e){return {coins:0,ledger:[]}}}
+let siteCopy=loadCopy(), wallet=loadWallet();
+function applyCopy(){
+  document.querySelectorAll('.brand small').forEach(el=>{if(el)el.textContent=siteCopy.sub});
+  const tiles=document.querySelectorAll('.tile p');
+  if(tiles[0])tiles[0].textContent=siteCopy.daily;
+  if(tiles[1])tiles[1].textContent=siteCopy.life;
+  if(tiles[2])tiles[2].textContent=siteCopy.gung;
+  if($('welcomeBot'))$('welcomeBot').textContent=siteCopy.welcome;
+  if($('coinView'))$('coinView').textContent=wallet.coins;
+  if($('fSub')){$('fSub').value=siteCopy.sub;$('fDaily').value=siteCopy.daily;$('fLife').value=siteCopy.life;$('fGung').value=siteCopy.gung;$('fWelcome').value=siteCopy.welcome;}
+  renderLedger();
+}
+function saveCopy(){
+  siteCopy={sub:$('fSub').value.trim()||defaultCopy.sub,daily:$('fDaily').value.trim()||defaultCopy.daily,life:$('fLife').value.trim()||defaultCopy.life,gung:$('fGung').value.trim()||defaultCopy.gung,welcome:$('fWelcome').value.trim()||defaultCopy.welcome};
+  localStorage.setItem(COPY_KEY,JSON.stringify(siteCopy)); applyCopy();
+  $('saveMsg').textContent='저장됐습니다. 홈과 상담 화면에 반영됐어요.';
+}
+function persistWallet(){localStorage.setItem(COIN_KEY,JSON.stringify(wallet)); applyCopy();}
+function renderLedger(){
+  if(!$('ledger'))return;
+  $('ledger').innerHTML=wallet.ledger.slice(0,12).map(r=>`${r.t} · ${r.text} (${r.delta>0?'+':''}${r.delta})`).join('<br>')||'아직 내역이 없습니다.';
+}
+function charge(n){
+  wallet.coins+=n;
+  wallet.ledger.unshift({t:new Date().toLocaleString('ko-KR',{hour12:false}),text:`사주아이 ${n}개 데모 충전`,delta:n});
+  persistWallet();
+  $('payMsg').textContent=`${n}개 충전 완료. 지금 ${wallet.coins}개 보유. 실제 결제는 아직 연결되지 않았습니다.`;
+}
+function replyFor(q){
+  const c=chart;
+  const base=c?`${c.input.name}님 원국은 ${c.pillars.year.ko}·${c.pillars.month.ko}·${c.pillars.day.ko}${c.pillars.hour?'·'+c.pillars.hour.ko:''}입니다. `:'아직 명식이 없어 일반 해설로 답합니다. 사주를 먼저 계산하면 더 정확합니다. ';
+  if(/재물|돈|수입/.test(q)) return base+(c?`월주 십신은 ${c.pillars.month.god}입니다. 재물은 재성 한 글자가 아니라 수입 방식과 대운을 함께 봅니다.`:'작은 수입이 쌓이는지, 지출이 먼저 커지는지를 생활에서 먼저 보세요.');
+  if(/이직|직업|직장/.test(q)) return base+(c?`일간 ${c.dayMaster.stem}과 월주 ${c.pillars.month.god}을 일로 읽을 때는 권한·리듬이 맞는지가 핵심입니다.`:'옮긴다면 연봉보다 역할과 회복 가능한 업무량을 보세요.');
+  if(/연애|결혼|인연/.test(q)) return base+'설렘과 생활 궁합은 별개입니다. 합·충은 사건이 아니라 조율 신호로 봅니다.';
+  return base+'질문을 한 가지로 좁혀주시면 대운·세운과 교차해서 더 구체적으로 볼게요.';
+}
+function sendQ(preset){
+  const input=$('askQ'); const q=(preset||input.value||'').trim(); if(!q)return;
+  if(wallet.coins<1){ $('msgs').innerHTML+=`<div class="sysnote">사주아이가 부족합니다. 충전 후 이어서 질문할 수 있어요.</div>`; go('wallet'); return; }
+  wallet.coins-=1;
+  wallet.ledger.unshift({t:new Date().toLocaleString('ko-KR',{hour12:false}),text:'질문 차감 · '+q.slice(0,18),delta:-1});
+  persistWallet();
+  $('msgs').innerHTML+=`<div class="bubble me">${esc(q)}</div><div class="sysnote">사주아이 1개 차감 · 남은 ${wallet.coins}개</div><div class="bubble bot">${esc(replyFor(q))}</div>`;
+  input.value=''; $('msgs').scrollTop=$('msgs').scrollHeight;
+}
+applyCopy();
+const h=location.hash.replace('#','');if(['home','saju','result','match','matchResult','today','mypage','ask','wallet','admin'].includes(h))go(h);
 </script>
 </body>
 </html>
