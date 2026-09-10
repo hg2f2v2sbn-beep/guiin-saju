@@ -381,7 +381,7 @@
       stars: specialStars({year:yearP,month:monthP,day:dayP,hour:hourP}, dayStem),
       twelveStages: twelveStagesForPillars({year:yearP,month:monthP,day:dayP,hour:hourP}, dayStem),
       calculation: {
-        engineVersion: "2.6.0-flow-crosscheck",
+        engineVersion: "2.7.0-life-compat-pro",
         solarTerms: "근사 절기식 · 경계 진단 포함",
         lunarConversion: lunarConversion?`음력 ${originalInput.year}.${originalInput.month}.${originalInput.day}${originalInput.leapMonth?" 윤달":""} → 양력 ${year}.${month}.${day}`:"양력 직접 입력",
         timezone: "KST UTC+9",
@@ -730,7 +730,7 @@
  * School-dependent rules remain labelled as such in the UI/catalog.
  */
 window.GUIIN_SAJU_EVIDENCE = Object.freeze({
-  version: "2.6.0-flow-crosscheck",
+  version: "2.7.0-life-compat-pro",
   interpretationOrder: ["원국","대운","세운","월운","일운"],
   caution: "명리 해석은 전통 이론의 적용이며 과학적 예측이나 사건 확률이 아닙니다.",
   privacy: "별도 서버 연동이 없는 기능은 브라우저 안에서 처리합니다."
@@ -740,7 +740,7 @@ window.GUIIN_SAJU_EVIDENCE = Object.freeze({
 /* v2.6 flow cross-check helpers: presentation/evidence only.
    These helpers do not introduce a new 명리 formula. */
 window.GUIIN_FLOW_CROSSCHECK = Object.freeze({
-  version: "2.6.0-flow-crosscheck",
+  version: "2.7.0-life-compat-pro",
   layers: [
     {key:"natal", label:"원국", scale:"기준 구조"},
     {key:"daewoon", label:"대운", scale:"약 10년"},
@@ -755,3 +755,5 @@ window.GUIIN_FLOW_CROSSCHECK = Object.freeze({
     "유파가 갈리는 신살과 시간 경계는 계산 기준을 함께 표시한다."
   ]
 });
+
+window.GUIIN_LIFE_TIMELINE_PRO=Object.freeze({version:"2.7.0-life-compat-pro",method:"대운 구간과 같은 연도의 세운을 원국에 교차 비교",caution:"관계 표식을 사건 확률로 환산하지 않음"});
