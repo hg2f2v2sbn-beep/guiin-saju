@@ -1,0 +1,17 @@
+귀인사주 FINAL PASTEL REDESIGN QA
+
+PASS - index
+PASS - engine
+PASS - precision_hidden
+PASS - precision_ids
+PASS - pastel_theme
+PASS - flat_seo_pages
+PASS - cname
+PASS - robots
+PASS - sitemap
+PASS - engine_version
+PASS - stars_catalog
+PASS - engine_js_syntax
+PASS - inline_js_syntax
+
+총 13/13 PASS
