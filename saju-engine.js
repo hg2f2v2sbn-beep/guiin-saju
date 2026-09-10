@@ -270,6 +270,20 @@
     return {year:dt.getUTCFullYear(),month:dt.getUTCMonth()+1,day:dt.getUTCDate(),source:{year:y,month:m,day:d,leap},leapMonth:lm};
   }
 
+
+const NAYIN_30=["해중금","노중화","대림목","노방토","검봉금","산두화","간하수","성두토","백랍금","양류목","천중수","옥상토","벽력화","송백목","장류수","사중금","산하화","평지목","벽상토","금박금","복등화","천하수","대역토","차천금","상자목","대계수","사중토","천상화","석류목","대해수"];
+const VOID_BY_XUN=[["戌","亥"],["申","酉"],["午","未"],["辰","巳"],["寅","卯"],["子","丑"]];
+function pillar60Index(stem,branch){for(let i=0;i<60;i++)if(STEMS[i%10]===stem&&BRANCHES[i%12]===branch)return i;return -1}
+function nayinForPillar(p){const i=pillar60Index(p.stem,p.branch);return i<0?null:NAYIN_30[Math.floor(i/2)]}
+function voidBranchesForPillar(p){const i=pillar60Index(p.stem,p.branch);return i<0?[]:VOID_BY_XUN[Math.floor(i/10)]}
+function foundationalExtras(pillars){
+ const dayVoid=voidBranchesForPillar(pillars.day),yearVoid=voidBranchesForPillar(pillars.year);
+ const roots=[];
+ Object.entries(pillars).forEach(([k,p])=>{if(!p)return;const hidden=HIDDEN_STEMS[p.branch]||[];if(hidden.some(h=>h.stem===pillars.day.stem))roots.push({pillar:k,branch:p.branch,kind:"본기·중기·여기 중 일간과 같은 천간"});});
+ return {nayin:{year:nayinForPillar(pillars.year),month:nayinForPillar(pillars.month),day:nayinForPillar(pillars.day),hour:pillars.hour?nayinForPillar(pillars.hour):null},
+  void:{day:dayVoid,year:yearVoid},roots};
+}
+
   function calculate(input) {
     const originalInput={...input};
     const requestedDayBoundary=input.dayBoundary==="00"?"00":"23";
@@ -412,6 +426,7 @@
       },
       yearForPillar,
       pillars: { year: yearP, month: monthP, day: dayP, hour: hourP },
+      extras: foundationalExtras({ year: yearP, month: monthP, day: dayP, hour: hourP }),
       dayMaster: {
         stem: STEMS[dayStem],
         hanja: STEMS_H[dayStem],
@@ -423,7 +438,7 @@
       stars: specialStars({year:yearP,month:monthP,day:dayP,hour:hourP}, dayStem),
       twelveStages: twelveStagesForPillars({year:yearP,month:monthP,day:dayP,hour:hourP}, dayStem),
       calculation: {
-        engineVersion: "3.5.0-complete-product",
+        engineVersion: "4.0.0-master-analysis",
         solarTerms: "태양 겉보기 황경 수치해석 · 경계 ±20분 교차확인 권장",
         lunarConversion: lunarConversion?`음력 ${originalInput.year}.${originalInput.month}.${originalInput.day}${originalInput.leapMonth?" 윤달":""} → 양력 ${year}.${month}.${day}`:"양력 직접 입력",
         timezone: "KST UTC+9",
@@ -759,6 +774,9 @@
     solarTermMs,
     solarTermInfo,
     apparentSolarLongitude,
+    foundationalExtras,
+    nayinForPillar,
+    voidBranchesForPillar,
     chartRelations,
     relationsWithTransit,
     equationOfTimeMinutes,
@@ -783,7 +801,7 @@
  * School-dependent rules remain labelled as such in the UI/catalog.
  */
 (typeof window!=="undefined"?window:globalThis).GUIIN_SAJU_EVIDENCE = Object.freeze({
-  version: "3.5.0-complete-product",
+  version: "4.0.0-master-analysis",
   interpretationOrder: ["원국","대운","세운","월운","일운"],
   caution: "명리 해석은 전통 이론의 적용이며 과학적 예측이나 사건 확률이 아닙니다.",
   privacy: "별도 서버 연동이 없는 기능은 브라우저 안에서 처리합니다."
@@ -793,7 +811,7 @@
 /* v2.6 flow cross-check helpers: presentation/evidence only.
    These helpers do not introduce a new 명리 formula. */
 (typeof window!=="undefined"?window:globalThis).GUIIN_FLOW_CROSSCHECK = Object.freeze({
-  version: "3.5.0-complete-product",
+  version: "4.0.0-master-analysis",
   layers: [
     {key:"natal", label:"원국", scale:"기준 구조"},
     {key:"daewoon", label:"대운", scale:"약 10년"},
@@ -809,10 +827,10 @@
   ]
 });
 
-(typeof window!=="undefined"?window:globalThis).GUIIN_LIFE_TIMELINE_PRO=Object.freeze({version:"3.5.0-complete-product",method:"대운 구간과 같은 연도의 세운을 원국에 교차 비교",caution:"관계 표식을 사건 확률로 환산하지 않음"});
+(typeof window!=="undefined"?window:globalThis).GUIIN_LIFE_TIMELINE_PRO=Object.freeze({version:"4.0.0-master-analysis",method:"대운 구간과 같은 연도의 세운을 원국에 교차 비교",caution:"관계 표식을 사건 확률로 환산하지 않음"});
 
 (typeof window!=="undefined"?window:globalThis).GUIIN_ALLINONE_RELEASE=Object.freeze({
- version:"3.5.0-complete-product",
+ version:"4.0.0-master-analysis",
  precision:"apparent-solar-longitude approximate solver",
  dayBoundaryOptions:["23","00"],
  trueSolar:"optional longitude + equation-of-time application",
@@ -831,7 +849,7 @@ function calculationFingerprint(result){
   return ("00000000"+(h>>>0).toString(16)).slice(-8);
 }
 const GUIIN_METHOD_DISCLOSURE=Object.freeze({
- version:"3.5.0-complete-product",
+ version:"4.0.0-master-analysis",
  pillars:"연주=입춘, 월주=절입, 일주 경계 선택형(23시/자정), 시주=일간×시지",
  solarTerms:"태양 겉보기 황경 저정밀 수치해석; 경계 ±20분 외부 정밀 역서 교차확인 권장",
  daeun:"연간 음양+성별로 순역행, 절입까지 실제 시간÷3일=1년; 정확 원값 보존",
@@ -841,3 +859,13 @@ const GUIIN_METHOD_DISCLOSURE=Object.freeze({
 });
 if(typeof module!=="undefined"&&module.exports){module.exports.calculationFingerprint=calculationFingerprint;module.exports.GUIIN_METHOD_DISCLOSURE=GUIIN_METHOD_DISCLOSURE}
 if(typeof window!=="undefined"){window.GUIIN_METHOD_DISCLOSURE=GUIIN_METHOD_DISCLOSURE}
+
+const GUIIN_FOUNDATION_METHOD=Object.freeze({
+ version:"4.0.0-master-analysis",
+ void:"60갑자 순(旬) 기준 공망: 갑자순 戌亥, 갑술순 申酉, 갑신순 午未, 갑오순 辰巳, 갑진순 寅卯, 갑인순 子丑",
+ nayin:"60갑자 두 간지씩 묶는 30 납음 표",
+ roots:"지장간에 일간과 동일 천간이 존재하는지를 통근의 기초 표식으로 표시",
+ scope:"격국·용신은 단일 공식으로 확정하지 않고 별도 유파 판단 영역으로 남김"
+});
+if(typeof module!=="undefined"&&module.exports){module.exports.GUIIN_FOUNDATION_METHOD=GUIIN_FOUNDATION_METHOD}
+if(typeof window!=="undefined"){window.GUIIN_FOUNDATION_METHOD=GUIIN_FOUNDATION_METHOD}
