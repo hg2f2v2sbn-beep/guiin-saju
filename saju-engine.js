@@ -57,22 +57,43 @@
     return julianDay(y, m, d) + (h - 12) / 24 + mi / 1440;
   }
 
-  // 절기 시각 (KST) — 1900년 소한을 기준으로 한 전통 근사식
-  // n: 0=소한, 1=입춘, 2=경칩, ... 23=동지 다음 소한 직전 대한
-  // 24절기 순서: 0소한 1대한 2입춘 3우수 4경칩 5춘분 6청명 7곡우
-  // 8입하 9소만 10망종 11하지 12소서 13대서 14입추 15처서
-  // 16백로 17추분 18한로 19상강 20입동 21소설 22대설 23동지
-  function solarTermMs(year, n) {
-    const termInfo = [
-      0, 21208, 42467, 63836, 85337, 107014, 128867, 150921, 173149, 195551,
-      218072, 240693, 263343, 285989, 308563, 331033, 353350, 375494, 397447,
-      419210, 440795, 462224, 483532, 504758,
-    ];
-    return (
-      Date.UTC(1900, 0, 6, 2, 5) +
-      31556925974.7 * (year - 1900) +
-      termInfo[n] * 60000
-    );
+  // 24절기 시각 — 태양의 겉보기 황경을 근사 계산해 목표 황경에 도달하는 시각을 수치해석합니다.
+  // NOAA/Meeus 계열의 저정밀 태양 위치식을 사용한 독립 계산이며 KASI 역서 원자료를 내장한 것은 아닙니다.
+  // 절입 경계 ±20분은 외부 정밀 역서와 교차 확인하도록 UI에서 경고합니다.
+  const SOLAR_TERM_TARGETS=[285,300,315,330,345,0,15,30,45,60,75,90,105,120,135,150,165,180,195,210,225,240,255,270];
+  const SOLAR_TERM_NAMES=["소한","대한","입춘","우수","경칩","춘분","청명","곡우","입하","소만","망종","하지","소서","대서","입추","처서","백로","추분","한로","상강","입동","소설","대설","동지"];
+  const TERM_INFO_MIN=[0,21208,42467,63836,85337,107014,128867,150921,173149,195551,218072,240693,263343,285989,308563,331033,353350,375494,397447,419210,440795,462224,483532,504758];
+  function approxSolarTermSeedMs(year,n){
+    return Date.UTC(1900,0,6,2,5)+31556925974.7*(year-1900)+TERM_INFO_MIN[n]*60000;
+  }
+  function msToJulian(ms){return ms/86400000+2440587.5}
+  function julianToMs(jd){return (jd-2440587.5)*86400000}
+  function apparentSolarLongitude(jd){
+    const T=(jd-2451545.0)/36525;
+    const rad=Math.PI/180;
+    const L0=((280.46646+T*(36000.76983+0.0003032*T))%360+360)%360;
+    const M=((357.52911+T*(35999.05029-0.0001537*T))%360+360)%360*rad;
+    const C=Math.sin(M)*(1.914602-T*(0.004817+0.000014*T))
+      +Math.sin(2*M)*(0.019993-0.000101*T)+Math.sin(3*M)*0.000289;
+    const omega=(125.04-1934.136*T)*rad;
+    return ((L0+C-0.00569-0.00478*Math.sin(omega))%360+360)%360;
+  }
+  function solarTermMs(year,n){
+    if(n<0||n>23) throw new Error("invalid solar term index");
+    let jd=msToJulian(approxSolarTermSeedMs(year,n));
+    const target=SOLAR_TERM_TARGETS[n];
+    for(let i=0;i<10;i++){
+      const lon=apparentSolarLongitude(jd);
+      const diff=((target-lon+540)%360)-180;
+      jd+=diff/0.98564736;
+      if(Math.abs(diff)<1e-7)break;
+    }
+    return julianToMs(jd);
+  }
+  function solarTermInfo(year,n){
+    const ms=solarTermMs(year,n), kst=new Date(ms+9*3600000);
+    return {name:SOLAR_TERM_NAMES[n],targetLongitude:SOLAR_TERM_TARGETS[n],utcMs:ms,
+      kst:{year:kst.getUTCFullYear(),month:kst.getUTCMonth()+1,day:kst.getUTCDate(),hour:kst.getUTCHours(),minute:kst.getUTCMinutes()}};
   }
 
   // 입력은 한국시간(KST, UTC+9)
@@ -251,8 +272,20 @@
 
   function calculate(input) {
     const originalInput={...input};
+    const requestedDayBoundary=input.dayBoundary==="00"?"00":"23";
+    const requestedTrueSolar=!!input.trueSolarApply;
+    const requestedLongitude=Number(input.longitude);
+
     let lunarConversion=null;
     if(input.calendar==="음력"){ lunarConversion=lunarToSolar(input.year,input.month,input.day,!!input.leapMonth); input={...input,...lunarConversion,calendar:"양력"}; }
+    let trueSolarApplied=null;
+    if(requestedTrueSolar && !input.hourUnknown && Number.isFinite(requestedLongitude)){
+      const preview=trueSolarPreview(input,requestedLongitude,135);
+      if(preview.available){
+        trueSolarApplied=preview;
+        input={...input,year:preview.corrected.year,month:preview.corrected.month,day:preview.corrected.day,hour:preview.corrected.hour,minute:preview.corrected.minute};
+      }
+    }
     const year = +input.year;
     const month = +input.month;
     const day = +input.day;
@@ -281,8 +314,8 @@
     let dayStem = dayIndex % 10;
     let dayBranch = dayIndex % 12;
 
-    // 야자시: 23시 이후는 다음날 일주
-    if (!input.hourUnknown && hour >= 23) {
+    // 일주 경계: 사용자가 23시 야자시 기준 또는 자정(00시) 기준을 선택합니다.
+    if (!input.hourUnknown && requestedDayBoundary==="23" && hour >= 23) {
       const next = ((dayIndex + 1) % 60 + 60) % 60;
       dayStem = next % 10;
       dayBranch = next % 12;
@@ -324,17 +357,20 @@
       return solarTermMs(yfp + 1, 2); // next 인월 = 다음 입춘
     }
     const birth = birthMsKst(year, month, day, hour, minute);
-    let startAge = 1;
+    let startAgeExact=0, startGapDays=0, startReferenceMs=null;
     if (forward) {
-      const next = monthStartMs(yearForPillar, monthIndex + 1);
-      const days = Math.max(1, (next - birth) / 86400000);
-      startAge = Math.max(1, Math.round(days / 3));
+      startReferenceMs=monthStartMs(yearForPillar, monthIndex + 1);
+      startGapDays=Math.max(0,(startReferenceMs-birth)/86400000);
     } else {
-      const prev = monthStartMs(yearForPillar, monthIndex);
-      const days = Math.max(1, (birth - prev) / 86400000);
-      startAge = Math.max(1, Math.round(days / 3));
+      startReferenceMs=monthStartMs(yearForPillar, monthIndex);
+      startGapDays=Math.max(0,(birth-startReferenceMs)/86400000);
     }
-
+    startAgeExact=startGapDays/3;
+    const startAge=Math.max(0,Math.round(startAgeExact));
+    const startY=Math.floor(startAgeExact);
+    const startM=Math.floor((startAgeExact-startY)*12);
+    const startD=Math.round((((startAgeExact-startY)*12)-startM)*30.44);
+    const startAgeText=`약 ${startY}년 ${startM}개월 ${startD}일`;
     const luck = [];
     let ls = monthStem;
     let lb = monthBranch;
@@ -349,6 +385,8 @@
       const p = pillarName(ls, lb);
       p.fromAge = startAge + i * 10;
       p.toAge = p.fromAge + 9;
+      p.fromAgeExact = startAgeExact + i*10;
+      p.toAgeExact = p.fromAgeExact + 10;
       p.god = tenGod(dayStem, ls);
       luck.push(p);
     }
@@ -367,6 +405,10 @@
         leapMonth: !!originalInput.leapMonth,
         originalDate: originalInput.calendar==="음력"?{year:originalInput.year,month:originalInput.month,day:originalInput.day,leap:!!originalInput.leapMonth}:null,
         normalizedSolarDate: lunarConversion?{year,month,day}:null,
+        dayBoundary: requestedDayBoundary,
+        trueSolarApply: requestedTrueSolar,
+        longitude: Number.isFinite(requestedLongitude)?requestedLongitude:null,
+        effectiveDateTime: trueSolarApplied?trueSolarApplied.corrected:null,
       },
       yearForPillar,
       pillars: { year: yearP, month: monthP, day: dayP, hour: hourP },
@@ -381,19 +423,24 @@
       stars: specialStars({year:yearP,month:monthP,day:dayP,hour:hourP}, dayStem),
       twelveStages: twelveStagesForPillars({year:yearP,month:monthP,day:dayP,hour:hourP}, dayStem),
       calculation: {
-        engineVersion: "2.7.0-life-compat-pro",
-        solarTerms: "근사 절기식 · 경계 진단 포함",
+        engineVersion: "3.0.0-allinone-precision-calendar",
+        solarTerms: "태양 겉보기 황경 수치해석 · 경계 ±20분 교차확인 권장",
         lunarConversion: lunarConversion?`음력 ${originalInput.year}.${originalInput.month}.${originalInput.day}${originalInput.leapMonth?" 윤달":""} → 양력 ${year}.${month}.${day}`:"양력 직접 입력",
         timezone: "KST UTC+9",
-        trueSolarTime: false,
-        longitudeCorrection: false,
-        dayBoundary: "23:00 다음 일주 적용",
+        trueSolarTime: !!trueSolarApplied,
+        longitudeCorrection: !!trueSolarApplied,
+        trueSolarCorrection: trueSolarApplied?trueSolarApplied.correction:null,
+        dayBoundary: requestedDayBoundary==="23"?"23:00 다음 일주 적용":"00:00 자정 일주 변경",
         elementMethod: "천간 + 지장간 가중",
         boundaryDiagnostics: boundaryDiagnostics({year,month,day,hour,minute,hourUnknown:!!input.hourUnknown})
       },
       luck,
       startAge,
-      startAgeRule: "절입까지 일수 ÷ 3 후 표시 나이는 반올림",
+      startAgeExact,
+      startGapDays,
+      startAgeText,
+      startReferenceMs,
+      startAgeRule: "순·역행 절입까지 실제 시간 간격 ÷ 3일=1년 환산; 기존 호환 표시 나이는 반올림",
       forward,
     };
   }
@@ -602,12 +649,13 @@
 
   // 특정 날짜의 세운·월운·일운을 출생 명식과 분리해 계산하는 공개 헬퍼.
   // 화면에서 날짜 흐름을 조회할 때 같은 계산식을 재사용해 UI와 엔진의 결과가 어긋나지 않게 합니다.
-  function calendarPillars(year, month, day, hour=12, minute=0) {
-    const c = calculate({name:"달력", gender:"여", calendar:"양력", year, month, day, hour, minute, hourUnknown:false});
+  function calendarPillars(year, month, day, hour=12, minute=0, options={}) {
+    const c = calculate({name:"달력", gender:"여", calendar:"양력", year, month, day, hour, minute, hourUnknown:false,
+      dayBoundary:options.dayBoundary||"23",trueSolarApply:!!options.trueSolarApply,longitude:options.longitude});
     return {year:c.pillars.year, month:c.pillars.month, day:c.pillars.day, hour:c.pillars.hour};
   }
-  function flowForDate(year, month, day, dayStem, hour=12, minute=0) {
-    const pillars=calendarPillars(year,month,day,hour,minute);
+  function flowForDate(year, month, day, dayStem, hour=12, minute=0, options={}) {
+    const pillars=calendarPillars(year,month,day,hour,minute,options);
     const ds=typeof dayStem==="number"?dayStem:STEMS.indexOf(dayStem);
     if(ds<0) throw new Error("invalid day stem");
     const out={pillars,gods:{},stages:{}};
@@ -675,8 +723,8 @@
     const starts=[];
     for(let y=jy.yearForPillar-1;y<=jy.yearForPillar+1;y++) for(let n=0;n<24;n+=2) starts.push(solarTermMs(y,n));
     const termDist=Math.min(...starts.map(x=>Math.abs(t-x)))/60000;
-    if(termDist<=720) out.push({type:"solar-term-boundary",level:"warn",minutes:Math.round(termDist),text:`절입 경계와 약 ${Math.round(termDist)}분 이내입니다. 현재 근사 절기식에서는 정밀 천문력과 월주가 달라질 가능성을 별도로 확인해야 합니다.`});
-    if(mins>=22*60+20 || mins<=40) out.push({type:"day-boundary",level:"warn",text:"23시 전후는 일주 경계 기준이 유파마다 다를 수 있어 현재 엔진의 ‘23시 다음 일주’ 기준을 함께 확인하세요."});
+    if(termDist<=720) out.push({type:"solar-term-boundary",level:"warn",minutes:Math.round(termDist),text:`절입 경계와 약 ${Math.round(termDist)}분 이내입니다. 현재 천문 근사 계산에서도 경계 오차가 중요하므로 정밀 역서와 월주를 교차 확인하세요.`});
+    if(mins>=22*60+20 || mins<=40) out.push({type:"day-boundary",level:"warn",text:"23시 전후는 일주 경계 기준이 유파마다 다를 수 있어 선택한 ‘23시 야자시’ 또는 ‘자정 변경’ 기준을 함께 확인하세요."});
     return out;
   }
 
@@ -701,11 +749,16 @@
     HIDDEN_STEMS,
     SINSAL_META,
     SINSAL_50_CATALOG,
+    SOLAR_TERM_NAMES,
+    SOLAR_TERM_TARGETS,
     TWELVE_STAGES,
     twelveStage,
     twelveStagesForPillars,
     calendarPillars,
     flowForDate,
+    solarTermMs,
+    solarTermInfo,
+    apparentSolarLongitude,
     chartRelations,
     relationsWithTransit,
     equationOfTimeMinutes,
@@ -729,8 +782,8 @@
  * Do not infer deterministic events from a single daily/monthly indicator.
  * School-dependent rules remain labelled as such in the UI/catalog.
  */
-window.GUIIN_SAJU_EVIDENCE = Object.freeze({
-  version: "2.7.0-life-compat-pro",
+(typeof window!=="undefined"?window:globalThis).GUIIN_SAJU_EVIDENCE = Object.freeze({
+  version: "3.0.0-allinone-precision-calendar",
   interpretationOrder: ["원국","대운","세운","월운","일운"],
   caution: "명리 해석은 전통 이론의 적용이며 과학적 예측이나 사건 확률이 아닙니다.",
   privacy: "별도 서버 연동이 없는 기능은 브라우저 안에서 처리합니다."
@@ -739,8 +792,8 @@ window.GUIIN_SAJU_EVIDENCE = Object.freeze({
 
 /* v2.6 flow cross-check helpers: presentation/evidence only.
    These helpers do not introduce a new 명리 formula. */
-window.GUIIN_FLOW_CROSSCHECK = Object.freeze({
-  version: "2.7.0-life-compat-pro",
+(typeof window!=="undefined"?window:globalThis).GUIIN_FLOW_CROSSCHECK = Object.freeze({
+  version: "3.0.0-allinone-precision-calendar",
   layers: [
     {key:"natal", label:"원국", scale:"기준 구조"},
     {key:"daewoon", label:"대운", scale:"약 10년"},
@@ -756,4 +809,16 @@ window.GUIIN_FLOW_CROSSCHECK = Object.freeze({
   ]
 });
 
-window.GUIIN_LIFE_TIMELINE_PRO=Object.freeze({version:"2.7.0-life-compat-pro",method:"대운 구간과 같은 연도의 세운을 원국에 교차 비교",caution:"관계 표식을 사건 확률로 환산하지 않음"});
+(typeof window!=="undefined"?window:globalThis).GUIIN_LIFE_TIMELINE_PRO=Object.freeze({version:"3.0.0-allinone-precision-calendar",method:"대운 구간과 같은 연도의 세운을 원국에 교차 비교",caution:"관계 표식을 사건 확률로 환산하지 않음"});
+
+(typeof window!=="undefined"?window:globalThis).GUIIN_ALLINONE_RELEASE=Object.freeze({
+ version:"3.0.0-allinone-precision-calendar",
+ precision:"apparent-solar-longitude approximate solver",
+ dayBoundaryOptions:["23","00"],
+ trueSolar:"optional longitude + equation-of-time application",
+ daeun:"exact gap/3 preserved plus compatibility rounded display",
+ dailyCalendar:true,
+ timelineYears:12,
+ compatibilityFlowYears:6,
+ starPolicy:"unsupported school-dependent items are not fabricated"
+});

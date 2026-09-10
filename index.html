@@ -140,6 +140,9 @@ body.home-mode nav{background:rgba(255,255,255,.97);border-top:1px solid #eee8de
 
 /* CALENDAR-UPGRADE */
 .calendar-seg{display:grid;grid-template-columns:1fr 1fr;gap:6px}.calendar-seg button{border:1px solid var(--line);background:#190c10;color:var(--muted);border-radius:13px;padding:11px}.calendar-seg button.on{background:var(--wine);color:white;border-color:#8d3c4e}.leap-row{display:none;margin-top:9px;padding:10px 11px;border-radius:12px;background:#190c10;border:1px solid var(--line)}.leap-row.on{display:flex;align-items:center;gap:8px}.leap-row input{width:auto}.mode-switch{display:flex;gap:6px;margin:10px 0}.mode-switch button{flex:1;border:1px solid var(--line);background:#190c10;color:#bca9a4;border-radius:12px;padding:9px;font-size:10px}.mode-switch button.on{background:#3b1922;color:var(--gold2);border-color:var(--gold)}.expert-only{display:none}.expert-mode .expert-only{display:block}.expert-mode .easy-only{display:none}
+
+.daily-cal{display:grid;grid-template-columns:repeat(7,1fr);gap:6px;margin-top:12px}.daily-cal .dow{font-size:9px;color:#9a8d84;text-align:center;padding:4px}.daily-cal .daycell{min-height:74px;padding:8px 6px;border:1px solid #e7ddd2;border-radius:12px;background:#faf7f3;text-align:left}.daily-cal .daycell.today{border-color:#9b6a45;background:#fff6e8}.daily-cal .daycell b{display:block;font-size:11px}.daily-cal .daycell span{display:block;font-size:10px;margin-top:4px;color:#6f6258}.daily-cal .daycell small{display:block;font-size:8px;margin-top:4px;color:#8b8179;line-height:1.35}.cal-head{display:flex;align-items:center;justify-content:space-between;gap:8px}.cal-head button{border:1px solid #dfd2c5;background:#fff;border-radius:10px;padding:8px 10px}.precision-options select{width:100%;padding:12px;border:1px solid var(--line);border-radius:12px;background:#190c10;color:#fff}.proof-badges{display:flex;gap:6px;flex-wrap:wrap;margin-top:10px}.proof-badges span{font-size:9px;padding:6px 8px;border:1px solid #e2d5c8;border-radius:999px;background:#fffaf4}
+
 </style>
 </head>
 <body class="home-mode">
@@ -148,14 +151,14 @@ body.home-mode nav{background:rgba(255,255,255,.97);border-top:1px solid #eee8de
 
 <section id="home" class="screen on">
  <div class="home-profile" role="button" tabindex="0" onclick="openLatestProfile()" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();openLatestProfile()}"><div class="home-avatar">☘</div><div><b>귀인사주 프로필</b><small id="homeProfileText">저장된 프로필을 선택해 보세요</small></div><div class="choose">프로필 ›</div></div>
- <div class="hero"><small>내 사주를 알고, 현실의 선택을 읽는 리포트</small><h1>귀인사주</h1><p>무료 명식부터 990원 상세 리포트까지. 원국·대운·세운의 근거를 과장 없이 풀어드립니다.</p><button class="btn gold cta" onclick="openService('saju')">무료 명식 보기 ›</button></div>
+ <div class="hero"><small>내 사주를 알고, 현실의 선택을 읽는 리포트</small><h1>귀인사주</h1><p>원국·대운·세운·월운·일운과 계산 근거까지. 경계 기준을 직접 선택하고 결과를 다시 확인할 수 있습니다.</p><button class="btn gold cta" onclick="openService('saju')">무료 명식 보기 ›</button></div>
  <div class="home-products">
   <button class="product-card" onclick="openService('today')"><i>☀️</i><b>오늘의 운세</b><span>명식과 올해 흐름에서 오늘의 체크포인트를 짧게</span><div class="mini">무료 명식부터 ›</div></button>
   <button class="product-card" onclick="openService('lifetime')"><em>990원</em><i>📜</i><b>평생사주</b><span>성격·직업·재물·연애·건강과 대운 상세</span><div class="mini">내 사주 전체 보기 ›</div></button>
   <button class="product-card" onclick="go('match')"><em>2,900원 데모</em><i>💜</i><b>우리 궁합</b><span>두 명식의 점수와 합·충 신호를 먼저 무료로</span><div class="mini">궁합 보기 ›</div></button>
  </div>
  <div class="home-note"><b>☘ 좋은 인연이, 좋은 운을 만듭니다.</b><br>현재 990원 평생사주와 2,900원 상세궁합은 데모입니다. 실제 결제는 발생하지 않습니다.</div>
- <div class="card"><h3>저장 프로필</h3><p class="input-help">프로필은 이 브라우저의 저장 공간에만 보관됩니다. 다른 기기와 동기화되지 않으며 브라우저 데이터를 지우면 사라질 수 있습니다.</p><div id="savedList" class="muted">아직 저장된 프로필이 없습니다.</div></div><div class="home-privacy"><span>귀인사주 데모 · 양력/음력(1900~2050) · KST 절기 계산</span><button type="button" onclick="clearLocalData()">이 기기 데이터 삭제</button></div>
+ <div class="card"><h3>저장 프로필</h3><p class="input-help">프로필은 이 브라우저의 저장 공간에만 보관됩니다. 다른 기기와 동기화되지 않으며 브라우저 데이터를 지우면 사라질 수 있습니다.</p><div id="savedList" class="muted">아직 저장된 프로필이 없습니다.</div></div><div class="home-privacy"><span>귀인사주 데모 · 양력/음력(1900~2050) · 천문 근사 절기 · 선택형 경계 계산</span><button type="button" onclick="clearLocalData()">이 기기 데이터 삭제</button></div>
 </section>
 
 <section id="saju" class="screen">
@@ -167,6 +170,16 @@ body.home-mode nav{background:rgba(255,255,255,.97);border-top:1px solid #eee8de
   <label>생년월일</label><div class="row y3"><input id="year" type="number" min="1900" max="2100" inputmode="numeric" placeholder="1991"><input id="month" type="number" min="1" max="12" inputmode="numeric" placeholder="11"><input id="day" type="number" min="1" max="31" inputmode="numeric" placeholder="23"></div>
   <label>출생 시각</label><div class="row y2"><input id="hour" type="number" min="0" max="23" inputmode="numeric" placeholder="시"><input id="minute" type="number" min="0" max="59" inputmode="numeric" placeholder="분"></div>
   <label class="check"><input id="hourUnknown" type="checkbox"> 출생시간 모름</label><div class="input-help">출생시간을 모르면 시주는 제외하고 계산합니다. 절기 경계일은 근사 계산이라 정밀 만세력과 차이가 날 수 있습니다.</div><div id="sajuError" class="errorbox"></div>
+
+  <div class="card precision-options">
+   <span class="eyebrow">정밀 계산 옵션</span><h3>경계 기준을 직접 선택하세요</h3>
+   <label>일주 변경 기준</label>
+   <select id="dayBoundaryMode"><option value="23">23:00부터 다음 일주(야자시 기준)</option><option value="00">00:00 자정부터 다음 일주</option></select>
+   <label class="check"><input id="applyTrueSolar" type="checkbox"> 진태양시를 실제 원국 계산에 적용</label>
+   <label>출생지 경도</label><input id="birthLongitudeApply" type="number" step="0.01" min="120" max="140" value="126.98" placeholder="예: 서울 126.98">
+   <div class="input-help">진태양시 적용 시 동경 135° 표준자오선과 출생지 경도 차이 + 균시차를 반영해 시각을 보정합니다. 역사적 서머타임/표준시 변경은 자동 보정하지 않습니다. 경계 출생은 외부 정밀 역서와 함께 확인하세요.</div>
+  </div>
+
   <div style="height:14px"></div><button class="btn gold" onclick="submitSaju()">무료 명식 계산</button>
  </div>
  <div id="result"></div>
@@ -201,7 +214,7 @@ const MATCH_TRINES=[["신","자","진"],["해","묘","미"],["인","오","술"],
 const BR_COMB={자:"축",축:"자",인:"해",해:"인",묘:"술",술:"묘",진:"유",유:"진",사:"신",신:"사",오:"미",미:"오"};
 const BR_CLASH={자:"오",오:"자",축:"미",미:"축",인:"신",신:"인",묘:"유",유:"묘",진:"술",술:"진",사:"해",해:"사"};
 const yearNow=new Date().getFullYear();
-const GUIIN_RELEASE="2026.09-final-product-qa";const DEMO_VERSION="2.1.0-lunar-calendar";
+const GUIIN_RELEASE="3.0.0-allinone-precision-calendar";const DEMO_VERSION="3.0.0-allinone-precision-calendar";
 let activeService="saju", matchLast=null, matchUnlocked=false;
 
 document.querySelectorAll("#calendarSeg button").forEach(b=>b.onclick=()=>{document.querySelectorAll("#calendarSeg button").forEach(x=>x.classList.remove("on"));b.classList.add("on");calendarType=b.dataset.v;$("leapRow").classList.toggle("on",calendarType==="음력");if(calendarType!=="음력")$("leapMonth").checked=false});
@@ -382,7 +395,7 @@ function calculationBasis(c){
  const b=nearBoundary(c.input), hour=c.input.hourUnknown?"출생시간 미상 · 시주 제외":`${String(c.input.hour).padStart(2,"0")}:${String(c.input.minute).padStart(2,"0")}`;
  const hidden=Object.entries(c.pillars).filter(([k,v])=>v&&v.hidden).map(([k,v])=>`${({year:"년주",month:"월주",day:"일주",hour:"시주"}[k])} ${v.hidden.map(h=>h.stem).join("·")}`).join(" / ");
  const rel=(c.relations||[]).slice(0,6).map(r=>`${r.a}${r.b} ${r.type}`).join(" · ");
- return `<details class="calc-note"><summary>이 결과의 계산 기준 · 신뢰 안내</summary><div class="calc-body"><b>입력</b> · 양력 · KST(UTC+9) · ${hour}${c.input.hourUnknown?"<br><b>시간 미상 안내</b> · 시주는 계산하지 않으며, 시주를 사용하는 세부 성향·후반기 해석은 의도적으로 약하게 제공합니다.":""}<br><b>사주 계산</b> · 연주는 입춘, 월주는 절기 경계의 근사 시각을 사용합니다. 23:00 이후는 다음 일주로 처리하는 규칙을 사용합니다.<br><b>대운</b> · 양남음녀 순행/음남양녀 역행 · 절기까지의 일수를 3일=1년으로 환산한 근사 시작 나이입니다.<br><b>오행</b> · 겉으로 드러난 천간뿐 아니라 지지 속 지장간을 가중해 비교합니다. 이는 용신·신강신약의 확정 판정이 아닙니다.${hidden?`<br><b>지장간</b> · ${hidden}`:""}${rel?`<br><b>원국 관계</b> · ${rel}`:""}<br><b>현재 미적용</b> · 출생지 경도·진태양시·균시차·역사적 서머타임의 정밀 보정. 따라서 시주·절기 경계에 가까운 출생은 전문 만세력과 차이가 날 수 있습니다.${b.length?`<div class="boundary-note">⚠ ${b.join(" · ")}에 가까운 입력입니다. 이 경우 정밀 절입 시각과 출생지 보정에 따라 결과가 달라질 수 있어요.</div>`:""}</div></details>`;
+ return `<details class="calc-note"><summary>이 결과의 계산 기준 · 신뢰 안내</summary><div class="calc-body"><b>입력</b> · 양력 · KST(UTC+9) · ${hour}${c.input.hourUnknown?"<br><b>시간 미상 안내</b> · 시주는 계산하지 않으며, 시주를 사용하는 세부 성향·후반기 해석은 의도적으로 약하게 제공합니다.":""}<br><b>사주 계산</b> · 연주는 입춘, 월주는 12절의 태양 황경 경계를 사용합니다. 절기 시각은 태양 겉보기 황경을 수치해석한 천문 근사값입니다. 일주 경계는 사용자가 23시 야자시 또는 자정 기준을 선택할 수 있습니다.<br><b>대운</b> · 양남음녀 순행/음남양녀 역행 · 순·역행에 따라 절입까지의 실제 시간 간격을 구한 뒤 3일=1년으로 환산합니다. 반올림 전 값도 엔진에 보존합니다.<br><b>오행</b> · 겉으로 드러난 천간뿐 아니라 지지 속 지장간을 가중해 비교합니다. 이는 용신·신강신약의 확정 판정이 아닙니다.${hidden?`<br><b>지장간</b> · ${hidden}`:""}${rel?`<br><b>원국 관계</b> · ${rel}`:""}<br><b>현재 미적용</b> · 역사적 서머타임·표준시 변경 이력의 자동 보정. 따라서 시주·절기 경계에 가까운 출생은 전문 만세력과 차이가 날 수 있습니다.${b.length?`<div class="boundary-note">⚠ ${b.join(" · ")}에 가까운 입력입니다. 이 경우 정밀 절입 시각과 출생지 보정에 따라 결과가 달라질 수 있어요.</div>`:""}</div></details>`;
 }
 
 function currentLuckOf(c){
@@ -652,8 +665,8 @@ function renderSolarPreview(){
 }
 
 function engineAuditHTML(c){
- const calc=c.calculation||{}, boundaries=nearBoundary(c.input), supported=c.stars?.supportedCount||0, total=c.stars?.catalogCount||50;
- return `<div class="card engine-audit"><span class="eyebrow">계산 엔진 상태</span><h3>지금 어디까지 계산하고 있나요?</h3><div class="audit-grid"><div><b>${calc.engineVersion||"—"}</b><span>엔진 버전</span></div><div><b>${supported}/${total}</b><span>신살 실제 계산</span></div><div><b>${c.input.hourUnknown?"시주 제외":"시주 포함"}</b><span>출생시간</span></div><div><b>${boundaries.length?"경계 주의":"일반 구간"}</b><span>정밀도 안내</span></div></div><p class="muted">원국·십성·지장간·12운성·대표 합충형파해·10개 대운(약 100년)과 날짜별 세운/월운/일운, 원국과 운의 관계 표식까지 같은 엔진에서 계산합니다. 진태양시는 사용자가 경도를 입력했을 때 경계 비교만 제공하며 기본 원국에는 자동 적용하지 않습니다. 음력·윤달 변환은 1900~2050 범위에서 지원합니다. 역사적 DST와 천문력급 절기 시각은 아직 적용하지 않아 그 부분을 정확하다고 표시하지 않습니다.</p></div>`;
+ const calc=c.calculation||{},boundaries=nearBoundary(c.input),supported=c.stars?.supportedCount||0,total=c.stars?.catalogCount||50;
+ return `<div class="card engine-audit"><span class="eyebrow">계산 엔진 상태</span><h3>계산한 것과 계산하지 않은 것을 구분합니다</h3><div class="audit-grid"><div><b>${calc.engineVersion||"—"}</b><span>엔진 버전</span></div><div><b>${supported}/${total}</b><span>신살 실제 계산</span></div><div><b>${c.startAgeExact!=null?c.startAgeExact.toFixed(3)+"세":"—"}</b><span>대운 시작 원값</span></div><div><b>${boundaries.length?"경계 주의":"일반 구간"}</b><span>정밀도 안내</span></div></div><div class="proof-badges"><span>${calc.solarTerms}</span><span>${calc.dayBoundary}</span><span>진태양시 ${calc.trueSolarTime?"적용":"미적용"}</span></div><p class="muted">원국·십성·지장간·12운성·합충형파해·10개 대운·세운·월운·일운·인생 타임라인·궁합 교차흐름을 한 엔진에서 계산합니다. 24절기는 태양의 겉보기 황경을 이용한 독립 천문 근사 계산이며, 경계 출생은 정밀 역서와 교차확인이 필요합니다. 역사적 DST/표준시 변경은 자동 적용하지 않습니다. 신살은 현재 ${supported}/${total}종만 실제 계산하고 나머지는 유파차이로 남깁니다.</p></div>`;
 }
 
 function all50StarsHTML(c){
@@ -686,7 +699,24 @@ function specialEnergyHTML(c){
 /* PREMIUM-DEPTH UPGRADE: summary, roadmap, glossary, personalized FAQ */
 function plainElementRank(c){const p=elPct(c);return Object.entries(p).sort((a,b)=>b[1]-a[1])}
 function reportQuickSummaryHTML(c){const rank=plainElementRank(c),hi=rank[0],lo=rank[rank.length-1],mg=c.pillars.month.god||"비견",g=guiinGod(mg),cur=currentLuckOf(c),cg=cur?guiinGod(cur.god):null,rels=natalRelations(c),stars=starSummary(c).slice(0,2);return `<div class="card quick-summary"><span class="eyebrow">먼저 이것만 읽어보세요</span><h2>${esc(c.input.name)}님의 사주 핵심 요약</h2><p class="summary-hero">기본적으로 <b>${GUIIN_DM_PLAIN[c.dayMaster.stem]}</b> 쪽의 성향을 바탕으로, 사회생활에서는 <b>${g.name}</b>과 관련된 ${g.core}이 반복 주제로 나타나기 쉬워요. ${cur?`지금의 10년은 <b>${cg.name}</b>이 핵심이라 ${cg.core}을 현실에서 어떻게 쓰는지가 중요합니다.`:"현재는 원국의 기본 패턴을 중심으로 읽는 편이 좋아요."}</p><div class="summary-chips"><span>나의 중심 · ${c.dayMaster.stem}일간</span><span>익숙한 힘 · ${hi[0]} ${hi[1]}%</span><span>보완해 볼 힘 · ${lo[0]} ${lo[1]}%</span>${cur?`<span>현재 10년 · ${cg.name}</span>`:""}${stars.map(x=>`<span>${x.name} · ${x.count}자리</span>`).join("")}</div><div class="action-grid" style="margin-top:12px"><div class="action-box"><b>일</b><p>${g.work}. 잘하는 일을 반복 가능한 기술로 만드는지 확인해 보세요.</p></div><div class="action-box"><b>돈</b><p>${g.money}. 사주보다 실제 수입·고정비·저축·부채 숫자를 우선하세요.</p></div><div class="action-box"><b>관계</b><p>${g.love}. 가까울수록 시간·돈·돌봄·개인공간을 말로 맞추는 게 중요해요.</p></div><div class="action-box"><b>주의</b><p>${g.watch}. 장점도 과하게 쓰면 피로가 될 수 있어요.</p></div></div><details class="calc-note"><summary>이 요약의 계산 근거</summary><div class="calc-body">일간 ${c.dayMaster.stem} · 월주 십성 ${mg} · 오행 ${hi[0]} ${hi[1]}% / ${lo[0]} ${lo[1]}%${cur?` · 현재 대운 ${cur.ko} ${cur.god}`:""}${rels.length?` · 원국 관계 ${rels.slice(0,4).join(" · ")}`:""}</div></details></div>`}
-function activeLuckForYear(c,y){const age=y-c.input.year+1;return (c.luck||[]).find(p=>age>=p.fromAge&&age<=p.toAge)||null}
+
+let GUIIN_CAL_YEAR=new Date().getFullYear(),GUIIN_CAL_MONTH=new Date().getMonth()+1;
+function relationLabelsForDay(c,p){try{return [...new Set((GuiinSaju.relationsWithTransit(c.pillars,p)||[]).map(x=>x.type||x.name).filter(Boolean))].slice(0,3)}catch(e){return []}}
+function dailyCalendarHTML(c,y=GUIIN_CAL_YEAR,m=GUIIN_CAL_MONTH){
+ const ds=GuiinSaju.STEMS.indexOf(c.dayMaster.stem),days=new Date(y,m,0).getDate(),first=new Date(y,m-1,1).getDay(),today=new Date(),cells=[];
+ ["일","월","화","수","목","금","토"].forEach(d=>cells.push(`<div class="dow">${d}</div>`));
+ for(let i=0;i<first;i++)cells.push("<div></div>");
+ for(let d=1;d<=days;d++){let f;try{f=GuiinSaju.flowForDate(y,m,d,ds,12,0,{dayBoundary:c.input.dayBoundary||"23"})}catch(e){continue}
+   const g=guiinGod(f.gods.day),rels=relationLabelsForDay(c,f.pillars.day),isToday=y===today.getFullYear()&&m===today.getMonth()+1&&d===today.getDate();
+   cells.push(`<button type="button" class="daycell ${isToday?"today":""}" onclick="setFlowDateFromCalendar(${y},${m},${d})"><b>${d} · ${f.pillars.day.ko}</b><span>${g.name}</span><small>${rels.length?rels.join(" · "):"큰 관계 표식 적음"}</small></button>`);
+ }
+ return `<div id="dailyCalendarCard" class="card"><span class="eyebrow">나의 일진 달력</span><div class="cal-head"><button onclick="shiftDailyCalendar(-1)">‹</button><h3>${y}년 ${m}월</h3><button onclick="shiftDailyCalendar(1)">›</button></div><p class="muted">각 날짜의 일주·십성과 내 원국에 겹치는 관계 표식을 한눈에 봅니다. 하루 신호만으로 중요한 결정을 단정하지 않습니다.</p><div class="daily-cal">${cells.join("")}</div></div>`}
+function shiftDailyCalendar(delta){GUIIN_CAL_MONTH+=delta;if(GUIIN_CAL_MONTH<1){GUIIN_CAL_MONTH=12;GUIIN_CAL_YEAR--}if(GUIIN_CAL_MONTH>12){GUIIN_CAL_MONTH=1;GUIIN_CAL_YEAR++}const x=$("dailyCalendarCard");if(x&&LAST)x.outerHTML=dailyCalendarHTML(LAST)}
+function setFlowDateFromCalendar(y,m,d){const el=$("flowDate");if(el){el.value=`${y}-${String(m).padStart(2,"0")}-${String(d).padStart(2,"0")}`;renderSelectedFlow();el.scrollIntoView({behavior:"smooth",block:"center"})}}
+function copyResultSummary(){if(!LAST)return;const c=LAST,txt=`귀인사주 | ${c.input.name}\n원국 ${c.pillars.year.ko} ${c.pillars.month.ko} ${c.pillars.day.ko}${c.pillars.hour?" "+c.pillars.hour.ko:""}\n일간 ${c.dayMaster.stem}(${c.dayMaster.hanja}) · 대운 시작 ${c.startAgeText||("약 "+c.startAge+"세")}\n계산기준 ${c.calculation.dayBoundary} / 진태양시 ${c.calculation.trueSolarTime?"적용":"미적용"}\n※ 전통 명리 해석 참고용`;navigator.clipboard?.writeText(txt).then(()=>toastMsg("결과 요약을 복사했어요")).catch(()=>toastMsg("복사 권한을 확인해 주세요"))}
+function exportResultJSON(){if(!LAST)return;const blob=new Blob([JSON.stringify(LAST,null,2)],{type:"application/json"}),a=document.createElement("a");a.href=URL.createObjectURL(blob);a.download=`guiin-saju-${LAST.input.name||"result"}.json`;a.click();setTimeout(()=>URL.revokeObjectURL(a.href),500)}
+
+function activeLuckForYear(c,y){const birth=Date.UTC(c.input.year,c.input.month-1,c.input.day),at=Date.UTC(y,6,1),age=(at-birth)/(365.2422*86400000);return (c.luck||[]).find(p=>age>=(p.fromAgeExact??p.fromAge)&&age<(p.toAgeExact??(p.toAge+1)))||null}
 function lifeTimelineProHTML(c){const now=new Date().getFullYear(),ds=GuiinSaju.STEMS.indexOf(c.dayMaster.stem),rows=[];for(let y=now;y<now+12;y++){let f;try{f=GuiinSaju.flowForDate(y,7,1,ds,12,0)}catch(e){continue}const yp=f.pillars.year,yg=guiinGod(f.gods.year),lk=activeLuckForYear(c,y),nr=GuiinSaju.relationsWithTransit?GuiinSaju.relationsWithTransit(c.pillars,yp):[],lr=lk&&GuiinSaju.relationsWithTransit?GuiinSaju.relationsWithTransit({luck:lk},yp):[],types=[...new Set([...nr,...lr].map(x=>x.type||x.name).filter(Boolean))];rows.push(`<div class="road-year ${y===now?"now":""}"><div><b>${y}</b><span>${yp.ko}</span></div><div><p><b>세운 ${yg.name}</b> · ${yg.core}${lk?`<br><b>대운 ${lk.ko} · ${guiinGod(lk.god).name}</b> · ${guiinGod(lk.god).core}`:""}</p><small>${types.length?`교차 신호: ${types.slice(0,5).join(" · ")}`:"큰 교차 관계 표식 적음"} · 사건 확정 예측이 아닙니다.</small></div></div>`)}return `<div class="card"><span class="eyebrow">인생 타임라인 PRO</span><h3>${now}–${now+11} 대운 × 세운</h3><p class="muted">각 해의 세운을 당시의 실제 대운 구간과 원국에 함께 겹쳐 봅니다. 세는나이를 기준으로 현재 엔진의 대운 구간을 연결하며, 합·충·형·파·해는 변화·조정 신호이지 사건 확률이 아닙니다.</p><div class="roadmap">${rows.join("")}</div></div>`}
 function decadeRoadmapHTML(c){return lifeTimelineProHTML(c)}
 const GUIIN_GLOSSARY={"일간":"사주에서 ‘나’를 읽을 때 중심으로 보는 태어난 날의 천간이에요.","오행":"목·화·토·금·수 다섯 범주로 기운의 분포를 비교하는 전통적 분류예요.","십성":"나와 다른 글자의 관계를 비견·식신·재성·관성·인성 등으로 나눈 이름이에요.","지장간":"지지 안에 포함되어 있다고 보는 천간의 구성입니다.","12운성":"일간과 지지의 관계를 12단계 이름으로 표현한 전통적 분류예요. 점수표가 아닙니다.","대운":"약 10년 단위로 보는 큰 흐름이에요. 시작 나이는 절기와 성별·음양 규칙으로 계산합니다.","세운":"한 해의 간지를 원국과 비교해 보는 연간 흐름이에요.","합·충":"합은 연결, 충은 부딪힘·재조정의 표식으로 참고합니다. 사건을 확정하지 않습니다.","신살":"도화·역마·화개·귀인처럼 특정 조건을 이름 붙인 보조 지표예요. 유파 차이가 큽니다.","공망":"일주가 속한 旬에서 비어 있는 두 지지를 보는 전통 규칙이에요. 불운 확정 표시가 아닙니다."};
@@ -735,7 +765,7 @@ function renderAll(c){
  <div id="todaySection" class="card"><div class="previewline"><b>오늘의 운세</b><div class="muted">${dailyReport(c)}</div></div><div class="previewline"><b>나를 이해하는 한 줄</b><div class="muted">${dmVoice(c.dayMaster.stem,c.pillars.month.god||"비견")}</div></div><div class="previewline"><b>지금의 10년 흐름</b><div class="muted">${cur?`${cur.fromAge}–${cur.toAge}세 · ${guiinGod(cur.god).name}<br>${dmVoice(c.dayMaster.stem,cur.god)}`:`첫 10년 운은 약 ${c.startAge}세부터 시작합니다. 현재 나이는 제공된 구간 밖이라 원국과 올해 흐름을 중심으로 읽습니다.`}</div></div></div>
  <div id="luckTimeline" class="card"><h3>대운 타임라인</h3><div class="luckstrip">${c.luck.map(p=>`<div class="luckpill ${p===cur?"now":""}"><b>${guiinGod(p.god).name}</b><span>${p.fromAge}–${p.toAge}세</span></div>`).join("")}</div><p class="muted">약 ${c.startAge}세부터 10년 단위로 흐름을 봅니다. 계산 방향과 간지는 위의 ‘계산 기준 · 신뢰 안내’에서 확인할 수 있어요.</p></div>
  ${paidBlock(c)}
- ${calendarConversionHTML(c)}<div class="card trust-card"><span class="eyebrow">귀인사주의 원칙</span><h3>맞히는 척보다, 왜 그렇게 읽었는지 보여드려요.</h3><p class="muted">같은 문장을 누구에게나 붙이지 않고 입력된 명식의 기본 성향, 사회생활의 반복 주제, 오행 분포, 지지 속 기운, 원국의 관계, 10년 흐름과 올해 흐름을 함께 비교합니다. 본문은 일·돈·관계·생활처럼 이해하기 쉬운 말로 풀고, 전문 명리 용어는 ‘풀이 근거 보기’에서 확인할 수 있게 분리했습니다.</p></div>
+ ${dailyCalendarHTML(c)}${calendarConversionHTML(c)}<div class="card result-actions"><button class="btn ghost" onclick="copyResultSummary()">결과 요약 복사</button><button class="btn ghost" onclick="exportResultJSON()">계산 데이터 저장</button></div><div class="card trust-card"><span class="eyebrow">귀인사주의 원칙</span><h3>맞히는 척보다, 왜 그렇게 읽었는지 보여드려요.</h3><p class="muted">같은 문장을 누구에게나 붙이지 않고 입력된 명식의 기본 성향, 사회생활의 반복 주제, 오행 분포, 지지 속 기운, 원국의 관계, 10년 흐름과 올해 흐름을 함께 비교합니다. 본문은 일·돈·관계·생활처럼 이해하기 쉬운 말로 풀고, 전문 명리 용어는 ‘풀이 근거 보기’에서 확인할 수 있게 분리했습니다.</p></div>
  <div class="disclaimer">본 서비스는 명리학 원국 계산과 규칙 기반 해설을 제공하는 참고용입니다. 의료·법률·투자·결혼 결정을 대신하지 않습니다. 절기 시각은 근사치입니다. 진태양시·출생지 경도 보정은 비교 기능으로 제공하며 기본 원국에는 자동 적용하지 않습니다.<br>명리학은 전통적 해석 체계이며 과학적으로 미래를 예측하는 방법으로 검증된 것은 아닙니다.</div>`;
  if($("result"))$("result").insertAdjacentHTML("afterbegin",`<div class="result-actions"><button class="btn ghost" onclick="copyResultText(\'result\')">결과 복사</button><button class="btn ghost" onclick="go(\'home\')">홈으로</button></div>`);
  if($("result"))$("result").insertAdjacentHTML("afterbegin",calculationBasis(c));
@@ -756,7 +786,10 @@ function readBirth(prefix=""){
  const val=k=>$(id(k)).value.trim();
  const unknown=prefix?!val("hour")&&!val("minute"):$("hourUnknown").checked;
  if(!unknown&&(!val("hour")||!val("minute")))throw new Error("출생 시각은 시와 분을 모두 입력하거나 ‘출생시간 모름’을 선택해 주세요.");
- const cal=prefix?(matchCalendar[prefix]||"양력"):calendarType; return {name:val("name")||"이름 없음",gender:prefix?matchGender[prefix]:gender,calendar:cal,leapMonth:prefix?(cal==="음력"&&($(prefix+"LeapMonth")?.checked||false)):($("leapMonth")?.checked||false),year:val("year")?Number(val("year")):NaN,month:val("month")?Number(val("month")):NaN,day:val("day")?Number(val("day")):NaN,hour:unknown?0:Number(val("hour")),minute:unknown?0:Number(val("minute")),hourUnknown:unknown};
+ const cal=prefix?(matchCalendar[prefix]||"양력"):calendarType; return {name:val("name")||"이름 없음",gender:prefix?matchGender[prefix]:gender,calendar:cal,leapMonth:prefix?(cal==="음력"&&($(prefix+"LeapMonth")?.checked||false)):($("leapMonth")?.checked||false),year:val("year")?Number(val("year")):NaN,month:val("month")?Number(val("month")):NaN,day:val("day")?Number(val("day")):NaN,hour:unknown?0:Number(val("hour")),minute:unknown?0:Number(val("minute")),hourUnknown:unknown,
+dayBoundary:prefix?"23":($("dayBoundaryMode")?.value||"23"),
+trueSolarApply:prefix?false:!!$("applyTrueSolar")?.checked,
+longitude:prefix?null:Number($("birthLongitudeApply")?.value)};
 }
 
 function showError(id,msg){const el=$(id);if(!el)return;if(msg){el.textContent=msg;el.style.display="block"}else{el.textContent="";el.style.display="none"}}
