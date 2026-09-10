@@ -346,7 +346,7 @@
       stars: specialStars({year:yearP,month:monthP,day:dayP,hour:hourP}, dayStem),
       twelveStages: twelveStagesForPillars({year:yearP,month:monthP,day:dayP,hour:hourP}, dayStem),
       calculation: {
-        engineVersion: "1.7.0-flow",
+        engineVersion: "1.9.0-deep-upgrade",
         solarTerms: "근사 절기식",
         timezone: "KST UTC+9",
         trueSolarTime: false,
@@ -536,6 +536,42 @@
     return out;
   }
 
+  // 특정 날짜의 세운·월운·일운을 출생 명식과 분리해 계산하는 공개 헬퍼.
+  // 화면에서 날짜 흐름을 조회할 때 같은 계산식을 재사용해 UI와 엔진의 결과가 어긋나지 않게 합니다.
+  function calendarPillars(year, month, day, hour=12, minute=0) {
+    const c = calculate({name:"달력", gender:"여", calendar:"양력", year, month, day, hour, minute, hourUnknown:false});
+    return {year:c.pillars.year, month:c.pillars.month, day:c.pillars.day, hour:c.pillars.hour};
+  }
+  function flowForDate(year, month, day, dayStem, hour=12, minute=0) {
+    const pillars=calendarPillars(year,month,day,hour,minute);
+    const ds=typeof dayStem==="number"?dayStem:STEMS.indexOf(dayStem);
+    if(ds<0) throw new Error("invalid day stem");
+    const out={pillars,gods:{},stages:{}};
+    ["year","month","day","hour"].forEach(k=>{
+      const p=pillars[k];
+      out.gods[k]=tenGod(ds,p.stemIndex);
+      out.stages[k]=twelveStage(ds,p.branchIndex);
+    });
+    return out;
+  }
+
+
+  // 원국에 하나의 운 간지를 겹쳐 합·충·형·파·해·삼합 등을 확인합니다.
+  // transit를 임시 시주 슬롯에 넣어 기존 관계 계산식을 재사용하며, 결과의 hour 라벨은 운으로 바꿉니다.
+  function relationsWithTransit(basePillars, transit) {
+    if(!basePillars || !transit) return [];
+    const merged=[basePillars.year,basePillars.month,basePillars.day,transit];
+    return chartRelations(merged).filter(r=>
+      r.aKey==="hour" || r.bKey==="hour" || (r.members||[]).some(m=>m.key==="hour")
+    ).map(r=>{
+      const x=Object.assign({},r);
+      if(x.aKey==="hour"){x.aKey="transit";x.aLabel="운";}
+      if(x.bKey==="hour"){x.bKey="transit";x.bLabel="운";}
+      if(x.members)x.members=x.members.map(m=>m.key==="hour"?Object.assign({},m,{key:"transit",label:"운"}):m);
+      return x;
+    });
+  }
+
   function normalizeEl(elCount) {
     const total = Object.values(elCount).reduce((a, b) => a + b, 0) || 1;
     const out = {};
@@ -560,6 +596,10 @@
     TWELVE_STAGES,
     twelveStage,
     twelveStagesForPillars,
+    calendarPillars,
+    flowForDate,
+    chartRelations,
+    relationsWithTransit,
     specialStars,
     calculate,
     normalizeEl,
