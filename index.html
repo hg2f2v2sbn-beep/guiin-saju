@@ -8,6 +8,7 @@
 <meta name="description" content="무료 사주 명식, 대운·세운·월운·일운, 신살과 궁합을 쉽게 확인하는 귀인사주">
 <link rel="canonical" href="https://gwiinsaju.com/">
 <script src="saju-engine.js"></script>
+<script src="expert-interpreter.js"></script>
 <style>
 :root{
  --bg:#fffaf1;--paper:#fffefa;--ink:#203128;--sub:#7c837d;--line:#ece5d7;
@@ -114,6 +115,10 @@ input:focus,select:focus{border-color:#edb72d;box-shadow:0 0 0 3px rgba(237,183,
 .noCropArt{display:flex;justify-content:flex-end;align-items:flex-end;min-height:90px;overflow:hidden}
 .noCropArt img{width:132px;height:96px;object-fit:contain!important;object-position:center bottom!important;border-radius:0!important}
 
+
+/* 6.0 expert interpretation */
+.expertIntro{padding:20px;background:linear-gradient(135deg,#f4f8e6,#fff8df);border:1px solid #eee4c7;border-radius:22px;margin:8px 0}.expertIntro h2{font-size:22px;line-height:1.4;color:#173c2f;margin:0 0 8px}.expertIntro p{font-size:14px;line-height:1.7;color:#68736d;margin:0}.expertSection{background:#fff;border:1px solid #eee8dc;border-radius:20px;padding:20px 18px;margin:10px 0}.expertSection .eyebrow{font-size:11px;color:#c79831;font-weight:800;margin-bottom:7px}.expertSection h3{font-size:20px;line-height:1.45;color:#1f352d;margin:0 0 12px}.expertSection p{font-size:15px;line-height:1.9;color:#555f5a;margin:0;word-break:keep-all}.expertSection .evidence{font-size:12px;line-height:1.65;color:#8a867e;background:#faf7f1;border-radius:12px;padding:10px 12px;margin-top:14px}.starSummary{display:grid;grid-template-columns:repeat(2,1fr);gap:8px;margin:10px 0}.starStat{background:#fff;border:1px solid #eee5d6;border-radius:16px;padding:13px}.starStat span{display:block;font-size:11px;color:#888}.starStat b{display:block;font-size:20px;color:#1e5a44;margin-top:4px}.starDetail{background:#fff;border:1px solid #eee8dc;border-radius:18px;padding:16px;margin:9px 0}.starDetail .top{display:flex;align-items:flex-start;justify-content:space-between;gap:10px}.starDetail h4{font-size:17px;line-height:1.45;margin:0;color:#263b33}.starCount{flex:none;background:#fff3c9;color:#9a6b00;border-radius:999px;padding:5px 9px;font-weight:800;font-size:12px}.starDetail p{font-size:14px;line-height:1.75;color:#5d655f;margin:9px 0}.starWhere{font-size:12px;color:#918c83;line-height:1.6}.cautionText{font-size:12px!important;color:#8d786f!important;background:#fff7f3;border-radius:10px;padding:9px 10px}.daeunList{display:grid;gap:8px}.daeunItem{border:1px solid #eee5d8;border-radius:15px;padding:13px 14px;background:#fff}.daeunItem.current{border-color:#e5b637;background:#fff9e9}.daeunItem b{font-size:14px;color:#234336}.daeunItem p{font-size:13px;line-height:1.65;margin:5px 0 0;color:#69716c}.disclaimerBox{font-size:12px;line-height:1.65;color:#827d74;padding:13px 14px;background:#f9f7f2;border-radius:14px;margin:10px 0}
+
 </style>
 </head>
 <body>
@@ -186,7 +191,7 @@ input:focus,select:focus{border-color:#edb72d;box-shadow:0 0 0 3px rgba(237,183,
     <button class="ghost"><svg viewBox="0 0 24 24" width="20" height="20"><path d="M18 8a6 6 0 00-12 0c0 7-3 7-3 9h18c0-2-3-2-3-9M10 21h4" fill="none" stroke="currentColor" stroke-width="1.8"/></svg></button>
   </div>
   <div class="tabs" id="resultTabs">
-    <button class="on" data-tab="summary">사주 요약</button><button data-tab="personality">성격 분석</button><button data-tab="flow">인생 흐름</button><button data-tab="fields">분야별 운세</button><button data-tab="chart">사주 원국</button>
+    <button class="on" data-tab="summary">전체 풀이</button><button data-tab="personality">성격·기질</button><button data-tab="fields">직업·재물·연애</button><button data-tab="stars">신살·귀인</button><button data-tab="flow">대운·세운</button><button data-tab="chart">사주 원국</button>
   </div>
   <div id="resultView"></div>
 </section>
@@ -452,51 +457,70 @@ function foundationReport(c){
  <p><b>통근</b>은 ${roots.length?roots.map(r=>`${({year:'년지',month:'월지',day:'일지',hour:'시지'}[r.pillar]||r.pillar)} ${r.branch}`).join(', ')+'에서 일간과 같은 천간이 지장간에 확인됩니다.':'현재 지장간에서 일간과 같은 천간이 직접 확인되지 않습니다.'}</p></div>`;
 }
 
+
+function expertSectionHTML(s){return `<article class="expertSection"><div class="eyebrow">${GuiinExpert.esc(s.eyebrow)}</div><h3>${GuiinExpert.esc(s.title)}</h3><p>${GuiinExpert.esc(s.body)}</p>${s.evidence?`<div class="evidence">${GuiinExpert.esc(s.evidence)}</div>`:''}</article>`}
+function expertSectionsHTML(sections){return (sections||[]).map(expertSectionHTML).join('')}
+function expertSummaryHTML(c){
+ const s=GuiinExpert.fullSections(c), stars=GuiinExpert.starGroups(c);
+ return `<div class="expertIntro"><h2>${esc(c.input.name)}님의 사주를 한 문장으로 단정하지 않고, 계절과 명식 전체를 연결해 풀어드립니다.</h2><p>일간 → 월령과 계절 → 오행 → 십성 → 지장간과 관계 → 신살·귀인 → 대운·세운 순서로 읽었습니다.</p></div>`+
+ expertSectionsHTML(s.slice(0,6))+
+ `<button class="ctaGreen" style="width:100%;margin:6px 0" onclick="setTab('stars')">내 신살·귀인 ${stars.total}개 자세히 보기 ›</button>`+
+ expertSectionsHTML(s.slice(6));
+}
+function expertStarsHTML(c){
+ const g=GuiinExpert.starGroups(c);
+ const stats=[['귀인·도움',g.cats.귀인],['매력·인연',g.cats.매력인연],['이동·변화',g.cats.이동변화],['강한 기운',g.cats.강한기운],['관계 신호',g.cats.관계신호]];
+ return `<div class="expertIntro"><h2>내 사주에 들어온 신살·귀인을 개수와 위치까지 확인해요.</h2><p>현재 엔진은 50종 카탈로그 중 공식화한 ${g.supportedCount}종만 실제 계산합니다. 같은 별이 같은 기둥에서 중복 계산된 경우 한 번만 셉니다.</p></div><div class="starSummary">${stats.map(x=>`<div class="starStat"><span>${x[0]}</span><b>${x[1]}개</b></div>`).join('')}</div>`+
+ (g.rows.length?g.rows.map(r=>`<article class="starDetail"><div class="top"><h4>${esc(r.name)} — ${esc(r.title)}</h4><span class="starCount">${r.count}개</span></div><p>${esc(r.body)}</p><div class="starWhere"><b>성립 위치</b> · ${r.where.map(esc).join(' / ')}</div><p class="cautionText">해석 주의 · ${esc(r.watch)}</p></article>`).join(''):`<div class="expertSection"><h3>현재 계산된 신살·귀인이 없습니다.</h3><p>신살이 적다고 나쁜 사주라는 뜻은 아닙니다. 원국·오행·십성·대운이 더 중요한 판단 기준입니다.</p></div>`)+
+ `<div class="disclaimerBox">신살은 전통 명리의 보조 해석입니다. 하나의 신살만으로 결혼·재물·질병·사고·성공을 확정하지 않습니다.</div>`;
+}
+function expertFlowHTML(c){
+ const f=GuiinExpert.flowSections(c,2026);
+ return expertSectionsHTML(f.sections)+`<div class="expertSection"><div class="eyebrow">전체 대운 지도</div><h3>10년마다 어떤 주제가 반복되는지 한눈에 봅니다</h3><div class="daeunList">${f.rows.map(r=>`<div class="daeunItem ${r.current?'current':''}"><b>${r.fromAge}~${r.toAge}세 · ${r.ko} 대운 · ${r.god}${r.current?' · 현재':''}</b><p>${esc(r.body)}</p></div>`).join('')}</div></div>`;
+}
+
 function renderResult(){
  if(!chart)return;
  document.querySelectorAll('#resultTabs button').forEach(b=>b.classList.toggle('on',b.dataset.tab===currentTab));
- const c=chart,copy=DM[c.dayMaster.stem]||['자기만의 색이 있는','균형을 만드는 힘'];
- const time=c.input.hourUnknown?'모름':`${String(c.input.hour).padStart(2,'0')}:${String(c.input.minute).padStart(2,'0')}`;
+ const c=chart,time=c.input.hourUnknown?'모름':`${String(c.input.hour).padStart(2,'0')}:${String(c.input.minute).padStart(2,'0')}`;
  if(currentTab==='summary'){
-  $('resultView').innerHTML=`<div class="summaryHero card"><h3>${esc(c.input.name)}님은<br>${copy[0]} 사람입니다.</h3><p>“한 줄 결론보다, 왜 그렇게 읽는지 근거까지 보여드릴게요.”</p><div class="noCropArt"><img src="summary-cat.jpg" alt="귀인사주 고양이 일러스트"></div></div>
-   <div class="infoCard card"><h3>✦ 기본 정보</h3><div class="infoGrid"><span>이름</span><b>${esc(c.input.name)}</b><span>생년월일</span><b>${c.input.year}년 ${c.input.month}월 ${c.input.day}일 (${c.input.calendar})</b><span>태어난 시간</span><b>${time}</b><span>성별</span><b>${c.input.gender==='여'?'여성':'남성'}</b></div></div>
-   <div class="infoCard card"><h3>한눈에 보는 사주 키워드</h3><div class="keywordGrid">
-    <div class="keyword" style="color:#dc8b13">${ICONS.fire}<b>${c.dayMaster.stem}일간</b></div>
-    <div class="keyword" style="color:#2c92be">${ICONS.water}<b>${copy[1]}</b></div>
-    <div class="keyword" style="color:#c69015">${ICONS.money}<b>${c.pillars.year.god}</b></div>
-    <div class="keyword" style="color:#309b61">${ICONS.leaf}<b>${c.pillars.month.god}</b></div>
-   </div></div>
-   <div class="slogan card"><b>당신의 인생은 좋은 인연으로 더 빛납니다.</b></div>
-   <button class="ctaGreen" style="width:100%;margin-top:9px" onclick="setTab('chart')">상세 분석 보기 ›</button>`;
+  $('resultView').innerHTML=expertSummaryHTML(c);
+ } else if(currentTab==='personality'){
+  $('resultView').innerHTML=expertSectionsHTML(GuiinExpert.personalitySections(c));
+ } else if(currentTab==='fields'){
+  $('resultView').innerHTML=expertSectionsHTML(GuiinExpert.fieldSections(c));
+ } else if(currentTab==='stars'){
+  $('resultView').innerHTML=expertStarsHTML(c);
+ } else if(currentTab==='flow'){
+  $('resultView').innerHTML=expertFlowHTML(c);
  } else if(currentTab==='chart'){
   const ps=[['년주',c.pillars.year],['월주',c.pillars.month],['일주',c.pillars.day],['시주',c.pillars.hour]].filter(x=>x[1]);
   const total=Object.values(c.elCount).reduce((a,b)=>a+b,0)||1;
-  const yi=c.dayMaster.yin==='음'?52:48,ya=100-yi;
   $('resultView').innerHTML=`<div class="infoCard card"><h3>사주 원국 (사주팔자)</h3><div class="pillars">${ps.map(([n,p])=>`<div class="pillar"><small>${n}</small><strong>${p.stemH}<br>${p.branchH}</strong><span>${p.ko}</span></div>`).join('')}</div></div>
-   <div class="infoCard card"><h3>오행 분포</h3><div class="elements">${['목','화','토','금','수'].map((e,i)=>`<div class="el"><b>${e}</b><span>${Math.round((c.elCount[e]||0)/total*100)}%</span></div>`).join('')}</div></div>
-   <div class="infoCard card"><h3>음양 분포</h3><div class="yy"><div class="yin"><b>음</b><strong>${yi}%</strong></div><div class="yang"><b>양</b><strong>${ya}%</strong></div></div></div>
-   <div class="slogan card"><b>오행이 조화를 이루고 있어, 균형 잡힌 에너지를 가지고 있습니다.</b></div>
-   ${advanced(c)}`;
-  } else if(currentTab==='personality'){
-  $('resultView').innerHTML=personalityReport(c);
-  } else if(currentTab==='flow'){
-  $('resultView').innerHTML=flowReport(c);
-  } else if(currentTab==='fields'){
-  $('resultView').innerHTML=fieldsReport(c);
+   <div class="infoCard card"><h3>오행 분포</h3><div class="elements">${['목','화','토','금','수'].map(e=>`<div class="el"><b>${e}</b><span>${Math.round((c.elCount[e]||0)/total*100)}%</span></div>`).join('')}</div></div>
+   ${expertSectionsHTML(GuiinExpert.foundationSections(c))}
+   <div class="deepCard card"><h3>계산 근거와 해석 원칙</h3><p>연주는 입춘, 월주는 절입, 일주는 23시 경계를 기본으로 계산합니다. 오행은 천간과 지장간 가중치를 함께 반영합니다. 격국·용신·조후는 유파 차이가 커 자동 확정하지 않습니다.</p></div>`;
  }
 }
 function setTab(t){currentTab=t;renderResult()}
-function advanced(c){
- return starDetails(c)+foundationReport(c)+`<div class="deepCard card"><h3>계산 근거와 해석 순서</h3><p>연주는 입춘, 월주는 절입, 일주는 선택한 23시/자정 경계를 기준으로 계산합니다. 오행은 천간과 지장간 가중치를 함께 반영합니다. 해석 순서는 <b>원국 → 오행·십신·지장간 → 12운성·합충형파해 → 공망·납음·통근 → 대운 → 세운·월운·일운 → 신살</b>입니다.</p><p>격국·용신·조후는 유파별 판정 차이가 커 현재 버전에서는 자동 확정하지 않습니다. 향후 추가할 경우 적용 유파와 판정 과정을 함께 공개합니다.</p></div>`;
-}
+function advanced(c){return expertStarsHTML(c)+expertSectionsHTML(GuiinExpert.foundationSections(c));}
 function submitMatch(){
  try{
   const a=GuiinSaju.calculate(profileInput('a')), b=GuiinSaju.calculate(profileInput('b'));
-  const same=a.dayMaster.el===b.dayMaster.el?6:0;
-  const score=Math.max(72,Math.min(96,86+same));
+  const pa=GuiinExpert.pct(a),pb=GuiinExpert.pct(b);
+  const distance=['목','화','토','금','수'].reduce((s,e)=>s+Math.abs(pa[e]-pb[e]),0);
+  const balance=Math.max(0,20-Math.round(distance/5));
+  const same=a.dayMaster.el===b.dayMaster.el?4:0;
+  const dayGap=Math.min((a.pillars.day.branchIndex-b.pillars.day.branchIndex+12)%12,(b.pillars.day.branchIndex-a.pillars.day.branchIndex+12)%12);
+  const relationBonus=dayGap===6?-4:(dayGap===4||dayGap===8?4:0);
+  const score=Math.max(60,Math.min(96,72+balance+same+relationBonus));
+  const love=Math.max(55,Math.min(98,score+(dayGap===4||dayGap===8?5:0)));
+  const personality=Math.max(55,Math.min(98,score+Math.round((20-distance/5)/2)));
+  const money=Math.max(55,Math.min(98,Math.round((100-(Math.abs(pa['토']-pb['토'])+Math.abs(pa['금']-pb['금'])))*.35+55)));
+  const future=Math.max(55,Math.min(98,Math.round((score+personality)/2)));
   $('matchView').innerHTML=`<div class="matchHero card"><h3>두 사람의 인연은 특별합니다.</h3><p>“좋은 인연이, 더 행복한 내일을 만듭니다.”</p><div class="matchArt"><img src="compat-animals.jpg" alt=""></div><div style="font-size:9px;margin-top:7px">두 사람의 궁합 점수</div><div class="score">♥ ${score}<small>점</small></div><p>서로를 보완하고 함께 성장하는 아주 좋은 인연입니다.</p></div>
    <div class="infoCard card"><div class="pair"><div class="person"><b>나<br>${esc(a.input.name)}</b><br>${a.input.year}.${a.input.month}.${a.input.day}<br>${a.input.gender==='여'?'여성':'남성'}</div><div class="heartSvg">${ICONS.heart}</div><div class="person b"><b>상대방<br>${esc(b.input.name)}</b><br>${b.input.year}.${b.input.month}.${b.input.day}<br>${b.input.gender==='여'?'여성':'남성'}</div></div></div>
-   <div class="infoCard card"><h3>세부 궁합 점수</h3>${[['연애궁합',95,'pink'],['성격궁합',90,'mint'],['재물궁합',85,'gold'],['미래궁합',88,'purple']].map(x=>`<div class="scoreRow"><span>${x[0]}</span><div class="scoreBar"><i class="${x[2]}" style="width:${x[1]}%"></i></div><b>${x[1]}</b></div>`).join('')}</div>
+   <div class="infoCard card"><h3>세부 궁합 점수</h3>${[['연애궁합',love,'pink'],['성격궁합',personality,'mint'],['재물궁합',money,'gold'],['미래궁합',future,'purple']].map(x=>`<div class="scoreRow"><span>${x[0]}</span><div class="scoreBar"><i class="${x[2]}" style="width:${x[1]}%"></i></div><b>${x[1]}</b></div>`).join('')}</div>
    <div class="slogan card"><b>좋은 인연이, 좋은 하루를 만듭니다.</b></div>`;
   go('matchResult');
  }catch(e){alert('두 사람의 생년월일을 확인해 주세요.')}

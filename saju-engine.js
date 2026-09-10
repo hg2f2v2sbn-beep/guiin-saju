@@ -444,7 +444,7 @@ function foundationalExtras(pillars){
       stars: specialStars({year:yearP,month:monthP,day:dayP,hour:hourP}, dayStem),
       twelveStages: twelveStagesForPillars({year:yearP,month:monthP,day:dayP,hour:hourP}, dayStem),
       calculation: {
-        engineVersion: "5.0.0-deep-reading-ui",
+        engineVersion: "6.0.0-expert-interpretation",
         solarTerms: "태양 겉보기 황경 수치해석 · 경계 ±20분 교차확인 권장",
         lunarConversion: lunarConversion?`음력 ${originalInput.year}.${originalInput.month}.${originalInput.day}${originalInput.leapMonth?" 윤달":""} → 양력 ${year}.${month}.${day}`:"양력 직접 입력",
         timezone: "KST UTC+9",
