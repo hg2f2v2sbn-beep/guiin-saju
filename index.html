@@ -824,4 +824,56 @@ if(!history.state&&location.protocol!=="about:")history.replaceState({screen:"ho
 showScreen(location.hash.slice(1)||"home");
 renderSaved();
 </script>
-<div id="loadingMask" class="loading-mask"><div class="loading-card"><div class="loading-dot"></div><b>명식을 읽고 있어요</b><div style="font-size:10px;margin-top:5px;color:#bda9a4">원국과 운의 흐름을 정리합니다.</div></div></div><div id="profilePicker" class="picker" aria-hidden="true" onclick="if(event.target===this)closePicker()"></div></body></html>
+<div id="loadingMask" class="loading-mask"><div class="loading-card"><div class="loading-dot"></div><b>명식을 읽고 있어요</b><div style="font-size:10px;margin-top:5px;color:#bda9a4">원국과 운의 흐름을 정리합니다.</div></div></div><div id="profilePicker" class="picker" aria-hidden="true" onclick="if(event.target===this)closePicker()"></div>
+<section id="evidenceTimelineUpgrade" style="max-width:980px;margin:28px auto;padding:18px;border:1px solid #eadfd5;border-radius:18px;background:#fffdf9">
+  <h2 style="margin:0 0 10px">운의 흐름을 읽는 순서</h2>
+  <p style="line-height:1.75">대운은 10년의 배경, 세운은 한 해의 주제, 월운은 그달의 흐름, 일운은 하루의 작은 변화를 뜻합니다. 작은 단위의 운만으로 큰 사건을 단정하지 않습니다.</p>
+  <details>
+    <summary><b>계산 근거와 유파 차이 보기</b></summary>
+    <div style="line-height:1.75;margin-top:10px">
+      <p>① 원국은 절입 기준의 연주·월주와 일주·시주를 계산합니다. ② 대운 시작은 절입까지의 시간 간격을 전통적인 3일=1년 환산법으로 계산합니다. ③ 12운성·지장간·합충형파해·신살은 엔진에 명시된 조견표를 사용합니다.</p>
+      <p>야자시, 진태양시, 일부 신살·12운성 적용법은 유파 차이가 있으므로 결과를 절대적 사실이나 사건 예언으로 표시하지 않습니다.</p>
+    </div>
+  </details>
+  <div style="display:flex;gap:8px;flex-wrap:wrap;margin-top:14px">
+    <button type="button" id="saveGuiinVisit" style="padding:10px 14px;border-radius:12px;border:1px solid #d9c7b7;background:white">이 결과 다시 보기 표시</button>
+    <span id="guiinVisitStatus" style="align-self:center;font-size:14px;color:#6f6258"></span>
+  </div>
+</section>
+<script>
+(function(){
+  const key='guiin-saju-last-visit-v25';
+  const btn=document.getElementById('saveGuiinVisit');
+  const status=document.getElementById('guiinVisitStatus');
+  if(!btn||!status) return;
+  try {
+    const prev=localStorage.getItem(key);
+    if(prev) status.textContent='마지막 확인: '+new Date(prev).toLocaleString('ko-KR');
+  } catch(e) {}
+  btn.addEventListener('click', function(){
+    try {
+      const now=new Date().toISOString();
+      localStorage.setItem(key,now);
+      status.textContent='이 브라우저에 다시 보기 시점을 저장했어요.';
+    } catch(e) {
+      status.textContent='브라우저 저장 기능을 사용할 수 없어요.';
+    }
+  });
+})();
+</script>
+
+
+<section id="flowCrosscheck26" style="max-width:980px;margin:28px auto;padding:18px;border:1px solid #e8ddd3;border-radius:18px;background:#fff">
+ <h2 style="margin-top:0">대운 × 세운 교차 읽기</h2>
+ <p style="line-height:1.75">큰 흐름인 대운과 한 해의 세운을 따로 단정하지 않고 함께 확인하세요. 같은 오행·십성 주제가 반복되면 그 주제가 상대적으로 두드러지는 시기로, 합·충·형·파·해가 겹치면 관계·환경의 변화 신호가 늘어난 시기로 참고합니다.</p>
+ <div id="flowGuideCards" style="display:grid;grid-template-columns:repeat(auto-fit,minmax(210px,1fr));gap:10px">
+  <div style="padding:12px;border-radius:14px;background:#faf7f3"><b>1. 원국</b><br><span>타고난 구조와 기준점</span></div>
+  <div style="padding:12px;border-radius:14px;background:#faf7f3"><b>2. 대운</b><br><span>10년 단위의 큰 환경</span></div>
+  <div style="padding:12px;border-radius:14px;background:#faf7f3"><b>3. 세운</b><br><span>그해에 강조되는 주제</span></div>
+  <div style="padding:12px;border-radius:14px;background:#faf7f3"><b>4. 월·일운</b><br><span>짧은 흐름은 보조 신호로 확인</span></div>
+ </div>
+ <details style="margin-top:12px"><summary><b>왜 점수나 사건 확률을 표시하지 않나요?</b></summary>
+ <p style="line-height:1.75">합이 있다고 무조건 좋은 해, 충이 있다고 무조건 나쁜 해라고 계산하지 않습니다. 12운성 역시 왕·쇠를 단순한 길흉 점수로 바꾸지 않습니다. 명리의 유파 차이와 해석 맥락을 보존하기 위해 계산값과 근거를 먼저 보여줍니다.</p></details>
+</section>
+
+</body></html>
