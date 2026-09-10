@@ -279,7 +279,13 @@ function voidBranchesForPillar(p){const i=pillar60Index(p.stem,p.branch);return 
 function foundationalExtras(pillars){
  const dayVoid=voidBranchesForPillar(pillars.day),yearVoid=voidBranchesForPillar(pillars.year);
  const roots=[];
- Object.entries(pillars).forEach(([k,p])=>{if(!p)return;const hidden=HIDDEN_STEMS[p.branch]||[];if(hidden.some(h=>h.stem===pillars.day.stem))roots.push({pillar:k,branch:p.branch,kind:"본기·중기·여기 중 일간과 같은 천간"});});
+ const dayStemIndex=pillars.day.stemIndex;
+ Object.entries(pillars).forEach(([k,p])=>{
+  if(!p)return;
+  const hidden=HIDDEN_STEMS[p.branchIndex]||[];
+  const hit=hidden.find(([stemIndex])=>stemIndex===dayStemIndex);
+  if(hit) roots.push({pillar:k,branch:p.branch,kind:"지장간에 일간과 같은 천간이 존재",weight:hit[1]});
+ });
  return {nayin:{year:nayinForPillar(pillars.year),month:nayinForPillar(pillars.month),day:nayinForPillar(pillars.day),hour:pillars.hour?nayinForPillar(pillars.hour):null},
   void:{day:dayVoid,year:yearVoid},roots};
 }
@@ -438,7 +444,7 @@ function foundationalExtras(pillars){
       stars: specialStars({year:yearP,month:monthP,day:dayP,hour:hourP}, dayStem),
       twelveStages: twelveStagesForPillars({year:yearP,month:monthP,day:dayP,hour:hourP}, dayStem),
       calculation: {
-        engineVersion: "4.0.0-master-analysis",
+        engineVersion: "5.0.0-deep-reading-ui",
         solarTerms: "태양 겉보기 황경 수치해석 · 경계 ±20분 교차확인 권장",
         lunarConversion: lunarConversion?`음력 ${originalInput.year}.${originalInput.month}.${originalInput.day}${originalInput.leapMonth?" 윤달":""} → 양력 ${year}.${month}.${day}`:"양력 직접 입력",
         timezone: "KST UTC+9",
