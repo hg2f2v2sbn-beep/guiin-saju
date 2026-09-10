@@ -47,6 +47,8 @@ body.home-mode #home>.card{background:#fffdf8;border:1px solid #eee7db;color:#20
 body.home-mode nav{background:rgba(255,255,255,.97);border-top:1px solid #eee8de}body.home-mode nav button{color:#9b9a96}body.home-mode nav button.on{color:#b98c16}
 @media(max-width:370px){.home-products{grid-template-columns:1fr}.product-card{min-height:120px}}
 
+
+.precision-card .precision-alert{background:rgba(215,127,134,.10);border:1px solid rgba(215,127,134,.25);border-radius:12px;padding:10px;margin:7px 0;font-size:11px;line-height:1.6}.precision-card .precision-ok{background:rgba(88,150,112,.10);border:1px solid rgba(88,150,112,.25);border-radius:12px;padding:10px;margin:7px 0;font-size:11px;line-height:1.6}.precision-controls{display:grid;grid-template-columns:1fr;gap:7px;margin-top:12px}.precision-controls label{margin:0}.solar-preview{margin-top:10px;background:#190c10;border:1px solid var(--line);border-radius:14px;padding:12px}.solar-preview b,.solar-preview strong{display:block;color:var(--gold2);margin-bottom:5px}.solar-preview span{font-size:10px;color:var(--muted)}.solar-preview p{font-size:11px;line-height:1.6;margin:8px 0 0}
 @media(max-width:370px){.app{padding-left:11px;padding-right:11px}.six{grid-template-columns:1fr}.hero h1{font-size:25px}}
 
 .compat-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin:12px 0}
@@ -177,7 +179,7 @@ const STEM_COMB={갑:"기",기:"갑",을:"경",경:"을",병:"신",신:"병",정
 const BR_COMB={자:"축",축:"자",인:"해",해:"인",묘:"술",술:"묘",진:"유",유:"진",사:"신",신:"사",오:"미",미:"오"};
 const BR_CLASH={자:"오",오:"자",축:"미",미:"축",인:"신",신:"인",묘:"유",유:"묘",진:"술",술:"진",사:"해",해:"사"};
 const yearNow=new Date().getFullYear();
-const GUIIN_RELEASE="2026.09-deep-upgrade";const DEMO_VERSION="1.2.0-research";
+const GUIIN_RELEASE="2026.09-precision";const DEMO_VERSION="1.2.0-research";
 let activeService="saju", matchLast=null, matchUnlocked=false;
 
 document.querySelectorAll("#genderSeg button").forEach(b=>b.onclick=()=>{document.querySelectorAll("#genderSeg button").forEach(x=>x.classList.remove("on"));b.classList.add("on");gender=b.dataset.v});
@@ -598,9 +600,21 @@ function fullLuckTimelineHTML(c){
  const cur=currentLuckOf(c),ds=GuiinSaju.STEMS.indexOf(c.dayMaster.stem);
  return `<div class="card full-luck-card"><span class="eyebrow">평생 대운 지도</span><h3>10년 흐름을 한 화면에서</h3><p class="muted">한 구간을 좋다·나쁘다로 채점하지 않고, 각 10년마다 어떤 생활 주제가 강조되는지 비교해요.</p><div class="full-luck-list">${(c.luck||[]).map(p=>{const g=guiinGod(p.god),stage=GuiinSaju.twelveStage(ds,p.branchIndex);return `<div class="${p===cur?"now":""}"><span>${p.fromAge}–${p.toAge}세</span><b>${p.ko} · ${g.name}</b><p>${g.core}</p><small>12운성 ${stage}</small></div>`}).join("")}</div></div>`;
 }
+
+function precisionCompareHTML(c){
+ const ds=(c.calculation&&c.calculation.boundaryDiagnostics)||[];
+ const alerts=ds.length?ds.map(x=>`<div class="precision-alert">${esc(x.text)}</div>`).join(""):`<div class="precision-ok">현재 입력값은 엔진이 감지한 주요 시간 경계에서 비교적 떨어져 있어요.</div>`;
+ if(c.input.hourUnknown)return `<div class="card precision-card"><span class="eyebrow">정밀 시간 점검</span><h3>출생시간을 알면 더 확인할 수 있어요</h3>${alerts}<p class="muted">시간 미상에서는 시주와 진태양시 비교를 만들지 않습니다.</p></div>`;
+ return `<div class="card precision-card"><span class="eyebrow">정밀 시간 점검 · 선택 기능</span><h3>출생지 경도에 따라 시주가 바뀌는지 비교</h3>${alerts}<p class="muted">기본 명식은 입력한 한국 표준시(KST)를 그대로 사용합니다. 아래 비교는 출생지 경도와 날짜별 균시차를 적용했을 때 <b>시지 경계를 넘는지만</b> 확인하는 보조 도구예요.</p><div class="precision-controls"><label>출생지 경도</label><input id="birthLongitude" type="number" step="0.001" min="120" max="140" value="126.978"><button class="btn ghost" onclick="renderSolarPreview()">진태양시 비교하기</button></div><div id="solarPreviewResult"><p class="tiny-note">기본값 126.978°E는 서울 중심부 예시입니다. 실제 출생지 경도를 입력해야 비교 의미가 있습니다.</p></div><details class="calc-note"><summary>왜 자동으로 원국을 바꾸지 않나요?</summary><div class="calc-body">진태양시 적용 여부와 자시 경계는 명리 유파에 따라 선택 기준이 다릅니다. 그래서 귀인사주는 표준시 원국을 기본으로 유지하고, 보정 시 시주가 달라지는지 별도로 보여줍니다. 현재 절기 자체는 천문력급 정밀값이 아니라 근사식이므로 절입 경계 출생은 별도 확인이 필요합니다.</div></details></div>`;
+}
+function renderSolarPreview(){
+ if(!LAST||!$("birthLongitude")||!$("solarPreviewResult"))return;
+ try{const lon=Number($("birthLongitude").value);if(!Number.isFinite(lon)||lon<120||lon>140)throw new Error();const r=GuiinSaju.trueSolarPreview(LAST.input,lon,135);if(!r.available){$("solarPreviewResult").innerHTML='<p class="muted">출생시간이 없어 비교할 수 없어요.</p>';return;}const sign=r.correction.totalMinutes>=0?"+":"";const hh=String(r.corrected.hour).padStart(2,"0"),mm=String(r.corrected.minute).padStart(2,"0");$("solarPreviewResult").innerHTML=`<div class="solar-preview"><b>보정 ${sign}${r.correction.totalMinutes.toFixed(1)}분</b><span>경도 ${r.correction.longitudeMinutes.toFixed(1)}분 · 균시차 ${r.correction.equationMinutes.toFixed(1)}분</span><strong>보정 시각 ${hh}:${mm}</strong><p>${r.branchChanged?"⚠️ 시지 경계를 넘어 시주가 달라질 수 있습니다.":"현재 입력에서는 보정 후에도 같은 시지 구간입니다."}</p></div>`;}catch(e){$("solarPreviewResult").innerHTML='<p class="muted">120~140 사이의 동경 값을 입력해 주세요.</p>';}
+}
+
 function engineAuditHTML(c){
  const calc=c.calculation||{}, boundaries=nearBoundary(c.input), supported=c.stars?.supportedCount||0, total=c.stars?.catalogCount||50;
- return `<div class="card engine-audit"><span class="eyebrow">계산 엔진 상태</span><h3>지금 어디까지 계산하고 있나요?</h3><div class="audit-grid"><div><b>${calc.engineVersion||"—"}</b><span>엔진 버전</span></div><div><b>${supported}/${total}</b><span>신살 실제 계산</span></div><div><b>${c.input.hourUnknown?"시주 제외":"시주 포함"}</b><span>출생시간</span></div><div><b>${boundaries.length?"경계 주의":"일반 구간"}</b><span>정밀도 안내</span></div></div><p class="muted">원국·십성·지장간·12운성·대표 합충형파해·대운과 날짜별 세운/월운/일운, 원국과 운의 관계 표식까지 같은 엔진에서 계산합니다. 아직 진태양시·출생지 경도·역사적 DST·천문력급 절기 시각은 적용하지 않아 그 부분을 정확하다고 표시하지 않습니다.</p></div>`;
+ return `<div class="card engine-audit"><span class="eyebrow">계산 엔진 상태</span><h3>지금 어디까지 계산하고 있나요?</h3><div class="audit-grid"><div><b>${calc.engineVersion||"—"}</b><span>엔진 버전</span></div><div><b>${supported}/${total}</b><span>신살 실제 계산</span></div><div><b>${c.input.hourUnknown?"시주 제외":"시주 포함"}</b><span>출생시간</span></div><div><b>${boundaries.length?"경계 주의":"일반 구간"}</b><span>정밀도 안내</span></div></div><p class="muted">원국·십성·지장간·12운성·대표 합충형파해·대운과 날짜별 세운/월운/일운, 원국과 운의 관계 표식까지 같은 엔진에서 계산합니다. 진태양시는 사용자가 경도를 입력했을 때 경계 비교만 제공하며 기본 원국에는 자동 적용하지 않습니다. 역사적 DST·천문력급 절기 시각·음력 변환은 아직 적용하지 않아 그 부분을 정확하다고 표시하지 않습니다.</p></div>`;
 }
 
 function all50StarsHTML(c){
@@ -657,6 +671,7 @@ function renderAll(c){
  ${currentFlowHTML(c)}
  ${selectedDateFlowHTML(c)}
  ${fullLuckTimelineHTML(c)}
+ ${precisionCompareHTML(c)}
  ${engineAuditHTML(c)}
  ${lifeManualHTML(c)}
  ${aiPromptTemplatesHTML(c)}

@@ -346,13 +346,14 @@
       stars: specialStars({year:yearP,month:monthP,day:dayP,hour:hourP}, dayStem),
       twelveStages: twelveStagesForPillars({year:yearP,month:monthP,day:dayP,hour:hourP}, dayStem),
       calculation: {
-        engineVersion: "1.9.0-deep-upgrade",
-        solarTerms: "근사 절기식",
+        engineVersion: "2.0.0-precision",
+        solarTerms: "근사 절기식 · 경계 진단 포함",
         timezone: "KST UTC+9",
         trueSolarTime: false,
         longitudeCorrection: false,
         dayBoundary: "23:00 다음 일주 적용",
-        elementMethod: "천간 + 지장간 가중"
+        elementMethod: "천간 + 지장간 가중",
+        boundaryDiagnostics: boundaryDiagnostics({year,month,day,hour,minute,hourUnknown:!!input.hourUnknown})
       },
       luck,
       startAge,
@@ -572,6 +573,50 @@
     });
   }
 
+
+  // 정밀 시간 보조층: 표준시를 바꾸지 않고, 사용자가 선택했을 때만
+  // 경도 보정 + 균시차(EoT)로 진태양시와의 차이를 비교합니다.
+  // NOAA 계열의 간단 근사식이며 역법 원국의 기본값에는 자동 적용하지 않습니다.
+  function equationOfTimeMinutes(year, month, day) {
+    const start = Date.UTC(year,0,1), cur = Date.UTC(year,month-1,day);
+    const n = Math.floor((cur-start)/86400000)+1;
+    const b = 2*Math.PI*(n-81)/364;
+    return 9.87*Math.sin(2*b)-7.53*Math.cos(b)-1.5*Math.sin(b);
+  }
+  function trueSolarCorrectionMinutes(year,month,day,longitude,standardMeridian=135) {
+    const lon=Number(longitude), sm=Number(standardMeridian);
+    if(!Number.isFinite(lon)||!Number.isFinite(sm)) throw new Error("invalid longitude");
+    const longitudeMinutes=4*(lon-sm);
+    const equationMinutes=equationOfTimeMinutes(year,month,day);
+    return {longitudeMinutes,equationMinutes,totalMinutes:longitudeMinutes+equationMinutes};
+  }
+  function trueSolarPreview(input, longitude, standardMeridian=135) {
+    if(input.hourUnknown) return {available:false,reason:"출생시간 미상"};
+    const corr=trueSolarCorrectionMinutes(input.year,input.month,input.day,longitude,standardMeridian);
+    const base=Date.UTC(input.year,input.month-1,input.day,Number(input.hour)||0,Number(input.minute)||0);
+    const dt=new Date(base+corr.totalMinutes*60000);
+    const h=dt.getUTCHours(), mi=dt.getUTCMinutes();
+    const originalBranch=hourBranchIndex(Number(input.hour)||0,Number(input.minute)||0);
+    const correctedBranch=hourBranchIndex(h,mi);
+    return {available:true,correction:corr,corrected:{year:dt.getUTCFullYear(),month:dt.getUTCMonth()+1,day:dt.getUTCDate(),hour:h,minute:mi},originalBranch,correctedBranch,branchChanged:originalBranch!==correctedBranch};
+  }
+  function boundaryDiagnostics(input) {
+    const out=[];
+    if(input.hourUnknown) return [{type:"hour-unknown",level:"info",text:"출생시간 미상이라 시주와 시간 민감 해석을 제외합니다."}];
+    const mins=(Number(input.hour)||0)*60+(Number(input.minute)||0);
+    const hourEdges=[60,180,300,420,540,660,780,900,1020,1140,1260,1380];
+    const hourDist=Math.min(...hourEdges.map(x=>Math.abs(mins-x)),Math.abs(mins-1440),mins);
+    if(hourDist<=40) out.push({type:"hour-boundary",level:"warn",minutes:hourDist,text:`시지 경계와 약 ${hourDist}분 이내입니다. 출생지 보정 여부에 따라 시주가 달라질 수 있습니다.`});
+    const t=birthMsKst(input.year,input.month,input.day,Number(input.hour)||0,Number(input.minute)||0);
+    const jy=jieMonthAndYear(input.year,input.month,input.day,Number(input.hour)||0,Number(input.minute)||0);
+    const starts=[];
+    for(let y=jy.yearForPillar-1;y<=jy.yearForPillar+1;y++) for(let n=0;n<24;n+=2) starts.push(solarTermMs(y,n));
+    const termDist=Math.min(...starts.map(x=>Math.abs(t-x)))/60000;
+    if(termDist<=720) out.push({type:"solar-term-boundary",level:"warn",minutes:Math.round(termDist),text:`절입 경계와 약 ${Math.round(termDist)}분 이내입니다. 현재 근사 절기식에서는 정밀 천문력과 월주가 달라질 가능성을 별도로 확인해야 합니다.`});
+    if(mins>=22*60+20 || mins<=40) out.push({type:"day-boundary",level:"warn",text:"23시 전후는 일주 경계 기준이 유파마다 다를 수 있어 현재 엔진의 ‘23시 다음 일주’ 기준을 함께 확인하세요."});
+    return out;
+  }
+
   function normalizeEl(elCount) {
     const total = Object.values(elCount).reduce((a, b) => a + b, 0) || 1;
     const out = {};
@@ -600,6 +645,10 @@
     flowForDate,
     chartRelations,
     relationsWithTransit,
+    equationOfTimeMinutes,
+    trueSolarCorrectionMinutes,
+    trueSolarPreview,
+    boundaryDiagnostics,
     specialStars,
     calculate,
     normalizeEl,
