@@ -338,7 +338,7 @@
     const luck = [];
     let ls = monthStem;
     let lb = monthBranch;
-    for (let i = 0; i < 8; i++) {
+    for (let i = 0; i < 10; i++) {
       if (forward) {
         ls = (ls + 1) % 10;
         lb = (lb + 1) % 12;
@@ -381,7 +381,7 @@
       stars: specialStars({year:yearP,month:monthP,day:dayP,hour:hourP}, dayStem),
       twelveStages: twelveStagesForPillars({year:yearP,month:monthP,day:dayP,hour:hourP}, dayStem),
       calculation: {
-        engineVersion: "2.1.0-lunar-calendar",
+        engineVersion: "2.2.0-evidence-stars-100y",
         solarTerms: "근사 절기식 · 경계 진단 포함",
         lunarConversion: lunarConversion?`음력 ${originalInput.year}.${originalInput.month}.${originalInput.day}${originalInput.leapMonth?" 윤달":""} → 양력 ${year}.${month}.${day}`:"양력 직접 입력",
         timezone: "KST UTC+9",
@@ -393,6 +393,7 @@
       },
       luck,
       startAge,
+      startAgeRule: "절입까지 일수 ÷ 3 후 표시 나이는 반올림",
       forward,
     };
   }
@@ -414,7 +415,12 @@
     "귀문관살": {group:"감각·몰입", tone:"deep", short:"예민한 감각과 깊은 몰입을 상징", good:"세밀한 관찰과 독특한 관점이 필요한 분야에서 장점으로 바꿀 수 있어요.", watch:"불안이나 질환을 뜻한다고 단정하지 않습니다. 실제 어려움은 전문가의 평가가 기준입니다."},
     "원진살": {group:"관계·조정", tone:"relation", short:"가까운 관계에서 감정의 엇갈림을 상징", good:"서로 다른 기대를 말로 확인해야 한다는 관계 체크포인트로 활용할 수 있어요.", watch:"특정 사람과의 악연을 뜻하지 않습니다."},
     "공망": {group:"비움·재정비", tone:"deep", short:"비어 있음과 재정비의 상징", good:"계획을 고정하기보다 여지를 두고 다시 점검하는 신호로 읽을 수 있어요.", watch:"재물·결혼·가족이 사라진다는 식으로 해석하지 않습니다."},
-    "건록": {group:"자립·기반", tone:"good", short:"자기 힘으로 기반을 세우는 상징", good:"꾸준히 실력과 생활 기반을 쌓는 힘을 살펴볼 때 참고합니다.", watch:"독립심이 모든 일을 혼자 해야 한다는 뜻은 아니에요."}
+    "건록": {group:"자립·기반", tone:"good", short:"자기 힘으로 기반을 세우는 상징", good:"꾸준히 실력과 생활 기반을 쌓는 힘을 살펴볼 때 참고합니다.", watch:"독립심이 모든 일을 혼자 해야 한다는 뜻은 아니에요."},
+    "천덕귀인": {group:"귀인·완충", tone:"good", short:"월지 기준으로 보는 전통적 완충·도움의 길신", good:"갈등이나 난관에서 주변 도움과 조정 여지를 살피는 보조 상징으로 참고합니다.", watch:"재난을 막아준다거나 반드시 귀인을 만난다고 단정하지 않습니다."},
+    "월덕귀인": {group:"귀인·완충", tone:"good", short:"월지 삼합국의 양간으로 보는 전통 길신", good:"관계 속 배려와 도움의 연결을 보는 보조 상징으로 참고합니다.", watch:"길흉을 뒤집는 절대적인 별로 해석하지 않습니다."},
+    "암록": {group:"귀인·기반", tone:"good", short:"건록의 육합지로 보는 숨은 기반의 상징", good:"드러나지 않은 도움·연결·생활 기반을 점검하는 보조 지표로 활용합니다.", watch:"숨은 재물이나 공짜 행운을 보장하는 뜻은 아닙니다."},
+    "학당귀인": {group:"배움·전문성", tone:"good", short:"배움과 가르침의 자질을 상징하는 전통 귀인", good:"공부·자격·교육·전문기술처럼 지식을 쌓고 전달하는 장면에서 참고합니다.", watch:"성적이나 합격을 보증하는 별은 아닙니다."},
+    "천의성": {group:"돌봄·회복", tone:"good", short:"월지 기준으로 보는 돌봄과 회복의 전통 상징", good:"돌봄·상담·건강관리처럼 사람을 보살피는 관심사를 살펴볼 때 참고합니다.", watch:"의료인 적성이나 질병을 진단하는 지표로 사용하지 않습니다."}
   };
 
   Object.keys(SINSAL_50_DEFAULT_META).forEach(k=>{if(!SINSAL_META[k])SINSAL_META[k]=SINSAL_50_DEFAULT_META[k];});
@@ -449,12 +455,25 @@
     const wonjinPairs=[[0,7],[1,6],[2,9],[3,8],[4,11],[5,10]];
     const guigang=new Set(["경진","경술","임진","무술"]);
     const geonrok={0:2,1:3,2:5,3:6,4:5,5:6,6:8,7:9,8:11,9:0};
+    // 검증된 추가 귀인 5종. 신살은 유파차이가 있으므로 아래 채택표를 계산 근거로 공개합니다.
+    const monthBranch=pillars.month.branchIndex;
+    // 천덕귀인: 월지별 대상 글자. stem은 천간, branch는 지지에서 찾습니다.
+    const cheondeok={2:["stem",3],3:["branch",8],4:["stem",8],5:["stem",7],6:["branch",11],7:["stem",0],8:["stem",9],9:["branch",2],10:["stem",2],11:["stem",1],0:["branch",5],1:["stem",6]};
+    // 월덕귀인: 寅午戌→丙, 亥卯未→甲, 申子辰→壬, 巳酉丑→庚.
+    const woldeokStem={2:2,6:2,10:2,11:0,3:0,7:0,8:8,0:8,4:8,5:6,9:6,1:6};
+    // 암록은 일간 건록의 육합지, 학당은 통용 장생지, 천의성은 월지 한 칸 앞 지지.
+    const amrok={0:11,1:10,2:8,3:7,4:8,5:7,6:5,7:4,8:2,9:1};
+    const hakdang={0:11,1:6,2:2,3:9,4:2,5:9,6:5,7:0,8:8,9:3};
+    const cheonui=(monthBranch+11)%12;
 
     function addByBranch(name,target,basis,excludeBasisSelf=false){
       entries.forEach(([k,p])=>{
         if(p.branchIndex===target && !(excludeBasisSelf && ((basis==="년지"&&k==="year")||(basis==="일지"&&k==="day"))))
           hits.push(starHit(name,k,basis));
       });
+    }
+    function addByStem(name,target,basis){
+      entries.forEach(([k,p])=>{ if(p.stemIndex===target) hits.push(starHit(name,k,basis)); });
     }
     // 년지·일지 두 기준을 모두 보여주되 같은 위치/이름/기준 중복은 제거합니다.
     addByBranch("도화살",peach[yearBranch],"년지");
@@ -470,6 +489,14 @@
     addByBranch("홍염살",hongyeom[dayStem],"일간");
     addByBranch("양인살",blade[dayStem],"일간");
     addByBranch("건록",geonrok[dayStem],"일간");
+
+    // 추가 검증 귀인 5종 계산
+    const td=cheondeok[monthBranch];
+    if(td){ if(td[0]==="stem") addByStem("천덕귀인",td[1],"월지·채택표"); else addByBranch("천덕귀인",td[1],"월지·채택표"); }
+    addByStem("월덕귀인",woldeokStem[monthBranch],"월지·삼합국 양간");
+    addByBranch("암록",amrok[dayStem],"일간·건록의 육합지");
+    addByBranch("학당귀인",hakdang[dayStem],"일간·장생지 통용표");
+    addByBranch("천의성",cheonui,"월지·직전 지지");
 
     entries.forEach(([k,p])=>{
       if(guigang.has(p.ko)) hits.push(starHit("괴강살",k,"일주·간지"));
@@ -551,7 +578,7 @@
 
     const clean=uniqStarHits(hits);
     const counts={}; clean.forEach(h=>counts[h.name]=(counts[h.name]||0)+1);
-    const supported=new Set(["겁살","재살","천살","지살","도화살","월살","망신살","장성살","반안살","역마살","육해살","화개살","천을귀인","문창귀인","태극귀인","건록","홍염살","양인살","괴강살","귀문관살","원진살","공망","고신살","과숙살","백호살","현침살","천라지망","삼기","형살","충살","파살","해살","삼합"]);
+    const supported=new Set(["겁살","재살","천살","지살","도화살","월살","망신살","장성살","반안살","역마살","육해살","화개살","천을귀인","천덕귀인","월덕귀인","문창귀인","태극귀인","천의성","건록","암록","학당귀인","홍염살","양인살","괴강살","귀문관살","원진살","공망","고신살","과숙살","백호살","현침살","천라지망","삼기","형살","충살","파살","해살","삼합"]);
     const catalogue=SINSAL_50_CATALOG.map(x=>Object.assign({},x,{count:counts[x.name]||0,status:supported.has(x.name)?"calculated":"school-dependent"}));
     return {hits:clean, counts, total:clean.length, catalogue, supportedCount:supported.size, catalogCount:SINSAL_50_CATALOG.length, voidBranches:voids.map(i=>BRANCHES[i])};
   }

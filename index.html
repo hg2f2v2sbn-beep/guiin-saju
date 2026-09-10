@@ -653,14 +653,14 @@ function renderSolarPreview(){
 
 function engineAuditHTML(c){
  const calc=c.calculation||{}, boundaries=nearBoundary(c.input), supported=c.stars?.supportedCount||0, total=c.stars?.catalogCount||50;
- return `<div class="card engine-audit"><span class="eyebrow">계산 엔진 상태</span><h3>지금 어디까지 계산하고 있나요?</h3><div class="audit-grid"><div><b>${calc.engineVersion||"—"}</b><span>엔진 버전</span></div><div><b>${supported}/${total}</b><span>신살 실제 계산</span></div><div><b>${c.input.hourUnknown?"시주 제외":"시주 포함"}</b><span>출생시간</span></div><div><b>${boundaries.length?"경계 주의":"일반 구간"}</b><span>정밀도 안내</span></div></div><p class="muted">원국·십성·지장간·12운성·대표 합충형파해·대운과 날짜별 세운/월운/일운, 원국과 운의 관계 표식까지 같은 엔진에서 계산합니다. 진태양시는 사용자가 경도를 입력했을 때 경계 비교만 제공하며 기본 원국에는 자동 적용하지 않습니다. 음력·윤달 변환은 1900~2050 범위에서 지원합니다. 역사적 DST와 천문력급 절기 시각은 아직 적용하지 않아 그 부분을 정확하다고 표시하지 않습니다.</p></div>`;
+ return `<div class="card engine-audit"><span class="eyebrow">계산 엔진 상태</span><h3>지금 어디까지 계산하고 있나요?</h3><div class="audit-grid"><div><b>${calc.engineVersion||"—"}</b><span>엔진 버전</span></div><div><b>${supported}/${total}</b><span>신살 실제 계산</span></div><div><b>${c.input.hourUnknown?"시주 제외":"시주 포함"}</b><span>출생시간</span></div><div><b>${boundaries.length?"경계 주의":"일반 구간"}</b><span>정밀도 안내</span></div></div><p class="muted">원국·십성·지장간·12운성·대표 합충형파해·10개 대운(약 100년)과 날짜별 세운/월운/일운, 원국과 운의 관계 표식까지 같은 엔진에서 계산합니다. 진태양시는 사용자가 경도를 입력했을 때 경계 비교만 제공하며 기본 원국에는 자동 적용하지 않습니다. 음력·윤달 변환은 1900~2050 범위에서 지원합니다. 역사적 DST와 천문력급 절기 시각은 아직 적용하지 않아 그 부분을 정확하다고 표시하지 않습니다.</p></div>`;
 }
 
 function all50StarsHTML(c){
  const cat=(c.stars&&c.stars.catalogue)||[];
  if(!cat.length)return "";
  const groups=["12신살","귀인·길신","매력·관계","강한 기운","특수","지지 관계"];
- return `<div class="card all50-card"><span class="eyebrow">신살·귀인 50종 도감</span><h3>50가지를 한 번에 확인해요</h3><p class="muted">현재 명식에서 잡힌 항목은 개수를 표시합니다. 유파마다 공식이 크게 갈리는 항목은 억지로 결과를 만들어내지 않고 <b>유파차이</b>로 표시해 신뢰도를 지켰어요.</p>
+ return `<div class="card all50-card"><span class="eyebrow">신살·귀인 50종 도감</span><h3>50가지를 한 번에 확인해요</h3><p class="muted">현재 명식에서 잡힌 항목은 개수를 표시합니다. 이번 버전은 50종 중 <b>${c.stars?.supportedCount||0}종을 실제 계산</b>하고, 공식이 크게 갈리는 나머지는 억지로 만들어내지 않고 <b>유파차이</b>로 표시합니다.</p>
  ${groups.map(g=>`<div class="fifty-group"><b>${g}</b><div class="fifty-grid">${cat.filter(x=>x.group===g).map(x=>`<span class="${x.count?"hit":x.status==="school-dependent"?"school":""}">${x.name}${x.count?` <strong>${x.count}</strong>`:x.status==="school-dependent"?` <small>유파차이</small>`:""}</span>`).join("")}</div></div>`).join("")}
  <details class="calc-note"><summary>왜 50개 중 일부는 ‘유파차이’인가요?</summary><div class="calc-body">신살은 고전과 유파에 따라 이름·기준표·적용 우선순위가 달라집니다. 공개적으로 계산 기준을 검증할 수 있는 항목은 실제 계산하고, 기준이 여러 갈래인 항목은 특정 사이트의 비공개 공식을 추측해 복제하지 않습니다. 계산식이 확정되는 항목은 이 목록에서 바로 실제 계산 대상으로 전환할 수 있습니다.</div></details></div>`;
 }
@@ -679,7 +679,7 @@ function specialEnergyHTML(c){
  <p class="muted">사람들이 많이 궁금해하는 도화·역마·화개와 귀인성을 명식에서 직접 찾아요. <b>신살은 보조 지표</b>라서 개수가 많다고 무조건 좋거나 나쁜 것은 아닙니다.</p>
  <div class="star-top">${featured.map(x=>`<div class="star-feature"><b>${x.name} ${x.count}자리</b><span>${x.meta.short||""}</span></div>`).join("")}</div>
  <div class="star-list">${rows.map(x=>`<details class="star-row"><summary><span><b>${x.name}</b><small>${x.meta.group||"특별한 기운"}</small></span><strong>${x.count}자리</strong></summary><div class="star-body"><p>${x.meta.short||""}</p><p><b>장점으로 쓰면</b> ${x.meta.good||""}</p><p><b>주의할 점</b> ${x.meta.watch||""}</p><div class="star-where">발견 위치 · ${[...new Set(x.hits.map(h=>STAR_PILLAR_LABEL[h.pillar]||h.pillar))].join(" · ")}${x.basisCount>x.count?`<br>계산 기준이 겹쳐 ${x.basisCount}회 포착되지만 실제 위치는 ${x.count}자리예요.`:""}</div></div></details>`).join("")}</div>
- <details class="calc-note"><summary>신살 계산 기준과 한계</summary><div class="calc-body">도화·역마·화개는 년지와 일지의 삼합 기준을 함께 확인하고, 천을·문창·태극·홍염·양인·건록은 일간 기준, 귀문·원진은 지지 쌍, 공망은 일주 旬 기준으로 계산합니다. 신살은 유파마다 채택 항목과 기준이 달라 다른 만세력과 결과가 일부 다를 수 있습니다. 귀인이나 살 하나로 사건·성격·질병·결혼을 단정하지 않습니다.</div></details></div>`;
+ <details class="calc-note"><summary>신살 계산 기준과 한계</summary><div class="calc-body">도화·역마·화개는 년지와 일지의 삼합 기준을 함께 확인합니다. 천을·문창·태극·홍염·양인·건록·암록·학당은 일간 기준, 천덕·월덕·천의는 월지 기준, 귀문·원진은 지지 쌍, 공망은 일주 旬 기준으로 계산합니다. 천덕은 월지별 채택표, 월덕은 삼합국의 양간, 암록은 건록의 육합지, 학당은 일간별 장생지 통용표, 천의는 월지의 직전 지지를 사용합니다. 신살은 유파마다 채택 항목과 기준이 달라 다른 만세력과 결과가 일부 다를 수 있습니다. 귀인이나 살 하나로 사건·성격·질병·결혼을 단정하지 않습니다.</div></details></div>`;
 }
 
 
