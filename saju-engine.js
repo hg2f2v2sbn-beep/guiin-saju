@@ -423,7 +423,7 @@
       stars: specialStars({year:yearP,month:monthP,day:dayP,hour:hourP}, dayStem),
       twelveStages: twelveStagesForPillars({year:yearP,month:monthP,day:dayP,hour:hourP}, dayStem),
       calculation: {
-        engineVersion: "3.0.0-allinone-precision-calendar",
+        engineVersion: "3.5.0-complete-product",
         solarTerms: "태양 겉보기 황경 수치해석 · 경계 ±20분 교차확인 권장",
         lunarConversion: lunarConversion?`음력 ${originalInput.year}.${originalInput.month}.${originalInput.day}${originalInput.leapMonth?" 윤달":""} → 양력 ${year}.${month}.${day}`:"양력 직접 입력",
         timezone: "KST UTC+9",
@@ -783,7 +783,7 @@
  * School-dependent rules remain labelled as such in the UI/catalog.
  */
 (typeof window!=="undefined"?window:globalThis).GUIIN_SAJU_EVIDENCE = Object.freeze({
-  version: "3.0.0-allinone-precision-calendar",
+  version: "3.5.0-complete-product",
   interpretationOrder: ["원국","대운","세운","월운","일운"],
   caution: "명리 해석은 전통 이론의 적용이며 과학적 예측이나 사건 확률이 아닙니다.",
   privacy: "별도 서버 연동이 없는 기능은 브라우저 안에서 처리합니다."
@@ -793,7 +793,7 @@
 /* v2.6 flow cross-check helpers: presentation/evidence only.
    These helpers do not introduce a new 명리 formula. */
 (typeof window!=="undefined"?window:globalThis).GUIIN_FLOW_CROSSCHECK = Object.freeze({
-  version: "3.0.0-allinone-precision-calendar",
+  version: "3.5.0-complete-product",
   layers: [
     {key:"natal", label:"원국", scale:"기준 구조"},
     {key:"daewoon", label:"대운", scale:"약 10년"},
@@ -809,10 +809,10 @@
   ]
 });
 
-(typeof window!=="undefined"?window:globalThis).GUIIN_LIFE_TIMELINE_PRO=Object.freeze({version:"3.0.0-allinone-precision-calendar",method:"대운 구간과 같은 연도의 세운을 원국에 교차 비교",caution:"관계 표식을 사건 확률로 환산하지 않음"});
+(typeof window!=="undefined"?window:globalThis).GUIIN_LIFE_TIMELINE_PRO=Object.freeze({version:"3.5.0-complete-product",method:"대운 구간과 같은 연도의 세운을 원국에 교차 비교",caution:"관계 표식을 사건 확률로 환산하지 않음"});
 
 (typeof window!=="undefined"?window:globalThis).GUIIN_ALLINONE_RELEASE=Object.freeze({
- version:"3.0.0-allinone-precision-calendar",
+ version:"3.5.0-complete-product",
  precision:"apparent-solar-longitude approximate solver",
  dayBoundaryOptions:["23","00"],
  trueSolar:"optional longitude + equation-of-time application",
@@ -822,3 +822,22 @@
  compatibilityFlowYears:6,
  starPolicy:"unsupported school-dependent items are not fabricated"
 });
+
+function calculationFingerprint(result){
+  const i=result.input||{},c=result.calculation||{};
+  const raw=[c.engineVersion,i.calendar,i.year,i.month,i.day,i.hour,i.minute,i.dayBoundary,i.trueSolarApply,i.longitude,
+    result.pillars?.year?.ko,result.pillars?.month?.ko,result.pillars?.day?.ko,result.pillars?.hour?.ko,result.startAgeExact].join("|");
+  let h=2166136261;for(let n=0;n<raw.length;n++){h^=raw.charCodeAt(n);h=Math.imul(h,16777619)}
+  return ("00000000"+(h>>>0).toString(16)).slice(-8);
+}
+const GUIIN_METHOD_DISCLOSURE=Object.freeze({
+ version:"3.5.0-complete-product",
+ pillars:"연주=입춘, 월주=절입, 일주 경계 선택형(23시/자정), 시주=일간×시지",
+ solarTerms:"태양 겉보기 황경 저정밀 수치해석; 경계 ±20분 외부 정밀 역서 교차확인 권장",
+ daeun:"연간 음양+성별로 순역행, 절입까지 실제 시간÷3일=1년; 정확 원값 보존",
+ trueSolar:"선택 적용: 경도 보정+균시차; 역사적 DST/표준시 변경 자동 미지원",
+ stars:"50종 카탈로그 중 엔진이 공식화한 항목만 계산; 유파차이 항목은 미지원 표시",
+ interpretation:"전통 명리 해석 보조용; 사건 확률·의학/법률/투자 결과를 산출하지 않음"
+});
+if(typeof module!=="undefined"&&module.exports){module.exports.calculationFingerprint=calculationFingerprint;module.exports.GUIIN_METHOD_DISCLOSURE=GUIIN_METHOD_DISCLOSURE}
+if(typeof window!=="undefined"){window.GUIIN_METHOD_DISCLOSURE=GUIIN_METHOD_DISCLOSURE}
