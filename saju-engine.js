@@ -346,7 +346,7 @@
       stars: specialStars({year:yearP,month:monthP,day:dayP,hour:hourP}, dayStem),
       twelveStages: twelveStagesForPillars({year:yearP,month:monthP,day:dayP,hour:hourP}, dayStem),
       calculation: {
-        engineVersion: "2.0.0-precision",
+        engineVersion: "2.0.1-precision-stable",
         solarTerms: "근사 절기식 · 경계 진단 포함",
         timezone: "KST UTC+9",
         trueSolarTime: false,
