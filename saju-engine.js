@@ -220,7 +220,39 @@
     return out;
   }
 
+
+  // Korean lunar calendar conversion table, 1900–2050.
+  // The conversion is used only to normalize a user-entered lunar birth date to a solar date;
+  // saju pillars are then calculated from the normalized solar date and solar terms.
+  const LUNAR_BASE_YEAR=1900, LUNAR_MAX_YEAR=2050;
+  const LUNAR_YEAR_DATA=[0x830084bd,0x82c404ae,0x82c60a57,0x82fe554d,0xc2c40d26,0x82c60d95,0x83014655,0x82c4056a,0xc2c609ad,0x8300255d,0x82c404ae,0x83006a5b,0xc2c40a4d,0x82c40d25,0x83005da9,0x82c60b55,0xc2c4056a,0x83002ada,0x82c6095d,0x830074bb,0xc2c4049b,0x82c40a4b,0x83005b4b,0x82c406a9,0xc2c40ad4,0x83024bb5,0x82c402b6,0x82c6095b,0xc3002537,0x82c40497,0x82fe6656,0x82c40e4a,0xc2c60ea5,0x830156a9,0x82c605b5,0x82c402b6,0xc30138ae,0x82c4092e,0x83017c8d,0x82c40c95,0xc2c40d4a,0x83016d8a,0x82c60b69,0x82c6056d,0xc301425b,0x82c4025d,0x82c4092d,0x83002d2b,0xc2c40a95,0x83007d55,0x82c40b4a,0x82c60b55,0xc3015555,0x82c604db,0x82c4025b,0x83013857,0xc2c4052b,0x83008a9b,0x82c40695,0x82c406aa,0xc3006aea,0x82c60ab5,0x82c404b6,0x83004aae,0xc2c60a57,0x82c40527,0x82fe3726,0x82c60d95,0xc30076b5,0x82c4056a,0x82c609ad,0x830054dd,0xc2c404ae,0x82c40a4e,0x83004d4d,0x82c40d25,0xc3008d59,0x82c40b54,0x82c60d6a,0x8301695a,0xc2c6095b,0x82c4049b,0x83004a9b,0x82c40a4b,0xc300ab27,0x82c406a5,0x82c406d4,0x83026b75,0xc2c402b6,0x82c6095b,0x830054b7,0x82c40497,0xc2c4064b,0x82fe374a,0x82c60ea5,0x830086d9,0xc2c605ad,0x82c402b6,0x8300596e,0x82c4092e,0xc2c40c96,0x83004e95,0x82c40d4a,0x82c60da5,0xc3002755,0x82c4056c,0x83027abb,0x82c4025d,0xc2c4092d,0x83005cab,0x82c40a95,0x82c40b4a,0xc3013b4a,0x82c60b55,0x8300955d,0x82c404ba,0xc2c60a5b,0x83005557,0x82c4052b,0x82c40a95,0xc3004b95,0x82c406aa,0x82c60ad5,0x830026b5,0xc2c404b6,0x83006a6e,0x82c60a57,0x82c40527,0xc2fe56a6,0x82c60d93,0x82c405aa,0x83003b6a,0xc2c6096d,0x8300b4af,0x82c404ae,0x82c40a4d,0xc3016d0d,0x82c40d25,0x82c40d52,0x83005dd4,0xc2c60b6a,0x82c6096d,0x8300255b,0x82c4049b,0xc3007a57,0x82c40a4b,0x82c40b25,0x83015b25,0xc2c406d4,0x82c60ada,0x830138b6];
+  function lunarData(y){ if(y<LUNAR_BASE_YEAR||y>LUNAR_MAX_YEAR) throw new Error("음력 입력은 1900~2050년만 지원합니다."); return LUNAR_YEAR_DATA[y-LUNAR_BASE_YEAR]>>>0; }
+  function lunarLeapMonth(y){ return (lunarData(y)>>>12)&15; }
+  function lunarMonthDays(y,m,leap=false){
+    if(m<1||m>12) throw new Error("음력 월을 확인해 주세요.");
+    const d=lunarData(y), lm=(d>>>12)&15;
+    if(leap){ if(lm!==m) throw new Error(`${y}년 음력 ${m}월은 윤달이 아닙니다.`); return ((d>>>16)&1)?30:29; }
+    return ((d>>>(12-m))&1)?30:29;
+  }
+  function lunarYearDays(y){ return (lunarData(y)>>>17)&0x1ff; }
+  function lunarToSolar(y,m,d,leap=false){
+    y=Number(y);m=Number(m);d=Number(d);leap=!!leap;
+    if(!Number.isInteger(y)||!Number.isInteger(m)||!Number.isInteger(d)) throw new Error("음력 생년월일을 확인해 주세요.");
+    const md=lunarMonthDays(y,m,leap); if(d<1||d>md) throw new Error(`${y}년 음력 ${m}월${leap?" 윤달":""}은 ${md}일까지입니다.`);
+    let offset=0;
+    for(let yy=1900;yy<y;yy++) offset+=lunarYearDays(yy);
+    const lm=lunarLeapMonth(y);
+    for(let mm=1;mm<m;mm++){ offset+=lunarMonthDays(y,mm,false); if(lm===mm) offset+=lunarMonthDays(y,mm,true); }
+    if(leap) offset+=lunarMonthDays(y,m,false);
+    offset+=d-1;
+    const dt=new Date(Date.UTC(1900,0,31)+offset*86400000);
+    return {year:dt.getUTCFullYear(),month:dt.getUTCMonth()+1,day:dt.getUTCDate(),source:{year:y,month:m,day:d,leap},leapMonth:lm};
+  }
+
   function calculate(input) {
+    const originalInput={...input};
+    let lunarConversion=null;
+    if(input.calendar==="음력"){ lunarConversion=lunarToSolar(input.year,input.month,input.day,!!input.leapMonth); input={...input,...lunarConversion,calendar:"양력"}; }
     const year = +input.year;
     const month = +input.month;
     const day = +input.day;
@@ -331,7 +363,10 @@
         hour: input.hourUnknown ? null : hour,
         minute: input.hourUnknown ? null : minute,
         hourUnknown: !!input.hourUnknown,
-        calendar: input.calendar || "양력",
+        calendar: originalInput.calendar || "양력",
+        leapMonth: !!originalInput.leapMonth,
+        originalDate: originalInput.calendar==="음력"?{year:originalInput.year,month:originalInput.month,day:originalInput.day,leap:!!originalInput.leapMonth}:null,
+        normalizedSolarDate: lunarConversion?{year,month,day}:null,
       },
       yearForPillar,
       pillars: { year: yearP, month: monthP, day: dayP, hour: hourP },
@@ -346,8 +381,9 @@
       stars: specialStars({year:yearP,month:monthP,day:dayP,hour:hourP}, dayStem),
       twelveStages: twelveStagesForPillars({year:yearP,month:monthP,day:dayP,hour:hourP}, dayStem),
       calculation: {
-        engineVersion: "2.0.1-precision-stable",
+        engineVersion: "2.1.0-lunar-calendar",
         solarTerms: "근사 절기식 · 경계 진단 포함",
+        lunarConversion: lunarConversion?`음력 ${originalInput.year}.${originalInput.month}.${originalInput.day}${originalInput.leapMonth?" 윤달":""} → 양력 ${year}.${month}.${day}`:"양력 직접 입력",
         timezone: "KST UTC+9",
         trueSolarTime: false,
         longitudeCorrection: false,
@@ -649,6 +685,9 @@
     trueSolarCorrectionMinutes,
     trueSolarPreview,
     boundaryDiagnostics,
+    lunarToSolar,
+    lunarLeapMonth,
+    lunarMonthDays,
     specialStars,
     calculate,
     normalizeEl,
