@@ -186,15 +186,37 @@
   }
 
   function chartRelations(ps) {
-    const arr = ps.filter(Boolean), out=[];
+    const keys=["year","month","day","hour"];
+    const labels={year:"년주",month:"월주",day:"일주",hour:"시주"};
+    const arr=ps.map((p,i)=>p?{p,key:keys[i],label:labels[keys[i]]}:null).filter(Boolean), out=[];
+    const push=(type,x,y,layer)=>out.push({
+      type, layer, a:x.p[layer==="천간"?"stem":"branch"], b:y.p[layer==="천간"?"stem":"branch"],
+      aKey:x.key,bKey:y.key,aLabel:x.label,bLabel:y.label
+    });
     for(let i=0;i<arr.length;i++) for(let j=i+1;j<arr.length;j++){
-      const a=arr[i], b=arr[j];
-      if(STEM_COMBINE[a.stemIndex]===b.stemIndex) out.push({type:"천간합",a:a.stem,b:b.stem});
-      if(BRANCH_COMBINE[a.branchIndex]===b.branchIndex) out.push({type:"육합",a:a.branch,b:b.branch});
-      if(BRANCH_CLASH[a.branchIndex]===b.branchIndex) out.push({type:"충",a:a.branch,b:b.branch});
-      if(BRANCH_HARM[a.branchIndex]===b.branchIndex) out.push({type:"해",a:a.branch,b:b.branch});
-      if(BRANCH_BREAK[a.branchIndex]===b.branchIndex) out.push({type:"파",a:a.branch,b:b.branch});
+      const x=arr[i],y=arr[j],a=x.p,b=y.p;
+      if(STEM_COMBINE[a.stemIndex]===b.stemIndex) push("천간합",x,y,"천간");
+      if(BRANCH_COMBINE[a.branchIndex]===b.branchIndex) push("육합",x,y,"지지");
+      if(BRANCH_CLASH[a.branchIndex]===b.branchIndex) push("충",x,y,"지지");
+      if(BRANCH_HARM[a.branchIndex]===b.branchIndex) push("해",x,y,"지지");
+      if(BRANCH_BREAK[a.branchIndex]===b.branchIndex) push("파",x,y,"지지");
     }
+    // 대표적인 지지 형 관계. 자형(辰辰·午午·酉酉·亥亥)도 포함.
+    const punishPairs=[[2,5],[5,8],[8,2],[1,10],[10,7],[7,1],[0,3]];
+    const selfPunish=new Set([4,6,9,11]);
+    for(let i=0;i<arr.length;i++) for(let j=i+1;j<arr.length;j++){
+      const x=arr[i],y=arr[j],a=x.p.branchIndex,b=y.p.branchIndex;
+      if(punishPairs.some(([u,v])=>(a===u&&b===v)||(a===v&&b===u)) || (a===b&&selfPunish.has(a))) push("형",x,y,"지지");
+    }
+    // 삼합은 세 지지가 모두 원국에 존재할 때 한 묶음으로 표시.
+    const triads=[{b:[8,0,4],name:"신자진 수국"},{b:[2,6,10],name:"인오술 화국"},{b:[5,9,1],name:"사유축 금국"},{b:[11,3,7],name:"해묘미 목국"}];
+    triads.forEach(t=>{
+      const found=arr.filter(x=>t.b.includes(x.p.branchIndex));
+      if(new Set(found.map(x=>x.p.branchIndex)).size===3) out.push({
+        type:"삼합",layer:"지지",name:t.name,
+        members:found.map(x=>({key:x.key,label:x.label,branch:x.p.branch}))
+      });
+    });
     return out;
   }
 
@@ -322,8 +344,9 @@
       elCount,
       relations: chartRelations(pillars),
       stars: specialStars({year:yearP,month:monthP,day:dayP,hour:hourP}, dayStem),
+      twelveStages: twelveStagesForPillars({year:yearP,month:monthP,day:dayP,hour:hourP}, dayStem),
       calculation: {
-        engineVersion: "1.3.0-stars",
+        engineVersion: "1.6.0-relations",
         solarTerms: "근사 절기식",
         timezone: "KST UTC+9",
         trueSolarTime: false,
@@ -339,6 +362,8 @@
 
   // 신살/귀인 보조 계산층.
   // 신살은 유파별 기준 차이가 있어 원국의 핵심 판단보다 낮은 우선순위의 참고 정보로 제공합니다.
+  const SINSAL_50_CATALOG=[{name:"겁살",group:"12신살"},{name:"재살",group:"12신살"},{name:"천살",group:"12신살"},{name:"지살",group:"12신살"},{name:"도화살",group:"12신살"},{name:"월살",group:"12신살"},{name:"망신살",group:"12신살"},{name:"장성살",group:"12신살"},{name:"반안살",group:"12신살"},{name:"역마살",group:"12신살"},{name:"육해살",group:"12신살"},{name:"화개살",group:"12신살"},{name:"천을귀인",group:"귀인·길신"},{name:"천덕귀인",group:"귀인·길신"},{name:"월덕귀인",group:"귀인·길신"},{name:"문창귀인",group:"귀인·길신"},{name:"태극귀인",group:"귀인·길신"},{name:"복성귀인",group:"귀인·길신"},{name:"금여성",group:"귀인·길신"},{name:"관귀학관",group:"귀인·길신"},{name:"천문성",group:"귀인·길신"},{name:"천의성",group:"귀인·길신"},{name:"건록",group:"귀인·길신"},{name:"암록",group:"귀인·길신"},{name:"협록",group:"귀인·길신"},{name:"문곡귀인",group:"귀인·길신"},{name:"학당귀인",group:"귀인·길신"},{name:"홍염살",group:"매력·관계"},{name:"원진살",group:"매력·관계"},{name:"귀문관살",group:"매력·관계"},{name:"고란살",group:"매력·관계"},{name:"고신살",group:"매력·관계"},{name:"과숙살",group:"매력·관계"},{name:"양인살",group:"강한 기운"},{name:"괴강살",group:"강한 기운"},{name:"백호살",group:"강한 기운"},{name:"현침살",group:"강한 기운"},{name:"탕화살",group:"강한 기운"},{name:"낙정관살",group:"강한 기운"},{name:"공망",group:"특수"},{name:"천라지망",group:"특수"},{name:"삼기",group:"특수"},{name:"월공",group:"특수"},{name:"상문살",group:"특수"},{name:"조객살",group:"특수"},{name:"형살",group:"지지 관계"},{name:"충살",group:"지지 관계"},{name:"파살",group:"지지 관계"},{name:"해살",group:"지지 관계"},{name:"삼합",group:"지지 관계"}];
+  const SINSAL_50_DEFAULT_META={"겁살":{group:"12신살",short:"12신살에서 살펴보는 전통 명리의 보조 상징",good:"원국 전체와 함께 보면 자신의 반복 패턴을 이해하는 참고가 될 수 있어요.",watch:"이 항목 하나만으로 성격·사건·질병·결혼·재물을 단정하지 않습니다."},"재살":{group:"12신살",short:"12신살에서 살펴보는 전통 명리의 보조 상징",good:"원국 전체와 함께 보면 자신의 반복 패턴을 이해하는 참고가 될 수 있어요.",watch:"이 항목 하나만으로 성격·사건·질병·결혼·재물을 단정하지 않습니다."},"천살":{group:"12신살",short:"12신살에서 살펴보는 전통 명리의 보조 상징",good:"원국 전체와 함께 보면 자신의 반복 패턴을 이해하는 참고가 될 수 있어요.",watch:"이 항목 하나만으로 성격·사건·질병·결혼·재물을 단정하지 않습니다."},"지살":{group:"12신살",short:"12신살에서 살펴보는 전통 명리의 보조 상징",good:"원국 전체와 함께 보면 자신의 반복 패턴을 이해하는 참고가 될 수 있어요.",watch:"이 항목 하나만으로 성격·사건·질병·결혼·재물을 단정하지 않습니다."},"도화살":{group:"12신살",short:"12신살에서 살펴보는 전통 명리의 보조 상징",good:"원국 전체와 함께 보면 자신의 반복 패턴을 이해하는 참고가 될 수 있어요.",watch:"이 항목 하나만으로 성격·사건·질병·결혼·재물을 단정하지 않습니다."},"월살":{group:"12신살",short:"12신살에서 살펴보는 전통 명리의 보조 상징",good:"원국 전체와 함께 보면 자신의 반복 패턴을 이해하는 참고가 될 수 있어요.",watch:"이 항목 하나만으로 성격·사건·질병·결혼·재물을 단정하지 않습니다."},"망신살":{group:"12신살",short:"12신살에서 살펴보는 전통 명리의 보조 상징",good:"원국 전체와 함께 보면 자신의 반복 패턴을 이해하는 참고가 될 수 있어요.",watch:"이 항목 하나만으로 성격·사건·질병·결혼·재물을 단정하지 않습니다."},"장성살":{group:"12신살",short:"12신살에서 살펴보는 전통 명리의 보조 상징",good:"원국 전체와 함께 보면 자신의 반복 패턴을 이해하는 참고가 될 수 있어요.",watch:"이 항목 하나만으로 성격·사건·질병·결혼·재물을 단정하지 않습니다."},"반안살":{group:"12신살",short:"12신살에서 살펴보는 전통 명리의 보조 상징",good:"원국 전체와 함께 보면 자신의 반복 패턴을 이해하는 참고가 될 수 있어요.",watch:"이 항목 하나만으로 성격·사건·질병·결혼·재물을 단정하지 않습니다."},"역마살":{group:"12신살",short:"12신살에서 살펴보는 전통 명리의 보조 상징",good:"원국 전체와 함께 보면 자신의 반복 패턴을 이해하는 참고가 될 수 있어요.",watch:"이 항목 하나만으로 성격·사건·질병·결혼·재물을 단정하지 않습니다."},"육해살":{group:"12신살",short:"12신살에서 살펴보는 전통 명리의 보조 상징",good:"원국 전체와 함께 보면 자신의 반복 패턴을 이해하는 참고가 될 수 있어요.",watch:"이 항목 하나만으로 성격·사건·질병·결혼·재물을 단정하지 않습니다."},"화개살":{group:"12신살",short:"12신살에서 살펴보는 전통 명리의 보조 상징",good:"원국 전체와 함께 보면 자신의 반복 패턴을 이해하는 참고가 될 수 있어요.",watch:"이 항목 하나만으로 성격·사건·질병·결혼·재물을 단정하지 않습니다."},"천을귀인":{group:"귀인·길신",short:"귀인·길신에서 살펴보는 전통 명리의 보조 상징",good:"원국 전체와 함께 보면 자신의 반복 패턴을 이해하는 참고가 될 수 있어요.",watch:"이 항목 하나만으로 성격·사건·질병·결혼·재물을 단정하지 않습니다."},"천덕귀인":{group:"귀인·길신",short:"귀인·길신에서 살펴보는 전통 명리의 보조 상징",good:"원국 전체와 함께 보면 자신의 반복 패턴을 이해하는 참고가 될 수 있어요.",watch:"이 항목 하나만으로 성격·사건·질병·결혼·재물을 단정하지 않습니다."},"월덕귀인":{group:"귀인·길신",short:"귀인·길신에서 살펴보는 전통 명리의 보조 상징",good:"원국 전체와 함께 보면 자신의 반복 패턴을 이해하는 참고가 될 수 있어요.",watch:"이 항목 하나만으로 성격·사건·질병·결혼·재물을 단정하지 않습니다."},"문창귀인":{group:"귀인·길신",short:"귀인·길신에서 살펴보는 전통 명리의 보조 상징",good:"원국 전체와 함께 보면 자신의 반복 패턴을 이해하는 참고가 될 수 있어요.",watch:"이 항목 하나만으로 성격·사건·질병·결혼·재물을 단정하지 않습니다."},"태극귀인":{group:"귀인·길신",short:"귀인·길신에서 살펴보는 전통 명리의 보조 상징",good:"원국 전체와 함께 보면 자신의 반복 패턴을 이해하는 참고가 될 수 있어요.",watch:"이 항목 하나만으로 성격·사건·질병·결혼·재물을 단정하지 않습니다."},"복성귀인":{group:"귀인·길신",short:"귀인·길신에서 살펴보는 전통 명리의 보조 상징",good:"원국 전체와 함께 보면 자신의 반복 패턴을 이해하는 참고가 될 수 있어요.",watch:"이 항목 하나만으로 성격·사건·질병·결혼·재물을 단정하지 않습니다."},"금여성":{group:"귀인·길신",short:"귀인·길신에서 살펴보는 전통 명리의 보조 상징",good:"원국 전체와 함께 보면 자신의 반복 패턴을 이해하는 참고가 될 수 있어요.",watch:"이 항목 하나만으로 성격·사건·질병·결혼·재물을 단정하지 않습니다."},"관귀학관":{group:"귀인·길신",short:"귀인·길신에서 살펴보는 전통 명리의 보조 상징",good:"원국 전체와 함께 보면 자신의 반복 패턴을 이해하는 참고가 될 수 있어요.",watch:"이 항목 하나만으로 성격·사건·질병·결혼·재물을 단정하지 않습니다."},"천문성":{group:"귀인·길신",short:"귀인·길신에서 살펴보는 전통 명리의 보조 상징",good:"원국 전체와 함께 보면 자신의 반복 패턴을 이해하는 참고가 될 수 있어요.",watch:"이 항목 하나만으로 성격·사건·질병·결혼·재물을 단정하지 않습니다."},"천의성":{group:"귀인·길신",short:"귀인·길신에서 살펴보는 전통 명리의 보조 상징",good:"원국 전체와 함께 보면 자신의 반복 패턴을 이해하는 참고가 될 수 있어요.",watch:"이 항목 하나만으로 성격·사건·질병·결혼·재물을 단정하지 않습니다."},"건록":{group:"귀인·길신",short:"귀인·길신에서 살펴보는 전통 명리의 보조 상징",good:"원국 전체와 함께 보면 자신의 반복 패턴을 이해하는 참고가 될 수 있어요.",watch:"이 항목 하나만으로 성격·사건·질병·결혼·재물을 단정하지 않습니다."},"암록":{group:"귀인·길신",short:"귀인·길신에서 살펴보는 전통 명리의 보조 상징",good:"원국 전체와 함께 보면 자신의 반복 패턴을 이해하는 참고가 될 수 있어요.",watch:"이 항목 하나만으로 성격·사건·질병·결혼·재물을 단정하지 않습니다."},"협록":{group:"귀인·길신",short:"귀인·길신에서 살펴보는 전통 명리의 보조 상징",good:"원국 전체와 함께 보면 자신의 반복 패턴을 이해하는 참고가 될 수 있어요.",watch:"이 항목 하나만으로 성격·사건·질병·결혼·재물을 단정하지 않습니다."},"문곡귀인":{group:"귀인·길신",short:"귀인·길신에서 살펴보는 전통 명리의 보조 상징",good:"원국 전체와 함께 보면 자신의 반복 패턴을 이해하는 참고가 될 수 있어요.",watch:"이 항목 하나만으로 성격·사건·질병·결혼·재물을 단정하지 않습니다."},"학당귀인":{group:"귀인·길신",short:"귀인·길신에서 살펴보는 전통 명리의 보조 상징",good:"원국 전체와 함께 보면 자신의 반복 패턴을 이해하는 참고가 될 수 있어요.",watch:"이 항목 하나만으로 성격·사건·질병·결혼·재물을 단정하지 않습니다."},"홍염살":{group:"매력·관계",short:"매력·관계에서 살펴보는 전통 명리의 보조 상징",good:"원국 전체와 함께 보면 자신의 반복 패턴을 이해하는 참고가 될 수 있어요.",watch:"이 항목 하나만으로 성격·사건·질병·결혼·재물을 단정하지 않습니다."},"원진살":{group:"매력·관계",short:"매력·관계에서 살펴보는 전통 명리의 보조 상징",good:"원국 전체와 함께 보면 자신의 반복 패턴을 이해하는 참고가 될 수 있어요.",watch:"이 항목 하나만으로 성격·사건·질병·결혼·재물을 단정하지 않습니다."},"귀문관살":{group:"매력·관계",short:"매력·관계에서 살펴보는 전통 명리의 보조 상징",good:"원국 전체와 함께 보면 자신의 반복 패턴을 이해하는 참고가 될 수 있어요.",watch:"이 항목 하나만으로 성격·사건·질병·결혼·재물을 단정하지 않습니다."},"고란살":{group:"매력·관계",short:"매력·관계에서 살펴보는 전통 명리의 보조 상징",good:"원국 전체와 함께 보면 자신의 반복 패턴을 이해하는 참고가 될 수 있어요.",watch:"이 항목 하나만으로 성격·사건·질병·결혼·재물을 단정하지 않습니다."},"고신살":{group:"매력·관계",short:"매력·관계에서 살펴보는 전통 명리의 보조 상징",good:"원국 전체와 함께 보면 자신의 반복 패턴을 이해하는 참고가 될 수 있어요.",watch:"이 항목 하나만으로 성격·사건·질병·결혼·재물을 단정하지 않습니다."},"과숙살":{group:"매력·관계",short:"매력·관계에서 살펴보는 전통 명리의 보조 상징",good:"원국 전체와 함께 보면 자신의 반복 패턴을 이해하는 참고가 될 수 있어요.",watch:"이 항목 하나만으로 성격·사건·질병·결혼·재물을 단정하지 않습니다."},"양인살":{group:"강한 기운",short:"강한 기운에서 살펴보는 전통 명리의 보조 상징",good:"원국 전체와 함께 보면 자신의 반복 패턴을 이해하는 참고가 될 수 있어요.",watch:"이 항목 하나만으로 성격·사건·질병·결혼·재물을 단정하지 않습니다."},"괴강살":{group:"강한 기운",short:"강한 기운에서 살펴보는 전통 명리의 보조 상징",good:"원국 전체와 함께 보면 자신의 반복 패턴을 이해하는 참고가 될 수 있어요.",watch:"이 항목 하나만으로 성격·사건·질병·결혼·재물을 단정하지 않습니다."},"백호살":{group:"강한 기운",short:"강한 기운에서 살펴보는 전통 명리의 보조 상징",good:"원국 전체와 함께 보면 자신의 반복 패턴을 이해하는 참고가 될 수 있어요.",watch:"이 항목 하나만으로 성격·사건·질병·결혼·재물을 단정하지 않습니다."},"현침살":{group:"강한 기운",short:"강한 기운에서 살펴보는 전통 명리의 보조 상징",good:"원국 전체와 함께 보면 자신의 반복 패턴을 이해하는 참고가 될 수 있어요.",watch:"이 항목 하나만으로 성격·사건·질병·결혼·재물을 단정하지 않습니다."},"탕화살":{group:"강한 기운",short:"강한 기운에서 살펴보는 전통 명리의 보조 상징",good:"원국 전체와 함께 보면 자신의 반복 패턴을 이해하는 참고가 될 수 있어요.",watch:"이 항목 하나만으로 성격·사건·질병·결혼·재물을 단정하지 않습니다."},"낙정관살":{group:"강한 기운",short:"강한 기운에서 살펴보는 전통 명리의 보조 상징",good:"원국 전체와 함께 보면 자신의 반복 패턴을 이해하는 참고가 될 수 있어요.",watch:"이 항목 하나만으로 성격·사건·질병·결혼·재물을 단정하지 않습니다."},"공망":{group:"특수",short:"특수에서 살펴보는 전통 명리의 보조 상징",good:"원국 전체와 함께 보면 자신의 반복 패턴을 이해하는 참고가 될 수 있어요.",watch:"이 항목 하나만으로 성격·사건·질병·결혼·재물을 단정하지 않습니다."},"천라지망":{group:"특수",short:"특수에서 살펴보는 전통 명리의 보조 상징",good:"원국 전체와 함께 보면 자신의 반복 패턴을 이해하는 참고가 될 수 있어요.",watch:"이 항목 하나만으로 성격·사건·질병·결혼·재물을 단정하지 않습니다."},"삼기":{group:"특수",short:"특수에서 살펴보는 전통 명리의 보조 상징",good:"원국 전체와 함께 보면 자신의 반복 패턴을 이해하는 참고가 될 수 있어요.",watch:"이 항목 하나만으로 성격·사건·질병·결혼·재물을 단정하지 않습니다."},"월공":{group:"특수",short:"특수에서 살펴보는 전통 명리의 보조 상징",good:"원국 전체와 함께 보면 자신의 반복 패턴을 이해하는 참고가 될 수 있어요.",watch:"이 항목 하나만으로 성격·사건·질병·결혼·재물을 단정하지 않습니다."},"상문살":{group:"특수",short:"특수에서 살펴보는 전통 명리의 보조 상징",good:"원국 전체와 함께 보면 자신의 반복 패턴을 이해하는 참고가 될 수 있어요.",watch:"이 항목 하나만으로 성격·사건·질병·결혼·재물을 단정하지 않습니다."},"조객살":{group:"특수",short:"특수에서 살펴보는 전통 명리의 보조 상징",good:"원국 전체와 함께 보면 자신의 반복 패턴을 이해하는 참고가 될 수 있어요.",watch:"이 항목 하나만으로 성격·사건·질병·결혼·재물을 단정하지 않습니다."},"형살":{group:"지지 관계",short:"지지 관계에서 살펴보는 전통 명리의 보조 상징",good:"원국 전체와 함께 보면 자신의 반복 패턴을 이해하는 참고가 될 수 있어요.",watch:"이 항목 하나만으로 성격·사건·질병·결혼·재물을 단정하지 않습니다."},"충살":{group:"지지 관계",short:"지지 관계에서 살펴보는 전통 명리의 보조 상징",good:"원국 전체와 함께 보면 자신의 반복 패턴을 이해하는 참고가 될 수 있어요.",watch:"이 항목 하나만으로 성격·사건·질병·결혼·재물을 단정하지 않습니다."},"파살":{group:"지지 관계",short:"지지 관계에서 살펴보는 전통 명리의 보조 상징",good:"원국 전체와 함께 보면 자신의 반복 패턴을 이해하는 참고가 될 수 있어요.",watch:"이 항목 하나만으로 성격·사건·질병·결혼·재물을 단정하지 않습니다."},"해살":{group:"지지 관계",short:"지지 관계에서 살펴보는 전통 명리의 보조 상징",good:"원국 전체와 함께 보면 자신의 반복 패턴을 이해하는 참고가 될 수 있어요.",watch:"이 항목 하나만으로 성격·사건·질병·결혼·재물을 단정하지 않습니다."},"삼합":{group:"지지 관계",short:"지지 관계에서 살펴보는 전통 명리의 보조 상징",good:"원국 전체와 함께 보면 자신의 반복 패턴을 이해하는 참고가 될 수 있어요.",watch:"이 항목 하나만으로 성격·사건·질병·결혼·재물을 단정하지 않습니다."}};
   const SINSAL_META = {
     "도화살": {group:"매력·표현", tone:"popular", short:"사람의 시선과 호감을 끄는 힘", good:"표현·서비스·영업·콘텐츠처럼 사람과 만나는 장면에서 매력으로 쓰기 좋습니다.", watch:"인기나 관심을 관계의 확신으로 바로 해석하지 않는 것이 좋아요."},
     "역마살": {group:"변화·이동", tone:"move", short:"움직임과 변화에 반응하는 힘", good:"이동·출장·여행·새 환경처럼 변화가 있는 자리에서 활력이 살아날 수 있어요.", watch:"변화 자체가 목적이 되어 자주 방향을 바꾸지는 않는지 확인해 보세요."},
@@ -355,6 +380,7 @@
     "건록": {group:"자립·기반", tone:"good", short:"자기 힘으로 기반을 세우는 상징", good:"꾸준히 실력과 생활 기반을 쌓는 힘을 살펴볼 때 참고합니다.", watch:"독립심이 모든 일을 혼자 해야 한다는 뜻은 아니에요."}
   };
 
+  Object.keys(SINSAL_50_DEFAULT_META).forEach(k=>{if(!SINSAL_META[k])SINSAL_META[k]=SINSAL_50_DEFAULT_META[k];});
   function starHit(name, pillarKey, basis, extra) {
     return Object.assign({name, pillar:pillarKey, basis, meta:SINSAL_META[name]||{group:"특별한 기운",short:"명식의 보조 상징",good:"원국과 함께 참고합니다.",watch:"단독으로 길흉을 정하지 않습니다."}}, extra||{});
   }
@@ -426,9 +452,88 @@
     const voids=voidBranches(dayStem,dayBranch);
     entries.forEach(([k,p])=>{if(voids.includes(p.branchIndex))hits.push(starHit("공망",k,"일주旬"));});
 
+
+    // 12신살 전체: 삼합국 기준 순환표. 년지와 일지를 각각 기준으로 확인합니다.
+    const twelveNames=["겁살","재살","천살","지살","도화살","월살","망신살","장성살","반안살","역마살","육해살","화개살"];
+    const twelveStart={8:5,0:5,4:5, 2:11,6:11,10:11, 5:2,9:2,1:2, 11:8,3:8,7:8};
+    function addTwelve(baseBranch,basis){
+      const start=twelveStart[baseBranch];
+      if(start===undefined)return;
+      entries.forEach(([k,p])=>{
+        const offset=(p.branchIndex-start+12)%12;
+        hits.push(starHit(twelveNames[offset],k,basis+"·12신살"));
+      });
+    }
+    addTwelve(yearBranch,"년지");
+    addTwelve(dayBranch,"일지");
+
+    // 지지 관계성: 형·충·파·해·삼합. 사건 예측이 아니라 원국 내부 관계 표식입니다.
+    const chungPairs=[[0,6],[1,7],[2,8],[3,9],[4,10],[5,11]];
+    const haePairs=[[0,7],[1,6],[2,5],[3,4],[8,11],[9,10]];
+    const paPairs=[[0,9],[1,4],[2,11],[3,6],[5,8],[7,10]];
+    const hyeongPairs=[[2,5],[5,8],[8,2],[1,10],[10,7],[7,1],[0,3]];
+    function addRelation(name,pairs){
+      for(let i=0;i<entries.length;i++)for(let j=i+1;j<entries.length;j++){
+        const [ka,a]=entries[i],[kb,b]=entries[j];
+        if(pairs.some(([x,y])=>(a.branchIndex===x&&b.branchIndex===y)||(a.branchIndex===y&&b.branchIndex===x))){
+          hits.push(starHit(name,ka,`${ka}↔${kb}`)); hits.push(starHit(name,kb,`${ka}↔${kb}`));
+        }
+      }
+    }
+    addRelation("충살",chungPairs); addRelation("해살",haePairs); addRelation("파살",paPairs); addRelation("형살",hyeongPairs);
+    const triads=[[8,0,4],[2,6,10],[5,9,1],[11,3,7]];
+    triads.forEach(t=>{
+      const present=entries.filter(([k,p])=>t.includes(p.branchIndex));
+      if(new Set(present.map(x=>x[1].branchIndex)).size===3) present.forEach(([k])=>hits.push(starHit("삼합",k,"원국 3지")));
+    });
+
+    // 천라지망: 辰巳 / 戌亥가 원국에서 함께 보이는 전통적 표식.
+    [[[4,5]],[[10,11]]].flat().forEach(([a,b])=>{
+      const pa=entries.filter(x=>x[1].branchIndex===a), pb=entries.filter(x=>x[1].branchIndex===b);
+      if(pa.length&&pb.length){pa.concat(pb).forEach(([k])=>hits.push(starHit("천라지망",k,"지지 조합")));}
+    });
+
+    // 고신·과숙: 년지 삼합국 기준의 대표적인 전통 표.
+    const gosin={11:2,0:2,1:2, 2:5,3:5,4:5, 5:8,6:8,7:8, 8:11,9:11,10:11};
+    const gwasuk={11:10,0:10,1:10, 2:1,3:1,4:1, 5:4,6:4,7:4, 8:7,9:7,10:7};
+    addByBranch("고신살",gosin[yearBranch],"년지");
+    addByBranch("과숙살",gwasuk[yearBranch],"년지");
+
+    // 현침: 천간/지지 글자 자체의 형상을 보는 대표 기준.
+    const needleStems=new Set([0,7]); // 甲, 辛
+    const needleBranches=new Set([3,6,8]); // 卯, 午, 申
+    entries.forEach(([k,p])=>{if(needleStems.has(p.stemIndex)||needleBranches.has(p.branchIndex))hits.push(starHit("현침살",k,"간지 형상"));});
+
+    // 백호: 널리 쓰이는 백호대살 7일주 기준.
+    const baekhoDays=new Set(["갑진","을미","병술","정축","무진","임술","계축"]);
+    if(baekhoDays.has(pillars.day.ko))hits.push(starHit("백호살","day","일주"));
+
+    // 삼기: 천간 3개가 甲戊庚 / 乙丙丁 / 壬癸辛 세 조합 중 하나를 모두 포함하는지 확인.
+    const stemSet=new Set(entries.map(x=>x[1].stemIndex));
+    [[0,4,6],[1,2,3],[8,9,7]].forEach(arr=>{if(arr.every(x=>stemSet.has(x)))entries.filter(x=>arr.includes(x[1].stemIndex)).forEach(([k])=>hits.push(starHit("삼기",k,"천간 3기")));});
+
     const clean=uniqStarHits(hits);
     const counts={}; clean.forEach(h=>counts[h.name]=(counts[h.name]||0)+1);
-    return {hits:clean, counts, total:clean.length, voidBranches:voids.map(i=>BRANCHES[i])};
+    const supported=new Set(["겁살","재살","천살","지살","도화살","월살","망신살","장성살","반안살","역마살","육해살","화개살","천을귀인","문창귀인","태극귀인","건록","홍염살","양인살","괴강살","귀문관살","원진살","공망","고신살","과숙살","백호살","현침살","천라지망","삼기","형살","충살","파살","해살","삼합"]);
+    const catalogue=SINSAL_50_CATALOG.map(x=>Object.assign({},x,{count:counts[x.name]||0,status:supported.has(x.name)?"calculated":"school-dependent"}));
+    return {hits:clean, counts, total:clean.length, catalogue, supportedCount:supported.size, catalogCount:SINSAL_50_CATALOG.length, voidBranches:voids.map(i=>BRANCHES[i])};
+  }
+
+
+  const TWELVE_STAGES=["장생","목욕","관대","건록","제왕","쇠","병","사","묘","절","태","양"];
+  // 일간별 장생 시작 지지: 甲亥 乙午 丙寅 丁酉 戊寅 己酉 庚巳 辛子 壬申 癸卯.
+  // 양간은 순행, 음간은 역행하는 통용표를 사용합니다.
+  const TWELVE_STAGE_START=[11,6,2,9,2,9,5,0,8,3];
+  function twelveStage(dayStem, branchIndex){
+    const start=TWELVE_STAGE_START[dayStem];
+    const forward=(dayStem%2===0);
+    const offset=forward ? (branchIndex-start+12)%12 : (start-branchIndex+12)%12;
+    return TWELVE_STAGES[offset];
+  }
+  function twelveStagesForPillars(pillars,dayStem){
+    const out={};
+    ["year","month","day","hour"].forEach(k=>{if(pillars[k])out[k]=twelveStage(dayStem,pillars[k].branchIndex);});
+    return out;
   }
 
   function normalizeEl(elCount) {
@@ -451,6 +556,10 @@
     TEN_GODS,
     HIDDEN_STEMS,
     SINSAL_META,
+    SINSAL_50_CATALOG,
+    TWELVE_STAGES,
+    twelveStage,
+    twelveStagesForPillars,
     specialStars,
     calculate,
     normalizeEl,
