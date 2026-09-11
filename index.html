@@ -24,8 +24,106 @@
 <link rel="icon" href="clover-mark.jpg">
 <script src="saju-engine.js"></script>
 <script src="expert-interpreter.js"></script>
-<script src="manse-view.js"></script>
+<script>
+/** 귀인사주 — 초보자용 만세력 표시 모듈 */
+(function(root,factory){if(typeof module==='object'&&module.exports)module.exports=factory();else root.GuiinManse=factory();})(typeof self!=='undefined'?self:this,function(){
+'use strict';
+const ELS=['목','화','토','금','수'], EC={목:'wood',화:'fire',토:'earth',금:'metal',수:'water'};
+const STEM={갑:'갑목',을:'을목',병:'병화',정:'정화',무:'무토',기:'기토',경:'경금',신:'신금',임:'임수',계:'계수'};
+const ROLE={year:['년주','태어난 집안·초기 환경'],month:['월주','성장 환경·사회생활의 바탕'],day:['일주','나 자신·가까운 관계의 중심'],hour:['시주','표현 방식·후반의 관심사']};
+function esc(v){return String(v??'').replace(/[&<>"']/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]));}
+function pct(c){const x=c&&c.elCount||{},t=Object.values(x).reduce((s,n)=>s+(+n||0),0)||1,o={};ELS.forEach(e=>o[e]=Math.round((x[e]||0)/t*100));return o;}
+function orderedElements(c){return Object.entries(pct(c)).sort((a,b)=>b[1]-a[1]);}
+function ageNow(i,n=new Date()){let a=n.getFullYear()-(+i.year||n.getFullYear());if(n.getMonth()+1<+i.month||(n.getMonth()+1===+i.month&&n.getDate()<+i.day))a--;return Math.max(0,a);}
+function currentLuck(c,n){const a=ageNow(c.input,n),r=c.luck||[];return r.find(x=>a>=x.fromAgeExact&&a<x.toAgeExact)||r.find(x=>a>=x.fromAge&&a<=x.toAge)||null;}
+function birthLine(c){const i=c.input||{},tm=i.hourUnknown?'시간 모름':`${String(i.hour??0).padStart(2,'0')}:${String(i.minute??0).padStart(2,'0')}`;return `${i.year}.${String(i.month).padStart(2,'0')}.${String(i.day).padStart(2,'0')} ${tm} · ${i.calendar||'양력'} · ${i.gender||''}`;}
+function hiddenText(p){return !p||!Array.isArray(p.hidden)||!p.hidden.length?'-':p.hidden.map(x=>`${x.stemH}${x.stem}·${x.god}`).join(' ');}
+function stage(c,k){return c.twelveStages&&c.twelveStages[k]||'-';}
+function pillarStars(c,key){const hits=c&&c.stars&&Array.isArray(c.stars.hits)?c.stars.hits.filter(h=>h&&h.pillar===key):[],g=new Map();hits.forEach(h=>{if(!g.has(h.name))g.set(h.name,{name:h.name,bases:new Set()});g.get(h.name).bases.add(h.basis||'기준표');});const ord=new Map((c?.stars?.catalogue||[]).map((x,i)=>[x.name,i]));return [...g.values()].map(x=>({name:x.name,count:x.bases.size,bases:[...x.bases]})).sort((a,b)=>(ord.get(a.name)??999)-(ord.get(b.name)??999)||a.name.localeCompare(b.name,'ko'));}
+function pillarStarsHTML(c,k){const r=pillarStars(c,k);return r.length?`<div class="pillarStarList">${r.map(x=>`<span class="pillarStarName" title="${esc(x.bases.join(' / '))}">${esc(x.name)}${x.count>1?'×'+x.count:''}</span>`).join('')}</div>`:'<span class="pillarStarNone">해당 없음</span>';}
+function ensureStyles(){if(typeof document==='undefined'||document.getElementById('guiin-pillar-star-style'))return;const s=document.createElement('style');s.id='guiin-pillar-star-style';s.textContent=`.manseRow.starRow .manseLabel{font-size:7px;padding:7px 2px}.manseRow.starRow .manseCell{padding:7px 2px;min-height:58px;display:flex;justify-content:center;align-items:flex-start}.pillarStarList{display:flex;flex-wrap:wrap;justify-content:center;gap:3px 2px}.pillarStarName{font-size:6.4px;line-height:1.25;color:#6f4e8f;background:#f5effb;border:1px solid #eee2f8;border-radius:6px;padding:2px 3px;white-space:nowrap}.pillarStarNone{font-size:6.5px;color:#aaa}.manseBeginner{margin-top:10px;padding:13px;border-radius:14px;background:#fffaf0;font-size:9px;line-height:1.75;color:#68716b}.manseBeginner b{color:#234437}.manseRoleGrid{display:grid;grid-template-columns:1fr 1fr;gap:6px;margin-top:9px}.manseRole{padding:9px;border-radius:11px;background:#f7f5ef;font-size:8px;line-height:1.5}.manseRole b{display:block;font-size:9px;color:#244438}.manseStarNote{font-size:7px;line-height:1.5;color:#928d86;margin-top:7px}`;document.head.appendChild(s);}
+function keyFacts(c){const o=orderedElements(c),lk=currentLuck(c);return [['나를 나타내는 글자',`${c.dayMaster.hanja} ${STEM[c.dayMaster.stem]||c.dayMaster.stem}`],['내 중심 기둥(일주)',c.pillars.day.ko],['태어난 달의 기운',`${c.pillars.month.branch}월`],['현재 10년 흐름',lk?`${lk.ko} · ${lk.god}`:'확인 필요'],['계산된 신살·귀인',`${c.stars?.total||0}개`],['오행 특징',`${o[0][0]} ${o[0][1]}% · ${o[o.length-1][0]} ${o[o.length-1][1]}%`]];}
+function elementBars(c){const p=pct(c);return `<div class="manseElements">${ELS.map(e=>`<div class="manseEl"><div class="manseElTop"><b>${e}</b><span>${p[e]}%</span></div><div class="manseElBar"><i class="${EC[e]}" style="width:${p[e]}%"></i></div></div>`).join('')}</div>`;}
+function table(c){const cols=[['year',c.pillars.year],['month',c.pillars.month],['day',c.pillars.day],['hour',c.pillars.hour]];return `<div class="manseTableWrap"><div class="manseTable" role="table"><div class="manseRow manseHead"><div class="manseLabel">구분</div>${cols.map(([k,p])=>`<div class="manseCell ${k==='day'?'dayCol':''}"><b>${ROLE[k][0]}</b><small>${p?esc(p.ko):'-'}</small></div>`).join('')}</div><div class="manseRow"><div class="manseLabel">천간<br><small>겉으로 드러나는 힘</small></div>${cols.map(([k,p])=>p?`<div class="manseCell ${k==='day'?'dayCol':''}"><strong class="bigChar ${EC[p.stemEl]||''}">${esc(p.stemH)}</strong><span>${esc(p.stem)} · ${esc(p.stemEl)}</span><small>${esc(p.god||'-')}</small></div>`:'<div class="manseCell empty">-</div>').join('')}</div><div class="manseRow"><div class="manseLabel">지지<br><small>바탕·생활의 힘</small></div>${cols.map(([k,p])=>p?`<div class="manseCell ${k==='day'?'dayCol':''}"><strong class="bigChar ${EC[p.branchEl]||''}">${esc(p.branchH)}</strong><span>${esc(p.branch)} · ${esc(p.branchEl)}</span><small>${esc(p.animal||'')}</small></div>`:'<div class="manseCell empty">-</div>').join('')}</div><div class="manseRow slim"><div class="manseLabel">12운성<br><small>힘의 단계</small></div>${cols.map(([k])=>`<div class="manseCell ${k==='day'?'dayCol':''}"><b>${esc(stage(c,k))}</b></div>`).join('')}</div><div class="manseRow hiddenStemRow"><div class="manseLabel">지장간<br><small>숨은 기운</small></div>${cols.map(([k,p])=>`<div class="manseCell ${k==='day'?'dayCol':''}"><small>${esc(hiddenText(p))}</small></div>`).join('')}</div><div class="manseRow starRow"><div class="manseLabel">신살·귀인<br><small>보조 상징</small></div>${cols.map(([k])=>`<div class="manseCell ${k==='day'?'dayCol':''}">${pillarStarsHTML(c,k)}</div>`).join('')}</div></div><div class="manseStarNote">※ 귀인사주는 현재 계산식이 정리된 ${c.stars?.supportedCount||38}/50종 안에서 실제 성립한 신살·귀인을 년주·월주·일주·시주별로 표시합니다. 신살 하나만으로 성격·결혼·재물·사건을 단정하지 않습니다.</div></div>`;}
+function beginner(c){const lk=currentLuck(c);return `<div class="manseBeginner"><b>처음 보는 분은 이것만 보세요.</b><br>① <b>일간</b>은 ‘나’를 나타내는 중심 글자입니다. ${esc(c.input.name||'사용자')}님의 일간은 <b>${esc(c.dayMaster.hanja)} ${esc(STEM[c.dayMaster.stem]||c.dayMaster.stem)}</b>입니다.<br>② <b>월주</b>는 성장 환경과 사회에서 힘을 쓰는 방식을 읽을 때 중요합니다.<br>③ <b>오행</b>은 목·화·토·금·수 다섯 성질의 분포입니다. 많다고 무조건 좋고 적다고 나쁜 것은 아닙니다.<br>④ <b>십신</b>은 나와 다른 글자의 관계를 생활 언어로 분류한 것입니다.<br>⑤ <b>12운성·신살</b>은 원국 전체를 보완해서 읽는 참고 신호입니다.${lk?`<br>⑥ 현재는 <b>${esc(lk.ko)} 대운</b>으로 계산되며, 이것은 한 사건의 예언이 아니라 약 10년간 반복되기 쉬운 환경과 과제를 보는 흐름입니다.`:''}<div class="manseRoleGrid">${Object.keys(ROLE).map(k=>`<div class="manseRole"><b>${ROLE[k][0]}</b>${ROLE[k][1]}</div>`).join('')}</div></div>`;}
+function summarySentence(c){const o=orderedElements(c),lk=currentLuck(c);return `${esc(c.input.name||'사용자')}님의 해석 중심은 <b>${esc(c.dayMaster.hanja)} ${esc(STEM[c.dayMaster.stem]||c.dayMaster.stem)}</b>입니다. 오행은 <b>${o[0][0]} ${o[0][1]}%</b>가 상대적으로 크게, <b>${o[o.length-1][0]} ${o[o.length-1][1]}%</b>가 작게 계산됩니다. ${lk?`현재는 <b>${esc(lk.ko)} 대운(${esc(lk.god)})</b> 구간입니다. `:''}이 숫자 하나로 좋고 나쁨을 정하지 않고 일간·계절·십신·지장간·관계·운의 흐름을 함께 읽습니다.`;}
+function render(c,opts={}){ensureStyles();return `<section class="manseSnapshot"><div class="manseProfile card"><div class="manseProfileTop"><div><div class="manseEyebrow">${esc(opts.eyebrow||'내 사주 원국')}</div><h2>${esc(opts.title||`${c.input.name||'사용자'}님의 만세력`)}</h2><p>${esc(birthLine(c))}</p></div><div class="dayMasterBadge"><small>나를 나타내는 일간</small><strong>${esc(c.dayMaster.hanja)}</strong><span>${esc(STEM[c.dayMaster.stem]||c.dayMaster.stem)}</span></div></div><div class="manseFacts">${keyFacts(c).map(([k,v])=>`<div class="manseFact"><span>${esc(k)}</span><b>${esc(v)}</b></div>`).join('')}</div></div><div class="manseChartCard card"><div class="manseSectionHead"><div><span>사주팔자</span><h3>한자보다 뜻부터 확인해요</h3></div><small>일주가 ‘나’의 중심입니다.</small></div>${table(c)}${beginner(c)}${elementBars(c)}<div class="manseReadGuide">${summarySentence(c)}</div></div></section>`;}
+function renderCompact(c,label){const o=orderedElements(c),lk=currentLuck(c);return `<div class="pairManse card"><div class="pairManseHead"><div><span>${esc(label||'명식')}</span><h3>${esc(c.input.name||'사용자')}님의 만세력</h3></div><b>${esc(c.dayMaster.hanja)} ${esc(STEM[c.dayMaster.stem]||c.dayMaster.stem)}</b></div><p class="pairBirth">${esc(birthLine(c))}</p>${table(c)}<div class="pairFacts"><span>태어난 달 <b>${esc(c.pillars.month.branch)}월</b></span><span>상대적으로 큰 오행 <b>${o[0][0]} ${o[0][1]}%</b></span><span>현재 10년 흐름 <b>${lk?esc(lk.ko):'-'}</b></span><span>신살·귀인 <b>${c.stars?.total||0}개</b></span></div></div>`;}
+function renderPair(a,b){return `<section class="compatManseBlock"><div class="compatManseIntro card"><span>두 사람 원국 비교</span><h2>궁합 점수보다 두 사람의 기본 구조를 먼저 봅니다.</h2><p>각자의 일간·태어난 달·오행·십신과 관계 신호를 확인한 뒤 겹쳐 읽습니다. 한 가지 합이나 충만으로 좋은 인연·나쁜 인연을 정하지 않습니다.</p></div>${renderCompact(a,'나')}${renderCompact(b,'상대방')}</section>`;}
+ensureStyles();return {esc,pct,currentLuck,keyFacts,table,elementBars,render,renderCompact,renderPair,pillarStars,pillarStarsHTML};
+});
+
+</script>
 <script src="compatibility-interpreter.js"></script>
+<script>
+
+(function(root){
+"use strict";
+const G={
+ 비견:["내 힘으로 결정하고 밀고 가는 성향","독립성과 자기 결정권","혼자 다 떠안지 않기"],
+ 겁재:["경쟁과 사람 사이에서 빠르게 움직이는 힘","협업·경쟁·영업","비교와 충동 지출 조심"],
+ 식신:["꾸준히 만들고 돌보며 결과를 쌓는 힘","기술·서비스·생산·콘텐츠","싫은 말을 너무 오래 미루지 않기"],
+ 상관:["내 생각을 표현하고 기존 방식을 고치는 힘","기획·표현·문제 해결","맞는 말도 너무 세게 하지 않기"],
+ 편재:["사람과 기회를 빠르게 연결하는 힘","사업·영업·현장 활동","기회가 많을수록 우선순위 줄이기"],
+ 정재:["현실을 관리하고 안정적으로 쌓는 힘","운영·관리·정산·계약","안정만 지키느라 기회를 놓치지 않기"],
+ 편관:["압박 속에서도 결단하고 버티는 힘","책임·경쟁·빠른 판단","무리해서 버티는 것을 능력으로 착각하지 않기"],
+ 정관:["규칙과 책임을 지키며 신뢰를 만드는 힘","조직·관리·전문 역할","내 기준을 지나치게 엄격하게 만들지 않기"],
+ 편인:["남들과 다른 방식으로 깊게 파고드는 힘","연구·분석·기획·전문지식","생각만 길어지고 실행이 늦어지지 않기"],
+ 정인:["배우고 도움받고 기반을 만드는 힘","교육·자격·문서·전문성","필요한 도움을 혼자 거절하지 않기"]
+};
+const E={
+ 목:["시작하고 키우는 힘","일을 너무 많이 벌이지 않기"],
+ 화:["표현하고 드러내는 힘","감정과 속도가 너무 빨라지지 않기"],
+ 토:["버티고 관리하는 힘","책임을 혼자 떠안지 않기"],
+ 금:["정리하고 기준을 세우는 힘","기준이 너무 날카로워지지 않기"],
+ 수:["살피고 연결하며 유연하게 바꾸는 힘","생각이 너무 많아지지 않기"]
+};
+const esc=v=>String(v??"").replace(/[&<>"']/g,m=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[m]));
+function pct(c){let x=c.elCount||{},t=Object.values(x).reduce((a,b)=>a+(+b||0),0)||1,o={};["목","화","토","금","수"].forEach(k=>o[k]=Math.round((x[k]||0)/t*100));return o}
+function luck(c,y){let a=y-(+c.input.year||y);return (c.luck||[]).find(x=>a>=x.fromAgeExact&&a<x.toAgeExact)||(c.luck||[]).find(x=>a>=x.fromAge&&a<=x.toAge)||(c.luck||[])[0]}
+function flow(c,y,m=9){try{return GuiinSaju.flowForDate(y,m,15,c.pillars.day.stemIndex,12,0,{dayBoundary:c.input.dayBoundary||"23"})}catch(e){return null}}
+function info(g){return G[g]||["환경과 역할이 달라지는 힘","현재 상황에 맞는 역할","한 신호만으로 결론 내리지 않기"]}
+function card(no,title,body){return `<article class="deepEasy card"><div class="deepNo">${no}</div><h3>${title}</h3>${body}</article>`}
+function ev(s){return `<details class="deepEvidence"><summary>명리 계산 근거 보기</summary><div>${esc(s)}</div></details>`}
+function renderFlow(c,y){
+ y=y||new Date().getFullYear(); const l=luck(c,y), f=flow(c,y), yg=f?.gods?.year||"-", yi=info(yg), li=info(l?.god);
+ const p=pct(c), arr=Object.entries(p).sort((a,b)=>b[1]-a[1]), top=arr[0], low=arr[arr.length-1];
+ const years=[y,y+1,y+2].map(n=>{let q=flow(c,n),g=q?.gods?.year||"-",i=info(g);return `<div class="deepYear"><b>${n}년 · ${esc(q?.pillars?.year?.ko||"-")} · ${esc(g)}</b><p>${esc(i[0])}이 한 해의 강조점입니다. 일·돈·관계에서 이 역할이 실제로 어떻게 나타나는지 확인하세요.</p></div>`}).join("");
+ const months=Array.from({length:12},(_,i)=>{let q=flow(c,y,i+1),g=q?.gods?.month||"-",z=info(g);return `<div class="deepMonth"><b>${i+1}월 · ${esc(g)}</b><span>${esc(z[0])}</span></div>`}).join("");
+ const map=(c.luck||[]).map(x=>`<div class="deepLuck ${l&&x.ko===l.ko&&x.fromAge===l.fromAge?'now':''}"><b>${x.fromAge}~${x.toAge}세 · ${esc(x.ko)} · ${esc(x.god)}</b><span>${esc(info(x.god)[0])}</span></div>`).join("");
+ return `<section class="deepEasyReport">
+ <div class="deepIntro card"><small>대운·세운을 처음 보는 분께</small><h2>대운은 약 10년의 큰 배경,<br>세운은 올해의 강조점이에요.</h2><p>“무슨 일이 반드시 생긴다”는 예언이 아니라, 어떤 역할과 문제가 반복해서 중요해지기 쉬운지를 보는 흐름입니다.</p></div>
+ ${card("1장 · 지금의 10년",`${esc(l?.ko||"-")} 대운 · ${esc(l?.god||"-")}`,`<p><b>${esc(l?.god||"-")}</b>을 쉬운 말로 바꾸면 <b>“${esc(li[0])}”</b>입니다. 지금 10년은 ${esc(li[1])}이 중요해지기 쉬운 구간입니다.</p><p>좋은 운·나쁜 운으로만 나누기보다 <b>${esc(li[2])}</b>를 생활 기준으로 삼는 편이 현실적입니다.</p>${ev(`현재 대운 ${l?.ko||"-"} / 십신 ${l?.god||"-"}`)}`)}
+ ${card(`2장 · ${y}년`,`${esc(yg)}의 역할이 올해 더 눈에 띕니다`,`<p>올해는 <b>${esc(yi[0])}</b>이 강조됩니다. 현재 10년의 흐름과 올해의 흐름을 겹쳐서 일, 돈, 관계의 우선순위를 정하는 식으로 읽습니다.</p><p>합은 무조건 좋은 인연, 충은 무조건 이별이라는 뜻이 아닙니다. 실제 생활에서 이동·역할 변경·관계 조정이 필요한지를 먼저 봅니다.</p>${ev(`${y} 세운 ${f?.pillars?.year?.ko||"-"} / 십신 ${yg} / 12운성 ${f?.stages?.year||"-"}`)}`)}
+ ${card("3장 · 일과 돈","직업운은 ‘이직한다’보다 어떤 방식으로 일할 때 힘이 나는지를 봅니다",`<p>현재 대운에서는 <b>${esc(li[1])}</b>이 중요하고, 올해는 <b>${esc(yi[1])}</b>이 더 눈에 띌 수 있습니다.</p><p>재물운도 큰돈이 들어온다고 단정하기보다 수입 구조, 고정비, 급한 지출, 계약 조건을 따로 확인하는 방식으로 해석합니다.</p><p>오행에서는 <b>${top[0]} ${top[1]}%</b>가 상대적으로 크고 <b>${low[0]} ${low[1]}%</b>가 작습니다. ${esc(E[top[0]][0])}을 잘 쓰되 ${esc(E[top[0]][1])}가 중요합니다.</p>`) }
+ ${card("4장 · 연애와 사람","누가 들어온다는 예언보다 가까워졌을 때 반복되는 관계 방식을 봅니다",`<p>올해의 ${esc(yg)}은 관계에서도 <b>${esc(yi[0])}</b>과 연결될 수 있습니다. 감정뿐 아니라 생활 리듬, 돈 이야기, 책임 분담, 말하는 방식을 함께 확인하는 것이 중요합니다.</p><p>사주의 합·충·형·파·해는 사건 확정표가 아니라 서로 맞추거나 바꿔야 하는 지점을 찾는 보조 신호입니다.</p>`) }
+ ${card("5장 · 앞으로 3년","세 해를 비교해 역할의 변화를 봅니다",years)}
+ ${card(`6장 · ${y}년 12개월`,"월운은 큰 결정을 대신하지 않고 이번 달 우선순위를 잡는 참고입니다",`<div class="deepMonths">${months}</div><p>월운 하나만 보고 계약·이별·투자 같은 큰 결정을 확정하지 않습니다.</p>`)}
+ ${card("7장 · 평생 대운 지도","10년마다 삶에서 반복해서 요구되는 역할이 어떻게 바뀌는지 봅니다",`<div class="deepLuckMap">${map}</div><p>대운은 10년 동안 매일 같은 일이 생긴다는 뜻이 아닙니다. 같은 주제가 직업·돈·가족·관계에서 다른 모습으로 반복될 수 있다는 큰 배경입니다.</p>`)}
+ ${card("8장 · 지금 기억할 세 가지","현재 10년의 역할 → 올해의 강조점 → 실제 행동 순서로 보세요",`<p><b>현재 대운:</b> ${esc(l?.god||"-")} = ${esc(li[0])}</p><p><b>올해:</b> ${esc(yg)} = ${esc(yi[0])}</p><p><b>실제 행동:</b> ${esc(li[2])}. 사주는 선택을 대신하지 않고 반복되는 패턴을 알아차리는 참고 지도입니다.</p>`)}
+ </section>`;
+}
+function renderChart(c){
+ const p=pct(c),arr=Object.entries(p).sort((a,b)=>b[1]-a[1]),top=arr[0],low=arr[arr.length-1],r=c.relations||[],ex=c.extras||{};
+ const roles=[["년주","태어난 집안과 초기 환경"],["월주","성장 환경과 사회생활의 바탕"],["일주","나 자신과 가까운 관계의 중심"],["시주","표현 방식과 후반의 관심사"]];
+ const ps=["year","month","day","hour"].map((k,i)=>`<div class="deepPillar"><b>${roles[i][0]} · ${esc(c.pillars[k]?.ko||"-")}</b><span>${roles[i][1]}</span></div>`).join("");
+ return `<section class="deepEasyReport">
+ <div class="deepIntro card"><small>사주 원국 = 태어난 순간의 기본 지도</small><h2>한자 표를 외울 필요 없어요.<br>뜻부터 순서대로 보면 됩니다.</h2><p>년주·월주·일주·시주 네 기둥을 기본으로 보고 오행, 십신, 지장간, 12운성, 관계 신호를 차례대로 연결합니다.</p></div>
+ ${card("1장 · 네 기둥","년주·월주·일주·시주는 보는 초점이 다릅니다",`<div class="deepPillars">${ps}</div><p>가장 중요한 출발점은 <b>일주의 첫 글자, 일간</b>입니다. ${esc(c.input.name||"사용자")}님의 일간은 <b>${esc(c.dayMaster.stem)}(${esc(c.dayMaster.hanja)})</b>이고, 이것을 ‘나’의 기준점으로 놓습니다.</p>${ev(`년주 ${c.pillars.year.ko} / 월주 ${c.pillars.month.ko} / 일주 ${c.pillars.day.ko} / 시주 ${c.pillars.hour?.ko||"-"}`)}`)}
+ ${card("2장 · 천간과 지지","위 글자는 겉으로 드러나는 힘, 아래 글자는 생활 속 바탕으로 생각하면 쉽습니다",`<p><b>천간</b>은 갑·을·병·정·무·기·경·신·임·계 같은 윗글자이고, 행동·표현·역할을 볼 때 많이 씁니다.</p><p><b>지지</b>는 자·축·인·묘·진·사·오·미·신·유·술·해 같은 아랫글자이고, 계절·생활 습관·안쪽의 반응을 볼 때 참고합니다.</p>`)}
+ ${card("3장 · 오행",`${top[0]}이 상대적으로 크고 ${low[0]}이 상대적으로 작습니다`,`<p>오행은 목·화·토·금·수 다섯 성질을 성적표처럼 매기는 것이 아닙니다. 현재 계산에서는 <b>${top[0]} ${top[1]}%</b>가 가장 크고 <b>${low[0]} ${low[1]}%</b>가 가장 작습니다.</p><p>강한 ${top[0]}은 <b>${esc(E[top[0]][0])}</b>이 자주 쓰인다는 뜻으로 보고, 낮은 ${low[0]}은 결함이 아니라 생활 속에서 의식적으로 보완할 부분으로 봅니다.</p>${ev(arr.map(x=>x[0]+" "+x[1]+"%").join(" / "))}`)}
+ ${card("4장 · 십신","비견·겁재·식신 같은 말은 성격 이름이 아니라 ‘나와 다른 글자의 관계 이름’입니다",`<p>십신은 나와 비슷한 힘, 내가 만들어 내는 결과, 돈과 현실, 책임과 규칙, 배움과 지원 같은 관계를 10가지 이름으로 나눈 것입니다.</p><p>정재가 있다고 반드시 부자가 되고 편관이 있다고 평생 압박만 받는 식으로 해석하지 않습니다. 어디에 놓였는지와 계절·오행·대운을 함께 봅니다.</p>`)}
+ ${card("5장 · 지장간과 12운성","숨은 기운과 힘의 단계를 보는 보조표입니다",`<p><b>지장간</b>은 지지 하나 안에도 여러 천간의 성질이 섞여 있다고 보는 전통 계산입니다. 겉으로 보이는 한 글자만으로 설명되지 않는 반응을 확인할 때 씁니다.</p><p><b>12운성</b>은 좋고 나쁨 점수가 아닙니다. 시작·확장·유지·정리·전환 중 어느 단계의 성격을 띠는지 보는 보조 언어입니다.</p>`)}
+ ${card("6장 · 합·충·형·파·해",r.length?`${r.length}개의 관계 신호가 계산됩니다`:"관계 신호가 복잡하지 않은 편입니다",`<p>합은 무조건 좋은 인연, 충은 무조건 이별이나 사고를 뜻하지 않습니다. 기둥끼리 서로 묶이거나 움직이고 조정되는 방식을 보는 신호입니다.</p><p>사건을 예언하기보다 실제 생활에서 무엇이 바뀌고 반복되는지를 확인할 때 사용합니다.</p>${ev(r.length?r.map(x=>(x.aLabel||x.a||"")+"-"+(x.bLabel||x.b||"")+" "+x.type).join(" / "):"직접 관계 신호 적음")}`)}
+ ${card("7장 · 공망·납음·통근","초보라면 마지막에 봐도 되는 보조 정보입니다",`<p><b>통근</b>은 일간과 같은 기운이 지장간에도 있는지를 참고합니다. 이것 하나로 강한 사주·약한 사주를 확정하지 않습니다.</p><p><b>공망</b>은 어떤 영역이 사라진다는 뜻이 아니라 체감 방식이나 자리 잡는 속도를 참고하는 전통 개념입니다.</p><p><b>납음</b>도 오래된 분류 이름이며 실제 오행 분포를 대신하지 않습니다.</p>${ev(`공망 ${(ex.void?.day||[]).join("·")||"-"} / 납음 ${[ex.nayin?.year,ex.nayin?.month,ex.nayin?.day,ex.nayin?.hour].filter(Boolean).join(" / ")||"-"}`)}`)}
+ ${card("8장 · 읽는 순서","일간 → 태어난 달 → 오행 → 십신 → 관계 → 대운 순서로 보면 됩니다",`<p><b>사주 원국은 운명을 확정하는 표가 아니라 내가 어떤 재료를 가지고 태어났는지 정리한 기본 지도</b>입니다. 실제 선택은 현재 환경과 운의 흐름을 함께 보면서 결정합니다.</p>`)}
+ ${card("초보자 용어 사전","어려운 말은 이 정도만 기억하세요",`<p><b>원국</b> 태어난 순간의 기본 사주표 · <b>일간</b> 나를 보는 기준 글자 · <b>오행</b> 목화토금수 다섯 성질 · <b>십신</b> 나와 다른 글자의 관계 · <b>지장간</b> 지지 안의 숨은 천간 · <b>12운성</b> 기운의 단계 · <b>대운</b> 약 10년의 큰 배경 · <b>세운</b> 한 해의 강조점</p>`)}
+ </section>`;
+}
+root.GuiinPlain={renderFlow,renderChart,pct};
+})(typeof self!=="undefined"?self:this);
+
+</script>
 <style>
 :root{
  --bg:#fffaf1;--paper:#fffefa;--ink:#203128;--sub:#7c837d;--line:#ece5d7;
@@ -94,7 +192,7 @@ input:focus,select:focus{border-color:#edb72d;box-shadow:0 0 0 3px rgba(237,183,
 .tabs{display:flex;gap:5px;overflow:auto;padding:9px 0 5px;scrollbar-width:none}.tabs::-webkit-scrollbar{display:none}
 .tabs button{white-space:nowrap;border:0;border-radius:999px;padding:8px 11px;background:#f4f0e8;color:#757b76;font-size:9.5px;font-weight:800}.tabs button.on{background:#f86487;color:white}.tabs.green button.on{background:#0c6d50}.tabs.purple button.on{background:#9c67d7}
 .summaryHero{padding:15px;background:linear-gradient(145deg,#eef9e6,#fff8dc);overflow:hidden}.summaryHero h3{font-size:22px;line-height:1.35;margin:3px 0;color:#1f3c2f}.summaryHero p{font-size:10.5px;line-height:1.5;color:#557061;margin:4px 0}
-.summaryArt{height:136px;border-radius:14px;overflow:hidden;margin-top:8px}.summaryArt img{width:100%;height:100%;object-fit:contain;object-position:center 8%}
+.summaryArt{height:136px;border-radius:14px;overflow:hidden;margin-top:8px}.summaryArt img{width:100%;height:100%;object-fit:cover}
 .infoCard{padding:14px;margin-top:9px}.infoCard h3{font-size:14px;margin:0 0 9px}
 .infoGrid{display:grid;grid-template-columns:76px 1fr;gap:7px;font-size:10px}.infoGrid span{color:#939892}.infoGrid b{font-weight:800}
 .keywordGrid{display:grid;grid-template-columns:repeat(4,1fr);gap:7px}.keyword{border-radius:13px;padding:8px 4px;text-align:center;font-size:8.5px}.keyword:nth-child(1){background:#fff0c9}.keyword:nth-child(2){background:#eaf7ff}.keyword:nth-child(3){background:#ffe8ed}.keyword:nth-child(4){background:#edf8e8}.keyword svg{width:21px;height:21px;margin:0 auto 4px}
@@ -109,7 +207,7 @@ input:focus,select:focus{border-color:#edb72d;box-shadow:0 0 0 3px rgba(237,183,
 .matchHero{padding:12px 13px 14px;text-align:center;background:linear-gradient(145deg,#fff0f4,#f5efff)}.matchHero h3{font-size:17px;color:#d93d67;margin:4px 0}.matchHero p{font-size:9px;color:#776c78;margin:2px 0 7px}.matchArt{height:135px;border-radius:14px;overflow:hidden}.matchArt img{width:100%;height:100%;object-fit:cover}.score{font-size:42px;font-weight:900;color:#e64670;line-height:1;margin:9px 0 3px}.score small{font-size:12px}
 .pair{display:grid;grid-template-columns:1fr 38px 1fr;gap:7px;align-items:center}.person{border-radius:14px;padding:10px;text-align:center;background:#fff8ef;font-size:9px;line-height:1.55}.person.b{background:#f1eaff}.heartSvg{color:#e9557b}.heartSvg svg{width:27px;height:27px;margin:auto}
 .scoreRow{display:grid;grid-template-columns:57px 1fr 28px;gap:7px;align-items:center;font-size:9px;margin:9px 0}.scoreBar{height:7px;background:#eeeae4;border-radius:999px;overflow:hidden}.scoreBar i{display:block;height:100%;border-radius:999px}.pink{background:#ef7e98}.mint{background:#72c3a1}.gold{background:#edc151}.purple{background:#a97cde}
-.todayDate{text-align:center;font-size:14px;font-weight:900;margin:10px 0}.todayHero{padding:12px}.todayArt{height:168px;border-radius:14px;overflow:hidden;background:#fff6e0}.todayArt img{width:100%;height:100%;object-fit:contain;object-position:center top}.todayHero h3{text-align:center;color:#ef7a26;font-size:16px;margin:9px 0 3px}.todayHero p{text-align:center;font-size:9px;color:#777}.fortuneList{padding:5px 13px}.fortuneRow{display:flex;gap:9px;align-items:center;padding:9px 0;border-top:1px solid #eee8de}.fortuneRow:first-child{border-top:0}.fortuneRow .fIcon{width:26px;height:26px;border-radius:9px;display:grid;place-items:center;background:#fff3cf;color:#c99011}.fortuneRow b{font-size:10px}.fortuneRow span{display:block;font-size:8.5px;color:#838985}
+.todayDate{text-align:center;font-size:14px;font-weight:900;margin:10px 0}.todayHero{padding:12px}.todayArt{height:145px;border-radius:14px;overflow:hidden}.todayArt img{width:100%;height:100%;object-fit:cover}.todayHero h3{text-align:center;color:#ef7a26;font-size:16px;margin:9px 0 3px}.todayHero p{text-align:center;font-size:9px;color:#777}.fortuneList{padding:5px 13px}.fortuneRow{display:flex;gap:9px;align-items:center;padding:9px 0;border-top:1px solid #eee8de}.fortuneRow:first-child{border-top:0}.fortuneRow .fIcon{width:26px;height:26px;border-radius:9px;display:grid;place-items:center;background:#fff3cf;color:#c99011}.fortuneRow b{font-size:10px}.fortuneRow span{display:block;font-size:8.5px;color:#838985}
 .profileCard{display:flex;gap:11px;align-items:center;padding:13px}.bigAvatar{width:62px;height:62px;border-radius:50%;overflow:hidden;background:#edf6dc}.bigAvatar img{width:100%;height:100%;object-fit:cover}.profileCard b{display:block;font-size:14px}.profileCard span{display:block;font-size:9px;color:#7f8580;margin-top:3px}
 .menuCard{padding:4px 13px;margin-top:9px}.menuCard button{display:flex;align-items:center;gap:9px;width:100%;border:0;background:none;border-top:1px solid #eee8de;padding:11px 0;color:#35423c;text-align:left;font-size:10px}.menuCard button:first-child{border-top:0}.menuCard svg{width:17px;height:17px;color:#34483e}.menuCard .arr{margin-left:auto;color:#8d938f}
 .footerArt{height:125px;border-radius:15px;overflow:hidden;margin-top:9px}.footerArt img{width:100%;height:100%;object-fit:cover}
@@ -161,7 +259,7 @@ html{background:#efe7d7}.app{background:linear-gradient(180deg,#fffaf0 0%,#fff6e
 .profilebar,.card{border-color:#eee1c8;box-shadow:var(--shadow)}
 .homeHero{padding:0!important;position:relative;background:#fff5dc;border-radius:22px;overflow:hidden;text-align:center}
 .homeHero .heroArt{height:208px!important;margin:0!important;border-radius:0!important;overflow:hidden}
-.homeHero .heroArt img{width:100%;height:100%;object-fit:cover;object-position:center 32%!important}
+.homeHero .heroArt img{object-fit:cover;object-position:center 74%!important}
 .homeHero .heroText{position:absolute;left:10px;right:10px;top:12px;z-index:2;pointer-events:none;text-shadow:0 1px 8px #fff8e8}
 .homeHero .ctaGreen{position:absolute;left:50%;bottom:12px;transform:translateX(-50%);z-index:3;min-width:200px;margin:0;padding:11px 16px;background:rgba(39,92,49,.94);box-shadow:0 8px 20px rgba(38,83,43,.22)}
 .profilebar{padding:8px 10px!important;margin:8px 0}
@@ -274,25 +372,82 @@ html{background:#efe7d7}.app{background:linear-gradient(180deg,#fffaf0 0%,#fff6e
 .homeHero .heroText{top:14px}
 
 
-.wongukCard{padding:14px;margin-top:8px}
-.wongukCard h3{font-size:14px;margin:0 0 10px;color:#1b4a39}
-.wongukGrid{display:grid;grid-template-columns:repeat(4,1fr);gap:7px}
-.wongukCell{border-radius:14px;text-align:center;padding:10px 4px}
-.wongukCell:nth-child(1){background:#e8f6e4}
-.wongukCell:nth-child(2){background:#fff1c4}
-.wongukCell:nth-child(3){background:#ffe3e6}
-.wongukCell:nth-child(4){background:#e4eeff}
-.wongukCell em{display:block;font-style:normal;font-size:8px;color:#7b817a}
-.wongukCell strong{display:block;font-family:Georgia,serif;font-size:26px;line-height:1.05;margin:4px 0}
-.wongukCell b{display:block;font-family:Georgia,serif;font-size:22px}
-.wongukCell span{display:block;font-size:8px;color:#6f756f;margin-top:4px}
-.elBarMix{height:8px;border-radius:999px;overflow:hidden;display:flex;margin-top:8px}
-.elBarMix i{display:block;height:100%}
-.lifeHero{position:relative;padding:18px 16px 14px;background:linear-gradient(160deg,#eef8e4,#fff8df)}.lifeHero h3{font-size:22px;line-height:1.38;margin:6px 0 8px;color:#1b4a39;word-break:keep-all}.lifeHero p{font-size:12px;color:#6d7468}
-.lifeHero .summaryArt{height:190px;margin-top:10px;overflow:hidden;border-radius:16px;background:#fff6e8}
-.mockQuote{padding:16px;background:#f6faee;margin-top:8px}
-.mockQuote p{font-size:16px;line-height:1.55;margin:0;color:#1f3c2f;font-weight:800}
-.catList .categoryRow{padding:13px 4px}
+/* UPDATE 10 — 일반인용 6쪽+ 상세 해설 */
+.plainReport{padding-bottom:8px}
+.plainHero{
+  margin:9px 0;padding:18px 17px;
+  background:linear-gradient(145deg,#f3f9e9,#fff8e7);
+  border-radius:20px
+}
+.plainBadge{
+  display:inline-flex;padding:5px 8px;border-radius:999px;
+  background:#e8f4e8;color:#2f6a45;font-size:8.5px;font-weight:900
+}
+.plainHero h2{font-size:20px;line-height:1.45;letter-spacing:-.04em;margin:9px 0 8px;color:#173a2d}
+.plainHero h2 b{color:#0d654b}
+.plainHero>p{font-size:11.5px;line-height:1.78;color:#6b746e;margin:0}
+.plainThree{display:grid;grid-template-columns:repeat(3,1fr);gap:6px;margin-top:13px}
+.plainThree div{background:#fffdf8;border:1px solid #ece3d5;border-radius:12px;padding:9px 6px;text-align:center}
+.plainThree b{display:block;font-size:10px;color:#234737}.plainThree span{display:block;font-size:7.5px;line-height:1.35;color:#8b8d88;margin-top:3px}
+.plainSteps{display:flex;gap:5px;flex-wrap:wrap;margin-top:12px}
+.plainSteps span{background:#fff;border:1px solid #ece4d8;border-radius:999px;padding:5px 7px;font-size:7.5px;color:#6f766f}
+.plainCard{padding:19px 17px;margin:10px 0;border-radius:20px}
+.plainCard.flowMajor{border-color:#e2b43b;background:linear-gradient(145deg,#fffdfa,#fff9e9)}
+.plainKicker{font-size:9px;font-weight:900;color:#be8b21;margin-bottom:7px}
+.plainCard h3{font-size:20px;line-height:1.46;letter-spacing:-.035em;color:#17382c;margin:0 0 12px}
+.plainBody p{font-size:14px;line-height:1.92;color:#606963;margin:9px 0;word-break:keep-all}
+.plainBody p:first-child{margin-top:0}.plainBody p:last-child{margin-bottom:0}
+.plainBody p b{color:#234a39}
+.plainBullet{display:grid;grid-template-columns:86px 1fr;gap:8px;padding:9px 0;border-top:1px solid #eee8dd}
+.plainBullet:first-child{border-top:0}
+.plainBullet b{font-size:10.5px;color:#24523d}.plainBullet span{font-size:10.5px;line-height:1.55;color:#707670}
+.plainTech{margin-top:13px;border-top:1px dashed #e2d9cb;padding-top:9px}
+.plainTech summary,.techEvidence summary{
+  cursor:pointer;list-style:none;font-size:8.5px;font-weight:800;color:#989188
+}
+.plainTech summary::-webkit-details-marker,.techEvidence summary::-webkit-details-marker{display:none}
+.plainTech summary:after,.techEvidence summary:after{content:" +";color:#b09a68}
+.plainTech[open] summary:after,.techEvidence[open] summary:after{content:" −"}
+.plainTech>div,.techEvidence>div{
+  margin-top:7px;padding:8px 9px;border-radius:9px;background:#faf7f1;
+  font-size:8px;line-height:1.55;color:#948e85
+}
+.techEvidence{margin-top:12px}
+.plainYearCompare{display:grid;gap:7px}
+.plainYearBox{background:#faf8f2;border:1px solid #eee7db;border-radius:13px;padding:11px}
+.plainYearTop{display:flex;justify-content:space-between;align-items:center;gap:7px}
+.plainYearTop b{font-size:14px;color:#1f4c39}.plainYearTop span{font-size:8px;color:#8e8474}
+.plainYearBox p{font-size:10.5px;line-height:1.62;margin:7px 0;color:#68706a}.plainYearBox small{font-size:7.5px;color:#9b968e}
+.plainMonthGrid{display:grid;grid-template-columns:repeat(3,1fr);gap:6px}
+.plainMonth{background:#faf8f2;border:1px solid #eee6da;border-radius:12px;padding:9px 7px;min-height:112px}
+.plainMonth>b{display:block;font-size:11px;color:#2b513f}.plainMonth>strong{display:block;font-size:10px;color:#77559b;margin-top:4px}
+.plainMonth>span{display:block;font-size:7.5px;line-height:1.4;color:#6f756f;margin-top:4px}.plainMonth>small{display:block;font-size:6.7px;line-height:1.35;color:#9b968e;margin-top:5px}
+.plainLuckMap{display:grid;gap:7px}
+.plainLuck{border:1px solid #eee5d8;border-radius:13px;padding:11px;background:#fff}
+.plainLuck.current{border-color:#ddb13b;background:#fff9e8}
+.plainLuck>div{display:flex;align-items:center;gap:7px;flex-wrap:wrap}.plainLuck b{font-size:10px;color:#8a7a63}.plainLuck strong{font-size:12px;color:#244939}.plainLuck em{font-style:normal;font-size:7px;background:#d9aa31;color:#fff;border-radius:999px;padding:3px 6px}
+.plainLuck p{font-size:9.5px;line-height:1.55;color:#747973;margin:6px 0 0}
+.plainPillarGrid{display:grid;grid-template-columns:1fr 1fr;gap:7px}
+.plainPillar{background:#faf8f3;border:1px solid #eee6da;border-radius:13px;padding:11px}
+.plainPillarHead{display:flex;justify-content:space-between;align-items:center}.plainPillarHead span{font-size:8px;color:#9a8760}.plainPillarHead b{font-size:17px;color:#1f4d39}
+.plainPillar>strong{display:block;font-size:10.5px;color:#3f4d45;margin-top:6px}.plainPillar p{font-size:9px!important;line-height:1.55!important;color:#767b76!important;margin:5px 0!important}.plainPillar small{font-size:7px;line-height:1.4;color:#9c968e}
+.plainGodGrid{display:grid;grid-template-columns:1fr 1fr;gap:6px}
+.plainGodGrid>div{background:#faf8f3;border-radius:12px;padding:10px}
+.plainGodGrid span{display:block;font-size:7.5px;color:#999087}.plainGodGrid b{display:block;font-size:12px;color:#735596;margin-top:3px}.plainGodGrid p{font-size:8.5px!important;line-height:1.45!important;margin:4px 0 0!important}
+.plainStageGrid{display:grid;grid-template-columns:1fr 1fr;gap:6px;margin-top:10px}
+.plainStageGrid>div{background:#faf8f3;border-radius:12px;padding:9px}.plainStageGrid>div>b{display:block;font-size:11px;color:#2d513f}.plainStageGrid>div>span{display:block;font-size:7.5px;line-height:1.4;color:#858983;margin-top:3px}
+.plainGlossary{display:grid;gap:0}
+.plainGlossary>div{display:grid;grid-template-columns:86px 1fr;gap:8px;padding:9px 0;border-top:1px solid #eee7dc}.plainGlossary>div:first-child{border-top:0}
+.plainGlossary b{font-size:10px;color:#2d533f}.plainGlossary span{font-size:9.5px;line-height:1.5;color:#717771}
+@media(max-width:360px){
+ .plainCard{padding:16px 14px}.plainCard h3{font-size:18px}.plainBody p{font-size:12.5px}
+ .plainMonthGrid{grid-template-columns:repeat(2,1fr)}
+}
+
+
+/* ONE FILE EASY REPORT */
+.deepEasyReport{padding-bottom:8px}.deepIntro,.deepEasy{margin:10px 0;padding:18px 16px;border-radius:20px}.deepIntro{background:linear-gradient(145deg,#f2f9e8,#fff8e5)}.deepIntro small,.deepNo{font-size:9px;font-weight:900;color:#b58a27}.deepIntro h2,.deepEasy h3{color:#173b2e;letter-spacing:-.04em}.deepIntro h2{font-size:21px;line-height:1.45;margin:8px 0}.deepIntro p,.deepEasy p{font-size:12.5px;line-height:1.9;color:#626c65;word-break:keep-all}.deepEasy h3{font-size:19px;line-height:1.45;margin:6px 0 10px}.deepEasy p b{color:#234b39}.deepEvidence{margin-top:12px;border-top:1px dashed #e3dbcf;padding-top:9px}.deepEvidence summary{font-size:8.5px;font-weight:800;color:#999188;cursor:pointer}.deepEvidence div{margin-top:7px;padding:8px;border-radius:9px;background:#faf7f1;font-size:8px;line-height:1.55;color:#948d84}.deepYear,.deepLuck{padding:10px;border:1px solid #eee6da;border-radius:12px;margin:6px 0;background:#fff}.deepYear b,.deepLuck b{font-size:10.5px;color:#27503e}.deepYear p{font-size:9.5px!important;line-height:1.6!important;margin:5px 0!important}.deepLuck span{display:block;font-size:8.5px;color:#777;margin-top:4px}.deepLuck.now{background:#fff8e6;border-color:#e1b53e}.deepMonths{display:grid;grid-template-columns:repeat(3,1fr);gap:6px}.deepMonth{min-height:70px;padding:8px;border-radius:11px;background:#faf8f2}.deepMonth b{display:block;font-size:9px;color:#315441}.deepMonth span{display:block;font-size:7.5px;line-height:1.4;color:#777;margin-top:4px}.deepPillars{display:grid;grid-template-columns:1fr 1fr;gap:6px}.deepPillar{padding:10px;border-radius:12px;background:#faf8f2}.deepPillar b{display:block;font-size:10px;color:#27503e}.deepPillar span{display:block;font-size:8px;line-height:1.45;color:#777;margin-top:4px}
+
 </style>
 </head>
 <body>
@@ -371,11 +526,11 @@ html{background:#efe7d7}.app{background:linear-gradient(180deg,#fffaf0 0%,#fff6e
 <section id="result" class="screen">
   <div class="topbar">
     <button class="ghost" onclick="go('home')" aria-label="뒤로"><svg viewBox="0 0 24 24" width="20" height="20"><path d="M15 5l-7 7 7 7" fill="none" stroke="currentColor" stroke-width="2"/></svg></button>
-    <div class="brand"><div class="brandline"><span class="logo-dot"><img loading="lazy" decoding="async" src="clover-mark.jpg" alt=""></span>귀인사주</div></div>
+    <div class="brand"><div class="brandline"><span class="logo-dot"><img loading="lazy" decoding="async" src="clover-mark.jpg" alt=""></span>귀인사주</div><small>좋은 인연이, 좋은 운을 만듭니다.</small></div>
     <button class="ghost"><svg viewBox="0 0 24 24" width="20" height="20"><path d="M18 8a6 6 0 00-12 0c0 7-3 7-3 9h18c0-2-3-2-3-9M10 21h4" fill="none" stroke="currentColor" stroke-width="1.8"/></svg></button>
   </div>
   <div class="tabs" id="resultTabs">
-    <button class="on" data-tab="summary">사주 요약</button><button data-tab="personality">성격 분석</button><button data-tab="flow">인생 흐름</button><button data-tab="fields">분야별 운세</button><button data-tab="stars">신살·귀인</button><button data-tab="chart">사주 원국</button>
+    <button class="on" data-tab="summary">전체 풀이</button><button data-tab="personality">성격·기질</button><button data-tab="fields">직업·재물·연애</button><button data-tab="stars">신살·귀인</button><button data-tab="flow">대운·세운</button><button data-tab="chart">사주 원국</button>
   </div>
   <div id="resultView"></div>
 </section>
@@ -449,7 +604,7 @@ html{background:#efe7d7}.app{background:linear-gradient(180deg,#fffaf0 0%,#fff6e
   </div>
   <div class="slogan card"><b>좋은 인연이, 좋은 하루를 만듭니다.</b><br>귀인사주와 함께할게요.</div>
   <div class="footerArt"><img loading="lazy" decoding="async" src="mypage-animals.jpg" alt=""></div>
-  
+  <button class="ctaGold" onclick="go('admin')">홈 문구 수정하기 ›</button>
 </section>
 
 
@@ -527,9 +682,6 @@ html{background:#efe7d7}.app{background:linear-gradient(180deg,#fffaf0 0%,#fff6e
     <button class="qchip" type="button" onclick="sendQ('올해 재물운이 어떤가요?')">올해 재물운</button>
     <button class="qchip" type="button" onclick="sendQ('지금 이직해도 될까요?')">이직 타이밍</button>
     <button class="qchip" type="button" onclick="sendQ('연애운이 언제 들어올까요?')">연애 시기</button>
-    <button class="qchip" type="button" onclick="sendQ('올해 전체 흐름이 어떤가요?')">올해 흐름</button>
-    <button class="qchip" type="button" onclick="sendQ('내 성격은 어떻게 보이나요?')">내 성격</button>
-    <button class="qchip" type="button" onclick="sendQ('건강운은 어떤가요?')">건강운</button>
   </div>
   <div class="composer" style="margin-top:8px">
     <input id="askQ" placeholder="궁금한 점을 물어보세요" onkeydown="if(event.key==='Enter')sendQ()">
@@ -604,9 +756,8 @@ function go(id){
  document.querySelectorAll('.bottom button').forEach(b=>b.classList.remove('active'));
  if(id==='home')$('navHome').classList.add('active');
  else if(id==='mypage')$('navMy').classList.add('active');
- else if($('navSaju'))$('navSaju').classList.add('active');
+ else $('navSaju').classList.add('active');
  history.replaceState(null,'','#'+id); window.scrollTo(0,0);
- if(id==='today') try{renderToday()}catch(e){console.error(e)}
 }
 function bindSeg(id,cb){
  const box=$(id); if(!box)return;
@@ -770,11 +921,11 @@ function foundationReport(c){
 }
 
 
-function expertSectionHTML(s){return `<article class="expertSection"><div class="eyebrow">${GuiinExpert.esc(s.eyebrow)}</div><h3>${GuiinExpert.esc(s.title)}</h3><p>${GuiinExpert.esc(s.body)}</p>${s.evidence?`<div class="evidence">${GuiinExpert.esc(s.evidence)}</div>`:''}</article>`}
+function expertSectionHTML(s){return `<article class="expertSection"><div class="eyebrow">${GuiinExpert.esc(s.eyebrow)}</div><h3>${GuiinExpert.esc(s.title)}</h3><p>${GuiinExpert.esc(s.body)}</p>${s.evidence?`<details class="techEvidence"><summary>명리 계산 근거 보기</summary><div>${GuiinExpert.esc(s.evidence)}</div></details>`:''}</article>`}
 function expertSectionsHTML(sections){return (sections||[]).map(expertSectionHTML).join('')}
 function expertSummaryHTML(c){
  const s=GuiinExpert.fullSections(c), stars=GuiinExpert.starGroups(c);
- return `<div class="expertIntro"><h2>지금부터는 조금 더 깊게, 그래도 쉬운 말로 이어집니다.</h2><p>어려운 한자가 나와도 그 아래 일상 설명을 먼저 읽으면 됩니다. “그래서 나는 어떻게 하면 되나”만 남기려고 썼습니다.</p></div>`+
+ return `<div class="expertIntro"><h2>${esc(c.input.name)}님의 사주를 처음 보는 분도 이해할 수 있게 생활 언어로 풀어드립니다.</h2><p>먼저 ‘나는 어떤 사람인지’를 설명하고, 그다음 일·돈·연애·가족·인생 흐름으로 이어집니다. 전문 용어와 계산 근거는 각 카드 아래에서 필요할 때만 펼쳐볼 수 있어요.</p></div>`+
  expertSectionsHTML(s.slice(0,6))+
  `<button class="ctaGreen" style="width:100%;margin:6px 0" onclick="setTab('stars')">내 신살·귀인 ${stars.total}개 자세히 보기 ›</button>`+
  expertSectionsHTML(s.slice(6));
@@ -787,258 +938,52 @@ function expertStarsHTML(c){
  `<div class="disclaimerBox">신살은 전통 명리의 보조 해석입니다. 하나의 신살만으로 결혼·재물·질병·사고·성공을 확정하지 않습니다.</div>`;
 }
 function expertFlowHTML(c){
- const f=GuiinExpert.flowSections(c,2026);
+ if(typeof GuiinPlain!=='undefined') return GuiinPlain.renderFlow(c,new Date().getFullYear());
+ const f=GuiinExpert.flowSections(c,new Date().getFullYear());
  return expertSectionsHTML(f.sections)+`<div class="expertSection"><div class="eyebrow">전체 대운 지도</div><h3>10년마다 어떤 주제가 반복되는지 한눈에 봅니다</h3><div class="daeunList">${f.rows.map(r=>`<div class="daeunItem ${r.current?'current':''}"><b>${r.fromAge}~${r.toAge}세 · ${r.ko} 대운 · ${r.god}${r.current?' · 현재':''}</b><p>${esc(r.body)}</p></div>`).join('')}</div></div>`;
 }
 
 
-function plainOpenHTML(c){
- const name=c.input.name||'당신';
- const me=typeof dayEl==='function'?dayEl(c):'';
- const won=(function(){try{return [c.pillars.year.ko,c.pillars.month.ko,c.pillars.day.ko,c.pillars.hour&&c.pillars.hour.ko].filter(Boolean).join(' · ')}catch(e){return ''}})();
- const who={
-  목:'새로운 일을 시작하고 사람을 잇는 쪽에 마음이 갑니다. 가만히 있으면 답답하고, 조금이라도 자라야 숨이 트입니다.',
-  화:'보이고 인정받는 자리에서 힘이 납니다. 반응이 없으면 쉽게 꺼지고, 따뜻한 한 마디면 다시 켜집니다.',
-  토:'맡은 일은 끝까지 들고 가려 합니다. 믿음은 두껍지만 갑작스러운 변화에는 속이 먼저 막힙니다.',
-  금:'맞고 틀림이 빨리 보입니다. 정리하고 기준을 세울 때 신뢰가 쌓이고, 감정 싸움에는 쉽게 지칩니다.',
-  수:'먼저 살피고 우회로를 찾습니다. 정보가 있어야 편하고, 막힌 절차 앞에서는 답답함이 커집니다.'
- }[me]||'자신의 속도로 길을 만드는 사람입니다.';
- return `<div class="expertSection"><div class="eyebrow">쉽게 읽는 사주</div>
- <h3>${esc(name)}님 사주를 일상 말로 풀어보면</h3>
- <p>${esc(name)}님의 사주 네 칸은 ${esc(won)||'원국'}입니다. 한자는 점수가 아니라 <b>나를 설명하는 메모</b>입니다. 가운데 일간이 나이고, 지금은 ${me?me+' 기운': '자기 기질'}이 중심입니다.</p>
- <p>${esc(who)} 그래서 주변에서는 “성실하다”와 “고집이 있다”를 같이 말합니다. 둘 다 틀린 말이 아닙니다. 잘 쓰는 날과 혼자 짊어지는 날이 갈릴 뿐입니다.</p>
- <p>재물은 한 방에 들어오는 운이 아니라 <b>새는 구멍을 막는 운</b>에 가깝습니다. 일은 연봉보다 역할이 맞을 때 오래 갑니다. 인연은 설렘보다, 같이 밥 먹은 뒤의 말투를 보면 답이 보입니다.</p>
- <p>아래 만세력표는 같은 네 칸을 더 자세히 펼친 것입니다. 그 다음 글은 성격·직업·재물·연애·대운을 이어서 풀어 드립니다. 점집이 아니라, 설명서처럼 읽히길 바랍니다.</p>
- </div>`;
-}
-function birthSeason(c){
- const br=(c.pillars&&c.pillars.month&&(c.pillars.month.branch||(c.pillars.month.ko||'')[1]))||'';
- if('인묘진'.includes(br)) return '봄';
- if('사오미'.includes(br)) return '여름';
- if('신유술'.includes(br)) return '가을';
- if('해자축'.includes(br)) return '겨울';
- const m=Number(c.input&&c.input.month)||1;
- if(m>=3&&m<=5) return '봄';
- if(m>=6&&m<=8) return '여름';
- if(m>=9&&m<=11) return '가을';
- return '겨울';
-}
-function headlineFor(c){
- const stem=(c.dayMaster&&c.dayMaster.stem)||(c.pillars&&c.pillars.day&&(c.pillars.day.stem||(c.pillars.day.ko||'')[0]))||'정';
- const season=birthSeason(c);
- const map={
-  갑:{봄:'봄비에 막 싹 틔운 큰 나무처럼, 시작이 운인 사람입니다.',여름:'한여름에도 그늘을 만드는 나무처럼, 버티는 힘이 있는 사람입니다.',가을:'잎을 내려놓고도 줄기는 남는 나무처럼, 본질을 지키는 사람입니다.',겨울:'눈 속에서도 뿌리를 내리는 나무처럼, 쉽게 안 꺾이는 사람입니다.'},
-  을:{봄:'봄바람에 몸을 맡긴 덩굴처럼, 유연하게 길을 찾는 사람입니다.',여름:'담장을 타고 피어난 꽃처럼, 기대는 자리에서 더 예쁜 사람입니다.',가을:'거센 바람에도 끊기지 않는 실처럼, 관계를 붙잡는 사람입니다.',겨울:'언 땅을 살짝 덮은 이끼처럼, 작아도 온기를 남기는 사람입니다.'},
-  병:{봄:'봄 햇살처럼 방을 환히 여는, 시작을 밝히는 사람입니다.',여름:'한낮의 태양처럼 주변을 달구는, 중심에 서는 사람입니다.',가을:'기울어가는 해처럼 더 진하게 남는, 여운이 긴 사람입니다.',겨울:'짧은 겨울 햇살처럼 귀하게 비추는, 있으면 그리운 사람입니다.'},
-  정:{봄:'봄밤에 켜 둔 작은 등처럼, 가까운 사람을 먼저 비추는 사람입니다.',여름:'한여름 처마 밑 촛불처럼, 더위 속에서도 온기를 지키는 사람입니다.',가을:'낙엽 사이 남은 불씨처럼, 식지 않는 마음이 있는 사람입니다.',겨울:'차가운 한겨울에 태어난 촛불처럼, 따뜻한 난로가 되어 주는 사람입니다.'},
-  무:{봄:'봄밭의 둔덕처럼, 심으면 반드시 받아 주는 사람입니다.',여름:'한낮에도 그늘이 있는 언덕처럼, 기대면 안전한 사람입니다.',가을:'수확을 담는 땅처럼, 결과를 지키는 사람입니다.',겨울:'언 땅 아래를 지키는 산처럼, 겉은 차가워도 속은 단단한 사람입니다.'},
-  기:{봄:'젖은 봄흙처럼 사람을 품는, 부드러운 자리의 사람입니다.',여름:'비 온 뒤 냄새 좋은 흙처럼, 가까울수록 편한 사람입니다.',가을:'곡식을 키워 낸 밭처럼, 베푸는 손이 있는 사람입니다.',겨울:'아랫목처럼 조용히 데우는, 말보다 온기가 먼저인 사람입니다.'},
-  경:{봄:'새로 간 칼처럼 시작이 분명한, 방향을 자르는 사람입니다.',여름:'뜨거운 햇살 아래 빛나는 쇠처럼, 기준이 선 사람입니다.',가을:'수확을 가르는 낫처럼, 남길 것과 버릴 것을 아는 사람입니다.',겨울:'눈 위의 칼날처럼 더 선명해지는, 흔들려도 원칙인 사람입니다.'},
-  신:{봄:'이슬 맺힌 세공처럼, 작아도 정교한 사람입니다.',여름:'더위 속에도 광을 잃지 않는 보석처럼, 품위를 지키는 사람입니다.',가을:'한 땀 한 땀 다듬어진 은장처럼, 디테일이 신뢰인 사람입니다.',겨울:'찬 공기 속 더 반짝이는 장신구처럼, 예민함이 빛인 사람입니다.'},
-  임:{봄:'풀린 강을 밀어내는 큰 물처럼, 판이 열려야 사는 사람입니다.',여름:'비구름을 몰고 오는 바다처럼, 한 번에 판을 바꾸는 사람입니다.',가을:'가을 강을 천천히 적시는 물처럼, 깊게 스미는 사람입니다.',겨울:'언 강을 밑에서 흐르는 물처럼, 겉은 멈춰도 속은 움직이는 사람입니다.'},
-  계:{봄:'꽃잎을 깨우는 아침 이슬처럼, 작은 신호에 먼저 반응하는 사람입니다.',여름:'한여름 소나기처럼 짧고 진하게, 마음을 적시는 사람입니다.',가을:'안개처럼 스며드는 비처럼, 말은 적은데 남는 사람입니다.',겨울:'창가에 서리는 성애처럼, 차갑게 보여도 섬세한 사람입니다.'}
- };
- const row=map[stem]||map['정'];
- return row[season]||row['겨울'];
-}
-function quoteFor(c){
- const season=birthSeason(c);
- const el=typeof dayEl==='function'?dayEl(c):'화';
- const q={
-  목:{봄:'“지금 심은 것이 당신의 내년입니다.”',여름:'“그늘이 되어 주는 날이, 가장 강한 날입니다.”',가을:'“내려놓아도 당신은 사라지지 않습니다.”',겨울:'“뿌리가 있는 사람은 겨울에도 죽지 않습니다.”'},
-  화:{봄:'“작은 온기가 방을 바꿉니다.”',여름:'“당신의 열이 누군가를 살립니다.”',가을:'“식기 전에 마음을 전하세요.”',겨울:'“한 점의 불이 긴 밤을 지킵니다.”'},
-  토:{봄:'“받아 주는 땅이 곧 운입니다.”',여름:'“당신이 버티는 동안 누군가 쉽니다.”',가을:'“거둔 것을 지키는 손이 복입니다.”',겨울:'“겉모습보다 속 온기를 믿으세요.”'},
-  금:{봄:'“선이 그어져야 길이 됩니다.”',여름:'“원칙이 당신을 지켜 줍니다.”',가을:'“자를 줄 아는 사람이 오래 갑니다.”',겨울:'“차가운 공기일수록 칼은 더 밝습니다.”'},
-  수:{봄:'“고이면 썩고, 흐르면 삽니다.”',여름:'“큰물도 물꼬가 있어야 합니다.”',가을:'“스미는 힘이 밀치는 힘보다 깁니다.”',겨울:'“얼음 밑에도 물은 흐릅니다.”'}
- };
- return (q[el]&&q[el][season])||'“지금의 선택이 내일을 데웁니다.”';
-}
 function prettySummaryHTML(c){
- const time=c.input.hourUnknown?'모름':(String(c.input.hour).padStart(2,'0')+':'+String(c.input.minute).padStart(2,'0'));
- const title=headlineFor(c);
- const quote=quoteFor(c);
- return `<div class="lifeHero card">
-   <h3>${esc(c.input.name)}님은<br>${esc(title)}</h3>
-   <p>${quote}</p>
-   <div class="summaryArt"><img src="input-cat.jpg" alt=""></div>
- </div>
- <div class="infoCard card"><h3>기본 정보</h3>
-  <div class="infoGrid">
-   <span>이름</span><b>${esc(c.input.name)}</b>
-   <span>생년월일</span><b>${c.input.year}년 ${c.input.month}월 ${c.input.day}일 (${c.input.calendar||'양력'})</b>
-   <span>태어난 시간</span><b>${time==='모름'?time:'오전 '+time}</b>
-   <span>성별</span><b>${c.input.gender==='여'?'여성':'남성'}</b>
-  </div>
- </div>
- <div class="slogan card"><b>타고난 빛이, 언제나 길을 만듭니다.</b></div>
- <button class="ctaGreen" style="width:100%;margin-top:8px" onclick="setTab('chart')">상세 분석 보기 ›</button>`;
-}
-function dayEl(c){
- const map={갑:'목',을:'목',병:'화',정:'화',무:'토',기:'토',경:'금',신:'금',임:'수',계:'수'};
- const stem=(c.dayMaster&&c.dayMaster.stem)||(c.pillars&&c.pillars.day&& (c.pillars.day.stem||(c.pillars.day.ko||'')[0]))||'';
- return (c.dayMaster&&c.dayMaster.el)||map[stem]||'목';
-}
-function ohaengGuideHTML(c){
- const me=dayEl(c);
- const stem=(c.dayMaster&&c.dayMaster.stem)||(c.pillars&&c.pillars.day&&(c.pillars.day.stem||(c.pillars.day.ko||'')[0]))||'';
- const pack={
-  목:{
-    title:'나무 기질',
-    who:'한곳에 머물기보다 자라고 연결되는 쪽에 마음이 갑니다. 기획, 사람, 새로운 시도에서 힘이 납니다.',
-    stem: stem==='갑'?'곧은 큰 나무처럼 앞장서는 편입니다.':'덩굴처럼 유연하게 길을 찾는 편입니다.',
-    help:'쉬는 시간, 산책, 책, 좋은 대화처럼 “물”이 닿을 때 다시 자랍니다. 잠이 줄면 아이디어부터 마릅니다.',
-    make:'말과 발표, 분위기 메이킹, 사람을 설득하는 일에서 결과가 잘 납니다.',
-    stress:'칼 같은 평가, 갑작스러운 마감, “틀렸다”는 한 마디에 쉽게 꺾입니다. 그날은 일을 더 하지 말고 물(휴식)을 먼저 주세요.',
-    handle:'늘어지는 회의, 애매한 규칙을 정리하는 역할이 잘 맞습니다. 다만 사람을 뿌리째 흔들지는 마세요.',
-    tip:'이번 주 할 일: 물 한 잔과 10분 걷기를 일과 사이에 넣기.'
-  },
-  화:{
-    title:'불 기질',
-    who:'보이고 싶어 하고, 따뜻한 자리면 더 잘합니다. 관심과 반응이 연료입니다.',
-    stem: stem==='병'?'태양처럼 크게 비추고 싶어 합니다.':'촛불처럼 가까이 있는 사람을 오래 비춥니다.',
-    help:'할 일이 분명하고 준비물(목)이 있을 때 불이 오래 갑니다. 빈 시간이 길면 마음이 먼저 꺼집니다.',
-    make:'영업, 강의, 콘텐츠, 팀 사기처럼 “사람을 달구는 일”에서 성과가 납니다.',
-    stress:'돈이나 반응이 갑자기 끊기거나, 차가운 한마디를 들으면 의욕이 내려앉습니다. 그날은 큰 결정을 미루세요.',
-    handle:'딱딱한 자리도 녹일 수 있지만, 너무 밀어붙이면 상대가  defensively 변합니다.',
-    tip:'이번 주 할 일: 칭찬받을 작은 결과 하나를 먼저 끝내기.'
-  },
-  토:{
-    title:'흙 기질',
-    who:'맡으면 끝까지 들고 가려 합니다. 믿음은 두껍고, 변화는 천천히 옵니다.',
-    stem: stem==='무'?'산처럼 자리를 지키는 편입니다.':'밭처럼 사람을 품는 편입니다.',
-    help:'목표와 인정(화)이 보일 때 움직입니다. “왜 하는지”가 빠지면 몸만 바쁩니다.',
-    make:'관리, 저축, 운영, 실무 완성도가 돈과 실력으로 남습니다.',
-    stress:'갑작스러운 일정 변경, 계획 없는 사람이 들어오면 속이 막힙니다. 미리 빈칸을 조금 남겨 두세요.',
-    handle:'흐트러진 일을 담는 그릇이 됩니다. 다만 남의 감정도 다 담으려 하면 소화가 안 됩니다.',
-    tip:'이번 주 할 일: 거절 한 번, 일정 비우기 한 칸.'
-  },
-  금:{
-    title:'쇠 기질',
-    who:'맞고 틀림이 빨리 보입니다. 정리하고 자르는 힘이 강합니다.',
-    stem: stem==='경'?'큰 칼처럼 결단이 분명합니다.':'작은 보석처럼 디테일이 예민합니다.',
-    help:'규칙, 루틴, 통장·할 일 목록처럼 흙(기반)이 있어야 날이 섭니다.',
-    make:'분석, 계약, 편집, 숫자, 기준 세우기에서 신뢰가 쌓입니다.',
-    stress:'감정 싸움, 급하게 몰아치는 요청에 이성이 녹습니다. 화가 올라오면 답을 한 템포 늦추세요.',
-    handle:'산만한 일을 잘라 주는 사람입니다. 너무 자르면 관계가 함께 잘립니다.',
-    tip:'이번 주 할 일: 결정 전에 10분만 걷기.'
-  },
-  수:{
-    title:'물 기질',
-    who:'먼저 살피고, 우회로를 잘 찾습니다. 정보가 많으면 마음이 편합니다.',
-    stem: stem==='임'?'큰 강처럼 판이 커야 힘이 납니다.':'이슬처럼 세밀한 감각이 강합니다.',
-    help:'기준과 기술(금)이 정해지면 막힘없이 흐릅니다. “아무 거나 해”는 독입니다.',
-    make:'기획, 조사, 상담, 글, 사람 사이를 잇는 일에서 길이 열립니다.',
-    stress:'승인 대기, 복잡한 절차, 막힌 조직에서 답답함이 커집니다. 작은 출구부터 만드세요.',
-    handle:'과열된 자리를 식힐 수 있습니다. 너무 식히면 팀의 열정까지 같이 내려갑니다.',
-    tip:'이번 주 할 일: 오늘 할 일 세 가지만 적고 나머지는 내일.'
-  }
- }[me];
- if(!pack) return '';
- const name=esc(c.input.name||'당신');
- return `<div class="infoCard card"><h3>나(${esc(me)} · ${esc(pack.title)})를 쉽게 보면</h3>
-  <p class="flowText">${name}님의 중심은 <b>${esc(me)}</b>입니다. ${esc(pack.who)} ${esc(pack.stem)}</p></div>
- <div class="listCard card"><h3>나를 살리는 것</h3><p class="flowText">${esc(pack.help)}</p></div>
- <div class="listCard card"><h3>내가 잘 만드는 결과</h3><p class="flowText">${esc(pack.make)}</p></div>
- <div class="listCard card"><h3>나를 지치게 하는 것</h3><p class="flowText">${esc(pack.stress)}</p></div>
- <div class="listCard card"><h3>내가 다루는 역할</h3><p class="flowText">${esc(pack.handle)}</p></div>
- <div class="slogan card"><b>${esc(pack.tip)}</b><br>상극은 불행이 아니라, 연습이 필요한 힘입니다.</div>`;
-}
-function wongukHTML(c){
- const order=['year','month','day','hour'];
- const lab={year:'태어난 해',month:'자란 환경',day:'나 자신',hour:'표현·말년'};
- const hint={year:'집안의 분위기, 어릴 때 바탕',month:'사회에 나가는 방식',day:'성격과 선택의 중심',hour:'말과 관계, 나중에 가는 길'};
- const ps=c.pillars||{};
- const cells=order.map(k=>{
-  const p=ps[k]||{};
-  const stem=(p.stem||p.ko||'·')[0]||'·';
-  const branch=(p.branch||(p.ko||'··')[1]||'·');
-  const god=p.god||'';
-  return `<div class="wongukCell"><em>${lab[k]}</em><strong>${esc(stem)}</strong><b>${esc(branch)}</b><span>${esc(god||hint[k])}</span></div>`;
- }).join('');
- const pct=(typeof GuiinExpert!=='undefined'&&GuiinExpert.pct)?GuiinExpert.pct(c):pctElements(c);
- const meaning={목:'성장·기획',화:'열정·표현',토:'안정·책임',금:'판단·정리',수:'유연·관찰'};
- const els=['목','화','토','금','수'];
- const colors=['#7ebd7a','#e8847a','#e2b15a','#b7b7b7','#7eb4d8'];
- const elBox=els.map((e,i)=>`<div class="el"><b>${e}</b><span>${pct[e]||0}%</span><small>${meaning[e]}</small></div>`).join('');
- const bar=els.map((e,i)=>`<i style="width:${pct[e]||0}%;background:${colors[i]}"></i>`).join('');
- const topEl=els.slice().sort((a,b)=>(pct[b]||0)-(pct[a]||0))[0];
- return `<div class="infoCard card"><h3>원국이 뭔가요?</h3>
-  <p class="flowText">원국은 <b>태어난 순간을 네 칸으로 나눈 표</b>입니다. 한자만 보지 말고, “나는 어떤 기질을 타고났나”를 보는 신분증이라고 생각하면 됩니다.<br><br>
-  왼쪽부터 <b>해 → 환경 → 나 → 표현</b> 순서입니다. 가운데 두 글자가 일주이고, 그게 나 자신입니다.</p></div>
- <div class="wongukCard card"><h3>내 사주 네 칸</h3><div class="wongukGrid">${cells}</div>
-  <p class="help" style="margin-top:10px">위 한자는 천간(겉모습), 아래 한자는 지지(속마음)입니다. 작은 글씨는 그 칸이 하는 역할입니다.</p></div>
- <div class="wongukCard card"><h3>지금 강한 기운</h3><div class="elements">${elBox}</div><div class="elBarMix">${bar}</div>
-  <p class="flowText" style="margin-top:10px">가장 많은 건 <b>${topEl}(${meaning[topEl]})</b> 기운입니다. 잘 쓰는 힘이고, 지나치면 피로가 됩니다.</p></div>
- ${ohaengGuideHTML(c)}<div class="slogan card"><b>표는 점수가 아니라 설명서입니다.</b><br>아래 만세력에서 같은 네 칸을 더 자세히 볼 수 있어요.</div>`;
-}
-function mockPersonalityHTML(c){
- let secs=[];
- try{secs=GuiinExpert.personalitySections(c)||[];}catch(e){}
- const q=secs[0]?.title||'따뜻한 마음과 강한 의지를 가진 당신은, 어떤 상황에서도 다시 일어서는 힘이 있습니다.';
- const body=secs[0]?.body||secs[1]?.body||'강한 책임감과 추진력을 지니고 있으며, 주변 사람들에게 안정감과 신뢰를 주는 편입니다.';
- const goods=(secs[1]?.body||'리더십과 결단력 / 따뜻한 배려심 / 현실적인 판단력').split(/[./·\n]/).map(s=>s.trim()).filter(s=>s.length>3).slice(0,4);
- const cares=(secs[2]?.body||'너무 많은 책임을 혼자 지지 않기 / 감정 소모를 줄이고 휴식 시간 갖기').split(/[./·\n]/).map(s=>s.trim()).filter(s=>s.length>3).slice(0,3);
- return `<div class="mockQuote card"><p>“${esc(q)}”</p></div>
- <div class="listCard card"><h3>기본 성향</h3><p class="flowText">${esc(body)}</p></div>
- <div class="listCard card"><h3>장점</h3>${(goods.length?goods:['꾸준함','배려','결단력']).map(g=>`<div class="bullet"><i></i><span>${esc(g)}</span></div>`).join('')}</div>
- <div class="listCard card"><h3>보완하면 좋은 점</h3>${(cares.length?cares:['휴식을 챙기기']).map(g=>`<div class="bullet"><i></i><span>${esc(g)}</span></div>`).join('')}</div>
- <div class="slogan card"><b>당신의 노력은 반드시 좋은 결실로 이어질 것입니다.</b></div>
- <button class="ctaGold" onclick="setTab('summary')">사주 요약으로 ›</button>`;
-}
-function mockFieldsHTML(c){
- let secs=[];
- try{secs=GuiinExpert.fieldSections(c)||[];}catch(e){}
- const fallback=[['직업운','새로운 도전이 좋은 결과로 이어질 수 있는 시기입니다.'],['재물운','작은 수익이 쌓여 큰 결실이 되는 흐름입니다.'],['연애운','진심이 통하는 인연을 만날 가능성이 높습니다.'],['건강운','충분한 휴식과 규칙적인 생활이 필요합니다.'],['학업/자격운','꾸준한 노력이 실력으로 인정받는 시기입니다.']];
- const rows=fallback.map((f,i)=>{
-  const s=secs[i];
-  return [s?.title||f[0], s?.body||f[1]];
- });
- const icons=[ICONS.brief,ICONS.money,ICONS.heart,ICONS.plus,ICONS.book];
- return `<div class="categoryList card">${rows.map((r,i)=>`<div class="categoryRow"><div class="catIcon">${icons[i]||ICONS.leaf}</div><div><b>${esc(r[0])}</b><span>${esc(String(r[1]).slice(0,52))}</span></div></div>`).join('')}</div>
- <div class="slogan card"><b>당신의 오늘이, 더 좋은 내일을 만듭니다.</b></div>`;
-}
-function mockFlowHTML(c){
- let f={sections:[],rows:[]};
- try{f=GuiinExpert.flowSections(c,new Date().getFullYear())||f;}catch(e){}
- const rows=f.rows||[];
- const cur=rows.find(r=>r.current)||rows[2]||{};
- const dots=['20대','30대','40대','50대','60대'].map((lab,i)=>{
-  const on=(cur.fromAge&&String(cur.fromAge).startsWith(String(20+i*10))) || i===1;
-  return `<span class="${on?'on':''}"></span>`;
- }).join('');
- const body=cur.body||'새로운 기회를 맞이하고, 자신이 원하는 방향으로 나아갈 수 있는 중요한 시기입니다. 꾸준한 노력이 더 큰 성과로 이어질 것입니다.';
- return `<div class="infoCard card"><h3>대운 흐름 (10년 주기)</h3>
-  <div class="flowTrack">${dots}</div>
-  <div class="flowLabels"><span>20대</span><span>30대</span><span>40대</span><span>50대</span><span>60대</span></div>
-  <p class="flowText" style="margin-top:10px"><b>${esc(cur.ko||'현재 대운')} (${esc(String(cur.fromAge||30))}~${esc(String(cur.toAge||40))}세)</b><br>${esc(body)}</p>
-  <div class="chips" style="margin-top:10px"><span class="chip">도전</span><span class="chip">성장</span><span class="chip">기회</span><span class="chip">재물운</span><span class="chip">인간관계</span></div>
- </div>
- <div class="slogan card"><b>지금의 경험이 더 큰 미래를 만듭니다.</b></div>
- ${(f.sections&&f.sections.length)?expertSectionsHTML(f.sections):''}`;
+ const time=c.input.hourUnknown?'모름':`${String(c.input.hour).padStart(2,'0')}:${String(c.input.minute).padStart(2,'0')}`;
+ const title=(typeof GuiinExpert!=='undefined' && GuiinExpert.fullSections)?(GuiinExpert.fullSections(c)[0]?.title||'당신은 특별한 빛을 가진 사람입니다.'):'당신은 특별한 빛을 가진 사람입니다.';
+ return `<div class="lifeHero card"><h3>${esc(c.input.name)}님은<br>${esc(title)}</h3><p>“좋은 인연이, 더 좋은 길을 만듭니다.”</p><div class="summaryArt"><img src="input-cat.jpg" alt=""></div></div>
+ <div class="infoCard card"><h3>기본 정보</h3><div class="infoGrid"><span>이름</span><b>${esc(c.input.name)}</b><span>생년월일</span><b>${c.input.year}년 ${c.input.month}월 ${c.input.day}일 (${c.input.calendar||'양력'})</b><span>태어난 시간</span><b>${time}</b><span>성별</span><b>${c.input.gender==='여'?'여자':'남자'}</b></div></div>
+ <button class="ctaGold" onclick="setTab('chart')">내 사주 전체 분석보기 ›</button>
+ <div class="infoCard card"><h3>한눈에 보는 사주 키워드</h3><div class="keywordGrid"><div class="keyword">${ICONS.leaf}<b>온화한 성격</b></div><div class="keyword">${ICONS.heart}<b>특별한 인연</b></div><div class="keyword">${ICONS.money}<b>안정적인 재물</b></div><div class="keyword">${ICONS.brief}<b>꾸준한 성장</b></div></div></div>
+ <div class="slogan card"><b>“당신의 인생은 좋은 인연으로 더 빛납니다.”</b></div>`;
 }
 function renderYearLuck(){
  const y=new Date().getFullYear();
- $('yearView').innerHTML=`<div class="tabs green"><button class="on">대운</button><button onclick="openResultTab('flow')">세운</button><button>월운</button><button>일운</button></div>
-  ${chart?mockFlowHTML(chart):`<div class="infoCard card"><p class="flowText">사주를 먼저 계산하면 내 대운이 표시됩니다.</p><button class="ctaGold" onclick="go('saju')">사주 입력하기 ›</button></div>`}`;
+ const name=($('homeName')?.textContent||'당신').replace('님 ›','').replace('반가워요! ›','당신');
+ $('yearView').innerHTML=`<div class="yearNav"><button type="button">&lt;</button><b>${y}년</b><button type="button">&gt;</button></div>
+  <div class="yearHero card"><img src="today-dog.jpg" alt=""><div class="inner"><h3>${y}년, 더 좋은 일이 기다리고 있어요.</h3><p>“지금의 노력이, 빛나는 내일이 됩니다.”</p></div></div>
+  <div class="infoCard card" style="margin-top:9px"><h3>${y}년 총운</h3><p class="flowText">변화 속에서 새로운 기회가 찾아오는 해입니다. 꾸준한 노력과 긍정적인 마음이 좋은 결실을 맺습니다.</p></div>
+  <button class="ctaGold" onclick="openResultTab('flow')">${y}년 월별 운세 보기 ›</button>
+  <div class="slogan card"><b>대운은 10년의 주제, 세운은 올해의 결입니다.</b><br>만세력과 함께 보면 더 정확합니다.</div>`;
 }
 
 function renderResult(){
  if(!chart)return;
  document.querySelectorAll('#resultTabs button').forEach(b=>b.classList.toggle('on',b.dataset.tab===currentTab));
- const c=chart;
- const manseTop=(typeof GuiinManse!=='undefined')?GuiinManse.render(c,{title:c.input.name+'님의 만세력',eyebrow:'내 사주'}):'';
+ const c=chart,time=c.input.hourUnknown?'모름':`${String(c.input.hour).padStart(2,'0')}:${String(c.input.minute).padStart(2,'0')}`;
+ const manseTop=(typeof GuiinManse!=='undefined')?GuiinManse.render(c,{title:`${c.input.name}님의 만세력`,eyebrow:'내 사주'}):'';
  if(currentTab==='summary'){
-  $('resultView').innerHTML=prettySummaryHTML(c)+plainOpenHTML(c)+manseTop+expertSummaryHTML(c);
+  $('resultView').innerHTML=prettySummaryHTML(c)+manseTop+expertSummaryHTML(c);
  } else if(currentTab==='personality'){
-  $('resultView').innerHTML=mockPersonalityHTML(c)+expertSectionsHTML(GuiinExpert.personalitySections(c));
+  $('resultView').innerHTML=manseTop+expertSectionsHTML(GuiinExpert.personalitySections(c));
  } else if(currentTab==='fields'){
-  $('resultView').innerHTML=mockFieldsHTML(c)+expertSectionsHTML(GuiinExpert.fieldSections(c));
+  $('resultView').innerHTML=manseTop+expertSectionsHTML(GuiinExpert.fieldSections(c));
  } else if(currentTab==='stars'){
   $('resultView').innerHTML=manseTop+expertStarsHTML(c);
  } else if(currentTab==='flow'){
-  $('resultView').innerHTML=mockFlowHTML(c)+manseTop;
+  $('resultView').innerHTML=manseTop+expertFlowHTML(c);
  } else if(currentTab==='chart'){
-  $('resultView').innerHTML=wongukHTML(c)+manseTop;
+  $('resultView').innerHTML=manseTop+
+   (typeof GuiinPlain!=='undefined'
+    ? GuiinPlain.renderChart(c)
+    : expertSectionsHTML(GuiinExpert.foundationSections(c))+
+      `<div class="deepCard card"><h3>계산 근거와 해석 원칙</h3><p>연주는 입춘, 월주는 절입, 일주는 23시 경계를 기본으로 계산합니다. 오행은 천간과 지장간 가중치를 함께 반영합니다. 격국·용신·조후는 유파 차이가 커 자동 확정하지 않습니다.</p></div>`);
  }
 }
 function setTab(t){currentTab=t;renderResult()}
@@ -1047,23 +992,6 @@ let matchAnalysis=null, matchTab='summary', matchBaseHTML='';
 
 function compatEsc(s){
  return String(s??'').replace(/[&<>"']/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]));
-}
-function expandCompatBody(s){
- const body=String(s.body||'');
- if(body.length>=260) return body;
- return (body+' 좋은 궁합은 싸움이 없는 관계가 아니라, 싸운 다음 날 밥이 나오는 관계입니다. 서로 다른 점은 부족한 점을 메우기도 하고 같은 상처를 두 번 건드리면 싸움이 됩니다. 점수가 높아도 말투와 돈을 안 나누면 생활에서 무너지고, 점수가 낮아도 역할이 분명하면 오래 갑니다. 이번 주 불편한 한 가지만 말로 확인해 보세요.').trim();
-}
-function matchProsCons(a,b,score){
- const ea=(a.dayMaster&&a.dayMaster.el)||'나';
- const eb=(b.dayMaster&&b.dayMaster.el)||'상대';
- const pair=esc(a.input.name)+'님('+ea+')과 '+esc(b.input.name)+'님('+eb+')';
- const good=score>=80
-  ? pair+'는 서로 다른 점이 공격이 되지 않고 역할이 되는 쪽에 가깝습니다. 한 사람이 밀 때 한 사람이 받쳐 주는 그림이 나오기 쉽습니다. 그 역할이 고착되면 “항상 나만”이라는 말이 나옵니다. 주 1회는 반대로 기대는 연습을 하세요. 장점은 위기가 왔을 때 먼저 남는 온기입니다.'
-  : pair+'는 끌림과 차이가 같이 있습니다. 처음엔 신선하고, 시간이 지나면 생활 습관이 드러납니다. 장점은 달라도 쉽게 포기하지 않는 힘입니다. 서로의 속도를 인정하면 단점이 개성이 되고, 고치려 하면 전쟁이 됩니다.';
- const bad=score>=80
-  ? '조율이 필요한 지점은 말의 온도입니다. 좋은 관계일수록 “당연히 알겠지”가 쌓입니다. 돈·일정·가족 이야기는 기분이 좋을 때 미리 나눠야 합니다. 미루면 작은 오해가 큰 점수가 됩니다. 서로 바쁠수록 짧은 확인 문장이 궁합을 지킵니다.'
-  : '조율이 필요한 지점은 자존심과 속도입니다. 한 사람은 지금 말하고 싶고, 한 사람은 하루가 필요합니다. 그 간격을 성격 탓으로 두면 반복됩니다. “오늘은 듣기만, 내일 답하기”처럼 규칙 하나를 정하면 관계가 가벼워집니다.';
- return '<div class="proBox card"><h3>이런 점이 좋아요</h3><p class="flowText">'+good+'</p></div><div class="listCard card"><h3>이런 점은 조율이 필요해요</h3><p class="flowText">'+bad+'</p></div>';
 }
 function renderCompatCards(){
  if(!matchAnalysis)return;
@@ -1095,7 +1023,8 @@ function submitMatch(){
   const future=Math.max(55,Math.min(98,Math.round((score+personality)/2)));
   const band=score>=86?'서로의 장점을 살릴 여지가 큰 관계입니다.':score>=76?'맞는 부분과 조율할 부분이 함께 있는 관계입니다.':score>=66?'끌림과 차이가 함께 있어 생활 조율이 중요한 관계입니다.':'점수보다 대화와 경계 설정이 특히 중요한 관계입니다.';
   matchBaseHTML=`<div class="matchHero card"><h3>두 사람의 인연은 특별합니다.</h3><p>“좋은 인연이, 더 행복한 내일을 만듭니다.”</p><div class="matchArt"><img loading="lazy" decoding="async" src="compat-animals.jpg" alt=""></div><div style="font-size:9px;margin-top:7px">귀인사주 참고 궁합 지수</div><div class="score">♥ ${score}<small>점</small></div><p>${band}</p></div>
-   <div class="infoCard card"><div class="pair"><div class="person"><b>나<br>${esc(a.input.name)}</b><br>${a.input.year}.${a.input.month}.${a.input.day}<br>${a.input.gender==='여'?'여성':'남성'}</div><div class="heartSvg">${ICONS.heart}</div><div class="person b"><b>상대방<br>${esc(b.input.name)}</b><br>${b.input.year}.${b.input.month}.${b.input.day}<br>${b.input.gender==='여'?'여성':'남성'}</div></div></div>`+matchProsCons(a,b,score)+`<div class="infoCard card"><h3>세부 궁합 지수</h3>${[['연애궁합',love,'pink'],['성격궁합',personality,'mint'],['재물궁합',money,'gold'],['미래궁합',future,'purple']].map(x=>`<div class="scoreRow"><span>${x[0]}</span><div class="scoreBar"><i class="${x[2]}" style="width:${x[1]}%"></i></div><b>${x[1]}</b></div>`).join('')}</div>`+
+   <div class="infoCard card"><div class="pair"><div class="person"><b>나<br>${esc(a.input.name)}</b><br>${a.input.year}.${a.input.month}.${a.input.day}<br>${a.input.gender==='여'?'여성':'남성'}</div><div class="heartSvg">${ICONS.heart}</div><div class="person b"><b>상대방<br>${esc(b.input.name)}</b><br>${b.input.year}.${b.input.month}.${b.input.day}<br>${b.input.gender==='여'?'여성':'남성'}</div></div></div>
+   <div class="infoCard card"><h3>세부 궁합 지수</h3>${[['연애궁합',love,'pink'],['성격궁합',personality,'mint'],['재물궁합',money,'gold'],['미래궁합',future,'purple']].map(x=>`<div class="scoreRow"><span>${x[0]}</span><div class="scoreBar"><i class="${x[2]}" style="width:${x[1]}%"></i></div><b>${x[1]}</b></div>`).join('')}</div>`+
    ((typeof GuiinManse!=='undefined')?GuiinManse.renderPair(a,b):'');
   if(typeof GuiinCompat==='undefined') throw new Error('compatibility-interpreter.js가 로드되지 않았습니다.');
   matchAnalysis=GuiinCompat.build(a,b,score);
@@ -1108,30 +1037,15 @@ function submitMatch(){
  }
 }
 function renderToday(){
- const box=$('todayView'); if(!box)return;
  const d=new Date();
  const days=['일','월','화','수','목','금','토'];
- const seed=(d.getFullYear()*10000+ (d.getMonth()+1)*100+d.getDate()+(chart?chart.input.day:0))%5;
- const packs=[
-  {h:'오늘도 좋은 일이 찾아와요!',s:'작은 행복이 모여, 큰 행운이 됩니다.',
-   rows:[['총운','좋은 기운이 흐르는 날이에요.'],['애정운','설레는 인연이 다가올 수 있어요.'],['재물운','작은 수익이 생길 수 있어요.'],['직장운','노력의 결실이 보이는 날이에요.'],['건강운','충분한 휴식이 필요해요.']]},
-  {h:'차분히 정리하면 길이 보여요.',s:'서두르지 않는 선택이 오늘을 지켜 줍니다.',
-   rows:[['총운','한 가지에만 집중하면 흐름이 좋아집니다.'],['애정운','짧은 대화가 오해를 줄입니다.'],['재물운','큰 지출은 하루만 미뤄 보세요.'],['직장운','마무리 일이 평가로 이어집니다.'],['건강운','잠이 곧 회복입니다.']]},
-  {h:'사람이 행운을 데려옵니다.',s:'먼저 안부를 묻는 쪽이 이깁니다.',
-   rows:[['총운','협업과 소개가 열리는 날입니다.'],['애정운','솔직한 한 마디가 거리를 좁힙니다.'],['재물운','공유·거래에서 실마리가 보입니다.'],['직장운','도움 요청이 일을 빠르게 합니다.'],['건강운','오래 앉아 있지 마세요.']]},
-  {h:'내 속도를 지키는 하루예요.',s:'비교보다 루틴이 힘이 됩니다.',
-   rows:[['총운','약속은 줄이고 실행은 분명히.'],['애정운','감정 기복이 있어도 말은 고르게.'],['재물운','고정비부터 점검해 보세요.'],['직장운','새로운 일보다 완성도가 점수입니다.'],['건강운','물과 스트레칭이 필요합니다.']]},
-  {h:'작은 시도가 내일의 문이 됩니다.',s:'완벽보다 시작이 오늘 운입니다.',
-   rows:[['총운','미뤄 둔 한 가지를 손대 보세요.'],['애정운','관심은 표현해야 도착합니다.'],['재물운','작은 수입 창구를 열어 두세요.'],['직장운','아이디어를 메모하면 길이 됩니다.'],['건강운','과로 전에 끊는 연습.']]}
- ][seed];
- const name=chart?(chart.input.name+'님, '):'';
- const icons=[ICONS.leaf||'',ICONS.heart||'',ICONS.money||'',ICONS.brief||'',ICONS.water||''];
- box.innerHTML=`<div class="todayDate">${d.getFullYear()}년 ${d.getMonth()+1}월 ${d.getDate()}일 (${days[d.getDay()]})</div>
-  <div class="todayHero card"><div class="todayArt"><img src="today-dog.jpg" alt="오늘의 운세" onerror="this.style.display='none'"></div>
-  <h3>${name}${packs.h}</h3><p>“${packs.s}”</p></div>
-  <div class="fortuneList card">${packs.rows.map((x,i)=>`<div class="fortuneRow"><div class="fIcon">${icons[i]}</div><div><b>${x[0]}</b><span>${x[1]}</span></div></div>`).join('')}</div>
-  <div class="slogan card"><b>오늘의 조언</b><br>${chart?'원국을 넣은 기준으로 오늘의 결을 읽었습니다.':'사주를 넣으면 이름과 일간을 반영해 더 맞춰 드려요.'}</div>
-  <button class="ctaGold" onclick="openResultTab('summary')">상세 운세 보기 ›</button>`;
+ $('todayView').innerHTML=`<div class="todayHero card"><div class="todayArt"><img loading="lazy" decoding="async" src="today-dog.jpg" alt=""></div><h3>오늘도 좋은 일이 찾아와요!</h3><p>“작은 행복이 모여, 큰 행운이 됩니다.”</p></div>
+  <div class="todayDate">${d.getFullYear()}년 ${d.getMonth()+1}월 ${d.getDate()}일 (${days[d.getDay()]})</div>
+  <p class="help" style="text-align:center;margin:0 8px 8px">오늘은 새로운 인연과 기회가 다가오는 날이에요. 평소보다 긍정적인 마음이 좋은 흐름을 만듭니다.</p>
+  <div class="fortuneList card" style="margin-top:9px">${[
+   ['총운','좋은 기운이 흐르는 날이에요.'],['애정운','설레는 인연이 다가올 수 있어요.'],['재물운','작은 수익이 생길 수 있어요.'],['직장운','노력의 결실이 보이는 날이에요.'],['건강운','충분한 휴식이 필요해요.']
+  ].map((x,i)=>`<div class="fortuneRow"><div class="fIcon">${[ICONS.money,ICONS.heart,ICONS.money,ICONS.brief,ICONS.plus][i]}</div><div><b>${x[0]}</b><span>${x[1]}</span></div></div>`).join('')}</div>
+  <div class="slogan card"><b>오늘의 조언</b><br>좋은 사람들과의 소중한 시간을 더 만들어 보세요.</div><button class="ctaGold">상세 운세 보기 ›</button>`;
 }
 restoreProfile();renderToday();
 const COPY_KEY='guiin_copy_v1', COIN_KEY='guiin_coins_v1';
@@ -1166,41 +1080,13 @@ function charge(n){
   persistWallet();
   $('payMsg').textContent=`${n}개 충전 완료. 지금 ${wallet.coins}개 보유. 실제 결제는 아직 연결되지 않았습니다.`;
 }
-function pillarKo(c){
-  try{return [c.pillars.year.ko,c.pillars.month.ko,c.pillars.day.ko,c.pillars.hour&&c.pillars.hour.ko].filter(Boolean).join(' · ');}catch(e){return '';}
-}
-function dayLabel(c){
-  try{return (c.dayMaster&& (c.dayMaster.stem+c.dayMaster.el)) || (c.pillars.day.ko||'일간');}catch(e){return '일간';}
-}
-function monthGod(c){try{return c.pillars.month.god||'월주';}catch(e){return '월주';}}
 function replyFor(q){
   const c=chart;
-  if(!c){
-    if(/재물|돈|수입/.test(q)) return '사주를 아직 넣지 않아 일반 흐름으로 답합니다. 재물은 한 번에 크게 들어오기보다, 새는 구멍을 먼저 막는 달이 좋습니다. 홈에서 생년월일을 넣고 다시 물어보시면 원국 기준으로 더 짚어 드릴게요.';
-    if(/이직|직업|직장|일/.test(q)) return '명식이 없으면 이직은 “연봉”보다 “회복 가능한 업무량”으로 보는 편이 안전합니다. 사주를 계산한 뒤 같은 질문을 주시면, 월주와 대운을 맞춰 시기를 narrow하게 볼게요.';
-    if(/연애|결혼|인연/.test(q)) return '사주 없이 연애를 보면 설렘과 생활이 섞입니다. 먼저 생년월일을 넣고, “시작/지속/결혼” 중 하나로 다시 물어보세요.';
-    return '지금은 명식이 없어 일반적인 조언만 가능합니다. 홈 → 사주 입력 후 다시 질문하면, 네 칸 원국을 보고 답합니다.';
-  }
-  const name=c.input.name||'당신';
-  const won=pillarKo(c);
-  const me=dayLabel(c);
-  const mg=monthGod(c);
-  const y=new Date().getFullYear();
-  if(/재물|돈|수입|투자|빚/.test(q))
-    return `${name}님 원국은 ${won}입니다. 일의 중심은 일간 ${me}, 사회 리듬은 월주 ${mg}입니다. 재물은 “한 방에 들어오는 점수”가 아니라, 들어오는 길과 새는 길을 같이 보는 주제입니다. ${y}년에는 큰 투자보다 고정비를 줄이고 작은 수입을 쌓는 쪽이 맞습니다. 충동이 오면 하루만 미뤄 보세요.`;
-  if(/이직|직업|직장|취업|사업/.test(q))
-    return `${name}님은 일간 ${me}에 월주 ${mg}가 일을 읽는 열쇠입니다. 이직은 연봉 한 줄보다, 권한·사람·회복 시간이 맞는지가 핵심입니다. 지금 자리가 숨이 막히면 옮길 신호고, 단지 비교가 불안하면 조금 더  dig는 편이 낫습니다. 원국 ${won} 기준으로는 “역할이 분명한 곳”이 오래 갑니다.`;
-  if(/연애|결혼|인연|이별/.test(q))
-    return `${name}님 인연은 일주(나)와 상대의 일주를 같이 봐야 정확합니다. 지금은 설렘보다 “같이 밥 먹고 난 뒤의 말투”를 보세요. 합은 당겨지는 힘, 충은 조율이 필요한 힘입니다. 올해는 새 사람을 서두르기보다, 이미 있는 관계를 말로 정리하는 달이 도움이 됩니다.`;
-  if(/건강|몸|피로|수면/.test(q))
-    return `${name}님은 몰입하면 선을 넘는 기질이 있습니다. 건강운은 큰 병보다 수면과 식사 리듬이 먼저입니다. 주 1회는 일정을 비우고, 카페인·야근이 겹치면 컨디션이 먼저 무너집니다. 원국 ${won}은 오래 가는 체력형이라, 쉬는 것도 일의 일부로 넣으세요.`;
-  if(/올해|세운|2026|2027|내년/.test(q))
-    return `${name}님 ${y}년 세운은 원국 ${won} 위에 한 해의 옷을 입히는 해입니다. 새 시작은 좋지만 한 번에 판을 바꾸기보다, 한 가지 목표만 밀어 보세요. 상반기는 정리, 하반기는 사람과 기회가 붙는 흐름입니다.`;
-  if(/성격|나|기질|단점/.test(q))
-    return `${name}님 핵심은 일간 ${me}입니다. 겉으로는 성실하고 속으로 기준이 분명합니다. 장점은 책임감, 보완점은 혼자 다 짊어지려는 점입니다. 사람을 고를 때는 속도보다 신뢰가 맞는 쪽이 편합니다.`;
-  if(/대운|흐름|언제/.test(q))
-    return `${name}님 대운은 10년 단위 주제입니다. “이번 달만”이 아니라 “지금 10년이 무엇을 배우게 하는지”로 보면 덜 조급해집니다. 원국 ${won} 위에 대운이 얹히면 일의 문과 사람의 문이 번갈아 열립니다. 인생 흐름 탭에서 현재 구간을 먼저 봐 주세요.`;
-  return `${name}님 질문으로 받은 말은 “${q.slice(0,24)}”입니다. 원국 ${won}, 일간 ${me}, 월주 ${mg}를 기준으로 보면 한 가지로 좁히는 게 좋습니다. 재물 / 일 / 인연 / 올해 중 하나로 다시 물어보시면, 같은 대화에서 이어서 더 구체적으로 답할게요.`;
+  const base=c?`${c.input.name}님 원국은 ${c.pillars.year.ko}·${c.pillars.month.ko}·${c.pillars.day.ko}${c.pillars.hour?'·'+c.pillars.hour.ko:''}입니다. `:'아직 명식이 없어 일반 해설로 답합니다. 사주를 먼저 계산하면 더 정확합니다. ';
+  if(/재물|돈|수입/.test(q)) return base+(c?`월주 십신은 ${c.pillars.month.god}입니다. 재물은 재성 한 글자가 아니라 수입 방식과 대운을 함께 봅니다.`:'작은 수입이 쌓이는지, 지출이 먼저 커지는지를 생활에서 먼저 보세요.');
+  if(/이직|직업|직장/.test(q)) return base+(c?`일간 ${c.dayMaster.stem}과 월주 ${c.pillars.month.god}을 일로 읽을 때는 권한·리듬이 맞는지가 핵심입니다.`:'옮긴다면 연봉보다 역할과 회복 가능한 업무량을 보세요.');
+  if(/연애|결혼|인연/.test(q)) return base+'설렘과 생활 궁합은 별개입니다. 합·충은 사건이 아니라 조율 신호로 봅니다.';
+  return base+'질문을 한 가지로 좁혀주시면 대운·세운과 교차해서 더 구체적으로 볼게요.';
 }
 function sendQ(preset){
   const input=$('askQ'); const q=(preset||input.value||'').trim(); if(!q)return;
