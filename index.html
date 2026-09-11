@@ -793,6 +793,10 @@ img[src="clover-mark.jpg"]{
 /* UPDATE 26 — FIVE-UPGRADE BUNDLE */
 .u26Signal{margin:9px 0;padding:16px 14px;border-radius:18px;background:#fff}.u26Signal h3{font-size:17px;color:#173f31;margin:3px 0 9px}.u26Signal p{font-size:9.8px;line-height:1.8;color:#616c65}.u26Rows{display:grid;gap:6px}.u26Row{padding:10px 11px;border-radius:12px;background:#f7f4ec}.u26Row b{display:block;font-size:9px;color:#315545}.u26Row span{font-size:8.3px;line-height:1.55;color:#77736e}.u26Timeline{display:grid;gap:7px}.u26Time{padding:11px;border-left:3px solid #c9a34c;border-radius:0 12px 12px 0;background:#fff9e9}.u26Time b{font-size:9px;color:#72571f}.u26Time p{margin:3px 0 0;font-size:8.7px;line-height:1.6;color:#6d685c}.u26Proof{font-size:8.4px;line-height:1.7;color:#69736d;padding:10px;border-radius:12px;background:#eef6ea}.u26Compare{display:grid;grid-template-columns:1fr 1fr;gap:7px}.u26Compare div{padding:11px;border-radius:13px;background:#faf7f0;font-size:8.5px;line-height:1.6;color:#6c706c}.u26Compare b{display:block;color:#29483a;margin-bottom:3px}@media(max-width:370px){.u26Compare{grid-template-columns:1fr}}
 
+
+/* UPDATE 27 — PERSONALIZATION + PAST CHECK + PERSONAL GLOSSARY + STAR PRIORITY + PUNCH */
+.u27Card{margin:9px 0;padding:16px 14px;border-radius:18px;background:#fff}.u27Card small{font-size:8px;font-weight:900;color:#b48627}.u27Card h3{font-size:17px;line-height:1.5;color:#173f31;margin:4px 0 9px}.u27Card p{font-size:9.7px;line-height:1.8;color:#626c65;word-break:keep-all}.u27Punch{padding:14px;border-radius:14px;background:#173f31;color:#fff;font-size:12px;font-weight:900;line-height:1.65}.u27Why{margin-top:7px;padding:10px;border-radius:12px;background:#eef6ea;font-size:8.5px;line-height:1.65;color:#52675c}.u27Era{padding:11px;border-radius:13px;background:#faf7ef;margin:6px 0}.u27Era b{font-size:9px;color:#315545}.u27Era span{display:block;font-size:8.4px;line-height:1.6;color:#74736d;margin-top:3px}.u27Term{padding:11px;border-radius:13px;background:#fff8e7;margin:6px 0}.u27Term b{font-size:9px;color:#7b5d1c}.u27Term span{display:block;font-size:8.3px;line-height:1.62;color:#6d685d;margin-top:3px}.u27Stars{display:flex;flex-wrap:wrap;gap:5px}.u27Star{padding:7px 9px;border-radius:999px;background:#f4eff9;color:#654b7c;font-size:8px;font-weight:900}.u27Star.major{background:#f6e8b8;color:#6d5318}
+
 </style>
 </head>
 <body>
@@ -1940,7 +1944,41 @@ function U26closing(c){
  const se=U21season(c),lk=U17cross(c).d.lk;
  return `<section class="u26Signal card"><small>05 · 프리미엄 리포트 결론</small><h3>${esc(c.input?.name||'나')}님의 사주는 한 문장보다 “반복되는 방식”을 보는 것이 더 정확합니다.</h3><p>${esc(c.dayMaster?.stem||'일간')}의 기질은 ${esc(se.name)}이라는 계절 환경에서 작동하고, 지금은 ${esc(lk?.god||'현재 대운')}의 역할이 장기 배경으로 겹칩니다. 따라서 좋은 운을 기다리는 것보다 어떤 조건에서 내 장점이 결과가 되고, 어떤 조건에서 같은 장점이 과사용되는지를 구분하는 것이 중요합니다.</p><div class="u26Proof"><b>귀인사주 해석 원칙 →</b> 계산된 원국을 먼저 고정하고, 전문용어를 쉬운말로 번역하며, 신살 하나나 하루 운세로 큰 사건을 확정하지 않습니다.</div></section>`;
 }
-function U26bundle(c){return U26signals(c)+U26timeline(c)+U26domains(c)+U26decision(c)+U26closing(c)}
+function U26bundle(c){return U26signals(c)+U26timeline(c)+U26domains(c)+U26decision(c)+U26closing(c)+U27bundle(c)}
+
+
+/* UPDATE 27 — FIVE PREMIUM QUALITY UPGRADES */
+function U27godPlain(g){return ({비견:'내 방식·주도권·동료',겁재:'경쟁·분배·주도권',식신:'능력을 결과물로 만드는 힘',상관:'표현·개선·틀을 깨는 힘',정재:'꾸준한 수입·관리·현실성',편재:'기회·거래·확장·유동성',정관:'책임·규칙·신뢰',편관:'압박·도전·결단·책임',정인:'배움·보호·정리·회복',편인:'직관·탐구·독특한 관점'})[g]||'현재 삶에서 반복되는 역할'}
+function U27personalPunch(c){
+ const se=U21season(c),s=U21strength(c),pairs=U21tenGodPairs(c),x=U17cross(c),dm=c.dayMaster||{};
+ let punch=`${dm.stem||''}${dm.el||''}의 기질이 ${se.name}의 환경에서 작동하는 사람입니다.`;
+ if(pairs[0]) punch+=` 특히 ${pairs[0][0]} 연결이 보여, ${pairs[0][1].replace('참고합니다.','삶의 반복 패턴으로 나타나는지 볼 가치가 큽니다.')}`;
+ else punch+=` 한 가지 십신 이름보다 ${s.label}과 계절 조건을 같이 볼 때 이 사람의 차이가 더 선명합니다.`;
+ return `<section class="u27Card card"><small>개인화 핵심문장</small><h3>누구에게나 붙는 말보다 이 명식에서 확인된 조합부터 말합니다.</h3><div class="u27Punch">${esc(punch)}</div><div class="u27Why">근거 → 일간 ${esc(dm.stem||'-')} · 월령 ${esc(c.pillars?.month?.branch||'-')} · ${esc(s.label)} · 현재 대운 ${esc(x.d.lk?.god||'-')}</div></section>`;
+}
+function U27past(c){
+ const luck=(c.luck||[]).slice(0,10), now=GuiinManse?.ageNow?GuiinManse.ageNow(c.input):null;
+ const past=luck.filter(v=>now!=null && v.fromAge<=now).slice(-4);
+ return `<section class="u27Card card"><small>과거 흐름 대조</small><h3>지나간 시기를 먼저 맞춰보세요.</h3><p>미래를 믿으라고 하기 전에, 이미 지나간 대운에서 실제로 어떤 주제가 반복됐는지 사용자가 직접 비교할 수 있게 합니다.</p>${past.map(v=>`<div class="u27Era"><b>${Math.round(v.fromAge)}~${Math.round(v.toAge)}세 · ${esc(v.ko)} ${esc(v.god||'')}</b><span>${esc(U27godPlain(v.god))}가 그 시기의 배경 주제로 반복됐는지, 실제 전환점·관계·일의 변화와 비교해 보세요.</span></div>`).join('')||'<div class="u27Era"><span>과거 대운 데이터가 충분하지 않습니다.</span></div>'}<div class="u27Why">과거가 맞지 않는다면 미래 문장의 강도도 낮춰 읽는 것이 귀인사주의 원칙입니다.</div></section>`;
+}
+function U27gloss(c){
+ const gods=[];['year','month','day','hour'].forEach(k=>{const p=c.pillars?.[k];if(p?.god)gods.push(p.god);(p?.hidden||[]).forEach(h=>h.god&&gods.push(h.god))});
+ const uniq=[...new Set(gods)].slice(0,8), lk=U17cross(c).d.lk;
+ return `<section class="u27Card card"><small>내 사주 전용 용어풀이</small><h3>사전 뜻에서 끝내지 않고 내 명식에서 왜 보는지 설명합니다.</h3>${uniq.map(g=>`<div class="u27Term"><b>${esc(g)}</b><span>쉽게 말하면 ${esc(U27godPlain(g))}. ${g===lk?.god?'현재 대운에서도 같은 역할이 들어와 있어 지금 시기의 해석에서 우선순위를 높여 봅니다.':'원국 안에 확인되므로 해당 궁위와 다른 십신의 연결을 함께 봅니다.'}</span></div>`).join('')}</section>`;
+}
+function U27starPriority(c){
+ const hits=c.stars?.hits||[], count={};hits.forEach(h=>count[h.name]=(count[h.name]||0)+1);
+ const names=Object.keys(count).sort((a,b)=>count[b]-count[a]||a.localeCompare(b,'ko'));
+ const major=names.filter(n=>count[n]>1).slice(0,8), rest=names.filter(n=>!major.includes(n)).slice(0,12);
+ return `<section class="u27Card card"><small>신살·귀인 우선순위</small><h3>${names.length}개를 똑같은 무게로 읽지 않습니다.</h3><p>여러 기준에서 겹치거나 원국 핵심과 같은 방향으로 읽히는 별을 먼저 확인하고, 나머지는 보조 상징으로 둡니다.</p><div class="u27Stars">${major.map(n=>`<span class="u27Star major">${esc(n)} ×${count[n]}</span>`).join('')}${rest.map(n=>`<span class="u27Star">${esc(n)}</span>`).join('')}</div><div class="u27Why">신살은 현재 계산식이 정리된 38/50종 안에서만 표시하며, 좋은 별·나쁜 별 하나로 사건을 확정하지 않습니다.</div></section>`;
+}
+function U27qualityGate(c){
+ const pairs=U21tenGodPairs(c),rels=U21relations(c),roots=U21strength(c).roots;
+ const layers=(pairs.length?1:0)+(rels.length?1:0)+(roots.length?1:0)+1;
+ const tone=layers>=3?'근거가 여러 층 겹치는 문장은 비교적 강하게 표현할 수 있습니다.':'근거층이 적은 부분은 가능성·경향 수준으로 낮춰 표현합니다.';
+ return `<section class="u27Card card"><small>해석 강도 조절</small><h3>센 문장은 근거가 겹칠 때만 씁니다.</h3><p>${tone} 현재 자동 판독에서 확인된 근거층은 월령을 포함해 약 <b>${layers}개 축</b>입니다.</p><div class="u27Why">목표는 무조건 놀라운 말을 만드는 것이 아니라, 실제 명식에서 설명할 수 있는 문장을 더 구체적으로 만드는 것입니다.</div></section>`;
+}
+function U27bundle(c){return U27personalPunch(c)+U27past(c)+U27gloss(c)+U27starPriority(c)+U27qualityGate(c)}
 
 function renderResult(){
  if(!chart)return;
