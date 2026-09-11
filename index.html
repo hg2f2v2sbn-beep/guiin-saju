@@ -513,6 +513,18 @@ body{padding-bottom:calc(92px + var(--safeBottom))}
 .shareSummary{padding:15px;border-radius:16px;background:#f2f8ed;margin:9px 0}.shareSummary h3{font-size:16px;color:#183f31;margin:0 0 7px}.shareSummary p{font-size:10px;line-height:1.7;color:#626c65}
 @media(max-width:370px){.masterGrid{grid-template-columns:1fr}}
 
+
+/* UPDATE 15 GRAND MASTER — completeness / UX / trust / conversion */
+.grandSection{margin:10px 0;padding:18px 16px;border-radius:20px;background:#fff}
+.grandSection small{font-size:9px;font-weight:900;color:#b68a2b}.grandSection h3{font-size:18px;line-height:1.5;color:#183f31;margin:5px 0 9px}.grandSection p{font-size:11px;line-height:1.85;color:#626c65;word-break:keep-all}
+.lifeTopicGrid{display:grid;grid-template-columns:1fr 1fr;gap:7px}.lifeTopic{padding:12px;border-radius:14px;background:#faf7ef}.lifeTopic b{font-size:10px;color:#254638}.lifeTopic span{display:block;font-size:8px;line-height:1.5;color:#7d7971;margin-top:4px}
+.questionDeck{display:grid;gap:7px}.questionDeck button{border:1px solid #e8dfd0;background:#fff;border-radius:14px;padding:12px;text-align:left;font-size:10px;font-weight:900;color:#29483a}.questionDeck button span{display:block;font-size:8px;font-weight:500;color:#8a847b;margin-top:4px}
+.glossaryGrid{display:grid;gap:6px}.glossaryRow{padding:10px 11px;border-radius:12px;background:#faf7f1}.glossaryRow b{font-size:10px;color:#70551d}.glossaryRow span{font-size:9px;line-height:1.6;color:#6d746e;margin-left:5px}
+.trustBox{padding:14px;border-radius:15px;background:#f2f8ed;margin:9px 0}.trustBox b{font-size:10px;color:#274739}.trustBox p{font-size:9px;line-height:1.65;color:#707870;margin:5px 0 0}
+.yearCompare{display:grid;gap:7px}.yearCompareItem{padding:12px;border-radius:14px;background:#faf7f0}.yearCompareItem b{font-size:10.5px;color:#28483a}.yearCompareItem strong{display:block;font-size:13px;color:#183f31;margin:4px 0}.yearCompareItem span{font-size:8.5px;line-height:1.5;color:#7a7770}
+.resultTabs,.tabs{scroll-behavior:smooth}.card,.deepEasy,.masterCard,.grandSection{content-visibility:auto;contain-intrinsic-size:1px 300px}
+button,input,select{touch-action:manipulation}.screen img{max-width:100%;height:auto}
+
 </style>
 </head>
 <body>
@@ -1185,25 +1197,66 @@ function M14profiles(){
  return `<section class="masterCard card"><small>저장 프로필</small><h3>이 기기에 저장된 사람</h3><div class="profileCards">${arr.map(x=>`<div class="profileCard"><b>${esc(x.name||'이름 없음')}</b><span>${esc(x.birth||'')}</span></div>`).join('')}</div></section>`;
 }
 
+
+/* UPDATE 15 GRAND MASTER */
+function G15safe(v){return esc(v==null?'-':v)}
+function G15yearCompare(c){
+ const y=new Date().getFullYear(), years=[y-1,y,y+1,y+2,y+3];
+ return `<section class="grandSection card"><small>5개년 흐름 비교</small><h3>올해 하나만 보지 말고 앞뒤 흐름을 같이 보세요.</h3><p>같은 사건도 어느 해에는 시작, 어느 해에는 정리, 어느 해에는 책임으로 체감될 수 있습니다.</p><div class="yearCompare">${years.map(n=>{let f=M14flow(c,n,6,15),g=f?.gods?.year||'-';return `<div class="yearCompareItem"><b>${n}년 · ${G15safe(f?.pillars?.year?.ko)}</b><strong>${G15safe(g)} · ${G15safe(M14meaning(g))}</strong><span>${n===y?'현재 해입니다. 대운의 큰 배경과 함께 읽으세요.':'이 해의 역할을 현재 대운과 연결해 비교하세요.'}</span></div>`}).join('')}</div></section>`
+}
+function G15lifeTopics(c){
+ const d=U13P(c);
+ const topics=[
+ ['나의 본성',`${c.dayMaster.stem}${c.dayMaster.el} 일간 · ${easyElement(c.dayMaster.el)}`],
+ ['감정 패턴',`${d.hi[0]} 기운을 과하게 쓸 때 피로가 커지는지 확인`],
+ ['일하는 방식',`${d.g} · ${M14meaning(d.g)}`],
+ ['돈 관리','버는 힘과 남기는 구조를 분리해서 보기'],
+ ['연애 패턴','끌림보다 가까워진 뒤의 말·행동·책임 보기'],
+ ['결혼 생활','돈·시간·가족 경계·집안일 합의 보기'],
+ ['가족 관계','익숙해서 떠안는 역할과 내 책임 구분하기'],
+ ['인간관계','사람 수보다 실제로 주고받는 관계의 질 보기'],
+ ['귀인·도움','도움이 들어오는 통로와 내가 도움을 받는 방식 보기'],
+ ['변화·이동','대운·세운에서 이동과 역할 변화가 겹치는지 보기'],
+ ['후반 흐름','시주와 이후 대운을 함께 보되 미래를 확정하지 않기'],
+ ['지금의 과제',`${d.lk?.god||'-'} · ${M14meaning(d.lk?.god||'-')}`]
+ ];
+ return `<section class="grandSection card"><small>평생사주 · 12가지 핵심 주제</small><h3>성격 몇 줄이 아니라 삶의 영역을 따로 읽습니다.</h3><div class="lifeTopicGrid">${topics.map(x=>`<div class="lifeTopic"><b>${x[0]}</b><span>${G15safe(x[1])}</span></div>`).join('')}</div></section>`
+}
+function G15glossary(){
+ const x=[['일간','사주에서 ‘나’를 보는 기준 글자'],['월령','태어난 달의 계절 힘. 같은 일간도 계절에 따라 쓰임이 달라짐'],['오행','목·화·토·금·수 다섯 성질'],['십신','다른 글자가 나와 어떤 역할 관계인지 붙인 10가지 이름'],['지장간','지지 안에 숨어 있다고 보는 천간의 기운'],['통근','내 기운이 지지 안에도 뿌리를 두는지 보는 보조 기준'],['12운성','기운이 시작·확장·정리되는 단계를 표현한 전통 언어'],['합','두 글자가 서로 묶이고 영향을 주는 관계'],['충','변화·이동·조정이 커질 수 있는 관계. 무조건 사고나 이별이 아님'],['형·파·해','마찰·조정·엇갈림을 세분한 관계 신호'],['신살','원국의 특정 조합에 붙이는 보조 상징. 별 하나로 운명을 판단하지 않음'],['대운','약 10년 단위의 큰 환경과 역할 배경'],['세운','한 해의 강조점'],['월운','한 달의 작은 흐름'],['공망','없어진다는 뜻이 아니라 체감과 자리 잡는 방식의 차이를 참고하는 개념'],['납음','간지 조합을 별도 오행 이름으로 분류한 전통 체계']];
+ return `<section class="grandSection card"><small>명리 용어사전</small><h3>전문가 말보다 먼저 사람말로 이해하세요.</h3><div class="glossaryGrid">${x.map(a=>`<div class="glossaryRow"><b>${a[0]}</b><span>${a[1]}</span></div>`).join('')}</div></section>`
+}
+function G15trust(){
+ return `<div class="trustBox"><b>귀인사주의 해석 원칙</b><p>계산 가능한 원국·오행·십신·12운성·대운·세운·공식화된 신살을 먼저 계산하고, 그 결과를 쉬운 한국어로 설명합니다. 신살 하나, 점수 하나, 특정 날짜 하나로 이별·결혼·재물·질병 같은 사건을 확정하지 않습니다. 학파에 따라 크게 달라지는 격국·용신·조후는 적용 기준 없이 자동 확정하지 않습니다.</p></div>`
+}
+function G15questions(){
+ return `<section class="grandSection card"><small>AI 상담 준비 · 추천 질문</small><h3>막연하게 묻기보다 이렇게 물으면 답이 깊어집니다.</h3><div class="questionDeck">
+ <button onclick="go('ask');setTimeout(()=>previewAIQuestion('현재 대운과 앞으로 3년을 같이 보고, 제가 일에서 바꿔야 할 점을 근거와 함께 설명해 주세요.'),100)">직업·이직<span>현재 대운 + 3년 흐름 + 현실 행동</span></button>
+ <button onclick="go('ask');setTimeout(()=>previewAIQuestion('제 사주에서 돈을 버는 방식과 돈이 새기 쉬운 패턴을 따로 설명해 주세요.'),100)">재물<span>수입과 지출 구조를 따로 질문</span></button>
+ <button onclick="go('ask');setTimeout(()=>previewAIQuestion('제가 연애에서 반복하기 쉬운 패턴과 오래 가는 관계의 조건을 설명해 주세요.'),100)">연애<span>상대 예언보다 내 관계 패턴</span></button>
+ <button onclick="go('ask');setTimeout(()=>previewAIQuestion('결혼생활에서 제가 특히 확인해야 할 돈, 생활, 가족 경계 문제를 사주 근거와 함께 설명해 주세요.'),100)">결혼<span>현실 생활 궁합 중심</span></button>
+ </div></section>`
+}
+
 function renderResult(){
  if(!chart)return;
  document.querySelectorAll('#resultTabs button').forEach(b=>b.classList.toggle('on',b.dataset.tab===currentTab));
  const c=chart,time=c.input.hourUnknown?'모름':`${String(c.input.hour).padStart(2,'0')}:${String(c.input.minute).padStart(2,'0')}`;
  const manseTop=(typeof GuiinManse!=='undefined')?GuiinManse.render(c,{title:`${c.input.name}님의 만세력`,eyebrow:'내 사주'}):'';
  if(currentTab==='summary'){
-  $('resultView').innerHTML=shareTop+U13ultra(c)+M14decisions(c)+directSummaryHTML(c)+prettySummaryHTML(c)+manseTop+expertSummaryHTML(c)+`<details class="resultMethod card"><summary>귀인사주는 어떻게 계산하나요?</summary><p>원국 계산 후 일간·월령/계절·오행·십신·지장간·관계·대운·세운을 함께 읽습니다. 신살은 공식화된 38/50종을 보조 정보로 사용합니다. 격국·용신·조후처럼 학파에 따라 판단이 크게 달라지는 항목은 자동 확정해 단정하지 않습니다.</p></details>`;
+  $('resultView').innerHTML=shareTop+U13ultra(c)+G15lifeTopics(c)+M14decisions(c)+G15yearCompare(c)+G15questions()+directSummaryHTML(c)+prettySummaryHTML(c)+manseTop+expertSummaryHTML(c)+`<details class="resultMethod card"><summary>귀인사주는 어떻게 계산하나요?</summary><p>원국 계산 후 일간·월령/계절·오행·십신·지장간·관계·대운·세운을 함께 읽습니다. 신살은 공식화된 38/50종을 보조 정보로 사용합니다. 격국·용신·조후처럼 학파에 따라 판단이 크게 달라지는 항목은 자동 확정해 단정하지 않습니다.</p></details>`;
  } else if(currentTab==='personality'){
   $('resultView').innerHTML=straightIntroHTML(c,'personality','성격·기질')+manseTop+expertSectionsHTML(GuiinExpert.personalitySections(c));
  } else if(currentTab==='fields'){
   $('resultView').innerHTML=straightIntroHTML(c,'career','직업·재물·연애')+U13domains(c)+manseTop+expertSectionsHTML(GuiinExpert.fieldSections(c));
  } else if(currentTab==='stars'){
-  $('resultView').innerHTML=straightIntroHTML(c,'stars','신살·귀인')+manseTop+U13stars(c)+expertStarsHTML(c);
+  $('resultView').innerHTML=straightIntroHTML(c,'stars','신살·귀인')+manseTop+U13stars(c)+G15trust()+expertStarsHTML(c);
  } else if(currentTab==='flow'){
-  $('resultView').innerHTML=straightIntroHTML(c,'flow','대운·세운')+M14calendar(c)+U13timeline(c)+manseTop+((typeof GuiinPlain!=='undefined')?GuiinPlain.renderFlow(c,new Date().getFullYear()):expertFlowHTML(c));
+  $('resultView').innerHTML=straightIntroHTML(c,'flow','대운·세운')+M14calendar(c)+G15yearCompare(c)+U13timeline(c)+manseTop+((typeof GuiinPlain!=='undefined')?GuiinPlain.renderFlow(c,new Date().getFullYear()):expertFlowHTML(c));
  } else if(currentTab==='chart'){
   $('resultView').innerHTML=manseTop+
    (typeof GuiinPlain!=='undefined'
-    ? GuiinPlain.renderChart(c)+`<article class="deepDomain card"><small>전문용어 10초 번역</small><h3>한자를 몰라도 여기까지만 알면 됩니다.</h3><p><b>일간</b> = 나를 보는 기준 글자 · <b>월령</b> = 태어난 계절의 힘 · <b>십신</b> = 나와 다른 글자의 관계 이름 · <b>지장간</b> = 지지 안에 숨어 있다고 보는 기운 · <b>12운성</b> = 기운의 단계 · <b>합충형파해</b> = 글자끼리 묶이고 부딪히고 조정되는 관계 · <b>대운</b> = 약 10년의 큰 배경 · <b>세운</b> = 한 해의 강조점.</p></article>`
+    ? GuiinPlain.renderChart(c)+G15glossary()+G15trust()+`<article class="deepDomain card"><small>전문용어 10초 번역</small><h3>한자를 몰라도 여기까지만 알면 됩니다.</h3><p><b>일간</b> = 나를 보는 기준 글자 · <b>월령</b> = 태어난 계절의 힘 · <b>십신</b> = 나와 다른 글자의 관계 이름 · <b>지장간</b> = 지지 안에 숨어 있다고 보는 기운 · <b>12운성</b> = 기운의 단계 · <b>합충형파해</b> = 글자끼리 묶이고 부딪히고 조정되는 관계 · <b>대운</b> = 약 10년의 큰 배경 · <b>세운</b> = 한 해의 강조점.</p></article>`
     : expertSectionsHTML(GuiinExpert.foundationSections(c))+
       `<div class="deepCard card"><h3>계산 근거와 해석 원칙</h3><p>연주는 입춘, 월주는 절입, 일주는 23시 경계를 기본으로 계산합니다. 오행은 천간과 지장간 가중치를 함께 반영합니다. 격국·용신·조후는 유파 차이가 커 자동 확정하지 않습니다.</p></div>`);
  }
