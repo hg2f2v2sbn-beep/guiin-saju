@@ -797,6 +797,31 @@ img[src="clover-mark.jpg"]{
 /* UPDATE 27 — PERSONALIZATION + PAST CHECK + PERSONAL GLOSSARY + STAR PRIORITY + PUNCH */
 .u27Card{margin:9px 0;padding:16px 14px;border-radius:18px;background:#fff}.u27Card small{font-size:8px;font-weight:900;color:#b48627}.u27Card h3{font-size:17px;line-height:1.5;color:#173f31;margin:4px 0 9px}.u27Card p{font-size:9.7px;line-height:1.8;color:#626c65;word-break:keep-all}.u27Punch{padding:14px;border-radius:14px;background:#173f31;color:#fff;font-size:12px;font-weight:900;line-height:1.65}.u27Why{margin-top:7px;padding:10px;border-radius:12px;background:#eef6ea;font-size:8.5px;line-height:1.65;color:#52675c}.u27Era{padding:11px;border-radius:13px;background:#faf7ef;margin:6px 0}.u27Era b{font-size:9px;color:#315545}.u27Era span{display:block;font-size:8.4px;line-height:1.6;color:#74736d;margin-top:3px}.u27Term{padding:11px;border-radius:13px;background:#fff8e7;margin:6px 0}.u27Term b{font-size:9px;color:#7b5d1c}.u27Term span{display:block;font-size:8.3px;line-height:1.62;color:#6d685d;margin-top:3px}.u27Stars{display:flex;flex-wrap:wrap;gap:5px}.u27Star{padding:7px 9px;border-radius:999px;background:#f4eff9;color:#654b7c;font-size:8px;font-weight:900}.u27Star.major{background:#f6e8b8;color:#6d5318}
 
+
+/* UPDATE 28 — REAL PAYWALL GATE + SAMPLE PREVIEW + CHECKLIST REPAIR */
+.u18Check{display:grid!important;grid-template-columns:28px minmax(0,1fr)!important;align-items:start!important;gap:10px!important;height:auto!important;min-height:0!important}
+.u18Check input[type="checkbox"]{appearance:none!important;-webkit-appearance:none!important;width:24px!important;height:24px!important;min-width:24px!important;max-width:24px!important;min-height:24px!important;max-height:24px!important;margin:1px 0 0!important;padding:0!important;border:2px solid #929498!important;border-radius:7px!important;background:#fff!important;box-shadow:none!important}
+.u18Check input[type="checkbox"]:checked{background:#1591f5!important;border-color:#1591f5!important}
+.u18Check input[type="checkbox"]:checked:after{content:"✓";display:block;color:#fff;font-weight:1000;font-size:17px;line-height:20px;text-align:center}
+.u18Check label{display:block!important;width:auto!important;min-width:0!important;max-width:none!important;writing-mode:horizontal-tb!important;white-space:normal!important;word-break:keep-all!important;overflow-wrap:break-word!important;font-size:9px!important;line-height:1.65!important;color:#4f5d55!important}
+.u28Preview{margin:10px 0;padding:17px 15px;border-radius:20px;background:#fff;border:1px solid #eadfc9}
+.u28Preview small{font-size:8px;font-weight:900;color:#b48627}.u28Preview h3{font-size:17px;line-height:1.5;color:#173f31;margin:5px 0 8px}.u28Preview p{font-size:9px;line-height:1.75;color:#69716c}
+.u28Sample{display:grid;gap:7px;margin:10px 0}.u28Sample>div{padding:12px;border-radius:14px;background:#f7f7f2}.u28Sample b{display:block;font-size:9.5px;color:#29483a}.u28Sample span{display:block;margin-top:3px;font-size:8.4px;line-height:1.6;color:#767771}
+.u28Badge{display:inline-block;padding:5px 8px;border-radius:999px;background:#fff1c9;color:#80611e;font-size:7.8px;font-weight:900}
+.u28LockedTab{padding-bottom:8px}
+.u28LockedTab .u19Lock{margin-top:10px}
+.u28NoActual{padding:10px 11px;border-radius:12px;background:#eef6ea;font-size:8.2px;line-height:1.65;color:#52675c}
+
+
+/* UPDATE 28 FINAL — checklist mobile repair + pre-payment preview gate */
+.u18Check{display:grid!important;grid-template-columns:32px minmax(0,1fr)!important;gap:12px!important;align-items:start!important;height:auto!important;min-height:0!important;padding:13px!important}
+.u18Check input{width:26px!important;height:26px!important;min-width:26px!important;max-width:26px!important;margin:0!important}
+.u18Check label,.u18Check div,.u18Check span,.u18Check p{width:auto!important;max-width:none!important;min-width:0!important;writing-mode:horizontal-tb!important;text-orientation:mixed!important;white-space:normal!important;word-break:keep-all!important;overflow-wrap:break-word!important}
+.u28Preview{margin:10px 0;padding:17px 15px;border-radius:20px;background:#fff;border:1px solid #eadfc9}
+.u28Preview h3{font-size:17px;line-height:1.5;color:#173f31;margin:6px 0 10px}
+.u28Badge{display:inline-block;padding:5px 8px;border-radius:999px;background:#fff1c9;color:#80611e;font-size:8px;font-weight:900}
+.u28Sample{padding:12px;border-radius:14px;background:#f7f7f2;font-size:9px;line-height:1.75;color:#666}
+
 </style>
 </head>
 <body>
@@ -1980,13 +2005,70 @@ function U27qualityGate(c){
 }
 function U27bundle(c){return U27personalPunch(c)+U27past(c)+U27gloss(c)+U27starPriority(c)+U27qualityGate(c)}
 
+
+/* UPDATE 28 — PRE-PAYMENT ACCESS CONTROL
+   Front-end preview only. Real entitlement must later come from server payment verification. */
+function U28hasPremium(){return false}
+function U28sample(kind){
+ const data={
+  personality:['성격·기질 예시','“겉으로는 차분해 보여도, 실제로는 기준이 분명한 사람일 수 있습니다.”','프리미엄에서는 일간 하나가 아니라 월령·통근·십신·지장간을 연결해 왜 그런 성향이 나오는지 설명합니다.'],
+  fields:['직업·재물·연애 예시','“잘하는 일과 오래 버틸 수 있는 일은 다를 수 있습니다.”','프리미엄에서는 직업은 식상·관성·인성, 재물은 재성·비겁·식상, 관계는 일지와 관계 신호처럼 분야별 근거를 나눠 읽습니다.'],
+  stars:['신살·귀인 예시','“별이 많다고 무조건 특별하거나, 흉살이 있다고 나쁜 사주는 아닙니다.”','프리미엄에서는 실제 성립한 신살의 위치·중복·현재 운의 재활성 여부를 구분해 우선순위를 보여줍니다.'],
+  flow:['대운·세운 예시','“좋은 해 하나보다 지금 10년의 배경과 올해가 어떻게 겹치는지가 중요합니다.”','프리미엄에서는 대운 → 세운 → 월운을 연결하고, 지나간 시기를 먼저 대조한 뒤 앞으로의 흐름을 읽습니다.'],
+  chart:['정밀 명식 예시','“전문용어를 나열하는 대신, 내 명식에서 그 글자가 왜 중요한지 번역합니다.”','프리미엄에서는 지장간·통근·십신 교차·합충형파해까지 연결하되 격국·용신·조후는 학파 기준 없이 자동 확정하지 않습니다.']
+ }[kind]||['프리미엄 해석 예시','“결론부터 읽고, 필요할 때 근거를 펼쳐보는 방식입니다.”','실제 결제 확인 후 본인 명식으로 전체 해석이 열립니다.'];
+ return `<section class="u28Preview"><span class="u28Badge">미리보기 예시 · 실제 내 사주 풀이 아님</span><h3>${data[0]}</h3><div class="u28Sample"><div><b>결론 예시</b><span>${data[1]}</span></div><div><b>풀이 방식</b><span>${data[2]}</span></div></div><div class="u28NoActual">결제 전에는 ${esc(chart?.input?.name||'회원')}님의 실제 심층 결과를 이 영역에 출력하지 않습니다.</div></section>`
+}
+function U28lockedTab(c,kind){
+ return `<div class="u28LockedTab">${U28sample(kind)}${U19paywall(c)}</div>`
+}
+function U28freeSummary(c){
+ const dm=c.dayMaster||{}, pct=GuiinExpert?.pct?GuiinExpert.pct(c):{};
+ const top=Object.entries(pct).sort((a,b)=>b[1]-a[1])[0]||['-',0];
+ return `${U16jump()}${U19freeNotice()}
+ <section class="u28Preview"><span class="u28Badge">무료 핵심 요약</span><h3>${esc(c.input?.name||'나')}님의 기본 명식</h3>
+ <div class="u28Sample"><div><b>사주 네 칸</b><span>${esc(c.pillars.year.ko)} · ${esc(c.pillars.month.ko)} · ${esc(c.pillars.day.ko)} · ${esc(c.pillars.hour?.ko||'-')}</span></div>
+ <div><b>일간</b><span>${esc((dm.stem||'')+(dm.el||''))} · ${esc(easyElement(dm.el||''))}</span></div>
+ <div><b>오행 핵심</b><span>현재 계산에서 가장 두드러진 기운은 ${esc(top[0])} ${Math.round(top[1]||0)}%입니다.</span></div></div></section>
+ ${U19paywall(c)}`;
+}
+
+
+/* UPDATE 28 FINAL — real premium content is NOT rendered before server entitlement */
+function U28hasPremium(){ return false; } // replace only with server-verified entitlement later
+function U28preview(c,kind){
+ const m={
+ personality:['성격·기질 미리보기','예시: “겉으로 차분해 보여도 자기 기준이 분명한 사람일 수 있습니다.”'],
+ fields:['직업·재물·연애 미리보기','예시: “잘하는 일과 오래 버틸 수 있는 일은 다를 수 있습니다.”'],
+ stars:['신살·귀인 미리보기','예시: “신살은 개수보다 위치와 중복, 현재 운에서 다시 작동하는지를 봅니다.”'],
+ flow:['대운·세운 미리보기','예시: “올해 하나보다 현재 10년의 배경과 올해가 어떻게 겹치는지를 봅니다.”'],
+ chart:['정밀 명식 미리보기','예시: “전문용어를 나열하지 않고 내 명식에서 왜 중요한지 풀어 설명합니다.”']
+ }[kind]||['프리미엄 미리보기','예시 해석만 제공합니다.'];
+ return `<section class="u28Preview"><span class="u28Badge">예시 화면 · 실제 내 심층 사주 아님</span><h3>${m[0]}</h3><div class="u28Sample">${m[1]}<br><br>결제 전에는 실제 개인 심층 해석·대운 상세·신살 상세를 출력하지 않습니다.</div></section>${U19paywall(c)}`;
+}
+function U28free(c){
+ return `<section class="u28Preview"><span class="u28Badge">무료로 보는 내 사주</span><h3>${esc(c.input?.name||'나')}님의 기본 명식</h3><div class="u28Sample"><b>사주 네 칸</b><br>${esc(c.pillars.year.ko)} · ${esc(c.pillars.month.ko)} · ${esc(c.pillars.day.ko)} · ${esc(c.pillars.hour?.ko||'-')}<br><br>무료에서는 원국·일간·오행 핵심까지만 확인할 수 있습니다. 성격·직업·재물·연애·신살·대운의 심층 풀이는 프리미엄에서 열립니다.</div></section>${U19paywall(c)}`;
+}
+
 function renderResult(){
+ if(chart && !U28hasPremium()){
+   document.querySelectorAll('#resultTabs button').forEach(b=>b.classList.toggle('on',b.dataset.tab===currentTab));
+   $('resultView').innerHTML=(currentTab==='summary')?U28free(chart):U28preview(chart,currentTab);
+   return;
+ }
+
  if(!chart)return;
  document.querySelectorAll('#resultTabs button').forEach(b=>b.classList.toggle('on',b.dataset.tab===currentTab));
- const c=chart,time=c.input.hourUnknown?'모름':`${String(c.input.hour).padStart(2,'0')}:${String(c.input.minute).padStart(2,'0')}`;
+ const c=chart;
+ if(!U28hasPremium()){
+   if(currentTab==='summary') $('resultView').innerHTML=U28freeSummary(c);
+   else $('resultView').innerHTML=U28lockedTab(c,currentTab);
+   setTimeout(()=>{try{U25repairAllImages()}catch(e){}},0);
+   return;
+ }
  const manseTop=(typeof GuiinManse!=='undefined')?GuiinManse.render(c,{title:`${c.input.name}님의 만세력`,eyebrow:'내 사주'}):'';
  if(currentTab==='summary'){
-  $('resultView').innerHTML=U16jump()+`<div id="u16core"></div>`+U17digest(c)+U19freeNotice()+U19premiumWrap(c,U18risk(c))+U19premiumWrap(c,U18action(c))+U19premiumWrap(c,U18compare(c))+U19premiumWrap(c,U23wrapPremium(c))+U18quality(c)+U13ultra(c)+U16personal(c)+G15lifeTopics(c)+M14decisions(c)+G15yearCompare(c)+U18decision(c,'job')+U18decision(c,'money')+U18decision(c,'love')+U17questions(c)+U18return(c)+U16share(c)+directSummaryHTML(c)+prettySummaryHTML(c)+manseTop+expertSummaryHTML(c)+`<details class="resultMethod card"><summary>귀인사주는 어떻게 계산하나요?</summary><p>원국 계산 후 일간·월령/계절·오행·십신·지장간·관계·대운·세운을 함께 읽습니다. 신살은 공식화된 38/50종을 보조 정보로 사용합니다. 격국·용신·조후처럼 학파에 따라 판단이 크게 달라지는 항목은 자동 확정해 단정하지 않습니다.</p></details>`;
+  $('resultView').innerHTML=U16jump()+U17digest(c)+U18risk(c)+U18action(c)+U18compare(c)+U23wrapPremium(c)+U18quality(c)+U13ultra(c)+U16personal(c)+G15lifeTopics(c)+M14decisions(c)+G15yearCompare(c)+U18decision(c,'job')+U18decision(c,'money')+U18decision(c,'love')+U17questions(c)+U18return(c)+U16share(c)+directSummaryHTML(c)+manseTop+expertSummaryHTML(c);
  } else if(currentTab==='personality'){
   $('resultView').innerHTML=straightIntroHTML(c,'personality','성격·기질')+manseTop+expertSectionsHTML(GuiinExpert.personalitySections(c));
  } else if(currentTab==='fields'){
@@ -1994,13 +2076,9 @@ function renderResult(){
  } else if(currentTab==='stars'){
   $('resultView').innerHTML=straightIntroHTML(c,'stars','신살·귀인')+manseTop+U16starCross(c)+U13stars(c)+G15trust()+expertStarsHTML(c);
  } else if(currentTab==='flow'){
-  $('resultView').innerHTML=straightIntroHTML(c,'flow','대운·세운')+`<div id="u16flow"></div>`+U18months(c)+M14calendar(c)+G15yearCompare(c)+U17lifeTimeline(c)+U13timeline(c)+U17starActivation(c)+manseTop+((typeof GuiinPlain!=='undefined')?GuiinPlain.renderFlow(c,new Date().getFullYear()):expertFlowHTML(c));
+  $('resultView').innerHTML=straightIntroHTML(c,'flow','대운·세운')+U18months(c)+M14calendar(c)+G15yearCompare(c)+U17lifeTimeline(c)+U13timeline(c)+U17starActivation(c)+manseTop+((typeof GuiinPlain!=='undefined')?GuiinPlain.renderFlow(c,new Date().getFullYear()):expertFlowHTML(c));
  } else if(currentTab==='chart'){
-  $('resultView').innerHTML=manseTop+
-   (typeof GuiinPlain!=='undefined'
-    ? GuiinPlain.renderChart(c)+U18glossary()+G15glossary()+G15trust()+`<article class="deepDomain card"><small>전문용어 10초 번역</small><h3>한자를 몰라도 여기까지만 알면 됩니다.</h3><p><b>일간</b> = 나를 보는 기준 글자 · <b>월령</b> = 태어난 계절의 힘 · <b>십신</b> = 나와 다른 글자의 관계 이름 · <b>지장간</b> = 지지 안에 숨어 있다고 보는 기운 · <b>12운성</b> = 기운의 단계 · <b>합충형파해</b> = 글자끼리 묶이고 부딪히고 조정되는 관계 · <b>대운</b> = 약 10년의 큰 배경 · <b>세운</b> = 한 해의 강조점.</p></article>`
-    : expertSectionsHTML(GuiinExpert.foundationSections(c))+
-      `<div class="deepCard card"><h3>계산 근거와 해석 원칙</h3><p>연주는 입춘, 월주는 절입, 일주는 23시 경계를 기본으로 계산합니다. 오행은 천간과 지장간 가중치를 함께 반영합니다. 격국·용신·조후는 유파 차이가 커 자동 확정하지 않습니다.</p></div>`);
+  $('resultView').innerHTML=manseTop+((typeof GuiinPlain!=='undefined')?GuiinPlain.renderChart(c)+U18glossary()+G15glossary()+G15trust():expertSectionsHTML(GuiinExpert.foundationSections(c)));
  }
 }
 function setTab(t){currentTab=t;renderResult()}
