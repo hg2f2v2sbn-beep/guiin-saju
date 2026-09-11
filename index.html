@@ -55,11 +55,14 @@ svg{display:block}
 .avatar img{width:100%;height:100%;object-fit:cover}
 .profilebar .txt b{display:block;font-size:12px}.profilebar .txt small{display:block;font-size:9px;color:var(--sub);margin-top:2px}
 .profilebar .picker{margin-left:auto;border:0;background:#f5f0e7;border-radius:999px;padding:8px 10px;font-size:9px;font-weight:800;color:#4a554f}
-.homeHero{padding:14px 14px 13px;text-align:center;background:linear-gradient(145deg,#f8ffe9,#fff7d5);overflow:hidden}
+.homeHero{padding:12px;text-align:center;background:linear-gradient(145deg,#f8ffe9,#fff7d5);overflow:hidden}
+.homeHero .heroArt{position:relative;height:188px;margin:0}
+.homeHero .heroText{position:absolute;left:0;right:0;top:10px;z-index:2;pointer-events:none;text-shadow:0 1px 0 #fff8}
+.homeHero .ctaGreen{position:relative;z-index:3;margin-top:0}
 .homeHero .kicker{font-size:10px;color:#5d775f;font-weight:800}.homeHero h1{font-size:34px;margin:4px 0;color:#075e46;letter-spacing:-.06em}
 .homeHero .copy{font-size:10px;line-height:1.6;color:#647269}
 .heroArt{height:148px;overflow:hidden;border-radius:16px;margin:10px 0 12px}
-.heroArt img{width:100%;height:100%;object-fit:cover;object-position:center 42%;display:block}
+.heroArt img{width:100%;height:100%;object-fit:cover;object-position:center 70%;display:block}
 .ctaGreen,.ctaGold{border:0;border-radius:15px;padding:13px 18px;font-weight:900}
 .ctaGreen{background:linear-gradient(135deg,#13795a,#075a43);color:white;min-width:210px}
 .ctaGold{width:100%;background:linear-gradient(135deg,#ffd45c,#efb42d);color:#2d382f;margin-top:14px}
@@ -156,12 +159,17 @@ img{max-width:100%;height:auto;display:block}
 html{background:#efe7d7}.app{background:linear-gradient(180deg,#fffaf0 0%,#fff6e5 100%)}
 .topbar{background:rgba(255,250,240,.95);border-bottom-color:#eee1c8}.brand .brandline{color:#285d32}.logo-dot{border-radius:50%}
 .profilebar,.card{border-color:#eee1c8;box-shadow:var(--shadow)}
-.homeHero{padding:0;position:relative;background:#fff5dc;border-radius:24px;overflow:hidden;text-align:center}
-
-.homeHero .ctaGreen{position:absolute;left:50%;bottom:18px;transform:translateX(-50%);min-width:220px;background:rgba(39,92,49,.94);box-shadow:0 8px 20px rgba(38,83,43,.22)}
-.tiles{grid-template-columns:repeat(2,1fr);gap:10px;margin-top:12px}.tile{min-height:162px;border-radius:22px;padding:16px 13px 43px;box-shadow:0 8px 22px rgba(101,76,34,.08)}
+.homeHero{padding:0!important;position:relative;background:#fff5dc;border-radius:22px;overflow:hidden;text-align:center}
+.homeHero .heroArt{height:208px!important;margin:0!important;border-radius:0!important;overflow:hidden}
+.homeHero .heroArt img{object-fit:cover;object-position:center 74%!important}
+.homeHero .heroText{position:absolute;left:10px;right:10px;top:12px;z-index:2;pointer-events:none;text-shadow:0 1px 8px #fff8e8}
+.homeHero .ctaGreen{position:absolute;left:50%;bottom:12px;transform:translateX(-50%);z-index:3;min-width:200px;margin:0;padding:11px 16px;background:rgba(39,92,49,.94);box-shadow:0 8px 20px rgba(38,83,43,.22)}
+.profilebar{padding:8px 10px!important;margin:8px 0}
+.tiles{display:grid!important;grid-template-columns:repeat(3,1fr)!important;gap:7px!important;margin-top:8px!important}
+.tile{min-height:118px!important;border-radius:16px!important;padding:10px 7px 34px!important;box-shadow:0 4px 12px rgba(101,76,34,.06)}
+#resultTabs button[data-tab="stars"],#resultTabs button[data-tab="chart"]{display:none}
 .tile:nth-child(1){background:linear-gradient(145deg,#fff8d8,#fff0bd)}.tile:nth-child(2){background:linear-gradient(145deg,#ffecef,#f8dfe8)}.tile:nth-child(3){background:linear-gradient(145deg,#f3eafd,#e9dcf8)}.tile:nth-child(4){background:linear-gradient(145deg,#e9f8ef,#dff3e6)}.tile:nth-child(5){background:linear-gradient(145deg,#eef8e9,#e1f2dd)}.tile:nth-child(6){background:linear-gradient(145deg,#fff5d9,#f8e9c2)}
-.tile b{font-size:15px;color:#2d342d}.tile p{font-size:10px;line-height:1.55}.tile .badge{font-size:8px;color:#8c6b25}.tile button{background:rgba(255,255,255,.62);color:#4b514b}
+.tile b{font-size:12px;color:#2d342d}.tile p{font-size:8.4px;line-height:1.4}.tile .badge{font-size:8px;color:#8c6b25}.tile button{background:rgba(255,255,255,.62);color:#4b514b}
 .screenTitle .mark,.avatar{background:#f3e7c4}.formCard{background:rgba(255,253,247,.95)}.ctaGold{background:linear-gradient(135deg,#f6dc8a,#cda34a);color:#38402f}
 .tabs button.on{background:#cf9e3d}.tabs.green button.on{background:#285d32}.summaryHero{background:linear-gradient(145deg,#f4f8df,#fff0cd)}
 .readingCard{border-color:#eee1c8!important;background:#fffdf8!important}.readingCard .readingHead{color:#285d32}.starCard{background:linear-gradient(145deg,#fff9e8,#fffdf8)!important}
@@ -231,8 +239,329 @@ html{background:#efe7d7}.app{background:linear-gradient(180deg,#fffaf0 0%,#fff6e
  .manseProfile h2{font-size:27px}
 }
 
+
+.lifeHero{padding:16px 14px 12px;text-align:center;background:linear-gradient(160deg,#ffe8ee,#fff6ea);margin-top:4px}
+.lifeHero h3{font-size:20px;line-height:1.4;margin:4px 0 6px;color:#c44763}
+.lifeHero p{font-size:10px;color:#8a6d72;margin:0 0 8px}
+.tile .pet{position:absolute;right:7px;bottom:34px;width:28px;height:28px;border-radius:9px;overflow:hidden}
+.tile .pet img{width:100%;height:100%;object-fit:cover}
+.rankRow{margin-top:10px;padding:11px 12px}
+.rankRow .head{display:flex;justify-content:space-between;align-items:center;font-size:10px;font-weight:800;color:#c45b2c;margin-bottom:8px}
+.rankRow .head span{color:#9a958c;font-weight:700}
+.rankChips{display:flex;gap:6px;overflow:auto;scrollbar-width:none}
+.rankChips b{flex:none;background:#fff7e8;border-radius:999px;padding:6px 8px;font-size:8.5px;color:#5d5548}
+.guideList{padding:6px 4px}
+.guideRow{display:flex;align-items:center;gap:10px;padding:12px 10px;border-top:1px solid #eee8de}
+.guideRow:first-child{border-top:0}
+.guideRow .gico{width:32px;height:32px;border-radius:10px;display:grid;place-items:center;background:#eef8e8;color:#2f8a55}
+.guideRow b{display:block;font-size:13px}
+.guideRow span{font-size:9px;color:#838980}
+.yearHero{padding:0;overflow:hidden;background:linear-gradient(160deg,#fff4d2,#f3ffe8)}
+.yearHero img{width:100%;height:168px;object-fit:cover;object-position:center 30%}
+.yearHero .inner{padding:12px 14px 16px}
+.yearHero h3{font-size:18px;margin:0 0 6px;color:#3d5a2f}
+.yearNav{display:flex;align-items:center;justify-content:space-between;padding:8px 6px}
+.yearNav b{font-size:16px}
+.yearNav button{border:0;background:#f4f0e6;border-radius:999px;width:32px;height:32px}
+.proBox{padding:13px;background:#f4f8ff;margin-top:9px}
+.proBox h3{margin:0 0 8px;font-size:13px;color:#3a6aa8}
+.proBox li{font-size:11px;line-height:1.7;color:#4d5a66}
+.manageCard{display:flex;gap:12px;align-items:center;padding:14px}
+.manageCard img{width:58px;height:58px;border-radius:50%;object-fit:cover;background:#eef6db}
+.btnRow{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:10px}
+.btnGhost{border:1px solid #e6dece;background:#fff;border-radius:12px;padding:10px;font-size:11px;font-weight:800}
+.homeHero .heroArt{height:188px}
+.homeHero .heroText{top:14px}
+
+
+/* =========================================================
+   REFERENCE FINAL 09
+   기준: 사용자가 승인한 8개 화면 모바일 레퍼런스
+   디자인만 정리. 계산/궁합/저장/상담 로직은 변경하지 않음.
+   ========================================================= */
+:root{
+  --ref-bg:#fffaf0;
+  --ref-paper:#fffef9;
+  --ref-green:#245c3c;
+  --ref-gold:#d7a430;
+  --ref-line:#eee3d1;
+  --ref-sub:#85847d;
+}
+
+/* 전체 프레임 */
+body{background:#eee7da}
+.app{
+  max-width:430px;
+  background:linear-gradient(180deg,#fffdf7 0%,#fff8e9 100%);
+  box-shadow:0 0 0 1px rgba(229,218,199,.72);
+}
+.screen{padding-left:12px;padding-right:12px}
+.card{
+  border-color:var(--ref-line);
+  box-shadow:0 4px 14px rgba(80,61,29,.055);
+}
+
+/* 상단바 — 모든 상세 화면의 브랜드는 '귀인사주' 체계를 유지 */
+.topbar{
+  height:64px;
+  margin-left:-12px;margin-right:-12px;
+  padding-left:12px;padding-right:12px;
+  background:rgba(255,252,245,.97);
+  border-bottom:1px solid #eee5d5;
+}
+.brand .brandline{font-size:19px;color:#1f5b3d}
+.brand small{font-size:7.5px;letter-spacing:1.1px}
+
+/* 홈 프로필 */
+.profilebar{
+  min-height:52px;
+  padding:7px 9px!important;
+  margin:7px 0!important;
+  border-radius:15px;
+  box-shadow:none!important;
+}
+.avatar{width:36px;height:36px}
+.profilebar .txt b{font-size:11.5px}
+.profilebar .txt small{font-size:8px}
+.profilebar .picker{font-size:7.8px;padding:6px 8px}
+
+/* 메인 배너
+   brand-home.jpg 안에 이미 '귀인사주' 글자가 있으므로 HTML 오버레이 문구는 숨김.
+   이미지 하단의 포스터용 메뉴 4개는 보이지 않도록 윗부분만 크롭. */
+.homeHero{
+  margin:0;
+  border-radius:20px!important;
+  overflow:hidden;
+  min-height:208px;
+}
+.homeHero .heroArt{
+  height:208px!important;
+  margin:0!important;
+  border-radius:0!important;
+  overflow:hidden;
+}
+.homeHero .heroArt img{
+  width:100%!important;
+  height:100%!important;
+  object-fit:cover!important;
+  object-position:center 18%!important;
+}
+.homeHero .heroText{display:none!important}
+.homeHero .ctaGreen{
+  bottom:11px!important;
+  min-width:188px!important;
+  padding:10px 15px!important;
+  font-size:10.5px!important;
+  border-radius:999px!important;
+  white-space:nowrap;
+}
+
+/* 홈 3 x 2 메뉴 — 레퍼런스 고정 */
+.tiles{
+  display:grid!important;
+  grid-template-columns:repeat(3,minmax(0,1fr))!important;
+  gap:7px!important;
+  margin-top:8px!important;
+}
+.tile{
+  min-height:121px!important;
+  padding:9px 7px 31px!important;
+  border-radius:15px!important;
+  box-shadow:0 3px 10px rgba(80,61,29,.05)!important;
+  overflow:hidden;
+}
+.tile .ico{width:25px;height:25px;margin-bottom:5px}
+.tile .ico svg{width:25px;height:25px}
+.tile b{font-size:11px!important;line-height:1.25}
+.tile p{
+  font-size:7.4px!important;
+  line-height:1.38!important;
+  margin-top:3px!important;
+  display:-webkit-box;
+  -webkit-box-orient:vertical;
+  -webkit-line-clamp:3;
+  overflow:hidden;
+}
+.tile .badge{font-size:6.6px!important;padding:2px 4px!important;right:5px!important;top:5px!important}
+.tile .pet{width:23px!important;height:23px!important;right:5px!important;bottom:29px!important;border-radius:7px!important}
+.tile button{
+  left:5px!important;right:5px!important;bottom:5px!important;
+  padding:5px 2px!important;font-size:6.8px!important
+}
+.slogan{padding:9px 10px;font-size:8px;line-height:1.45}
+.rankRow{padding:9px 10px;margin-top:8px}
+.rankRow .head{font-size:8.5px;margin-bottom:6px}
+.rankChips b{font-size:7px;padding:5px 7px}
+
+/* 상세 화면 상단 탭 */
+.tabs,.tabs.green,.tabs.purple{
+  position:sticky;
+  top:64px;
+  z-index:24;
+  margin-left:-12px;margin-right:-12px;
+  padding:7px 12px 8px;
+  gap:4px;
+  background:rgba(255,252,246,.97);
+  border-bottom:1px solid #eee6d8;
+  backdrop-filter:blur(12px);
+  -webkit-backdrop-filter:blur(12px);
+}
+.tabs button{
+  padding:7px 9px;
+  font-size:8.6px;
+  border-radius:999px;
+}
+/* 레퍼런스는 결과 상단에 핵심 4개 탭만 노출 */
+#resultTabs button[data-tab="stars"],
+#resultTabs button[data-tab="chart"]{display:none!important}
+
+/* 사주 입력 */
+.screenTitle{padding:12px 2px 8px;gap:9px}
+.screenTitle .mark{width:36px;height:36px;border-radius:11px}
+.screenTitle h2{font-size:21px}
+.screenTitle p{font-size:9px}
+.screenTitle .sideArt{width:68px;height:52px;border-radius:12px}
+.formCard{padding:14px;border-radius:17px;box-shadow:none}
+.formCard label{font-size:9.5px;margin:10px 0 5px}
+input,select{min-height:40px;border-radius:11px;font-size:11px;padding:8px 9px}
+.seg{gap:6px}.seg button{padding:9px 7px;border-radius:11px;font-size:10px}
+.locationRow{padding:9px 10px;border-radius:11px;font-size:9.5px}
+.help{font-size:7.5px}
+.ctaGold,.ctaGreen{min-height:43px}
+
+/* 평생사주 결과 — 상단 브랜드명은 계속 '귀인사주' */
+.lifeHero{padding:13px 12px 11px;border-radius:18px}
+.lifeHero h3{font-size:17px;line-height:1.38}
+.lifeHero p{font-size:8.5px}
+.summaryArt{height:auto;aspect-ratio:16/7.5;border-radius:12px}
+.infoCard{padding:12px;margin-top:8px;border-radius:16px}
+.infoCard h3{font-size:12.5px}
+.infoGrid{grid-template-columns:66px 1fr;gap:6px;font-size:9px}
+.keywordGrid{gap:5px}
+.keyword{padding:7px 3px;border-radius:10px;font-size:7.5px}
+.keyword svg{width:18px;height:18px}
+
+/* 장문 결과 카드 */
+.expertIntro,.expertSection,.deepCard{
+  border-radius:17px!important;
+  margin:8px 0!important;
+}
+.expertIntro{padding:15px!important}
+.expertIntro h2{font-size:17px!important;line-height:1.42!important}
+.expertIntro p{font-size:10.5px!important;line-height:1.65!important}
+.expertSection,.deepCard{padding:15px 14px!important}
+.expertSection h3,.deepCard h3{font-size:16.5px!important;line-height:1.43!important}
+.expertSection p,.deepCard p{font-size:12px!important;line-height:1.78!important}
+.expertSection .eyebrow,.miniTitle{font-size:8px!important}
+.expertSection .evidence,.evidenceLine{font-size:8.8px!important;line-height:1.55!important;padding:8px 9px!important}
+
+/* 만세력 */
+.manseProfile{padding:14px!important;border-radius:17px!important}
+.manseProfile h2{font-size:18px!important}
+.manseProfile p{font-size:8px!important}
+.dayMasterBadge{width:72px!important;min-width:72px!important;padding:7px 4px!important;border-radius:12px!important}
+.dayMasterBadge strong{font-size:25px!important}
+.manseFacts{gap:5px!important;margin-top:9px!important}
+.manseFact{padding:7px!important;border-radius:9px!important}
+.manseFact span{font-size:6.5px!important}.manseFact b{font-size:8px!important}
+.manseChartCard{padding:12px 7px!important;border-radius:17px!important}
+.manseSectionHead{margin-bottom:8px!important}
+.manseSectionHead h3{font-size:14px!important}
+.manseTableWrap{overflow:visible!important}
+.manseTable{min-width:0!important;width:100%!important}
+.manseRow{grid-template-columns:40px repeat(4,minmax(0,1fr))!important}
+.manseLabel,.manseCell{padding:6px 2px!important}
+.manseLabel{font-size:6.5px!important}
+.manseHead .manseCell{font-size:7px!important}
+.bigChar{font-size:23px!important}
+.manseCell span{font-size:6.7px!important}
+.manseCell small{font-size:6px!important;line-height:1.23!important}
+.hiddenStemRow .manseCell{min-height:42px!important;padding:5px 2px!important}
+.manseReadGuide{font-size:8px!important;padding:9px!important;line-height:1.55!important}
+
+/* 궁합 */
+.matchHero{padding:10px 11px 12px;border-radius:18px}
+.matchHero h3{font-size:15px}
+.matchHero p{font-size:7.5px}
+.matchArt{aspect-ratio:16/8.2}
+.score{font-size:36px}
+.person{padding:8px 5px;font-size:8px}
+.scoreRow{grid-template-columns:53px 1fr 25px;font-size:8px}
+.compatIntro{padding:12px 13px;border-radius:16px}
+.compatIntro h3{font-size:14px}
+.compatIntro p{font-size:9px}
+.compatDetailCard{padding:15px 14px;border-radius:17px}
+.compatDetailCard h3{font-size:16.5px}
+.compatDetailCard p{font-size:12px;line-height:1.78}
+.compatEvidence{font-size:8px}
+
+/* 오늘 운세 */
+.todayDate{font-size:12px;margin:8px 0}
+.todayHero{padding:10px;border-radius:17px}
+.todayArt{aspect-ratio:16/8.7}
+.todayHero h3{font-size:14px}
+.todayHero p{font-size:8px}
+.fortuneList{padding:3px 11px}
+.fortuneRow{padding:7px 0}
+.fortuneRow b{font-size:9px}
+.fortuneRow span{font-size:7.5px}
+
+/* 대운·세운 화면 */
+.yearNav{padding:7px 4px}
+.yearNav b{font-size:14px}
+.yearHero img{height:150px}
+.yearHero h3{font-size:16px}
+.yearHero .inner{padding:10px 12px 13px}
+
+/* 내 사주관리 */
+.manageCard{padding:12px}
+.manageCard img{width:52px;height:52px}
+.btnGhost{padding:9px;font-size:9.5px;border-radius:10px}
+
+/* 이용가이드 */
+.guideList{padding:4px 3px}
+.guideRow{padding:10px 8px}
+.guideRow .gico{width:29px;height:29px;border-radius:9px}
+.guideRow b{font-size:11.5px}
+.guideRow span{font-size:8px}
+
+/* 마이페이지 */
+.profileCard{padding:11px;border-radius:16px}
+.bigAvatar{width:53px;height:53px}
+.profileCard b{font-size:12px}
+.profileCard span{font-size:8px}
+.menuCard{padding:3px 11px;border-radius:16px}
+.menuCard button{padding:10px 0;font-size:9.5px}
+.footerArt{aspect-ratio:16/7.2}
+/* 관리자 전용 버튼은 일반 사용자 마이페이지에서 숨김 */
+#mypage > .ctaGold{display:none!important}
+
+/* 하단 네비 */
+.bottom{
+  height:66px;
+  grid-template-columns:1fr 1fr 70px 1fr 1fr;
+}
+.bottom button{font-size:7.8px}
+.bottom button svg{width:18px;height:18px}
+.bottom .flower{
+  width:46px;height:46px;
+  margin:-18px auto 0;
+}
+
+/* 작은 화면 */
+@media(max-width:360px){
+  .screen{padding-left:9px;padding-right:9px}
+  .topbar{margin-left:-9px;margin-right:-9px;padding-left:9px;padding-right:9px}
+  .tabs,.tabs.green,.tabs.purple{margin-left:-9px;margin-right:-9px;padding-left:9px;padding-right:9px}
+  .homeHero .heroArt{height:194px!important}
+  .tile{min-height:116px!important;padding-left:5px!important;padding-right:5px!important}
+  .tile b{font-size:10px!important}
+  .tile p{font-size:6.8px!important}
+  .manseRow{grid-template-columns:36px repeat(4,minmax(0,1fr))!important}
+  .bigChar{font-size:21px!important}
+}
+
 </style>
-<link rel="stylesheet" href="ui-reference-lock.css">
 </head>
 <body>
 <div class="app">
@@ -245,29 +574,39 @@ html{background:#efe7d7}.app{background:linear-gradient(180deg,#fffaf0 0%,#fff6e
   </div>
 
   <div class="profilebar card">
-    <div class="avatar"><img loading="lazy" decoding="async" src="hero-animals.jpg" alt=""></div>
+    <div class="avatar"><img loading="lazy" decoding="async" src="clover-mark.jpg" alt=""></div>
     <div class="txt"><b id="homeName">반가워요! ›</b><small id="homeBirth">오늘도 좋은 하루 되세요!</small></div>
     <button class="picker" onclick="go('mypage')">다른 프로필 선택 ›</button>
   </div>
 
   <div class="homeHero card">
-    <div class="kicker">좋은 인연이, 좋은 운을 만드는</div>
-    <h1>귀인사주</h1>
-    <div class="copy">지금의 고민이<br>더 좋은 내일로 이어지길.</div>
-    <div class="heroArt"><img decoding="async" fetchpriority="high" src="brand-home.jpg" alt="귀인사주"></div>
+    <div class="heroArt">
+      <img decoding="async" fetchpriority="high" src="brand-home.jpg" alt="귀인사주">
+      <div class="heroText">
+        <div class="kicker">좋은 인연이, 좋은 운을 만드는</div>
+        <h1>귀인사주</h1>
+        <div class="copy">지금의 고민이<br>더 좋은 내일로 이어지길.</div>
+      </div>
+    </div>
     <button class="ctaGreen" onclick="go('ask')">AI 사주상담 시작하기 ›</button>
   </div>
 
   <div class="tiles">
     <div class="tile"><div class="ico"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="4" fill="currentColor"/><g stroke="currentColor" stroke-width="1.7"><path d="M12 1v4M12 19v4M1 12h4M19 12h4M4.2 4.2l2.8 2.8M17 17l2.8 2.8M19.8 4.2L17 7M7 17l-2.8 2.8"/></g></svg></div><b>오늘의 운세</b><p>오늘 나에게 들어오는 기운과 주의할 점</p><button onclick="renderToday();go('today')">지금 바로 보기 ›</button></div>
-    <div class="tile"><div class="ico"><svg viewBox="0 0 24 24"><path d="M6 3h12v18H6z" fill="none" stroke="currentColor" stroke-width="1.7"/><path d="M9 7h6M9 11h6M9 15h4" stroke="currentColor" stroke-width="1.7"/></svg></div><span class="badge">990원 · 결제 준비중</span><b>평생사주</b><p>성격, 직업, 재물, 연애, 대운까지</p><button onclick="openResultTab('summary')">내 사주 전체 보기 ›</button></div>
-    <div class="tile"><div class="ico"><svg viewBox="0 0 24 24"><path d="M12 20s-8-4.8-8-10a4.5 4.5 0 018-2.8A4.5 4.5 0 0120 10c0 5.2-8 10-8 10z" fill="currentColor"/></svg></div><span class="badge">2,900원 · 결제 준비중</span><b>우리 궁합</b><p>두 사람의 인연과 갈등, 결혼 흐름까지</p><button onclick="go('match')">궁합 보기 ›</button></div>
-    <div class="tile"><div class="ico"><svg viewBox="0 0 24 24"><path d="M4 20V10h3v10H4zm6 0V5h3v15h-3zm6 0V2h3v18h-3z" fill="currentColor"/></svg></div><b>대운·세운·연운</b><p>10년 단위 대운과 올해의 흐름</p><button onclick="openResultTab('flow')">운의 흐름 보기 ›</button></div>
-    <div class="tile"><div class="ico"><svg viewBox="0 0 24 24"><path d="M12 21V10M12 10C6 10 4 7 4 3c5 0 8 2 8 7zm0 0c6 0 8-3 8-7-5 0-8 2-8 7z" fill="currentColor"/></svg></div><b>내 사주관리</b><p>저장한 프로필로 더 빠르고 편리하게</p><button onclick="go('mypage')">내 프로필 보기 ›</button></div>
-    <div class="tile"><div class="ico"><svg viewBox="0 0 24 24"><path d="M12 2l3 6 6 .8-4.5 4.4 1.2 6.2L12 16.5 6.3 19.4l1.2-6.2L3 8.8 9 8z" fill="currentColor"/></svg></div><b>이용가이드</b><p>처음 오셨나요? 귀인사주 이용방법을 안내해드려요.</p><button onclick="location.href='manse.html'">가이드 보기 ›</button></div>
+    <div class="tile"><div class="ico"><svg viewBox="0 0 24 24"><path d="M6 3h12v18H6z" fill="none" stroke="currentColor" stroke-width="1.7"/><path d="M9 7h6M9 11h6M9 15h4" stroke="currentColor" stroke-width="1.7"/></svg></div><span class="badge">990원</span><div class="pet"><img src="input-cat.jpg" alt=""></div><b>평생사주</b><p>성격, 직업, 재물, 연애, 가족, 대운까지</p><button onclick="openResultTab('summary')">내 사주 전체 보기 ›</button></div>
+    <div class="tile"><div class="ico"><svg viewBox="0 0 24 24"><path d="M12 20s-8-4.8-8-10a4.5 4.5 0 018-2.8A4.5 4.5 0 0120 10c0 5.2-8 10-8 10z" fill="currentColor"/></svg></div><span class="badge">2,900원</span><div class="pet"><img src="compat-animals.jpg" alt=""></div><b>우리 궁합</b><p>두 사람의 끌림, 갈등, 결혼, 재물궁합까지</p><button onclick="go('match')">궁합 보기 ›</button></div>
+    <div class="tile"><div class="ico"><svg viewBox="0 0 24 24"><path d="M4 20V10h3v10H4zm6 0V5h3v15h-3zm6 0V2h3v18h-3z" fill="currentColor"/></svg></div><b>대운·세운·연운</b><p>10년 단위 대운과 올해의 흐름, 월별 운세</p><button onclick="renderYearLuck();go('yearLuck')">운의 흐름 보기 ›</button></div>
+    <div class="tile"><div class="ico"><svg viewBox="0 0 24 24"><path d="M12 21V10M12 10C6 10 4 7 4 3c5 0 8 2 8 7zm0 0c6 0 8-3 8-7-5 0-8 2-8 7z" fill="currentColor"/></svg></div><div class="pet"><img src="compat-animals.jpg" alt=""></div><b>내 사주관리</b><p>저장한 프로필로 더 빠르고 편리하게</p><button onclick="go('manage')">내 프로필 보기 ›</button></div>
+    <div class="tile"><div class="ico"><svg viewBox="0 0 24 24"><path d="M12 2l3 6 6 .8-4.5 4.4 1.2 6.2L12 16.5 6.3 19.4l1.2-6.2L3 8.8 9 8z" fill="currentColor"/></svg></div><b>이용가이드</b><p>처음 오셨나요? 귀인사주 이용방법을 안내해드려요.</p><button onclick="go('guide')">가이드 보기 ›</button></div>
   </div>
 
   <div class="slogan card"><b>좋은 인연이, 좋은 운을 만듭니다.</b><br>귀인사주는 당신의 오늘이 조금 더 빛나길 응원합니다.</div>
+  <div class="rankRow card">
+    <div class="head">🔥 많은 분들이 보고 있어요 <span>더보기 ›</span></div>
+    <div class="rankChips">
+      <b>1 오늘의 운세</b><b>2 평생사주</b><b>3 사주상담</b><b>4 우리 궁합</b><b>5 2026년 운세</b>
+    </div>
+  </div>
 </section>
 
 <section id="saju" class="screen">
@@ -304,7 +643,7 @@ html{background:#efe7d7}.app{background:linear-gradient(180deg,#fffaf0 0%,#fff6e
     <button class="ghost"><svg viewBox="0 0 24 24" width="20" height="20"><path d="M18 8a6 6 0 00-12 0c0 7-3 7-3 9h18c0-2-3-2-3-9M10 21h4" fill="none" stroke="currentColor" stroke-width="1.8"/></svg></button>
   </div>
   <div class="tabs" id="resultTabs">
-    <button class="on" data-tab="summary">전체 풀이</button><button data-tab="personality">성격·기질</button><button data-tab="fields">직업·재물·연애</button><button data-tab="stars">신살·귀인</button><button data-tab="flow">대운·세운</button><button data-tab="chart">사주 원국</button>
+    <button class="on" data-tab="summary">사주 요약</button><button data-tab="personality">성격 분석</button><button data-tab="flow">인생 흐름</button><button data-tab="fields">분야별 운세</button><button data-tab="stars">신살·귀인</button><button data-tab="chart">사주 원국</button>
   </div>
   <div id="resultView"></div>
 </section>
@@ -368,12 +707,11 @@ html{background:#efe7d7}.app{background:linear-gradient(180deg,#fffaf0 0%,#fff6e
     <div><b id="myName">프로필을 만들어 보세요</b><span id="myBirth">사주를 계산하면 저장할 수 있어요.</span></div>
   </div>
   <div class="menuCard card">
-    <button>이용 내역 <span class="arr">›</span></button>
-    <button>결제 내역 <span class="arr">›</span></button>
-    <button>저장한 프로필 <span class="arr">›</span></button>
+    <button onclick="go('wallet')">이용 내역 <span class="arr">›</span></button>
     <button>찜한 콘텐츠 <span class="arr">›</span></button>
-    <button>알림 설정 <span class="arr">›</span></button>
+    <button onclick="go('ask')">상담 내역 <span class="arr">›</span></button>
     <button>쿠폰함 <span class="arr">›</span></button>
+    <button>알림 설정 <span class="arr">›</span></button>
     <button>고객센터 <span class="arr">›</span></button>
     <button>앱 정보 <span class="arr">›</span></button>
   </div>
@@ -381,6 +719,65 @@ html{background:#efe7d7}.app{background:linear-gradient(180deg,#fffaf0 0%,#fff6e
   <div class="footerArt"><img loading="lazy" decoding="async" src="mypage-animals.jpg" alt=""></div>
   <button class="ctaGold" onclick="go('admin')">홈 문구 수정하기 ›</button>
 </section>
+
+
+<section id="yearLuck" class="screen">
+  <div class="topbar">
+    <button class="ghost" onclick="go('home')" aria-label="뒤로"><svg viewBox="0 0 24 24" width="20" height="20"><path d="M15 5l-7 7 7 7" fill="none" stroke="currentColor" stroke-width="2"/></svg></button>
+    <div class="brand"><div class="brandline">대운·세운·연운</div></div>
+    <button class="ghost"></button>
+  </div>
+  <div class="tabs green"><button class="on" onclick="renderYearLuck()">대운 보기</button><button onclick="openResultTab('flow')">세운 보기</button><button onclick="renderYearLuck()">연운 보기</button><button onclick="renderYearLuck()">월운 보기</button></div>
+  <div id="yearView"></div>
+</section>
+
+<section id="manage" class="screen">
+  <div class="topbar">
+    <button class="ghost" onclick="go('home')" aria-label="뒤로"><svg viewBox="0 0 24 24" width="20" height="20"><path d="M15 5l-7 7 7 7" fill="none" stroke="currentColor" stroke-width="2"/></svg></button>
+    <div class="brand"><div class="brandline">내 사주관리</div></div>
+    <button class="ghost"></button>
+  </div>
+  <div class="tabs green"><button class="on">내 프로필</button><button>가족 프로필</button><button onclick="go('saju')">프로필 추가 ›</button></div>
+  <div class="manageCard card" style="margin-top:10px">
+    <img src="compat-animals.jpg" alt="">
+    <div>
+      <div style="font-size:10px;color:#7d837c">내 프로필</div>
+      <b id="manageName">프로필을 만들어 보세요</b>
+      <span id="manageBirth" style="display:block;font-size:10px;color:#888;margin-top:3px">사주를 계산하면 저장됩니다.</span>
+    </div>
+  </div>
+  <div class="btnRow">
+    <button class="btnGhost" onclick="go('saju')">프로필 수정</button>
+    <button class="btnGhost" onclick="openResultTab('summary')">사주 다시 보기</button>
+  </div>
+  <div class="infoCard card" style="margin-top:12px">
+    <h3>저장한 프로필</h3>
+    <button class="btnGhost" style="width:100%" onclick="go('saju')">+ 새 프로필 추가하기 ›</button>
+  </div>
+  <div class="slogan card"><b>소중한 사람들의 사주도 함께 저장해보세요.</b><br>좋은 인연이 더 좋은 운을 만들어줍니다.</div>
+</section>
+
+<section id="guide" class="screen">
+  <div class="topbar">
+    <button class="ghost" onclick="go('home')" aria-label="뒤로"><svg viewBox="0 0 24 24" width="20" height="20"><path d="M15 5l-7 7 7 7" fill="none" stroke="currentColor" stroke-width="2"/></svg></button>
+    <div class="brand"><div class="brandline">이용가이드</div></div>
+    <button class="ghost"></button>
+  </div>
+  <div class="screenTitle">
+    <div class="mark"><img src="clover-mark.jpg" alt=""></div>
+    <div><h2>처음 오셨나요?</h2><p>귀인사주가 처음이라도,<br>쉽게 이용할 수 있어요.</p></div>
+    <div class="sideArt"><img src="input-cat.jpg" alt=""></div>
+  </div>
+  <div class="card guideList">
+    <div class="guideRow"><div class="gico">?</div><div><b>귀인사주란?</b><span>좋은 인연과 운을 쉽게 읽는 사주</span></div></div>
+    <div class="guideRow" onclick="go('saju')"><div class="gico">☰</div><div><b>서비스 이용방법</b><span>생년월일만 넣으면 명식이 나옵니다</span></div></div>
+    <div class="guideRow" onclick="renderToday();go('today')"><div class="gico">☀</div><div><b>운세 항목 안내</b><span>오늘·대운·분야별 운세를 나눠 보여요</span></div></div>
+    <div class="guideRow" onclick="go('ask')"><div class="gico">💬</div><div><b>자주 묻는 질문</b><span>사주아이에게 이어서 물어볼 수 있어요</span></div></div>
+    <div class="guideRow"><div class="gico">☎</div><div><b>고객센터</b><span>이용 중 궁금한 점을 남겨 주세요</span></div></div>
+  </div>
+  <div class="slogan card"><b>언제나, 좋은 인연이 함께하길.</b><br>귀인사주가 응원합니다.</div>
+</section>
+
 
 <section id="ask" class="screen">
   <div class="topbar">
@@ -511,7 +908,7 @@ function restoreProfile(){
   const v=JSON.parse(localStorage.getItem('guiin_last')); if(!v)return;
   $('name').value=v.name||'';$('year').value=v.year||'';$('month').value=v.month||'';$('day').value=v.day||'';$('hour').value=v.hour??'';$('minute').value=v.minute??'';
   $('homeName').textContent=(v.name||'사용자')+'님 ›';$('homeBirth').textContent=`${v.year}년 ${v.month}월 ${v.day}일 (${v.calendar||'양력'})`;
-  $('myName').textContent=(v.name||'사용자')+'님';$('myBirth').textContent=`${v.year}년 ${v.month}월 ${v.day}일 (${v.calendar||'양력'})`;
+  $('myName').textContent=(v.name||'사용자')+'님';$('myBirth').textContent=`${v.year}년 ${v.month}월 ${v.day}일 (${v.calendar||'양력'})`;if($('manageName')){$('manageName').textContent=(v.name||'사용자');$('manageBirth').textContent=`${v.year}년 ${v.month}월 ${v.day}일 (${v.calendar||'양력'})`;}
  }catch(e){}
 }
 function submitSaju(){
@@ -658,13 +1055,33 @@ function expertFlowHTML(c){
  return expertSectionsHTML(f.sections)+`<div class="expertSection"><div class="eyebrow">전체 대운 지도</div><h3>10년마다 어떤 주제가 반복되는지 한눈에 봅니다</h3><div class="daeunList">${f.rows.map(r=>`<div class="daeunItem ${r.current?'current':''}"><b>${r.fromAge}~${r.toAge}세 · ${r.ko} 대운 · ${r.god}${r.current?' · 현재':''}</b><p>${esc(r.body)}</p></div>`).join('')}</div></div>`;
 }
 
+
+function prettySummaryHTML(c){
+ const time=c.input.hourUnknown?'모름':`${String(c.input.hour).padStart(2,'0')}:${String(c.input.minute).padStart(2,'0')}`;
+ const title=(typeof GuiinExpert!=='undefined' && GuiinExpert.fullSections)?(GuiinExpert.fullSections(c)[0]?.title||'당신은 특별한 빛을 가진 사람입니다.'):'당신은 특별한 빛을 가진 사람입니다.';
+ return `<div class="lifeHero card"><h3>${esc(c.input.name)}님은<br>${esc(title)}</h3><p>“좋은 인연이, 더 좋은 길을 만듭니다.”</p><div class="summaryArt"><img src="input-cat.jpg" alt=""></div></div>
+ <div class="infoCard card"><h3>기본 정보</h3><div class="infoGrid"><span>이름</span><b>${esc(c.input.name)}</b><span>생년월일</span><b>${c.input.year}년 ${c.input.month}월 ${c.input.day}일 (${c.input.calendar||'양력'})</b><span>태어난 시간</span><b>${time}</b><span>성별</span><b>${c.input.gender==='여'?'여자':'남자'}</b></div></div>
+ <button class="ctaGold" onclick="setTab('chart')">내 사주 전체 분석보기 ›</button>
+ <div class="infoCard card"><h3>한눈에 보는 사주 키워드</h3><div class="keywordGrid"><div class="keyword">${ICONS.leaf}<b>온화한 성격</b></div><div class="keyword">${ICONS.heart}<b>특별한 인연</b></div><div class="keyword">${ICONS.money}<b>안정적인 재물</b></div><div class="keyword">${ICONS.brief}<b>꾸준한 성장</b></div></div></div>
+ <div class="slogan card"><b>“당신의 인생은 좋은 인연으로 더 빛납니다.”</b></div>`;
+}
+function renderYearLuck(){
+ const y=new Date().getFullYear();
+ const name=($('homeName')?.textContent||'당신').replace('님 ›','').replace('반가워요! ›','당신');
+ $('yearView').innerHTML=`<div class="yearNav"><button type="button">&lt;</button><b>${y}년</b><button type="button">&gt;</button></div>
+  <div class="yearHero card"><img src="today-dog.jpg" alt=""><div class="inner"><h3>${y}년, 더 좋은 일이 기다리고 있어요.</h3><p>“지금의 노력이, 빛나는 내일이 됩니다.”</p></div></div>
+  <div class="infoCard card" style="margin-top:9px"><h3>${y}년 총운</h3><p class="flowText">변화 속에서 새로운 기회가 찾아오는 해입니다. 꾸준한 노력과 긍정적인 마음이 좋은 결실을 맺습니다.</p></div>
+  <button class="ctaGold" onclick="openResultTab('flow')">${y}년 월별 운세 보기 ›</button>
+  <div class="slogan card"><b>대운은 10년의 주제, 세운은 올해의 결입니다.</b><br>만세력과 함께 보면 더 정확합니다.</div>`;
+}
+
 function renderResult(){
  if(!chart)return;
  document.querySelectorAll('#resultTabs button').forEach(b=>b.classList.toggle('on',b.dataset.tab===currentTab));
  const c=chart,time=c.input.hourUnknown?'모름':`${String(c.input.hour).padStart(2,'0')}:${String(c.input.minute).padStart(2,'0')}`;
  const manseTop=(typeof GuiinManse!=='undefined')?GuiinManse.render(c,{title:`${c.input.name}님의 만세력`,eyebrow:'내 사주'}):'';
  if(currentTab==='summary'){
-  $('resultView').innerHTML=manseTop+expertSummaryHTML(c);
+  $('resultView').innerHTML=prettySummaryHTML(c)+manseTop+expertSummaryHTML(c);
  } else if(currentTab==='personality'){
   $('resultView').innerHTML=manseTop+expertSectionsHTML(GuiinExpert.personalitySections(c));
  } else if(currentTab==='fields'){
@@ -715,7 +1132,7 @@ function submitMatch(){
   const money=Math.max(55,Math.min(98,Math.round((100-(Math.abs(pa['토']-pb['토'])+Math.abs(pa['금']-pb['금'])))*.35+55)));
   const future=Math.max(55,Math.min(98,Math.round((score+personality)/2)));
   const band=score>=86?'서로의 장점을 살릴 여지가 큰 관계입니다.':score>=76?'맞는 부분과 조율할 부분이 함께 있는 관계입니다.':score>=66?'끌림과 차이가 함께 있어 생활 조율이 중요한 관계입니다.':'점수보다 대화와 경계 설정이 특히 중요한 관계입니다.';
-  matchBaseHTML=`<div class="matchHero card"><h3>두 사람의 관계를 여러 층으로 읽어볼게요.</h3><p>“점수 하나보다, 왜 끌리고 어디서 부딪히는지가 더 중요합니다.”</p><div class="matchArt"><img loading="lazy" decoding="async" src="compat-animals.jpg" alt=""></div><div style="font-size:9px;margin-top:7px">귀인사주 참고 궁합 지수</div><div class="score">♥ ${score}<small>점</small></div><p>${band}</p></div>
+  matchBaseHTML=`<div class="matchHero card"><h3>두 사람의 인연은 특별합니다.</h3><p>“좋은 인연이, 더 행복한 내일을 만듭니다.”</p><div class="matchArt"><img loading="lazy" decoding="async" src="compat-animals.jpg" alt=""></div><div style="font-size:9px;margin-top:7px">귀인사주 참고 궁합 지수</div><div class="score">♥ ${score}<small>점</small></div><p>${band}</p></div>
    <div class="infoCard card"><div class="pair"><div class="person"><b>나<br>${esc(a.input.name)}</b><br>${a.input.year}.${a.input.month}.${a.input.day}<br>${a.input.gender==='여'?'여성':'남성'}</div><div class="heartSvg">${ICONS.heart}</div><div class="person b"><b>상대방<br>${esc(b.input.name)}</b><br>${b.input.year}.${b.input.month}.${b.input.day}<br>${b.input.gender==='여'?'여성':'남성'}</div></div></div>
    <div class="infoCard card"><h3>세부 궁합 지수</h3>${[['연애궁합',love,'pink'],['성격궁합',personality,'mint'],['재물궁합',money,'gold'],['미래궁합',future,'purple']].map(x=>`<div class="scoreRow"><span>${x[0]}</span><div class="scoreBar"><i class="${x[2]}" style="width:${x[1]}%"></i></div><b>${x[1]}</b></div>`).join('')}</div>`+
    ((typeof GuiinManse!=='undefined')?GuiinManse.renderPair(a,b):'');
@@ -731,8 +1148,10 @@ function submitMatch(){
 }
 function renderToday(){
  const d=new Date();
- $('todayView').innerHTML=`<div class="todayDate">${d.getFullYear()}년 ${d.getMonth()+1}월 ${d.getDate()}일</div>
-  <div class="todayHero card"><div class="todayArt"><img loading="lazy" decoding="async" src="today-dog.jpg" alt=""></div><h3>오늘도 좋은 일이 찾아와요!</h3><p>“작은 행복이 모여, 큰 행운이 됩니다.”</p></div>
+ const days=['일','월','화','수','목','금','토'];
+ $('todayView').innerHTML=`<div class="todayHero card"><div class="todayArt"><img loading="lazy" decoding="async" src="today-dog.jpg" alt=""></div><h3>오늘도 좋은 일이 찾아와요!</h3><p>“작은 행복이 모여, 큰 행운이 됩니다.”</p></div>
+  <div class="todayDate">${d.getFullYear()}년 ${d.getMonth()+1}월 ${d.getDate()}일 (${days[d.getDay()]})</div>
+  <p class="help" style="text-align:center;margin:0 8px 8px">오늘은 새로운 인연과 기회가 다가오는 날이에요. 평소보다 긍정적인 마음이 좋은 흐름을 만듭니다.</p>
   <div class="fortuneList card" style="margin-top:9px">${[
    ['총운','좋은 기운이 흐르는 날이에요.'],['애정운','설레는 인연이 다가올 수 있어요.'],['재물운','작은 수익이 생길 수 있어요.'],['직장운','노력의 결실이 보이는 날이에요.'],['건강운','충분한 휴식이 필요해요.']
   ].map((x,i)=>`<div class="fortuneRow"><div class="fIcon">${[ICONS.money,ICONS.heart,ICONS.money,ICONS.brief,ICONS.plus][i]}</div><div><b>${x[0]}</b><span>${x[1]}</span></div></div>`).join('')}</div>
@@ -789,7 +1208,7 @@ function sendQ(preset){
   input.value=''; $('msgs').scrollTop=$('msgs').scrollHeight;
 }
 applyCopy();
-const h=location.hash.replace('#','');if(['home','saju','result','match','matchResult','today','mypage','ask','wallet','admin'].includes(h))go(h);
+const h=location.hash.replace('#','');if(['home','saju','result','match','matchResult','today','mypage','ask','wallet','admin','guide','manage','yearLuck'].includes(h))go(h);
 </script>
 </body>
 </html>
