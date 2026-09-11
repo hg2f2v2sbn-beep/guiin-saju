@@ -604,8 +604,9 @@ function go(id){
  document.querySelectorAll('.bottom button').forEach(b=>b.classList.remove('active'));
  if(id==='home')$('navHome').classList.add('active');
  else if(id==='mypage')$('navMy').classList.add('active');
- else $('navSaju').classList.add('active');
+ else if($('navSaju'))$('navSaju').classList.add('active');
  history.replaceState(null,'','#'+id); window.scrollTo(0,0);
+ if(id==='today') try{renderToday()}catch(e){console.error(e)}
 }
 function bindSeg(id,cb){
  const box=$(id); if(!box)return;
@@ -1030,15 +1031,30 @@ function submitMatch(){
  }
 }
 function renderToday(){
+ const box=$('todayView'); if(!box)return;
  const d=new Date();
  const days=['일','월','화','수','목','금','토'];
- $('todayView').innerHTML=`<div class="todayHero card"><div class="todayArt"><img loading="lazy" decoding="async" src="today-dog.jpg" alt=""></div><h3>오늘도 좋은 일이 찾아와요!</h3><p>“작은 행복이 모여, 큰 행운이 됩니다.”</p></div>
-  <div class="todayDate">${d.getFullYear()}년 ${d.getMonth()+1}월 ${d.getDate()}일 (${days[d.getDay()]})</div>
-  <p class="help" style="text-align:center;margin:0 8px 8px">오늘은 새로운 인연과 기회가 다가오는 날이에요. 평소보다 긍정적인 마음이 좋은 흐름을 만듭니다.</p>
-  <div class="fortuneList card" style="margin-top:9px">${[
-   ['총운','좋은 기운이 흐르는 날이에요.'],['애정운','설레는 인연이 다가올 수 있어요.'],['재물운','작은 수익이 생길 수 있어요.'],['직장운','노력의 결실이 보이는 날이에요.'],['건강운','충분한 휴식이 필요해요.']
-  ].map((x,i)=>`<div class="fortuneRow"><div class="fIcon">${[ICONS.money,ICONS.heart,ICONS.money,ICONS.brief,ICONS.plus][i]}</div><div><b>${x[0]}</b><span>${x[1]}</span></div></div>`).join('')}</div>
-  <div class="slogan card"><b>오늘의 조언</b><br>좋은 사람들과의 소중한 시간을 더 만들어 보세요.</div><button class="ctaGold">상세 운세 보기 ›</button>`;
+ const seed=(d.getFullYear()*10000+ (d.getMonth()+1)*100+d.getDate()+(chart?chart.input.day:0))%5;
+ const packs=[
+  {h:'오늘도 좋은 일이 찾아와요!',s:'작은 행복이 모여, 큰 행운이 됩니다.',
+   rows:[['총운','좋은 기운이 흐르는 날이에요.'],['애정운','설레는 인연이 다가올 수 있어요.'],['재물운','작은 수익이 생길 수 있어요.'],['직장운','노력의 결실이 보이는 날이에요.'],['건강운','충분한 휴식이 필요해요.']]},
+  {h:'차분히 정리하면 길이 보여요.',s:'서두르지 않는 선택이 오늘을 지켜 줍니다.',
+   rows:[['총운','한 가지에만 집중하면 흐름이 좋아집니다.'],['애정운','짧은 대화가 오해를 줄입니다.'],['재물운','큰 지출은 하루만 미뤄 보세요.'],['직장운','마무리 일이 평가로 이어집니다.'],['건강운','잠이 곧 회복입니다.']]},
+  {h:'사람이 행운을 데려옵니다.',s:'먼저 안부를 묻는 쪽이 이깁니다.',
+   rows:[['총운','협업과 소개가 열리는 날입니다.'],['애정운','솔직한 한 마디가 거리를 좁힙니다.'],['재물운','공유·거래에서 실마리가 보입니다.'],['직장운','도움 요청이 일을 빠르게 합니다.'],['건강운','오래 앉아 있지 마세요.']]},
+  {h:'내 속도를 지키는 하루예요.',s:'비교보다 루틴이 힘이 됩니다.',
+   rows:[['총운','약속은 줄이고 실행은 분명히.'],['애정운','감정 기복이 있어도 말은 고르게.'],['재물운','고정비부터 점검해 보세요.'],['직장운','새로운 일보다 완성도가 점수입니다.'],['건강운','물과 스트레칭이 필요합니다.']]},
+  {h:'작은 시도가 내일의 문이 됩니다.',s:'완벽보다 시작이 오늘 운입니다.',
+   rows:[['총운','미뤄 둔 한 가지를 손대 보세요.'],['애정운','관심은 표현해야 도착합니다.'],['재물운','작은 수입 창구를 열어 두세요.'],['직장운','아이디어를 메모하면 길이 됩니다.'],['건강운','과로 전에 끊는 연습.']]}
+ ][seed];
+ const name=chart?(chart.input.name+'님, '):'';
+ const icons=[ICONS.leaf||'',ICONS.heart||'',ICONS.money||'',ICONS.brief||'',ICONS.water||''];
+ box.innerHTML=`<div class="todayDate">${d.getFullYear()}년 ${d.getMonth()+1}월 ${d.getDate()}일 (${days[d.getDay()]})</div>
+  <div class="todayHero card"><div class="todayArt"><img src="today-dog.jpg" alt="오늘의 운세" onerror="this.style.display='none'"></div>
+  <h3>${name}${packs.h}</h3><p>“${packs.s}”</p></div>
+  <div class="fortuneList card">${packs.rows.map((x,i)=>`<div class="fortuneRow"><div class="fIcon">${icons[i]}</div><div><b>${x[0]}</b><span>${x[1]}</span></div></div>`).join('')}</div>
+  <div class="slogan card"><b>오늘의 조언</b><br>${chart?'원국을 넣은 기준으로 오늘의 결을 읽었습니다.':'사주를 넣으면 이름과 일간을 반영해 더 맞춰 드려요.'}</div>
+  <button class="ctaGold" onclick="openResultTab('summary')">상세 운세 보기 ›</button>`;
 }
 restoreProfile();renderToday();
 const COPY_KEY='guiin_copy_v1', COIN_KEY='guiin_coins_v1';
