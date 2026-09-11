@@ -500,6 +500,19 @@ body{padding-bottom:calc(92px + var(--safeBottom))}
 .easyInline{display:block;margin-top:7px;padding:9px 10px;border-radius:11px;background:#faf7f0;font-size:9px;line-height:1.65;color:#766f65}.easyInline b{color:#70551c}
 @media(max-width:380px){.manseTable{min-width:370px!important}.directGrid,.patternGrid,.timeFlow{grid-template-columns:1fr}.ultraIntro h2{font-size:20px}}
 
+
+/* UPDATE 14 MASTER — decision reports / monthly-weekly / compatibility / profiles / share */
+.masterHub{margin:10px 0;padding:18px 16px;border-radius:21px;background:linear-gradient(145deg,#edf8e9,#fff5da)}
+.masterHub small,.masterCard small{font-size:9px;font-weight:900;color:#b98b28}.masterHub h2{font-size:21px;line-height:1.5;color:#183f31;margin:6px 0}.masterHub p,.masterCard p{font-size:11.5px;line-height:1.85;color:#606b64;word-break:keep-all}
+.masterGrid{display:grid;grid-template-columns:1fr 1fr;gap:7px;margin-top:11px}.masterBtn{border:1px solid #e8dfd1;background:#fff;border-radius:14px;padding:12px 10px;text-align:left}.masterBtn b{display:block;font-size:10.5px;color:#29483a}.masterBtn span{display:block;font-size:8px;color:#89847c;margin-top:4px;line-height:1.45}
+.masterCard{margin:9px 0;padding:17px 15px;border-radius:18px;background:#fff}.masterCard h3{font-size:18px;line-height:1.5;color:#183f31;margin:5px 0 9px}.masterPunch{padding:11px 12px;border-radius:13px;background:#183f31;color:#fff;font-size:11px;font-weight:900;line-height:1.7}
+.flowStrip{display:flex;gap:7px;overflow-x:auto;padding:5px 0 8px;scrollbar-width:none}.flowStrip::-webkit-scrollbar{display:none}.flowUnit{flex:0 0 135px;padding:11px;border-radius:13px;background:#faf7ef}.flowUnit b{font-size:9.5px;color:#28483a}.flowUnit span{display:block;font-size:8px;line-height:1.5;color:#79776f;margin-top:4px}
+.decisionGrid{display:grid;gap:7px}.decisionItem{padding:12px;border-radius:14px;background:#faf7f0}.decisionItem b{font-size:11px;color:#254638}.decisionItem p{font-size:9.5px!important;line-height:1.7!important;margin:5px 0 0!important}
+.compatDeep{padding:16px;margin:9px 0;border-radius:18px;background:#fff}.compatDeep h3{font-size:17px;color:#183f31}.compatDeep .compatTruth{padding:11px;border-radius:13px;background:#fff7df;font-size:11px;font-weight:900;line-height:1.65;color:#5d4a20}
+.profileCards{display:grid;gap:7px}.profileCard{padding:12px;border-radius:14px;background:#faf7f0}.profileCard b{font-size:10px;color:#274739}.profileCard span{display:block;font-size:8px;color:#7f7a72;margin-top:3px}
+.shareSummary{padding:15px;border-radius:16px;background:#f2f8ed;margin:9px 0}.shareSummary h3{font-size:16px;color:#183f31;margin:0 0 7px}.shareSummary p{font-size:10px;line-height:1.7;color:#626c65}
+@media(max-width:370px){.masterGrid{grid-template-columns:1fr}}
+
 </style>
 </head>
 <body>
@@ -694,7 +707,7 @@ body{padding-bottom:calc(92px + var(--safeBottom))}
     <button class="btnGhost" style="width:100%" onclick="go('saju')">+ 새 프로필 추가하기 ›</button>
   </div>
   <div class="slogan card"><b>소중한 사람들의 사주도 함께 저장해보세요.</b><br>좋은 인연이 더 좋은 운을 만들어줍니다.</div>
-</section>
+<div id="masterProfiles"></div></section>
 
 <section id="guide" class="screen">
   <div class="topbar">
@@ -1135,13 +1148,50 @@ function U13date(offset){const d=new Date();d.setHours(12,0,0,0);d.setDate(d.get
 function U13timeBlocks(c,d){const labels=[['아침','07~11시','오늘 해야 할 일을 늘리기보다 우선순위를 정하세요.'],['낮','11~15시','사람·일의 반응이 커지는 시간이라 말과 결정의 속도를 조절하세요.'],['저녁','15~19시','정산·마무리·관계 조율에 집중하면 좋습니다.'],['밤','19시 이후','새 결론을 급하게 내리기보다 오늘의 감정과 사실을 분리해 정리하세요.']];return `<div class="timeFlow">${labels.map(x=>`<div class="timeBlock"><b>${x[0]} · ${x[1]}</b><span>${x[2]}</span></div>`).join('')}</div>`}
 function U13today(c,offset){const d=U13date(offset),f=todayFlow(c,d),dg=f?.gods?.day||'-',dm=todayGodMeaning(dg),lk=currentLuck(c);return `<div class="todayNav card"><button onclick="todayOffset--;renderToday()">‹ 전날</button><b>${d.getMonth()+1}월 ${d.getDate()}일 ${offset===0?'오늘':offset===-1?'어제':offset===1?'내일':''}</b><button onclick="todayOffset++;renderToday()">다음날 ›</button></div><div class="todayDeepHero card"><div class="date">${d.getFullYear()}년 ${d.getMonth()+1}월 ${d.getDate()}일</div><h2>${esc(c.input.name)}님, ${offset===0?'오늘은':'이 날은'}<br>“${esc(dm[0])}”에 힘이 실립니다.</h2><p>${esc(dm[1])} 현재 ${esc(lk?.ko||'-')} 대운의 ${esc(lk?.god||'-')} 주제와 함께 읽어야 하루 운세가 과장되지 않습니다.</p><div class="todayBadgeRow"><span class="todayBadge">${esc(f?.pillars?.day?.ko||'-')}</span><span class="todayBadge">${esc(dg)}</span><span class="todayBadge">${esc(f?.stages?.day||'-')}</span></div></div><div class="todayChapter card"><div class="k">시간대별 생활 가이드</div><h3>좋은 시간·나쁜 시간을 찍기보다 하루 리듬을 나눠 봅니다</h3>${U13timeBlocks(c,d)}<div class="todayEvidence">시간대 문구는 길흉 확정이 아니라 하루 행동 가이드입니다. 실제 일진 계산 근거는 ${esc(f?.pillars?.day?.ko||'-')} · ${esc(dg)} · ${esc(f?.stages?.day||'-')}입니다.</div></div>`}
 
+
+/* UPDATE 14 MASTER */
+function M14flow(c,y,m,d){try{return GuiinSaju.flowForDate(y,m,d||15,c.pillars.day.stemIndex,12,0,{dayBoundary:c.input.dayBoundary||'23'})}catch(e){return null}}
+function M14meaning(g){return (typeof easyGod==='function'?easyGod(g):g)}
+function M14decision(c,type){
+ const d=U13P(c), lk=d.lk, now=new Date(), f=M14flow(c,now.getFullYear(),now.getMonth()+1,now.getDate()), yg=f?.gods?.year||'-';
+ const x={
+ job:['이직·직업','“지금 싫다”와 “지금 옮겨야 한다”는 같은 말이 아닙니다.',`현재 ${lk?.god||'-'} 대운은 ${M14meaning(lk?.god||'-')}이라는 장기 과제를 만들고, 올해 ${yg}은 ${M14meaning(yg)}을 강조합니다. 이직은 운 하나보다 권한·보상·성장·생활 리듬 네 조건을 같이 보세요.`,'새 자리의 직함보다 내가 실제로 결정할 수 있는 범위와 남는 보상을 확인하세요.'],
+ business:['사업','매출이 오른다고 사업운이 좋은 게 아닙니다. 남는 구조가 있어야 합니다.',`월주 ${d.g}은 ${M14meaning(d.g)}과 연결됩니다. ${d.hi[0]} ${d.hi[1]}%의 강점을 고객 가치로 바꾸되, 고정비와 내가 직접 해야만 돌아가는 구조를 분리해야 합니다.`,'“내가 하루 빠져도 굴러가는가?”를 사업운 체크리스트에 넣으세요.'],
+ money:['재물','돈복은 통장에 들어오는 순간보다 남아 있는 순간에 확인됩니다.',`현재 대운과 올해 흐름을 같이 보면 돈 문제는 수입·지출·계약·확장으로 나눠 읽는 게 안전합니다. ${d.hi[0]}의 강점을 수입으로 연결하고 ${d.lo[0]}의 부족함은 관리 습관으로 보완하세요.`,'대출·투자·큰 계약은 사주 결과만으로 결정하지 말고 실제 숫자를 먼저 보세요.'],
+ love:['연애','연락이 오느냐보다 다시 만나도 같은 문제를 반복하지 않느냐가 더 중요합니다.',`${U13relationTone(c)} 현재 ${lk?.god||'-'} 대운의 관계 주제까지 같이 보되 특정인의 연락 날짜를 확정하지 않습니다.`,'상대의 감정보다 관계가 달라질 구체적인 행동이 있는지 확인하세요.'],
+ marriage:['결혼','좋아하는 사람과 생활이 맞는 사람은 다를 수 있습니다.',`결혼은 일지·관계 신호·재성/관성·현재 흐름을 함께 읽습니다. 돈·시간·가족·집안일의 합의가 실제 결혼생활을 더 정확히 보여줍니다.`,'결혼운을 묻기 전에 함께 살 때 해결해야 할 현실 문제 세 가지를 적어보세요.']
+ }[type];
+ return `<article class="masterCard card"><small>${x[0]} · 질문별 심층 리포트</small><h3>${x[1]}</h3><p>${x[2]}</p><div class="masterPunch">현실 행동 · ${x[3]}</div><span class="easyInline"><b>계산 근거</b> · 일간 ${esc(c.dayMaster.stem+c.dayMaster.el)} / 월주 ${esc(d.g)} / 현재 ${esc(lk?lk.ko+' '+lk.god:'-')} / 올해 ${esc(yg)}</span></article>`;
+}
+function M14decisions(c){return `<section class="masterHub card"><small>질문별 리포트</small><h2>“제 사주가 어때요?”보다<br>지금 궁금한 문제부터 바로 보세요.</h2><p>같은 명식도 질문이 이직인지, 사업인지, 돈인지, 연애인지에 따라 확인해야 할 근거가 다릅니다.</p><div class="masterGrid"><div class="masterBtn"><b>이직·직업</b><span>옮길까 / 버틸까 / 어떤 환경이 맞나</span></div><div class="masterBtn"><b>사업</b><span>확장 / 운영 / 내 역할</span></div><div class="masterBtn"><b>재물</b><span>수입 / 지출 / 계약 / 관리</span></div><div class="masterBtn"><b>연애·재회</b><span>관계 패턴 / 다시 만나도 달라질까</span></div><div class="masterBtn"><b>결혼</b><span>생활 궁합 / 책임 / 현실 갈등</span></div></div></section>${['job','business','money','love','marriage'].map(t=>M14decision(c,t)).join('')}`}
+function M14calendar(c){
+ const n=new Date(), y=n.getFullYear(), mo=n.getMonth()+1;
+ const weeks=[1,8,15,22].map(day=>{let f=M14flow(c,y,mo,day),g=f?.gods?.day||'-';return `<div class="flowUnit"><b>${mo}월 ${day}일 전후 · ${esc(g)}</b><span>${esc(M14meaning(g))}</span></div>`}).join('');
+ const months=Array.from({length:12},(_,i)=>{let f=M14flow(c,y,i+1,15),g=f?.gods?.month||'-';return `<div class="flowUnit"><b>${i+1}월 · ${esc(g)}</b><span>${esc(M14meaning(g))}</span></div>`}).join('');
+ return `<section class="masterCard card"><small>주간·월간 흐름</small><h3>하루 운세를 1년 흐름 속에서 봅니다.</h3><p>하루의 길흉을 찍기보다 이번 주의 행동 리듬과 월별로 반복되는 역할을 비교합니다.</p><b style="font-size:9px;color:#8d6b24">이번 달 주간 포인트</b><div class="flowStrip">${weeks}</div><b style="font-size:9px;color:#8d6b24">${y}년 월별 포인트</b><div class="flowStrip">${months}</div></section>`;
+}
+function M14share(c){
+ const d=U13P(c), lk=d.lk;
+ return `<section class="shareSummary"><h3>${esc(c.input.name||'사용자')}님의 사주 한 장 요약</h3><p><b>${esc(c.pillars.year.ko)} · ${esc(c.pillars.month.ko)} · ${esc(c.pillars.day.ko)} · ${esc(c.pillars.hour?.ko||'-')}</b><br>일간 ${esc(c.dayMaster.stem+c.dayMaster.el)} · 강하게 쓰는 힘 ${esc(d.hi[0])} ${d.hi[1]}% · 현재 ${esc(lk?lk.ko+' '+lk.god:'-')} 대운.<br>공유할 때는 생년월일·출생시간 같은 개인정보가 포함될 수 있으므로 본인이 확인한 뒤 사용하세요.</p></section>`;
+}
+function M14compat(c1,c2){
+ if(!c1||!c2)return '';
+ const a=c1.dayMaster?.el,b=c2.dayMaster?.el;
+ return `<section class="compatDeep card"><small>궁합 · 현실 번역</small><h3>잘 맞는다는 점수보다 “어디서 편하고 어디서 부딪히는가”를 봅니다.</h3><div class="compatTruth">${esc(c1.input.name||'A')}의 ${esc(a)}(${esc(easyElement(a))})와 ${esc(c2.input.name||'B')}의 ${esc(b)}(${esc(easyElement(b))})를 시작점으로, 두 원국의 십신·오행·관계 신호를 함께 봅니다.</div><p>궁합은 상대를 좋은 사람/나쁜 사람으로 판정하는 기능이 아닙니다. 연애에서는 감정 표현, 결혼에서는 돈·생활·가족 경계, 갈등에서는 회복 방식을 따로 확인해야 실제 관계에 도움이 됩니다.</p></section>`;
+}
+function M14profiles(){
+ let arr=[];try{arr=JSON.parse(localStorage.getItem('guiinProfiles')||'[]')}catch(e){}
+ if(!arr.length)return `<section class="masterCard card"><small>프로필 관리</small><h3>나·가족·연인의 사주를 다시 입력하지 않도록 준비했습니다.</h3><p>현재 저장된 추가 프로필은 없습니다. 프로필 저장은 이 기기 안에서만 처리하고 서버 전송은 하지 않는 구조를 우선 사용합니다.</p></section>`;
+ return `<section class="masterCard card"><small>저장 프로필</small><h3>이 기기에 저장된 사람</h3><div class="profileCards">${arr.map(x=>`<div class="profileCard"><b>${esc(x.name||'이름 없음')}</b><span>${esc(x.birth||'')}</span></div>`).join('')}</div></section>`;
+}
+
 function renderResult(){
  if(!chart)return;
  document.querySelectorAll('#resultTabs button').forEach(b=>b.classList.toggle('on',b.dataset.tab===currentTab));
  const c=chart,time=c.input.hourUnknown?'모름':`${String(c.input.hour).padStart(2,'0')}:${String(c.input.minute).padStart(2,'0')}`;
  const manseTop=(typeof GuiinManse!=='undefined')?GuiinManse.render(c,{title:`${c.input.name}님의 만세력`,eyebrow:'내 사주'}):'';
  if(currentTab==='summary'){
-  $('resultView').innerHTML=U13ultra(c)+directSummaryHTML(c)+prettySummaryHTML(c)+manseTop+expertSummaryHTML(c)+`<details class="resultMethod card"><summary>귀인사주는 어떻게 계산하나요?</summary><p>원국 계산 후 일간·월령/계절·오행·십신·지장간·관계·대운·세운을 함께 읽습니다. 신살은 공식화된 38/50종을 보조 정보로 사용합니다. 격국·용신·조후처럼 학파에 따라 판단이 크게 달라지는 항목은 자동 확정해 단정하지 않습니다.</p></details>`;
+  $('resultView').innerHTML=shareTop+U13ultra(c)+M14decisions(c)+directSummaryHTML(c)+prettySummaryHTML(c)+manseTop+expertSummaryHTML(c)+`<details class="resultMethod card"><summary>귀인사주는 어떻게 계산하나요?</summary><p>원국 계산 후 일간·월령/계절·오행·십신·지장간·관계·대운·세운을 함께 읽습니다. 신살은 공식화된 38/50종을 보조 정보로 사용합니다. 격국·용신·조후처럼 학파에 따라 판단이 크게 달라지는 항목은 자동 확정해 단정하지 않습니다.</p></details>`;
  } else if(currentTab==='personality'){
   $('resultView').innerHTML=straightIntroHTML(c,'personality','성격·기질')+manseTop+expertSectionsHTML(GuiinExpert.personalitySections(c));
  } else if(currentTab==='fields'){
@@ -1149,7 +1199,7 @@ function renderResult(){
  } else if(currentTab==='stars'){
   $('resultView').innerHTML=straightIntroHTML(c,'stars','신살·귀인')+manseTop+U13stars(c)+expertStarsHTML(c);
  } else if(currentTab==='flow'){
-  $('resultView').innerHTML=straightIntroHTML(c,'flow','대운·세운')+U13timeline(c)+manseTop+((typeof GuiinPlain!=='undefined')?GuiinPlain.renderFlow(c,new Date().getFullYear()):expertFlowHTML(c));
+  $('resultView').innerHTML=straightIntroHTML(c,'flow','대운·세운')+M14calendar(c)+U13timeline(c)+manseTop+((typeof GuiinPlain!=='undefined')?GuiinPlain.renderFlow(c,new Date().getFullYear()):expertFlowHTML(c));
  } else if(currentTab==='chart'){
   $('resultView').innerHTML=manseTop+
    (typeof GuiinPlain!=='undefined'
