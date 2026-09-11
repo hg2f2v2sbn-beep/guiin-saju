@@ -876,6 +876,22 @@ img[src="clover-mark.jpg"]{
 .u34PriceGrid{display:grid;grid-template-columns:1fr 1fr;gap:7px;margin:10px 0}.u34Price{padding:12px;border-radius:14px;background:#f5f7f1;border:1px solid #e1e7dd}.u34Price b{display:block;font-size:10px;color:#244c3a}.u34Price strong{display:block;margin-top:3px;font-size:16px;color:#173f31}.u34Price span{display:block;margin-top:4px;font-size:7.8px;line-height:1.55;color:#737c76}
 @media(max-width:360px){.u34PriceGrid{grid-template-columns:1fr}}
 
+
+/* UPDATE 35 FINAL — COMPATIBILITY PRODUCT + RELEASE HARDENING */
+.u35Hero,.u35Card,.u35Lock,.u35Sample,.u35Checklist{margin:9px 0;border-radius:18px}
+.u35Hero{padding:18px;background:linear-gradient(145deg,#fff8fb,#fffdf4);border:1px solid #eee0e5}
+.u35Hero small{font-size:8px;font-weight:900;color:#9b5c83}.u35Hero h2{margin:5px 0 8px;font-size:20px;line-height:1.42;color:#24483a}.u35Hero p{margin:0;font-size:9px;line-height:1.75;color:#716d6b}
+.u35Grid{display:grid;grid-template-columns:1fr 1fr;gap:7px;margin-top:10px}.u35Card{padding:12px;background:#fff;border:1px solid #ece5df}
+.u35Card b{display:block;font-size:9px;color:#8b667b}.u35Card strong{display:block;margin:4px 0;font-size:13px;color:#24483a}.u35Card span{font-size:8px;line-height:1.55;color:#777}
+.u35Lock{padding:18px;background:#173f31;color:#fff}.u35Lock h3{margin:0;font-size:18px}.u35Lock .price{font-size:28px;font-weight:950;margin:5px 0}.u35Lock p{font-size:9px;line-height:1.65;color:#e7eee9}
+.u35Includes{display:grid;grid-template-columns:1fr 1fr;gap:6px;margin:11px 0}.u35Includes span{padding:8px;border-radius:10px;background:rgba(255,255,255,.09);font-size:8px;line-height:1.5}
+.u35Lock button{width:100%;border:0;border-radius:13px;padding:13px;background:#d9b55c;color:#17352a;font-weight:950}
+.u35Sample{padding:16px;background:#fff;border:1px solid #eadfc9}.u35Sample em{display:block;font-style:normal;font-size:8px;font-weight:900;color:#b48627}
+.u35Sample h4{margin:5px 0 8px;font-size:14px;line-height:1.55;color:#24483a}.u35Sample p{margin:0;font-size:9px;line-height:1.85;color:#676d68;word-break:keep-all}
+.u35Evidence{margin-top:9px!important;padding:10px;border-radius:11px;background:#f5f4ef;color:#777!important}
+.u35Checklist{padding:13px;background:#f8f6ef;font-size:8.5px;line-height:1.75;color:#716e68}
+@media(max-width:360px){.u35Grid,.u35Includes{grid-template-columns:1fr}}
+
 </style>
 </head>
 <body>
@@ -909,7 +925,7 @@ img[src="clover-mark.jpg"]{
   <div class="tiles">
     <div class="tile"><div class="ico"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="4" fill="currentColor"/><g stroke="currentColor" stroke-width="1.7"><path d="M12 1v4M12 19v4M1 12h4M19 12h4M4.2 4.2l2.8 2.8M17 17l2.8 2.8M19.8 4.2L17 7M7 17l-2.8 2.8"/></g></svg></div><b>오늘의 운세</b><p>오늘 나에게 들어오는 기운과 주의할 점</p><button onclick="renderToday();go('today')">지금 바로 보기 ›</button></div>
     <div class="tile"><div class="ico"><svg viewBox="0 0 24 24"><path d="M6 3h12v18H6z" fill="none" stroke="currentColor" stroke-width="1.7"/><path d="M9 7h6M9 11h6M9 15h4" stroke="currentColor" stroke-width="1.7"/></svg></div><span class="badge">990원</span><div class="pet"><img src="input-cat.jpg" alt=""></div><b>평생사주</b><p>성격, 직업, 재물, 연애, 가족, 대운까지</p><button onclick="openResultTab('summary')">내 사주 전체 보기 ›</button></div>
-    <div class="tile"><div class="ico"><svg viewBox="0 0 24 24"><path d="M12 20s-8-4.8-8-10a4.5 4.5 0 018-2.8A4.5 4.5 0 0120 10c0 5.2-8 10-8 10z" fill="currentColor"/></svg></div><span class="badge">2,900원</span><div class="pet"><img src="compat-animals.jpg" alt=""></div><b>우리 궁합</b><p>두 사람의 끌림, 갈등, 결혼, 재물궁합까지</p><button onclick="go('match')">궁합 보기 ›</button></div>
+    <div class="tile"><div class="ico"><svg viewBox="0 0 24 24"><path d="M12 20s-8-4.8-8-10a4.5 4.5 0 018-2.8A4.5 4.5 0 0120 10c0 5.2-8 10-8 10z" fill="currentColor"/></svg></div><span class="badge">7,900원</span><div class="pet"><img src="compat-animals.jpg" alt=""></div><b>우리 궁합</b><p>두 사람의 끌림, 갈등, 결혼, 재물궁합까지</p><button onclick="go('match')">궁합 보기 ›</button></div>
     <div class="tile"><div class="ico"><svg viewBox="0 0 24 24"><path d="M4 20V10h3v10H4zm6 0V5h3v15h-3zm6 0V2h3v18h-3z" fill="currentColor"/></svg></div><b>대운·세운·연운</b><p>10년 단위 대운과 올해의 흐름, 월별 운세</p><button onclick="renderYearLuck();go('yearLuck')">운의 흐름 보기 ›</button></div>
     <div class="tile"><div class="ico"><svg viewBox="0 0 24 24"><path d="M12 21V10M12 10C6 10 4 7 4 3c5 0 8 2 8 7zm0 0c6 0 8-3 8-7-5 0-8 2-8 7z" fill="currentColor"/></svg></div><div class="pet"><img src="compat-animals.jpg" alt=""></div><b>내 사주관리</b><p>저장한 프로필로 더 빠르고 편리하게</p><button onclick="go('manage')">내 프로필 보기 ›</button></div>
     <div class="tile"><div class="ico"><svg viewBox="0 0 24 24"><path d="M12 2l3 6 6 .8-4.5 4.4 1.2 6.2L12 16.5 6.3 19.4l1.2-6.2L3 8.8 9 8z" fill="currentColor"/></svg></div><b>이용가이드</b><p>처음 오셨나요? 귀인사주 이용방법을 안내해드려요.</p><button onclick="go('guide')">가이드 보기 ›</button></div>
@@ -977,11 +993,11 @@ img[src="clover-mark.jpg"]{
     <label>나</label><input id="aName" placeholder="이름">
     <div class="seg" id="aGender"><button class="on" data-v="여">여성</button><button data-v="남">남성</button></div>
     <div class="row3" style="margin-top:7px"><input id="aYear" type="number" placeholder="년"><input id="aMonth" type="number" placeholder="월"><input id="aDay" type="number" placeholder="일"></div>
-    <div class="row2" style="margin-top:7px"><input id="aHour" type="number" placeholder="시"><input id="aMin" type="number" placeholder="분"></div>
+    <div class="row2" style="margin-top:7px"><input id="aHour" type="number" placeholder="시"><input id="aMin" type="number" placeholder="분"></div><label class="check"><input id="aHourUnknown" type="checkbox">출생시간을 모릅니다.</label>
     <label>상대</label><input id="bName" placeholder="이름">
     <div class="seg" id="bGender"><button class="on" data-v="여">여성</button><button data-v="남">남성</button></div>
     <div class="row3" style="margin-top:7px"><input id="bYear" type="number" placeholder="년"><input id="bMonth" type="number" placeholder="월"><input id="bDay" type="number" placeholder="일"></div>
-    <div class="row2" style="margin-top:7px"><input id="bHour" type="number" placeholder="시"><input id="bMin" type="number" placeholder="분"></div>
+    <div class="row2" style="margin-top:7px"><input id="bHour" type="number" placeholder="시"><input id="bMin" type="number" placeholder="분"></div><label class="check"><input id="bHourUnknown" type="checkbox">출생시간을 모릅니다.</label><div class="help">출생시간을 모르면 시주 관련 판단은 제외하거나 강도를 낮춰 해석합니다.</div>
     <button class="ctaGold" onclick="submitMatch()">궁합 보기 ›</button>
   </div>
 </section>
@@ -1183,7 +1199,7 @@ function intVal(id,fallback=0){const n=parseInt($(id)?.value,10);return Number.i
 function profileInput(prefix=''){
  const name=$(prefix?prefix+'Name':'name').value||'사용자';
  const gender=segVal(prefix?prefix+'Gender':'genderSeg')||'여';
- return {name,gender,calendar:prefix?'양력':(segVal('calendarSeg')||'양력'),year:intVal(prefix?prefix+'Year':'year'),month:intVal(prefix?prefix+'Month':'month'),day:intVal(prefix?prefix+'Day':'day'),hour:intVal(prefix?prefix+'Hour':'hour',12),minute:intVal(prefix?prefix+'Min':'minute',0),hourUnknown:false,leapMonth:prefix?false:($('leapMonth')?.checked||false),dayBoundary:'23',trueSolarApply:false,longitude:126.98};
+ return {name,gender,calendar:prefix?'양력':(segVal('calendarSeg')||'양력'),year:intVal(prefix?prefix+'Year':'year'),month:intVal(prefix?prefix+'Month':'month'),day:intVal(prefix?prefix+'Day':'day'),hour:intVal(prefix?prefix+'Hour':'hour',12),minute:intVal(prefix?prefix+'Min':'minute',0),hourUnknown:prefix?($(prefix+'HourUnknown')?.checked||false):($('hourUnknown')?.checked||false),leapMonth:prefix?false:($('leapMonth')?.checked||false),dayBoundary:'23',trueSolarApply:false,longitude:126.98};
 }
 const DM={
  '갑':['곧고 성장지향적인','새로운 길을 만드는 힘'],
@@ -2317,6 +2333,71 @@ function U34compatPaywall(){
  return `<section class="u28Preview"><span class="u28Badge">프리미엄 궁합</span><h3>두 사람을 함께 보는 심층 궁합</h3>${U34priceInfo()}${U34compatSample()}<div class="u29Notice">실제 7,900원 결제는 KCP 서버 연동 및 결제 검증이 완료된 뒤 활성화됩니다. 현재는 결제된 것처럼 처리하거나 실제 궁합을 임의로 해제하지 않습니다.</div></section>`;
 }
 
+
+/* UPDATE 35 FINAL — Compatibility master layer.
+   It uses already-calculated natal charts and never replaces the Four Pillars engine. */
+const U35PRODUCTS={
+ lifetime:{id:'premium_lifetime_6900',name:'프리미엄 평생사주',price:6900},
+ compatibility:{id:'premium_compatibility_7900',name:'프리미엄 궁합',price:7900}
+};
+const U35Compat=(()=>{
+ const E=['목','화','토','금','수'], gen={목:'화',화:'토',토:'금',금:'수',수:'목'}, ctl={목:'토',토:'수',수:'화',화:'금',금:'목'};
+ const six=new Set(['0-1','2-11','3-10','4-9','5-8','6-7']), clash=new Set(['0-6','1-7','2-8','3-9','4-10','5-11']);
+ const key=(a,b)=>[a,b].sort((x,y)=>x-y).join('-');
+ function pct(c){try{return GuiinExpert.pct(c)}catch(e){return {목:20,화:20,토:20,금:20,수:20}}}
+ function rel(a,b){
+  if(a===b)return ['공감','기본 기운이 같아 서로를 빠르게 이해하기 쉽지만, 같은 약점도 동시에 커질 수 있습니다.'];
+  if(gen[a]===b||gen[b]===a)return ['보완','한 사람의 기운이 다른 사람에게 자연스럽게 이어지는 생조 흐름이 있습니다.'];
+  if(ctl[a]===b||ctl[b]===a)return ['긴장과 끌림','서로 다른 기준이 선명해 끌림과 긴장이 함께 생길 수 있습니다. 통제보다 역할 합의가 중요합니다.'];
+  return ['조율','처음부터 같은 방식이라기보다 관계 속에서 서로의 언어를 배워가는 편입니다.'];
+ }
+ function analyze(a,b){
+  const ae=a.pillars.day.stemEl, be=b.pillars.day.stemEl, r=rel(ae,be);
+  const ak=a.pillars.day.branchIndex, bk=b.pillars.day.branchIndex, k=key(ak,bk);
+  const day = six.has(k)?['일지 육합','가까운 관계 자리에서 서로 맞물리는 신호가 있어 친밀감과 협력이 자연스럽게 생길 여지가 있습니다.']:
+              clash.has(k)?['일지 충','가까운 관계 자리에서 차이가 크게 체감될 수 있습니다. 충은 이별 확정이 아니라 변화와 조율이 필요한 신호입니다.']:
+              ['일지 직접 강신호 없음','한 가지 합·충만으로 관계를 규정하기보다 전체 명식과 생활 패턴을 함께 보는 편이 안전합니다.'];
+  const pa=pct(a),pb=pct(b);
+  let gaps=E.map(x=>[x,Math.abs((pa[x]||0)-(pb[x]||0))]).sort((x,y)=>y[1]-x[1]);
+  const timeLimited=!!(a.profile?.hourUnknown||b.profile?.hourUnknown);
+  return {stem:r,day,largestGap:gaps[0],timeLimited,
+   domains:[
+    ['끌림과 첫인상',r[0],r[1]],
+    ['감정표현','표현 속도 확인','좋아하는 마음의 크기와 표현 방식은 같지 않을 수 있습니다. 상대가 알아서 알겠지보다 원하는 반응을 구체적으로 말하는 편이 좋습니다.'],
+    ['대화와 갈등',day[0],day[1]],
+    ['싸운 뒤 회복','회복 규칙 필요','누가 맞는지를 끝까지 가리기보다 감정이 올라왔을 때 멈추는 시간과 다시 이야기할 시간을 미리 합의하면 반복 갈등을 줄이는 데 도움이 됩니다.'],
+    ['생활궁합','역할을 말로 정하기','연애의 설렘과 같이 사는 편안함은 별개입니다. 집안일·개인시간·연락 빈도처럼 작은 생활 규칙을 실제 행동 단위로 맞추는 것이 중요합니다.'],
+    ['돈과 현실','기준 공개하기',`두 명식의 오행 분포에서 차이가 크게 보이는 축은 ${gaps[0][0]} 기운입니다. 이것만으로 소비습관을 단정하지 않고 실제 예산·저축·공동비용 기준과 함께 확인해야 합니다.`],
+    ['친밀감','속도 존중','정서적 친밀감은 상대가 편안함을 느끼는 속도를 존중할수록 안정되기 쉽습니다. 사주만으로 성적 행동이나 만족도를 단정하지 않습니다.'],
+    ['결혼과 장기관계','생활 합의가 핵심','결혼 가능 여부를 한 점수로 결정하지 않습니다. 책임 분담, 돈, 가족 경계, 거주 방식처럼 오래 함께 살 때 필요한 조건을 구체적으로 맞춰야 합니다.'],
+    ['가족과 경계','둘의 원칙 먼저','양가 가족과 주변 사람의 의견이 관계 안으로 들어올 때 두 사람이 먼저 같은 원칙을 정해두는 것이 도움이 됩니다.'],
+    ['현재와 앞으로','운의 배경을 함께 보기','실제 유료판에서는 각자의 원국을 바꾸지 않은 채 대운·세운이 관계에 주는 압력과 기회를 따로 겹쳐 봅니다. 특정 연도에 이별·결혼이 확정된다고 말하지 않습니다.']
+   ]};
+ }
+ return {analyze};
+})();
+function U35compatSample(){
+ return `<div class="u35Hero"><small>프리미엄 궁합 · 풀이 미리보기</small><h2>궁합은 “몇 점”보다<br>두 사람이 어떻게 함께 사는지를 봅니다.</h2><p>※ 아래 내용은 풀이 형식을 보여드리는 가상 예시입니다. 고객님의 실제 궁합 결과가 아닙니다.</p></div>
+ <div class="u35Sample"><em>예시 01 · 끌림과 감정</em><h4>“처음의 끌림은 강할 수 있습니다. 다만 마음을 확인하는 방식은 서로 다를 수 있습니다.”</h4><p>한 사람은 행동으로 챙기는 것을 사랑이라고 느끼고, 다른 사람은 말과 반응이 있어야 사랑받는다고 느낄 수 있습니다. 이런 관계는 마음이 부족해서가 아니라 표현의 번역이 늦어서 서운함이 커지기 쉽습니다. 유료판에서는 두 사람의 일간·일지와 십신 관계를 각각 먼저 읽고, 어떤 지점에서 상대를 매력적으로 느끼는지와 서운함이 쌓이는 방식을 따로 설명합니다.</p><p class="u35Evidence"><b>명리 근거도 같이 보여드립니다.</b> 전문용어를 나열하지 않고 “일지는 가까운 관계와 생활에서 드러나는 자리”처럼 바로 쉬운 뜻을 붙입니다.</p></div>
+ <div class="u35Sample"><em>예시 02 · 갈등과 회복</em><h4>“잘 안 싸우는 궁합보다, 싸운 뒤 다시 연결되는 방법을 아는 궁합이 오래 갑니다.”</h4><p>한쪽은 문제가 생기면 당장 답을 내고 싶고 다른 쪽은 혼자 정리할 시간이 필요하다면 같은 갈등이 반복될 수 있습니다. 이때 단순히 ‘상극’이라고 결론내리지 않고 갈등의 시작점, 감정이 커지는 방식, 멈춰야 하는 순간, 다시 대화를 시작하기 좋은 방식을 나눠 보여드립니다. 합과 충도 천생연분이나 이별 확정으로 사용하지 않고 관계의 결합·변화 신호로 해석합니다.</p></div>
+ <div class="u35Sample"><em>예시 03 · 돈·생활·결혼</em><h4>“연애할 때 좋은 사람과 같이 살 때 편한 사람은 다를 수 있습니다.”</h4><p>유료 궁합에서는 돈을 쓰고 모으는 기준, 생활 리듬, 혼자 있는 시간, 책임 분담, 가족과의 경계까지 장기관계 관점에서 봅니다. 두 사람의 장점이 서로를 보완하는지, 오히려 같은 성향이 경쟁으로 변하는지도 함께 확인합니다. 마지막에는 잘 맞는 부분·부딪히는 부분·회복 방법·두 사람이 실제로 합의해야 할 것을 정리합니다.</p></div>`;
+}
+function U35compatLock(){
+ return `<div class="u35Lock"><h3>두 사람의 심층 궁합 전체보기</h3><div class="price">7,900원</div><p>두 명의 명식을 각각 계산한 뒤 관계 안에서 만나는 지점을 함께 분석합니다.</p>
+ <div class="u35Includes"><span>✓ 끌림·감정표현</span><span>✓ 대화·갈등·회복</span><span>✓ 생활·돈·책임</span><span>✓ 친밀감·경계</span><span>✓ 결혼·장기관계</span><span>✓ 대운·세운 흐름</span><span>✓ 명리 근거 설명</span><span>✓ 현실 행동 조언</span></div>
+ <button type="button" onclick="openPaywall('compatibility')">프리미엄 궁합 7,900원</button></div>`;
+}
+function U35premiumCompatibility(a,b){
+ const x=U35Compat.analyze(a,b);
+ let cards=x.domains.map((d,i)=>`<section class="u35Sample"><em>${String(i+1).padStart(2,'0')} · ${d[0]}</em><h4>${d[1]}</h4><p>${d[2]}</p></section>`).join('');
+ return `<div class="u35Hero"><small>두 사람의 프리미엄 궁합</small><h2>점수보다 중요한 건<br>이 관계가 실제로 움직이는 방식입니다.</h2><p>${x.timeLimited?'한 명 이상 출생시간을 몰라 시주 관련 판단은 제외하거나 강도를 낮췄습니다.':'두 사람의 입력된 출생시간까지 포함해 계산된 명식을 기준으로 해석합니다.'}</p></div>${cards}
+ <div class="u35Checklist"><b>해석 원칙</b><br>한 개의 신살이나 합·충만으로 천생연분·이별·결혼을 확정하지 않습니다. 실제 계산된 두 명식을 유지한 채 반복되는 근거를 우선하고, 근거가 약한 부분은 가능성의 언어로 낮춰 설명합니다.</div>`;
+}
+/* Product-aware checkout bridge.
+   Real KCP approval still requires the server; this layer never grants entitlement by itself. */
+function U35productMeta(kind){return kind==='compatibility'?U35PRODUCTS.compatibility:U35PRODUCTS.lifetime}
+function U35checkoutLabel(kind){const x=U35productMeta(kind);return `${x.name} · ${x.price.toLocaleString()}원`}
+
 function renderResult(){
  if(chart && !U28hasPremium()){
    document.querySelectorAll('#resultTabs button').forEach(b=>b.classList.toggle('on',b.dataset.tab===currentTab));
@@ -2370,33 +2451,16 @@ function setMatchTab(tab){
  window.scrollTo({top:0,behavior:'smooth'});
 }
 function submitMatch(){
- try{
-  const a=GuiinSaju.calculate(profileInput('a')), b=GuiinSaju.calculate(profileInput('b'));
-  const pa=GuiinExpert.pct(a),pb=GuiinExpert.pct(b);
-  const distance=['목','화','토','금','수'].reduce((s,e)=>s+Math.abs(pa[e]-pb[e]),0);
-  const balance=Math.max(0,20-Math.round(distance/5));
-  const same=a.dayMaster.el===b.dayMaster.el?4:0;
-  const dayGap=Math.min((a.pillars.day.branchIndex-b.pillars.day.branchIndex+12)%12,(b.pillars.day.branchIndex-a.pillars.day.branchIndex+12)%12);
-  const relationBonus=dayGap===6?-4:(dayGap===4||dayGap===8?4:0);
-  const score=Math.max(60,Math.min(96,72+balance+same+relationBonus));
-  const love=Math.max(55,Math.min(98,score+(dayGap===4||dayGap===8?5:0)));
-  const personality=Math.max(55,Math.min(98,score+Math.round((20-distance/5)/2)));
-  const money=Math.max(55,Math.min(98,Math.round((100-(Math.abs(pa['토']-pb['토'])+Math.abs(pa['금']-pb['금'])))*.35+55)));
-  const future=Math.max(55,Math.min(98,Math.round((score+personality)/2)));
-  const band=score>=86?'서로의 장점을 살릴 여지가 큰 관계입니다.':score>=76?'맞는 부분과 조율할 부분이 함께 있는 관계입니다.':score>=66?'끌림과 차이가 함께 있어 생활 조율이 중요한 관계입니다.':'점수보다 대화와 경계 설정이 특히 중요한 관계입니다.';
-  matchBaseHTML=`<div class="matchHero card"><h3>두 사람의 인연은 특별합니다.</h3><p>“좋은 인연이, 더 행복한 내일을 만듭니다.”</p><div class="matchArt"><img loading="lazy" decoding="async" src="compat-animals.jpg" alt=""></div><div style="font-size:9px;margin-top:7px">귀인사주 참고 궁합 지수</div><div class="score">♥ ${score}<small>점</small></div><p>${band}</p></div>
-   <div class="infoCard card"><div class="pair"><div class="person"><b>나<br>${esc(a.input.name)}</b><br>${a.input.year}.${a.input.month}.${a.input.day}<br>${a.input.gender==='여'?'여성':'남성'}</div><div class="heartSvg">${ICONS.heart}</div><div class="person b"><b>상대방<br>${esc(b.input.name)}</b><br>${b.input.year}.${b.input.month}.${b.input.day}<br>${b.input.gender==='여'?'여성':'남성'}</div></div></div>
-   <div class="infoCard card"><h3>세부 궁합 지수</h3>${[['연애궁합',love,'pink'],['성격궁합',personality,'mint'],['재물궁합',money,'gold'],['미래궁합',future,'purple']].map(x=>`<div class="scoreRow"><span>${x[0]}</span><div class="scoreBar"><i class="${x[2]}" style="width:${x[1]}%"></i></div><b>${x[1]}</b></div>`).join('')}</div>`+
-   ((typeof GuiinManse!=='undefined')?GuiinManse.renderPair(a,b):'');
-  if(typeof GuiinCompat==='undefined') throw new Error('compatibility-interpreter.js가 로드되지 않았습니다.');
-  matchAnalysis=GuiinCompat.build(a,b,score);
-  matchTab='summary';
-  renderCompatCards();
-  go('matchResult');
- }catch(e){
-  console.error(e);
-  alert('두 사람의 생년월일을 확인해 주세요.');
- }
+ const a=profileInput('a'),b=profileInput('b');
+ if(!a.name||!b.name){toast('두 사람의 이름을 입력해주세요.');return}
+ const ca=buildChart(a),cb=buildChart(b);
+ if(!ca||!cb)return;
+ const x=U35Compat.analyze(ca,cb);
+ const free=`<div class="u35Hero"><small>${esc(a.name)} × ${esc(b.name)} · 무료 궁합 요약</small><h2>${x.stem[0]}의 흐름이 먼저 보입니다.</h2><p>${x.stem[1]}</p>
+ <div class="u35Grid"><div class="u35Card"><b>가까운 관계 자리</b><strong>${x.day[0]}</strong><span>${x.day[1]}</span></div><div class="u35Card"><b>해석 범위</b><strong>${x.timeLimited?'출생시간 일부 제외':'시주 포함'}</strong><span>${x.timeLimited?'시간 관련 판단은 낮춰서 봅니다.':'입력된 출생시간을 포함합니다.'}</span></div></div></div>`;
+ const entitled=(typeof U28hasPremium==='function'&&U28hasPremium('compatibility'))||(window.__GUIIN_COMPAT_ENTITLED__===true);
+ const body=free+(entitled?U35premiumCompatibility(ca,cb):(U35compatLock()+U35compatSample()));
+ openSheet('궁합 결과',body);
 }
 function todayFlow(c,d){try{return GuiinSaju.flowForDate(d.getFullYear(),d.getMonth()+1,d.getDate(),c.pillars.day.stemIndex,12,0,{dayBoundary:c.input.dayBoundary||'23'});}catch(e){return null}}
 function todayGodMeaning(g){const m={비견:['내 페이스','내가 직접 결정하고 움직이는 힘이 커집니다.','오늘 끝낼 한 가지를 정하세요.'],겁재:['경쟁·협업','사람과 속도가 붙는 날입니다.','비교 소비와 감정적인 승부를 줄이세요.'],식신:['결과 만들기','손으로 만들고 마무리하는 일이 잘 맞습니다.','작은 결과라도 남기세요.'],상관:['표현·개선','말과 아이디어가 빨라지는 날입니다.','맞는 말도 부드럽게 표현하세요.'],편재:['기회·거래','사람과 돈의 흐름이 빠르게 움직일 수 있습니다.','즉흥 지출보다 조건을 먼저 보세요.'],정재:['관리·현실','정산·계약·예산처럼 현실적인 일이 중요합니다.','작은 돈과 약속을 정확히 관리하세요.'],편관:['책임·결단','압박 속에서 결정할 일이 생기기 쉽습니다.','책임을 전부 혼자 떠안지 마세요.'],정관:['규칙·신뢰','약속과 절차를 지키는 것이 평가로 이어집니다.','정석대로 처리하세요.'],편인:['관찰·전문성','혼자 깊게 생각하고 파고드는 힘이 살아납니다.','생각 뒤에 작은 실행을 붙이세요.'],정인:['배움·지원','배우거나 도움받는 흐름이 유리합니다.','문서와 정보를 차분히 확인하세요.']};return m[g]||['균형','오늘의 기운을 한 사건으로 단정하지 않습니다.','평소 루틴을 지키세요.']}
@@ -2467,5 +2531,10 @@ applyCopy();
 const h=location.hash.replace('#','');if(['home','saju','result','match','matchResult','today','mypage','ask','wallet','admin','guide','manage','yearLuck'].includes(h))go(h);
 </script>
 <button class="u16TopBtn" onclick="window.scrollTo({top:0,behavior:'smooth'})" aria-label="맨 위로">↑</button>
+
+<script type="application/json" id="guiin-release-products">
+{"version":"35-final","currency":"KRW","products":[{"id":"premium_lifetime_6900","name":"프리미엄 평생사주","amount":6900},{"id":"premium_compatibility_7900","name":"프리미엄 궁합","amount":7900}],"payment":{"provider":"NHN KCP","live":false,"rule":"server_verified_entitlement_only"},"stars":{"supported":38,"catalog":50}}
+</script>
+
 </body>
 </html>
