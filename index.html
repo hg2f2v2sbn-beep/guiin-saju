@@ -55,14 +55,11 @@ svg{display:block}
 .avatar img{width:100%;height:100%;object-fit:cover}
 .profilebar .txt b{display:block;font-size:12px}.profilebar .txt small{display:block;font-size:9px;color:var(--sub);margin-top:2px}
 .profilebar .picker{margin-left:auto;border:0;background:#f5f0e7;border-radius:999px;padding:8px 10px;font-size:9px;font-weight:800;color:#4a554f}
-.homeHero{padding:12px;text-align:center;background:linear-gradient(145deg,#f8ffe9,#fff7d5);overflow:hidden}
-.homeHero .heroArt{position:relative;height:210px;margin:0 0 10px}
-.homeHero .heroText{position:absolute;left:0;right:0;top:10px;z-index:2;pointer-events:none;text-shadow:0 1px 0 #fff8}
-.homeHero .ctaGreen{position:relative;z-index:3;margin-top:0}
+.homeHero{padding:14px 14px 13px;text-align:center;background:linear-gradient(145deg,#f8ffe9,#fff7d5);overflow:hidden}
 .homeHero .kicker{font-size:10px;color:#5d775f;font-weight:800}.homeHero h1{font-size:34px;margin:4px 0;color:#075e46;letter-spacing:-.06em}
 .homeHero .copy{font-size:10px;line-height:1.6;color:#647269}
 .heroArt{height:148px;overflow:hidden;border-radius:16px;margin:10px 0 12px}
-.heroArt img{width:100%;height:100%;object-fit:cover;object-position:center 70%;display:block}
+.heroArt img{width:100%;height:100%;object-fit:cover;object-position:center 42%;display:block}
 .ctaGreen,.ctaGold{border:0;border-radius:15px;padding:13px 18px;font-weight:900}
 .ctaGreen{background:linear-gradient(135deg,#13795a,#075a43);color:white;min-width:210px}
 .ctaGold{width:100%;background:linear-gradient(135deg,#ffd45c,#efb42d);color:#2d382f;margin-top:14px}
@@ -235,6 +232,7 @@ html{background:#efe7d7}.app{background:linear-gradient(180deg,#fffaf0 0%,#fff6e
 }
 
 </style>
+<link rel="stylesheet" href="ui-reference-lock.css">
 </head>
 <body>
 <div class="app">
@@ -253,14 +251,10 @@ html{background:#efe7d7}.app{background:linear-gradient(180deg,#fffaf0 0%,#fff6e
   </div>
 
   <div class="homeHero card">
-    <div class="heroArt">
-      <img decoding="async" fetchpriority="high" src="brand-home.jpg" alt="귀인사주">
-      <div class="heroText">
-        <div class="kicker">좋은 인연이, 좋은 운을 만드는</div>
-        <h1>귀인사주</h1>
-        <div class="copy">지금의 고민이<br>더 좋은 내일로 이어지길.</div>
-      </div>
-    </div>
+    <div class="kicker">좋은 인연이, 좋은 운을 만드는</div>
+    <h1>귀인사주</h1>
+    <div class="copy">지금의 고민이<br>더 좋은 내일로 이어지길.</div>
+    <div class="heroArt"><img decoding="async" fetchpriority="high" src="brand-home.jpg" alt="귀인사주"></div>
     <button class="ctaGreen" onclick="go('ask')">AI 사주상담 시작하기 ›</button>
   </div>
 

@@ -1,0 +1,283 @@
+/* GUIIN SAJU — REFERENCE LOCK UI 06
+   Design-only overrides based on the approved 10-screen mobile reference.
+   No image paths, calculation logic, or result data are changed. */
+
+:root{
+  --ui-bg:#fffaf0;--ui-paper:#fffefa;--ui-ink:#24372d;--ui-sub:#7d827c;
+  --ui-line:#ece3d4;--ui-green:#0b6b4f;--ui-green2:#07583f;
+  --ui-gold:#e7b12f;--ui-gold2:#ffd45d;--ui-pink:#ef6685;--ui-purple:#9b65d7;
+  --ui-radius:18px;--ui-shadow:0 5px 18px rgba(76,58,28,.07)
+}
+
+html{background:#efe8dc}
+body{
+  background:#efe8dc;color:var(--ui-ink);
+  -webkit-font-smoothing:antialiased;text-rendering:optimizeLegibility
+}
+.app{
+  width:100%;max-width:430px;min-height:100dvh;margin:0 auto;
+  background:linear-gradient(180deg,#fffdf8 0%,#fff8e9 100%);
+  box-shadow:0 0 0 1px rgba(221,209,187,.7);
+  padding-bottom:calc(74px + env(safe-area-inset-bottom))
+}
+.screen{padding:0 12px calc(98px + env(safe-area-inset-bottom));min-height:100dvh}
+.card{
+  border-radius:18px;border:1px solid var(--ui-line);
+  box-shadow:var(--ui-shadow);background:rgba(255,254,250,.97)
+}
+
+/* 상단바 */
+.topbar{
+  height:64px;grid-template-columns:36px 1fr 36px;
+  background:rgba(255,251,242,.94);border-bottom:0;
+  backdrop-filter:blur(18px);-webkit-backdrop-filter:blur(18px);
+  padding-top:env(safe-area-inset-top)
+}
+.topbar .ghost{
+  width:36px;height:36px;display:grid;place-items:center;
+  border-radius:12px;padding:0
+}
+.brand .brandline{
+  font-size:18px;line-height:1.05;font-weight:900;
+  letter-spacing:-.045em;color:#145b44
+}
+.brand small{font-size:7.5px;letter-spacing:.02em;color:#99958d;margin-top:3px}
+.logo-dot{width:18px;height:18px}
+
+/* 홈 */
+.profilebar{
+  padding:9px 10px;margin:8px 0 10px;border-radius:16px;
+  box-shadow:none;background:#fffdfa
+}
+.avatar{width:38px;height:38px}
+.profilebar .txt b{font-size:12px}
+.profilebar .txt small{font-size:8px}
+.profilebar .picker{
+  font-size:8px;padding:7px 9px;background:#f7f2e8
+}
+.homeHero{
+  border-radius:20px;margin:0;box-shadow:var(--ui-shadow);overflow:hidden
+}
+.homeHero .kicker{font-size:9px}
+.homeHero h1{font-size:31px}
+.homeHero .copy{font-size:9.5px}
+.heroArt{
+  height:auto;aspect-ratio:1.68/1;border-radius:0;margin:8px 0 0
+}
+.heroArt img{object-fit:cover}
+.homeHero .ctaGreen{
+  min-width:190px;max-width:78%;bottom:14px;
+  padding:12px 16px;border-radius:999px;font-size:12px
+}
+
+/* 기준 시안처럼 3 x 2 홈 메뉴 */
+.tiles{
+  grid-template-columns:repeat(3,minmax(0,1fr))!important;
+  gap:7px!important;margin-top:9px!important
+}
+.tile{
+  min-height:132px!important;border-radius:16px!important;
+  padding:11px 8px 34px!important;
+  box-shadow:0 4px 14px rgba(93,70,33,.06)!important
+}
+.tile .ico{width:28px;height:28px;margin:0 auto 5px}
+.tile .ico svg{width:28px;height:28px}
+.tile b{font-size:11px!important;text-align:center;line-height:1.25}
+.tile p{
+  font-size:7.6px!important;line-height:1.42!important;
+  text-align:center;margin-top:4px!important;
+  display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden
+}
+.tile .badge{
+  font-size:6.3px!important;right:5px!important;top:5px!important;
+  padding:2px 5px!important
+}
+.tile button{
+  left:6px!important;right:6px!important;bottom:6px!important;
+  padding:5px 3px!important;font-size:7px!important
+}
+.slogan{
+  padding:10px 11px;font-size:8.5px;border-radius:15px;box-shadow:none
+}
+
+/* 하단 네비게이션 */
+.bottom{
+  height:68px;padding-bottom:env(safe-area-inset-bottom);
+  background:rgba(255,255,255,.95);border-top:1px solid #eee6d9;
+  backdrop-filter:blur(18px);-webkit-backdrop-filter:blur(18px);
+  grid-template-columns:1fr 1fr 68px 1fr 1fr
+}
+.bottom button{font-size:8px}
+.bottom button svg{width:19px;height:19px}
+.bottom .flower{
+  width:48px;height:48px;margin:-19px auto 0;
+  box-shadow:0 7px 18px rgba(190,135,18,.26)
+}
+
+/* 사주 입력 / 공통 폼 */
+.screenTitle{padding:12px 2px 9px;align-items:center}
+.screenTitle .mark{width:38px;height:38px;border-radius:12px}
+.screenTitle h2{font-size:22px}
+.screenTitle p{font-size:9.5px}
+.screenTitle .sideArt{width:74px;height:54px;border-radius:13px}
+.formCard{padding:15px;border-radius:18px;box-shadow:none}
+.formCard label{font-size:9.5px;margin:11px 0 5px}
+input,select{
+  min-height:42px;border-radius:11px;font-size:12px;
+  padding:9px 10px;background:#fffefa
+}
+.seg{gap:7px}
+.seg button{padding:10px 8px;border-radius:11px;font-size:11px}
+.seg button.on{
+  background:#fff5c7;border-color:#e7b12f;color:#5f4c16
+}
+.locationRow{padding:10px;border-radius:11px;font-size:10px}
+.help{font-size:8px}
+.ctaGold,.ctaGreen{min-height:46px;border-radius:13px;font-size:13px}
+.ctaGold{margin-top:12px}
+
+/* 기준 시안: 탭은 흰 배경 + 선택한 알약만 컬러 */
+.tabs,.tabs.purple,.tabs.green{
+  position:sticky;top:64px;z-index:25;margin:0 -12px;
+  padding:7px 12px 8px;gap:5px;
+  background:rgba(255,251,243,.97);
+  border-bottom:1px solid #eee5d8;
+  backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px)
+}
+.tabs button{
+  padding:7px 10px;border-radius:999px;font-size:9px;
+  background:#f4f0e9;color:#777b76
+}
+.tabs button.on{background:#ef6787;color:#fff}
+.tabs.green button.on{background:#0c6a4f}
+.tabs.purple button.on{background:#9d69d8}
+
+/* 결과 카드 */
+.summaryHero{border-radius:18px;padding:14px}
+.summaryHero h3{font-size:20px}
+.summaryHero p{font-size:10px}
+.summaryArt{height:auto;aspect-ratio:16/7.8;border-radius:13px}
+.infoCard,.listCard{padding:13px;border-radius:17px}
+.infoCard h3,.listCard h3{font-size:13px}
+.quote{padding:14px;border-radius:17px}
+.quote h3{font-size:16px}
+.quote p{font-size:10px}
+.keywordGrid{gap:6px}
+.keyword{border-radius:11px;padding:7px 3px}
+
+/* 긴 해석: 실제 폰에서 읽기 좋은 크기로 정리 */
+.expertIntro{
+  padding:17px 16px;border-radius:18px;margin:8px 0
+}
+.expertIntro h2{font-size:18px;line-height:1.45}
+.expertIntro p{font-size:11.5px;line-height:1.72}
+.expertSection,.deepCard{
+  padding:17px 16px;border-radius:18px;margin:8px 0
+}
+.expertSection h3,.deepCard h3{font-size:18px;line-height:1.42}
+.expertSection p,.deepCard p{font-size:13px;line-height:1.82}
+.expertSection .eyebrow,.miniTitle{font-size:9px}
+.expertSection .evidence,.evidenceLine{
+  font-size:10px;line-height:1.6;padding:9px 10px;border-radius:10px
+}
+
+/* 만세력표: 기준 시안처럼 휴대폰 한 화면 안에 맞춤 */
+.manseSnapshot{margin-top:8px}
+.manseProfile{padding:15px;border-radius:18px}
+.manseProfile h2{font-size:20px}
+.manseProfile p{font-size:8.5px}
+.dayMasterBadge{
+  width:78px;min-width:78px;border-radius:14px;padding:8px 5px
+}
+.dayMasterBadge strong{font-size:28px}
+.manseFacts{gap:6px;margin-top:11px}
+.manseFact{padding:8px;border-radius:11px}
+.manseFact span{font-size:7px}
+.manseFact b{font-size:9px}
+.manseChartCard{padding:14px 9px;border-radius:18px}
+.manseSectionHead h3{font-size:15px}
+.manseSectionHead small{font-size:7px}
+.manseTableWrap{overflow:visible}
+.manseTable{min-width:0!important;width:100%;border-radius:12px}
+.manseRow{grid-template-columns:42px repeat(4,minmax(0,1fr))}
+.manseLabel,.manseCell{padding:7px 2px}
+.manseLabel{font-size:7px}
+.manseHead .manseCell{font-size:7.5px}
+.bigChar{font-size:25px}
+.manseCell span{font-size:7px}
+.manseCell small{font-size:6.6px;line-height:1.25}
+.hiddenStemRow .manseCell{min-height:46px;padding:6px 2px}
+.manseElements{gap:4px}
+.manseEl{padding:6px 4px;border-radius:8px}
+.manseElTop{font-size:7px}
+.manseReadGuide{font-size:9px;line-height:1.65;padding:10px}
+
+/* 궁합 */
+.matchHero{padding:13px;border-radius:19px}
+.matchHero h3{font-size:16px}
+.matchHero p{font-size:8.5px}
+.matchArt{border-radius:13px;aspect-ratio:16/8.6}
+.score{font-size:40px}
+.pair{gap:6px}
+.person{border-radius:12px;padding:9px 7px}
+.scoreRow{grid-template-columns:56px 1fr 26px;font-size:8.5px}
+.scoreBar{height:7px}
+.compatIntro{padding:14px 15px;border-radius:17px}
+.compatIntro h3{font-size:16px}
+.compatIntro p{font-size:10px}
+.compatDetailCard{padding:17px 16px;border-radius:18px}
+.compatDetailCard h3{font-size:18px}
+.compatDetailCard p{font-size:13px;line-height:1.82}
+.compatEvidence{font-size:9px}
+.pairManse{padding:13px 9px}
+.pairManseHead h3{font-size:15px}
+.pairFacts{gap:5px}
+.pairFacts span{font-size:7.5px}
+
+/* 오늘의 운세 */
+.todayDate{font-size:13px;margin:9px 0}
+.todayHero{padding:11px;border-radius:18px}
+.todayArt{aspect-ratio:16/8.8;border-radius:12px}
+.todayHero h3{font-size:15px}
+.todayHero p{font-size:8.5px}
+.fortuneList{padding:4px 12px}
+.fortuneRow{padding:8px 0}
+.fortuneRow b{font-size:9.5px}
+.fortuneRow span{font-size:8px}
+
+/* 마이페이지 */
+.profileCard{padding:12px;border-radius:17px}
+.bigAvatar{width:56px;height:56px}
+.profileCard b{font-size:13px}
+.profileCard span{font-size:8.5px}
+.menuCard{padding:3px 12px;border-radius:17px}
+.menuCard button{padding:11px 0;font-size:10px}
+.footerArt{aspect-ratio:16/7.7;border-radius:14px}
+
+/* AI 상담 / 결제 준비 화면 */
+.creditBar{border-radius:16px;padding:12px 14px}
+.bubble{font-size:12px;line-height:1.6;border-radius:15px}
+.qchip{font-size:10px}
+.composer{
+  position:sticky;bottom:76px;
+  background:rgba(255,250,240,.96);padding:8px 0
+}
+
+/* 작은 아이폰 */
+@media (max-width:360px){
+  .screen{padding-left:9px;padding-right:9px}
+  .tabs,.tabs.purple,.tabs.green{
+    margin-left:-9px;margin-right:-9px;padding-left:9px;padding-right:9px
+  }
+  .tiles{gap:5px!important}
+  .tile{padding-left:6px!important;padding-right:6px!important}
+  .tile b{font-size:10px!important}
+  .tile p{font-size:7px!important}
+  .manseRow{grid-template-columns:38px repeat(4,minmax(0,1fr))}
+  .bigChar{font-size:23px}
+}
+
+/* PC에서는 폰 UI 비율을 유지 */
+@media (min-width:700px){
+  .app{box-shadow:0 18px 60px rgba(74,55,28,.12)}
+}
