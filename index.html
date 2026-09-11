@@ -525,6 +525,22 @@ body{padding-bottom:calc(92px + var(--safeBottom))}
 .resultTabs,.tabs{scroll-behavior:smooth}.card,.deepEasy,.masterCard,.grandSection{content-visibility:auto;contain-intrinsic-size:1px 300px}
 button,input,select{touch-action:manipulation}.screen img{max-width:100%;height:auto}
 
+
+/* UPDATE 16 — SYSTEM CLEANUP & DEEP PERSONALIZATION */
+.u16Jump{position:sticky;top:58px;z-index:55;display:flex;gap:6px;overflow-x:auto;padding:7px 8px;margin:4px -4px 10px;background:rgba(255,249,238,.95);backdrop-filter:blur(10px);scrollbar-width:none}.u16Jump::-webkit-scrollbar{display:none}.u16Jump button{flex:0 0 auto;border:0;border-radius:999px;padding:8px 10px;background:#fff;color:#4f5e55;font-size:8.5px;font-weight:900;box-shadow:0 2px 10px rgba(50,50,30,.06)}
+.u16Panel{margin:9px 0;padding:17px 15px;border-radius:19px;background:#fff}.u16Panel small{font-size:9px;font-weight:900;color:#b88a29}.u16Panel h3{font-size:18px;line-height:1.5;color:#183f31;margin:5px 0 9px}.u16Panel p{font-size:10.5px;line-height:1.8;color:#626c65;word-break:keep-all}
+.u16Choices{display:flex;gap:6px;flex-wrap:wrap;margin:8px 0}.u16Choices button{border:1px solid #e6dece;border-radius:999px;background:#faf7f0;padding:8px 10px;font-size:8.5px;font-weight:900;color:#5b645e}.u16Choices button.on{background:#1e4738;color:#fff;border-color:#1e4738}
+.u16Answer{padding:12px;border-radius:14px;background:#f6f8ef;margin-top:8px;font-size:10px;line-height:1.75;color:#536159}.u16Answer b{color:#173f31}
+.u16StarCross{display:grid;gap:7px}.u16StarCross>div{padding:11px;border-radius:13px;background:#faf7f1}.u16StarCross b{font-size:10px;color:#503d73}.u16StarCross span{display:block;font-size:8.5px;line-height:1.55;color:#77736d;margin-top:4px}
+.u16CompatGrid{display:grid;grid-template-columns:1fr 1fr;gap:7px}.u16CompatGrid>div{padding:11px;border-radius:13px;background:#faf7f0}.u16CompatGrid b{font-size:9.5px;color:#28483a}.u16CompatGrid span{display:block;font-size:8px;line-height:1.5;color:#777;margin-top:4px}
+.u16ProfileForm{display:grid;grid-template-columns:1fr 1fr;gap:7px}.u16ProfileForm input,.u16ProfileForm select{width:100%;box-sizing:border-box;border:1px solid #e3dccf;border-radius:12px;padding:10px;background:#fff;font-size:10px}.u16ProfileForm .wide{grid-column:1/-1}.u16Save{width:100%;border:0;border-radius:13px;padding:11px;background:#1e4738;color:#fff;font-weight:900;font-size:10px}
+.u16ProfileRow{display:flex;justify-content:space-between;gap:8px;align-items:center;padding:10px;border-radius:13px;background:#faf7f1;margin-top:6px}.u16ProfileRow b{font-size:10px;color:#29483a}.u16ProfileRow span{font-size:8px;color:#817b72}.u16ProfileRow button{border:0;border-radius:999px;padding:6px 8px;background:#eee7da;font-size:8px}
+.u16Privacy{display:flex;gap:7px}.u16Privacy button{flex:1;border:0;border-radius:12px;padding:10px;background:#f4efe5;font-size:9px;font-weight:900;color:#5b635d}
+.u16Error{padding:10px 12px;border-radius:12px;background:#fff0ed;color:#9b4c3f;font-size:9px;line-height:1.55;margin:7px 0}
+.u16TopBtn{position:fixed;right:14px;bottom:calc(86px + env(safe-area-inset-bottom,0px));z-index:70;width:38px;height:38px;border:0;border-radius:50%;background:#23483a;color:#fff;font-weight:900;box-shadow:0 4px 15px rgba(0,0,0,.15)}
+details.u16Fold{margin:7px 0;border:1px solid #eee4d7;border-radius:14px;background:#fff;overflow:hidden}details.u16Fold summary{cursor:pointer;padding:12px;font-size:10px;font-weight:900;color:#29483a;list-style:none}details.u16Fold summary::-webkit-details-marker{display:none}details.u16Fold>div{padding:0 12px 12px;font-size:9px;line-height:1.7;color:#6d746e}
+@media(max-width:370px){.u16CompatGrid,.u16ProfileForm{grid-template-columns:1fr}.u16ProfileForm .wide{grid-column:auto}.u16Jump{top:54px}}
+
 </style>
 </head>
 <body>
@@ -1238,21 +1254,94 @@ function G15questions(){
  </div></section>`
 }
 
+
+/* UPDATE 16 SYSTEM CLEANUP & DEEP PERSONALIZATION */
+const U16={love:'single',work:'owner',privacy:true};
+function U16jump(){return `<nav class="u16Jump"><button onclick="U16scroll('u16core')">핵심</button><button onclick="U16scroll('u16life')">맞춤풀이</button><button onclick="U16scroll('u16stars')">신살</button><button onclick="U16scroll('u16flow')">흐름</button><button onclick="U16scroll('u16share')">공유</button></nav>`}
+function U16scroll(id){const e=document.getElementById(id);if(e)e.scrollIntoView({behavior:'smooth',block:'start'})}
+function U16love(c,mode){
+ const d=U13P(c), base=U13relationTone(c);
+ const m={
+ single:['솔로','새 인연의 “날짜”보다 어떤 사람을 골라야 덜 지치는지가 먼저입니다.','호감이 생겼을 때 빠른 확신보다 말과 행동이 일정한지, 책임을 상대에게 떠넘기지 않는지를 보세요.'],
+ couple:['연애 중','좋아하는 마음과 관계 운영 능력은 따로 봐야 합니다.','서운함을 참다가 한 번에 정리하는 패턴이 있는지, 돈·시간·연락·돌봄의 균형을 실제 행동으로 확인하세요.'],
+ reunion:['재회 고민','연락이 오는지가 핵심이 아니라 다시 만나도 문제가 달라질 수 있느냐가 핵심입니다.','헤어진 원인이 바뀌었는지, 말이 아니라 행동과 환경이 달라졌는지부터 확인하세요.']
+ }[mode]||[];
+ return `<div class="u16Answer"><b>${m[0]} 맞춤 · ${m[1]}</b><br>${m[2]} ${base} 현재 ${d.lk?.god||'-'} 대운(${M14meaning(d.lk?.god||'-')})의 장기 과제도 함께 봅니다.</div>`
+}
+function U16work(c,mode){
+ const d=U13P(c);
+ const m={
+ employee:['직장인','직업 이름보다 권한·보상·성장·생활 리듬이 맞는지를 보세요.','책임만 커지고 결정권은 없는 자리가 반복되면 이직 욕구가 커질 수 있습니다.'],
+ owner:['사업자·자영업','매출보다 “내가 빠져도 돌아가는 구조”와 순이익을 먼저 봐야 합니다.','내 능력이 매출로 연결되는 장점과 고정비·과로가 이익을 먹는 문제를 분리하세요.'],
+ change:['이직 고민','현재 직장이 싫다는 감정과 지금 옮기는 게 유리하다는 판단을 분리하세요.','새 자리의 연봉뿐 아니라 역할·권한·통근·생활시간까지 숫자로 비교하세요.'],
+ startup:['창업 고민','창업운보다 고객이 돈을 낼 이유와 버틸 현금흐름이 먼저입니다.','사주는 일하는 방식의 적합성을 참고하고, 투자·대출·계약은 실제 사업계획으로 판단하세요.']
+ }[mode]||[];
+ return `<div class="u16Answer"><b>${m[0]} 맞춤 · ${m[1]}</b><br>${m[2]} 월주 ${d.g}(${M14meaning(d.g)})와 강한 ${d.hi[0]} ${d.hi[1]}%의 쓰임을 함께 본 설명입니다.</div>`
+}
+function U16personal(c){
+ return `<section id="u16life" class="u16Panel card"><small>상황에 따라 달라지는 풀이</small><h3>같은 사주라도 지금 처한 상황이 다르면 조언도 달라야 합니다.</h3><p>아래 선택은 명식을 바꾸지 않습니다. 같은 계산 결과에서 지금 필요한 해석의 초점을 바꿉니다.</p><b style="font-size:9px;color:#765b21">연애 상태</b><div class="u16Choices"><button onclick="U16setLove(this,'single')">솔로</button><button onclick="U16setLove(this,'couple')">연애 중</button><button onclick="U16setLove(this,'reunion')">재회 고민</button></div><div id="u16LoveBox">${U16love(c,U16.love)}</div><b style="display:block;margin-top:12px;font-size:9px;color:#765b21">일·사업 상황</b><div class="u16Choices"><button onclick="U16setWork(this,'employee')">직장인</button><button onclick="U16setWork(this,'owner')">사업자</button><button onclick="U16setWork(this,'change')">이직 고민</button><button onclick="U16setWork(this,'startup')">창업 고민</button></div><div id="u16WorkBox">${U16work(c,U16.work)}</div></section>`
+}
+function U16setLove(btn,v){U16.love=v;document.querySelectorAll('#u16life .u16Choices:first-of-type button').forEach(x=>x.classList.remove('on'));btn.classList.add('on');if(window.chart&&$('u16LoveBox'))$('u16LoveBox').innerHTML=U16love(chart,v)}
+function U16setWork(btn,v){U16.work=v;btn.parentElement.querySelectorAll('button').forEach(x=>x.classList.remove('on'));btn.classList.add('on');if(window.chart&&$('u16WorkBox'))$('u16WorkBox').innerHTML=U16work(chart,v)}
+function U16starCross(c){
+ const hits=c.stars?.hits||[], d=U13P(c), lk=d.lk?.god||'-', seen={};
+ hits.forEach(h=>{if(!seen[h.name])seen[h.name]=[];seen[h.name].push(h.pillar)});
+ const rows=Object.entries(seen).slice(0,38).map(([n,ps])=>{const loc=[...new Set(ps)].map(p=>({year:'년주',month:'월주',day:'일주',hour:'시주'}[p]||p)).join('·');return `<div><b>${esc(n)} · ${esc(loc)}</b><span>${esc(U13starMeaning(n))} 현재 대운의 ${esc(lk)} 주제와 겹쳐 체감되는지는 원국 전체와 함께 판단합니다.</span></div>`}).join('');
+ return `<section id="u16stars" class="u16Panel card"><small>신살 38종 교차 읽기</small><h3>“별이 있다”에서 끝내지 않고 위치와 현재 흐름을 같이 봅니다.</h3><p>현재 실제 성립한 신살·귀인만 표시하며, 지원 공식은 ${c.stars?.supportedCount||38}/50종입니다.</p><div class="u16StarCross">${rows||'<div><b>성립 항목 없음</b><span>신살이 적다고 나쁜 사주가 아닙니다.</span></div>'}</div></section>`
+}
+function U16compat(c1,c2){
+ if(!c1||!c2)return '';
+ const a=c1.dayMaster?.el,b=c2.dayMaster?.el;
+ const items=[
+ ['끌림','첫인상보다 서로의 표현 방식이 실제로 맞는지 봅니다.'],
+ ['감정 표현',`${easyElement(a)}와 ${easyElement(b)}의 표현 속도 차이를 참고합니다.`],
+ ['싸우는 방식','합·충·형·파·해는 갈등의 존재보다 조정 방식을 보는 보조 근거입니다.'],
+ ['화해 방식','사과의 말보다 이후 행동이 바뀌는 관계인지 확인합니다.'],
+ ['돈','소비·저축·부담 비율을 현실에서 합의할 수 있어야 합니다.'],
+ ['생활','수면·청소·반려동물·개인시간 같은 반복 생활이 중요합니다.'],
+ ['결혼','가족 경계·돈·집안일·책임 분담을 따로 봅니다.'],
+ ['오래 갈 조건','상대가 바뀌길 기다리는 관계보다 서로 조정 가능한 관계가 유리합니다.']
+ ];
+ return `<section class="u16Panel card"><small>궁합 8영역 심층</small><h3>점수 하나 대신 실제로 같이 살 때 부딪히는 영역을 나눠 봅니다.</h3><div class="u16CompatGrid">${items.map(x=>`<div><b>${x[0]}</b><span>${x[1]}</span></div>`).join('')}</div><span class="easyInline"><b>명리 시작점</b> · ${esc(c1.input.name||'A')} ${esc(a)} / ${esc(c2.input.name||'B')} ${esc(b)}. 실제 궁합 판정은 두 원국 전체 관계를 함께 봅니다.</span></section>`
+}
+function U16compatCombined(a,b){return M14compat(a,b)+U16compat(a,b)}
+function U16profileUI(){
+ let arr=[];try{arr=JSON.parse(localStorage.getItem('guiinProfiles')||'[]')}catch(e){}
+ return `<section class="u16Panel card"><small>프로필 저장</small><h3>나·가족·연인을 이 기기에 저장해 다시 입력하는 수고를 줄입니다.</h3><p>서버 계정 저장이 아니라 현재 브라우저의 localStorage에만 저장합니다. 브라우저 데이터 삭제 시 사라질 수 있습니다.</p><div class="u16ProfileForm"><input id="u16pn" placeholder="이름"><input id="u16pb" placeholder="생년월일 예: 1991-11-23"><input id="u16pt" placeholder="시간 예: 07:40"><select id="u16pg"><option value="female">여성</option><option value="male">남성</option></select><button class="u16Save wide" onclick="U16saveProfile()">이 기기에 저장</button></div><div id="u16ProfileList">${U16profileRows(arr)}</div></section>`
+}
+function U16profileRows(arr){return (arr||[]).map((x,i)=>`<div class="u16ProfileRow"><div><b>${esc(x.name)}</b><span>${esc(x.birth)} ${esc(x.time||'')}</span></div><button onclick="U16delProfile(${i})">삭제</button></div>`).join('')||'<p style="font-size:9px;color:#888">아직 저장된 프로필이 없습니다.</p>'}
+function U16saveProfile(){const n=$('u16pn')?.value.trim(),b=$('u16pb')?.value.trim(),t=$('u16pt')?.value.trim(),g=$('u16pg')?.value;if(!n||!/^\d{4}-\d{2}-\d{2}$/.test(b||'')){alert('이름과 생년월일(YYYY-MM-DD)을 확인해 주세요.');return}let a=[];try{a=JSON.parse(localStorage.getItem('guiinProfiles')||'[]')}catch(e){};a.push({name:n,birth:b,time:t,gender:g});localStorage.setItem('guiinProfiles',JSON.stringify(a));if($('u16ProfileList'))$('u16ProfileList').innerHTML=U16profileRows(a)}
+function U16delProfile(i){let a=[];try{a=JSON.parse(localStorage.getItem('guiinProfiles')||'[]')}catch(e){};a.splice(i,1);localStorage.setItem('guiinProfiles',JSON.stringify(a));if($('u16ProfileList'))$('u16ProfileList').innerHTML=U16profileRows(a)}
+function U16share(c){
+ const d=U13P(c), name=U16.privacy?'나':(c.input.name||'사용자'), birth=U16.privacy?'생년월일 비공개':`${c.input.year||''}-${String(c.input.month||'').padStart(2,'0')}-${String(c.input.day||'').padStart(2,'0')}`;
+ return `<section id="u16share" class="u16Panel card"><small>안전한 결과 공유</small><h3>사주 내용은 공유하되 개인정보는 숨길 수 있습니다.</h3><div class="u16Privacy"><button onclick="U16.privacy=true;renderResult()">개인정보 숨김</button><button onclick="U16.privacy=false;renderResult()">내 정보 포함</button></div><div class="u16Answer"><b>${esc(name)}의 사주 요약</b><br>${esc(birth)} · 일간 ${esc(c.dayMaster.stem+c.dayMaster.el)} · 현재 ${esc(d.lk?d.lk.ko+' '+d.lk.god:'대운 확인 필요')}<br>※ 공유 전 화면에 이름·생년월일·출생시간이 남아 있지 않은지 직접 확인하세요.</div></section>`
+}
+function U16validation(){
+ const y=+$('sy')?.value,m=+$('sm')?.value,d=+$('sd')?.value,h=+$('sh')?.value,mi=+$('smin')?.value;
+ if(y && (y<1900||y>2050))return '현재 음양력 계산 지원 범위는 1900~2050년입니다.';
+ if(m && (m<1||m>12))return '월은 1~12 사이여야 합니다.';
+ if(d && (d<1||d>31))return '일자를 확인해 주세요.';
+ if(h && (h<0||h>23))return '시간은 0~23 사이여야 합니다.';
+ if(mi && (mi<0||mi>59))return '분은 0~59 사이여야 합니다.';
+ return '';
+}
+function U16fold(title,body){return `<details class="u16Fold"><summary>${title} ＋</summary><div>${body}</div></details>`}
+
 function renderResult(){
  if(!chart)return;
  document.querySelectorAll('#resultTabs button').forEach(b=>b.classList.toggle('on',b.dataset.tab===currentTab));
  const c=chart,time=c.input.hourUnknown?'모름':`${String(c.input.hour).padStart(2,'0')}:${String(c.input.minute).padStart(2,'0')}`;
  const manseTop=(typeof GuiinManse!=='undefined')?GuiinManse.render(c,{title:`${c.input.name}님의 만세력`,eyebrow:'내 사주'}):'';
  if(currentTab==='summary'){
-  $('resultView').innerHTML=shareTop+U13ultra(c)+G15lifeTopics(c)+M14decisions(c)+G15yearCompare(c)+G15questions()+directSummaryHTML(c)+prettySummaryHTML(c)+manseTop+expertSummaryHTML(c)+`<details class="resultMethod card"><summary>귀인사주는 어떻게 계산하나요?</summary><p>원국 계산 후 일간·월령/계절·오행·십신·지장간·관계·대운·세운을 함께 읽습니다. 신살은 공식화된 38/50종을 보조 정보로 사용합니다. 격국·용신·조후처럼 학파에 따라 판단이 크게 달라지는 항목은 자동 확정해 단정하지 않습니다.</p></details>`;
+  $('resultView').innerHTML=U16jump()+`<div id="u16core"></div>`+U13ultra(c)+U16personal(c)+G15lifeTopics(c)+M14decisions(c)+G15yearCompare(c)+G15questions()+U16share(c)+directSummaryHTML(c)+prettySummaryHTML(c)+manseTop+expertSummaryHTML(c)+`<details class="resultMethod card"><summary>귀인사주는 어떻게 계산하나요?</summary><p>원국 계산 후 일간·월령/계절·오행·십신·지장간·관계·대운·세운을 함께 읽습니다. 신살은 공식화된 38/50종을 보조 정보로 사용합니다. 격국·용신·조후처럼 학파에 따라 판단이 크게 달라지는 항목은 자동 확정해 단정하지 않습니다.</p></details>`;
  } else if(currentTab==='personality'){
   $('resultView').innerHTML=straightIntroHTML(c,'personality','성격·기질')+manseTop+expertSectionsHTML(GuiinExpert.personalitySections(c));
  } else if(currentTab==='fields'){
   $('resultView').innerHTML=straightIntroHTML(c,'career','직업·재물·연애')+U13domains(c)+manseTop+expertSectionsHTML(GuiinExpert.fieldSections(c));
  } else if(currentTab==='stars'){
-  $('resultView').innerHTML=straightIntroHTML(c,'stars','신살·귀인')+manseTop+U13stars(c)+G15trust()+expertStarsHTML(c);
+  $('resultView').innerHTML=straightIntroHTML(c,'stars','신살·귀인')+manseTop+U16starCross(c)+U13stars(c)+G15trust()+expertStarsHTML(c);
  } else if(currentTab==='flow'){
-  $('resultView').innerHTML=straightIntroHTML(c,'flow','대운·세운')+M14calendar(c)+G15yearCompare(c)+U13timeline(c)+manseTop+((typeof GuiinPlain!=='undefined')?GuiinPlain.renderFlow(c,new Date().getFullYear()):expertFlowHTML(c));
+  $('resultView').innerHTML=straightIntroHTML(c,'flow','대운·세운')+`<div id="u16flow"></div>`+M14calendar(c)+G15yearCompare(c)+U13timeline(c)+manseTop+((typeof GuiinPlain!=='undefined')?GuiinPlain.renderFlow(c,new Date().getFullYear()):expertFlowHTML(c));
  } else if(currentTab==='chart'){
   $('resultView').innerHTML=manseTop+
    (typeof GuiinPlain!=='undefined'
@@ -1379,5 +1468,6 @@ function previewAIQuestion(preset){const input=$('askQ'),q=(preset||input?.value
 applyCopy();
 const h=location.hash.replace('#','');if(['home','saju','result','match','matchResult','today','mypage','ask','wallet','admin','guide','manage','yearLuck'].includes(h))go(h);
 </script>
+<button class="u16TopBtn" onclick="window.scrollTo({top:0,behavior:'smooth'})" aria-label="맨 위로">↑</button>
 </body>
 </html>
