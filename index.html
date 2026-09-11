@@ -861,6 +861,14 @@ img[src="clover-mark.jpg"]{
 .u32Ticket{padding:12px;border-radius:14px;background:#eef6ea;margin-top:10px}.u32Ticket b{display:block;font-size:9px;color:#29483a}.u32Ticket span{display:block;margin-top:4px;font-size:8px;line-height:1.65;color:#66736b}
 @media(max-width:360px){.u32Quick{grid-template-columns:1fr}}
 
+
+/* UPDATE 33 — KAKAO-FIRST CUSTOMER CENTER */
+.u33Hero{padding:15px;border-radius:18px;background:#174c39;color:#fff;margin:8px 0 12px}.u33Hero small{color:#e0bd62;font-size:8px;font-weight:900}.u33Hero h3{margin:5px 0;font-size:17px;line-height:1.45}.u33Hero p{margin:0;font-size:8.5px;line-height:1.65;color:#edf4ef}
+.u33Kakao{display:block;width:100%;box-sizing:border-box;border:0;border-radius:14px;padding:14px 12px;background:#fee500;color:#191919;font-size:10px;font-weight:1000;text-align:center}
+.u33Kakao[disabled]{opacity:.55}.u33Sub{display:grid;grid-template-columns:1fr 1fr;gap:7px;margin:8px 0}.u33Sub button{border:0;border-radius:13px;padding:11px 7px;background:#f5f3ed;color:#315545;font-size:8.5px;font-weight:900}
+.u33Hours{padding:10px;border-radius:12px;background:#f7f7f2;font-size:8px;line-height:1.65;color:#69736d}.u33Hours b{color:#29483a}
+.u33Email{padding:11px;border-radius:13px;background:#eef6ea;margin-top:8px;font-size:8.2px;line-height:1.65;color:#52675c}
+
 </style>
 </head>
 <body>
@@ -2241,7 +2249,7 @@ function U32send(){
  alert('현재 고객센터 접수 서버를 연결하기 전이라 문의가 전송되지는 않습니다. 고객센터 이메일/접수 서버를 연결한 뒤 이 버튼을 실제 접수 기능으로 전환합니다.');
 }
 function U32customerCenter(){
- return `<section class="u32Cs"><small>귀인사주 고객센터</small><h2>무엇을 도와드릴까요?</h2><p>결제·환불·입력정보·결과 이용 중 궁금한 내용을 먼저 확인해 보세요.</p><div class="u32Quick"><button onclick="U31open('refund','취소·환불 안내')">취소·환불 안내</button><button onclick="U31open('privacy','개인정보처리방침')">개인정보 안내</button><button onclick="document.getElementById('u32Inquiry')?.scrollIntoView({behavior:'smooth'})">1:1 문의</button><button onclick="U31open('business','사업자정보')">사업자정보</button></div><div class="u32Notice">결제정보 문의 시 카드번호·CVC·비밀번호·주민등록번호를 보내지 마세요. 주문 확인에는 주문번호 등 필요한 최소 정보만 사용합니다.</div><h3 style="margin:16px 0 2px;color:#244c3a;font-size:12px">자주 묻는 질문</h3>${U32faqHTML()}<div id="u32Inquiry"><h3 style="margin:18px 0 2px;color:#244c3a;font-size:12px">1:1 문의</h3><p style="font-size:8px;line-height:1.65;color:#77817b">실제 고객센터 이메일 또는 문의 서버를 연결한 뒤 접수가 활성화됩니다.</p>${U32form()}</div><div class="u32Ticket"><b>고객센터 운영정보</b><span>전화 ${esc(U31BUSINESS.customerTel)} · 이메일 ${esc(U31BUSINESS.customerEmail)}<br>운영시간은 실제 운영정책 확정 후 표시합니다.</span></div></section>`;
+ return `<section class="u32Cs">${U33supportTop()}<div class="u32Notice">결제 문의 시 카드번호·CVC·비밀번호·주민등록번호는 보내지 마세요. 주문번호 등 필요한 최소 정보만 전달해 주세요.</div><h3 style="margin:16px 0 2px;color:#244c3a;font-size:12px">자주 묻는 질문</h3>${U32faqHTML()}<div id="u32Inquiry"><h3 style="margin:18px 0 2px;color:#244c3a;font-size:12px">이메일 문의 준비</h3><p style="font-size:8px;line-height:1.65;color:#77817b">실제 고객센터 이메일 또는 문의 서버를 연결한 뒤 접수가 활성화됩니다.</p>${U32form()}</div><div class="u32Ticket"><b>고객센터 운영정보</b><span>전화 ${esc(U31BUSINESS.customerTel)} · 이메일 ${esc(U31BUSINESS.customerEmail)}<br>운영시간은 실제 운영정책 확정 후 표시합니다.</span></div></section>`;
 }
 function U32open(){
  let m=document.getElementById('u32Modal');
@@ -2255,6 +2263,23 @@ function U32install(){
  if(links && !links.querySelector('.u32CsBtn'))links.insertAdjacentHTML('afterbegin',`<button class="u32CsBtn" onclick="U32open()">고객센터</button>`);
 }
 document.addEventListener('DOMContentLoaded',()=>setTimeout(U32install,0));
+
+
+/* UPDATE 33 — KAKAO CHANNEL CUSTOMER CENTER
+   Channel created: 귀인사주 / search ID gwiinsaju.
+   Exact chat URL is intentionally not guessed; connect it once copied from Kakao Channel Manager. */
+const U33KAKAO={channelName:'귀인사주',searchId:'gwiinsaju',chatUrl:''};
+function U33kakao(){
+ if(U33KAKAO.chatUrl) window.open(U33KAKAO.chatUrl,'_blank','noopener');
+ else alert('귀인사주 카카오톡 채널은 생성 완료되었습니다. 채널 관리자에서 상담용 채팅 링크를 복사해 연결하면 이 버튼이 바로 카카오톡 상담으로 열립니다.');
+}
+function U33supportTop(){
+ return `<div class="u33Hero"><small>귀인사주 고객센터</small><h3>가장 빠른 문의는 카카오톡으로</h3><p>결제·환불·입력정보·이용방법 문의를 도와드립니다.</p></div>
+ <button class="u33Kakao" type="button" onclick="U33kakao()">💬 카카오톡으로 문의하기</button>
+ <div class="u33Sub"><button type="button" onclick="U31open('refund','취소·환불 안내')">결제·환불 안내</button><button type="button" onclick="document.querySelector('#u32Modal .u32Faq')?.scrollIntoView({behavior:'smooth'})">자주 묻는 질문</button></div>
+ <div class="u33Hours"><b>카카오톡 채널</b> 귀인사주 · 검색 ID <b>gwiinsaju</b><br><b>상담 운영시간</b> [실제 운영시간 입력 필요]<br>운영시간 외 문의는 확인 후 순차 답변합니다.</div>
+ <div class="u33Email"><b>공식 이메일</b> ${esc(U31BUSINESS.customerEmail)}<br>카카오톡을 주 상담채널로 운영하고, 결제·환불 등 기록이 필요한 문의를 위해 공식 이메일도 함께 표시합니다.</div>`;
+}
 
 function renderResult(){
  if(chart && !U28hasPremium()){
