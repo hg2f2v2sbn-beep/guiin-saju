@@ -631,6 +631,73 @@ img[src="clover-mark.jpg"]{
   .resultHero img,.summaryHero img,.fortuneHero img,.compatHero img,.resultImage img{max-height:300px!important}
 }
 
+
+/* UPDATE 23 — PREMIUM READING EXPERIENCE */
+.u23Nav{position:sticky;top:54px;z-index:15;display:flex;gap:5px;overflow-x:auto;padding:7px 5px;margin:8px 0;background:rgba(255,250,241,.94);backdrop-filter:blur(8px);scrollbar-width:none}.u23Nav::-webkit-scrollbar{display:none}.u23Nav button{flex:0 0 auto;border:0;border-radius:999px;padding:7px 9px;background:#fff;color:#466054;font-size:8px;font-weight:900;box-shadow:0 2px 8px rgba(0,0,0,.04)}
+.u23Intro{padding:18px 15px;border-radius:20px;background:#fff;margin:9px 0}.u23Intro small{font-size:8px;font-weight:900;color:#b48627}.u23Intro h3{font-size:18px;line-height:1.5;color:#173f31;margin:5px 0 8px}.u23Intro p{font-size:10px;line-height:1.8;color:#626b65}.u23Score{display:grid;grid-template-columns:repeat(3,1fr);gap:6px;margin-top:10px}.u23Score div{padding:9px 5px;border-radius:12px;background:#f6f3eb;text-align:center}.u23Score b{display:block;font-size:12px;color:#29483a}.u23Score span{font-size:7px;color:#8a8881}
+.u23Insight{margin:8px 0;padding:13px;border-left:3px solid #c8a354;border-radius:0 13px 13px 0;background:#fff9e9;font-size:9px;line-height:1.72;color:#6b624d}.u23Insight b{color:#725619}
+.u23Bottom{padding:17px 14px;border-radius:19px;background:#eef6ea;margin:10px 0}.u23Bottom h3{font-size:16px;color:#24483a;margin:0 0 7px}.u23Bottom p{font-size:9.5px;line-height:1.75;color:#5c6a62}.u23Bottom li{font-size:8.8px;line-height:1.7;color:#617068}
+
+
+/* UPDATE 24 — MOBILE RESULT LAYOUT REPAIR
+   Fixes the narrow vertical text / giant blank image-card problem shown on iPhone. */
+.resultPage,.resultWrap,.resultBody,.resultContent,.card,.u20Master,.u20Chapter,.u21Box,.u23Intro,.u23Bottom{
+  min-width:0!important;max-width:100%!important;box-sizing:border-box!important;
+}
+.resultPage *,.resultWrap *,.resultBody *,.resultContent *{
+  min-width:0;
+}
+.resultPage p,.resultPage li,.resultPage span,.resultPage b,.resultPage strong,
+.u20Master p,.u20Chapter p,.u21Box p,.u23Intro p,.u23Bottom p{
+  writing-mode:horizontal-tb!important;
+  text-orientation:mixed!important;
+  word-break:keep-all!important;
+  overflow-wrap:break-word!important;
+  white-space:normal!important;
+}
+.resultPage img,.resultWrap img,.resultBody img,.resultContent img,
+.u20Master img,.u20Chapter img,.u21Box img,.u23Intro img,.u23Bottom img{
+  display:block!important;
+  width:auto!important;
+  max-width:100%!important;
+  height:auto!important;
+  max-height:320px!important;
+  margin:10px auto!important;
+  object-fit:contain!important;
+  object-position:center!important;
+  float:none!important;
+  position:static!important;
+}
+.resultPage figure,.resultWrap figure,.resultBody figure,.resultContent figure,
+.resultPage .photo,.resultPage .image,.resultPage .illustration,.resultPage .resultImage{
+  width:100%!important;
+  max-width:100%!important;
+  height:auto!important;
+  min-height:0!important;
+  max-height:none!important;
+  aspect-ratio:auto!important;
+  overflow:visible!important;
+  float:none!important;
+  display:block!important;
+}
+.resultPage figure:empty,.resultPage .photo:empty,.resultPage .image:empty,
+.resultPage .illustration:empty,.resultPage .resultImage:empty{
+  display:none!important;
+}
+.resultPage [style*="float: right"],.resultPage [style*="float:right"],
+.resultPage [style*="float: left"],.resultPage [style*="float:left"]{
+  float:none!important;width:auto!important;max-width:100%!important;
+}
+.resultPage [style*="position: absolute"],.resultPage [style*="position:absolute"]{
+  max-width:100%!important;
+}
+.u23Nav{top:calc(86px + env(safe-area-inset-top,0px))!important;z-index:20!important}
+@media(max-width:520px){
+  .resultPage,.resultWrap,.resultBody,.resultContent{width:100%!important;padding-left:0!important;padding-right:0!important}
+  .resultPage img,.resultWrap img,.resultBody img,.resultContent img{max-height:260px!important}
+  .u20Chapter,.u21Box,.u23Intro,.u23Bottom{width:100%!important}
+}
+
 </style>
 </head>
 <body>
@@ -1654,13 +1721,67 @@ else U22fixImages();
 const U22observer=new MutationObserver(()=>U22fixImages());
 if(document.documentElement)U22observer.observe(document.documentElement,{childList:true,subtree:true});
 
+
+/* UPDATE 23 PREMIUM READING EXPERIENCE */
+function U23jump(id){const e=document.getElementById(id);if(e)e.scrollIntoView({behavior:'smooth',block:'start'})}
+function U23nav(){return `<nav class="u23Nav" aria-label="심층사주 바로가기"><button onclick="U23jump('u23-core')">핵심</button><button onclick="U23jump('u23-precision')">정밀판독</button><button onclick="U23jump('u23-master')">평생해석</button><button onclick="U23jump('u23-action')">현실조언</button></nav>`}
+function U23confidence(c){
+ const roots=U21strength(c).roots.length, pairs=U21tenGodPairs(c).length, rel=U21relations(c).length;
+ return {foundation:Math.min(5,2+roots),cross:Math.min(5,2+pairs),relation:Math.min(5,2+rel)};
+}
+function U23intro(c){
+ const q=U23confidence(c), se=U21season(c), s=U21strength(c);
+ return `<section class="u23Intro card" id="u23-core"><small>PREMIUM READING GUIDE</small><h3>결론부터 읽고, 궁금할 때 근거를 펼쳐보세요.</h3><p>이 보고서는 전문용어를 많이 보여주기 위한 보고서가 아닙니다. <b>${esc(c.dayMaster?.stem||'일간')}</b>을 중심으로 ${esc(se.name)}의 계절 환경, ${esc(s.label)}, 십신 조합과 현재 운을 순서대로 연결합니다. 같은 문장을 모든 사람에게 붙이지 않고 실제 계산값이 있는 항목을 우선합니다.</p><div class="u23Score"><div><b>${q.foundation}/5</b><span>원국 근거층</span></div><div><b>${q.cross}/5</b><span>십신 교차층</span></div><div><b>${q.relation}/5</b><span>관계 교차층</span></div></div><div class="u23Insight"><b>점수의 뜻 →</b> 좋고 나쁨 점수가 아니라, 현재 자동 계산에서 이 해석을 뒷받침하는 근거층이 몇 겹 확인되는지 보여주는 내부 설명 지표입니다.</div></section>`
+}
+function U23action(c){
+ const s=U21strength(c), pairs=U21tenGodPairs(c), lk=U17cross(c).d.lk;
+ const todo=[
+  `강하게 반복해서 쓰는 방식만 고집하지 말고 ${esc(s.roots.length?'뿌리가 확인된 힘의 과사용':'부족하게 느끼는 기능')}을 실제 생활에서 점검하기`,
+  pairs.length?`${esc(pairs[0][0])} 조합이 현실의 일·돈·관계에서 어떻게 반복되는지 한 달 동안 기록하기`:'십신 하나의 이름보다 실제 행동 패턴을 기록하기',
+  `${esc(lk?.god||'현재 대운')}의 주제를 장기 선택 기준과 비교하고 하루 운세로 큰 결정을 바꾸지 않기`
+ ];
+ return `<section class="u23Bottom" id="u23-action"><h3>이 사주를 현실에서 쓰는 법</h3><p>사주풀이를 읽고 끝내지 않도록, 원국과 현재 운에서 확인되는 내용을 행동 질문으로 바꿨습니다.</p><ul>${todo.map(x=>`<li>${x}</li>`).join('')}</ul></section>`
+}
+function U23wrapPremium(c){
+ return `${U23nav()}${U23intro(c)}<div id="u23-precision">${U21precision(c)}</div><div id="u23-master">${U20master(c)}</div>${U21quality(c)}${U23action(c)}`;
+}
+
+
+/* UPDATE 24 MOBILE RESULT DOM REPAIR */
+function U24repairResultLayout(){
+ const root=document.querySelector('.resultPage,.resultWrap,.resultBody,.resultContent,#result');
+ if(!root)return;
+ root.querySelectorAll('img').forEach(img=>{
+   img.style.float='none';
+   img.style.position='static';
+   img.style.width='auto';
+   img.style.maxWidth='100%';
+   img.style.height='auto';
+   img.style.objectFit='contain';
+   const par=img.parentElement;
+   if(par){
+     par.style.minWidth='0';
+     if(par.children.length===1){par.style.height='auto';par.style.minHeight='0';}
+   }
+ });
+ root.querySelectorAll('p,li,span,b,strong').forEach(el=>{
+   el.style.writingMode='horizontal-tb';
+   el.style.wordBreak='keep-all';
+   el.style.overflowWrap='break-word';
+ });
+}
+if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',U24repairResultLayout);
+else U24repairResultLayout();
+const U24observer=new MutationObserver(()=>requestAnimationFrame(U24repairResultLayout));
+U24observer.observe(document.body,{childList:true,subtree:true});
+
 function renderResult(){
  if(!chart)return;
  document.querySelectorAll('#resultTabs button').forEach(b=>b.classList.toggle('on',b.dataset.tab===currentTab));
  const c=chart,time=c.input.hourUnknown?'모름':`${String(c.input.hour).padStart(2,'0')}:${String(c.input.minute).padStart(2,'0')}`;
  const manseTop=(typeof GuiinManse!=='undefined')?GuiinManse.render(c,{title:`${c.input.name}님의 만세력`,eyebrow:'내 사주'}):'';
  if(currentTab==='summary'){
-  $('resultView').innerHTML=U16jump()+`<div id="u16core"></div>`+U17digest(c)+U19freeNotice()+U19premiumWrap(c,U18risk(c))+U19premiumWrap(c,U18action(c))+U19premiumWrap(c,U18compare(c))+U19premiumWrap(c,U21precision(c)+U20master(c)+U21quality(c))+U18quality(c)+U13ultra(c)+U16personal(c)+G15lifeTopics(c)+M14decisions(c)+G15yearCompare(c)+U18decision(c,'job')+U18decision(c,'money')+U18decision(c,'love')+U17questions(c)+U18return(c)+U16share(c)+directSummaryHTML(c)+prettySummaryHTML(c)+manseTop+expertSummaryHTML(c)+`<details class="resultMethod card"><summary>귀인사주는 어떻게 계산하나요?</summary><p>원국 계산 후 일간·월령/계절·오행·십신·지장간·관계·대운·세운을 함께 읽습니다. 신살은 공식화된 38/50종을 보조 정보로 사용합니다. 격국·용신·조후처럼 학파에 따라 판단이 크게 달라지는 항목은 자동 확정해 단정하지 않습니다.</p></details>`;
+  $('resultView').innerHTML=U16jump()+`<div id="u16core"></div>`+U17digest(c)+U19freeNotice()+U19premiumWrap(c,U18risk(c))+U19premiumWrap(c,U18action(c))+U19premiumWrap(c,U18compare(c))+U19premiumWrap(c,U23wrapPremium(c))+U18quality(c)+U13ultra(c)+U16personal(c)+G15lifeTopics(c)+M14decisions(c)+G15yearCompare(c)+U18decision(c,'job')+U18decision(c,'money')+U18decision(c,'love')+U17questions(c)+U18return(c)+U16share(c)+directSummaryHTML(c)+prettySummaryHTML(c)+manseTop+expertSummaryHTML(c)+`<details class="resultMethod card"><summary>귀인사주는 어떻게 계산하나요?</summary><p>원국 계산 후 일간·월령/계절·오행·십신·지장간·관계·대운·세운을 함께 읽습니다. 신살은 공식화된 38/50종을 보조 정보로 사용합니다. 격국·용신·조후처럼 학파에 따라 판단이 크게 달라지는 항목은 자동 확정해 단정하지 않습니다.</p></details>`;
  } else if(currentTab==='personality'){
   $('resultView').innerHTML=straightIntroHTML(c,'personality','성격·기질')+manseTop+expertSectionsHTML(GuiinExpert.personalitySections(c));
  } else if(currentTab==='fields'){
