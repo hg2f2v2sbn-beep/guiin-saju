@@ -591,6 +591,46 @@ details.u16Fold{margin:7px 0;border:1px solid #eee4d7;border-radius:14px;backgro
 .u21Box{margin:9px 0;padding:17px 15px;border-radius:18px;background:#fff}.u21Box small{font-size:9px;font-weight:900;color:#b48627}.u21Box h3{font-size:17px;line-height:1.5;color:#173f31;margin:5px 0 9px}.u21Box p{font-size:10.5px;line-height:1.85;color:#626b65;word-break:keep-all}.u21Grid{display:grid;grid-template-columns:1fr 1fr;gap:7px}.u21Cell{padding:11px;border-radius:13px;background:#faf7ef}.u21Cell b{display:block;font-size:9.5px;color:#29483a}.u21Cell span{display:block;font-size:8.4px;line-height:1.55;color:#77736d;margin-top:3px}.u21Logic{padding:12px;border-radius:14px;background:#eef6ea;font-size:9px;line-height:1.7;color:#496055;margin:8px 0}.u21Tag{display:inline-block;padding:4px 7px;border-radius:999px;background:#f3ecdc;color:#73591e;font-size:7.5px;font-weight:900;margin:2px}.u21Warn{padding:10px;border-radius:12px;background:#fff8e7;font-size:8.5px;line-height:1.65;color:#77663e}
 @media(max-width:370px){.u21Grid{grid-template-columns:1fr}}
 
+
+/* UPDATE 22 — IMAGE DISPLAY STABILITY FIX
+   Keep every existing image path/file unchanged. Fix only presentation. */
+img{max-width:100%;height:auto}
+.hero img,.resultHero img,.summaryHero img,.fortuneHero img,.compatHero img,
+.card img,.illustration img,.mascot img,.resultImage img{
+  display:block!important;
+  max-width:100%!important;
+  height:auto!important;
+  object-fit:contain!important;
+  object-position:center center!important;
+  transform:none!important;
+}
+.hero,.resultHero,.summaryHero,.fortuneHero,.compatHero,.resultImage,.illustration,.mascot{
+  overflow:hidden;
+}
+.hero img,.homeHero img{
+  width:100%!important;
+  height:auto!important;
+  object-fit:contain!important;
+}
+.resultHero img,.summaryHero img,.fortuneHero img,.compatHero img,.resultImage img{
+  width:100%!important;
+  max-height:360px!important;
+  object-fit:contain!important;
+}
+img[src="brand-home.jpg"]{
+  width:100%!important;
+  height:auto!important;
+  object-fit:contain!important;
+  object-position:center top!important;
+}
+img[src="clover-mark.jpg"]{
+  object-fit:contain!important;
+  object-position:center!important;
+}
+@media(max-width:520px){
+  .resultHero img,.summaryHero img,.fortuneHero img,.compatHero img,.resultImage img{max-height:300px!important}
+}
+
 </style>
 </head>
 <body>
@@ -1595,6 +1635,24 @@ function U21quality(c){
  const markers=[c.dayMaster?.stem,c.pillars?.month?.branch,U17cross(c).d.lk?.god].filter(Boolean);
  return `<section class="u21Box card"><small>해석 품질 원칙</small><h3>길게 쓰는 것보다, 이 명식에서만 성립하는 근거를 더 많이 남깁니다.</h3><p>귀인사주는 전문용어를 숨기지 않고 바로 쉬운말로 번역합니다. 분야 이름만 바꾼 반복 문장을 줄이고, 성격·직업·돈·연애·결혼은 서로 다른 근거를 우선 사용합니다.</p><div>${markers.map(x=>`<span class="u21Tag">${esc(x)}</span>`).join('')}</div></section>`
 }
+
+
+/* UPDATE 22 IMAGE DISPLAY STABILITY */
+function U22fixImages(){
+ document.querySelectorAll('img').forEach(img=>{
+   img.setAttribute('loading',img.closest('.hero,.homeHero')?'eager':'lazy');
+   img.setAttribute('decoding','async');
+   if(!img.getAttribute('alt')) img.setAttribute('alt','귀인사주 이미지');
+   img.style.maxWidth='100%';
+   if(!img.hasAttribute('width') || !img.hasAttribute('height')){
+     img.style.height='auto';
+   }
+ });
+}
+if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',U22fixImages);
+else U22fixImages();
+const U22observer=new MutationObserver(()=>U22fixImages());
+if(document.documentElement)U22observer.observe(document.documentElement,{childList:true,subtree:true});
 
 function renderResult(){
  if(!chart)return;
