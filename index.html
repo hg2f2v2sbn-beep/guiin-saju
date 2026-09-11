@@ -892,6 +892,8 @@ img[src="clover-mark.jpg"]{
 .u35Checklist{padding:13px;background:#f8f6ef;font-size:8.5px;line-height:1.75;color:#716e68}
 @media(max-width:360px){.u35Grid,.u35Includes{grid-template-columns:1fr}}
 
+
+#ask.active~.u16TopBtn{display:none!important} #ask .composer{position:relative;z-index:100} #ask #askSendBtn{position:relative;z-index:101;pointer-events:auto!important;touch-action:manipulation}
 </style>
 </head>
 <body>
@@ -1188,6 +1190,7 @@ function go(id){
  else if(id==='mypage')$('navMy').classList.add('active');
  else $('navSaju').classList.add('active');
  history.replaceState(null,'','#'+id); window.scrollTo(0,0);
+ if(id==='ask') setTimeout(()=>{renderAIContext();syncAIComposer();},0);
 }
 function bindSeg(id,cb){
  const box=$(id); if(!box)return;
@@ -1233,7 +1236,7 @@ function submitSaju(){
   const inp=profileInput();
   inp.hourUnknown=$('hourUnknown').checked;
   if(!inp.year||!inp.month||!inp.day)throw new Error('생년월일을 입력해 주세요.');
-  chart=GuiinSaju.calculate(inp); saveProfile(chart); currentTab='summary'; renderResult(); go('result');
+  chart=GuiinSaju.calculate(inp); saveProfile(chart); try{localStorage.setItem('guiin_ai_chart_v1',JSON.stringify(guiinAIChart(chart)))}catch(_){ } currentTab='summary'; renderResult(); go('result');
  }catch(e){alert(e.message||'입력값을 확인해 주세요.')}
 }
 document.querySelectorAll('#resultTabs button').forEach(b=>b.onclick=()=>{currentTab=b.dataset.tab;renderResult()});
@@ -2524,7 +2527,16 @@ function sendQ(preset){
   input.value=''; $('msgs').scrollTop=$('msgs').scrollHeight;
 }
 function aiChartContext(c){if(!c)return null;const d=new Date(),f=todayFlow(c,d),lk=currentLuck(c);return {pillars:[c.pillars.year.ko,c.pillars.month.ko,c.pillars.day.ko,c.pillars.hour?.ko].filter(Boolean),dayMaster:c.dayMaster,currentLuck:lk,currentTransit:f,stars:{total:c.stars?.total||0,supported:c.stars?.supportedCount||38,names:[...new Set((c.stars?.hits||[]).map(x=>x.name))]},rule:'AI는 계산값을 다시 계산하거나 임의로 바꾸지 않는다.'}}
-function renderAIContext(){const box=$('aiContext');if(!box)return;if(!chart){box.innerHTML='<h3>상담에 사용할 명식</h3><p>아직 계산된 사주가 없습니다. 먼저 생년월일을 입력해 주세요.</p><button class="ctaGold" onclick="go(\'saju\')">사주 입력하기 ›</button>';return}const x=aiChartContext(chart);box.innerHTML=`<h3>AI에 전달될 내 사주 근거</h3><p>AI가 사주를 다시 추측하지 않고 아래 계산값을 그대로 근거로 답하도록 설계했습니다.</p><div class="aiContextGrid"><div><span>원국</span><b>${esc(x.pillars.join(' · '))}</b></div><div><span>일간</span><b>${esc(x.dayMaster.hanja+' '+x.dayMaster.stem+x.dayMaster.el)}</b></div><div><span>현재 대운</span><b>${esc(x.currentLuck?x.currentLuck.ko+' · '+x.currentLuck.god:'-')}</b></div><div><span>신살·귀인</span><b>${x.stars.total}개 · ${x.stars.supported}/50종 지원</b></div></div>`}
+function guiinLoadSavedChart(){try{const x=JSON.parse(localStorage.getItem('guiin_ai_chart_v1')||'null');return x&&x.year&&x.month&&x.day?x:null}catch(_){return null}}
+function syncAIComposer(){const btn=$('askSendBtn'),input=$('askQ');if(btn){btn.disabled=false;btn.style.pointerEvents='auto';btn.style.position='relative';btn.style.zIndex='90';}if(input){input.disabled=false;input.style.pointerEvents='auto';}}
+function renderAIContext(){
+  const box=$('aiContext'); if(!box)return;
+  const saved=guiinLoadSavedChart();
+  if(!chart && !saved){box.innerHTML='<h3>상담에 사용할 명식</h3><p>아직 계산된 사주가 없습니다. 먼저 생년월일을 입력해 주세요.</p><button class="ctaGold" onclick="go(\'saju\')">사주 입력하기 ›</button>';return;}
+  if(chart){const x=aiChartContext(chart);box.innerHTML=`<h3>AI에 전달될 내 사주 근거</h3><p>AI가 사주를 다시 추측하지 않고 아래 계산값을 그대로 근거로 답하도록 설계했습니다.</p><div class="aiContextGrid"><div><span>원국</span><b>${esc(x.pillars.join(' · '))}</b></div><div><span>일간</span><b>${esc(x.dayMaster.hanja+' '+x.dayMaster.stem+x.dayMaster.el)}</b></div><div><span>현재 대운</span><b>${esc(x.currentLuck?x.currentLuck.ko+' · '+x.currentLuck.god:'-')}</b></div><div><span>신살·귀인</span><b>${x.stars.total}개 · ${x.stars.supported}/50종 지원</b></div></div>`;return;}
+  const ps=[saved.year,saved.month,saved.day,saved.hour].filter(Boolean);
+  box.innerHTML=`<h3>AI에 전달될 내 사주 근거</h3><p>저장된 계산 명식을 불러왔습니다. AI는 이 값을 다시 계산하지 않고 그대로 사용합니다.</p><div class="aiContextGrid"><div><span>원국</span><b>${esc(ps.join(' · '))}</b></div></div>`;
+}
 const GUIIN_AI_API='https://guiin-saju-api.blue-wls.workers.dev/api/chat';
 let guiinAIHistory=[];
 let guiinAISending=false;
@@ -2540,7 +2552,7 @@ async function sendAIQuestion(preset){
   if(guiinAISending)return;
   const input=$('askQ'), q=String(preset||input?.value||'').trim(); if(!q)return;
   renderAIContext();
-  const compact=guiinAIChart(chart);
+  const compact=guiinAIChart(chart)||guiinLoadSavedChart();
   if(!compact){toast('사주를 먼저 계산해 주세요.');go('saju');return;}
   if(q.length>800){toast('질문은 800자 이내로 입력해 주세요.');return;}
   guiinAddBubble('me',q); if(input)input.value='';
