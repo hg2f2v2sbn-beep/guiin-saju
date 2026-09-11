@@ -831,6 +831,14 @@ img[src="clover-mark.jpg"]{
 .u29Notice{padding:10px;border-radius:12px;background:#fff6dc;font-size:8.2px;line-height:1.65;color:#75622f}
 @media(max-width:360px){.u29Menu{grid-template-columns:1fr}}
 
+
+/* UPDATE 30 — MULTI-CHART QA + DIFFERENTIATION GUARD */
+.u30Card{margin:10px 0;padding:16px 14px;border-radius:19px;background:#fff;border:1px solid #eadfc9}
+.u30Card small{font-size:8px;font-weight:900;color:#b48627}.u30Card h3{margin:5px 0 8px;font-size:17px;line-height:1.5;color:#173f31}
+.u30Card p{font-size:9px;line-height:1.75;color:#68716b}.u30Grid{display:grid;gap:7px}.u30Row{padding:11px;border-radius:13px;background:#f7f7f2}
+.u30Row b{display:block;font-size:9px;color:#29483a}.u30Row span{display:block;margin-top:3px;font-size:8px;line-height:1.6;color:#747873}
+.u30Tag{display:inline-block;margin:2px;padding:5px 7px;border-radius:999px;background:#eef6ea;color:#315545;font-size:7.7px;font-weight:900}
+
 </style>
 </head>
 <body>
@@ -2077,6 +2085,53 @@ function U29historyPreview(c){
 }
 function U29prePurchaseUX(c){return U29purchaseStatus(c)+U29afterPurchasePreview()+U29historyPreview(c)}
 
+
+/* UPDATE 30 — INTERPRETATION DIFFERENTIATION ENGINE
+   Uses chart evidence to choose different emphasis. No pseudo probability score. */
+function U30fingerprint(c){
+ const se=U21season(c),st=U21strength(c),pairs=U21tenGodPairs(c),rels=U21relations(c),x=U17cross(c);
+ return {
+  dm:c.dayMaster?.stem||'-', el:c.dayMaster?.el||'-', month:c.pillars?.month?.branch||'-',
+  season:se.name, root:st.label, pair:pairs[0]?.[0]||'단독 구조',
+  relation:rels[0]||'강한 관계신호 제한', luck:x.d.lk?.god||'-'
+ };
+}
+function U30domainEvidence(c,type){
+ const f=U30fingerprint(c);
+ const map={
+ personality:[`일간 ${f.dm}${f.el}`,`월령 ${f.month} · ${f.season}`,f.root],
+ career:[f.pair,`현재 대운 ${f.luck}`,'식상·관성·인성의 연결'],
+ money:[f.pair,'재성·비겁·식상의 연결',`현재 대운 ${f.luck}`],
+ love:[`일지 ${c.pillars?.day?.branch||'-'}`,f.relation,'관계 십신과 생활 패턴'],
+ family:[`연주 ${c.pillars?.year?.ko||'-'} · 월주 ${c.pillars?.month?.ko||'-'}`,f.relation,'궁위별 역할'],
+ flow:[`현재 대운 ${f.luck}`,`올해 ${U17cross(c).yg}`,`이번 달 ${U17cross(c).mg}`]
+ };
+ return map[type]||[f.pair,f.relation,`현재 대운 ${f.luck}`];
+}
+function U30evidenceBox(c,type,title){
+ const ev=U30domainEvidence(c,type);
+ return `<section class="u30Card"><small>개인화 근거 · ${esc(title)}</small><h3>이 분야는 이 근거를 우선해서 읽습니다.</h3><div>${ev.map(x=>`<span class="u30Tag">${esc(x)}</span>`).join('')}</div><p>다른 분야의 결론을 그대로 복사하지 않고, 이 영역과 직접 관련된 원국·관계·현재 운의 신호를 우선합니다.</p></section>`;
+}
+function U30phraseGuard(text){
+ if(!text)return '';
+ const sentences=String(text).split(/(?<=[.!?。]|습니다\.|입니다\.)\s+/).map(x=>x.trim()).filter(Boolean);
+ const seen=new Set(), out=[];
+ for(const s of sentences){
+   const key=s.replace(/\s+/g,'').replace(/[“”"'·,.:;!?()[\]{}]/g,'').slice(0,70);
+   if(key.length>10 && seen.has(key))continue;
+   seen.add(key);out.push(s);
+ }
+ return out.join(' ');
+}
+function U30audit(c){
+ const f=U30fingerprint(c);
+ return `<section class="u30Card"><small>해석 차별화 확인</small><h3>이 명식의 판독 지문</h3><div class="u30Grid">
+ <div class="u30Row"><b>기질축</b><span>${esc(f.dm+f.el)} · ${esc(f.season)} · ${esc(f.root)}</span></div>
+ <div class="u30Row"><b>구조축</b><span>${esc(f.pair)} · ${esc(f.relation)}</span></div>
+ <div class="u30Row"><b>시간축</b><span>현재 대운 ${esc(f.luck)} · 올해 ${esc(U17cross(c).yg)} · 이번 달 ${esc(U17cross(c).mg)}</span></div>
+ </div><p>이 지문이 달라지면 핵심문장·직업·재물·관계·흐름의 강조점도 달라지도록 설계합니다.</p></section>`;
+}
+
 function renderResult(){
  if(chart && !U28hasPremium()){
    document.querySelectorAll('#resultTabs button').forEach(b=>b.classList.toggle('on',b.dataset.tab===currentTab));
@@ -2097,13 +2152,13 @@ function renderResult(){
  if(currentTab==='summary'){
   $('resultView').innerHTML=U16jump()+U17digest(c)+U18risk(c)+U18action(c)+U18compare(c)+U23wrapPremium(c)+U18quality(c)+U13ultra(c)+U16personal(c)+G15lifeTopics(c)+M14decisions(c)+G15yearCompare(c)+U18decision(c,'job')+U18decision(c,'money')+U18decision(c,'love')+U17questions(c)+U18return(c)+U16share(c)+directSummaryHTML(c)+manseTop+expertSummaryHTML(c);
  } else if(currentTab==='personality'){
-  $('resultView').innerHTML=straightIntroHTML(c,'personality','성격·기질')+manseTop+expertSectionsHTML(GuiinExpert.personalitySections(c));
+  $('resultView').innerHTML=straightIntroHTML(c,'personality','성격·기질')+U30evidenceBox(c,'personality','성격·기질')+manseTop+expertSectionsHTML(GuiinExpert.personalitySections(c));
  } else if(currentTab==='fields'){
-  $('resultView').innerHTML=straightIntroHTML(c,'career','직업·재물·연애')+U13domains(c)+manseTop+expertSectionsHTML(GuiinExpert.fieldSections(c));
+  $('resultView').innerHTML=straightIntroHTML(c,'career','직업·재물·연애')+U30evidenceBox(c,'career','직업')+U30evidenceBox(c,'money','재물')+U30evidenceBox(c,'love','연애·관계')+U13domains(c)+manseTop+expertSectionsHTML(GuiinExpert.fieldSections(c));
  } else if(currentTab==='stars'){
   $('resultView').innerHTML=straightIntroHTML(c,'stars','신살·귀인')+manseTop+U16starCross(c)+U13stars(c)+G15trust()+expertStarsHTML(c);
  } else if(currentTab==='flow'){
-  $('resultView').innerHTML=straightIntroHTML(c,'flow','대운·세운')+U18months(c)+M14calendar(c)+G15yearCompare(c)+U17lifeTimeline(c)+U13timeline(c)+U17starActivation(c)+manseTop+((typeof GuiinPlain!=='undefined')?GuiinPlain.renderFlow(c,new Date().getFullYear()):expertFlowHTML(c));
+  $('resultView').innerHTML=U30evidenceBox(c,'flow','대운·세운')+straightIntroHTML(c,'flow','대운·세운')+U18months(c)+M14calendar(c)+G15yearCompare(c)+U17lifeTimeline(c)+U13timeline(c)+U17starActivation(c)+manseTop+((typeof GuiinPlain!=='undefined')?GuiinPlain.renderFlow(c,new Date().getFullYear()):expertFlowHTML(c));
  } else if(currentTab==='chart'){
   $('resultView').innerHTML=manseTop+((typeof GuiinPlain!=='undefined')?GuiinPlain.renderChart(c)+U18glossary()+G15glossary()+G15trust():expertSectionsHTML(GuiinExpert.foundationSections(c)));
  }
