@@ -698,6 +698,97 @@ img[src="clover-mark.jpg"]{
   .u20Chapter,.u21Box,.u23Intro,.u23Bottom{width:100%!important}
 }
 
+
+/* UPDATE 25 — GLOBAL IMAGE CROP AUDIT & FIX
+   No image file/path replacement. Preserve intrinsic ratio everywhere. */
+html,body{max-width:100%;overflow-x:hidden}
+img{
+  display:block;
+  max-width:100%;
+  height:auto;
+  box-sizing:border-box;
+}
+[class*="hero"] img,[class*="Hero"] img,
+[class*="image"] img,[class*="Image"] img,
+[class*="photo"] img,[class*="Photo"] img,
+[class*="illustr"] img,[class*="Illustr"] img,
+[class*="mascot"] img,[class*="Mascot"] img,
+[class*="visual"] img,[class*="Visual"] img,
+.resultPage img,.resultWrap img,.resultBody img,.resultContent img{
+  width:auto!important;
+  max-width:100%!important;
+  height:auto!important;
+  max-height:none!important;
+  min-height:0!important;
+  aspect-ratio:auto!important;
+  object-fit:contain!important;
+  object-position:center center!important;
+  clip-path:none!important;
+  transform:none!important;
+  float:none!important;
+}
+[class*="hero"],[class*="Hero"],
+[class*="image"],[class*="Image"],
+[class*="photo"],[class*="Photo"],
+[class*="illustr"],[class*="Illustr"],
+[class*="mascot"],[class*="Mascot"],
+[class*="visual"],[class*="Visual"]{
+  min-width:0!important;
+  max-width:100%!important;
+  height:auto!important;
+  min-height:0!important;
+  max-height:none!important;
+  aspect-ratio:auto!important;
+  box-sizing:border-box!important;
+}
+/* result cards must grow with the full image instead of cropping it */
+.resultPage figure,.resultWrap figure,.resultBody figure,.resultContent figure{
+  height:auto!important;
+  max-height:none!important;
+  min-height:0!important;
+  overflow:visible!important;
+  aspect-ratio:auto!important;
+}
+/* Do not let generic card overflow rules clip an image vertically */
+.resultPage .card:has(img),.resultWrap .card:has(img),.resultBody .card:has(img),.resultContent .card:has(img){
+  height:auto!important;
+  max-height:none!important;
+}
+/* brand poster keeps its full intrinsic aspect ratio */
+img[src="brand-home.jpg"]{
+  width:100%!important;
+  max-width:100%!important;
+  height:auto!important;
+  max-height:none!important;
+  object-fit:contain!important;
+  object-position:center top!important;
+}
+/* tiny logo/icon stays compact; this is not a content photo */
+img[src="clover-mark.jpg"]{
+  width:auto!important;
+  height:auto!important;
+  max-width:42px!important;
+  max-height:42px!important;
+  object-fit:contain!important;
+}
+/* If an image is intentionally inside a rounded frame, round the image itself;
+   do not crop it with a fixed-height parent. */
+.resultPage img,.resultWrap img,.resultBody img,.resultContent img{
+  margin-left:auto!important;
+  margin-right:auto!important;
+}
+@media(max-width:520px){
+  [class*="hero"] img,[class*="Hero"] img,
+  [class*="image"] img,[class*="Image"] img,
+  [class*="photo"] img,[class*="Photo"] img,
+  [class*="illustr"] img,[class*="Illustr"] img,
+  .resultPage img,.resultWrap img,.resultBody img,.resultContent img{
+    width:100%!important;
+    height:auto!important;
+    max-height:none!important;
+  }
+}
+
 </style>
 </head>
 <body>
@@ -1774,6 +1865,41 @@ if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',
 else U24repairResultLayout();
 const U24observer=new MutationObserver(()=>requestAnimationFrame(U24repairResultLayout));
 U24observer.observe(document.body,{childList:true,subtree:true});
+
+
+/* UPDATE 25 — GLOBAL IMAGE RATIO GUARD */
+function U25repairAllImages(){
+ document.querySelectorAll('img').forEach(img=>{
+   const src=(img.getAttribute('src')||'').split('?')[0];
+   if(src.endsWith('clover-mark.jpg')) return;
+   img.style.setProperty('height','auto','important');
+   img.style.setProperty('max-height','none','important');
+   img.style.setProperty('min-height','0','important');
+   img.style.setProperty('max-width','100%','important');
+   img.style.setProperty('object-fit','contain','important');
+   img.style.setProperty('object-position','center center','important');
+   img.style.setProperty('float','none','important');
+   img.style.setProperty('transform','none','important');
+   img.style.setProperty('clip-path','none','important');
+   const box=img.parentElement;
+   if(box){
+     box.style.setProperty('min-height','0','important');
+     box.style.setProperty('max-height','none','important');
+     box.style.setProperty('height','auto','important');
+     box.style.setProperty('aspect-ratio','auto','important');
+     box.style.setProperty('min-width','0','important');
+   }
+   if(img.complete && img.naturalWidth && img.naturalHeight){
+     img.dataset.ratio=`${img.naturalWidth}/${img.naturalHeight}`;
+   }
+ });
+}
+function U25schedule(){requestAnimationFrame(U25repairAllImages)}
+if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',U25schedule);else U25schedule();
+window.addEventListener('load',U25schedule);
+window.addEventListener('resize',U25schedule);
+const U25observer=new MutationObserver(U25schedule);
+U25observer.observe(document.body,{childList:true,subtree:true});
 
 function renderResult(){
  if(!chart)return;
