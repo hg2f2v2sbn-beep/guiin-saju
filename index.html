@@ -527,6 +527,9 @@ html{background:#efe7d7}.app{background:linear-gradient(180deg,#fffaf0 0%,#fff6e
     <button class="qchip" type="button" onclick="sendQ('올해 재물운이 어떤가요?')">올해 재물운</button>
     <button class="qchip" type="button" onclick="sendQ('지금 이직해도 될까요?')">이직 타이밍</button>
     <button class="qchip" type="button" onclick="sendQ('연애운이 언제 들어올까요?')">연애 시기</button>
+    <button class="qchip" type="button" onclick="sendQ('올해 전체 흐름이 어떤가요?')">올해 흐름</button>
+    <button class="qchip" type="button" onclick="sendQ('내 성격은 어떻게 보이나요?')">내 성격</button>
+    <button class="qchip" type="button" onclick="sendQ('건강운은 어떤가요?')">건강운</button>
   </div>
   <div class="composer" style="margin-top:8px">
     <input id="askQ" placeholder="궁금한 점을 물어보세요" onkeydown="if(event.key==='Enter')sendQ()">
@@ -1000,13 +1003,41 @@ function charge(n){
   persistWallet();
   $('payMsg').textContent=`${n}개 충전 완료. 지금 ${wallet.coins}개 보유. 실제 결제는 아직 연결되지 않았습니다.`;
 }
+function pillarKo(c){
+  try{return [c.pillars.year.ko,c.pillars.month.ko,c.pillars.day.ko,c.pillars.hour&&c.pillars.hour.ko].filter(Boolean).join(' · ');}catch(e){return '';}
+}
+function dayLabel(c){
+  try{return (c.dayMaster&& (c.dayMaster.stem+c.dayMaster.el)) || (c.pillars.day.ko||'일간');}catch(e){return '일간';}
+}
+function monthGod(c){try{return c.pillars.month.god||'월주';}catch(e){return '월주';}}
 function replyFor(q){
   const c=chart;
-  const base=c?`${c.input.name}님 원국은 ${c.pillars.year.ko}·${c.pillars.month.ko}·${c.pillars.day.ko}${c.pillars.hour?'·'+c.pillars.hour.ko:''}입니다. `:'아직 명식이 없어 일반 해설로 답합니다. 사주를 먼저 계산하면 더 정확합니다. ';
-  if(/재물|돈|수입/.test(q)) return base+(c?`월주 십신은 ${c.pillars.month.god}입니다. 재물은 재성 한 글자가 아니라 수입 방식과 대운을 함께 봅니다.`:'작은 수입이 쌓이는지, 지출이 먼저 커지는지를 생활에서 먼저 보세요.');
-  if(/이직|직업|직장/.test(q)) return base+(c?`일간 ${c.dayMaster.stem}과 월주 ${c.pillars.month.god}을 일로 읽을 때는 권한·리듬이 맞는지가 핵심입니다.`:'옮긴다면 연봉보다 역할과 회복 가능한 업무량을 보세요.');
-  if(/연애|결혼|인연/.test(q)) return base+'설렘과 생활 궁합은 별개입니다. 합·충은 사건이 아니라 조율 신호로 봅니다.';
-  return base+'질문을 한 가지로 좁혀주시면 대운·세운과 교차해서 더 구체적으로 볼게요.';
+  if(!c){
+    if(/재물|돈|수입/.test(q)) return '사주를 아직 넣지 않아 일반 흐름으로 답합니다. 재물은 한 번에 크게 들어오기보다, 새는 구멍을 먼저 막는 달이 좋습니다. 홈에서 생년월일을 넣고 다시 물어보시면 원국 기준으로 더 짚어 드릴게요.';
+    if(/이직|직업|직장|일/.test(q)) return '명식이 없으면 이직은 “연봉”보다 “회복 가능한 업무량”으로 보는 편이 안전합니다. 사주를 계산한 뒤 같은 질문을 주시면, 월주와 대운을 맞춰 시기를 narrow하게 볼게요.';
+    if(/연애|결혼|인연/.test(q)) return '사주 없이 연애를 보면 설렘과 생활이 섞입니다. 먼저 생년월일을 넣고, “시작/지속/결혼” 중 하나로 다시 물어보세요.';
+    return '지금은 명식이 없어 일반적인 조언만 가능합니다. 홈 → 사주 입력 후 다시 질문하면, 네 칸 원국을 보고 답합니다.';
+  }
+  const name=c.input.name||'당신';
+  const won=pillarKo(c);
+  const me=dayLabel(c);
+  const mg=monthGod(c);
+  const y=new Date().getFullYear();
+  if(/재물|돈|수입|투자|빚/.test(q))
+    return `${name}님 원국은 ${won}입니다. 일의 중심은 일간 ${me}, 사회 리듬은 월주 ${mg}입니다. 재물은 “한 방에 들어오는 점수”가 아니라, 들어오는 길과 새는 길을 같이 보는 주제입니다. ${y}년에는 큰 투자보다 고정비를 줄이고 작은 수입을 쌓는 쪽이 맞습니다. 충동이 오면 하루만 미뤄 보세요.`;
+  if(/이직|직업|직장|취업|사업/.test(q))
+    return `${name}님은 일간 ${me}에 월주 ${mg}가 일을 읽는 열쇠입니다. 이직은 연봉 한 줄보다, 권한·사람·회복 시간이 맞는지가 핵심입니다. 지금 자리가 숨이 막히면 옮길 신호고, 단지 비교가 불안하면 조금 더  dig는 편이 낫습니다. 원국 ${won} 기준으로는 “역할이 분명한 곳”이 오래 갑니다.`;
+  if(/연애|결혼|인연|이별/.test(q))
+    return `${name}님 인연은 일주(나)와 상대의 일주를 같이 봐야 정확합니다. 지금은 설렘보다 “같이 밥 먹고 난 뒤의 말투”를 보세요. 합은 당겨지는 힘, 충은 조율이 필요한 힘입니다. 올해는 새 사람을 서두르기보다, 이미 있는 관계를 말로 정리하는 달이 도움이 됩니다.`;
+  if(/건강|몸|피로|수면/.test(q))
+    return `${name}님은 몰입하면 선을 넘는 기질이 있습니다. 건강운은 큰 병보다 수면과 식사 리듬이 먼저입니다. 주 1회는 일정을 비우고, 카페인·야근이 겹치면 컨디션이 먼저 무너집니다. 원국 ${won}은 오래 가는 체력형이라, 쉬는 것도 일의 일부로 넣으세요.`;
+  if(/올해|세운|2026|2027|내년/.test(q))
+    return `${name}님 ${y}년 세운은 원국 ${won} 위에 한 해의 옷을 입히는 해입니다. 새 시작은 좋지만 한 번에 판을 바꾸기보다, 한 가지 목표만 밀어 보세요. 상반기는 정리, 하반기는 사람과 기회가 붙는 흐름입니다.`;
+  if(/성격|나|기질|단점/.test(q))
+    return `${name}님 핵심은 일간 ${me}입니다. 겉으로는 성실하고 속으로 기준이 분명합니다. 장점은 책임감, 보완점은 혼자 다 짊어지려는 점입니다. 사람을 고를 때는 속도보다 신뢰가 맞는 쪽이 편합니다.`;
+  if(/대운|흐름|언제/.test(q))
+    return `${name}님 대운은 10년 단위 주제입니다. “이번 달만”이 아니라 “지금 10년이 무엇을 배우게 하는지”로 보면 덜 조급해집니다. 원국 ${won} 위에 대운이 얹히면 일의 문과 사람의 문이 번갈아 열립니다. 인생 흐름 탭에서 현재 구간을 먼저 봐 주세요.`;
+  return `${name}님 질문으로 받은 말은 “${q.slice(0,24)}”입니다. 원국 ${won}, 일간 ${me}, 월주 ${mg}를 기준으로 보면 한 가지로 좁히는 게 좋습니다. 재물 / 일 / 인연 / 올해 중 하나로 다시 물어보시면, 같은 대화에서 이어서 더 구체적으로 답할게요.`;
 }
 function sendQ(preset){
   const input=$('askQ'); const q=(preset||input.value||'').trim(); if(!q)return;
