@@ -811,10 +811,52 @@ function plainOpenHTML(c){
  <p>아래 만세력표는 같은 네 칸을 더 자세히 펼친 것입니다. 그 다음 글은 성격·직업·재물·연애·대운을 이어서 풀어 드립니다. 점집이 아니라, 설명서처럼 읽히길 바랍니다.</p>
  </div>`;
 }
+function birthSeason(c){
+ const br=(c.pillars&&c.pillars.month&&(c.pillars.month.branch||(c.pillars.month.ko||'')[1]))||'';
+ if('인묘진'.includes(br)) return '봄';
+ if('사오미'.includes(br)) return '여름';
+ if('신유술'.includes(br)) return '가을';
+ if('해자축'.includes(br)) return '겨울';
+ const m=Number(c.input&&c.input.month)||1;
+ if(m>=3&&m<=5) return '봄';
+ if(m>=6&&m<=8) return '여름';
+ if(m>=9&&m<=11) return '가을';
+ return '겨울';
+}
+function headlineFor(c){
+ const stem=(c.dayMaster&&c.dayMaster.stem)||(c.pillars&&c.pillars.day&&(c.pillars.day.stem||(c.pillars.day.ko||'')[0]))||'정';
+ const season=birthSeason(c);
+ const map={
+  갑:{봄:'봄비에 막 싹 틔운 큰 나무처럼, 시작이 운인 사람입니다.',여름:'한여름에도 그늘을 만드는 나무처럼, 버티는 힘이 있는 사람입니다.',가을:'잎을 내려놓고도 줄기는 남는 나무처럼, 본질을 지키는 사람입니다.',겨울:'눈 속에서도 뿌리를 내리는 나무처럼, 쉽게 안 꺾이는 사람입니다.'},
+  을:{봄:'봄바람에 몸을 맡긴 덩굴처럼, 유연하게 길을 찾는 사람입니다.',여름:'담장을 타고 피어난 꽃처럼, 기대는 자리에서 더 예쁜 사람입니다.',가을:'거센 바람에도 끊기지 않는 실처럼, 관계를 붙잡는 사람입니다.',겨울:'언 땅을 살짝 덮은 이끼처럼, 작아도 온기를 남기는 사람입니다.'},
+  병:{봄:'봄 햇살처럼 방을 환히 여는, 시작을 밝히는 사람입니다.',여름:'한낮의 태양처럼 주변을 달구는, 중심에 서는 사람입니다.',가을:'기울어가는 해처럼 더 진하게 남는, 여운이 긴 사람입니다.',겨울:'짧은 겨울 햇살처럼 귀하게 비추는, 있으면 그리운 사람입니다.'},
+  정:{봄:'봄밤에 켜 둔 작은 등처럼, 가까운 사람을 먼저 비추는 사람입니다.',여름:'한여름 처마 밑 촛불처럼, 더위 속에서도 온기를 지키는 사람입니다.',가을:'낙엽 사이 남은 불씨처럼, 식지 않는 마음이 있는 사람입니다.',겨울:'차가운 한겨울에 태어난 촛불처럼, 따뜻한 난로가 되어 주는 사람입니다.'},
+  무:{봄:'봄밭의 둔덕처럼, 심으면 반드시 받아 주는 사람입니다.',여름:'한낮에도 그늘이 있는 언덕처럼, 기대면 안전한 사람입니다.',가을:'수확을 담는 땅처럼, 결과를 지키는 사람입니다.',겨울:'언 땅 아래를 지키는 산처럼, 겉은 차가워도 속은 단단한 사람입니다.'},
+  기:{봄:'젖은 봄흙처럼 사람을 품는, 부드러운 자리의 사람입니다.',여름:'비 온 뒤 냄새 좋은 흙처럼, 가까울수록 편한 사람입니다.',가을:'곡식을 키워 낸 밭처럼, 베푸는 손이 있는 사람입니다.',겨울:'아랫목처럼 조용히 데우는, 말보다 온기가 먼저인 사람입니다.'},
+  경:{봄:'새로 간 칼처럼 시작이 분명한, 방향을 자르는 사람입니다.',여름:'뜨거운 햇살 아래 빛나는 쇠처럼, 기준이 선 사람입니다.',가을:'수확을 가르는 낫처럼, 남길 것과 버릴 것을 아는 사람입니다.',겨울:'눈 위의 칼날처럼 더 선명해지는, 흔들려도 원칙인 사람입니다.'},
+  신:{봄:'이슬 맺힌 세공처럼, 작아도 정교한 사람입니다.',여름:'더위 속에도 광을 잃지 않는 보석처럼, 품위를 지키는 사람입니다.',가을:'한 땀 한 땀 다듬어진 은장처럼, 디테일이 신뢰인 사람입니다.',겨울:'찬 공기 속 더 반짝이는 장신구처럼, 예민함이 빛인 사람입니다.'},
+  임:{봄:'풀린 강을 밀어내는 큰 물처럼, 판이 열려야 사는 사람입니다.',여름:'비구름을 몰고 오는 바다처럼, 한 번에 판을 바꾸는 사람입니다.',가을:'가을 강을 천천히 적시는 물처럼, 깊게 스미는 사람입니다.',겨울:'언 강을 밑에서 흐르는 물처럼, 겉은 멈춰도 속은 움직이는 사람입니다.'},
+  계:{봄:'꽃잎을 깨우는 아침 이슬처럼, 작은 신호에 먼저 반응하는 사람입니다.',여름:'한여름 소나기처럼 짧고 진하게, 마음을 적시는 사람입니다.',가을:'안개처럼 스며드는 비처럼, 말은 적은데 남는 사람입니다.',겨울:'창가에 서리는 성애처럼, 차갑게 보여도 섬세한 사람입니다.'}
+ };
+ const row=map[stem]||map['정'];
+ return row[season]||row['겨울'];
+}
+function quoteFor(c){
+ const season=birthSeason(c);
+ const el=typeof dayEl==='function'?dayEl(c):'화';
+ const q={
+  목:{봄:'“지금 심은 것이 당신의 내년입니다.”',여름:'“그늘이 되어 주는 날이, 가장 강한 날입니다.”',가을:'“내려놓아도 당신은 사라지지 않습니다.”',겨울:'“뿌리가 있는 사람은 겨울에도 죽지 않습니다.”'},
+  화:{봄:'“작은 온기가 방을 바꿉니다.”',여름:'“당신의 열이 누군가를 살립니다.”',가을:'“식기 전에 마음을 전하세요.”',겨울:'“한 점의 불이 긴 밤을 지킵니다.”'},
+  토:{봄:'“받아 주는 땅이 곧 운입니다.”',여름:'“당신이 버티는 동안 누군가 쉽니다.”',가을:'“거둔 것을 지키는 손이 복입니다.”',겨울:'“겉모습보다 속 온기를 믿으세요.”'},
+  금:{봄:'“선이 그어져야 길이 됩니다.”',여름:'“원칙이 당신을 지켜 줍니다.”',가을:'“자를 줄 아는 사람이 오래 갑니다.”',겨울:'“차가운 공기일수록 칼은 더 밝습니다.”'},
+  수:{봄:'“고이면 썩고, 흐르면 삽니다.”',여름:'“큰물도 물꼬가 있어야 합니다.”',가을:'“스미는 힘이 밀치는 힘보다 깁니다.”',겨울:'“얼음 밑에도 물은 흐릅니다.”'}
+ };
+ return (q[el]&&q[el][season])||'“지금의 선택이 내일을 데웁니다.”';
+}
 function prettySummaryHTML(c){
  const time=c.input.hourUnknown?'모름':(String(c.input.hour).padStart(2,'0')+':'+String(c.input.minute).padStart(2,'0'));
- const title='흔들려도, 결국 빛나는 사람입니다.';
- const quote='“지금의 선택이 더 큰 행복으로 이어질 것입니다.”';
+ const title=headlineFor(c);
+ const quote=quoteFor(c);
  return `<div class="lifeHero card">
    <h3>${esc(c.input.name)}님은<br>${esc(title)}</h3>
    <p>${quote}</p>
@@ -1006,6 +1048,23 @@ let matchAnalysis=null, matchTab='summary', matchBaseHTML='';
 function compatEsc(s){
  return String(s??'').replace(/[&<>"']/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]));
 }
+function expandCompatBody(s){
+ const body=String(s.body||'');
+ if(body.length>=260) return body;
+ return (body+' 좋은 궁합은 싸움이 없는 관계가 아니라, 싸운 다음 날 밥이 나오는 관계입니다. 서로 다른 점은 부족한 점을 메우기도 하고 같은 상처를 두 번 건드리면 싸움이 됩니다. 점수가 높아도 말투와 돈을 안 나누면 생활에서 무너지고, 점수가 낮아도 역할이 분명하면 오래 갑니다. 이번 주 불편한 한 가지만 말로 확인해 보세요.').trim();
+}
+function matchProsCons(a,b,score){
+ const ea=(a.dayMaster&&a.dayMaster.el)||'나';
+ const eb=(b.dayMaster&&b.dayMaster.el)||'상대';
+ const pair=esc(a.input.name)+'님('+ea+')과 '+esc(b.input.name)+'님('+eb+')';
+ const good=score>=80
+  ? pair+'는 서로 다른 점이 공격이 되지 않고 역할이 되는 쪽에 가깝습니다. 한 사람이 밀 때 한 사람이 받쳐 주는 그림이 나오기 쉽습니다. 그 역할이 고착되면 “항상 나만”이라는 말이 나옵니다. 주 1회는 반대로 기대는 연습을 하세요. 장점은 위기가 왔을 때 먼저 남는 온기입니다.'
+  : pair+'는 끌림과 차이가 같이 있습니다. 처음엔 신선하고, 시간이 지나면 생활 습관이 드러납니다. 장점은 달라도 쉽게 포기하지 않는 힘입니다. 서로의 속도를 인정하면 단점이 개성이 되고, 고치려 하면 전쟁이 됩니다.';
+ const bad=score>=80
+  ? '조율이 필요한 지점은 말의 온도입니다. 좋은 관계일수록 “당연히 알겠지”가 쌓입니다. 돈·일정·가족 이야기는 기분이 좋을 때 미리 나눠야 합니다. 미루면 작은 오해가 큰 점수가 됩니다. 서로 바쁠수록 짧은 확인 문장이 궁합을 지킵니다.'
+  : '조율이 필요한 지점은 자존심과 속도입니다. 한 사람은 지금 말하고 싶고, 한 사람은 하루가 필요합니다. 그 간격을 성격 탓으로 두면 반복됩니다. “오늘은 듣기만, 내일 답하기”처럼 규칙 하나를 정하면 관계가 가벼워집니다.';
+ return '<div class="proBox card"><h3>이런 점이 좋아요</h3><p class="flowText">'+good+'</p></div><div class="listCard card"><h3>이런 점은 조율이 필요해요</h3><p class="flowText">'+bad+'</p></div>';
+}
 function renderCompatCards(){
  if(!matchAnalysis)return;
  document.querySelectorAll('#matchTabs button').forEach(b=>b.classList.toggle('on',b.dataset.matchTab===matchTab));
@@ -1036,8 +1095,7 @@ function submitMatch(){
   const future=Math.max(55,Math.min(98,Math.round((score+personality)/2)));
   const band=score>=86?'서로의 장점을 살릴 여지가 큰 관계입니다.':score>=76?'맞는 부분과 조율할 부분이 함께 있는 관계입니다.':score>=66?'끌림과 차이가 함께 있어 생활 조율이 중요한 관계입니다.':'점수보다 대화와 경계 설정이 특히 중요한 관계입니다.';
   matchBaseHTML=`<div class="matchHero card"><h3>두 사람의 인연은 특별합니다.</h3><p>“좋은 인연이, 더 행복한 내일을 만듭니다.”</p><div class="matchArt"><img loading="lazy" decoding="async" src="compat-animals.jpg" alt=""></div><div style="font-size:9px;margin-top:7px">귀인사주 참고 궁합 지수</div><div class="score">♥ ${score}<small>점</small></div><p>${band}</p></div>
-   <div class="infoCard card"><div class="pair"><div class="person"><b>나<br>${esc(a.input.name)}</b><br>${a.input.year}.${a.input.month}.${a.input.day}<br>${a.input.gender==='여'?'여성':'남성'}</div><div class="heartSvg">${ICONS.heart}</div><div class="person b"><b>상대방<br>${esc(b.input.name)}</b><br>${b.input.year}.${b.input.month}.${b.input.day}<br>${b.input.gender==='여'?'여성':'남성'}</div></div></div>
-   <div class="infoCard card"><h3>세부 궁합 지수</h3>${[['연애궁합',love,'pink'],['성격궁합',personality,'mint'],['재물궁합',money,'gold'],['미래궁합',future,'purple']].map(x=>`<div class="scoreRow"><span>${x[0]}</span><div class="scoreBar"><i class="${x[2]}" style="width:${x[1]}%"></i></div><b>${x[1]}</b></div>`).join('')}</div>`+
+   <div class="infoCard card"><div class="pair"><div class="person"><b>나<br>${esc(a.input.name)}</b><br>${a.input.year}.${a.input.month}.${a.input.day}<br>${a.input.gender==='여'?'여성':'남성'}</div><div class="heartSvg">${ICONS.heart}</div><div class="person b"><b>상대방<br>${esc(b.input.name)}</b><br>${b.input.year}.${b.input.month}.${b.input.day}<br>${b.input.gender==='여'?'여성':'남성'}</div></div></div>`+matchProsCons(a,b,score)+`<div class="infoCard card"><h3>세부 궁합 지수</h3>${[['연애궁합',love,'pink'],['성격궁합',personality,'mint'],['재물궁합',money,'gold'],['미래궁합',future,'purple']].map(x=>`<div class="scoreRow"><span>${x[0]}</span><div class="scoreBar"><i class="${x[2]}" style="width:${x[1]}%"></i></div><b>${x[1]}</b></div>`).join('')}</div>`+
    ((typeof GuiinManse!=='undefined')?GuiinManse.renderPair(a,b):'');
   if(typeof GuiinCompat==='undefined') throw new Error('compatibility-interpreter.js가 로드되지 않았습니다.');
   matchAnalysis=GuiinCompat.build(a,b,score);
