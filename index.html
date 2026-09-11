@@ -251,7 +251,7 @@ html{background:#efe7d7}.app{background:linear-gradient(180deg,#fffaf0 0%,#fff6e
     <div class="brand"><div class="brandline"><span class="logo-dot"><img src="clover-mark.jpg" alt=""></span>우리 궁합</div></div>
     <button class="ghost"><svg viewBox="0 0 24 24" width="20" height="20"><path d="M12 20s-8-4.8-8-10a4.5 4.5 0 018-2.8A4.5 4.5 0 0120 10c0 5.2-8 10-8 10z" fill="none" stroke="currentColor" stroke-width="1.7"/></svg></button>
   </div>
-  <div class="tabs purple"><button class="on">궁합 요약</button><button>연애 궁합</button><button>결혼 궁합</button><button>상대방 분석</button></div>
+  <div class="tabs purple" id="matchTabs"><button class="on" data-mtab="sum" onclick="showMatchTab('sum')">궁합 요약</button><button data-mtab="love" onclick="showMatchTab('love')">연애 궁합</button><button data-mtab="marry" onclick="showMatchTab('marry')">결혼 궁합</button><button data-mtab="other" onclick="showMatchTab('other')">상대방 분석</button></div>
   <div id="matchView"></div>
 </section>
 
@@ -591,6 +591,11 @@ function renderResult(){
 }
 function setTab(t){currentTab=t;renderResult()}
 function advanced(c){return expertStarsHTML(c)+expertSectionsHTML(GuiinExpert.foundationSections(c));}
+function showMatchTab(id){
+  const box=$('matchView'); if(!box||!window._matchHTML)return;
+  box.innerHTML=window._matchHTML[id]||window._matchHTML.sum;
+  document.querySelectorAll('#matchTabs button').forEach(b=>b.classList.toggle('on',b.dataset.mtab===id));
+}
 function submitMatch(){
  try{
   const a=GuiinSaju.calculate(profileInput('a')), b=GuiinSaju.calculate(profileInput('b'));
@@ -605,10 +610,18 @@ function submitMatch(){
   const personality=Math.max(55,Math.min(98,score+Math.round((20-distance/5)/2)));
   const money=Math.max(55,Math.min(98,Math.round((100-(Math.abs(pa['토']-pb['토'])+Math.abs(pa['금']-pb['금'])))*.35+55)));
   const future=Math.max(55,Math.min(98,Math.round((score+personality)/2)));
-  $('matchView').innerHTML=`<div class="matchHero card"><h3>두 사람의 인연은 특별합니다.</h3><p>“좋은 인연이, 더 행복한 내일을 만듭니다.”</p><div class="matchArt"><img src="compat-animals.jpg" alt=""></div><div style="font-size:9px;margin-top:7px">두 사람의 궁합 점수</div><div class="score">♥ ${score}<small>점</small></div><p>서로를 보완하고 함께 성장하는 아주 좋은 인연입니다.</p></div>
-   <div class="infoCard card"><div class="pair"><div class="person"><b>나<br>${esc(a.input.name)}</b><br>${a.input.year}.${a.input.month}.${a.input.day}<br>${a.input.gender==='여'?'여성':'남성'}</div><div class="heartSvg">${ICONS.heart}</div><div class="person b"><b>상대방<br>${esc(b.input.name)}</b><br>${b.input.year}.${b.input.month}.${b.input.day}<br>${b.input.gender==='여'?'여성':'남성'}</div></div></div>
-   <div class="infoCard card"><h3>세부 궁합 점수</h3>${[['연애궁합',love,'pink'],['성격궁합',personality,'mint'],['재물궁합',money,'gold'],['미래궁합',future,'purple']].map(x=>`<div class="scoreRow"><span>${x[0]}</span><div class="scoreBar"><i class="${x[2]}" style="width:${x[1]}%"></i></div><b>${x[1]}</b></div>`).join('')}</div>
-   <div class="slogan card"><b>좋은 인연이, 좋은 하루를 만듭니다.</b></div>`;
+  const gapLabel=dayGap===0?'같은 지지':dayGap===6?'충(마주보는 기운)':(dayGap===4||dayGap===8)?'합에 가까운 거리':'서로 다른 리듬';
+  const headline=score>=85?'두 사람의 흐름이 잘 맞물립니다.':score>=75?'좋은 끌림과 조율이 함께 있습니다.':'점수가 낮아도 관계가 실패라는 뜻은 아닙니다.';
+  const tone=dayGap===6?'충이 있으면 감정이 빨리 부딪힐 수 있으니, 말의 속도와 쉬는 시간을 따로 정하는 편이 좋습니다.':(dayGap===4||dayGap===8)?'합의 느낌은 끌림을 키우지만, 생활 분담까지 자동으로 맞춰 주지는 않습니다.':'서로 속도가 다를 수 있으니 약속을 구체적으로 나누는 해석이 필요합니다.';
+  const pairBox=`<div class="infoCard card"><div class="pair"><div class="person"><b>나<br>${esc(a.input.name)}</b><br>${a.pillars.day.ko}<br>${a.input.year}.${a.input.month}.${a.input.day}<br>${a.input.gender==='여'?'여성':'남성'}</div><div class="heartSvg">${ICONS.heart}</div><div class="person b"><b>상대방<br>${esc(b.input.name)}</b><br>${b.pillars.day.ko}<br>${b.input.year}.${b.input.month}.${b.input.day}<br>${b.input.gender==='여'?'여성':'남성'}</div></div></div>`;
+  const bars=`<div class="infoCard card"><h3>세부 참고 점수</h3>${[['연애',love,'pink'],['성격',personality,'mint'],['재물',money,'gold'],['미래',future,'purple']].map(x=>`<div class="scoreRow"><span>${x[0]}</span><div class="scoreBar"><i class="${x[2]}" style="width:${x[1]}%"></i></div><b>${x[1]}</b></div>`).join('')}<p style="font-size:9px;color:#7a817c;margin:8px 0 0">점수는 일간·오행 거리·일지 간격의 참고값입니다. 결혼·재물을 확정하지 않습니다.</p></div>`;
+  window._matchHTML={
+    sum:`<div class="matchHero card"><h3>${headline}</h3><p>“좋은 인연이, 더 행복한 내일을 만듭니다.”</p><div class="matchArt"><img src="compat-animals.jpg" alt="펭귄과 토끼"></div><div style="font-size:9px;margin-top:7px">두 사람의 참고 궁합 점수</div><div class="score">♥ ${score}<small>점</small></div><p>${tone}</p></div>${pairBox}${bars}<div class="deepCard card"><h3>한 줄로 단정하지 않는 이유</h3><p>일간은 ${a.dayMaster.stem}과 ${b.dayMaster.stem}, 일주는 ${a.pillars.day.ko}와 ${b.pillars.day.ko}입니다. 일지 관계는 ‘${gapLabel}’입니다. 합이 많다고 무조건 좋고 충이 있다고 무조건 나쁜 것은 아닙니다.</p></div><div class="slogan card"><b>좋은 인연이, 좋은 하루를 만듭니다.</b></div>`,
+    love:`<div class="deepCard card"><h3>연애에서 잘 맞는 지점</h3><p>${a.input.name}님 일간 ${a.dayMaster.stem}(${a.dayMaster.el})와 ${b.input.name}님 일간 ${b.dayMaster.stem}(${b.dayMaster.el})를 먼저 봅니다. 같은 오행이면 속도가 비슷하고, 다르면 서로 자극이 됩니다.</p><p>일지 간격은 ${gapLabel}입니다. ${tone}</p></div><div class="deepCard card"><h3>설렘과 생활은 따로</h3><p>연애 참고 점수 ${love}점은 끌림의 온도일 뿐입니다. 연락 주기, 갈등 후 회복, 약속 지키는 방식은 점수 밖에 있습니다.</p></div>${bars}`,
+    marry:`<div class="deepCard card"><h3>결혼·동거는 책임 궁합</h3><p>미래 참고 점수 ${future}점, 재물 참고 점수 ${money}점입니다. 결혼은 일지의 합충보다 ‘누가 돈을 모으고, 누가 일정을 챙기는지’가 더 크게 느껴집니다.</p></div><div class="deepCard card"><h3>같이 보면 좋은 것</h3><p>${a.input.name}님 월주 십신 ${a.pillars.month.god}, ${b.input.name}님 월주 십신 ${b.pillars.month.god}입니다. 가정에서 역할이 겹치면 피로가 쌓이고, 보완되면 안정됩니다. 대운은 각자 결과 탭에서 시기를 확인하세요.</p></div>${pairBox}`,
+    other:`<div class="deepCard card"><h3>${esc(b.input.name)}님 원국 요약</h3><p>일간 ${b.dayMaster.stem} · 일주 ${b.pillars.day.ko} · 월주 ${b.pillars.month.ko} · 월주 십신 ${b.pillars.month.god}</p><p>오행 비율(참고): ${['목','화','토','금','수'].map(e=>e+' '+pb[e]+'%').join(' · ')}</p></div><div class="deepCard card"><h3>${esc(a.input.name)}님과 비교</h3><p>오행 거리 합 ${distance}입니다. 차이가 클수록 취향·에너지 소모 지점이 다를 수 있습니다. 상대를 ‘고치는’ 관계가 아니라 리듬을 맞추는 관계로 읽는 편이 안전합니다.</p></div>${pairBox}`
+  };
+  showMatchTab('sum');
   go('matchResult');
  }catch(e){alert('두 사람의 생년월일을 확인해 주세요.')}
 }
