@@ -811,6 +811,76 @@ function prettySummaryHTML(c){
  <div class="slogan card"><b>타고난 빛이, 언제나 길을 만듭니다.</b></div>
  <button class="ctaGreen" style="width:100%;margin-top:8px" onclick="setTab('chart')">상세 분석 보기 ›</button>`;
 }
+function dayEl(c){
+ const map={갑:'목',을:'목',병:'화',정:'화',무:'토',기:'토',경:'금',신:'금',임:'수',계:'수'};
+ const stem=(c.dayMaster&&c.dayMaster.stem)||(c.pillars&&c.pillars.day&& (c.pillars.day.stem||(c.pillars.day.ko||'')[0]))||'';
+ return (c.dayMaster&&c.dayMaster.el)||map[stem]||'목';
+}
+function ohaengGuideHTML(c){
+ const me=dayEl(c);
+ const stem=(c.dayMaster&&c.dayMaster.stem)||(c.pillars&&c.pillars.day&&(c.pillars.day.stem||(c.pillars.day.ko||'')[0]))||'';
+ const pack={
+  목:{
+    title:'나무 기질',
+    who:'한곳에 머물기보다 자라고 연결되는 쪽에 마음이 갑니다. 기획, 사람, 새로운 시도에서 힘이 납니다.',
+    stem: stem==='갑'?'곧은 큰 나무처럼 앞장서는 편입니다.':'덩굴처럼 유연하게 길을 찾는 편입니다.',
+    help:'쉬는 시간, 산책, 책, 좋은 대화처럼 “물”이 닿을 때 다시 자랍니다. 잠이 줄면 아이디어부터 마릅니다.',
+    make:'말과 발표, 분위기 메이킹, 사람을 설득하는 일에서 결과가 잘 납니다.',
+    stress:'칼 같은 평가, 갑작스러운 마감, “틀렸다”는 한 마디에 쉽게 꺾입니다. 그날은 일을 더 하지 말고 물(휴식)을 먼저 주세요.',
+    handle:'늘어지는 회의, 애매한 규칙을 정리하는 역할이 잘 맞습니다. 다만 사람을 뿌리째 흔들지는 마세요.',
+    tip:'이번 주 할 일: 물 한 잔과 10분 걷기를 일과 사이에 넣기.'
+  },
+  화:{
+    title:'불 기질',
+    who:'보이고 싶어 하고, 따뜻한 자리면 더 잘합니다. 관심과 반응이 연료입니다.',
+    stem: stem==='병'?'태양처럼 크게 비추고 싶어 합니다.':'촛불처럼 가까이 있는 사람을 오래 비춥니다.',
+    help:'할 일이 분명하고 준비물(목)이 있을 때 불이 오래 갑니다. 빈 시간이 길면 마음이 먼저 꺼집니다.',
+    make:'영업, 강의, 콘텐츠, 팀 사기처럼 “사람을 달구는 일”에서 성과가 납니다.',
+    stress:'돈이나 반응이 갑자기 끊기거나, 차가운 한마디를 들으면 의욕이 내려앉습니다. 그날은 큰 결정을 미루세요.',
+    handle:'딱딱한 자리도 녹일 수 있지만, 너무 밀어붙이면 상대가  defensively 변합니다.',
+    tip:'이번 주 할 일: 칭찬받을 작은 결과 하나를 먼저 끝내기.'
+  },
+  토:{
+    title:'흙 기질',
+    who:'맡으면 끝까지 들고 가려 합니다. 믿음은 두껍고, 변화는 천천히 옵니다.',
+    stem: stem==='무'?'산처럼 자리를 지키는 편입니다.':'밭처럼 사람을 품는 편입니다.',
+    help:'목표와 인정(화)이 보일 때 움직입니다. “왜 하는지”가 빠지면 몸만 바쁩니다.',
+    make:'관리, 저축, 운영, 실무 완성도가 돈과 실력으로 남습니다.',
+    stress:'갑작스러운 일정 변경, 계획 없는 사람이 들어오면 속이 막힙니다. 미리 빈칸을 조금 남겨 두세요.',
+    handle:'흐트러진 일을 담는 그릇이 됩니다. 다만 남의 감정도 다 담으려 하면 소화가 안 됩니다.',
+    tip:'이번 주 할 일: 거절 한 번, 일정 비우기 한 칸.'
+  },
+  금:{
+    title:'쇠 기질',
+    who:'맞고 틀림이 빨리 보입니다. 정리하고 자르는 힘이 강합니다.',
+    stem: stem==='경'?'큰 칼처럼 결단이 분명합니다.':'작은 보석처럼 디테일이 예민합니다.',
+    help:'규칙, 루틴, 통장·할 일 목록처럼 흙(기반)이 있어야 날이 섭니다.',
+    make:'분석, 계약, 편집, 숫자, 기준 세우기에서 신뢰가 쌓입니다.',
+    stress:'감정 싸움, 급하게 몰아치는 요청에 이성이 녹습니다. 화가 올라오면 답을 한 템포 늦추세요.',
+    handle:'산만한 일을 잘라 주는 사람입니다. 너무 자르면 관계가 함께 잘립니다.',
+    tip:'이번 주 할 일: 결정 전에 10분만 걷기.'
+  },
+  수:{
+    title:'물 기질',
+    who:'먼저 살피고, 우회로를 잘 찾습니다. 정보가 많으면 마음이 편합니다.',
+    stem: stem==='임'?'큰 강처럼 판이 커야 힘이 납니다.':'이슬처럼 세밀한 감각이 강합니다.',
+    help:'기준과 기술(금)이 정해지면 막힘없이 흐릅니다. “아무 거나 해”는 독입니다.',
+    make:'기획, 조사, 상담, 글, 사람 사이를 잇는 일에서 길이 열립니다.',
+    stress:'승인 대기, 복잡한 절차, 막힌 조직에서 답답함이 커집니다. 작은 출구부터 만드세요.',
+    handle:'과열된 자리를 식힐 수 있습니다. 너무 식히면 팀의 열정까지 같이 내려갑니다.',
+    tip:'이번 주 할 일: 오늘 할 일 세 가지만 적고 나머지는 내일.'
+  }
+ }[me];
+ if(!pack) return '';
+ const name=esc(c.input.name||'당신');
+ return `<div class="infoCard card"><h3>나(${esc(me)} · ${esc(pack.title)})를 쉽게 보면</h3>
+  <p class="flowText">${name}님의 중심은 <b>${esc(me)}</b>입니다. ${esc(pack.who)} ${esc(pack.stem)}</p></div>
+ <div class="listCard card"><h3>나를 살리는 것</h3><p class="flowText">${esc(pack.help)}</p></div>
+ <div class="listCard card"><h3>내가 잘 만드는 결과</h3><p class="flowText">${esc(pack.make)}</p></div>
+ <div class="listCard card"><h3>나를 지치게 하는 것</h3><p class="flowText">${esc(pack.stress)}</p></div>
+ <div class="listCard card"><h3>내가 다루는 역할</h3><p class="flowText">${esc(pack.handle)}</p></div>
+ <div class="slogan card"><b>${esc(pack.tip)}</b><br>상극은 불행이 아니라, 연습이 필요한 힘입니다.</div>`;
+}
 function wongukHTML(c){
  const order=['year','month','day','hour'];
  const lab={year:'태어난 해',month:'자란 환경',day:'나 자신',hour:'표현·말년'};
@@ -837,7 +907,7 @@ function wongukHTML(c){
   <p class="help" style="margin-top:10px">위 한자는 천간(겉모습), 아래 한자는 지지(속마음)입니다. 작은 글씨는 그 칸이 하는 역할입니다.</p></div>
  <div class="wongukCard card"><h3>지금 강한 기운</h3><div class="elements">${elBox}</div><div class="elBarMix">${bar}</div>
   <p class="flowText" style="margin-top:10px">가장 많은 건 <b>${topEl}(${meaning[topEl]})</b> 기운입니다. 잘 쓰는 힘이고, 지나치면 피로가 됩니다.</p></div>
- <div class="slogan card"><b>표는 점수가 아니라 설명서입니다.</b><br>아래 만세력에서 같은 네 칸을 더 자세히 볼 수 있어요.</div>`;
+ ${ohaengGuideHTML(c)}<div class="slogan card"><b>표는 점수가 아니라 설명서입니다.</b><br>아래 만세력에서 같은 네 칸을 더 자세히 볼 수 있어요.</div>`;
 }
 function mockPersonalityHTML(c){
  let secs=[];
