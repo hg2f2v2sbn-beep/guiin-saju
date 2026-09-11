@@ -1,0 +1,83 @@
+name: site-check
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+  workflow_dispatch:
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Required files exist
+        run: |
+          set -e
+          for f in \
+            index.html \
+            saju-engine.js \
+            expert-interpreter.js \
+            today.html \
+            manse.html \
+            compatibility.html \
+            2026-fortune.html \
+            2027-fortune.html \
+            cheon-eul-gwiin.html \
+            saju-compatibility-guide.html \
+            sitemap.xml \
+            robots.txt \
+            CNAME \
+            brand-home.jpg
+          do
+            test -f "$f" || { echo "MISSING: $f"; exit 1; }
+          done
+          echo "required files ok"
+
+      - name: No leftover SVG mascots or QA notes
+        run: |
+          set -e
+          if ls mascot-*.svg clover-mark.svg og-image.svg 2>/dev/null; then
+            echo "flat SVG leftover found"
+            exit 1
+          fi
+          if ls QA*.txt UPLOAD-README.txt SEARCH-SETUP.txt UTM-GUIDE.txt 2>/dev/null; then
+            echo "internal notes should not be in repo root"
+            exit 1
+          fi
+          echo "no leftover files"
+
+      - name: Guide pages use .html canonical and brand-home OG
+        run: |
+          set -e
+          fail=0
+          for f in today.html manse.html compatibility.html 2026-fortune.html 2027-fortune.html cheon-eul-gwiin.html saju-compatibility-guide.html; do
+            if grep -q 'gwiinsaju.com/[^"<>]*/"' "$f"; then
+              if grep -E 'canonical|og:url|mainEntityOfPage' "$f" | grep -v '\.html'; then
+                echo "folder-style URL in $f"
+                grep -E 'canonical|og:url|mainEntityOfPage' "$f" || true
+                fail=1
+              fi
+            fi
+            if grep -q 'og-image.svg' "$f"; then
+              echo "og-image.svg still referenced in $f"
+              fail=1
+            fi
+            if ! grep -q 'brand-home.jpg' "$f"; then
+              echo "brand-home.jpg OG missing in $f"
+              fail=1
+            fi
+          done
+          test "$fail" -eq 0
+          echo "SEO checks ok"
+
+      - name: Sitemap uses .html paths
+        run: |
+          set -e
+          if grep -E 'gwiinsaju.com/(today|manse|compatibility)/<' sitemap.xml; then
+            echo "sitemap still uses folder URLs"
+            exit 1
+          fi
+          echo "sitemap ok"
