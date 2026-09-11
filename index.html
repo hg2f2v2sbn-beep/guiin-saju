@@ -789,6 +789,10 @@ img[src="clover-mark.jpg"]{
   }
 }
 
+
+/* UPDATE 26 — FIVE-UPGRADE BUNDLE */
+.u26Signal{margin:9px 0;padding:16px 14px;border-radius:18px;background:#fff}.u26Signal h3{font-size:17px;color:#173f31;margin:3px 0 9px}.u26Signal p{font-size:9.8px;line-height:1.8;color:#616c65}.u26Rows{display:grid;gap:6px}.u26Row{padding:10px 11px;border-radius:12px;background:#f7f4ec}.u26Row b{display:block;font-size:9px;color:#315545}.u26Row span{font-size:8.3px;line-height:1.55;color:#77736e}.u26Timeline{display:grid;gap:7px}.u26Time{padding:11px;border-left:3px solid #c9a34c;border-radius:0 12px 12px 0;background:#fff9e9}.u26Time b{font-size:9px;color:#72571f}.u26Time p{margin:3px 0 0;font-size:8.7px;line-height:1.6;color:#6d685c}.u26Proof{font-size:8.4px;line-height:1.7;color:#69736d;padding:10px;border-radius:12px;background:#eef6ea}.u26Compare{display:grid;grid-template-columns:1fr 1fr;gap:7px}.u26Compare div{padding:11px;border-radius:13px;background:#faf7f0;font-size:8.5px;line-height:1.6;color:#6c706c}.u26Compare b{display:block;color:#29483a;margin-bottom:3px}@media(max-width:370px){.u26Compare{grid-template-columns:1fr}}
+
 </style>
 </head>
 <body>
@@ -1834,7 +1838,7 @@ function U23action(c){
  return `<section class="u23Bottom" id="u23-action"><h3>이 사주를 현실에서 쓰는 법</h3><p>사주풀이를 읽고 끝내지 않도록, 원국과 현재 운에서 확인되는 내용을 행동 질문으로 바꿨습니다.</p><ul>${todo.map(x=>`<li>${x}</li>`).join('')}</ul></section>`
 }
 function U23wrapPremium(c){
- return `${U23nav()}${U23intro(c)}<div id="u23-precision">${U21precision(c)}</div><div id="u23-master">${U20master(c)}</div>${U21quality(c)}${U23action(c)}`;
+ return `${U23nav()}${U23intro(c)}<div id="u23-precision">${U21precision(c)}</div><div id="u23-master">${U20master(c)}</div>${U21quality(c)}${U23action(c)+U26bundle(c)}`;
 }
 
 
@@ -1900,6 +1904,43 @@ window.addEventListener('load',U25schedule);
 window.addEventListener('resize',U25schedule);
 const U25observer=new MutationObserver(U25schedule);
 U25observer.observe(document.body,{childList:true,subtree:true});
+
+
+/* UPDATE 26 — FIVE-UPGRADE BUNDLE
+  1. 명식 핵심 신호
+  2. 과거-현재-미래 검증형 타임라인
+  3. 분야별 근거 분리
+  4. 선택 비교
+  5. 프리미엄 리포트 마무리
+*/
+function U26signals(c){
+ const s=U21strength(c),se=U21season(c),pairs=U21tenGodPairs(c),rels=U21relations(c),x=U17cross(c);
+ const rows=[
+  ['태어난 환경',`${se.name} · ${se.desc}. 같은 일간이라도 계절이 달라지면 힘을 쓰는 방식이 달라집니다.`],
+  ['뿌리',`${s.label}${s.roots.length?' · '+s.roots.join(', '):''}. 강약을 이것 하나로 확정하지 않습니다.`],
+  ['십신 교차',pairs.length?pairs.map(v=>v[0]).join(' · '):'단독 십신보다 원국 전체의 배치를 우선합니다.'],
+  ['관계 신호',rels.length?rels.join(' · '):'강하게 표시할 합·충·형·파·해가 제한적입니다.'],
+  ['현재 시간축',`${x.d.lk?.god||'대운 확인'} → ${x.yg} → ${x.mg} → ${x.dg}`]
+ ];
+ return `<section class="u26Signal card"><small>01 · 명식 핵심 신호</small><h3>이 사람에게 실제로 잡힌 신호만 먼저 모았습니다.</h3><div class="u26Rows">${rows.map(v=>`<div class="u26Row"><b>${esc(v[0])}</b><span>${esc(v[1])}</span></div>`).join('')}</div></section>`;
+}
+function U26timeline(c){
+ const x=U17cross(c),lk=x.d.lk;
+ return `<section class="u26Signal card"><small>02 · 흐름 검증</small><h3>과거는 맞춰보고, 미래는 준비할 주제로 읽습니다.</h3><div class="u26Timeline"><div class="u26Time"><b>원국 · 변하지 않는 바탕</b><p>${esc(c.dayMaster?.stem||'일간')}을 중심으로 월령·오행·십신·지장간·관계를 읽습니다.</p></div><div class="u26Time"><b>현재 10년 · ${esc(lk?.ko||'-')} ${esc(lk?.god||'')}</b><p>${esc(M14meaning(lk?.god||''))}의 역할이 장기 배경에서 반복되는지 실제 삶과 비교합니다.</p></div><div class="u26Time"><b>올해 · ${esc(x.yg)}</b><p>대운의 장기 주제 위에 올해의 강조점이 무엇을 건드리는지 봅니다.</p></div><div class="u26Time"><b>이번 달 · ${esc(x.mg)}</b><p>큰 방향을 뒤집는 예언이 아니라 단기적으로 집중할 문제를 좁힙니다.</p></div></div><div class="u26Proof">과거의 큰 전환점 2~3개가 대운 변화와 실제로 맞았는지 사용자가 직접 비교할 수 있어야 미래 해석도 신뢰할 근거가 생깁니다.</div></section>`;
+}
+function U26domains(c){
+ const pairs=U21tenGodPairs(c), s=U21strength(c), x=U17cross(c);
+ return `<section class="u26Signal card"><small>03 · 분야별 근거 분리</small><h3>성격 이야기를 직업·돈·연애에 복사하지 않습니다.</h3><div class="u26Rows"><div class="u26Row"><b>직업</b><span>식상·관성·인성의 역할, 현재 대운의 책임/표현 구조와 실제 권한을 우선합니다.</span></div><div class="u26Row"><b>재물</b><span>재성·비겁·식상 연결과 실제 수입·지출·분배 구조를 우선합니다.</span></div><div class="u26Row"><b>연애·결혼</b><span>일지, 관계 신호, 배우자 역할과 생활의 책임 분담을 우선합니다.</span></div><div class="u26Row"><b>내면</b><span>월령 ${esc(c.pillars?.month?.branch||'-')}, ${esc(s.label)}, 오행 사용 습관을 우선합니다.</span></div></div><div class="u26Proof">현재 확인된 십신 교차: ${pairs.length?pairs.map(v=>esc(v[0])).join(' · '):'개별 판독'} / 현재 대운: ${esc(x.d.lk?.god||'-')}</div></section>`;
+}
+function U26decision(c){
+ const x=U17cross(c),god=x.d.lk?.god||'현재 흐름';
+ return `<section class="u26Signal card"><small>04 · 선택 비교</small><h3>운이 좋다/나쁘다가 아니라 두 선택의 비용을 비교합니다.</h3><div class="u26Compare"><div><b>유지할 때</b>이미 가진 기반·수입·관계를 지킬 수 있는 대신, 반복되는 불편의 비용이 계속되는지 확인합니다.</div><div><b>변화할 때</b>새 기회가 생기는 대신 초기 비용·불확실성·책임 증가를 감당할 수 있는지 확인합니다.</div></div><p><b>${esc(god)}</b> 대운이라는 이유만으로 어느 쪽을 정답으로 만들지 않습니다. 사주 신호와 실제 돈·시간·관계·체력 조건이 같은 방향일 때 선택의 근거가 강해집니다.</p></section>`;
+}
+function U26closing(c){
+ const se=U21season(c),lk=U17cross(c).d.lk;
+ return `<section class="u26Signal card"><small>05 · 프리미엄 리포트 결론</small><h3>${esc(c.input?.name||'나')}님의 사주는 한 문장보다 “반복되는 방식”을 보는 것이 더 정확합니다.</h3><p>${esc(c.dayMaster?.stem||'일간')}의 기질은 ${esc(se.name)}이라는 계절 환경에서 작동하고, 지금은 ${esc(lk?.god||'현재 대운')}의 역할이 장기 배경으로 겹칩니다. 따라서 좋은 운을 기다리는 것보다 어떤 조건에서 내 장점이 결과가 되고, 어떤 조건에서 같은 장점이 과사용되는지를 구분하는 것이 중요합니다.</p><div class="u26Proof"><b>귀인사주 해석 원칙 →</b> 계산된 원국을 먼저 고정하고, 전문용어를 쉬운말로 번역하며, 신살 하나나 하루 운세로 큰 사건을 확정하지 않습니다.</div></section>`;
+}
+function U26bundle(c){return U26signals(c)+U26timeline(c)+U26domains(c)+U26decision(c)+U26closing(c)}
 
 function renderResult(){
  if(!chart)return;
