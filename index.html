@@ -894,6 +894,12 @@ img[src="clover-mark.jpg"]{
 
 
 body.ai-screen-open .u16TopBtn{display:none!important} #ask .composer{position:relative;z-index:100} #ask #askSendBtn{position:relative;z-index:101;pointer-events:auto!important;touch-action:manipulation}
+/* MAIN HERO: requested 3:1 display ratio */
+#home .homeHero .heroArt{height:auto!important;aspect-ratio:3/1!important;min-height:0!important}
+#home .homeHero .heroArt img{width:100%!important;height:100%!important;object-fit:cover!important;object-position:center 68%!important}
+#home .homeHero{min-height:0!important}
+/* reliable tappable controls */
+.menuCard button,[data-nav],#askSendBtn,.qchip{touch-action:manipulation;-webkit-tap-highlight-color:rgba(0,0,0,.06)}
 </style>
 </head>
 <body>
@@ -1040,12 +1046,12 @@ body.ai-screen-open .u16TopBtn{display:none!important} #ask .composer{position:r
     <div><b id="myName">프로필을 만들어 보세요</b><span id="myBirth">사주를 계산하면 저장할 수 있어요.</span></div>
   </div>
   <div class="menuCard card">
-    <button onclick="go('wallet')">이용 내역 <span class="arr">›</span></button>
+    <button type="button" data-nav="wallet">이용 내역 <span class="arr">›</span></button>
     <button>찜한 콘텐츠 <span class="arr">›</span></button>
-    <button onclick="go('ask')">상담 내역 <span class="arr">›</span></button>
+    <button type="button" data-nav="ask">상담 내역 <span class="arr">›</span></button>
     <button>쿠폰함 <span class="arr">›</span></button>
     <button>알림 설정 <span class="arr">›</span></button>
-    <button>고객센터 <span class="arr">›</span></button>
+    <button type="button" id="myCustomerCenter">고객센터 <span class="arr">›</span></button>
     <button>앱 정보 <span class="arr">›</span></button>
   </div>
   <div class="slogan card"><b>좋은 인연이, 좋은 하루를 만듭니다.</b><br>귀인사주와 함께할게요.</div>
@@ -1119,7 +1125,7 @@ body.ai-screen-open .u16TopBtn{display:none!important} #ask .composer{position:r
 <div class="aiNotice"><b>안내</b> · AI 답변은 귀인사주에서 계산된 명식을 근거로 제공합니다. 중요한 건강·법률·금융 결정은 사주 답변만으로 판단하지 마세요.</div>
 <div class="msgs" id="msgs"><div class="sysnote">귀인사주 AI 상담</div><div class="bubble bot" id="welcomeBot">사주를 먼저 계산한 뒤 궁금한 점을 물어보세요. 계산된 명식을 바탕으로 이어서 답해드릴게요.</div></div>
 <div class="aiFreeStatus card" id="aiFreeStatus" style="padding:10px 14px;margin:8px 0;font-size:13px"></div><div><button class="qchip" onclick="sendAIQuestion('올해 재물운이 어떤가요?')">올해 재물운</button><button class="qchip" onclick="sendAIQuestion('지금 이직해도 될까요?')">이직 타이밍</button><button class="qchip" onclick="sendAIQuestion('연애와 관계 흐름을 봐주세요.')">연애·관계</button><button class="qchip" onclick="sendAIQuestion('현재 대운과 올해 흐름을 같이 봐주세요.')">대운·세운</button></div>
-<div class="composer" style="margin-top:8px"><input id="askQ" maxlength="800" autocomplete="off" placeholder="궁금한 점을 입력해 보세요" onkeydown="if(event.key==='Enter'&&!event.isComposing){event.preventDefault();sendAIQuestion()}"><button id="askSendBtn" type="button" class="ctaGreen" style="min-width:88px" onclick="sendAIQuestion()">보내기</button></div>
+<div class="composer" style="margin-top:8px"><input id="askQ" maxlength="800" autocomplete="off" placeholder="궁금한 점을 입력해 보세요" onkeydown="if(event.key==='Enter'&&!event.isComposing){event.preventDefault();sendAIQuestion()}"><button id="askSendBtn" type="button" class="ctaGreen" style="min-width:88px">보내기</button></div>
 </section>
 <section id="wallet" class="screen">
   <div class="topbar">
@@ -1159,7 +1165,7 @@ body.ai-screen-open .u16TopBtn{display:none!important} #ask .composer{position:r
   <button id="navHome" class="active" onclick="go('home')"><svg viewBox="0 0 24 24"><path d="M4 11l8-7 8 7v9H6v-9" fill="none" stroke="currentColor" stroke-width="1.7"/><path d="M9 20v-6h6v6" fill="none" stroke="currentColor" stroke-width="1.7"/></svg>홈</button>
   <button id="navSaju" onclick="openResultTab('summary')"><svg viewBox="0 0 24 24"><circle cx="12" cy="8" r="3" fill="none" stroke="currentColor" stroke-width="1.7"/><path d="M6 21c0-4 2.5-7 6-7s6 3 6 7" fill="none" stroke="currentColor" stroke-width="1.7"/></svg>내 사주</button>
   <button class="flower" onclick="go('ask')" aria-label="사주에게 묻기"><svg viewBox="0 0 24 24"><g fill="currentColor"><ellipse cx="12" cy="6.8" rx="3" ry="4.5"/><ellipse cx="17.2" cy="12" rx="4.5" ry="3"/><ellipse cx="12" cy="17.2" rx="3" ry="4.5"/><ellipse cx="6.8" cy="12" rx="4.5" ry="3"/></g><circle cx="12" cy="12" r="2.1" fill="#fff8dc"/></svg></button>
-  <button onclick="go('today')"><svg viewBox="0 0 24 24"><rect x="5" y="4" width="14" height="16" rx="2" fill="none" stroke="currentColor" stroke-width="1.7"/><path d="M8 8h8M8 12h8M8 16h5" stroke="currentColor" stroke-width="1.7"/></svg>이용내역</button>
+  <button type="button" data-nav="wallet"><svg viewBox="0 0 24 24"><rect x="5" y="4" width="14" height="16" rx="2" fill="none" stroke="currentColor" stroke-width="1.7"/><path d="M8 8h8M8 12h8M8 16h5" stroke="currentColor" stroke-width="1.7"/></svg>이용내역</button>
   <button id="navMy" onclick="go('mypage')"><svg viewBox="0 0 24 24"><circle cx="12" cy="8" r="3" fill="none" stroke="currentColor" stroke-width="1.7"/><path d="M6 21c0-4 2.5-7 6-7s6 3 6 7" fill="none" stroke="currentColor" stroke-width="1.7"/></svg>마이페이지</button>
 </nav>
 </div>
@@ -1190,14 +1196,14 @@ function go(id){
  history.replaceState(null,'','#'+id); window.scrollTo(0,0);
  if(id==='ask') setTimeout(()=>{renderAIContext();syncAIComposer();},0);
 }
-// iOS Safari navigation/tap hardening
+// Navigation uses one delegated click handler below.
+// Single navigation/action dispatcher: works for dynamically rendered and iOS Safari buttons.
 document.addEventListener('click',function(e){
-  const b=e.target.closest('button[onclick]');
-  if(!b)return;
-  const code=b.getAttribute('onclick')||'';
-  const m=code.match(/(?:^|;)\s*go\(['\"]([a-zA-Z]+)['\"]\)/);
-  if(m && !document.getElementById(m[1])?.classList.contains('active')){ try{go(m[1]);}catch(err){console.error('GUIIN_NAV_ERROR',err);} }
-},true);
+  const nav=e.target.closest('[data-nav]');
+  if(nav){e.preventDefault();const id=nav.getAttribute('data-nav');if(id)go(id);return;}
+  const cs=e.target.closest('#myCustomerCenter');
+  if(cs){e.preventDefault();if(typeof U32open==='function')U32open();else if(typeof U31open==='function')U31open('business','고객센터');return;}
+});
 function bindSeg(id,cb){
  const box=$(id); if(!box)return;
  box.querySelectorAll('button').forEach(b=>b.onclick=()=>{box.querySelectorAll('button').forEach(x=>x.classList.remove('on'));b.classList.add('on');cb&&cb(b.dataset.v)});
@@ -2582,7 +2588,7 @@ async function sendAIQuestion(preset){
     if(guiinAIHistory.length>20)guiinAIHistory=guiinAIHistory.slice(-20);
   }catch(err){
     console.error('GUIIN_AI_CHAT_ERROR',err);
-    waiting.textContent='지금은 AI 상담 연결이 원활하지 않아요. 잠시 후 다시 질문해 주세요.';
+    waiting.textContent='AI 상담 연결 오류가 발생했어요. 잠시 후 다시 시도해 주세요.'; const st=$('aiFreeStatus'); if(st)st.textContent='연결 오류 · '+String(err?.message||err||'unknown');
   }finally{
     guiinAISending=false; if(btn){btn.disabled=false;btn.textContent='보내기';}
     const m=$('msgs');if(m)m.scrollTop=m.scrollHeight;
@@ -2592,8 +2598,9 @@ function previewAIQuestion(preset){return sendAIQuestion(preset)}
 
 // Direct listeners: avoids inline-handler/touch issues on iOS
 (function(){
- const send=$('askSendBtn'); if(send){send.addEventListener('click',function(e){e.preventDefault();e.stopPropagation();sendAIQuestion();},{passive:false});}
+ const send=$('askSendBtn'); if(send){send.addEventListener('click',function(e){e.preventDefault();sendAIQuestion();},{passive:false});}
  const q=$('askQ'); if(q){q.addEventListener('keydown',function(e){if(e.key==='Enter'&&!e.isComposing){e.preventDefault();sendAIQuestion();}});}
+ const cs=$('myCustomerCenter'); if(cs){cs.addEventListener('click',function(e){e.preventDefault();if(typeof U32open==='function')U32open();});}
 })();
 applyCopy(); guiinUpdateCreditUI();
 const h=location.hash.replace('#','');if(['home','saju','result','match','matchResult','today','mypage','ask','wallet','admin','guide','manage','yearLuck'].includes(h))go(h);
