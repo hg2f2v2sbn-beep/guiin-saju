@@ -839,6 +839,17 @@ img[src="clover-mark.jpg"]{
 .u30Row b{display:block;font-size:9px;color:#29483a}.u30Row span{display:block;margin-top:3px;font-size:8px;line-height:1.6;color:#747873}
 .u30Tag{display:inline-block;margin:2px;padding:5px 7px;border-radius:999px;background:#eef6ea;color:#315545;font-size:7.7px;font-weight:900}
 
+
+/* UPDATE 31 — KCP REVIEW / LEGAL INFORMATION / PRE-PAYMENT CONSENT */
+.u31LegalLinks{display:flex;flex-wrap:wrap;justify-content:center;gap:7px 12px;margin:18px 10px 105px;padding:15px 10px;border-top:1px solid #e8deca}
+.u31LegalLinks button{border:0;background:transparent;padding:3px;color:#657169;font-size:8px;text-decoration:underline}
+.u31Modal{position:fixed;inset:0;z-index:10050;background:rgba(12,31,24,.55);display:none;align-items:flex-end;justify-content:center}
+.u31Modal.on{display:flex}.u31Sheet{width:min(100%,520px);max-height:84vh;overflow:auto;background:#fffdf8;border-radius:24px 24px 0 0;padding:18px 16px calc(24px + env(safe-area-inset-bottom));box-shadow:0 -10px 40px rgba(0,0,0,.16)}
+.u31Head{display:flex;align-items:center;justify-content:space-between;gap:10px;position:sticky;top:-18px;background:#fffdf8;padding:12px 0;z-index:2}.u31Head h2{margin:0;color:#173f31;font-size:18px}.u31Close{width:34px;height:34px;border:0;border-radius:50%;background:#f2efe7;font-size:18px}
+.u31Body{font-size:9px;line-height:1.85;color:#56615b;word-break:keep-all}.u31Body h3{margin:17px 0 5px;color:#244c3a;font-size:11px}.u31Body b{color:#29483a}.u31Warn{padding:10px;border-radius:12px;background:#fff4d7;color:#775e21}.u31Info{display:grid;gap:6px}.u31Info div{padding:10px;border-radius:11px;background:#f7f7f2}
+.u31Consent{margin:10px 0;padding:13px;border:1px solid #e7dbc1;border-radius:15px;background:#fff}.u31Consent label{display:flex!important;align-items:flex-start!important;gap:9px!important;width:auto!important;writing-mode:horizontal-tb!important;line-height:1.55!important;font-size:8.5px!important}.u31Consent input{width:20px!important;height:20px!important;min-width:20px!important;margin:0!important}
+.u31PayBtn[disabled]{opacity:.45!important;cursor:not-allowed!important}.u31Product{padding:12px;border-radius:14px;background:#f4f7f1;margin:8px 0}.u31Product strong{display:block;color:#173f31;font-size:11px}.u31Product span{display:block;margin-top:4px;font-size:8px;line-height:1.65;color:#66736b}
+
 </style>
 </head>
 <body>
@@ -2130,6 +2141,68 @@ function U30audit(c){
  <div class="u30Row"><b>구조축</b><span>${esc(f.pair)} · ${esc(f.relation)}</span></div>
  <div class="u30Row"><b>시간축</b><span>현재 대운 ${esc(f.luck)} · 올해 ${esc(U17cross(c).yg)} · 이번 달 ${esc(U17cross(c).mg)}</span></div>
  </div><p>이 지문이 달라지면 핵심문장·직업·재물·관계·흐름의 강조점도 달라지도록 설계합니다.</p></section>`;
+}
+
+
+/* UPDATE 31 — KCP REVIEW-READY LEGAL UI
+   Unknown statutory business details are intentionally not fabricated. Fill U31BUSINESS before production review. */
+const U31BUSINESS={
+ tradeName:'귀인사주',
+ representative:'[대표자명 입력 필요]',
+ businessNo:'[사업자등록번호 입력 필요]',
+ mailOrderNo:'[통신판매업 신고번호 입력 필요]',
+ address:'[사업장 주소 입력 필요]',
+ customerTel:'[고객센터 전화번호 입력 필요]',
+ customerEmail:'[고객센터 이메일 입력 필요]',
+ hosting:'GitHub Pages',
+ domain:'gwiinsaju.com'
+};
+function U31info(){
+ const b=U31BUSINESS;
+ return `<div class="u31Info"><div><b>상호</b> ${esc(b.tradeName)}</div><div><b>대표자</b> ${esc(b.representative)}</div><div><b>사업자등록번호</b> ${esc(b.businessNo)}</div><div><b>통신판매업 신고번호</b> ${esc(b.mailOrderNo)}</div><div><b>사업장 주소</b> ${esc(b.address)}</div><div><b>고객센터</b> ${esc(b.customerTel)} · ${esc(b.customerEmail)}</div><div><b>웹사이트</b> ${esc(b.domain)}</div></div>`;
+}
+function U31content(type){
+ if(type==='business')return `<h3>사업자정보</h3>${U31info()}<p class="u31Warn">실서비스/KCP 심사 전 대괄호로 표시된 항목을 실제 사업자등록증 및 신고 정보와 동일하게 입력해야 합니다.</p>`;
+ if(type==='terms')return `<h3>서비스 이용약관</h3><p><b>1. 목적</b><br>본 약관은 귀인사주가 제공하는 사주·운세 정보 및 디지털 콘텐츠 서비스의 이용조건과 권리·의무를 정합니다.</p><p><b>2. 서비스 성격</b><br>귀인사주의 사주 해석은 전통 명리 해석을 바탕으로 제공되는 참고용 정보 콘텐츠입니다. 의료·법률·투자 등 전문적인 판단을 대신하지 않으며 특정 결과를 보장하지 않습니다.</p><p><b>3. 유료상품</b><br>프리미엄 평생사주의 판매가격은 결제화면에 표시하며 현재 예정 상품가는 5,900원입니다. 이용자는 결제 전 상품명, 가격, 제공내용과 환불조건을 확인할 수 있습니다.</p><p><b>4. 제공</b><br>결제 승인이 서버에서 확인된 후 구매한 디지털 결과를 열람할 수 있도록 제공하는 것을 원칙으로 합니다. 실제 제공시점과 이용기간은 결제화면에 명확히 표시합니다.</p><p><b>5. 금지행위</b><br>타인의 정보를 무단 입력하거나 서비스·결제 시스템을 비정상적으로 조작하는 행위를 금지합니다.</p><p><b>6. 문의</b><br>서비스·결제·환불 문의는 사업자정보에 표시된 고객센터로 접수합니다.</p>`;
+ if(type==='privacy')return `<h3>개인정보처리방침</h3><p><b>수집 항목</b><br>사주 계산을 위해 이용자가 입력한 이름 또는 별칭, 생년월일, 출생시간, 성별, 양력·음력 구분 등을 처리할 수 있습니다. 결제 연동 시 주문 식별정보와 결제 결과정보를 처리할 수 있으며 카드번호 등 결제수단의 민감한 인증정보를 귀인사주 화면에서 직접 저장하지 않는 구조를 원칙으로 합니다.</p><p><b>이용 목적</b><br>사주 계산·결과 제공, 구매 확인, 구매내역 및 다시보기 제공, 고객문의·환불 처리, 서비스 보안과 오류 대응에 이용합니다.</p><p><b>보유기간</b><br>법령상 보존의무가 있는 거래정보는 해당 법정기간 동안 보관하고, 그 밖의 개인정보는 이용목적 달성 또는 이용자의 삭제 요청 등 처리사유가 종료되면 관련 법령에 따라 파기합니다. 실제 서버 구축 시 항목별 보유기간을 확정하여 이 방침에 반영합니다.</p><p><b>제3자/처리위탁</b><br>결제 과정에서는 PG사 등 결제처리 사업자가 필요한 정보를 처리할 수 있습니다. 실제 운영 전 수탁자·처리업무·보유조건을 확정해 공개합니다.</p><p class="u31Warn">현재는 결제 서버 구축 전 단계입니다. 실제 운영 전 개인정보 처리 흐름에 맞춰 수탁자, 보유기간, 개인정보 보호책임자 연락처 등을 최종 확정해야 합니다.</p>`;
+ if(type==='refund')return `<h3>취소·환불 안내</h3><div class="u31Product"><strong>프리미엄 평생사주 · 5,900원</strong><span>결제 후 개인 명식에 기반한 디지털 심층 해석을 제공하는 상품입니다.</span></div><p><b>결제 오류·중복결제</b><br>서비스가 정상 제공되지 않았거나 동일 주문이 중복 승인된 경우 확인 후 취소·환불을 처리합니다.</p><p><b>디지털 콘텐츠 제공 전</b><br>관련 법령과 결제수단 정책에 따라 청약철회 또는 취소가 가능한 경우 처리합니다.</p><p><b>콘텐츠 제공이 시작된 경우</b><br>디지털 콘텐츠의 제공이 개시된 이후에는 관계 법령상 청약철회가 제한될 수 있습니다. 이러한 제한이 적용되는 경우 결제 전에 이용자에게 해당 사실을 명확히 알리고 필요한 동의·확인 절차를 거칩니다.</p><p><b>서비스 장애</b><br>사업자 귀책으로 구매한 콘텐츠를 제공하지 못한 경우 재제공 또는 환불 등 적절한 조치를 합니다.</p><p><b>신청방법</b><br>사업자정보에 표시된 고객센터로 주문 확인에 필요한 정보와 함께 요청해 주세요. 실제 환불은 결제수단 및 PG사의 처리기간에 따라 반영 시점이 달라질 수 있습니다.</p>`;
+ return '';
+}
+function U31open(type,title){
+ let m=document.getElementById('u31Modal');
+ if(!m){document.body.insertAdjacentHTML('beforeend',`<div id="u31Modal" class="u31Modal" onclick="if(event.target===this)U31close()"><div class="u31Sheet"><div class="u31Head"><h2 id="u31Title"></h2><button class="u31Close" onclick="U31close()">×</button></div><div id="u31Body" class="u31Body"></div></div></div>`);m=document.getElementById('u31Modal')}
+ document.getElementById('u31Title').textContent=title;document.getElementById('u31Body').innerHTML=U31content(type);m.classList.add('on');document.body.style.overflow='hidden';
+}
+function U31close(){const m=document.getElementById('u31Modal');if(m)m.classList.remove('on');document.body.style.overflow=''}
+function U31footer(){
+ return `<div class="u31LegalLinks"><button onclick="U31open('business','사업자정보')">사업자정보</button><button onclick="U31open('terms','이용약관')">이용약관</button><button onclick="U31open('privacy','개인정보처리방침')">개인정보처리방침</button><button onclick="U31open('refund','취소·환불 안내')">취소·환불</button></div>`;
+}
+function U31consent(){
+ return `<div class="u31Product"><strong>귀인사주 프리미엄 평생사주</strong><span>판매가 5,900원 · 개인 명식 기반 디지털 심층 해석 · 결제 승인 확인 후 제공</span></div><div class="u31Consent"><label><input id="u31Terms" type="checkbox" onchange="U31syncPay()"><span><b>[필수]</b> 상품 내용, 이용약관 및 취소·환불 조건을 확인했습니다. <button type="button" onclick="U31open('refund','취소·환불 안내')" style="border:0;background:none;text-decoration:underline">내용보기</button></span></label></div><div class="u31Consent"><label><input id="u31Digital" type="checkbox" onchange="U31syncPay()"><span><b>[필수]</b> 결제 후 개인화 디지털 콘텐츠의 제공이 시작되며, 제공 개시 후에는 관계 법령에 따라 청약철회가 제한될 수 있다는 안내를 확인했습니다.</span></label></div>`;
+}
+function U31syncPay(){const b=document.querySelector('.u31PayBtn');if(b)b.disabled=!(document.getElementById('u31Terms')?.checked&&document.getElementById('u31Digital')?.checked)}
+function U31installFooter(){
+ if(document.querySelector('.u31LegalLinks'))return;
+ const nav=document.querySelector('.bottomNav,nav.bottom,.bottom-nav');
+ if(nav)nav.insertAdjacentHTML('beforebegin',U31footer()); else document.body.insertAdjacentHTML('beforeend',U31footer());
+}
+document.addEventListener('DOMContentLoaded',U31installFooter);
+
+
+const U31_originalOpenCheckout=(typeof U19openCheckout==='function')?U19openCheckout:null;
+if(U31_originalOpenCheckout){
+ U19openCheckout=function(){
+  U31_originalOpenCheckout.apply(this,arguments);
+  setTimeout(()=>{
+   const candidates=[...document.querySelectorAll('button')];
+   const pay=candidates.find(b=>/5,900원 결제하기|결제하기/.test(b.textContent||'') && !b.closest('.u31LegalLinks'));
+   if(pay){
+    pay.classList.add('u31PayBtn');pay.disabled=true;
+    if(!document.getElementById('u31Terms'))pay.insertAdjacentHTML('beforebegin',U31consent());
+    U31syncPay();
+   }
+  },0);
+ }
 }
 
 function renderResult(){
