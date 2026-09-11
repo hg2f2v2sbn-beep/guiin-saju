@@ -822,6 +822,15 @@ img[src="clover-mark.jpg"]{
 .u28Badge{display:inline-block;padding:5px 8px;border-radius:999px;background:#fff1c9;color:#80611e;font-size:8px;font-weight:900}
 .u28Sample{padding:12px;border-radius:14px;background:#f7f7f2;font-size:9px;line-height:1.75;color:#666}
 
+
+/* UPDATE 29 — PURCHASED REPORT UX (UI READY, PAYMENT STILL SERVER-LOCKED) */
+.u29Card{margin:10px 0;padding:16px 14px;border-radius:19px;background:#fff;border:1px solid #eadfc9}.u29Card small{font-size:8px;font-weight:900;color:#b48627}.u29Card h3{margin:5px 0 8px;font-size:17px;line-height:1.5;color:#173f31}.u29Card p{font-size:9px;line-height:1.75;color:#68716b}
+.u29Status{display:flex;align-items:center;gap:8px;padding:11px;border-radius:13px;background:#eef6ea}.u29Dot{width:9px;height:9px;border-radius:50%;background:#c9a34c;flex:0 0 auto}.u29Status b{font-size:9px;color:#29483a}.u29Status span{display:block;font-size:8px;color:#718078;margin-top:2px}
+.u29Menu{display:grid;grid-template-columns:1fr 1fr;gap:7px;margin-top:10px}.u29Menu button{border:0;border-radius:13px;padding:11px 8px;background:#f7f4ec;color:#315545;font-weight:900;font-size:8.5px}.u29Menu button:active{transform:scale(.98)}
+.u29History{display:grid;gap:7px}.u29HistoryRow{padding:11px;border-radius:13px;background:#faf7f0}.u29HistoryRow b{display:block;font-size:9px;color:#29483a}.u29HistoryRow span{display:block;margin-top:3px;font-size:8px;line-height:1.55;color:#777}
+.u29Notice{padding:10px;border-radius:12px;background:#fff6dc;font-size:8.2px;line-height:1.65;color:#75622f}
+@media(max-width:360px){.u29Menu{grid-template-columns:1fr}}
+
 </style>
 </head>
 <body>
@@ -2047,8 +2056,26 @@ function U28preview(c,kind){
  return `<section class="u28Preview"><span class="u28Badge">예시 화면 · 실제 내 심층 사주 아님</span><h3>${m[0]}</h3><div class="u28Sample">${m[1]}<br><br>결제 전에는 실제 개인 심층 해석·대운 상세·신살 상세를 출력하지 않습니다.</div></section>${U19paywall(c)}`;
 }
 function U28free(c){
- return `<section class="u28Preview"><span class="u28Badge">무료로 보는 내 사주</span><h3>${esc(c.input?.name||'나')}님의 기본 명식</h3><div class="u28Sample"><b>사주 네 칸</b><br>${esc(c.pillars.year.ko)} · ${esc(c.pillars.month.ko)} · ${esc(c.pillars.day.ko)} · ${esc(c.pillars.hour?.ko||'-')}<br><br>무료에서는 원국·일간·오행 핵심까지만 확인할 수 있습니다. 성격·직업·재물·연애·신살·대운의 심층 풀이는 프리미엄에서 열립니다.</div></section>${U19paywall(c)}`;
+ return `<section class="u28Preview"><span class="u28Badge">무료로 보는 내 사주</span><h3>${esc(c.input?.name||'나')}님의 기본 명식</h3><div class="u28Sample"><b>사주 네 칸</b><br>${esc(c.pillars.year.ko)} · ${esc(c.pillars.month.ko)} · ${esc(c.pillars.day.ko)} · ${esc(c.pillars.hour?.ko||'-')}<br><br>무료에서는 원국·일간·오행 핵심까지만 확인할 수 있습니다. 성격·직업·재물·연애·신살·대운의 심층 풀이는 프리미엄에서 열립니다.</div></section>${U29prePurchaseUX(c)}${U19paywall(c)}`;
 }
+
+
+/* UPDATE 29 — PURCHASED REPORT EXPERIENCE
+   UI only. Never grants premium locally. Entitlement must come from server verification. */
+function U29entitlementState(){
+ return {verified:false,source:'server-required',product:'premium_lifetime_5900'};
+}
+function U29purchaseStatus(c){
+ const e=U29entitlementState();
+ return `<section class="u29Card"><small>구매 상태</small><h3>프리미엄 평생사주</h3><div class="u29Status"><i class="u29Dot"></i><div><b>${e.verified?'구매 확인 완료':'아직 구매 확인 전'}</b><span>${e.verified?'서버에서 결제 권한을 확인했습니다.':'실제 결제 서버 연결 후 구매 여부가 자동 확인됩니다.'}</span></div></div><div class="u29Notice" style="margin-top:8px">브라우저 버튼이나 localStorage만으로 프리미엄을 열지 않습니다. 결제 금액·주문·승인은 서버에서 검증해야 합니다.</div></section>`;
+}
+function U29afterPurchasePreview(){
+ return `<section class="u29Card"><small>구매 후 이용 화면 미리보기</small><h3>결제 후에는 이렇게 이용합니다.</h3><div class="u29Menu"><button type="button">전체 심층사주 보기</button><button type="button">지난 결과 다시보기</button><button type="button">대운·세운 이어보기</button><button type="button">신살·귀인 다시보기</button></div><p>구매가 서버에서 확인되면 같은 결과를 다시 열 수 있도록 주문과 분석 결과를 계정에 연결하는 구조입니다.</p></section>`;
+}
+function U29historyPreview(c){
+ return `<section class="u29Card"><small>이용내역 준비</small><h3>구매한 사주는 다시 볼 수 있게</h3><div class="u29History"><div class="u29HistoryRow"><b>${esc(c.input?.name||'내 사주')} · 프리미엄 평생사주</b><span>상태: 결제 서버 연결 전 · 실제 구매내역 아님</span></div><div class="u29HistoryRow"><b>보관 방식</b><span>실서비스에서는 사용자 계정 + 주문번호 + 분석 ID를 서버에 저장하고, 브라우저 데이터만으로 구매를 판단하지 않습니다.</span></div></div></section>`;
+}
+function U29prePurchaseUX(c){return U29purchaseStatus(c)+U29afterPurchasePreview()+U29historyPreview(c)}
 
 function renderResult(){
  if(chart && !U28hasPremium()){
