@@ -26,6 +26,7 @@
 <script src="expert-interpreter.js"></script>
 <script src="manse-view.js"></script>
 <script src="star-view.js"></script>
+<script src="flow-timeline.js"></script>
 <script src="compatibility-interpreter.js"></script>
 <style>
 :root{
@@ -246,6 +247,29 @@ html{background:#efe7d7}.app{background:linear-gradient(180deg,#fffaf0 0%,#fff6e
  .sinsalGroupSummary{grid-template-columns:repeat(6,1fr)}
  .sinsalCatalogRow{grid-template-columns:120px 1fr 90px}
 }
+
+
+/* UPDATE 05 — 대운·세운·월운 타임라인 */
+.flowDeep{padding-bottom:8px}
+.flowNow{margin-top:9px;padding:19px;background:linear-gradient(145deg,#edf8ee,#fff6df)}
+.flowEyebrow,.flowSectionHead>span{font-size:8px;font-weight:900;letter-spacing:.05em;color:#97711d}
+.flowNow h2,.flowSectionHead h2{font-size:21px;line-height:1.38;letter-spacing:-.04em;color:#17382c;margin:4px 0 7px}
+.flowNow h2 b{color:#0b6b4f}.flowNow>p,.flowSectionHead>p{font-size:10px;line-height:1.72;color:#747a74;margin:0}
+.flowNowGrid{display:grid;grid-template-columns:1fr 1fr;gap:7px;margin-top:14px}
+.flowNowGrid>div{background:#fffdf8;border:1px solid #e7dece;border-radius:14px;padding:11px}
+.flowNowGrid span{display:block;font-size:8px;color:#918a80}.flowNowGrid strong{display:block;font-size:20px;color:#174534;margin:3px 0}.flowNowGrid small{font-size:8px;color:#898b86}
+.flowSignals{display:grid;grid-template-columns:118px 1fr;gap:7px 8px;align-items:center;margin-top:12px;background:rgba(255,255,255,.58);border-radius:13px;padding:10px}
+.flowSignals>b{font-size:8.5px;color:#625e56}.flowSignals>div{display:flex;gap:4px;flex-wrap:wrap}
+.flowTag{display:inline-block;border-radius:999px;padding:4px 7px;font-size:7.5px;font-weight:800}.flowTag.link{background:#e6f4ea;color:#39744f}.flowTag.motion{background:#fff0db;color:#97672d}.flowTag.neutral{background:#f0eee9;color:#8c877f}
+.flowGuide{display:grid;grid-template-columns:1fr 1fr;gap:7px;margin-top:10px}.flowGuide>div{background:#fff;border-radius:12px;padding:10px;border:1px solid #eee5d8}.flowGuide span{font-size:8px;color:#9c7d36;font-weight:900}.flowGuide p{font-size:9.5px;line-height:1.6;color:#686e69;margin:4px 0 0}
+.flowEvidence{margin-top:10px;padding-top:10px;border-top:1px dashed #ddd5c9;font-size:8px;line-height:1.55;color:#979188}
+.flowSectionHead{padding:23px 4px 7px}.flowSectionHead h2{font-size:20px;margin-bottom:5px}
+.daeunMap,.yearTimeline{display:grid;grid-template-columns:1fr;gap:8px}.daeunBlock,.yearCard{padding:15px}.daeunBlock.current,.yearCard.current{border:1.5px solid #cfa53a;background:linear-gradient(145deg,#fffdf7,#fff8df)}
+.daeunTop,.yearCardTop{display:flex;justify-content:space-between;gap:9px;align-items:flex-start}.daeunTop span,.yearCardTop span{font-size:8px;color:#997d3e;font-weight:900}.daeunTop h3,.yearCardTop h3{font-size:16px;color:#18382c;margin:3px 0 0}.daeunTop>b,.yearCardTop>b{white-space:nowrap;background:#f0e7fb;color:#79549c;border-radius:999px;padding:6px 8px;font-size:8px}
+.daeunYears,.yearLuck{font-size:8.5px;color:#938d84;margin-top:7px}.daeunBlock>p,.yearCard>p{font-size:10.5px;line-height:1.72;color:#646a65;margin:10px 0 0}.daeunRel,.yearRel{display:flex;gap:4px;flex-wrap:wrap;margin-top:8px}
+.monthGrid{display:grid;grid-template-columns:repeat(2,1fr);gap:7px}.monthCard{background:#fffefa;border:1px solid #ece4d7;border-radius:15px;padding:11px}.monthCard.current{border:1.5px solid #cda33b;background:#fff9e7}.monthTop{display:flex;justify-content:space-between;gap:5px;align-items:center}.monthTop b{font-size:12px;color:#22483a}.monthTop span{font-size:8px;color:#8f8b84}.monthCard>strong{display:block;font-size:11px;color:#704e91;margin-top:6px}.monthCard>small{display:block;font-size:7.5px;color:#9c978f;margin-top:2px}.monthTags{display:flex;flex-wrap:wrap;gap:3px;margin-top:7px}.monthCard>p{font-size:8.5px;line-height:1.5;color:#70746f;margin:7px 0 0}
+.flowLegend{padding:14px;margin-top:12px}.flowLegend h3{font-size:14px;color:#29473a;margin:0 0 8px}.flowLegend>div{display:grid;grid-template-columns:55px 1fr;gap:7px;padding:7px 0;border-bottom:1px solid #f0ebe2}.flowLegend>div b{font-size:9px;color:#6e4c8e}.flowLegend>div span{font-size:8.5px;line-height:1.5;color:#747871}.flowLegend>p,.flowDisclaimer p{font-size:8.5px;line-height:1.6;color:#817b72;margin:9px 0 0}.flowDisclaimer{padding:13px 14px;margin-top:9px;background:#fff7e7}.flowDisclaimer b{font-size:10px;color:#6c5225}
+@media(min-width:760px){.monthGrid{grid-template-columns:repeat(4,1fr)}.flowGuide{grid-template-columns:repeat(4,1fr)}}
 
 </style>
 </head>
@@ -668,7 +692,8 @@ function expertStarsHTML(c){
  expertSectionsHTML((g.rows||[]).map(r=>({eyebrow:'신살·귀인',title:r.name,body:r.body,evidence:(r.where||[]).join(' / ')})));
 }
 function expertFlowHTML(c){
- const f=GuiinExpert.flowSections(c,2026);
+ if(typeof GuiinFlow!=='undefined') return GuiinFlow.render(c,{startYear:new Date().getFullYear()});
+ const f=GuiinExpert.flowSections(c,new Date().getFullYear());
  return expertSectionsHTML(f.sections)+`<div class="expertSection"><div class="eyebrow">전체 대운 지도</div><h3>10년마다 어떤 주제가 반복되는지 한눈에 봅니다</h3><div class="daeunList">${f.rows.map(r=>`<div class="daeunItem ${r.current?'current':''}"><b>${r.fromAge}~${r.toAge}세 · ${r.ko} 대운 · ${r.god}${r.current?' · 현재':''}</b><p>${esc(r.body)}</p></div>`).join('')}</div></div>`;
 }
 
