@@ -94,7 +94,7 @@ input:focus,select:focus{border-color:#edb72d;box-shadow:0 0 0 3px rgba(237,183,
 .tabs{display:flex;gap:5px;overflow:auto;padding:9px 0 5px;scrollbar-width:none}.tabs::-webkit-scrollbar{display:none}
 .tabs button{white-space:nowrap;border:0;border-radius:999px;padding:8px 11px;background:#f4f0e8;color:#757b76;font-size:9.5px;font-weight:800}.tabs button.on{background:#f86487;color:white}.tabs.green button.on{background:#0c6d50}.tabs.purple button.on{background:#9c67d7}
 .summaryHero{padding:15px;background:linear-gradient(145deg,#eef9e6,#fff8dc);overflow:hidden}.summaryHero h3{font-size:22px;line-height:1.35;margin:3px 0;color:#1f3c2f}.summaryHero p{font-size:10.5px;line-height:1.5;color:#557061;margin:4px 0}
-.summaryArt{height:136px;border-radius:14px;overflow:hidden;margin-top:8px}.summaryArt img{width:100%;height:100%;object-fit:contain;object-position:center top}
+.summaryArt{height:136px;border-radius:14px;overflow:hidden;margin-top:8px}.summaryArt img{width:100%;height:100%;object-fit:contain;object-position:center 8%}
 .infoCard{padding:14px;margin-top:9px}.infoCard h3{font-size:14px;margin:0 0 9px}
 .infoGrid{display:grid;grid-template-columns:76px 1fr;gap:7px;font-size:10px}.infoGrid span{color:#939892}.infoGrid b{font-weight:800}
 .keywordGrid{display:grid;grid-template-columns:repeat(4,1fr);gap:7px}.keyword{border-radius:13px;padding:8px 4px;text-align:center;font-size:8.5px}.keyword:nth-child(1){background:#fff0c9}.keyword:nth-child(2){background:#eaf7ff}.keyword:nth-child(3){background:#ffe8ed}.keyword:nth-child(4){background:#edf8e8}.keyword svg{width:21px;height:21px;margin:0 auto 4px}
@@ -288,8 +288,8 @@ html{background:#efe7d7}.app{background:linear-gradient(180deg,#fffaf0 0%,#fff6e
 .wongukCell span{display:block;font-size:8px;color:#6f756f;margin-top:4px}
 .elBarMix{height:8px;border-radius:999px;overflow:hidden;display:flex;margin-top:8px}
 .elBarMix i{display:block;height:100%}
-.lifeHero{position:relative;padding:16px 14px 12px;background:linear-gradient(160deg,#eef8e4,#fff8df)}
-.lifeHero .summaryArt{height:168px;margin-top:8px;overflow:hidden;border-radius:16px;background:#fff6e8}
+.lifeHero{position:relative;padding:18px 16px 14px;background:linear-gradient(160deg,#eef8e4,#fff8df)}.lifeHero h3{font-size:22px;line-height:1.38;margin:6px 0 8px;color:#1b4a39;word-break:keep-all}.lifeHero p{font-size:12px;color:#6d7468}
+.lifeHero .summaryArt{height:190px;margin-top:10px;overflow:hidden;border-radius:16px;background:#fff6e8}
 .mockQuote{padding:16px;background:#f6faee;margin-top:8px}
 .mockQuote p{font-size:16px;line-height:1.55;margin:0;color:#1f3c2f;font-weight:800}
 .catList .categoryRow{padding:13px 4px}
@@ -774,7 +774,7 @@ function expertSectionHTML(s){return `<article class="expertSection"><div class=
 function expertSectionsHTML(sections){return (sections||[]).map(expertSectionHTML).join('')}
 function expertSummaryHTML(c){
  const s=GuiinExpert.fullSections(c), stars=GuiinExpert.starGroups(c);
- return `<div class="expertIntro"><h2>${esc(c.input.name)}님의 사주를 한 문장으로 단정하지 않고, 계절과 명식 전체를 연결해 풀어드립니다.</h2><p>일간 → 월령과 계절 → 오행 → 십성 → 지장간과 관계 → 신살·귀인 → 대운·세운 순서로 읽었습니다.</p></div>`+
+ return `<div class="expertIntro"><h2>지금부터는 조금 더 깊게, 그래도 쉬운 말로 이어집니다.</h2><p>어려운 한자가 나와도 그 아래 일상 설명을 먼저 읽으면 됩니다. “그래서 나는 어떻게 하면 되나”만 남기려고 썼습니다.</p></div>`+
  expertSectionsHTML(s.slice(0,6))+
  `<button class="ctaGreen" style="width:100%;margin:6px 0" onclick="setTab('stars')">내 신살·귀인 ${stars.total}개 자세히 보기 ›</button>`+
  expertSectionsHTML(s.slice(6));
@@ -792,9 +792,28 @@ function expertFlowHTML(c){
 }
 
 
+function plainOpenHTML(c){
+ const name=c.input.name||'당신';
+ const me=typeof dayEl==='function'?dayEl(c):'';
+ const won=(function(){try{return [c.pillars.year.ko,c.pillars.month.ko,c.pillars.day.ko,c.pillars.hour&&c.pillars.hour.ko].filter(Boolean).join(' · ')}catch(e){return ''}})();
+ const who={
+  목:'새로운 일을 시작하고 사람을 잇는 쪽에 마음이 갑니다. 가만히 있으면 답답하고, 조금이라도 자라야 숨이 트입니다.',
+  화:'보이고 인정받는 자리에서 힘이 납니다. 반응이 없으면 쉽게 꺼지고, 따뜻한 한 마디면 다시 켜집니다.',
+  토:'맡은 일은 끝까지 들고 가려 합니다. 믿음은 두껍지만 갑작스러운 변화에는 속이 먼저 막힙니다.',
+  금:'맞고 틀림이 빨리 보입니다. 정리하고 기준을 세울 때 신뢰가 쌓이고, 감정 싸움에는 쉽게 지칩니다.',
+  수:'먼저 살피고 우회로를 찾습니다. 정보가 있어야 편하고, 막힌 절차 앞에서는 답답함이 커집니다.'
+ }[me]||'자신의 속도로 길을 만드는 사람입니다.';
+ return `<div class="expertSection"><div class="eyebrow">쉽게 읽는 사주</div>
+ <h3>${esc(name)}님 사주를 일상 말로 풀어보면</h3>
+ <p>${esc(name)}님의 사주 네 칸은 ${esc(won)||'원국'}입니다. 한자는 점수가 아니라 <b>나를 설명하는 메모</b>입니다. 가운데 일간이 나이고, 지금은 ${me?me+' 기운': '자기 기질'}이 중심입니다.</p>
+ <p>${esc(who)} 그래서 주변에서는 “성실하다”와 “고집이 있다”를 같이 말합니다. 둘 다 틀린 말이 아닙니다. 잘 쓰는 날과 혼자 짊어지는 날이 갈릴 뿐입니다.</p>
+ <p>재물은 한 방에 들어오는 운이 아니라 <b>새는 구멍을 막는 운</b>에 가깝습니다. 일은 연봉보다 역할이 맞을 때 오래 갑니다. 인연은 설렘보다, 같이 밥 먹은 뒤의 말투를 보면 답이 보입니다.</p>
+ <p>아래 만세력표는 같은 네 칸을 더 자세히 펼친 것입니다. 그 다음 글은 성격·직업·재물·연애·대운을 이어서 풀어 드립니다. 점집이 아니라, 설명서처럼 읽히길 바랍니다.</p>
+ </div>`;
+}
 function prettySummaryHTML(c){
  const time=c.input.hourUnknown?'모름':(String(c.input.hour).padStart(2,'0')+':'+String(c.input.minute).padStart(2,'0'));
- let title='흔들려도, 결국 빛나는 사람입니다.';
+ const title='흔들려도, 결국 빛나는 사람입니다.';
  const quote='“지금의 선택이 더 큰 행복으로 이어질 것입니다.”';
  return `<div class="lifeHero card">
    <h3>${esc(c.input.name)}님은<br>${esc(title)}</h3>
@@ -967,7 +986,7 @@ function renderResult(){
  const c=chart;
  const manseTop=(typeof GuiinManse!=='undefined')?GuiinManse.render(c,{title:c.input.name+'님의 만세력',eyebrow:'내 사주'}):'';
  if(currentTab==='summary'){
-  $('resultView').innerHTML=prettySummaryHTML(c)+manseTop+expertSummaryHTML(c);
+  $('resultView').innerHTML=prettySummaryHTML(c)+plainOpenHTML(c)+manseTop+expertSummaryHTML(c);
  } else if(currentTab==='personality'){
   $('resultView').innerHTML=mockPersonalityHTML(c)+expertSectionsHTML(GuiinExpert.personalitySections(c));
  } else if(currentTab==='fields'){
