@@ -869,6 +869,13 @@ img[src="clover-mark.jpg"]{
 .u33Hours{padding:10px;border-radius:12px;background:#f7f7f2;font-size:8px;line-height:1.65;color:#69736d}.u33Hours b{color:#29483a}
 .u33Email{padding:11px;border-radius:13px;background:#eef6ea;margin-top:8px;font-size:8.2px;line-height:1.65;color:#52675c}
 
+
+/* UPDATE 34 — NEW PRICING + LONG-FORM PRE-PAYMENT READING SAMPLES */
+.u34Samples{margin:12px 0}.u34SampleHead{padding:14px;border-radius:17px;background:#173f31;color:#fff}.u34SampleHead small{font-size:8px;font-weight:900;color:#e1bd61}.u34SampleHead h3{margin:5px 0 6px;font-size:17px;line-height:1.45}.u34SampleHead p{margin:0;font-size:8.4px;line-height:1.7;color:#e8f0ec}
+.u34Chapter{margin-top:8px;padding:14px;border:1px solid #eadfc9;border-radius:17px;background:#fff}.u34Chapter em{display:block;font-style:normal;font-size:7.7px;font-weight:900;color:#b48627}.u34Chapter h4{margin:5px 0 7px;font-size:13px;line-height:1.55;color:#244c3a}.u34Chapter p{margin:0;font-size:8.7px;line-height:1.85;color:#626d67;word-break:keep-all}.u34Evidence{margin-top:9px;padding:9px;border-radius:11px;background:#f5f5ef;font-size:7.9px!important;color:#68736d!important}
+.u34PriceGrid{display:grid;grid-template-columns:1fr 1fr;gap:7px;margin:10px 0}.u34Price{padding:12px;border-radius:14px;background:#f5f7f1;border:1px solid #e1e7dd}.u34Price b{display:block;font-size:10px;color:#244c3a}.u34Price strong{display:block;margin-top:3px;font-size:16px;color:#173f31}.u34Price span{display:block;margin-top:4px;font-size:7.8px;line-height:1.55;color:#737c76}
+@media(max-width:360px){.u34PriceGrid{grid-template-columns:1fr}}
+
 </style>
 </head>
 <body>
@@ -1784,10 +1791,10 @@ function U18backendSpec(c){
 function U18emptyGuard(v,msg){return v?String(v):msg}
 
 /* UPDATE 19 PREMIUM 5,900 PAYWALL UI */
-const U19PRODUCT={id:'premium_lifetime_5900',name:'귀인사주 프리미엄 평생사주',price:5900,currency:'KRW'};
+const U19PRODUCT={id:'premium_lifetime_6900',name:'귀인사주 프리미엄 평생사주',price:6900,currency:'KRW'};
 function U19freeNotice(){return `<div class="u19Free"><b>무료로 보는 내용</b> · 사주 네 칸, 일간, 오행과 핵심 요약까지 먼저 확인할 수 있습니다. 더 깊은 평생사주는 프리미엄 영역입니다.</div>`}
-function U19paywall(c){const name=esc(c?.input?.name||'나');return `<section class="u19Lock"><small>🔒 PREMIUM REPORT</small><h2>여기부터 ${name}님의<br>심층 평생사주입니다.</h2><p>성격·일·돈·연애·결혼·가족·인간관계·신살·대운과 앞으로의 흐름을 하나의 명식으로 연결해서 읽습니다.</p><div class="u19Benefits"><div>✓ 성격·숨은 패턴</div><div>✓ 직업·사업·재물</div><div>✓ 연애·결혼·인간관계</div><div>✓ 신살·귀인 분석</div><div>✓ 대운·세운·월운</div><div>✓ 5개년·인생 흐름</div></div><div class="u19Price">5,900원 <span>1회 구매</span></div><button class="u19Buy" onclick="U19openCheckout()">프리미엄 전체보기</button><p class="u19Fine">실제 PG 승인 서버 연결 전에는 결제나 잠금 해제가 처리되지 않습니다.</p></section>`}
-function U19openCheckout(){U19closeCheckout();const d=document.createElement('div');d.id='u19Modal';d.className='u19Modal';d.innerHTML=`<div class="u19Sheet"><small>귀인사주 결제</small><h2>프리미엄 평생사주</h2><div class="u19Order"><b>${U19PRODUCT.name}</b><strong>${U19PRODUCT.price.toLocaleString()}원</strong></div><div class="u19Pending"><b>아직 실제 결제 연결 전입니다.</b><br>PG와 서버 검증이 연결된 뒤 결제 버튼이 활성화됩니다. 지금은 카드번호나 결제 개인정보를 입력받지 않습니다.</div><button class="u19SheetBtn u19Primary" onclick="U19notReady()">5,900원 결제하기</button><button class="u19SheetBtn u19Secondary" onclick="U19closeCheckout()">닫기</button></div>`;document.body.appendChild(d)}
+function U19paywall(c){const name=esc(c?.input?.name||'나');return `<section class="u19Lock"><small>🔒 PREMIUM REPORT</small><h2>여기부터 ${name}님의<br>심층 평생사주입니다.</h2><p>성격·일·돈·연애·결혼·가족·인간관계·신살·대운과 앞으로의 흐름을 하나의 명식으로 연결해서 읽습니다.</p><div class="u19Benefits"><div>✓ 성격·숨은 패턴</div><div>✓ 직업·사업·재물</div><div>✓ 연애·결혼·인간관계</div><div>✓ 신살·귀인 분석</div><div>✓ 대운·세운·월운</div><div>✓ 5개년·인생 흐름</div></div><div class="u19Price">6,900원 <span>1회 구매</span></div><button class="u19Buy" onclick="U19openCheckout()">프리미엄 전체보기</button><p class="u19Fine">실제 PG 승인 서버 연결 전에는 결제나 잠금 해제가 처리되지 않습니다.</p></section>`}
+function U19openCheckout(){U19closeCheckout();const d=document.createElement('div');d.id='u19Modal';d.className='u19Modal';d.innerHTML=`<div class="u19Sheet"><small>귀인사주 결제</small><h2>프리미엄 평생사주</h2><div class="u19Order"><b>${U19PRODUCT.name}</b><strong>${U19PRODUCT.price.toLocaleString()}원</strong></div><div class="u19Pending"><b>아직 실제 결제 연결 전입니다.</b><br>PG와 서버 검증이 연결된 뒤 결제 버튼이 활성화됩니다. 지금은 카드번호나 결제 개인정보를 입력받지 않습니다.</div><button class="u19SheetBtn u19Primary" onclick="U19notReady()">6,900원 결제하기</button><button class="u19SheetBtn u19Secondary" onclick="U19closeCheckout()">닫기</button></div>`;document.body.appendChild(d)}
 function U19closeCheckout(){const e=document.getElementById('u19Modal');if(e)e.remove()}
 function U19notReady(){alert('현재 실제 결제 서버 연결 전입니다.')}
 function U19premiumWrap(c,content){return `${U19paywall(c)}<div class="u19LockedContent" aria-hidden="true">${content}</div>`}
@@ -2094,14 +2101,14 @@ function U28preview(c,kind){
  return `<section class="u28Preview"><span class="u28Badge">예시 화면 · 실제 내 심층 사주 아님</span><h3>${m[0]}</h3><div class="u28Sample">${m[1]}<br><br>결제 전에는 실제 개인 심층 해석·대운 상세·신살 상세를 출력하지 않습니다.</div></section>${U19paywall(c)}`;
 }
 function U28free(c){
- return `<section class="u28Preview"><span class="u28Badge">무료로 보는 내 사주</span><h3>${esc(c.input?.name||'나')}님의 기본 명식</h3><div class="u28Sample"><b>사주 네 칸</b><br>${esc(c.pillars.year.ko)} · ${esc(c.pillars.month.ko)} · ${esc(c.pillars.day.ko)} · ${esc(c.pillars.hour?.ko||'-')}<br><br>무료에서는 원국·일간·오행 핵심까지만 확인할 수 있습니다. 성격·직업·재물·연애·신살·대운의 심층 풀이는 프리미엄에서 열립니다.</div></section>${U29prePurchaseUX(c)}${U19paywall(c)}`;
+ return `<section class="u28Preview"><span class="u28Badge">무료로 보는 내 사주</span><h3>${esc(c.input?.name||'나')}님의 기본 명식</h3><div class="u28Sample"><b>사주 네 칸</b><br>${esc(c.pillars.year.ko)} · ${esc(c.pillars.month.ko)} · ${esc(c.pillars.day.ko)} · ${esc(c.pillars.hour?.ko||'-')}<br><br>무료에서는 원국·일간·오행 핵심까지만 확인할 수 있습니다. 성격·직업·재물·연애·신살·대운의 심층 풀이는 프리미엄에서 열립니다.</div></section>${U29prePurchaseUX(c)}${U34priceInfo()}${U34lifetimeSample()}${U19paywall(c)}`;
 }
 
 
 /* UPDATE 29 — PURCHASED REPORT EXPERIENCE
    UI only. Never grants premium locally. Entitlement must come from server verification. */
 function U29entitlementState(){
- return {verified:false,source:'server-required',product:'premium_lifetime_5900'};
+ return {verified:false,source:'server-required',product:'premium_lifetime_6900'};
 }
 function U29purchaseStatus(c){
  const e=U29entitlementState();
@@ -2172,7 +2179,7 @@ const U31BUSINESS={
  mailOrderNo:'[통신판매업 신고번호 입력 필요]',
  address:'[사업장 주소 입력 필요]',
  customerTel:'[고객센터 전화번호 입력 필요]',
- customerEmail:'[고객센터 이메일 입력 필요]',
+ customerEmail:'blue_wls@naver.com',
  hosting:'GitHub Pages',
  domain:'gwiinsaju.com'
 };
@@ -2182,9 +2189,9 @@ function U31info(){
 }
 function U31content(type){
  if(type==='business')return `<h3>사업자정보</h3>${U31info()}<p class="u31Warn">실서비스/KCP 심사 전 대괄호로 표시된 항목을 실제 사업자등록증 및 신고 정보와 동일하게 입력해야 합니다.</p>`;
- if(type==='terms')return `<h3>서비스 이용약관</h3><p><b>1. 목적</b><br>본 약관은 귀인사주가 제공하는 사주·운세 정보 및 디지털 콘텐츠 서비스의 이용조건과 권리·의무를 정합니다.</p><p><b>2. 서비스 성격</b><br>귀인사주의 사주 해석은 전통 명리 해석을 바탕으로 제공되는 참고용 정보 콘텐츠입니다. 의료·법률·투자 등 전문적인 판단을 대신하지 않으며 특정 결과를 보장하지 않습니다.</p><p><b>3. 유료상품</b><br>프리미엄 평생사주의 판매가격은 결제화면에 표시하며 현재 예정 상품가는 5,900원입니다. 이용자는 결제 전 상품명, 가격, 제공내용과 환불조건을 확인할 수 있습니다.</p><p><b>4. 제공</b><br>결제 승인이 서버에서 확인된 후 구매한 디지털 결과를 열람할 수 있도록 제공하는 것을 원칙으로 합니다. 실제 제공시점과 이용기간은 결제화면에 명확히 표시합니다.</p><p><b>5. 금지행위</b><br>타인의 정보를 무단 입력하거나 서비스·결제 시스템을 비정상적으로 조작하는 행위를 금지합니다.</p><p><b>6. 문의</b><br>서비스·결제·환불 문의는 사업자정보에 표시된 고객센터로 접수합니다.</p>`;
+ if(type==='terms')return `<h3>서비스 이용약관</h3><p><b>1. 목적</b><br>본 약관은 귀인사주가 제공하는 사주·운세 정보 및 디지털 콘텐츠 서비스의 이용조건과 권리·의무를 정합니다.</p><p><b>2. 서비스 성격</b><br>귀인사주의 사주 해석은 전통 명리 해석을 바탕으로 제공되는 참고용 정보 콘텐츠입니다. 의료·법률·투자 등 전문적인 판단을 대신하지 않으며 특정 결과를 보장하지 않습니다.</p><p><b>3. 유료상품</b><br>프리미엄 평생사주의 판매가격은 결제화면에 표시하며 현재 예정 상품가는 6,900원입니다. 이용자는 결제 전 상품명, 가격, 제공내용과 환불조건을 확인할 수 있습니다.</p><p><b>4. 제공</b><br>결제 승인이 서버에서 확인된 후 구매한 디지털 결과를 열람할 수 있도록 제공하는 것을 원칙으로 합니다. 실제 제공시점과 이용기간은 결제화면에 명확히 표시합니다.</p><p><b>5. 금지행위</b><br>타인의 정보를 무단 입력하거나 서비스·결제 시스템을 비정상적으로 조작하는 행위를 금지합니다.</p><p><b>6. 문의</b><br>서비스·결제·환불 문의는 사업자정보에 표시된 고객센터로 접수합니다.</p>`;
  if(type==='privacy')return `<h3>개인정보처리방침</h3><p><b>수집 항목</b><br>사주 계산을 위해 이용자가 입력한 이름 또는 별칭, 생년월일, 출생시간, 성별, 양력·음력 구분 등을 처리할 수 있습니다. 결제 연동 시 주문 식별정보와 결제 결과정보를 처리할 수 있으며 카드번호 등 결제수단의 민감한 인증정보를 귀인사주 화면에서 직접 저장하지 않는 구조를 원칙으로 합니다.</p><p><b>이용 목적</b><br>사주 계산·결과 제공, 구매 확인, 구매내역 및 다시보기 제공, 고객문의·환불 처리, 서비스 보안과 오류 대응에 이용합니다.</p><p><b>보유기간</b><br>법령상 보존의무가 있는 거래정보는 해당 법정기간 동안 보관하고, 그 밖의 개인정보는 이용목적 달성 또는 이용자의 삭제 요청 등 처리사유가 종료되면 관련 법령에 따라 파기합니다. 실제 서버 구축 시 항목별 보유기간을 확정하여 이 방침에 반영합니다.</p><p><b>제3자/처리위탁</b><br>결제 과정에서는 PG사 등 결제처리 사업자가 필요한 정보를 처리할 수 있습니다. 실제 운영 전 수탁자·처리업무·보유조건을 확정해 공개합니다.</p><p class="u31Warn">현재는 결제 서버 구축 전 단계입니다. 실제 운영 전 개인정보 처리 흐름에 맞춰 수탁자, 보유기간, 개인정보 보호책임자 연락처 등을 최종 확정해야 합니다.</p>`;
- if(type==='refund')return `<h3>취소·환불 안내</h3><div class="u31Product"><strong>프리미엄 평생사주 · 5,900원</strong><span>결제 후 개인 명식에 기반한 디지털 심층 해석을 제공하는 상품입니다.</span></div><p><b>결제 오류·중복결제</b><br>서비스가 정상 제공되지 않았거나 동일 주문이 중복 승인된 경우 확인 후 취소·환불을 처리합니다.</p><p><b>디지털 콘텐츠 제공 전</b><br>관련 법령과 결제수단 정책에 따라 청약철회 또는 취소가 가능한 경우 처리합니다.</p><p><b>콘텐츠 제공이 시작된 경우</b><br>디지털 콘텐츠의 제공이 개시된 이후에는 관계 법령상 청약철회가 제한될 수 있습니다. 이러한 제한이 적용되는 경우 결제 전에 이용자에게 해당 사실을 명확히 알리고 필요한 동의·확인 절차를 거칩니다.</p><p><b>서비스 장애</b><br>사업자 귀책으로 구매한 콘텐츠를 제공하지 못한 경우 재제공 또는 환불 등 적절한 조치를 합니다.</p><p><b>신청방법</b><br>사업자정보에 표시된 고객센터로 주문 확인에 필요한 정보와 함께 요청해 주세요. 실제 환불은 결제수단 및 PG사의 처리기간에 따라 반영 시점이 달라질 수 있습니다.</p>`;
+ if(type==='refund')return `<h3>취소·환불 안내</h3><div class="u31Product"><strong>프리미엄 평생사주 · 6,900원</strong><span>결제 후 개인 명식에 기반한 디지털 심층 해석을 제공하는 상품입니다.</span></div><p><b>결제 오류·중복결제</b><br>서비스가 정상 제공되지 않았거나 동일 주문이 중복 승인된 경우 확인 후 취소·환불을 처리합니다.</p><p><b>디지털 콘텐츠 제공 전</b><br>관련 법령과 결제수단 정책에 따라 청약철회 또는 취소가 가능한 경우 처리합니다.</p><p><b>콘텐츠 제공이 시작된 경우</b><br>디지털 콘텐츠의 제공이 개시된 이후에는 관계 법령상 청약철회가 제한될 수 있습니다. 이러한 제한이 적용되는 경우 결제 전에 이용자에게 해당 사실을 명확히 알리고 필요한 동의·확인 절차를 거칩니다.</p><p><b>서비스 장애</b><br>사업자 귀책으로 구매한 콘텐츠를 제공하지 못한 경우 재제공 또는 환불 등 적절한 조치를 합니다.</p><p><b>신청방법</b><br>사업자정보에 표시된 고객센터로 주문 확인에 필요한 정보와 함께 요청해 주세요. 실제 환불은 결제수단 및 PG사의 처리기간에 따라 반영 시점이 달라질 수 있습니다.</p>`;
  return '';
 }
 function U31open(type,title){
@@ -2197,7 +2204,7 @@ function U31footer(){
  return `<div class="u31LegalLinks"><button onclick="U31open('business','사업자정보')">사업자정보</button><button onclick="U31open('terms','이용약관')">이용약관</button><button onclick="U31open('privacy','개인정보처리방침')">개인정보처리방침</button><button onclick="U31open('refund','취소·환불 안내')">취소·환불</button></div>`;
 }
 function U31consent(){
- return `<div class="u31Product"><strong>귀인사주 프리미엄 평생사주</strong><span>판매가 5,900원 · 개인 명식 기반 디지털 심층 해석 · 결제 승인 확인 후 제공</span></div><div class="u31Consent"><label><input id="u31Terms" type="checkbox" onchange="U31syncPay()"><span><b>[필수]</b> 상품 내용, 이용약관 및 취소·환불 조건을 확인했습니다. <button type="button" onclick="U31open('refund','취소·환불 안내')" style="border:0;background:none;text-decoration:underline">내용보기</button></span></label></div><div class="u31Consent"><label><input id="u31Digital" type="checkbox" onchange="U31syncPay()"><span><b>[필수]</b> 결제 후 개인화 디지털 콘텐츠의 제공이 시작되며, 제공 개시 후에는 관계 법령에 따라 청약철회가 제한될 수 있다는 안내를 확인했습니다.</span></label></div>`;
+ return `<div class="u31Product"><strong>귀인사주 프리미엄 평생사주</strong><span>판매가 6,900원 · 개인 명식 기반 디지털 심층 해석 · 결제 승인 확인 후 제공</span></div><div class="u31Consent"><label><input id="u31Terms" type="checkbox" onchange="U31syncPay()"><span><b>[필수]</b> 상품 내용, 이용약관 및 취소·환불 조건을 확인했습니다. <button type="button" onclick="U31open('refund','취소·환불 안내')" style="border:0;background:none;text-decoration:underline">내용보기</button></span></label></div><div class="u31Consent"><label><input id="u31Digital" type="checkbox" onchange="U31syncPay()"><span><b>[필수]</b> 결제 후 개인화 디지털 콘텐츠의 제공이 시작되며, 제공 개시 후에는 관계 법령에 따라 청약철회가 제한될 수 있다는 안내를 확인했습니다.</span></label></div>`;
 }
 function U31syncPay(){const b=document.querySelector('.u31PayBtn');if(b)b.disabled=!(document.getElementById('u31Terms')?.checked&&document.getElementById('u31Digital')?.checked)}
 function U31installFooter(){
@@ -2214,7 +2221,7 @@ if(U31_originalOpenCheckout){
   U31_originalOpenCheckout.apply(this,arguments);
   setTimeout(()=>{
    const candidates=[...document.querySelectorAll('button')];
-   const pay=candidates.find(b=>/5,900원 결제하기|결제하기/.test(b.textContent||'') && !b.closest('.u31LegalLinks'));
+   const pay=candidates.find(b=>/6,900원 결제하기|결제하기/.test(b.textContent||'') && !b.closest('.u31LegalLinks'));
    if(pay){
     pay.classList.add('u31PayBtn');pay.disabled=true;
     if(!document.getElementById('u31Terms'))pay.insertAdjacentHTML('beforebegin',U31consent());
@@ -2279,6 +2286,35 @@ function U33supportTop(){
  <div class="u33Sub"><button type="button" onclick="U31open('refund','취소·환불 안내')">결제·환불 안내</button><button type="button" onclick="document.querySelector('#u32Modal .u32Faq')?.scrollIntoView({behavior:'smooth'})">자주 묻는 질문</button></div>
  <div class="u33Hours"><b>카카오톡 채널</b> 귀인사주 · 검색 ID <b>gwiinsaju</b><br><b>상담 운영시간</b> [실제 운영시간 입력 필요]<br>운영시간 외 문의는 확인 후 순차 답변합니다.</div>
  <div class="u33Email"><b>공식 이메일</b> ${esc(U31BUSINESS.customerEmail)}<br>카카오톡을 주 상담채널로 운영하고, 결제·환불 등 기록이 필요한 문의를 위해 공식 이메일도 함께 표시합니다.</div>`;
+}
+
+
+/* UPDATE 34 — PRICING
+   Lifetime: 6,900 KRW / Compatibility: 7,900 KRW.
+   Samples below are fictional format previews, never the visitor's calculated result. */
+const U34PRODUCTS={
+ lifetime:{id:'premium_lifetime_6900',name:'귀인사주 프리미엄 평생사주',price:6900},
+ compatibility:{id:'premium_compatibility_7900',name:'귀인사주 프리미엄 궁합',price:7900}
+};
+function U34priceInfo(){
+ return `<div class="u34PriceGrid"><div class="u34Price"><b>프리미엄 평생사주</b><strong>6,900원</strong><span>개인 명식 심층 해석 · 성격·직업·재물·연애·신살·대운</span></div><div class="u34Price"><b>프리미엄 궁합</b><strong>7,900원</strong><span>두 사람의 명식을 함께 보는 관계·갈등·생활·결혼 심층 분석</span></div></div>`;
+}
+function U34lifetimeSample(){
+ return `<div class="u34Samples"><div class="u34SampleHead"><small>유료 풀이 미리보기</small><h3>결제하면 이런 깊이로 풀어드립니다.</h3><p>※ 아래 내용은 풀이의 구성과 깊이를 보여드리기 위한 가상 예시입니다. 고객님의 실제 사주 결과가 아니며, 실제 결과는 입력한 생년월일·출생시간을 계산한 명식에 따라 달라집니다.</p></div>
+ <article class="u34Chapter"><em>예시 01 · 타고난 성향</em><h4>“처음부터 강하게 자신을 드러내기보다, 시간이 갈수록 존재감이 커지는 사람입니다.”</h4><p>겉으로는 웬만한 일을 넘기는 것처럼 보여도 속에서는 사람의 말투와 분위기, 관계의 미묘한 변화를 꽤 세밀하게 읽는 편으로 해석할 수 있습니다. 이런 사람은 무조건 예민하다고 단정하기보다 ‘어디에 에너지를 쓰는지’를 같이 봐야 합니다. 자신의 기준이 분명한데도 관계를 깨고 싶지 않아 말을 늦추면, 어느 순간 이미 마음속 결론이 끝난 뒤에야 상대에게 통보하는 패턴이 생길 수 있습니다. 잘 풀릴 때는 섬세함이 관찰력과 판단력으로 바뀌지만, 꼬일 때는 생각을 너무 오래 안에 쌓아두게 됩니다. 따라서 중요한 관계에서는 참는 능력보다 불편함을 작을 때 말하는 연습이 더 도움이 됩니다.</p><p class="u34Evidence"><b>왜 이렇게 해석하나요?</b> 실제 유료판에서는 일간만 보고 성격을 정하지 않습니다. 월령의 계절 환경, 통근 여부, 지장간의 숨은 기운, 십신 배치와 합·충 등 관계 신호를 함께 연결하고 전문용어 바로 아래에 쉬운 뜻을 붙입니다.</p></article>
+ <article class="u34Chapter"><em>예시 02 · 직업과 재물</em><h4>“돈을 버는 힘과 돈이 남는 방식은 따로 봐야 합니다.”</h4><p>능력이 결과물로 연결되는 힘이 살아 있다면 일을 만들어내고 수익화하는 감각이 장점이 될 수 있습니다. 하지만 벌어들이는 흐름만 보고 재물운이 좋다고 말하면 절반짜리 해석입니다. 실제로는 재성을 다루는 힘, 비겁과의 관계, 식상이 재성으로 이어지는지, 현재 대운에서 그 구조가 어떻게 움직이는지를 같이 봅니다. 그래서 ‘한 번에 크게 벌 운’ 같은 자극적인 결론보다 어떤 방식의 일이 돈으로 이어지기 쉬운지, 반대로 고정비·충동지출·관계비용처럼 돈이 새기 쉬운 지점은 무엇인지 현실적으로 설명합니다. 직업 역시 직장형인지 사업형인지 하나로 단정하지 않고 책임과 규칙을 다루는 힘, 결과물을 만드는 힘, 배우고 정리하는 힘의 균형을 비교해 지금 환경에서 무엇이 답답함을 만드는지까지 풀어드립니다.</p><p class="u34Evidence"><b>쉽게 말하면</b> 식상은 ‘내 능력을 결과물로 만드는 힘’, 재성은 ‘현실의 돈과 자원을 다루는 힘’, 관성은 ‘책임·규칙·사회적 역할을 다루는 힘’처럼 번역해서 설명합니다.</p></article>
+ <article class="u34Chapter"><em>예시 03 · 연애와 결혼</em><h4>“사랑을 못해서 끝나는 관계보다, 너무 오래 참다가 마음이 끝나는 관계를 조심해야 할 수도 있습니다.”</h4><p>연애는 단순히 ‘배우자운이 있다/없다’로 보지 않습니다. 내가 관계에서 무엇에 끌리는지, 서운할 때 바로 말하는지 쌓아두는지, 싸운 뒤 회복하는 방식은 어떤지, 생활과 돈 문제에서 어느 지점이 갈등이 되기 쉬운지를 나눠 읽습니다. 특히 일지와 관계 신호가 반복해서 같은 방향을 가리킬 때는 문장을 조금 더 강하게 쓰고, 근거가 약하면 가능성의 언어로 낮춰 설명합니다. 결혼 역시 시기 하나를 찍어 약속하기보다 장기생활에서 필요한 상대의 태도와 내가 지켜야 할 경계를 현실적인 언어로 보여드립니다.</p><p class="u34Evidence"><b>유료판의 원칙</b> 실제 명식에서 여러 근거가 겹칠 때만 강한 문장을 사용하며, 한 개의 신살만으로 이별·결혼·재산 같은 사건을 단정하지 않습니다.</p></article>
+ <article class="u34Chapter"><em>예시 04 · 대운과 앞으로의 흐름</em><h4>“좋은 해 하나보다, 지금 어떤 10년을 지나고 있는지가 먼저입니다.”</h4><p>대운은 약 10년 단위의 큰 배경이고 세운은 그 안에 들어오는 한 해의 변화입니다. 유료판에서는 현재 연도만 떼어 ‘올해 좋다’고 말하지 않고 원국 → 현재 대운 → 올해 → 이번 달의 순서로 겹쳐 봅니다. 지나간 대운도 함께 보여주어 실제 삶에서 변화가 컸던 시기와 먼저 비교할 수 있게 하고, 앞으로의 흐름은 확정된 사건이 아니라 선택과 대응에 참고할 수 있는 방향으로 설명합니다. 변화가 강한 시기라면 무조건 이직하거나 헤어지라고 하지 않고 무엇을 점검한 뒤 움직여야 하는지 행동 기준까지 연결합니다.</p><p class="u34Evidence"><b>결과에는</b> 대운·세운·월운, 주요 신살·귀인의 위치와 중복, 현재 운에서 다시 활성화되는 신호, 그리고 현실적인 행동 체크가 함께 제공됩니다.</p></article></div>`;
+}
+function U34compatSample(){
+ return `<div class="u34Samples"><div class="u34SampleHead"><small>궁합 풀이 미리보기</small><h3>궁합은 점수 하나로 끝내지 않습니다.</h3><p>※ 아래 내용은 가상의 두 사람을 이용한 풀이 형식 예시이며 실제 고객의 궁합 결과가 아닙니다.</p></div>
+ <article class="u34Chapter"><em>예시 · 관계의 핵심</em><h4>“끌림은 빠를 수 있지만, 오래 가는 힘은 싸운 뒤 어떻게 회복하느냐에서 갈립니다.”</h4><p>두 사람이 서로에게 강하게 끌리는 것과 실제 생활이 잘 맞는 것은 다른 문제입니다. 유료 궁합에서는 두 명의 원국을 각각 먼저 읽은 뒤 감정표현, 갈등 방식, 회복력, 돈에 대한 태도, 생활 리듬, 연애의 온도, 결혼생활과 장기관계의 순서로 비교합니다. 한 사람은 바로 해결하려 하고 다른 사람은 시간을 두고 정리하는 구조라면 ‘안 맞는다’고 끝내는 대신, 왜 같은 싸움이 반복되는지와 어떤 대화 방식이 두 사람에게 현실적으로 맞는지까지 설명합니다.</p><p class="u34Evidence"><b>왜 이렇게 보나요?</b> 두 사람의 일간·일지·십신과 합충 관계를 함께 비교하고, 한 가지 요소만으로 천생연분이나 이별을 단정하지 않습니다.</p></article>
+ <article class="u34Chapter"><em>예시 · 결혼과 생활</em><h4>“연애할 때 좋은 사람과 같이 살 때 편한 사람은 다를 수 있습니다.”</h4><p>결혼궁합에서는 설렘보다 생활을 더 구체적으로 봅니다. 돈을 쓰고 모으는 방식, 혼자 있는 시간이 필요한 정도, 가족과의 경계, 책임을 나누는 방식처럼 실제 동거와 결혼에서 부딪히는 주제를 따로 읽습니다. 서로 부족한 부분을 보완하는 구조인지, 같은 장점이 오히려 경쟁으로 변하기 쉬운지, 현재 각자의 운 흐름이 관계에 어떤 압력을 주는지도 함께 살펴봅니다. 최종 결과는 단순한 궁합점수보다 ‘잘 맞는 부분·부딪히는 부분·회복 방법·장기적으로 필요한 약속’을 중심으로 제공합니다.</p></article></div>`;
+}
+
+
+function U34compatPaywall(){
+ return `<section class="u28Preview"><span class="u28Badge">프리미엄 궁합</span><h3>두 사람을 함께 보는 심층 궁합</h3>${U34priceInfo()}${U34compatSample()}<div class="u29Notice">실제 7,900원 결제는 KCP 서버 연동 및 결제 검증이 완료된 뒤 활성화됩니다. 현재는 결제된 것처럼 처리하거나 실제 궁합을 임의로 해제하지 않습니다.</div></section>`;
 }
 
 function renderResult(){
