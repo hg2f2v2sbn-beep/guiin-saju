@@ -43,6 +43,46 @@
   }
   function stage(c,key){ return (c.twelveStages||{})[key]||"-"; }
 
+  function pillarStars(c,key){
+    const hits=(c&&c.stars&&Array.isArray(c.stars.hits))?c.stars.hits.filter(h=>h&&h.pillar===key):[];
+    const grouped=new Map();
+    hits.forEach(h=>{
+      if(!grouped.has(h.name)) grouped.set(h.name,{name:h.name,bases:new Set()});
+      grouped.get(h.name).bases.add(h.basis||"기준표");
+    });
+    const order=new Map(((c&&c.stars&&Array.isArray(c.stars.catalogue))?c.stars.catalogue:[]).map((x,i)=>[x.name,i]));
+    return [...grouped.values()]
+      .map(x=>({name:x.name,count:x.bases.size,bases:[...x.bases]}))
+      .sort((a,b)=>(order.get(a.name)??999)-(order.get(b.name)??999)||a.name.localeCompare(b.name,"ko"));
+  }
+
+  function pillarStarsHTML(c,key){
+    const rows=pillarStars(c,key);
+    if(!rows.length) return '<span class="pillarStarNone">-</span>';
+    return `<div class="pillarStarList">${rows.map(x=>
+      `<span class="pillarStarName" title="${esc(x.bases.join(" / "))}">${esc(x.name)}${x.count>1?`×${x.count}`:""}</span>`
+    ).join("")}</div>`;
+  }
+
+  function ensureStarRowStyles(){
+    if(typeof document==="undefined" || document.getElementById("guiin-pillar-star-style")) return;
+    const style=document.createElement("style");
+    style.id="guiin-pillar-star-style";
+    style.textContent=`
+      .manseRow.starRow .manseLabel{font-size:6.9px;line-height:1.2;padding:7px 2px}
+      .manseRow.starRow .manseCell{padding:7px 2px;display:flex;align-items:flex-start;justify-content:center;min-height:54px}
+      .pillarStarList{display:flex;flex-wrap:wrap;justify-content:center;align-content:flex-start;gap:3px 2px;width:100%}
+      .pillarStarName{display:inline-block;font-size:6.4px;line-height:1.22;color:#6f4e8f;background:#f5effb;border:1px solid #eee2f8;border-radius:6px;padding:2px 3px;word-break:keep-all;white-space:nowrap}
+      .pillarStarNone{font-size:7px;color:#b3aea7}
+      .manseStarNote{font-size:7px;line-height:1.45;color:#9b958d;text-align:left;margin-top:6px;padding:0 3px}
+      @media(max-width:360px){
+        .pillarStarName{font-size:6px;padding:2px}
+        .manseRow.starRow .manseCell{min-height:50px}
+      }
+    `;
+    document.head.appendChild(style);
+  }
+
   function keyFacts(c){
     const ord=orderedElements(c), lk=currentLuck(c);
     return [
@@ -103,7 +143,12 @@
           <div class="manseLabel" role="rowheader">지장간</div>
           ${cols.map(([k,label,p])=>`<div class="manseCell ${k==="day"?"dayCol":""}"><small>${esc(hiddenText(p))}</small></div>`).join("")}
         </div>
+        <div class="manseRow starRow" role="row">
+          <div class="manseLabel" role="rowheader">신살</div>
+          ${cols.map(([k])=>`<div class="manseCell ${k==="day"?"dayCol":""}">${pillarStarsHTML(c,k)}</div>`).join("")}
+        </div>
       </div>
+      <div class="manseStarNote">※ 현재 공식화한 ${(c.stars&&c.stars.supportedCount)||38}/50종 중 원국에서 실제 성립한 신살·귀인을 기둥별로 모두 표시합니다. 같은 별이 같은 기둥에서 다른 기준으로 겹치면 ×2처럼 표시합니다.</div>
     </div>`;
   }
 
@@ -171,5 +216,6 @@
     </section>`;
   }
 
-  return {esc,pct,currentLuck,keyFacts,table,elementBars,render,renderCompact,renderPair};
+  ensureStarRowStyles();
+  return {esc,pct,currentLuck,keyFacts,table,elementBars,render,renderCompact,renderPair,pillarStars,pillarStarsHTML};
 });
