@@ -541,6 +541,19 @@ button,input,select{touch-action:manipulation}.screen img{max-width:100%;height:
 details.u16Fold{margin:7px 0;border:1px solid #eee4d7;border-radius:14px;background:#fff;overflow:hidden}details.u16Fold summary{cursor:pointer;padding:12px;font-size:10px;font-weight:900;color:#29483a;list-style:none}details.u16Fold summary::-webkit-details-marker{display:none}details.u16Fold>div{padding:0 12px 12px;font-size:9px;line-height:1.7;color:#6d746e}
 @media(max-width:370px){.u16CompatGrid,.u16ProfileForm{grid-template-columns:1fr}.u16ProfileForm .wide{grid-column:auto}.u16Jump{top:54px}}
 
+
+/* UPDATE 17 — SERVICE COMPLETION */
+.u17Digest{margin:9px 0;padding:18px 16px;border-radius:21px;background:linear-gradient(145deg,#f0f8e9,#fff4d8)}
+.u17Digest small,.u17Card small{font-size:9px;font-weight:900;color:#b78927}.u17Digest h2{font-size:21px;line-height:1.48;color:#183f31;margin:6px 0 8px}.u17Digest p,.u17Card p{font-size:10.5px;line-height:1.8;color:#626c65;word-break:keep-all}
+.u17Signal{display:grid;grid-template-columns:repeat(3,1fr);gap:6px;margin-top:10px}.u17Signal div{padding:10px 7px;border-radius:13px;background:#fff;text-align:center}.u17Signal b{display:block;font-size:8px;color:#9b7624}.u17Signal strong{display:block;font-size:10px;color:#244638;margin-top:3px}
+.u17Card{margin:9px 0;padding:17px 15px;border-radius:18px;background:#fff}.u17Card h3{font-size:17px;line-height:1.5;color:#183f31;margin:5px 0 9px}
+.u17Layer{border:1px solid #eee5d8;border-radius:14px;margin-top:7px;overflow:hidden}.u17Layer summary{padding:11px 12px;font-size:9.5px;font-weight:900;color:#29483a;cursor:pointer;list-style:none}.u17Layer summary::-webkit-details-marker{display:none}.u17Layer div{padding:0 12px 12px;font-size:9px;line-height:1.7;color:#70766f}
+.u17Cross{padding:12px;border-radius:14px;background:#183f31;color:#fff;font-size:11px;font-weight:900;line-height:1.75}
+.u17Ask{display:grid;gap:6px}.u17Ask button{border:1px solid #e8dfd0;background:#faf7f0;border-radius:13px;padding:11px;text-align:left;font-size:9.5px;font-weight:900;color:#29483a}.u17Ask span{display:block;font-size:8px;font-weight:500;color:#817c73;margin-top:3px}
+.u17ProfileUse{display:flex;gap:6px;margin-top:6px}.u17ProfileUse button{border:0;border-radius:999px;padding:7px 9px;background:#e9f0e4;color:#365646;font-size:8px;font-weight:900}
+.u17Notice{padding:11px;border-radius:13px;background:#fff8e6;font-size:8.8px;line-height:1.65;color:#74643e}
+@media(max-width:370px){.u17Signal{grid-template-columns:1fr}}
+
 </style>
 </head>
 <body>
@@ -1307,11 +1320,11 @@ function U16compat(c1,c2){
 function U16compatCombined(a,b){return M14compat(a,b)+U16compat(a,b)}
 function U16profileUI(){
  let arr=[];try{arr=JSON.parse(localStorage.getItem('guiinProfiles')||'[]')}catch(e){}
- return `<section class="u16Panel card"><small>프로필 저장</small><h3>나·가족·연인을 이 기기에 저장해 다시 입력하는 수고를 줄입니다.</h3><p>서버 계정 저장이 아니라 현재 브라우저의 localStorage에만 저장합니다. 브라우저 데이터 삭제 시 사라질 수 있습니다.</p><div class="u16ProfileForm"><input id="u16pn" placeholder="이름"><input id="u16pb" placeholder="생년월일 예: 1991-11-23"><input id="u16pt" placeholder="시간 예: 07:40"><select id="u16pg"><option value="female">여성</option><option value="male">남성</option></select><button class="u16Save wide" onclick="U16saveProfile()">이 기기에 저장</button></div><div id="u16ProfileList">${U16profileRows(arr)}</div></section>`
+ return `<section class="u16Panel card"><small>프로필 저장</small><h3>나·가족·연인을 이 기기에 저장해 다시 입력하는 수고를 줄입니다.</h3><p>서버 계정 저장이 아니라 현재 브라우저의 localStorage에만 저장합니다. 브라우저 데이터 삭제 시 사라질 수 있습니다.</p><div class="u16ProfileForm"><input id="u16pn" placeholder="이름"><input id="u16pb" placeholder="생년월일 예: 1991-11-23"><input id="u16pt" placeholder="시간 예: 07:40"><select id="u16pg"><option value="female">여성</option><option value="male">남성</option></select><button class="u16Save wide" onclick="U16saveProfile()">이 기기에 저장</button></div><div id="u16ProfileList">${U17profileRows(arr)}</div></section>`
 }
-function U16profileRows(arr){return (arr||[]).map((x,i)=>`<div class="u16ProfileRow"><div><b>${esc(x.name)}</b><span>${esc(x.birth)} ${esc(x.time||'')}</span></div><button onclick="U16delProfile(${i})">삭제</button></div>`).join('')||'<p style="font-size:9px;color:#888">아직 저장된 프로필이 없습니다.</p>'}
-function U16saveProfile(){const n=$('u16pn')?.value.trim(),b=$('u16pb')?.value.trim(),t=$('u16pt')?.value.trim(),g=$('u16pg')?.value;if(!n||!/^\d{4}-\d{2}-\d{2}$/.test(b||'')){alert('이름과 생년월일(YYYY-MM-DD)을 확인해 주세요.');return}let a=[];try{a=JSON.parse(localStorage.getItem('guiinProfiles')||'[]')}catch(e){};a.push({name:n,birth:b,time:t,gender:g});localStorage.setItem('guiinProfiles',JSON.stringify(a));if($('u16ProfileList'))$('u16ProfileList').innerHTML=U16profileRows(a)}
-function U16delProfile(i){let a=[];try{a=JSON.parse(localStorage.getItem('guiinProfiles')||'[]')}catch(e){};a.splice(i,1);localStorage.setItem('guiinProfiles',JSON.stringify(a));if($('u16ProfileList'))$('u16ProfileList').innerHTML=U16profileRows(a)}
+function U17profileRows(arr){return (arr||[]).map((x,i)=>`<div class="u16ProfileRow"><div><b>${esc(x.name)}</b><span>${esc(x.birth)} ${esc(x.time||'')}</span></div><button onclick="U16delProfile(${i})">삭제</button></div>`).join('')||'<p style="font-size:9px;color:#888">아직 저장된 프로필이 없습니다.</p>'}
+function U16saveProfile(){const n=$('u16pn')?.value.trim(),b=$('u16pb')?.value.trim(),t=$('u16pt')?.value.trim(),g=$('u16pg')?.value;if(!n||!/^\d{4}-\d{2}-\d{2}$/.test(b||'')){alert('이름과 생년월일(YYYY-MM-DD)을 확인해 주세요.');return}let a=[];try{a=JSON.parse(localStorage.getItem('guiinProfiles')||'[]')}catch(e){};a.push({name:n,birth:b,time:t,gender:g});localStorage.setItem('guiinProfiles',JSON.stringify(a));if($('u16ProfileList'))$('u16ProfileList').innerHTML=U17profileRows(a)}
+function U16delProfile(i){let a=[];try{a=JSON.parse(localStorage.getItem('guiinProfiles')||'[]')}catch(e){};a.splice(i,1);localStorage.setItem('guiinProfiles',JSON.stringify(a));if($('u16ProfileList'))$('u16ProfileList').innerHTML=U17profileRows(a)}
 function U16share(c){
  const d=U13P(c), name=U16.privacy?'나':(c.input.name||'사용자'), birth=U16.privacy?'생년월일 비공개':`${c.input.year||''}-${String(c.input.month||'').padStart(2,'0')}-${String(c.input.day||'').padStart(2,'0')}`;
  return `<section id="u16share" class="u16Panel card"><small>안전한 결과 공유</small><h3>사주 내용은 공유하되 개인정보는 숨길 수 있습니다.</h3><div class="u16Privacy"><button onclick="U16.privacy=true;renderResult()">개인정보 숨김</button><button onclick="U16.privacy=false;renderResult()">내 정보 포함</button></div><div class="u16Answer"><b>${esc(name)}의 사주 요약</b><br>${esc(birth)} · 일간 ${esc(c.dayMaster.stem+c.dayMaster.el)} · 현재 ${esc(d.lk?d.lk.ko+' '+d.lk.god:'대운 확인 필요')}<br>※ 공유 전 화면에 이름·생년월일·출생시간이 남아 있지 않은지 직접 확인하세요.</div></section>`
@@ -1327,13 +1340,70 @@ function U16validation(){
 }
 function U16fold(title,body){return `<details class="u16Fold"><summary>${title} ＋</summary><div>${body}</div></details>`}
 
+
+/* UPDATE 17 SERVICE COMPLETION */
+function U17cross(c){
+ const d=U13P(c),n=new Date(),f=M14flow(c,n.getFullYear(),n.getMonth()+1,n.getDate());
+ const yg=f?.gods?.year||'-',mg=f?.gods?.month||'-',dg=f?.gods?.day||'-';
+ return {d,f,yg,mg,dg,headline:`지금 10년의 ${M14meaning(d.lk?.god||'-')} 위에 올해 ${M14meaning(yg)}, 이번 달 ${M14meaning(mg)}이 겹칩니다.`}
+}
+function U17digest(c){
+ const x=U17cross(c);
+ return `<section class="u17Digest card"><small>지금 내 사주 · 30초 핵심</small><h2>${esc(x.headline)}</h2><p>오늘 하나만 떼어 길흉을 말하지 않고, 대운 → 올해 → 이번 달 → 오늘 순서로 좁혀 읽습니다.</p><div class="u17Signal"><div><b>10년 배경</b><strong>${esc(x.d.lk?.god||'-')}</strong></div><div><b>올해</b><strong>${esc(x.yg)}</strong></div><div><b>이번 달</b><strong>${esc(x.mg)}</strong></div></div><details class="u17Layer"><summary>왜 이렇게 읽었나요? ＋</summary><div>일간 ${esc(c.dayMaster.stem+c.dayMaster.el)}, 월령 ${esc(x.d.season)}, 현재 대운 ${esc(x.d.lk?x.d.lk.ko+' '+x.d.lk.god:'-')}, 연운 ${esc(x.yg)}, 월운 ${esc(x.mg)}, 일진 ${esc(x.dg)}을 순서대로 겹쳐 본 결과입니다.</div></details></section>`
+}
+function U17todayAll(c){
+ const x=U17cross(c);
+ const areas=[
+ ['일·사업',`오늘 ${x.dg}은 ${M14meaning(x.dg)}을 강조합니다. 중요한 결정은 현재 대운의 장기 방향과 충돌하지 않는지 먼저 보세요.`],
+ ['재물','오늘의 운세보다 결제·계약·고정비처럼 실제 숫자가 우선입니다. 좋은 흐름도 새는 구조를 대신 막아주지는 않습니다.'],
+ ['연애','상대의 속마음을 확정하기보다 오늘 실제로 오간 말과 행동을 기준으로 보세요.'],
+ ['인간관계','도움을 받을 일과 내가 대신 책임지고 있는 일을 구분하면 관계 피로를 줄이기 쉽습니다.']
+ ];
+ return `<section class="u17Card card"><small>오늘 · 이번 주 · 이번 달 연결</small><h3>오늘의 감정이 이번 달 전체 운세라고 착각하지 않게 봅니다.</h3><div class="u17Cross">${esc(x.headline)}</div>${areas.map(a=>`<details class="u17Layer"><summary>${a[0]} 더 깊게 보기 ＋</summary><div>${a[1]}<br><br><b>근거</b> · 오늘 ${esc(x.dg)} / 이번 달 ${esc(x.mg)} / 현재 대운 ${esc(x.d.lk?.god||'-')}</div></details>`).join('')}</section>`
+}
+function U17lifeTimeline(c){
+ const nowY=new Date().getFullYear(), birth=+c.input.year||nowY;
+ const rows=(c.luck||[]).map(l=>{const y1=birth+l.fromAge,y2=birth+l.toAge;return `<details class="u17Layer"><summary>${l.fromAge}~${l.toAge}세 · ${y1}~${y2} · ${esc(l.ko)} ${esc(l.god)} ＋</summary><div><b>${esc(M14meaning(l.god))}</b>이라는 역할이 이 10년의 배경이 될 수 있습니다. 사건을 확정하는 표가 아니라 그 시기에 반복해서 중요해지는 선택과 환경을 보는 지도입니다.</div></details>`}).join('');
+ return `<section class="u17Card card"><small>평생 인생지도</small><h3>10대·20대·30대·40대… 흐름을 한 번에 비교합니다.</h3>${rows}</section>`
+}
+function U17starActivation(c){
+ const x=U17cross(c), hits=c.stars?.hits||[];
+ const names=[...new Set(hits.map(h=>h.name))].slice(0,38);
+ return `<section class="u17Card card"><small>신살 활성화 읽기</small><h3>원국의 별과 현재 운을 따로 보지 않습니다.</h3><p>현재 원국에서 성립한 신살·귀인을 대운·연운·월운의 역할과 함께 참고합니다. “활성화”는 사건 발생을 뜻하지 않습니다.</p>${names.slice(0,10).map(n=>`<details class="u17Layer"><summary>${esc(n)} × 현재 흐름 ＋</summary><div>${esc(U13starMeaning(n))}<br><br>현재 대운 ${esc(x.d.lk?.god||'-')} · 올해 ${esc(x.yg)} · 이번 달 ${esc(x.mg)}과 함께 읽되, 이 별 하나로 결과를 확정하지 않습니다.</div></details>`).join('')}</section>`
+}
+function U17questions(c){
+ const x=U17cross(c), q=[
+ [`지금 ${x.d.lk?.god||'-'} 대운에서 제가 가장 먼저 정리해야 할 일은 무엇인가요?`,'10년 흐름 중심'],
+ [`올해 ${x.yg}과 이번 달 ${x.mg}이 겹칠 때 일과 돈에서 무엇을 조심해야 하나요?`,'연운+월운 교차'],
+ ['제가 연애에서 반복하는 패턴과 상대를 고를 때 꼭 확인할 조건을 알려주세요.','관계 패턴'],
+ ['지금 직업을 유지할 때와 바꿀 때 각각 확인할 현실 조건을 알려주세요.','직업 의사결정']
+ ];
+ return `<section class="u17Card card"><small>내 명식에서 자동 추천한 질문</small><h3>지금 물어볼 가치가 높은 질문부터 보여줍니다.</h3><div class="u17Ask">${q.map(a=>`<button onclick="go('ask');setTimeout(()=>previewAIQuestion(${JSON.stringify(a[0])}),100)">${esc(a[0])}<span>${a[1]}</span></button>`).join('')}</div><div class="u17Notice">현재 실제 AI 서버·결제가 연결되지 않았다면 질문 미리보기까지만 작동해야 하며, 크레딧을 차감한 것처럼 표시하지 않습니다.</div></section>`
+}
+function U17profileRows(arr){
+ return (arr||[]).map((x,i)=>`<div class="u16ProfileRow"><div><b>${esc(x.name)}</b><span>${esc(x.birth)} ${esc(x.time||'')}</span><div class="u17ProfileUse"><button onclick="U17loadProfile(${i})">사주 입력에 불러오기</button><button onclick="U16delProfile(${i})">삭제</button></div></div></div>`).join('')||'<p style="font-size:9px;color:#888">아직 저장된 프로필이 없습니다.</p>'
+}
+function U17loadProfile(i){
+ let a=[];try{a=JSON.parse(localStorage.getItem('guiinProfiles')||'[]')}catch(e){}
+ const x=a[i];if(!x)return;
+ const parts=(x.birth||'').split('-'),tm=(x.time||'').split(':');
+ const set=(id,v)=>{const e=$(id);if(e&&v!==undefined)e.value=v};
+ set('name',x.name);set('sy',parts[0]);set('sm',parts[1]);set('sd',parts[2]);set('sh',tm[0]||'12');set('smin',tm[1]||'00');
+ const g=$('gender');if(g)g.value=x.gender||'female';
+ go('saju');
+}
+function U17apiContract(c){
+ const ctx=aiChartContext(c);
+ return {version:'guiin-ai-v1',chart:ctx,question:'',conversation_id:null,credit_policy:{deduct_only_after_success:true,no_charge_on_error:true},client_rules:{never_send_api_secret:true,never_verify_payment_on_client:true}}
+}
+
 function renderResult(){
  if(!chart)return;
  document.querySelectorAll('#resultTabs button').forEach(b=>b.classList.toggle('on',b.dataset.tab===currentTab));
  const c=chart,time=c.input.hourUnknown?'모름':`${String(c.input.hour).padStart(2,'0')}:${String(c.input.minute).padStart(2,'0')}`;
  const manseTop=(typeof GuiinManse!=='undefined')?GuiinManse.render(c,{title:`${c.input.name}님의 만세력`,eyebrow:'내 사주'}):'';
  if(currentTab==='summary'){
-  $('resultView').innerHTML=U16jump()+`<div id="u16core"></div>`+U13ultra(c)+U16personal(c)+G15lifeTopics(c)+M14decisions(c)+G15yearCompare(c)+G15questions()+U16share(c)+directSummaryHTML(c)+prettySummaryHTML(c)+manseTop+expertSummaryHTML(c)+`<details class="resultMethod card"><summary>귀인사주는 어떻게 계산하나요?</summary><p>원국 계산 후 일간·월령/계절·오행·십신·지장간·관계·대운·세운을 함께 읽습니다. 신살은 공식화된 38/50종을 보조 정보로 사용합니다. 격국·용신·조후처럼 학파에 따라 판단이 크게 달라지는 항목은 자동 확정해 단정하지 않습니다.</p></details>`;
+  $('resultView').innerHTML=U16jump()+`<div id="u16core"></div>`+U17digest(c)+U13ultra(c)+U16personal(c)+G15lifeTopics(c)+M14decisions(c)+G15yearCompare(c)+U17questions(c)+U16share(c)+directSummaryHTML(c)+prettySummaryHTML(c)+manseTop+expertSummaryHTML(c)+`<details class="resultMethod card"><summary>귀인사주는 어떻게 계산하나요?</summary><p>원국 계산 후 일간·월령/계절·오행·십신·지장간·관계·대운·세운을 함께 읽습니다. 신살은 공식화된 38/50종을 보조 정보로 사용합니다. 격국·용신·조후처럼 학파에 따라 판단이 크게 달라지는 항목은 자동 확정해 단정하지 않습니다.</p></details>`;
  } else if(currentTab==='personality'){
   $('resultView').innerHTML=straightIntroHTML(c,'personality','성격·기질')+manseTop+expertSectionsHTML(GuiinExpert.personalitySections(c));
  } else if(currentTab==='fields'){
@@ -1341,7 +1411,7 @@ function renderResult(){
  } else if(currentTab==='stars'){
   $('resultView').innerHTML=straightIntroHTML(c,'stars','신살·귀인')+manseTop+U16starCross(c)+U13stars(c)+G15trust()+expertStarsHTML(c);
  } else if(currentTab==='flow'){
-  $('resultView').innerHTML=straightIntroHTML(c,'flow','대운·세운')+`<div id="u16flow"></div>`+M14calendar(c)+G15yearCompare(c)+U13timeline(c)+manseTop+((typeof GuiinPlain!=='undefined')?GuiinPlain.renderFlow(c,new Date().getFullYear()):expertFlowHTML(c));
+  $('resultView').innerHTML=straightIntroHTML(c,'flow','대운·세운')+`<div id="u16flow"></div>`+M14calendar(c)+G15yearCompare(c)+U17lifeTimeline(c)+U13timeline(c)+U17starActivation(c)+manseTop+((typeof GuiinPlain!=='undefined')?GuiinPlain.renderFlow(c,new Date().getFullYear()):expertFlowHTML(c));
  } else if(currentTab==='chart'){
   $('resultView').innerHTML=manseTop+
    (typeof GuiinPlain!=='undefined'
@@ -1402,7 +1472,7 @@ function submitMatch(){
 }
 function todayFlow(c,d){try{return GuiinSaju.flowForDate(d.getFullYear(),d.getMonth()+1,d.getDate(),c.pillars.day.stemIndex,12,0,{dayBoundary:c.input.dayBoundary||'23'});}catch(e){return null}}
 function todayGodMeaning(g){const m={비견:['내 페이스','내가 직접 결정하고 움직이는 힘이 커집니다.','오늘 끝낼 한 가지를 정하세요.'],겁재:['경쟁·협업','사람과 속도가 붙는 날입니다.','비교 소비와 감정적인 승부를 줄이세요.'],식신:['결과 만들기','손으로 만들고 마무리하는 일이 잘 맞습니다.','작은 결과라도 남기세요.'],상관:['표현·개선','말과 아이디어가 빨라지는 날입니다.','맞는 말도 부드럽게 표현하세요.'],편재:['기회·거래','사람과 돈의 흐름이 빠르게 움직일 수 있습니다.','즉흥 지출보다 조건을 먼저 보세요.'],정재:['관리·현실','정산·계약·예산처럼 현실적인 일이 중요합니다.','작은 돈과 약속을 정확히 관리하세요.'],편관:['책임·결단','압박 속에서 결정할 일이 생기기 쉽습니다.','책임을 전부 혼자 떠안지 마세요.'],정관:['규칙·신뢰','약속과 절차를 지키는 것이 평가로 이어집니다.','정석대로 처리하세요.'],편인:['관찰·전문성','혼자 깊게 생각하고 파고드는 힘이 살아납니다.','생각 뒤에 작은 실행을 붙이세요.'],정인:['배움·지원','배우거나 도움받는 흐름이 유리합니다.','문서와 정보를 차분히 확인하세요.']};return m[g]||['균형','오늘의 기운을 한 사건으로 단정하지 않습니다.','평소 루틴을 지키세요.']}
-function renderToday(){const box=$('todayView');if(!box)return;const d=new Date(),days=['일','월','화','수','목','금','토'];if(!chart){box.innerHTML=U13today(chart,todayOffset)+`<div class="todayDeepHero card"><div class="date">${d.getFullYear()}년 ${d.getMonth()+1}월 ${d.getDate()}일 (${days[d.getDay()]})</div><h2>오늘의 사주는<br>내 명식이 있어야 계산돼요.</h2><p>원국 + 현재 대운 + 올해 세운 + 오늘 일진을 겹쳐서 보여드립니다.</p></div><button class="ctaGold" onclick="go('saju')">내 사주 입력하기 ›</button>`;return}const f=todayFlow(chart,d),dg=f?.gods?.day||'-',mg=f?.gods?.month||'-',yg=f?.gods?.year||'-',dm=todayGodMeaning(dg),mm=todayGodMeaning(mg),ym=todayGodMeaning(yg),lk=currentLuck(chart);let rel=[];try{if(f?.pillars?.day)rel=GuiinSaju.relationsWithTransit(chart.pillars,f.pillars.day)||[]}catch(e){}const rt=rel.length?rel.map(x=>x.type).join(' · '):'강한 관계 신호 없음';box.innerHTML=`<div class="todayDeepHero card"><div class="date">${d.getFullYear()}년 ${d.getMonth()+1}월 ${d.getDate()}일 (${days[d.getDay()]})</div><h2>${esc(chart.input.name)}님, 오늘의 중심은<br>“${esc(dm[0])}”입니다.</h2><p>${esc(dm[1])} 오늘 하루를 좋다·나쁘다로 단정하지 않고 현재 대운과 오늘의 역할이 어디서 겹치는지 봅니다.</p><div class="todayBadgeRow"><span class="todayBadge">오늘 ${esc(f?.pillars?.day?.ko||'-')}</span><span class="todayBadge">${esc(dg)}</span><span class="todayBadge">12운성 ${esc(f?.stages?.day||'-')}</span></div></div>
+function renderToday(){const box=$('todayView');if(!box)return;const d=new Date(),days=['일','월','화','수','목','금','토'];if(!chart){box.innerHTML=U13today(chart,todayOffset)+U17todayAll(chart)+`<div class="todayDeepHero card"><div class="date">${d.getFullYear()}년 ${d.getMonth()+1}월 ${d.getDate()}일 (${days[d.getDay()]})</div><h2>오늘의 사주는<br>내 명식이 있어야 계산돼요.</h2><p>원국 + 현재 대운 + 올해 세운 + 오늘 일진을 겹쳐서 보여드립니다.</p></div><button class="ctaGold" onclick="go('saju')">내 사주 입력하기 ›</button>`;return}const f=todayFlow(chart,d),dg=f?.gods?.day||'-',mg=f?.gods?.month||'-',yg=f?.gods?.year||'-',dm=todayGodMeaning(dg),mm=todayGodMeaning(mg),ym=todayGodMeaning(yg),lk=currentLuck(chart);let rel=[];try{if(f?.pillars?.day)rel=GuiinSaju.relationsWithTransit(chart.pillars,f.pillars.day)||[]}catch(e){}const rt=rel.length?rel.map(x=>x.type).join(' · '):'강한 관계 신호 없음';box.innerHTML=`<div class="todayDeepHero card"><div class="date">${d.getFullYear()}년 ${d.getMonth()+1}월 ${d.getDate()}일 (${days[d.getDay()]})</div><h2>${esc(chart.input.name)}님, 오늘의 중심은<br>“${esc(dm[0])}”입니다.</h2><p>${esc(dm[1])} 오늘 하루를 좋다·나쁘다로 단정하지 않고 현재 대운과 오늘의 역할이 어디서 겹치는지 봅니다.</p><div class="todayBadgeRow"><span class="todayBadge">오늘 ${esc(f?.pillars?.day?.ko||'-')}</span><span class="todayBadge">${esc(dg)}</span><span class="todayBadge">12운성 ${esc(f?.stages?.day||'-')}</span></div></div>
 <div class="todayChapter card"><div class="k">01 · 오늘의 총운</div><h3>${esc(dm[0])}에 힘을 쓰는 날</h3><p>${esc(dm[1])} ${esc(dm[2])}</p><div class="todayEvidence">근거 · 오늘 일진 ${esc(f?.pillars?.day?.ko||'-')} · 십신 ${esc(dg)} · 12운성 ${esc(f?.stages?.day||'-')}</div></div>
 <div class="todayChapter card"><div class="k">02 · 일·사업</div><h3>결과보다 역할을 먼저 보세요</h3><p>${esc(dm[1])} 현재 대운 ${esc(lk?.ko||'-')}(${esc(lk?.god||'-')})의 장기 과제와 충돌하지 않는 한 가지를 끝내는 편이 좋습니다.</p></div>
 <div class="todayChapter card"><div class="k">03 · 재물</div><h3>들어오는 돈과 나가는 돈을 따로 봐요</h3><p>${dg==='편재'||dg==='정재'?'재성의 주제가 오늘 직접 강조됩니다. 거래·정산·지출 조건을 꼼꼼히 확인하세요.':'큰 행운을 단정하기보다 지출·계약 조건을 확인하는 데 초점을 두세요.'} 큰 투자나 대출은 하루 운세만으로 결정하지 않습니다.</p></div>
