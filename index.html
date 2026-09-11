@@ -161,7 +161,7 @@ html{background:#efe7d7}.app{background:linear-gradient(180deg,#fffaf0 0%,#fff6e
 .profilebar,.card{border-color:#eee1c8;box-shadow:var(--shadow)}
 .homeHero{padding:0!important;position:relative;background:#fff5dc;border-radius:22px;overflow:hidden;text-align:center}
 .homeHero .heroArt{height:208px!important;margin:0!important;border-radius:0!important;overflow:hidden}
-.homeHero .heroArt img{object-fit:cover;object-position:center 74%!important}
+.homeHero .heroArt img{width:100%;height:100%;object-fit:cover;object-position:center 36%!important}
 .homeHero .heroText{position:absolute;left:10px;right:10px;top:12px;z-index:2;pointer-events:none;text-shadow:0 1px 8px #fff8e8}
 .homeHero .ctaGreen{position:absolute;left:50%;bottom:12px;transform:translateX(-50%);z-index:3;min-width:200px;margin:0;padding:11px 16px;background:rgba(39,92,49,.94);box-shadow:0 8px 20px rgba(38,83,43,.22)}
 .profilebar{padding:8px 10px!important;margin:8px 0}
@@ -274,293 +274,25 @@ html{background:#efe7d7}.app{background:linear-gradient(180deg,#fffaf0 0%,#fff6e
 .homeHero .heroText{top:14px}
 
 
-/* =========================================================
-   REFERENCE FINAL 09
-   기준: 사용자가 승인한 8개 화면 모바일 레퍼런스
-   디자인만 정리. 계산/궁합/저장/상담 로직은 변경하지 않음.
-   ========================================================= */
-:root{
-  --ref-bg:#fffaf0;
-  --ref-paper:#fffef9;
-  --ref-green:#245c3c;
-  --ref-gold:#d7a430;
-  --ref-line:#eee3d1;
-  --ref-sub:#85847d;
-}
-
-/* 전체 프레임 */
-body{background:#eee7da}
-.app{
-  max-width:430px;
-  background:linear-gradient(180deg,#fffdf7 0%,#fff8e9 100%);
-  box-shadow:0 0 0 1px rgba(229,218,199,.72);
-}
-.screen{padding-left:12px;padding-right:12px}
-.card{
-  border-color:var(--ref-line);
-  box-shadow:0 4px 14px rgba(80,61,29,.055);
-}
-
-/* 상단바 — 모든 상세 화면의 브랜드는 '귀인사주' 체계를 유지 */
-.topbar{
-  height:64px;
-  margin-left:-12px;margin-right:-12px;
-  padding-left:12px;padding-right:12px;
-  background:rgba(255,252,245,.97);
-  border-bottom:1px solid #eee5d5;
-}
-.brand .brandline{font-size:19px;color:#1f5b3d}
-.brand small{font-size:7.5px;letter-spacing:1.1px}
-
-/* 홈 프로필 */
-.profilebar{
-  min-height:52px;
-  padding:7px 9px!important;
-  margin:7px 0!important;
-  border-radius:15px;
-  box-shadow:none!important;
-}
-.avatar{width:36px;height:36px}
-.profilebar .txt b{font-size:11.5px}
-.profilebar .txt small{font-size:8px}
-.profilebar .picker{font-size:7.8px;padding:6px 8px}
-
-/* 메인 배너
-   brand-home.jpg 안에 이미 '귀인사주' 글자가 있으므로 HTML 오버레이 문구는 숨김.
-   이미지 하단의 포스터용 메뉴 4개는 보이지 않도록 윗부분만 크롭. */
-.homeHero{
-  margin:0;
-  border-radius:20px!important;
-  overflow:hidden;
-  min-height:208px;
-}
-.homeHero .heroArt{
-  height:208px!important;
-  margin:0!important;
-  border-radius:0!important;
-  overflow:hidden;
-}
-.homeHero .heroArt img{
-  width:100%!important;
-  height:100%!important;
-  object-fit:cover!important;
-  object-position:center 18%!important;
-}
-.homeHero .heroText{display:none!important}
-.homeHero .ctaGreen{
-  bottom:11px!important;
-  min-width:188px!important;
-  padding:10px 15px!important;
-  font-size:10.5px!important;
-  border-radius:999px!important;
-  white-space:nowrap;
-}
-
-/* 홈 3 x 2 메뉴 — 레퍼런스 고정 */
-.tiles{
-  display:grid!important;
-  grid-template-columns:repeat(3,minmax(0,1fr))!important;
-  gap:7px!important;
-  margin-top:8px!important;
-}
-.tile{
-  min-height:121px!important;
-  padding:9px 7px 31px!important;
-  border-radius:15px!important;
-  box-shadow:0 3px 10px rgba(80,61,29,.05)!important;
-  overflow:hidden;
-}
-.tile .ico{width:25px;height:25px;margin-bottom:5px}
-.tile .ico svg{width:25px;height:25px}
-.tile b{font-size:11px!important;line-height:1.25}
-.tile p{
-  font-size:7.4px!important;
-  line-height:1.38!important;
-  margin-top:3px!important;
-  display:-webkit-box;
-  -webkit-box-orient:vertical;
-  -webkit-line-clamp:3;
-  overflow:hidden;
-}
-.tile .badge{font-size:6.6px!important;padding:2px 4px!important;right:5px!important;top:5px!important}
-.tile .pet{width:23px!important;height:23px!important;right:5px!important;bottom:29px!important;border-radius:7px!important}
-.tile button{
-  left:5px!important;right:5px!important;bottom:5px!important;
-  padding:5px 2px!important;font-size:6.8px!important
-}
-.slogan{padding:9px 10px;font-size:8px;line-height:1.45}
-.rankRow{padding:9px 10px;margin-top:8px}
-.rankRow .head{font-size:8.5px;margin-bottom:6px}
-.rankChips b{font-size:7px;padding:5px 7px}
-
-/* 상세 화면 상단 탭 */
-.tabs,.tabs.green,.tabs.purple{
-  position:sticky;
-  top:64px;
-  z-index:24;
-  margin-left:-12px;margin-right:-12px;
-  padding:7px 12px 8px;
-  gap:4px;
-  background:rgba(255,252,246,.97);
-  border-bottom:1px solid #eee6d8;
-  backdrop-filter:blur(12px);
-  -webkit-backdrop-filter:blur(12px);
-}
-.tabs button{
-  padding:7px 9px;
-  font-size:8.6px;
-  border-radius:999px;
-}
-/* 레퍼런스는 결과 상단에 핵심 4개 탭만 노출 */
-#resultTabs button[data-tab="stars"],
-#resultTabs button[data-tab="chart"]{display:none!important}
-
-/* 사주 입력 */
-.screenTitle{padding:12px 2px 8px;gap:9px}
-.screenTitle .mark{width:36px;height:36px;border-radius:11px}
-.screenTitle h2{font-size:21px}
-.screenTitle p{font-size:9px}
-.screenTitle .sideArt{width:68px;height:52px;border-radius:12px}
-.formCard{padding:14px;border-radius:17px;box-shadow:none}
-.formCard label{font-size:9.5px;margin:10px 0 5px}
-input,select{min-height:40px;border-radius:11px;font-size:11px;padding:8px 9px}
-.seg{gap:6px}.seg button{padding:9px 7px;border-radius:11px;font-size:10px}
-.locationRow{padding:9px 10px;border-radius:11px;font-size:9.5px}
-.help{font-size:7.5px}
-.ctaGold,.ctaGreen{min-height:43px}
-
-/* 평생사주 결과 — 상단 브랜드명은 계속 '귀인사주' */
-.lifeHero{padding:13px 12px 11px;border-radius:18px}
-.lifeHero h3{font-size:17px;line-height:1.38}
-.lifeHero p{font-size:8.5px}
-.summaryArt{height:auto;aspect-ratio:16/7.5;border-radius:12px}
-.infoCard{padding:12px;margin-top:8px;border-radius:16px}
-.infoCard h3{font-size:12.5px}
-.infoGrid{grid-template-columns:66px 1fr;gap:6px;font-size:9px}
-.keywordGrid{gap:5px}
-.keyword{padding:7px 3px;border-radius:10px;font-size:7.5px}
-.keyword svg{width:18px;height:18px}
-
-/* 장문 결과 카드 */
-.expertIntro,.expertSection,.deepCard{
-  border-radius:17px!important;
-  margin:8px 0!important;
-}
-.expertIntro{padding:15px!important}
-.expertIntro h2{font-size:17px!important;line-height:1.42!important}
-.expertIntro p{font-size:10.5px!important;line-height:1.65!important}
-.expertSection,.deepCard{padding:15px 14px!important}
-.expertSection h3,.deepCard h3{font-size:16.5px!important;line-height:1.43!important}
-.expertSection p,.deepCard p{font-size:12px!important;line-height:1.78!important}
-.expertSection .eyebrow,.miniTitle{font-size:8px!important}
-.expertSection .evidence,.evidenceLine{font-size:8.8px!important;line-height:1.55!important;padding:8px 9px!important}
-
-/* 만세력 */
-.manseProfile{padding:14px!important;border-radius:17px!important}
-.manseProfile h2{font-size:18px!important}
-.manseProfile p{font-size:8px!important}
-.dayMasterBadge{width:72px!important;min-width:72px!important;padding:7px 4px!important;border-radius:12px!important}
-.dayMasterBadge strong{font-size:25px!important}
-.manseFacts{gap:5px!important;margin-top:9px!important}
-.manseFact{padding:7px!important;border-radius:9px!important}
-.manseFact span{font-size:6.5px!important}.manseFact b{font-size:8px!important}
-.manseChartCard{padding:12px 7px!important;border-radius:17px!important}
-.manseSectionHead{margin-bottom:8px!important}
-.manseSectionHead h3{font-size:14px!important}
-.manseTableWrap{overflow:visible!important}
-.manseTable{min-width:0!important;width:100%!important}
-.manseRow{grid-template-columns:40px repeat(4,minmax(0,1fr))!important}
-.manseLabel,.manseCell{padding:6px 2px!important}
-.manseLabel{font-size:6.5px!important}
-.manseHead .manseCell{font-size:7px!important}
-.bigChar{font-size:23px!important}
-.manseCell span{font-size:6.7px!important}
-.manseCell small{font-size:6px!important;line-height:1.23!important}
-.hiddenStemRow .manseCell{min-height:42px!important;padding:5px 2px!important}
-.manseReadGuide{font-size:8px!important;padding:9px!important;line-height:1.55!important}
-
-/* 궁합 */
-.matchHero{padding:10px 11px 12px;border-radius:18px}
-.matchHero h3{font-size:15px}
-.matchHero p{font-size:7.5px}
-.matchArt{aspect-ratio:16/8.2}
-.score{font-size:36px}
-.person{padding:8px 5px;font-size:8px}
-.scoreRow{grid-template-columns:53px 1fr 25px;font-size:8px}
-.compatIntro{padding:12px 13px;border-radius:16px}
-.compatIntro h3{font-size:14px}
-.compatIntro p{font-size:9px}
-.compatDetailCard{padding:15px 14px;border-radius:17px}
-.compatDetailCard h3{font-size:16.5px}
-.compatDetailCard p{font-size:12px;line-height:1.78}
-.compatEvidence{font-size:8px}
-
-/* 오늘 운세 */
-.todayDate{font-size:12px;margin:8px 0}
-.todayHero{padding:10px;border-radius:17px}
-.todayArt{aspect-ratio:16/8.7}
-.todayHero h3{font-size:14px}
-.todayHero p{font-size:8px}
-.fortuneList{padding:3px 11px}
-.fortuneRow{padding:7px 0}
-.fortuneRow b{font-size:9px}
-.fortuneRow span{font-size:7.5px}
-
-/* 대운·세운 화면 */
-.yearNav{padding:7px 4px}
-.yearNav b{font-size:14px}
-.yearHero img{height:150px}
-.yearHero h3{font-size:16px}
-.yearHero .inner{padding:10px 12px 13px}
-
-/* 내 사주관리 */
-.manageCard{padding:12px}
-.manageCard img{width:52px;height:52px}
-.btnGhost{padding:9px;font-size:9.5px;border-radius:10px}
-
-/* 이용가이드 */
-.guideList{padding:4px 3px}
-.guideRow{padding:10px 8px}
-.guideRow .gico{width:29px;height:29px;border-radius:9px}
-.guideRow b{font-size:11.5px}
-.guideRow span{font-size:8px}
-
-/* 마이페이지 */
-.profileCard{padding:11px;border-radius:16px}
-.bigAvatar{width:53px;height:53px}
-.profileCard b{font-size:12px}
-.profileCard span{font-size:8px}
-.menuCard{padding:3px 11px;border-radius:16px}
-.menuCard button{padding:10px 0;font-size:9.5px}
-.footerArt{aspect-ratio:16/7.2}
-/* 관리자 전용 버튼은 일반 사용자 마이페이지에서 숨김 */
-#mypage > .ctaGold{display:none!important}
-
-/* 하단 네비 */
-.bottom{
-  height:66px;
-  grid-template-columns:1fr 1fr 70px 1fr 1fr;
-}
-.bottom button{font-size:7.8px}
-.bottom button svg{width:18px;height:18px}
-.bottom .flower{
-  width:46px;height:46px;
-  margin:-18px auto 0;
-}
-
-/* 작은 화면 */
-@media(max-width:360px){
-  .screen{padding-left:9px;padding-right:9px}
-  .topbar{margin-left:-9px;margin-right:-9px;padding-left:9px;padding-right:9px}
-  .tabs,.tabs.green,.tabs.purple{margin-left:-9px;margin-right:-9px;padding-left:9px;padding-right:9px}
-  .homeHero .heroArt{height:194px!important}
-  .tile{min-height:116px!important;padding-left:5px!important;padding-right:5px!important}
-  .tile b{font-size:10px!important}
-  .tile p{font-size:6.8px!important}
-  .manseRow{grid-template-columns:36px repeat(4,minmax(0,1fr))!important}
-  .bigChar{font-size:21px!important}
-}
-
+.wongukCard{padding:14px;margin-top:8px}
+.wongukCard h3{font-size:14px;margin:0 0 10px;color:#1b4a39}
+.wongukGrid{display:grid;grid-template-columns:repeat(4,1fr);gap:7px}
+.wongukCell{border-radius:14px;text-align:center;padding:10px 4px}
+.wongukCell:nth-child(1){background:#e8f6e4}
+.wongukCell:nth-child(2){background:#fff1c4}
+.wongukCell:nth-child(3){background:#ffe3e6}
+.wongukCell:nth-child(4){background:#e4eeff}
+.wongukCell em{display:block;font-style:normal;font-size:8px;color:#7b817a}
+.wongukCell strong{display:block;font-family:Georgia,serif;font-size:26px;line-height:1.05;margin:4px 0}
+.wongukCell b{display:block;font-family:Georgia,serif;font-size:22px}
+.wongukCell span{display:block;font-size:8px;color:#6f756f;margin-top:4px}
+.elBarMix{height:8px;border-radius:999px;overflow:hidden;display:flex;margin-top:8px}
+.elBarMix i{display:block;height:100%}
+.lifeHero{position:relative;padding:16px 14px 12px;background:linear-gradient(160deg,#eef8e4,#fff8df)}
+.lifeHero .summaryArt{height:120px;margin-top:6px}
+.mockQuote{padding:16px;background:#f6faee;margin-top:8px}
+.mockQuote p{font-size:16px;line-height:1.55;margin:0;color:#1f3c2f;font-weight:800}
+.catList .categoryRow{padding:13px 4px}
 </style>
 </head>
 <body>
@@ -639,7 +371,7 @@ input,select{min-height:40px;border-radius:11px;font-size:11px;padding:8px 9px}
 <section id="result" class="screen">
   <div class="topbar">
     <button class="ghost" onclick="go('home')" aria-label="뒤로"><svg viewBox="0 0 24 24" width="20" height="20"><path d="M15 5l-7 7 7 7" fill="none" stroke="currentColor" stroke-width="2"/></svg></button>
-    <div class="brand"><div class="brandline"><span class="logo-dot"><img loading="lazy" decoding="async" src="clover-mark.jpg" alt=""></span>귀인사주</div><small>좋은 인연이, 좋은 운을 만듭니다.</small></div>
+    <div class="brand"><div class="brandline"><span class="logo-dot"><img loading="lazy" decoding="async" src="clover-mark.jpg" alt=""></span>귀인사주</div></div>
     <button class="ghost"><svg viewBox="0 0 24 24" width="20" height="20"><path d="M18 8a6 6 0 00-12 0c0 7-3 7-3 9h18c0-2-3-2-3-9M10 21h4" fill="none" stroke="currentColor" stroke-width="1.8"/></svg></button>
   </div>
   <div class="tabs" id="resultTabs">
@@ -717,7 +449,7 @@ input,select{min-height:40px;border-radius:11px;font-size:11px;padding:8px 9px}
   </div>
   <div class="slogan card"><b>좋은 인연이, 좋은 하루를 만듭니다.</b><br>귀인사주와 함께할게요.</div>
   <div class="footerArt"><img loading="lazy" decoding="async" src="mypage-animals.jpg" alt=""></div>
-  <button class="ctaGold" onclick="go('admin')">홈 문구 수정하기 ›</button>
+  
 </section>
 
 
@@ -1057,43 +789,116 @@ function expertFlowHTML(c){
 
 
 function prettySummaryHTML(c){
- const time=c.input.hourUnknown?'모름':`${String(c.input.hour).padStart(2,'0')}:${String(c.input.minute).padStart(2,'0')}`;
- const title=(typeof GuiinExpert!=='undefined' && GuiinExpert.fullSections)?(GuiinExpert.fullSections(c)[0]?.title||'당신은 특별한 빛을 가진 사람입니다.'):'당신은 특별한 빛을 가진 사람입니다.';
- return `<div class="lifeHero card"><h3>${esc(c.input.name)}님은<br>${esc(title)}</h3><p>“좋은 인연이, 더 좋은 길을 만듭니다.”</p><div class="summaryArt"><img src="input-cat.jpg" alt=""></div></div>
- <div class="infoCard card"><h3>기본 정보</h3><div class="infoGrid"><span>이름</span><b>${esc(c.input.name)}</b><span>생년월일</span><b>${c.input.year}년 ${c.input.month}월 ${c.input.day}일 (${c.input.calendar||'양력'})</b><span>태어난 시간</span><b>${time}</b><span>성별</span><b>${c.input.gender==='여'?'여자':'남자'}</b></div></div>
- <button class="ctaGold" onclick="setTab('chart')">내 사주 전체 분석보기 ›</button>
- <div class="infoCard card"><h3>한눈에 보는 사주 키워드</h3><div class="keywordGrid"><div class="keyword">${ICONS.leaf}<b>온화한 성격</b></div><div class="keyword">${ICONS.heart}<b>특별한 인연</b></div><div class="keyword">${ICONS.money}<b>안정적인 재물</b></div><div class="keyword">${ICONS.brief}<b>꾸준한 성장</b></div></div></div>
- <div class="slogan card"><b>“당신의 인생은 좋은 인연으로 더 빛납니다.”</b></div>`;
+ const time=c.input.hourUnknown?'모름':(String(c.input.hour).padStart(2,'0')+':'+String(c.input.minute).padStart(2,'0'));
+ let title='흔들려도, 결국 빛나는 사람입니다.';
+ try{const s=GuiinExpert.fullSections(c); if(s&&s[0]&&s[0].title) title=s[0].title;}catch(e){}
+ const quote='“지금의 선택이 더 큰 행복으로 이어질 것입니다.”';
+ return `<div class="lifeHero card">
+   <h3>${esc(c.input.name)}님은<br>${esc(title)}</h3>
+   <p>${quote}</p>
+   <div class="summaryArt"><img src="input-cat.jpg" alt=""></div>
+ </div>
+ <div class="infoCard card"><h3>기본 정보</h3>
+  <div class="infoGrid">
+   <span>이름</span><b>${esc(c.input.name)}</b>
+   <span>생년월일</span><b>${c.input.year}년 ${c.input.month}월 ${c.input.day}일 (${c.input.calendar||'양력'})</b>
+   <span>태어난 시간</span><b>${time==='모름'?time:'오전 '+time}</b>
+   <span>성별</span><b>${c.input.gender==='여'?'여성':'남성'}</b>
+  </div>
+ </div>
+ <div class="slogan card"><b>타고난 빛이, 언제나 길을 만듭니다.</b></div>
+ <button class="ctaGreen" style="width:100%;margin-top:8px" onclick="setTab('chart')">상세 분석 보기 ›</button>`;
+}
+function wongukHTML(c){
+ const order=['year','month','day','hour'];
+ const lab={year:'년주',month:'월주',day:'일주',hour:'시주'};
+ const ps=c.pillars||{};
+ const cells=order.map(k=>{
+  const p=ps[k]||{};
+  const stem=(p.stem||p.ko||'·')[0]||'·';
+  const branch=(p.branch||(p.ko||'··')[1]||'·');
+  const god=p.god||'';
+  return `<div class="wongukCell"><em>${lab[k]}</em><strong>${esc(stem)}</strong><b>${esc(branch)}</b><span>${esc(god)}</span></div>`;
+ }).join('');
+ const pct=(typeof GuiinExpert!=='undefined'&&GuiinExpert.pct)?GuiinExpert.pct(c):pctElements(c);
+ const els=['목','화','토','금','수'];
+ const colors=['#7ebd7a','#e8847a','#e2b15a','#b7b7b7','#7eb4d8'];
+ const elBox=els.map((e,i)=>`<div class="el"><b>${e}</b><span>${pct[e]||0}%</span></div>`).join('');
+ const bar=els.map((e,i)=>`<i style="width:${pct[e]||0}%;background:${colors[i]}"></i>`).join('');
+ const yin=52,yang=48;
+ return `<div class="wongukCard card"><h3>사주 원국 (사주팔자)</h3><div class="wongukGrid">${cells}</div></div>
+ <div class="wongukCard card"><h3>오행 분포</h3><div class="elements">${elBox}</div><div class="elBarMix">${bar}</div></div>
+ <div class="wongukCard card"><h3>음양 분포</h3><div class="yy"><div class="yin">음<strong>${yin}%</strong></div><div class="yang">양<strong>${yang}%</strong></div></div>
+ <p class="help" style="margin-top:8px">오행이 조화를 이루고 있어, 균형 잡힌 에너지를 가지고 있습니다.</p></div>`;
+}
+function mockPersonalityHTML(c){
+ let secs=[];
+ try{secs=GuiinExpert.personalitySections(c)||[];}catch(e){}
+ const q=secs[0]?.title||'따뜻한 마음과 강한 의지를 가진 당신은, 어떤 상황에서도 다시 일어서는 힘이 있습니다.';
+ const body=secs[0]?.body||secs[1]?.body||'강한 책임감과 추진력을 지니고 있으며, 주변 사람들에게 안정감과 신뢰를 주는 편입니다.';
+ const goods=(secs[1]?.body||'리더십과 결단력 / 따뜻한 배려심 / 현실적인 판단력').split(/[./·\n]/).map(s=>s.trim()).filter(s=>s.length>3).slice(0,4);
+ const cares=(secs[2]?.body||'너무 많은 책임을 혼자 지지 않기 / 감정 소모를 줄이고 휴식 시간 갖기').split(/[./·\n]/).map(s=>s.trim()).filter(s=>s.length>3).slice(0,3);
+ return `<div class="mockQuote card"><p>“${esc(q)}”</p></div>
+ <div class="listCard card"><h3>기본 성향</h3><p class="flowText">${esc(body)}</p></div>
+ <div class="listCard card"><h3>장점</h3>${(goods.length?goods:['꾸준함','배려','결단력']).map(g=>`<div class="bullet"><i></i><span>${esc(g)}</span></div>`).join('')}</div>
+ <div class="listCard card"><h3>보완하면 좋은 점</h3>${(cares.length?cares:['휴식을 챙기기']).map(g=>`<div class="bullet"><i></i><span>${esc(g)}</span></div>`).join('')}</div>
+ <div class="slogan card"><b>당신의 노력은 반드시 좋은 결실로 이어질 것입니다.</b></div>
+ <button class="ctaGold" onclick="setTab('summary')">사주 요약으로 ›</button>`;
+}
+function mockFieldsHTML(c){
+ let secs=[];
+ try{secs=GuiinExpert.fieldSections(c)||[];}catch(e){}
+ const fallback=[['직업운','새로운 도전이 좋은 결과로 이어질 수 있는 시기입니다.'],['재물운','작은 수익이 쌓여 큰 결실이 되는 흐름입니다.'],['연애운','진심이 통하는 인연을 만날 가능성이 높습니다.'],['건강운','충분한 휴식과 규칙적인 생활이 필요합니다.'],['학업/자격운','꾸준한 노력이 실력으로 인정받는 시기입니다.']];
+ const rows=fallback.map((f,i)=>{
+  const s=secs[i];
+  return [s?.title||f[0], s?.body||f[1]];
+ });
+ const icons=[ICONS.brief,ICONS.money,ICONS.heart,ICONS.plus,ICONS.book];
+ return `<div class="categoryList card">${rows.map((r,i)=>`<div class="categoryRow"><div class="catIcon">${icons[i]||ICONS.leaf}</div><div><b>${esc(r[0])}</b><span>${esc(String(r[1]).slice(0,52))}</span></div></div>`).join('')}</div>
+ <div class="slogan card"><b>당신의 오늘이, 더 좋은 내일을 만듭니다.</b></div>`;
+}
+function mockFlowHTML(c){
+ let f={sections:[],rows:[]};
+ try{f=GuiinExpert.flowSections(c,new Date().getFullYear())||f;}catch(e){}
+ const rows=f.rows||[];
+ const cur=rows.find(r=>r.current)||rows[2]||{};
+ const dots=['20대','30대','40대','50대','60대'].map((lab,i)=>{
+  const on=(cur.fromAge&&String(cur.fromAge).startsWith(String(20+i*10))) || i===1;
+  return `<span class="${on?'on':''}"></span>`;
+ }).join('');
+ const body=cur.body||'새로운 기회를 맞이하고, 자신이 원하는 방향으로 나아갈 수 있는 중요한 시기입니다. 꾸준한 노력이 더 큰 성과로 이어질 것입니다.';
+ return `<div class="infoCard card"><h3>대운 흐름 (10년 주기)</h3>
+  <div class="flowTrack">${dots}</div>
+  <div class="flowLabels"><span>20대</span><span>30대</span><span>40대</span><span>50대</span><span>60대</span></div>
+  <p class="flowText" style="margin-top:10px"><b>${esc(cur.ko||'현재 대운')} (${esc(String(cur.fromAge||30))}~${esc(String(cur.toAge||40))}세)</b><br>${esc(body)}</p>
+  <div class="chips" style="margin-top:10px"><span class="chip">도전</span><span class="chip">성장</span><span class="chip">기회</span><span class="chip">재물운</span><span class="chip">인간관계</span></div>
+ </div>
+ <div class="slogan card"><b>지금의 경험이 더 큰 미래를 만듭니다.</b></div>
+ ${(f.sections&&f.sections.length)?expertSectionsHTML(f.sections):''}`;
 }
 function renderYearLuck(){
  const y=new Date().getFullYear();
- const name=($('homeName')?.textContent||'당신').replace('님 ›','').replace('반가워요! ›','당신');
- $('yearView').innerHTML=`<div class="yearNav"><button type="button">&lt;</button><b>${y}년</b><button type="button">&gt;</button></div>
-  <div class="yearHero card"><img src="today-dog.jpg" alt=""><div class="inner"><h3>${y}년, 더 좋은 일이 기다리고 있어요.</h3><p>“지금의 노력이, 빛나는 내일이 됩니다.”</p></div></div>
-  <div class="infoCard card" style="margin-top:9px"><h3>${y}년 총운</h3><p class="flowText">변화 속에서 새로운 기회가 찾아오는 해입니다. 꾸준한 노력과 긍정적인 마음이 좋은 결실을 맺습니다.</p></div>
-  <button class="ctaGold" onclick="openResultTab('flow')">${y}년 월별 운세 보기 ›</button>
-  <div class="slogan card"><b>대운은 10년의 주제, 세운은 올해의 결입니다.</b><br>만세력과 함께 보면 더 정확합니다.</div>`;
+ $('yearView').innerHTML=`<div class="tabs green"><button class="on">대운</button><button onclick="openResultTab('flow')">세운</button><button>월운</button><button>일운</button></div>
+  ${chart?mockFlowHTML(chart):`<div class="infoCard card"><p class="flowText">사주를 먼저 계산하면 내 대운이 표시됩니다.</p><button class="ctaGold" onclick="go('saju')">사주 입력하기 ›</button></div>`}`;
 }
 
 function renderResult(){
  if(!chart)return;
  document.querySelectorAll('#resultTabs button').forEach(b=>b.classList.toggle('on',b.dataset.tab===currentTab));
- const c=chart,time=c.input.hourUnknown?'모름':`${String(c.input.hour).padStart(2,'0')}:${String(c.input.minute).padStart(2,'0')}`;
- const manseTop=(typeof GuiinManse!=='undefined')?GuiinManse.render(c,{title:`${c.input.name}님의 만세력`,eyebrow:'내 사주'}):'';
+ const c=chart;
+ const manseTop=(typeof GuiinManse!=='undefined')?GuiinManse.render(c,{title:c.input.name+'님의 만세력',eyebrow:'내 사주'}):'';
  if(currentTab==='summary'){
-  $('resultView').innerHTML=prettySummaryHTML(c)+manseTop+expertSummaryHTML(c);
+  $('resultView').innerHTML=prettySummaryHTML(c);
  } else if(currentTab==='personality'){
-  $('resultView').innerHTML=manseTop+expertSectionsHTML(GuiinExpert.personalitySections(c));
+  $('resultView').innerHTML=mockPersonalityHTML(c);
  } else if(currentTab==='fields'){
-  $('resultView').innerHTML=manseTop+expertSectionsHTML(GuiinExpert.fieldSections(c));
+  $('resultView').innerHTML=mockFieldsHTML(c);
  } else if(currentTab==='stars'){
   $('resultView').innerHTML=manseTop+expertStarsHTML(c);
  } else if(currentTab==='flow'){
-  $('resultView').innerHTML=manseTop+expertFlowHTML(c);
+  $('resultView').innerHTML=mockFlowHTML(c)+manseTop;
  } else if(currentTab==='chart'){
-  $('resultView').innerHTML=manseTop+
-   expertSectionsHTML(GuiinExpert.foundationSections(c))+
-   `<div class="deepCard card"><h3>계산 근거와 해석 원칙</h3><p>연주는 입춘, 월주는 절입, 일주는 23시 경계를 기본으로 계산합니다. 오행은 천간과 지장간 가중치를 함께 반영합니다. 격국·용신·조후는 유파 차이가 커 자동 확정하지 않습니다.</p></div>`;
+  $('resultView').innerHTML=wongukHTML(c)+manseTop;
  }
 }
 function setTab(t){currentTab=t;renderResult()}
