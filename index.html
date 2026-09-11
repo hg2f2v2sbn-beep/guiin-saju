@@ -577,6 +577,8 @@ details.u16Fold{margin:7px 0;border:1px solid #eee4d7;border-radius:14px;backgro
 .u18Empty{padding:12px;border-radius:13px;background:#fff8e8;font-size:9px;line-height:1.6;color:#75653e}
 @media(max-width:370px){.u18Radar,.u18Compare{grid-template-columns:1fr}}
 
+/* UPDATE 19 — PREMIUM 5,900 PAYWALL UI */
+.u19Free{margin:9px 0;padding:12px 14px;border-radius:15px;background:#eef6e9;font-size:9px;line-height:1.65;color:#476052}.u19Lock{position:relative;margin:10px 0;padding:22px 17px;border-radius:23px;background:linear-gradient(150deg,#183f31,#315d4b);color:#fff;overflow:hidden}.u19Lock small{font-size:9px;font-weight:900;color:#f2cd72}.u19Lock h2{font-size:22px;line-height:1.45;margin:7px 0}.u19Lock p{font-size:10px;line-height:1.75;color:#e4eee8}.u19Benefits{display:grid;grid-template-columns:1fr 1fr;gap:6px;margin:13px 0}.u19Benefits div{padding:9px;border-radius:12px;background:rgba(255,255,255,.09);font-size:8.5px}.u19Price{font-size:28px;font-weight:1000;margin:12px 0}.u19Price span{font-size:10px;font-weight:700}.u19Buy{width:100%;border:0;border-radius:14px;padding:13px;background:#f5cf72;color:#183f31;font-size:11px;font-weight:1000}.u19Fine{font-size:7.8px!important;color:#c9d7d0!important}.u19LockedContent{max-height:280px;overflow:hidden;filter:blur(2.4px);opacity:.42;pointer-events:none;user-select:none}.u19Modal{position:fixed;inset:0;z-index:9999;background:rgba(15,28,23,.58);display:flex;align-items:flex-end;justify-content:center}.u19Sheet{width:min(100%,520px);box-sizing:border-box;border-radius:24px 24px 0 0;background:#fff;padding:20px 17px calc(20px + env(safe-area-inset-bottom,0px));max-height:88vh;overflow:auto}.u19Sheet h2{font-size:20px;color:#183f31}.u19Order{padding:13px;border-radius:14px;background:#faf6ec;margin:10px 0;display:flex;justify-content:space-between}.u19SheetBtn{width:100%;border:0;border-radius:13px;padding:12px;margin-top:7px;font-size:10px;font-weight:900}.u19Primary{background:#1f4738;color:#fff}.u19Secondary{background:#f1eee7;color:#626862}.u19Pending{padding:11px;border-radius:12px;background:#fff5dc;color:#7a642c;font-size:8.5px;line-height:1.6}@media(max-width:370px){.u19Benefits{grid-template-columns:1fr}}
 </style>
 </head>
 <body>
@@ -1491,13 +1493,23 @@ function U18backendSpec(c){
 }
 function U18emptyGuard(v,msg){return v?String(v):msg}
 
+/* UPDATE 19 PREMIUM 5,900 PAYWALL UI */
+const U19PRODUCT={id:'premium_lifetime_5900',name:'귀인사주 프리미엄 평생사주',price:5900,currency:'KRW'};
+function U19freeNotice(){return `<div class="u19Free"><b>무료로 보는 내용</b> · 사주 네 칸, 일간, 오행과 핵심 요약까지 먼저 확인할 수 있습니다. 더 깊은 평생사주는 프리미엄 영역입니다.</div>`}
+function U19paywall(c){const name=esc(c?.input?.name||'나');return `<section class="u19Lock"><small>🔒 PREMIUM REPORT</small><h2>여기부터 ${name}님의<br>심층 평생사주입니다.</h2><p>성격·일·돈·연애·결혼·가족·인간관계·신살·대운과 앞으로의 흐름을 하나의 명식으로 연결해서 읽습니다.</p><div class="u19Benefits"><div>✓ 성격·숨은 패턴</div><div>✓ 직업·사업·재물</div><div>✓ 연애·결혼·인간관계</div><div>✓ 신살·귀인 분석</div><div>✓ 대운·세운·월운</div><div>✓ 5개년·인생 흐름</div></div><div class="u19Price">5,900원 <span>1회 구매</span></div><button class="u19Buy" onclick="U19openCheckout()">프리미엄 전체보기</button><p class="u19Fine">실제 PG 승인 서버 연결 전에는 결제나 잠금 해제가 처리되지 않습니다.</p></section>`}
+function U19openCheckout(){U19closeCheckout();const d=document.createElement('div');d.id='u19Modal';d.className='u19Modal';d.innerHTML=`<div class="u19Sheet"><small>귀인사주 결제</small><h2>프리미엄 평생사주</h2><div class="u19Order"><b>${U19PRODUCT.name}</b><strong>${U19PRODUCT.price.toLocaleString()}원</strong></div><div class="u19Pending"><b>아직 실제 결제 연결 전입니다.</b><br>PG와 서버 검증이 연결된 뒤 결제 버튼이 활성화됩니다. 지금은 카드번호나 결제 개인정보를 입력받지 않습니다.</div><button class="u19SheetBtn u19Primary" onclick="U19notReady()">5,900원 결제하기</button><button class="u19SheetBtn u19Secondary" onclick="U19closeCheckout()">닫기</button></div>`;document.body.appendChild(d)}
+function U19closeCheckout(){const e=document.getElementById('u19Modal');if(e)e.remove()}
+function U19notReady(){alert('현재 실제 결제 서버 연결 전입니다.')}
+function U19premiumWrap(c,content){return `${U19paywall(c)}<div class="u19LockedContent" aria-hidden="true">${content}</div>`}
+function U19serverEntitlementSpec(){return {product_id:U19PRODUCT.id,amount:5900,currency:'KRW',grant_only_after_server_payment_verification:true,ai_credit_separate:true}}
+
 function renderResult(){
  if(!chart)return;
  document.querySelectorAll('#resultTabs button').forEach(b=>b.classList.toggle('on',b.dataset.tab===currentTab));
  const c=chart,time=c.input.hourUnknown?'모름':`${String(c.input.hour).padStart(2,'0')}:${String(c.input.minute).padStart(2,'0')}`;
  const manseTop=(typeof GuiinManse!=='undefined')?GuiinManse.render(c,{title:`${c.input.name}님의 만세력`,eyebrow:'내 사주'}):'';
  if(currentTab==='summary'){
-  $('resultView').innerHTML=U16jump()+`<div id="u16core"></div>`+U17digest(c)+U18quality(c)+U13ultra(c)+U16personal(c)+G15lifeTopics(c)+M14decisions(c)+G15yearCompare(c)+U18decision(c,'job')+U18decision(c,'money')+U18decision(c,'love')+U17questions(c)+U18return(c)+U16share(c)+directSummaryHTML(c)+prettySummaryHTML(c)+manseTop+expertSummaryHTML(c)+`<details class="resultMethod card"><summary>귀인사주는 어떻게 계산하나요?</summary><p>원국 계산 후 일간·월령/계절·오행·십신·지장간·관계·대운·세운을 함께 읽습니다. 신살은 공식화된 38/50종을 보조 정보로 사용합니다. 격국·용신·조후처럼 학파에 따라 판단이 크게 달라지는 항목은 자동 확정해 단정하지 않습니다.</p></details>`;
+  $('resultView').innerHTML=U16jump()+`<div id="u16core"></div>`+U17digest(c)+U19freeNotice()+U19premiumWrap(c,U18risk(c))+U19premiumWrap(c,U18action(c))+U19premiumWrap(c,U18compare(c))+U18quality(c)+U13ultra(c)+U16personal(c)+G15lifeTopics(c)+M14decisions(c)+G15yearCompare(c)+U18decision(c,'job')+U18decision(c,'money')+U18decision(c,'love')+U17questions(c)+U18return(c)+U16share(c)+directSummaryHTML(c)+prettySummaryHTML(c)+manseTop+expertSummaryHTML(c)+`<details class="resultMethod card"><summary>귀인사주는 어떻게 계산하나요?</summary><p>원국 계산 후 일간·월령/계절·오행·십신·지장간·관계·대운·세운을 함께 읽습니다. 신살은 공식화된 38/50종을 보조 정보로 사용합니다. 격국·용신·조후처럼 학파에 따라 판단이 크게 달라지는 항목은 자동 확정해 단정하지 않습니다.</p></details>`;
  } else if(currentTab==='personality'){
   $('resultView').innerHTML=straightIntroHTML(c,'personality','성격·기질')+manseTop+expertSectionsHTML(GuiinExpert.personalitySections(c));
  } else if(currentTab==='fields'){
