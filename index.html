@@ -281,6 +281,15 @@ html{background:#efe7d7}.app{background:linear-gradient(180deg,#fffaf0 0%,#fff6e
 /* 2026-09-12 readability + manse + interaction upgrade */
 .expertSection{padding:20px 18px!important}.expertSection h3{font-size:21px!important;line-height:1.42!important;letter-spacing:-.04em!important;margin-bottom:13px!important}.plainGuide{background:linear-gradient(145deg,#f7fbf3,#fffaf0);border:1px solid #e5ead9;border-radius:16px;padding:15px 14px;margin:10px 0 8px}.plainGuide b{display:block;color:#a87918;font-size:12px;margin:8px 0 3px}.plainGuide b:first-child{margin-top:0}.plainGuide p{font-size:14px!important;line-height:1.72!important;color:#48564e!important;margin:0!important}.whyDetail{margin-top:12px;border-top:1px solid #eee6d8;padding-top:11px}.whyDetail summary{font-size:12px;font-weight:900;color:#6c756e;cursor:pointer}.whyDetail>p{font-size:12px!important;line-height:1.7!important;color:#737b75!important;margin-top:10px!important}.whyDetail .evidence{font-size:10px!important}
 .manseProfile{padding:20px 18px!important}.manseProfile h2{font-size:25px!important}.manseFacts{gap:9px!important}.manseFact{padding:12px 10px!important}.manseFact span{font-size:10px!important}.manseFact b{font-size:13px!important}.manseChartCard{padding:18px 10px!important}.manseTableWrap{margin:0 -2px;padding-bottom:7px!important}.manseTable{min-width:430px!important;border-radius:16px!important}.manseRow{grid-template-columns:58px repeat(4,93px)!important}.manseLabel{font-size:10px!important}.manseCell{padding:11px 5px!important;font-size:11px!important}.manseHead .manseCell{font-size:10px!important}.manseCell .hanja,.manseCell strong{font-size:25px!important;line-height:1.15}.manseCell span{font-size:9px!important}.manseCell small{font-size:8.5px!important;line-height:1.45!important}.manseReadGuide{font-size:12px!important;line-height:1.7!important;padding:13px 14px!important}.manseReadGuide:before{content:'표가 어렵다면 이렇게 보세요 · ';font-weight:900;color:#a87918}.cloverStore .cloverPack{grid-template-columns:64px 1fr!important}.cloverStore .cloverBuy{grid-column:1/-1;display:flex;align-items:center;justify-content:space-between;text-align:left;border-top:1px solid #eee6d8;padding-top:12px}.cloverStore .cloverBuy strong{margin:0!important}.cloverStore .cloverBuy button{padding:11px 15px!important}.todayDetailCard p{font-size:14px!important;line-height:1.8!important}
+
+.premiumPreview{margin:14px 0 110px}.premiumHero{padding:22px 18px;background:linear-gradient(145deg,#fffaf0,#f3f8e9)}
+.premiumHero .mini{font-size:11px;font-weight:900;color:#b47c14}.premiumHero h2{font-size:23px;line-height:1.35;color:#183f2d;margin:7px 0}.premiumHero p{font-size:13px;line-height:1.75;color:#666d66}
+.premiumIncluded{padding:18px;margin-top:10px}.premiumIncluded h3{color:#183f2d}.premiumGrid{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.premiumItem{background:#faf7ef;border:1px solid #eee3d1;border-radius:15px;padding:12px 10px;min-height:74px}.premiumItem b{display:block;color:#234632;font-size:13px;margin-bottom:4px}.premiumItem span{font-size:10px;line-height:1.45;color:#858078}
+.sampleNotice{margin:12px 0 8px;padding:12px 14px;border-radius:14px;background:#fff3c9;color:#775b16;font-size:11px;line-height:1.55;font-weight:800}
+.sampleCard{padding:18px;margin-top:9px}.sampleCard .eyebrow{color:#c68d1e;font-size:11px;font-weight:900}.sampleCard h3{color:#183f2d;font-size:18px;line-height:1.45;margin:7px 0}.sampleCard p{font-size:12px;line-height:1.75;color:#676c67}.sampleTag{display:inline-block;margin-top:10px;padding:5px 9px;border-radius:999px;background:#f2eee5;color:#7a756c;font-size:9px;font-weight:900}
+.premiumLock{position:sticky;bottom:78px;z-index:20;margin:14px 0;padding:14px;border-radius:20px;background:rgba(255,253,247,.96);border:1px solid #ead8ae;box-shadow:0 8px 26px rgba(76,55,15,.13)}.premiumLock strong{display:block;color:#183f2d;font-size:17px}.premiumLock p{font-size:11px;color:#777269}.premiumLock button{width:100%;border:0;border-radius:15px;padding:14px;background:linear-gradient(135deg,#f6dc8a,#cda34a);font-weight:900}
+.premiumSheet{position:fixed;inset:0;z-index:1200;background:rgba(20,30,24,.46);display:none;align-items:flex-end;justify-content:center}.premiumSheet.on{display:flex}.premiumPanel{width:min(430px,100%);max-height:88vh;overflow:auto;background:#fffdf8;border-radius:26px 26px 0 0;padding:20px 18px calc(24px + env(safe-area-inset-bottom))}.premiumPanel h2{color:#183f2d}.premiumPanel .price{font-size:30px;font-weight:950;color:#b47c14}.premiumPanel .payList{background:#faf7ef;border-radius:16px;padding:12px 14px;font-size:12px;line-height:1.9}.premiumPanel .primary{width:100%;border:0;border-radius:15px;padding:15px;background:linear-gradient(135deg,#f6dc8a,#cda34a);font-weight:900}.premiumPanel .secondary{width:100%;border:0;background:transparent;padding:13px;color:#777}
 </style>
 <!-- GUIIN_RELEASE: 2026-09-12-clover-datefix -->
 </head>
@@ -476,7 +485,10 @@ html{background:#efe7d7}.app{background:linear-gradient(180deg,#fffaf0 0%,#fff6e
   <button class="primary" onclick="payNotReady()">결제하기</button><button class="secondary" onclick="closePaySheet()">취소</button><p id="payMsg" class="adminNote"></p>
 </div></div>
 
-<section id="login" class="screen">
+<div id="premiumSheet" class="premiumSheet" onclick="if(event.target===this)closePremiumPay()"><div class="premiumPanel">
+<h2>프리미엄 평생사주</h2><div class="price">5,900원</div><p>무료 기본 명식을 확인한 뒤 내 실제 심층 풀이 전체를 열 수 있어요.</p>
+<div class="payList">✓ 성격·감정 패턴<br>✓ 직업·적성·사업 성향<br>✓ 재물·수입·지출 패턴<br>✓ 연애·결혼·관계<br>✓ 가족·대인관계<br>✓ 신살·귀인<br>✓ 대운·세운·월운<br>✓ 앞으로의 흐름과 현실 조언</div>
+<button class="primary" onclick="premiumPayNotReady()">5,900원 결제하기</button><button class="secondary" onclick="closePremiumPay()">나중에 보기</button><p id="premiumPayMsg" class="adminNote"></p></div></div><section id="login" class="screen">
   <div class="topbar"><button class="ghost" onclick="go('mypage')" aria-label="뒤로">‹</button><div class="brand"><div class="brandline">로그인</div></div><span></span></div>
   <div class="authHero"><div class="authMark"><img src="clover-mark.jpg" alt=""></div><h2>귀인사주에 오신 걸 환영해요</h2><p>로그인하고 내 사주와 상담 내역을 안전하게 이어보세요.</p></div>
   <div class="authCard card">
@@ -744,26 +756,39 @@ function expertFlowHTML(c){
  return expertSectionsHTML(f.sections)+`<div class="expertSection"><div class="eyebrow">전체 대운 지도</div><h3>10년마다 어떤 주제가 반복되는지 한눈에 봅니다</h3><div class="daeunList">${f.rows.map(r=>`<div class="daeunItem ${r.current?'current':''}"><b>${r.fromAge}~${r.toAge}세 · ${r.ko} 대운 · ${r.god}${r.current?' · 현재':''}</b><p>${esc(r.body)}</p></div>`).join('')}</div></div>`;
 }
 
+function premiumSampleHTML(c){
+ const n=esc(c?.input?.name||'사용자');
+ const x=[
+ ['성격·기질','겉모습과 가까워졌을 때 드러나는 진짜 성향','강점이 과해질 때의 모습과 감정이 커질 때의 반응까지 설명해요.'],
+ ['직업·적성','직업 이름보다 능력이 살아나는 환경','조직형·독립형, 전문기술·관리 역할처럼 실제 일하는 방식으로 풀어요.'],
+ ['재물운','버는 힘과 남기는 힘을 따로 분석','수입 방식, 지출 습관, 큰돈을 움직일 때의 주의점을 함께 봐요.'],
+ ['연애·인연','끌리는 사람과 오래 편한 관계의 차이','연락·표현·질투·거리감·책임에서 반복되는 패턴까지 살펴봐요.'],
+ ['결혼·장기관계','좋아하는 마음 이후의 현실 궁합','돈·생활습관·가족 경계·역할분담처럼 오래 만날수록 중요한 부분을 봐요.'],
+ ['가족·대인관계','가까운 사람에게 유독 달라지는 모습','책임을 오래 끌고 가는지, 관계에서 에너지가 새는 지점을 설명해요.'],
+ ['신살·귀인','도화·역마·화개·귀인을 쉬운 말로','무서운 판정이 아니라 현실에서 어떤 성향으로 나타나는지 번역해요.'],
+ ['대운','10년 단위 인생의 큰 배경','일·돈·관계 중 어떤 주제가 커지기 쉬운지 봐요.'],
+ ['세운·월운','올해와 가까운 시기의 변화 포인트','사건을 단정하지 않고 기회와 주의할 선택을 구분해요.'],
+ ['인생 흐름','성격부터 운의 흐름까지 하나로 연결','따로 노는 풀이가 아니라 '+n+'님의 실제 선택에 참고하도록 정리해요.']];
+ return `<div class="premiumPreview"><div class="premiumHero card"><div class="mini">프리미엄 평생사주 · 5,900원</div><h2>“와, 이런 것까지 내 사주에서 풀어준다고?”</h2><p>명리 용어를 나열하지 않고 성격·일·돈·연애·관계·앞으로의 흐름이 실제 생활에서 어떻게 나타나는지 끝까지 연결해 설명합니다.</p></div>
+ <div class="premiumIncluded card"><h3>결제하면 이런 내용까지 열려요</h3><div class="premiumGrid">${x.map((v,i)=>`<div class="premiumItem"><b>${i+1}. ${v[0]}</b><span>${v[1]}</span></div>`).join('')}</div></div>
+ <div class="sampleNotice">아래는 설명 방식을 보여주는 예시입니다. <b>${n}님의 실제 심층 사주 결과는 결제 전 공개되지 않습니다.</b></div>
+ ${x.slice(0,5).map(v=>`<div class="sampleCard card"><div class="eyebrow">${v[0]} 예시</div><h3>${v[1]}</h3><p>${v[2]}</p><span class="sampleTag">예시 화면 · 실제 내 심층 사주 아님</span></div>`).join('')}
+ <div class="premiumLock"><strong>내 실제 심층 풀이 전체 열기</strong><p>10개 영역의 개인 해석과 명리 근거를 모두 확인할 수 있어요.</p><button onclick="openPremiumPay()">프리미엄 평생사주 5,900원 ›</button></div></div>`;
+}
+function hasPremiumLifetime(){return false}
 function renderResult(){
  if(!chart)return;
  document.querySelectorAll('#resultTabs button').forEach(b=>b.classList.toggle('on',b.dataset.tab===currentTab));
- const c=chart,time=c.input.hourUnknown?'모름':`${String(c.input.hour).padStart(2,'0')}:${String(c.input.minute).padStart(2,'0')}`;
- const manseTop=(typeof GuiinManse!=='undefined')?GuiinManse.render(c,{title:`${c.input.name}님의 만세력`,eyebrow:'내 사주'}):'';
- if(currentTab==='summary'){
-  $('resultView').innerHTML=manseTop+expertSummaryHTML(c);
- } else if(currentTab==='personality'){
-  $('resultView').innerHTML=expertSectionsHTML(GuiinExpert.personalitySections(c));
- } else if(currentTab==='fields'){
-  $('resultView').innerHTML=expertSectionsHTML(GuiinExpert.fieldSections(c));
- } else if(currentTab==='stars'){
-  $('resultView').innerHTML=expertStarsHTML(c);
- } else if(currentTab==='flow'){
-  $('resultView').innerHTML=expertFlowHTML(c);
- } else if(currentTab==='chart'){
-  $('resultView').innerHTML=manseTop+
-   expertSectionsHTML(GuiinExpert.foundationSections(c))+
-   `<div class="deepCard card"><h3>계산 근거와 해석 원칙</h3><p>연주는 입춘, 월주는 절입, 일주는 23시 경계를 기본으로 계산합니다. 오행은 천간과 지장간 가중치를 함께 반영합니다. 격국·용신·조후는 유파 차이가 커 자동 확정하지 않습니다.</p></div>`;
+ const c=chart, manseTop=(typeof GuiinManse!=='undefined')?GuiinManse.render(c,{title:`${c.input.name}님의 만세력`,eyebrow:'내 사주'}):'';
+ if(!hasPremiumLifetime()){
+   $('resultView').innerHTML=manseTop+`<div class="expertIntro"><h2>${esc(c.input.name)}님의 기본 사주가 계산됐어요.</h2><p>기본 명식과 오행 구조는 무료로 확인하고, 실제 개인 심층 해석은 결제 후 열리는 구조예요. 어려운 표는 프리미엄 풀이에서 생활 언어로 연결해 설명합니다.</p></div>`+premiumSampleHTML(c); return;
  }
+ if(currentTab==='summary')$('resultView').innerHTML=manseTop+expertSummaryHTML(c);
+ else if(currentTab==='personality')$('resultView').innerHTML=expertSectionsHTML(GuiinExpert.personalitySections(c));
+ else if(currentTab==='fields')$('resultView').innerHTML=expertSectionsHTML(GuiinExpert.fieldSections(c));
+ else if(currentTab==='stars')$('resultView').innerHTML=expertStarsHTML(c);
+ else if(currentTab==='flow')$('resultView').innerHTML=expertFlowHTML(c);
+ else $('resultView').innerHTML=manseTop+expertSectionsHTML(GuiinExpert.foundationSections(c));
 }
 function setTab(t){currentTab=t;renderResult()}
 function advanced(c){return expertStarsHTML(c)+expertSectionsHTML(GuiinExpert.foundationSections(c));}
@@ -882,6 +907,9 @@ function payNotReady(){
   const msg=$('payMsg');
   if(msg)msg.textContent='결제창 연결 준비가 완료된 상태입니다. NHN KCP 승인·서버 검증 연동 전이라 지금은 실제 결제나 클로버 지급이 진행되지 않습니다.';
 }
+function openPremiumPay(){const s=$('premiumSheet');if(s){if($('premiumPayMsg'))$('premiumPayMsg').textContent='';s.classList.add('on')}}
+function closePremiumPay(){const s=$('premiumSheet');if(s)s.classList.remove('on')}
+function premiumPayNotReady(){const m=$('premiumPayMsg');if(m)m.textContent='NHN KCP 심사·서버 검증 연동 전이라 현재는 실제 결제나 프리미엄 해제가 진행되지 않습니다.'}
 function openPaySheet(base,bonus,price){
  const sheet=$('paySheet'); if(!sheet)return;
  $('payPackText').textContent=bonus>0?`클로버 ${base}개 + ${bonus}개 보너스 · 총 ${base+bonus}개`:`네잎클로버 ${base}개 · AI 상담 질문 ${base}회`;
