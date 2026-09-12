@@ -1125,7 +1125,7 @@ body.ai-screen-open .u16TopBtn{display:none!important} #ask .composer{position:r
 <div class="aiNotice"><b>안내</b> · AI 답변은 귀인사주에서 계산된 명식을 근거로 제공합니다. 중요한 건강·법률·금융 결정은 사주 답변만으로 판단하지 마세요.</div>
 <div class="msgs" id="msgs"><div class="sysnote">귀인사주 AI 상담</div><div class="bubble bot" id="welcomeBot">사주를 먼저 계산한 뒤 궁금한 점을 물어보세요. 계산된 명식을 바탕으로 이어서 답해드릴게요.</div></div>
 <div class="aiFreeStatus card" id="aiFreeStatus" style="padding:10px 14px;margin:8px 0;font-size:13px"></div><div><button class="qchip" onclick="sendAIQuestion('올해 재물운이 어떤가요?')">올해 재물운</button><button class="qchip" onclick="sendAIQuestion('지금 이직해도 될까요?')">이직 타이밍</button><button class="qchip" onclick="sendAIQuestion('연애와 관계 흐름을 봐주세요.')">연애·관계</button><button class="qchip" onclick="sendAIQuestion('현재 대운과 올해 흐름을 같이 봐주세요.')">대운·세운</button></div>
-<div class="composer" style="margin-top:8px"><input id="askQ" maxlength="800" autocomplete="off" placeholder="궁금한 점을 입력해 보세요" onkeydown="if(event.key==='Enter'&&!event.isComposing){event.preventDefault();sendAIQuestion()}"><button id="askSendBtn" type="button" class="ctaGreen" style="min-width:88px">보내기</button></div>
+<div class="composer" style="margin-top:8px"><input id="askQ" maxlength="800" autocomplete="off" placeholder="궁금한 점을 입력해 보세요" onkeydown="if(event.key==='Enter'&&!event.isComposing){event.preventDefault();sendAIQuestion()}"><button id="askSendBtn" type="button" class="ctaGreen" style="min-width:88px" onclick="sendAIQuestion()">보내기</button></div>
 </section>
 <section id="wallet" class="screen">
   <div class="topbar">
@@ -2598,7 +2598,7 @@ function previewAIQuestion(preset){return sendAIQuestion(preset)}
 
 // Direct listeners: avoids inline-handler/touch issues on iOS
 (function(){
- const send=$('askSendBtn'); if(send){send.addEventListener('click',function(e){e.preventDefault();sendAIQuestion();},{passive:false});}
+ const send=$('askSendBtn'); if(send){send.style.pointerEvents='auto';send.style.touchAction='manipulation';}
  const q=$('askQ'); if(q){q.addEventListener('keydown',function(e){if(e.key==='Enter'&&!e.isComposing){e.preventDefault();sendAIQuestion();}});}
  const cs=$('myCustomerCenter'); if(cs){cs.addEventListener('click',function(e){e.preventDefault();if(typeof U32open==='function')U32open();});}
 })();
