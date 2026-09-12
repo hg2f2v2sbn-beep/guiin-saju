@@ -1,2 +1,1019 @@
 <!doctype html>
-PLACEHOLDER
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#fffaf1">
+<title>귀인사주 | 무료 명식 · 평생사주 · 궁합</title>
+<meta name="description" content="무료 사주 명식, 대운·세운·월운·일운, 신살과 궁합을 쉽게 확인하는 귀인사주">
+<link rel="canonical" href="https://gwiinsaju.com/">
+<meta name="robots" content="index,follow,max-image-preview:large">
+<meta name="geo.region" content="KR">
+<meta property="og:locale" content="ko_KR">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="귀인사주">
+<meta property="og:title" content="귀인사주 | 무료 명식 · 평생사주 · 궁합">
+<meta property="og:description" content="무료 사주 명식, 대운·세운·월운·일운, 신살과 궁합을 쉽게 확인하는 귀인사주">
+<meta property="og:url" content="https://gwiinsaju.com/">
+<meta property="og:image" content="https://gwiinsaju.com/brand-home.jpg">
+<meta property="og:image:alt" content="귀인사주">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="귀인사주 | 무료 명식 · 평생사주 · 궁합">
+<meta name="twitter:description" content="무료 사주 명식, 대운·세운·월운·일운, 신살과 궁합을 쉽게 확인하는 귀인사주">
+<meta name="twitter:image" content="https://gwiinsaju.com/brand-home.jpg">
+<link rel="icon" href="clover-mark.jpg">
+<script src="saju-engine.js"></script>
+<script src="expert-interpreter.js"></script>
+<script src="manse-view.js"></script>
+<script src="compatibility-interpreter.js"></script>
+<style>
+:root{
+ --bg:#fffaf1;--paper:#fffefa;--ink:#203128;--sub:#7c837d;--line:#ece5d7;
+ --green:#0b6b4f;--green2:#075942;--gold:#efb62e;--gold2:#ffd35b;
+ --pink:#fcebf1;--pinkStrong:#f45f86;--lav:#eee4fb;--lavStrong:#9f66dd;
+ --mint:#eaf8ee;--sky:#eaf7ff;--yellow:#fff2c4;--shadow:0 6px 22px rgba(66,57,43,.06)
+}
+*{box-sizing:border-box}
+html{background:#eee7da}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:-apple-system,BlinkMacSystemFont,"Apple SD Gothic Neo","Noto Sans KR",sans-serif}
+button,input,select{font:inherit}
+button{cursor:pointer}
+svg{display:block}
+.app{max-width:430px;margin:0 auto;min-height:100vh;background:linear-gradient(#fffdf8,#fff9ee);padding-bottom:76px}
+.screen{display:none;min-height:100vh;padding:0 13px 92px}
+.screen.active{display:block}
+.topbar{height:72px;display:grid;grid-template-columns:38px 1fr 38px;align-items:center;position:sticky;top:0;z-index:30;background:rgba(255,253,248,.97);border-bottom:1px solid #eee7da;backdrop-filter:blur(12px)}
+.topbar .ghost{border:0;background:none;padding:6px;color:#23372d}
+.brand{text-align:center}
+.brand .brandline{display:flex;justify-content:center;align-items:center;gap:6px;font-size:20px;font-weight:900;color:#0a6048;letter-spacing:-.04em}
+.brand small{display:block;font-size:8px;color:#9d978c;letter-spacing:1.5px;margin-top:1px}
+.logo-dot{width:18px;height:18px;border-radius:5px;overflow:hidden}
+.logo-dot img{width:100%;height:100%;object-fit:cover}
+.card{background:var(--paper);border:1px solid var(--line);border-radius:19px;box-shadow:var(--shadow)}
+.profilebar{display:flex;align-items:center;gap:10px;padding:10px 11px;margin:10px 0}
+.avatar{width:40px;height:40px;border-radius:50%;overflow:hidden;background:#eef6db;border:1px solid #e2e9d1}
+.avatar img{width:100%;height:100%;object-fit:cover}
+.profilebar .txt b{display:block;font-size:12px}.profilebar .txt small{display:block;font-size:9px;color:var(--sub);margin-top:2px}
+.profilebar .picker{margin-left:auto;border:0;background:#f5f0e7;border-radius:999px;padding:8px 10px;font-size:9px;font-weight:800;color:#4a554f}
+.homeHero{padding:12px;text-align:center;background:linear-gradient(145deg,#f8ffe9,#fff7d5);overflow:hidden}
+.homeHero .heroArt{position:relative;height:188px;margin:0}
+.homeHero .heroText{position:absolute;left:0;right:0;top:10px;z-index:2;pointer-events:none;text-shadow:0 1px 0 #fff8}
+.homeHero .ctaGreen{position:relative;z-index:3;margin-top:0}
+.homeHero .kicker{font-size:10px;color:#5d775f;font-weight:800}.homeHero h1{font-size:34px;margin:4px 0;color:#075e46;letter-spacing:-.06em}
+.homeHero .copy{font-size:10px;line-height:1.6;color:#647269}
+.heroArt{height:148px;overflow:hidden;border-radius:16px;margin:10px 0 12px}
+.heroArt img{width:100%;height:100%;object-fit:cover;object-position:center 70%;display:block}
+.ctaGreen,.ctaGold{border:0;border-radius:15px;padding:13px 18px;font-weight:900}
+.ctaGreen{background:linear-gradient(135deg,#13795a,#075a43);color:white;min-width:210px}
+.ctaGold{width:100%;background:linear-gradient(135deg,#ffd45c,#efb42d);color:#2d382f;margin-top:14px}
+.tiles{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-top:9px}
+.tile{position:relative;border:1px solid rgba(231,222,208,.9);border-radius:17px;padding:12px 9px 41px;min-height:148px}
+.tile:nth-child(1){background:#fff2bf}.tile:nth-child(2){background:#fde8ed}.tile:nth-child(3){background:#efe5fb}
+.tile:nth-child(4){background:#e9f7ed}.tile:nth-child(5){background:#e9f6fd}.tile:nth-child(6){background:#fff3c9}
+.tile .ico{width:28px;height:28px;margin-bottom:6px;color:#d79b18}.tile:nth-child(3) .ico{color:#9759ce}.tile:nth-child(4) .ico{color:#38a96d}.tile:nth-child(5) .ico{color:#2e9dce}
+.tile b{display:block;font-size:13px}.tile p{font-size:8.8px;line-height:1.45;color:#6f7772;margin:4px 0 0}.tile .badge{position:absolute;right:7px;top:7px;background:#ffffffbd;border-radius:999px;padding:3px 6px;font-size:8px;font-weight:900;color:#b16e7e}
+.tile button{position:absolute;left:7px;right:7px;bottom:7px;border:0;background:#ffffffc8;border-radius:999px;padding:6px;font-size:8.5px;font-weight:900;color:#39423d}
+.slogan{margin-top:9px;padding:12px 13px;background:#fffdf7;font-size:9px;color:#716d62;line-height:1.55}.slogan b{color:#7a671d}
+.bottom{position:fixed;left:50%;bottom:0;transform:translateX(-50%);width:min(430px,100%);height:68px;background:rgba(255,255,255,.97);border-top:1px solid #ece4d8;display:grid;grid-template-columns:1fr 1fr 74px 1fr 1fr;align-items:center;z-index:50;backdrop-filter:blur(15px)}
+.bottom button{border:0;background:none;color:#92978f;font-size:8.5px;padding:4px}.bottom button svg{width:20px;height:20px;margin:0 auto 2px}
+.bottom button.active{color:#d39a14}.bottom .flower{width:46px;height:46px;border-radius:50%;margin:-20px auto 0;background:linear-gradient(135deg,#f4c13d,#df9d0c);box-shadow:0 6px 14px rgba(212,155,22,.28);display:grid;place-items:center;color:white}
+.bottom .flower svg{width:25px;height:25px;margin:0}
+.screenTitle{display:flex;align-items:flex-start;gap:10px;padding:15px 3px 11px}
+.screenTitle .mark{width:42px;height:42px;border-radius:14px;overflow:hidden;background:#eef7dd;flex:none}.screenTitle .mark img{width:100%;height:100%;object-fit:cover}
+.screenTitle h2{margin:0;font-size:25px;letter-spacing:-.05em}.screenTitle p{margin:4px 0 0;font-size:10.5px;color:var(--sub);line-height:1.45}
+.screenTitle .sideArt{margin-left:auto;width:72px;height:64px;overflow:hidden;border-radius:14px}.screenTitle .sideArt img{width:100%;height:100%;object-fit:cover}
+.formCard{padding:17px}.formCard label{display:block;font-size:10.5px;color:#656d67;font-weight:800;margin:12px 0 5px}.formCard label:first-child{margin-top:0}
+input,select{width:100%;min-height:44px;border:1px solid #e4dccd;border-radius:13px;background:#fffefa;color:#2c3731;padding:10px 11px;font-size:13px;outline:none}
+input:focus,select:focus{border-color:#edb72d;box-shadow:0 0 0 3px rgba(237,183,45,.12)}
+.seg{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.seg button{border:1px solid #e5ddcf;background:#fffefa;border-radius:13px;padding:11px;color:#676d69;font-weight:800}.seg button.on{background:#fff3c8;border-color:#edb72d;color:#594810}
+.row2,.row3{display:grid;gap:8px}.row2{grid-template-columns:1fr 1fr}.row3{grid-template-columns:1.15fr .85fr .85fr}
+.check{display:flex!important;gap:7px;align-items:center!important;font-weight:600!important;color:#717873!important}.check input{width:18px;height:18px;min-height:18px}
+.help{font-size:8.8px;color:#999c97;line-height:1.5;margin-top:5px}
+.locationRow{display:flex;align-items:center;justify-content:space-between;border:1px solid #e4dccd;border-radius:13px;background:#fffefa;padding:10px 11px;font-size:11px}
+.tabs{display:flex;gap:5px;overflow:auto;padding:9px 0 5px;scrollbar-width:none}.tabs::-webkit-scrollbar{display:none}
+.tabs button{white-space:nowrap;border:0;border-radius:999px;padding:8px 11px;background:#f4f0e8;color:#757b76;font-size:9.5px;font-weight:800}.tabs button.on{background:#f86487;color:white}.tabs.green button.on{background:#0c6d50}.tabs.purple button.on{background:#9c67d7}
+.summaryHero{padding:15px;background:linear-gradient(145deg,#eef9e6,#fff8dc);overflow:hidden}.summaryHero h3{font-size:22px;line-height:1.35;margin:3px 0;color:#1f3c2f}.summaryHero p{font-size:10.5px;line-height:1.5;color:#557061;margin:4px 0}
+.summaryArt{height:136px;border-radius:14px;overflow:hidden;margin-top:8px}.summaryArt img{width:100%;height:100%;object-fit:cover}
+.infoCard{padding:14px;margin-top:9px}.infoCard h3{font-size:14px;margin:0 0 9px}
+.infoGrid{display:grid;grid-template-columns:76px 1fr;gap:7px;font-size:10px}.infoGrid span{color:#939892}.infoGrid b{font-weight:800}
+.keywordGrid{display:grid;grid-template-columns:repeat(4,1fr);gap:7px}.keyword{border-radius:13px;padding:8px 4px;text-align:center;font-size:8.5px}.keyword:nth-child(1){background:#fff0c9}.keyword:nth-child(2){background:#eaf7ff}.keyword:nth-child(3){background:#ffe8ed}.keyword:nth-child(4){background:#edf8e8}.keyword svg{width:21px;height:21px;margin:0 auto 4px}
+.quote{padding:15px;background:#f5fae9}.quote .marks{color:#72b449;font-size:28px;font-weight:900}.quote h3{font-size:17px;line-height:1.5;margin:2px 0 8px}.quote p{font-size:10px;color:#66716a;line-height:1.65;margin:0}
+.listCard{padding:14px;margin-top:9px}.listCard h3{font-size:14px;margin:0 0 7px}.bullet{display:flex;gap:8px;align-items:flex-start;border-top:1px solid #eee8de;padding:7px 0;font-size:10px}.bullet:first-of-type{border-top:0}.bullet i{width:7px;height:7px;border-radius:50%;background:#50a870;margin-top:4px;flex:none}
+.pillars{display:grid;grid-template-columns:repeat(4,1fr);gap:6px}.pillar{border-radius:13px;text-align:center;padding:8px 4px}.pillar:nth-child(1){background:#edf7e6}.pillar:nth-child(2){background:#fff1c6}.pillar:nth-child(3){background:#ffe5e7}.pillar:nth-child(4){background:#e8f0ff}.pillar small{font-size:7.5px}.pillar strong{display:block;font-size:19px;line-height:1.1;margin:5px 0}.pillar span{font-size:8px}
+.elements{display:grid;grid-template-columns:repeat(5,1fr);gap:6px}.el{text-align:center;border-radius:12px;padding:8px 3px;font-size:8px}.el:nth-child(1){background:#eaf7ea}.el:nth-child(2){background:#ffe8e8}.el:nth-child(3){background:#fff0d6}.el:nth-child(4){background:#f2f2f2}.el:nth-child(5){background:#e8f4ff}.el b{display:block;font-size:11px}.el span{display:block;font-size:8px}
+.yy{display:grid;grid-template-columns:1fr 1fr;gap:8px}.yy div{border-radius:14px;padding:12px;text-align:center}.yy .yin{background:#e9f4ff}.yy .yang{background:#fff3c6}.yy b{font-size:13px}.yy strong{display:block;font-size:18px;margin-top:4px}
+.flowTrack{display:flex;align-items:center;justify-content:space-between;margin:14px 6px 6px}.flowTrack span{width:12px;height:12px;border-radius:50%;background:#dcded9}.flowTrack span.on{width:28px;height:28px;background:#efb62e;color:white;display:grid;place-items:center;font-weight:900}.flowLabels{display:flex;justify-content:space-between;color:#777d79;font-size:8px}.flowText{font-size:10px;line-height:1.7;color:#5f6963}
+.chips{display:flex;gap:6px;flex-wrap:wrap}.chip{background:#f5f2eb;border:1px solid #ece5d9;border-radius:999px;padding:6px 8px;font-size:8.5px}
+.categoryList{padding:6px 13px}.categoryRow{display:flex;align-items:center;gap:9px;padding:11px 0;border-top:1px solid #eee8de}.categoryRow:first-child{border-top:0}.catIcon{width:34px;height:34px;border-radius:11px;display:grid;place-items:center;background:#eaf8ef;color:#188b59}.catIcon svg{width:20px;height:20px}.categoryRow b{display:block;font-size:12px}.categoryRow span{font-size:9px;color:#7e8580}
+.matchHero{padding:12px 13px 14px;text-align:center;background:linear-gradient(145deg,#fff0f4,#f5efff)}.matchHero h3{font-size:17px;color:#d93d67;margin:4px 0}.matchHero p{font-size:9px;color:#776c78;margin:2px 0 7px}.matchArt{height:135px;border-radius:14px;overflow:hidden}.matchArt img{width:100%;height:100%;object-fit:cover}.score{font-size:42px;font-weight:900;color:#e64670;line-height:1;margin:9px 0 3px}.score small{font-size:12px}
+.pair{display:grid;grid-template-columns:1fr 38px 1fr;gap:7px;align-items:center}.person{border-radius:14px;padding:10px;text-align:center;background:#fff8ef;font-size:9px;line-height:1.55}.person.b{background:#f1eaff}.heartSvg{color:#e9557b}.heartSvg svg{width:27px;height:27px;margin:auto}
+.scoreRow{display:grid;grid-template-columns:57px 1fr 28px;gap:7px;align-items:center;font-size:9px;margin:9px 0}.scoreBar{height:7px;background:#eeeae4;border-radius:999px;overflow:hidden}.scoreBar i{display:block;height:100%;border-radius:999px}.pink{background:#ef7e98}.mint{background:#72c3a1}.gold{background:#edc151}.purple{background:#a97cde}
+.todayDate{text-align:center;font-size:14px;font-weight:900;margin:10px 0}.todayHero{padding:12px}.todayArt{height:145px;border-radius:14px;overflow:hidden}.todayArt img{width:100%;height:100%;object-fit:cover}.todayHero h3{text-align:center;color:#ef7a26;font-size:16px;margin:9px 0 3px}.todayHero p{text-align:center;font-size:9px;color:#777}.fortuneList{padding:5px 13px}.fortuneRow{display:flex;gap:9px;align-items:center;padding:9px 0;border-top:1px solid #eee8de}.fortuneRow:first-child{border-top:0}.fortuneRow .fIcon{width:26px;height:26px;border-radius:9px;display:grid;place-items:center;background:#fff3cf;color:#c99011}.fortuneRow b{font-size:10px}.fortuneRow span{display:block;font-size:8.5px;color:#838985}
+.profileCard{display:flex;gap:11px;align-items:center;padding:13px}.bigAvatar{width:62px;height:62px;border-radius:50%;overflow:hidden;background:#edf6dc}.bigAvatar img{width:100%;height:100%;object-fit:cover}.profileCard b{display:block;font-size:14px}.profileCard span{display:block;font-size:9px;color:#7f8580;margin-top:3px}
+.menuCard{padding:4px 13px;margin-top:9px}.menuCard button{display:flex;align-items:center;gap:9px;width:100%;border:0;background:none;border-top:1px solid #eee8de;padding:11px 0;color:#35423c;text-align:left;font-size:10px}.menuCard button:first-child{border-top:0}.menuCard svg{width:17px;height:17px;color:#34483e}.menuCard .arr{margin-left:auto;color:#8d938f}
+.footerArt{height:125px;border-radius:15px;overflow:hidden;margin-top:9px}.footerArt img{width:100%;height:100%;object-fit:cover}
+.details details{background:#fff;border:1px solid #eee6d9;border-radius:14px;padding:10px;margin-top:7px}.details summary{font-size:10px;font-weight:900}.details p,.details li{font-size:9px;line-height:1.6;color:#68726c}
+.hidden{display:none!important}
+
+img{max-width:100%;height:auto;display:block}
+.heroArt,.summaryArt,.matchArt,.todayArt,.footerArt,.screenTitle .sideArt,.screenTitle .mark,.avatar,.bigAvatar,.logo-dot{
+  overflow:hidden}
+
+
+.matchArt{aspect-ratio:16/9;height:auto}
+.matchArt img,.todayArt img,.summaryArt img,.footerArt img{
+  width:100%;height:100%;object-fit:cover;object-position:center 70%;display:block}
+.todayArt{aspect-ratio:16/10;height:auto}
+.footerArt{aspect-ratio:16/10;height:auto}
+.avatar img,.bigAvatar img,.logo-dot img,.mark img,.sideArt img{
+  width:100%;height:100%;object-fit:cover;object-position:center}
+
+@media(min-width:700px){body{background:#efe8dc}.app{box-shadow:0 0 0 1px #e8e0d3}}
+
+/* 5.0 deep reading report */
+.deepCard{padding:22px 20px}.deepCard h3{font-size:22px;margin:0 0 12px;color:#17352a}
+.deepCard h4{font-size:17px;margin:18px 0 8px;color:#254438}
+.deepCard p{font-size:15px;line-height:1.85;color:#5f655f;margin:7px 0}
+.evidenceLine{padding:12px 14px;background:#faf7f0;border-radius:14px;margin-top:12px;font-size:13px;line-height:1.65;color:#777}
+.reportLead{font-size:17px!important;color:#253b32!important;font-weight:700}
+.miniTitle{font-size:12px;color:#c18d20;font-weight:800;letter-spacing:.04em;margin-bottom:5px}
+.deepList{display:grid;gap:9px;margin-top:12px}.deepItem{padding:13px 14px;border-radius:14px;background:#fbfaf6;line-height:1.65;color:#4f5b55;font-size:14px}
+.deepItem b{display:block;color:#1f3a2f;margin-bottom:3px}
+.luckGrid{display:grid;gap:9px}.luckRow{padding:14px;border:1px solid #eee6d8;border-radius:15px;background:#fff}
+.luckRow.current{border-color:#e7b633;background:#fffaf0}.luckRow b{font-size:15px;color:#1e392e}.luckRow p{margin:5px 0 0;font-size:13px}
+.starGrid{display:grid;grid-template-columns:1fr;gap:9px;margin-top:10px}.starItem{padding:13px 14px;border-radius:14px;background:#fbfaf6}
+.starItem b{color:#214235}.starItem span{display:block;font-size:13px;line-height:1.6;color:#777;margin-top:3px}
+.relationTag{display:inline-block;padding:6px 10px;border-radius:999px;background:#f6f2ea;margin:3px;font-size:12px;color:#536057}
+.sectionDivider{height:1px;background:#eee7dc;margin:18px 0}
+.noCropArt{display:flex;justify-content:flex-end;align-items:flex-end;min-height:90px;overflow:hidden}
+.noCropArt img{width:132px;height:96px;object-fit:contain!important;object-position:center bottom!important;border-radius:0!important}
+
+
+/* 6.0 expert interpretation */
+.expertIntro{padding:20px;background:linear-gradient(135deg,#f4f8e6,#fff8df);border:1px solid #eee4c7;border-radius:22px;margin:8px 0}.expertIntro h2{font-size:22px;line-height:1.4;color:#173c2f;margin:0 0 8px}.expertIntro p{font-size:14px;line-height:1.7;color:#68736d;margin:0}.expertSection{background:#fff;border:1px solid #eee8dc;border-radius:20px;padding:20px 18px;margin:10px 0}.expertSection .eyebrow{font-size:11px;color:#c79831;font-weight:800;margin-bottom:7px}.expertSection h3{font-size:20px;line-height:1.45;color:#1f352d;margin:0 0 12px}.expertSection p{font-size:15px;line-height:1.9;color:#555f5a;margin:0;word-break:keep-all}.expertSection .evidence{font-size:12px;line-height:1.65;color:#8a867e;background:#faf7f1;border-radius:12px;padding:10px 12px;margin-top:14px}.starSummary{display:grid;grid-template-columns:repeat(2,1fr);gap:8px;margin:10px 0}.starStat{background:#fff;border:1px solid #eee5d6;border-radius:16px;padding:13px}.starStat span{display:block;font-size:11px;color:#888}.starStat b{display:block;font-size:20px;color:#1e5a44;margin-top:4px}.starDetail{background:#fff;border:1px solid #eee8dc;border-radius:18px;padding:16px;margin:9px 0}.starDetail .top{display:flex;align-items:flex-start;justify-content:space-between;gap:10px}.starDetail h4{font-size:17px;line-height:1.45;margin:0;color:#263b33}.starCount{flex:none;background:#fff3c9;color:#9a6b00;border-radius:999px;padding:5px 9px;font-weight:800;font-size:12px}.starDetail p{font-size:14px;line-height:1.75;color:#5d655f;margin:9px 0}.starWhere{font-size:12px;color:#918c83;line-height:1.6}.cautionText{font-size:12px!important;color:#8d786f!important;background:#fff7f3;border-radius:10px;padding:9px 10px}.daeunList{display:grid;gap:8px}.daeunItem{border:1px solid #eee5d8;border-radius:15px;padding:13px 14px;background:#fff}.daeunItem.current{border-color:#e5b637;background:#fff9e9}.daeunItem b{font-size:14px;color:#234336}.daeunItem p{font-size:13px;line-height:1.65;margin:5px 0 0;color:#69716c}.disclaimerBox{font-size:12px;line-height:1.65;color:#827d74;padding:13px 14px;background:#f9f7f2;border-radius:14px;margin:10px 0}
+
+
+/* WARM CLOVER 7.0 — approved visual system */
+:root{--bg:#fff8ea;--paper:#fffdf7;--ink:#2f3028;--sub:#7e7669;--line:#eee1c8;--green:#285d32;--green2:#194a27;--gold:#c99b34;--gold2:#f5d985;--shadow:0 10px 28px rgba(102,76,34,.10)}
+html{background:#efe7d7}.app{background:linear-gradient(180deg,#fffaf0 0%,#fff6e5 100%)}
+.topbar{background:rgba(255,250,240,.95);border-bottom-color:#eee1c8}.brand .brandline{color:#285d32}.logo-dot{border-radius:50%}
+.profilebar,.card{border-color:#eee1c8;box-shadow:var(--shadow)}
+.homeHero{padding:0!important;position:relative;background:#fff5dc;border-radius:22px;overflow:hidden;text-align:center}
+.homeHero .heroArt{height:208px!important;margin:0!important;border-radius:0!important;overflow:hidden}
+.homeHero .heroArt img{width:100%;height:100%;object-fit:cover;object-position:center 36%!important}
+.homeHero .heroText{position:absolute;left:10px;right:10px;top:12px;z-index:2;pointer-events:none;text-shadow:0 1px 8px #fff8e8}
+.homeHero .ctaGreen{position:absolute;left:50%;bottom:12px;transform:translateX(-50%);z-index:3;min-width:200px;margin:0;padding:11px 16px;background:rgba(39,92,49,.94);box-shadow:0 8px 20px rgba(38,83,43,.22)}
+.profilebar{padding:8px 10px!important;margin:8px 0}
+.tiles{display:grid!important;grid-template-columns:repeat(3,1fr)!important;gap:7px!important;margin-top:8px!important}
+.tile{min-height:118px!important;border-radius:16px!important;padding:10px 7px 34px!important;box-shadow:0 4px 12px rgba(101,76,34,.06)}
+#resultTabs button[data-tab="stars"],#resultTabs button[data-tab="chart"]{display:none}
+.tile:nth-child(1){background:linear-gradient(145deg,#fff8d8,#fff0bd)}.tile:nth-child(2){background:linear-gradient(145deg,#ffecef,#f8dfe8)}.tile:nth-child(3){background:linear-gradient(145deg,#f3eafd,#e9dcf8)}.tile:nth-child(4){background:linear-gradient(145deg,#e9f8ef,#dff3e6)}.tile:nth-child(5){background:linear-gradient(145deg,#eef8e9,#e1f2dd)}.tile:nth-child(6){background:linear-gradient(145deg,#fff5d9,#f8e9c2)}
+.tile b{font-size:12px;color:#2d342d}.tile p{font-size:8.4px;line-height:1.4}.tile .badge{font-size:8px;color:#8c6b25}.tile button{background:rgba(255,255,255,.62);color:#4b514b}
+.screenTitle .mark,.avatar{background:#f3e7c4}.formCard{background:rgba(255,253,247,.95)}.ctaGold{background:linear-gradient(135deg,#f6dc8a,#cda34a);color:#38402f}
+.tabs button.on{background:#cf9e3d}.tabs.green button.on{background:#285d32}.summaryHero{background:linear-gradient(145deg,#f4f8df,#fff0cd)}
+.readingCard{border-color:#eee1c8!important;background:#fffdf8!important}.readingCard .readingHead{color:#285d32}.starCard{background:linear-gradient(145deg,#fff9e8,#fffdf8)!important}
+.bottom .flower{background:linear-gradient(135deg,#e4bb58,#a8781f)}.bottom button.active{color:#9b7225}
+.creditBar{display:flex;justify-content:space-between;align-items:center;background:linear-gradient(135deg,#285d32,#3d7a48);color:#fff;border-radius:18px;padding:14px 16px;margin:10px 0}
+.creditBar b{font-size:22px}
+.msgs{min-height:280px;max-height:48vh;overflow:auto;padding:6px 2px 10px}
+.bubble{max-width:84%;padding:10px 12px;border-radius:16px;margin:8px 0;font-size:14px;line-height:1.55}
+.bubble.me{margin-left:auto;background:#285d32;color:#fff;border-bottom-right-radius:4px}
+.bubble.bot{background:#fff;border:1px solid var(--line);border-bottom-left-radius:4px}
+.sysnote{text-align:center;font-size:11px;color:#8a8378;margin:8px 0}
+.composer{display:flex;gap:8px}.composer input{flex:1}
+.qchip{display:inline-block;background:#f5f0e4;border-radius:999px;padding:6px 10px;font-size:12px;margin:3px 4px 3px 0;border:0}
+.adminNote{font-size:12px;color:#7a7368;line-height:1.5}
+
+.compatIntro{padding:16px 18px;margin:9px 0;background:linear-gradient(145deg,#f7efff,#fffaf1)}
+.compatIntro h3{font-size:18px;margin:0 0 7px;color:#4f3472}.compatIntro p{font-size:11px;line-height:1.65;color:#746d77;margin:0}
+.compatDetailCard{padding:22px 20px;margin-top:9px;background:#fffefa}
+.compatDetailCard .compatNo{display:inline-flex;align-items:center;justify-content:center;min-width:26px;height:26px;padding:0 8px;border-radius:999px;background:#f2e8fb;color:#8452bc;font-size:10px;font-weight:900;margin-bottom:10px}
+.compatDetailCard h3{font-size:22px;line-height:1.32;margin:0 0 12px;color:#17352a;letter-spacing:-.035em}
+.compatDetailCard p{font-size:15px;line-height:1.88;color:#626861;margin:0}
+.compatEvidence{margin-top:14px;padding-top:12px;border-top:1px dashed #e6ddcf;font-size:9.5px;line-height:1.55;color:#9a9186}
+@media (min-width:760px){
+ .compatDetailCard p{font-size:16px}.compatDetailCard h3{font-size:24px}
+}
+
+
+/* UPDATE 03 — 만세력 원국 패널 */
+.manseSnapshot{margin-top:9px}
+.manseProfile{padding:18px;background:linear-gradient(145deg,#fffaf0,#f3f9ec)}
+.manseProfileTop{display:flex;gap:12px;align-items:flex-start;justify-content:space-between}
+.manseEyebrow{font-size:9px;font-weight:900;color:#9b7a25;letter-spacing:.04em;margin-bottom:4px}
+.manseProfile h2{font-size:23px;line-height:1.28;margin:0;color:#15392d;letter-spacing:-.045em}
+.manseProfile p{font-size:9.5px;color:#81847e;margin:5px 0 0}
+.dayMasterBadge{width:86px;min-width:86px;background:#fff;border:1px solid #eadfc9;border-radius:17px;text-align:center;padding:9px 6px;box-shadow:0 4px 14px rgba(78,67,42,.05)}
+.dayMasterBadge small{display:block;font-size:7px;color:#999085}.dayMasterBadge strong{display:block;font-family:Georgia,serif;font-size:30px;line-height:1.05;color:#0d6b50;margin:4px 0 2px}.dayMasterBadge span{font-size:10px;font-weight:900;color:#384a40}
+.manseFacts{display:grid;grid-template-columns:repeat(2,1fr);gap:7px;margin-top:14px}
+.manseFact{background:rgba(255,255,255,.76);border:1px solid #eee4d4;border-radius:13px;padding:9px}
+.manseFact span{display:block;font-size:8px;color:#999188;margin-bottom:3px}.manseFact b{display:block;font-size:10px;color:#334139;line-height:1.35}
+.manseChartCard{padding:17px 12px;margin-top:9px;overflow:hidden}
+.manseSectionHead{display:flex;justify-content:space-between;align-items:end;gap:8px;margin:0 4px 12px}
+.manseSectionHead span{font-size:8px;color:#a37c20;font-weight:900}.manseSectionHead h3{font-size:17px;margin:2px 0 0;color:#17362a}.manseSectionHead small{font-size:8px;color:#a09b92;text-align:right}
+.manseTableWrap{overflow-x:auto;-webkit-overflow-scrolling:touch;padding-bottom:2px}
+.manseTable{min-width:390px;border:1px solid #e9e0d2;border-radius:14px;overflow:hidden;background:#fff}
+.manseRow{display:grid;grid-template-columns:52px repeat(4,1fr);border-top:1px solid #eee7dc}
+.manseRow:first-child{border-top:0}
+.manseHead{background:#f7f1e7}
+.manseLabel,.manseCell{min-width:0;padding:8px 4px;text-align:center;border-left:1px solid #eee7dc}
+.manseLabel{border-left:0;display:flex;align-items:center;justify-content:center;font-size:8px;font-weight:900;color:#8f887e;background:#fbf7ef}
+.manseCell{font-size:9px;color:#4b554f}.manseCell.dayCol{background:#fff8de}
+.manseHead .manseCell{font-size:8.5px;font-weight:900;color:#645f56;padding:7px 3px}.manseHead .manseCell small{margin-top:2px}
+.bigChar{display:block;font-family:Georgia,"Times New Roman",serif;font-size:29px;line-height:1;margin-bottom:4px}
+.bigChar.wood{color:#4b9a63}.bigChar.fire{color:#df5e55}.bigChar.earth{color:#b88a3c}.bigChar.metal{color:#737d88}.bigChar.water{color:#427eaa}
+.manseCell span{display:block;font-size:8px}.manseCell small{display:block;font-size:7.5px;color:#9b968e;margin-top:3px;line-height:1.35}.manseCell b{font-size:9px}
+.manseRow.slim .manseCell,.manseRow.slim .manseLabel{padding-top:7px;padding-bottom:7px}
+.hiddenStemRow .manseCell{padding:8px 3px;min-height:49px;display:flex;align-items:center;justify-content:center}.hiddenStemRow .manseCell small{margin:0}
+.manseElements{display:grid;grid-template-columns:repeat(5,1fr);gap:5px;margin-top:12px}
+.manseEl{background:#faf7f0;border-radius:10px;padding:7px 6px}.manseElTop{display:flex;justify-content:space-between;gap:2px;font-size:8px}.manseElTop span{color:#7f817c}
+.manseElBar{height:4px;border-radius:999px;background:#e9e5dc;overflow:hidden;margin-top:5px}.manseElBar i{display:block;height:100%;border-radius:999px;background:#7eb18a}.manseElBar i.fire{background:#e68478}.manseElBar i.earth{background:#d1a45d}.manseElBar i.metal{background:#9aa2aa}.manseElBar i.water{background:#78a8c9}
+.manseReadGuide{margin-top:12px;border-radius:13px;background:#f8f5ed;padding:11px 12px;font-size:10px;line-height:1.7;color:#666b66}.manseReadGuide b{color:#1b4a39}
+.compatManseBlock{margin-top:9px}.compatManseIntro{padding:17px 18px;background:linear-gradient(145deg,#f7efff,#fffaf2)}.compatManseIntro>span{font-size:8px;font-weight:900;color:#8c5dc2}.compatManseIntro h2{font-size:19px;line-height:1.35;margin:3px 0 6px;color:#2e3d35}.compatManseIntro p{font-size:10px;line-height:1.65;color:#77736f;margin:0}
+.pairManse{padding:15px 11px;margin-top:9px}.pairManseHead{display:flex;justify-content:space-between;gap:8px;align-items:center;margin:0 4px 4px}.pairManseHead span{font-size:8px;color:#9b7b3a;font-weight:900}.pairManseHead h3{font-size:16px;margin:2px 0;color:#18382c}.pairManseHead>b{font-size:11px;color:#6e4a9a;background:#f1e7fb;border-radius:999px;padding:7px 9px}
+.pairBirth{font-size:8.5px;color:#98948d;margin:0 4px 10px}.pairFacts{display:grid;grid-template-columns:1fr 1fr;gap:6px;margin-top:10px}.pairFacts span{font-size:8px;background:#faf6ee;border-radius:9px;padding:7px;color:#8a867f}.pairFacts b{display:block;color:#3d4942;font-size:9px;margin-top:2px}
+@media (min-width:760px){
+ .manseFacts{grid-template-columns:repeat(3,1fr)}
+ .manseTable{min-width:520px}
+ .manseProfile h2{font-size:27px}
+}
+
+
+.lifeHero{padding:16px 14px 12px;text-align:center;background:linear-gradient(160deg,#ffe8ee,#fff6ea);margin-top:4px}
+.lifeHero h3{font-size:20px;line-height:1.4;margin:4px 0 6px;color:#c44763}
+.lifeHero p{font-size:10px;color:#8a6d72;margin:0 0 8px}
+.tile .pet{position:absolute;right:7px;bottom:34px;width:28px;height:28px;border-radius:9px;overflow:hidden}
+.tile .pet img{width:100%;height:100%;object-fit:cover}
+.rankRow{margin-top:10px;padding:11px 12px}
+.rankRow .head{display:flex;justify-content:space-between;align-items:center;font-size:10px;font-weight:800;color:#c45b2c;margin-bottom:8px}
+.rankRow .head span{color:#9a958c;font-weight:700}
+.rankChips{display:flex;gap:6px;overflow:auto;scrollbar-width:none}
+.rankChips b{flex:none;background:#fff7e8;border-radius:999px;padding:6px 8px;font-size:8.5px;color:#5d5548}
+.guideList{padding:6px 4px}
+.guideRow{display:flex;align-items:center;gap:10px;padding:12px 10px;border-top:1px solid #eee8de}
+.guideRow:first-child{border-top:0}
+.guideRow .gico{width:32px;height:32px;border-radius:10px;display:grid;place-items:center;background:#eef8e8;color:#2f8a55}
+.guideRow b{display:block;font-size:13px}
+.guideRow span{font-size:9px;color:#838980}
+.yearHero{padding:0;overflow:hidden;background:linear-gradient(160deg,#fff4d2,#f3ffe8)}
+.yearHero img{width:100%;height:168px;object-fit:cover;object-position:center 30%}
+.yearHero .inner{padding:12px 14px 16px}
+.yearHero h3{font-size:18px;margin:0 0 6px;color:#3d5a2f}
+.yearNav{display:flex;align-items:center;justify-content:space-between;padding:8px 6px}
+.yearNav b{font-size:16px}
+.yearNav button{border:0;background:#f4f0e6;border-radius:999px;width:32px;height:32px}
+.proBox{padding:13px;background:#f4f8ff;margin-top:9px}
+.proBox h3{margin:0 0 8px;font-size:13px;color:#3a6aa8}
+.proBox li{font-size:11px;line-height:1.7;color:#4d5a66}
+.manageCard{display:flex;gap:12px;align-items:center;padding:14px}
+.manageCard img{width:58px;height:58px;border-radius:50%;object-fit:cover;background:#eef6db}
+.btnRow{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:10px}
+.btnGhost{border:1px solid #e6dece;background:#fff;border-radius:12px;padding:10px;font-size:11px;font-weight:800}
+.homeHero .heroArt{height:188px}
+.homeHero .heroText{top:14px}
+
+
+.wongukCard{padding:14px;margin-top:8px}
+.wongukCard h3{font-size:14px;margin:0 0 10px;color:#1b4a39}
+.wongukGrid{display:grid;grid-template-columns:repeat(4,1fr);gap:7px}
+.wongukCell{border-radius:14px;text-align:center;padding:10px 4px}
+.wongukCell:nth-child(1){background:#e8f6e4}
+.wongukCell:nth-child(2){background:#fff1c4}
+.wongukCell:nth-child(3){background:#ffe3e6}
+.wongukCell:nth-child(4){background:#e4eeff}
+.wongukCell em{display:block;font-style:normal;font-size:8px;color:#7b817a}
+.wongukCell strong{display:block;font-family:Georgia,serif;font-size:26px;line-height:1.05;margin:4px 0}
+.wongukCell b{display:block;font-family:Georgia,serif;font-size:22px}
+.wongukCell span{display:block;font-size:8px;color:#6f756f;margin-top:4px}
+.elBarMix{height:8px;border-radius:999px;overflow:hidden;display:flex;margin-top:8px}
+.elBarMix i{display:block;height:100%}
+.lifeHero{position:relative;padding:16px 14px 12px;background:linear-gradient(160deg,#eef8e4,#fff8df)}
+.lifeHero .summaryArt{height:120px;margin-top:6px}
+.mockQuote{padding:16px;background:#f6faee;margin-top:8px}
+.mockQuote p{font-size:16px;line-height:1.55;margin:0;color:#1f3c2f;font-weight:800}
+.catList .categoryRow{padding:13px 4px}
+</style>
+</head>
+<body>
+<div class="app">
+
+<section id="home" class="screen active">
+  <div class="topbar">
+    <button class="ghost" aria-label="메뉴" onclick="go('mypage')"><svg viewBox="0 0 24 24" width="21" height="21"><path d="M4 7h16M4 12h16M4 17h16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg></button>
+    <div class="brand"><div class="brandline"><span class="logo-dot"><img loading="lazy" decoding="async" src="clover-mark.jpg" alt=""></span>귀인사주</div><small>좋은 인연이, 좋은 운을 만듭니다.</small></div>
+    <button class="ghost" aria-label="알림"><svg viewBox="0 0 24 24" width="20" height="20"><path d="M18 8a6 6 0 00-12 0c0 7-3 7-3 9h18c0-2-3-2-3-9M10 21h4" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg></button>
+  </div>
+
+  <div class="profilebar card">
+    <div class="avatar"><img loading="lazy" decoding="async" src="clover-mark.jpg" alt=""></div>
+    <div class="txt"><b id="homeName">반가워요! ›</b><small id="homeBirth">오늘도 좋은 하루 되세요!</small></div>
+    <button class="picker" onclick="go('mypage')">다른 프로필 선택 ›</button>
+  </div>
+
+  <div class="homeHero card">
+    <div class="heroArt">
+      <img decoding="async" fetchpriority="high" src="brand-home.jpg" alt="귀인사주">
+      <div class="heroText">
+        <div class="kicker">좋은 인연이, 좋은 운을 만드는</div>
+        <h1>귀인사주</h1>
+        <div class="copy">지금의 고민이<br>더 좋은 내일로 이어지길.</div>
+      </div>
+    </div>
+    <button class="ctaGreen" onclick="go('ask')">AI 사주상담 시작하기 ›</button>
+  </div>
+
+  <div class="tiles">
+    <div class="tile"><div class="ico"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="4" fill="currentColor"/><g stroke="currentColor" stroke-width="1.7"><path d="M12 1v4M12 19v4M1 12h4M19 12h4M4.2 4.2l2.8 2.8M17 17l2.8 2.8M19.8 4.2L17 7M7 17l-2.8 2.8"/></g></svg></div><b>오늘의 운세</b><p>오늘 나에게 들어오는 기운과 주의할 점</p><button onclick="renderToday();go('today')">지금 바로 보기 ›</button></div>
+    <div class="tile"><div class="ico"><svg viewBox="0 0 24 24"><path d="M6 3h12v18H6z" fill="none" stroke="currentColor" stroke-width="1.7"/><path d="M9 7h6M9 11h6M9 15h4" stroke="currentColor" stroke-width="1.7"/></svg></div><span class="badge">990원</span><div class="pet"><img src="input-cat.jpg" alt=""></div><b>평생사주</b><p>성격, 직업, 재물, 연애, 가족, 대운까지</p><button onclick="openResultTab('summary')">내 사주 전체 보기 ›</button></div>
+    <div class="tile"><div class="ico"><svg viewBox="0 0 24 24"><path d="M12 20s-8-4.8-8-10a4.5 4.5 0 018-2.8A4.5 4.5 0 0120 10c0 5.2-8 10-8 10z" fill="currentColor"/></svg></div><span class="badge">2,900원</span><div class="pet"><img src="compat-animals.jpg" alt=""></div><b>우리 궁합</b><p>두 사람의 끌림, 갈등, 결혼, 재물궁합까지</p><button onclick="go('match')">궁합 보기 ›</button></div>
+    <div class="tile"><div class="ico"><svg viewBox="0 0 24 24"><path d="M4 20V10h3v10H4zm6 0V5h3v15h-3zm6 0V2h3v18h-3z" fill="currentColor"/></svg></div><b>대운·세운·연운</b><p>10년 단위 대운과 올해의 흐름, 월별 운세</p><button onclick="renderYearLuck();go('yearLuck')">운의 흐름 보기 ›</button></div>
+    <div class="tile"><div class="ico"><svg viewBox="0 0 24 24"><path d="M12 21V10M12 10C6 10 4 7 4 3c5 0 8 2 8 7zm0 0c6 0 8-3 8-7-5 0-8 2-8 7z" fill="currentColor"/></svg></div><div class="pet"><img src="compat-animals.jpg" alt=""></div><b>내 사주관리</b><p>저장한 프로필로 더 빠르고 편리하게</p><button onclick="go('manage')">내 프로필 보기 ›</button></div>
+    <div class="tile"><div class="ico"><svg viewBox="0 0 24 24"><path d="M12 2l3 6 6 .8-4.5 4.4 1.2 6.2L12 16.5 6.3 19.4l1.2-6.2L3 8.8 9 8z" fill="currentColor"/></svg></div><b>이용가이드</b><p>처음 오셨나요? 귀인사주 이용방법을 안내해드려요.</p><button onclick="go('guide')">가이드 보기 ›</button></div>
+  </div>
+
+  <div class="slogan card"><b>좋은 인연이, 좋은 운을 만듭니다.</b><br>귀인사주는 당신의 오늘이 조금 더 빛나길 응원합니다.</div>
+  <div class="rankRow card">
+    <div class="head">🔥 많은 분들이 보고 있어요 <span>더보기 ›</span></div>
+    <div class="rankChips">
+      <b>1 오늘의 운세</b><b>2 평생사주</b><b>3 사주상담</b><b>4 우리 궁합</b><b>5 2026년 운세</b>
+    </div>
+  </div>
+</section>
+
+<section id="saju" class="screen">
+  <div class="topbar">
+    <button class="ghost" onclick="go('home')" aria-label="뒤로"><svg viewBox="0 0 24 24" width="20" height="20"><path d="M15 5l-7 7 7 7" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+    <div class="brand"><div class="brandline">사주 입력</div></div>
+    <button class="ghost" aria-label="알림"><svg viewBox="0 0 24 24" width="20" height="20"><path d="M18 8a6 6 0 00-12 0c0 7-3 7-3 9h18c0-2-3-2-3-9M10 21h4" fill="none" stroke="currentColor" stroke-width="1.8"/></svg></button>
+  </div>
+  <div class="screenTitle">
+    <div class="mark"><img loading="lazy" decoding="async" src="clover-mark.jpg" alt=""></div>
+    <div><h2>사주 입력</h2><p>정확한 사주 분석을 위해<br>아래 정보를 입력해 주세요.</p></div>
+    <div class="sideArt"><img loading="lazy" decoding="async" src="input-cat.jpg" alt=""></div>
+  </div>
+  <div class="formCard card">
+    <label>이름</label><input id="name" placeholder="이름을 입력해 주세요">
+    <label>성별</label><div class="seg" id="genderSeg"><button class="on" data-v="여">여성</button><button data-v="남">남성</button></div>
+    <label>생년월일</label><div class="seg" id="calendarSeg"><button class="on" data-v="양력">양력</button><button data-v="음력">음력</button></div>
+    <div id="leapRow" class="hidden"><label class="check"><input id="leapMonth" type="checkbox">윤달</label></div>
+    <div class="row3" style="margin-top:7px"><input id="year" type="number" inputmode="numeric" placeholder="1991"><input id="month" type="number" inputmode="numeric" placeholder="11"><input id="day" type="number" inputmode="numeric" placeholder="23"></div>
+    <label>출생 시간</label><div class="row2"><input id="hour" type="number" inputmode="numeric" placeholder="07"><input id="minute" type="number" inputmode="numeric" placeholder="40"></div>
+    <label class="check"><input id="hourUnknown" type="checkbox">출생시간을 모릅니다.</label>
+    <div class="help">출생시간을 정확히 모르더라도 기본 분석은 가능합니다.</div>
+    <label>출생지 (선택)</label><div class="locationRow"><span>서울특별시</span><span>›</span></div>
+    <div class="hidden"><select id="dayBoundaryMode"><option value="23" selected>23</option></select><input id="applyTrueSolar" type="checkbox"><input id="birthLongitudeApply" value="126.98"></div>
+    <button class="ctaGold" onclick="submitSaju()">사주 보기 ›</button>
+  </div>
+  <div class="slogan card"><b>좋은 선택이, 더 나은 내일을 만듭니다.</b><br>귀인사주가 함께할게요.</div>
+</section>
+
+<section id="result" class="screen">
+  <div class="topbar">
+    <button class="ghost" onclick="go('home')" aria-label="뒤로"><svg viewBox="0 0 24 24" width="20" height="20"><path d="M15 5l-7 7 7 7" fill="none" stroke="currentColor" stroke-width="2"/></svg></button>
+    <div class="brand"><div class="brandline"><span class="logo-dot"><img loading="lazy" decoding="async" src="clover-mark.jpg" alt=""></span>귀인사주</div></div>
+    <button class="ghost"><svg viewBox="0 0 24 24" width="20" height="20"><path d="M18 8a6 6 0 00-12 0c0 7-3 7-3 9h18c0-2-3-2-3-9M10 21h4" fill="none" stroke="currentColor" stroke-width="1.8"/></svg></button>
+  </div>
+  <div class="tabs" id="resultTabs">
+    <button class="on" data-tab="summary">사주 요약</button><button data-tab="personality">성격 분석</button><button data-tab="flow">인생 흐름</button><button data-tab="fields">분야별 운세</button><button data-tab="stars">신살·귀인</button><button data-tab="chart">사주 원국</button>
+  </div>
+  <div id="resultView"></div>
+</section>
+
+<section id="match" class="screen">
+  <div class="topbar">
+    <button class="ghost" onclick="go('home')" aria-label="뒤로"><svg viewBox="0 0 24 24" width="20" height="20"><path d="M15 5l-7 7 7 7" fill="none" stroke="currentColor" stroke-width="2"/></svg></button>
+    <div class="brand"><div class="brandline">우리 궁합</div></div>
+    <button class="ghost"><svg viewBox="0 0 24 24" width="20" height="20"><path d="M18 8a6 6 0 00-12 0c0 7-3 7-3 9h18c0-2-3-2-3-9M10 21h4" fill="none" stroke="currentColor" stroke-width="1.8"/></svg></button>
+  </div>
+  <div class="screenTitle">
+    <div class="mark" style="background:#f0e7fb"><img loading="lazy" decoding="async" src="clover-mark.jpg" alt=""></div>
+    <div><h2>궁합</h2><p>두 사람의 명식을 같은 기준으로 비교해요.</p></div>
+  </div>
+  <div class="formCard card">
+    <label>나</label><input id="aName" placeholder="이름">
+    <div class="seg" id="aGender"><button class="on" data-v="여">여성</button><button data-v="남">남성</button></div>
+    <div class="row3" style="margin-top:7px"><input id="aYear" type="number" placeholder="년"><input id="aMonth" type="number" placeholder="월"><input id="aDay" type="number" placeholder="일"></div>
+    <div class="row2" style="margin-top:7px"><input id="aHour" type="number" placeholder="시"><input id="aMin" type="number" placeholder="분"></div>
+    <label>상대</label><input id="bName" placeholder="이름">
+    <div class="seg" id="bGender"><button class="on" data-v="여">여성</button><button data-v="남">남성</button></div>
+    <div class="row3" style="margin-top:7px"><input id="bYear" type="number" placeholder="년"><input id="bMonth" type="number" placeholder="월"><input id="bDay" type="number" placeholder="일"></div>
+    <div class="row2" style="margin-top:7px"><input id="bHour" type="number" placeholder="시"><input id="bMin" type="number" placeholder="분"></div>
+    <button class="ctaGold" onclick="submitMatch()">궁합 보기 ›</button>
+  </div>
+</section>
+
+<section id="matchResult" class="screen">
+  <div class="topbar">
+    <button class="ghost" onclick="go('match')" aria-label="뒤로"><svg viewBox="0 0 24 24" width="20" height="20"><path d="M15 5l-7 7 7 7" fill="none" stroke="currentColor" stroke-width="2"/></svg></button>
+    <div class="brand"><div class="brandline"><span class="logo-dot"><img loading="lazy" decoding="async" src="clover-mark.jpg" alt=""></span>우리 궁합</div></div>
+    <button class="ghost"><svg viewBox="0 0 24 24" width="20" height="20"><path d="M12 20s-8-4.8-8-10a4.5 4.5 0 018-2.8A4.5 4.5 0 0120 10c0 5.2-8 10-8 10z" fill="none" stroke="currentColor" stroke-width="1.7"/></svg></button>
+  </div>
+  <div class="tabs purple" id="matchTabs">
+    <button class="on" data-match-tab="summary" onclick="setMatchTab('summary')">궁합 요약</button>
+    <button data-match-tab="love" onclick="setMatchTab('love')">연애 궁합</button>
+    <button data-match-tab="marriage" onclick="setMatchTab('marriage')">결혼 궁합</button>
+    <button data-match-tab="partner" onclick="setMatchTab('partner')">상대방 분석</button>
+  </div>
+  <div id="matchView"></div>
+</section>
+
+<section id="today" class="screen">
+  <div class="topbar">
+    <button class="ghost" onclick="go('home')" aria-label="뒤로"><svg viewBox="0 0 24 24" width="20" height="20"><path d="M15 5l-7 7 7 7" fill="none" stroke="currentColor" stroke-width="2"/></svg></button>
+    <div class="brand"><div class="brandline">오늘의 운세</div></div>
+    <button class="ghost"><svg viewBox="0 0 24 24" width="20" height="20"><path d="M18 8a6 6 0 00-12 0c0 7-3 7-3 9h18c0-2-3-2-3-9M10 21h4" fill="none" stroke="currentColor" stroke-width="1.8"/></svg></button>
+  </div>
+  <div class="tabs green"><button class="on">오늘의 운세</button><button>주간 운세</button><button>월간 운세</button></div>
+  <div id="todayView"></div>
+</section>
+
+<section id="mypage" class="screen">
+  <div class="topbar">
+    <button class="ghost" onclick="go('home')" aria-label="뒤로"><svg viewBox="0 0 24 24" width="20" height="20"><path d="M15 5l-7 7 7 7" fill="none" stroke="currentColor" stroke-width="2"/></svg></button>
+    <div class="brand"><div class="brandline"><span class="logo-dot"><img loading="lazy" decoding="async" src="clover-mark.jpg" alt=""></span>마이페이지</div></div>
+    <button class="ghost"><svg viewBox="0 0 24 24" width="20" height="20"><circle cx="12" cy="12" r="3" fill="none" stroke="currentColor" stroke-width="1.7"/><path d="M12 2v3M12 19v3M2 12h3M19 12h3M4.9 4.9l2.1 2.1M17 17l2.1 2.1M19.1 4.9L17 7M7 17l-2.1 2.1" stroke="currentColor" stroke-width="1.7"/></svg></button>
+  </div>
+  <div class="profileCard card" style="margin-top:10px">
+    <div class="bigAvatar"><img loading="lazy" decoding="async" src="clover-mark.jpg" alt=""></div>
+    <div><b id="myName">프로필을 만들어 보세요</b><span id="myBirth">사주를 계산하면 저장할 수 있어요.</span></div>
+  </div>
+  <div class="menuCard card">
+    <button onclick="go('wallet')">이용 내역 <span class="arr">›</span></button>
+    <button>찜한 콘텐츠 <span class="arr">›</span></button>
+    <button onclick="go('ask')">상담 내역 <span class="arr">›</span></button>
+    <button>쿠폰함 <span class="arr">›</span></button>
+    <button>알림 설정 <span class="arr">›</span></button>
+    <button>고객센터 <span class="arr">›</span></button>
+    <button>앱 정보 <span class="arr">›</span></button>
+  </div>
+  <div class="slogan card"><b>좋은 인연이, 좋은 하루를 만듭니다.</b><br>귀인사주와 함께할게요.</div>
+  <div class="footerArt"><img loading="lazy" decoding="async" src="mypage-animals.jpg" alt=""></div>
+  
+</section>
+
+
+<section id="yearLuck" class="screen">
+  <div class="topbar">
+    <button class="ghost" onclick="go('home')" aria-label="뒤로"><svg viewBox="0 0 24 24" width="20" height="20"><path d="M15 5l-7 7 7 7" fill="none" stroke="currentColor" stroke-width="2"/></svg></button>
+    <div class="brand"><div class="brandline">대운·세운·연운</div></div>
+    <button class="ghost"></button>
+  </div>
+  <div class="tabs green"><button class="on" onclick="renderYearLuck()">대운 보기</button><button onclick="openResultTab('flow')">세운 보기</button><button onclick="renderYearLuck()">연운 보기</button><button onclick="renderYearLuck()">월운 보기</button></div>
+  <div id="yearView"></div>
+</section>
+
+<section id="manage" class="screen">
+  <div class="topbar">
+    <button class="ghost" onclick="go('home')" aria-label="뒤로"><svg viewBox="0 0 24 24" width="20" height="20"><path d="M15 5l-7 7 7 7" fill="none" stroke="currentColor" stroke-width="2"/></svg></button>
+    <div class="brand"><div class="brandline">내 사주관리</div></div>
+    <button class="ghost"></button>
+  </div>
+  <div class="tabs green"><button class="on">내 프로필</button><button>가족 프로필</button><button onclick="go('saju')">프로필 추가 ›</button></div>
+  <div class="manageCard card" style="margin-top:10px">
+    <img src="compat-animals.jpg" alt="">
+    <div>
+      <div style="font-size:10px;color:#7d837c">내 프로필</div>
+      <b id="manageName">프로필을 만들어 보세요</b>
+      <span id="manageBirth" style="display:block;font-size:10px;color:#888;margin-top:3px">사주를 계산하면 저장됩니다.</span>
+    </div>
+  </div>
+  <div class="btnRow">
+    <button class="btnGhost" onclick="go('saju')">프로필 수정</button>
+    <button class="btnGhost" onclick="openResultTab('summary')">사주 다시 보기</button>
+  </div>
+  <div class="infoCard card" style="margin-top:12px">
+    <h3>저장한 프로필</h3>
+    <button class="btnGhost" style="width:100%" onclick="go('saju')">+ 새 프로필 추가하기 ›</button>
+  </div>
+  <div class="slogan card"><b>소중한 사람들의 사주도 함께 저장해보세요.</b><br>좋은 인연이 더 좋은 운을 만들어줍니다.</div>
+</section>
+
+<section id="guide" class="screen">
+  <div class="topbar">
+    <button class="ghost" onclick="go('home')" aria-label="뒤로"><svg viewBox="0 0 24 24" width="20" height="20"><path d="M15 5l-7 7 7 7" fill="none" stroke="currentColor" stroke-width="2"/></svg></button>
+    <div class="brand"><div class="brandline">이용가이드</div></div>
+    <button class="ghost"></button>
+  </div>
+  <div class="screenTitle">
+    <div class="mark"><img src="clover-mark.jpg" alt=""></div>
+    <div><h2>처음 오셨나요?</h2><p>귀인사주가 처음이라도,<br>쉽게 이용할 수 있어요.</p></div>
+    <div class="sideArt"><img src="input-cat.jpg" alt=""></div>
+  </div>
+  <div class="card guideList">
+    <div class="guideRow"><div class="gico">?</div><div><b>귀인사주란?</b><span>좋은 인연과 운을 쉽게 읽는 사주</span></div></div>
+    <div class="guideRow" onclick="go('saju')"><div class="gico">☰</div><div><b>서비스 이용방법</b><span>생년월일만 넣으면 명식이 나옵니다</span></div></div>
+    <div class="guideRow" onclick="renderToday();go('today')"><div class="gico">☀</div><div><b>운세 항목 안내</b><span>오늘·대운·분야별 운세를 나눠 보여요</span></div></div>
+    <div class="guideRow" onclick="go('ask')"><div class="gico">💬</div><div><b>자주 묻는 질문</b><span>사주아이에게 이어서 물어볼 수 있어요</span></div></div>
+    <div class="guideRow"><div class="gico">☎</div><div><b>고객센터</b><span>이용 중 궁금한 점을 남겨 주세요</span></div></div>
+  </div>
+  <div class="slogan card"><b>언제나, 좋은 인연이 함께하길.</b><br>귀인사주가 응원합니다.</div>
+</section>
+
+
+<section id="ask" class="screen">
+  <div class="topbar">
+    <button class="ghost" onclick="go('home')" aria-label="뒤로"><svg viewBox="0 0 24 24" width="20" height="20"><path d="M15 5l-7 7 7 7" fill="none" stroke="currentColor" stroke-width="2"/></svg></button>
+    <div class="brand"><div class="brandline">사주에게 묻기</div></div>
+    <button class="ghost" onclick="go('wallet')">사주아이</button>
+  </div>
+  <div class="creditBar"><div><div style="font-size:12px;opacity:.85">보유 사주아이</div><b id="coinView">0</b><span style="font-size:13px"> 개</span></div><button class="ctaGold" style="width:auto;margin:0;padding:10px 14px" onclick="go('wallet')">충전하기</button></div>
+  <p class="adminNote">질문 1회마다 사주아이 1개(990원)가 차감됩니다. 같은 대화에서 이어서 물어볼 수 있어요. 실제 PG 결제는 아직 연결 전이며, 충전은 데모입니다.</p>
+  <div class="msgs" id="msgs">
+    <div class="sysnote">귀인사주 상담이 시작되었습니다</div>
+    <div class="bubble bot" id="welcomeBot">사주를 먼저 계산해 두면 원국 기준으로 답합니다. 직업, 연애, 올해 흐름 중 무엇이 궁금한가요?</div>
+  </div>
+  <div>
+    <button class="qchip" type="button" onclick="sendQ('올해 재물운이 어떤가요?')">올해 재물운</button>
+    <button class="qchip" type="button" onclick="sendQ('지금 이직해도 될까요?')">이직 타이밍</button>
+    <button class="qchip" type="button" onclick="sendQ('연애운이 언제 들어올까요?')">연애 시기</button>
+  </div>
+  <div class="composer" style="margin-top:8px">
+    <input id="askQ" placeholder="궁금한 점을 물어보세요" onkeydown="if(event.key==='Enter')sendQ()">
+    <button class="ctaGreen" style="min-width:88px" onclick="sendQ()">보내기</button>
+  </div>
+</section>
+
+<section id="wallet" class="screen">
+  <div class="topbar">
+    <button class="ghost" onclick="go('ask')" aria-label="뒤로"><svg viewBox="0 0 24 24" width="20" height="20"><path d="M15 5l-7 7 7 7" fill="none" stroke="currentColor" stroke-width="2"/></svg></button>
+    <div class="brand"><div class="brandline">사주아이 충전</div></div>
+    <span></span>
+  </div>
+  <div class="formCard card">
+    <p class="adminNote">1 사주아이 = 990원. 평생사주와 같은 단위입니다. 지금은 결제 준비중이라 데모 충전만 됩니다.</p>
+    <div class="row2">
+      <button class="ctaGold" onclick="charge(1)">1개 · 990원</button>
+      <button class="ctaGold" onclick="charge(3)">3개 · 2,970원</button>
+      <button class="ctaGold" onclick="charge(5)">5개 · 4,950원</button>
+      <button class="ctaGold" onclick="charge(10)">10개 · 9,900원</button>
+    </div>
+    <p id="payMsg" class="adminNote"></p>
+  </div>
+  <div class="infoCard card"><h3>이용 내역</h3><div id="ledger" class="adminNote">아직 내역이 없습니다.</div></div>
+</section>
+
+<section id="admin" class="screen">
+  <div class="topbar">
+    <button class="ghost" onclick="go('mypage')" aria-label="뒤로"><svg viewBox="0 0 24 24" width="20" height="20"><path d="M15 5l-7 7 7 7" fill="none" stroke="currentColor" stroke-width="2"/></svg></button>
+    <div class="brand"><div class="brandline">콘텐츠 수정</div></div>
+    <span></span>
+  </div>
+  <div class="formCard card">
+    <p class="adminNote">여기서 고친 문구는 이 기기 홈·상담 화면에 바로 반영됩니다. 서버 배포용이 아니라 브라우저 저장입니다.</p>
+    <label>브랜드 한 줄</label><input id="fSub">
+    <label>오늘의 운세 설명</label><input id="fDaily">
+    <label>평생사주 설명</label><input id="fLife">
+    <label>궁합 설명</label><input id="fGung">
+    <label>상담 첫 인사</label><textarea id="fWelcome" style="width:100%;min-height:88px;border:1px solid #e4dccd;border-radius:13px;padding:10px"></textarea>
+    <button class="ctaGold" onclick="saveCopy()">저장하고 홈에 반영</button>
+    <p id="saveMsg" class="adminNote"></p>
+  </div>
+</section>
+
+<nav class="bottom">
+  <button id="navHome" class="active" onclick="go('home')"><svg viewBox="0 0 24 24"><path d="M4 11l8-7 8 7v9H6v-9" fill="none" stroke="currentColor" stroke-width="1.7"/><path d="M9 20v-6h6v6" fill="none" stroke="currentColor" stroke-width="1.7"/></svg>홈</button>
+  <button id="navSaju" onclick="openResultTab('summary')"><svg viewBox="0 0 24 24"><circle cx="12" cy="8" r="3" fill="none" stroke="currentColor" stroke-width="1.7"/><path d="M6 21c0-4 2.5-7 6-7s6 3 6 7" fill="none" stroke="currentColor" stroke-width="1.7"/></svg>내 사주</button>
+  <button class="flower" onclick="go('ask')" aria-label="사주에게 묻기"><svg viewBox="0 0 24 24"><g fill="currentColor"><ellipse cx="12" cy="6.8" rx="3" ry="4.5"/><ellipse cx="17.2" cy="12" rx="4.5" ry="3"/><ellipse cx="12" cy="17.2" rx="3" ry="4.5"/><ellipse cx="6.8" cy="12" rx="4.5" ry="3"/></g><circle cx="12" cy="12" r="2.1" fill="#fff8dc"/></svg></button>
+  <button onclick="go('today')"><svg viewBox="0 0 24 24"><rect x="5" y="4" width="14" height="16" rx="2" fill="none" stroke="currentColor" stroke-width="1.7"/><path d="M8 8h8M8 12h8M8 16h5" stroke="currentColor" stroke-width="1.7"/></svg>이용내역</button>
+  <button id="navMy" onclick="go('mypage')"><svg viewBox="0 0 24 24"><circle cx="12" cy="8" r="3" fill="none" stroke="currentColor" stroke-width="1.7"/><path d="M6 21c0-4 2.5-7 6-7s6 3 6 7" fill="none" stroke="currentColor" stroke-width="1.7"/></svg>마이페이지</button>
+</nav>
+</div>
+
+<script>
+const $=id=>document.getElementById(id);
+const ICONS={
+ fire:`<svg viewBox="0 0 24 24"><path d="M13 2c1 5-3 6-1 10 1-2 3-3 4-5 4 4 4 9 1 12-3 3-9 3-12 0-4-4-1-10 3-13 0 4 2 5 3 6-1-5 2-7 2-10z" fill="currentColor"/></svg>`,
+ water:`<svg viewBox="0 0 24 24"><path d="M12 2s7 8 7 13a7 7 0 11-14 0c0-5 7-13 7-13z" fill="currentColor"/></svg>`,
+ money:`<svg viewBox="0 0 24 24"><path d="M5 7h14v12H5zM8 4h8v3H8z" fill="none" stroke="currentColor" stroke-width="1.7"/><circle cx="12" cy="13" r="3" fill="none" stroke="currentColor" stroke-width="1.7"/></svg>`,
+ leaf:`<svg viewBox="0 0 24 24"><path d="M4 20c7-1 12-6 16-16-10 2-15 7-16 16zM8 16l8-8" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>`,
+ heart:`<svg viewBox="0 0 24 24"><path d="M12 20s-8-4.8-8-10a4.5 4.5 0 018-2.8A4.5 4.5 0 0120 10c0 5.2-8 10-8 10z" fill="currentColor"/></svg>`,
+ brief:`<svg viewBox="0 0 24 24"><rect x="3" y="7" width="18" height="13" rx="2" fill="none" stroke="currentColor" stroke-width="1.7"/><path d="M8 7V4h8v3M3 12h18" stroke="currentColor" stroke-width="1.7"/></svg>`,
+ plus:`<svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9" fill="none" stroke="currentColor" stroke-width="1.7"/><path d="M12 8v8M8 12h8" stroke="currentColor" stroke-width="1.7"/></svg>`,
+ book:`<svg viewBox="0 0 24 24"><path d="M4 4h7a3 3 0 013 3v13a3 3 0 00-3-3H4V4zm16 0h-7a3 3 0 00-3 3v13a3 3 0 013-3h7V4z" fill="none" stroke="currentColor" stroke-width="1.7"/></svg>`
+};
+let chart=null,currentTab='summary';
+
+function esc(s){return String(s??'').replace(/[&<>"']/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]))}
+function go(id){
+ document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));
+ const el=$(id); if(el)el.classList.add('active');
+ document.querySelectorAll('.bottom button').forEach(b=>b.classList.remove('active'));
+ if(id==='home')$('navHome').classList.add('active');
+ else if(id==='mypage')$('navMy').classList.add('active');
+ else $('navSaju').classList.add('active');
+ history.replaceState(null,'','#'+id); window.scrollTo(0,0);
+}
+function bindSeg(id,cb){
+ const box=$(id); if(!box)return;
+ box.querySelectorAll('button').forEach(b=>b.onclick=()=>{box.querySelectorAll('button').forEach(x=>x.classList.remove('on'));b.classList.add('on');cb&&cb(b.dataset.v)});
+}
+['genderSeg','calendarSeg','aGender','bGender'].forEach(id=>bindSeg(id,v=>{if(id==='calendarSeg')$('leapRow').classList.toggle('hidden',v!=='음력')}));
+function segVal(id){return $(id)?.querySelector('button.on')?.dataset.v}
+function intVal(id,fallback=0){const n=parseInt($(id)?.value,10);return Number.isFinite(n)?n:fallback}
+function profileInput(prefix=''){
+ const name=$(prefix?prefix+'Name':'name').value||'사용자';
+ const gender=segVal(prefix?prefix+'Gender':'genderSeg')||'여';
+ return {name,gender,calendar:prefix?'양력':(segVal('calendarSeg')||'양력'),year:intVal(prefix?prefix+'Year':'year'),month:intVal(prefix?prefix+'Month':'month'),day:intVal(prefix?prefix+'Day':'day'),hour:intVal(prefix?prefix+'Hour':'hour',12),minute:intVal(prefix?prefix+'Min':'minute',0),hourUnknown:false,leapMonth:prefix?false:($('leapMonth')?.checked||false),dayBoundary:'23',trueSolarApply:false,longitude:126.98};
+}
+const DM={
+ '갑':['곧고 성장지향적인','새로운 길을 만드는 힘'],
+ '을':['유연하고 섬세한','관계를 살피는 감각'],
+ '병':['밝고 추진력 있는','분위기를 이끄는 힘'],
+ '정':['따뜻한 마음과 강한 의지의','다시 일어서는 힘'],
+ '무':['든든하고 현실적인','중심을 잡는 힘'],
+ '기':['세심하고 실용적인','돌보고 정리하는 힘'],
+ '경':['결단력 있고 선명한','기준을 세우는 힘'],
+ '신':['정교하고 감각적인','완성도를 높이는 힘'],
+ '임':['넓게 보고 움직이는','변화에 적응하는 힘'],
+ '계':['차분하고 직관적인','흐름을 읽는 힘']
+};
+function saveProfile(c){
+ localStorage.setItem('guiin_last',JSON.stringify(c.input));
+ $('homeName').textContent=c.input.name+'님 ›';
+ $('homeBirth').textContent=`${c.input.year}년 ${c.input.month}월 ${c.input.day}일 (${c.input.calendar})`;
+ $('myName').textContent=c.input.name+'님';
+ $('myBirth').textContent=`${c.input.year}년 ${c.input.month}월 ${c.input.day}일 (${c.input.calendar})`;
+}
+function restoreProfile(){
+ try{
+  const v=JSON.parse(localStorage.getItem('guiin_last')); if(!v)return;
+  $('name').value=v.name||'';$('year').value=v.year||'';$('month').value=v.month||'';$('day').value=v.day||'';$('hour').value=v.hour??'';$('minute').value=v.minute??'';
+  $('homeName').textContent=(v.name||'사용자')+'님 ›';$('homeBirth').textContent=`${v.year}년 ${v.month}월 ${v.day}일 (${v.calendar||'양력'})`;
+  $('myName').textContent=(v.name||'사용자')+'님';$('myBirth').textContent=`${v.year}년 ${v.month}월 ${v.day}일 (${v.calendar||'양력'})`;if($('manageName')){$('manageName').textContent=(v.name||'사용자');$('manageBirth').textContent=`${v.year}년 ${v.month}월 ${v.day}일 (${v.calendar||'양력'})`;}
+ }catch(e){}
+}
+function submitSaju(){
+ try{
+  const inp=profileInput();
+  inp.hourUnknown=$('hourUnknown').checked;
+  if(!inp.year||!inp.month||!inp.day)throw new Error('생년월일을 입력해 주세요.');
+  chart=GuiinSaju.calculate(inp); saveProfile(chart); currentTab='summary'; renderResult(); go('result');
+ }catch(e){alert(e.message||'입력값을 확인해 주세요.')}
+}
+document.querySelectorAll('#resultTabs button').forEach(b=>b.onclick=()=>{currentTab=b.dataset.tab;renderResult()});
+function openResultTab(t){if(chart){currentTab=t;renderResult();go('result')}else go('saju')}
+
+function uniq(arr){return [...new Set((arr||[]).filter(Boolean))]}
+function pctElements(c){
+ const total=Object.values(c.elCount||{}).reduce((a,b)=>a+b,0)||1,out={};
+ ['목','화','토','금','수'].forEach(e=>out[e]=Math.round(((c.elCount||{})[e]||0)/total*100));
+ return out;
+}
+const EL_DESC={
+ '목':'성장·기획·확장','화':'표현·속도·열정','토':'현실감·책임·안정','금':'판단·정리·기준','수':'관찰·유연성·정보'
+};
+const GOD_DESC={
+ '비견':'자기주도·독립성','겁재':'경쟁·추진·동료 관계','식신':'생산성·표현·꾸준함','상관':'표현력·개선 욕구·자유',
+ '편재':'기회 포착·유동 재물·대외 활동','정재':'관리·축적·현실 재물','편관':'압박 대응·결단·도전','정관':'책임·규칙·신뢰',
+ '편인':'직관·전문성·독특한 관점','정인':'학습·보호·문서·안정','일간':'나 자신'
+};
+function pillarGodSummary(c){
+ return uniq(['년주 '+c.pillars.year.god,'월주 '+c.pillars.month.god,c.pillars.hour?'시주 '+c.pillars.hour.god:null]).join(' · ');
+}
+function relationSummary(c){
+ const rs=c.relations||[];
+ if(!rs.length)return '원국의 합·충·형·파·해가 과도하게 겹치지 않아, 관계 신호는 다른 구조와 함께 읽는 편이 좋습니다.';
+ return rs.map(r=>`${r.aLabel||''}–${r.bLabel||''} ${r.type}`).join(' · ');
+}
+function dominantElements(c){
+ const p=pctElements(c), sorted=Object.entries(p).sort((a,b)=>b[1]-a[1]);
+ return {p,top:sorted[0],second:sorted[1],low:sorted[sorted.length-1]};
+}
+function currentLuck(c){
+ const age=2026-c.input.year;
+ return (c.luck||[]).find(x=>age>=x.fromAge&&age<=x.toAge)||(c.luck||[])[0]||null;
+}
+function currentYearFlow(c){
+ try{return GuiinSaju.flowForDate(2026,9,10,c.pillars.day.stemIndex,12,0,{dayBoundary:c.input.dayBoundary||'23'});}catch(e){return null}
+}
+function personalityReport(c){
+ const copy=DM[c.dayMaster.stem]||['자기만의 색이 있는','균형을 만드는 힘'];
+ const el=dominantElements(c), monthGod=c.pillars.month.god, dayGod=c.pillars.day.god;
+ const rel=relationSummary(c);
+ return `
+ <div class="quote card"><div class="marks">“</div><h3>${copy[0]} 당신은,<br>${copy[1]}을 삶의 중요한 축으로 삼는 편입니다.</h3></div>
+ <div class="deepCard card"><div class="miniTitle">핵심 성향</div><h3>${c.dayMaster.stem}(${c.dayMaster.hanja}) 일간을 중심으로 읽는 당신의 기본 결</h3>
+  <p class="reportLead">${c.dayMaster.stem}일간은 ‘${copy[1]}’이라는 키워드로 시작하지만, 일간 하나만으로 성격을 단정하지 않습니다. 귀인사주는 월주·오행·십신·지지 관계를 함께 겹쳐 봅니다.</p>
+  <p>현재 명식에서는 <b>${el.top[0]} ${el.top[1]}%</b>가 가장 두드러지고, 다음은 <b>${el.second[0]} ${el.second[1]}%</b>입니다. ${el.top[0]}은 ${EL_DESC[el.top[0]]}, ${el.second[0]}은 ${EL_DESC[el.second[0]]}의 주제와 연결해 읽습니다. 반대로 ${el.low[0]} ${el.low[1]}%는 상대적으로 낮아, 이 영역을 ‘없다’고 보기보다 의식적으로 보완할 생활 습관을 찾는 쪽이 안전합니다.</p>
+  <div class="evidenceLine"><b>계산 근거</b> · 일간 ${c.dayMaster.stem}${c.dayMaster.hanja} · ${pillarGodSummary(c)} · 오행 ${Object.entries(el.p).map(([k,v])=>`${k} ${v}%`).join(' / ')}</div>
+ </div>
+ <div class="deepCard card"><h3>생각하고 결정하는 방식</h3>
+  <p>월주의 십신은 <b>${monthGod}</b>으로 계산됩니다. 이 항목은 사회생활과 익숙한 환경에서 반복되는 태도를 읽을 때 참고합니다. ${GOD_DESC[monthGod]||'주변 환경과 역할을 대하는 방식'}의 주제가 강해질 수 있으며, 일간의 기본 기질과 결합될 때 ‘무엇을 중요하게 여기고 어떻게 행동하는지’가 더 구체적으로 드러납니다.</p>
+  <p>좋은 쪽으로 쓰이면 자신의 기준을 행동으로 옮기는 힘이 됩니다. 다만 한쪽 기운이 과해질 때는 책임을 지나치게 떠안거나, 반대로 자신의 속도와 기준을 주변에도 똑같이 요구하는 식으로 나타날 수 있으니 상황별 강약 조절이 중요합니다.</p>
+ </div>
+ <div class="deepCard card"><h3>관계에서 보이는 모습</h3>
+  <p>${rel}</p>
+  <p>합은 무조건 좋은 관계, 충은 무조건 나쁜 관계라는 뜻이 아닙니다. 합은 묶이고 조정되는 힘, 충은 움직임과 방향 전환의 신호로 보고 실제 관계에서는 대화 방식·생활 리듬·책임 분담과 함께 해석합니다.</p>
+ </div>
+ <div class="deepCard card"><h3>강점이 가장 잘 살아나는 조건</h3><div class="deepList">
+  <div class="deepItem"><b>① 스스로 기준을 정할 수 있을 때</b>${copy[1]}을 억누르기보다 목표와 역할이 분명할수록 장점이 선명해집니다.</div>
+  <div class="deepItem"><b>② ${el.top[0]}의 장점을 현실 행동으로 옮길 때</b>${EL_DESC[el.top[0]]}의 에너지를 일·관계·취미에서 구체적인 결과로 연결해 보세요.</div>
+  <div class="deepItem"><b>③ 부족한 ${el.low[0]} 기운을 생활에서 보완할 때</b>사주에서 낮은 비중은 결함이 아니라 균형을 의식할 지점입니다.</div>
+ </div></div>
+ <div class="deepCard card"><h3>보완하면 좋은 패턴</h3>
+  <p>강한 장점은 과해질 때 피로의 원인이 되기도 합니다. ‘내가 해야 마음이 놓인다’는 식으로 책임이 몰리거나, 감정과 체력의 회복보다 결과를 먼저 챙기고 있지는 않은지 점검해 보세요. 중요한 결정은 순간적인 운세 문장보다 원국의 성향, 현재 대운, 올해 세운을 함께 보고 판단하는 편이 좋습니다.</p>
+ </div>`;
+}
+function flowReport(c){
+ const lk=currentLuck(c), yf=currentYearFlow(c);
+ const age=2026-c.input.year;
+ const yrGod=yf?.gods?.year||'';
+ const transit=yf?.pillars?.year;
+ let trs=[];
+ try{trs=transit?GuiinSaju.relationsWithTransit(c.pillars,transit):[]}catch(e){}
+ const luckRows=(c.luck||[]).map(x=>{
+   const cur=lk&&x.ko===lk.ko&&x.fromAge===lk.fromAge;
+   return `<div class="luckRow ${cur?'current':''}"><b>${x.fromAge}~${x.toAge}세 · ${x.ko} 대운 ${cur?'· 현재':''}</b><p>${x.god}의 주제가 10년 배경으로 들어옵니다. ${GOD_DESC[x.god]||'환경과 역할의 변화'}를 장기 흐름으로 살펴보는 구간입니다.</p></div>`;
+ }).join('');
+ return `<div class="deepCard card"><div class="miniTitle">인생 흐름</div><h3>대운은 10년의 배경, 세운은 한 해의 강조점입니다</h3>
+ <p class="reportLead">현재 만 ${age}세 기준으로 ${lk?`<b>${lk.ko} 대운(${lk.fromAge}~${lk.toAge}세)</b>`:'대운'} 구간을 중심으로 읽습니다.</p>
+ <p>${lk?`${lk.god}의 성격인 ‘${GOD_DESC[lk.god]||'역할 변화'}’가 장기 배경으로 깔립니다. `:''}대운 하나만으로 사건을 예언하지 않고, 원국에서 이미 가진 성향이 어떤 환경에서 더 강해지는지 확인하는 방식입니다.</p>
+ <div class="evidenceLine"><b>대운 시작</b> · ${c.startAgeText||c.startAge+'세'} · ${c.forward?'순행':'역행'} · 절입 시간 간격 ÷ 3일=1년 환산</div></div>
+ <div class="deepCard card"><h3>전체 대운 지도</h3><div class="luckGrid">${luckRows}</div></div>
+ <div class="deepCard card"><h3>2026년 세운과 현재 대운의 교차</h3>
+ <p>2026년 세운의 십신은 <b>${yrGod||'계산값 확인'}</b>${yrGod?`으로, ${GOD_DESC[yrGod]||'해당 십신의 주제'}가 한 해의 강조점으로 들어옵니다.`:'입니다.'} 현재 대운의 ${lk?.god||''}과 같은 주제가 반복되면 체감이 커질 수 있고, 서로 다른 주제라면 장기 목표와 당장의 요구 사이에서 우선순위를 조정할 일이 생길 수 있습니다.</p>
+ <p>${trs.length?`올해 간지와 원국 사이에는 ${trs.map(r=>r.type).join('·')} 신호가 잡힙니다. 이는 사건 확정이 아니라 변화·조정이 필요한 지점을 찾는 보조 신호입니다.`:'올해 간지와 원국의 관계 신호가 강하게 겹치지 않더라도, 세운의 십신 주제 자체는 한 해의 분위기를 읽는 참고가 됩니다.'}</p>
+ <div class="deepList"><div class="deepItem"><b>일·직업</b>현재 대운의 ${lk?.god||'주제'}와 2026 세운의 ${yrGod||'주제'}가 실제 역할·책임·이동과 어떻게 연결되는지 보세요.</div><div class="deepItem"><b>재물</b>재물은 재성 한 항목만 보지 않고 지출 구조, 일의 변화, 대운·세운의 반복을 함께 확인합니다.</div><div class="deepItem"><b>관계</b>합·충·형·파·해는 만남·이별을 단정하는 점수가 아니라 관계 방식이 흔들리거나 재조정되는 신호로 사용합니다.</div></div></div>`;
+}
+function fieldsReport(c){
+ const el=dominantElements(c), lk=currentLuck(c), yf=currentYearFlow(c), yg=yf?.gods?.year||'';
+ const common=`현재 대운 ${lk?lk.ko+'('+lk.god+')':'미확인'}과 2026 세운 ${yg||'계산값'}을 원국과 함께 읽었습니다.`;
+ const rows=[
+ ['직업·일',`당신의 기본 일간 ${c.dayMaster.stem}과 월주 ${c.pillars.month.god}의 조합은 일에서 ‘${GOD_DESC[c.pillars.month.god]||'역할과 환경'}’을 중요하게 보는 편으로 읽힙니다. ${common} 새로운 일을 고를 때는 단순히 운이 좋다는 문장보다, 책임 범위와 성장 가능성이 자신의 강점을 살리는지 확인하는 것이 좋습니다.`],
+ ['재물',`오행에서 ${el.top[0]}가 가장 두드러지고 ${el.low[0]}가 상대적으로 낮습니다. 재물 해석은 재성 유무만으로 부자·빈자를 판단하지 않습니다. 수입을 만드는 방식, 지출 통제, 장기 대운의 역할 변화가 함께 움직이는지 보는 것이 핵심입니다. ${common}`],
+ ['연애·관계',`관계에서는 일지와 원국의 합·충·형·파·해를 우선 확인하고 신살은 보조로 둡니다. 현재 원국 관계 신호는 ‘${relationSummary(c)}’입니다. 강한 끌림과 안정적인 생활 궁합은 다른 문제일 수 있으므로, 감정의 속도와 실제 책임 분담을 따로 살펴보는 해석이 필요합니다.`],
+ ['생활·건강 리듬',`사주는 질병을 진단하는 도구가 아닙니다. 다만 ${el.top[0]} 기운이 강하고 ${el.low[0]}가 낮은 구조를 생활 리듬의 비유로 활용해, 과로·휴식·수면·활동량처럼 실제로 조절 가능한 부분을 점검할 수 있습니다. 몸의 증상은 운세가 아니라 의료적 기준으로 확인해야 합니다.`],
+ ['학업·자격·전문성',`학습과 자격은 인성·식상 계열 십신, 반복되는 대운·세운 주제, 실제 목표를 함께 봅니다. 현재는 ${c.pillars.month.god}의 성격과 ${lk?.god||'대운'}의 흐름을 연결해 ‘배운 것을 실전에 쓰는가, 전문성을 축적하는가’를 중심으로 계획을 세우는 편이 좋습니다.`]
+ ];
+ return `<div class="deepCard card"><div class="miniTitle">분야별 운세</div><h3>한 줄 운세가 아니라 원국 × 대운 × 세운으로 읽습니다</h3><p>각 분야는 좋은/나쁜 점수 대신 실제 계산값이 어떤 생활 주제로 이어지는지 설명합니다.</p></div>`+
+ rows.map(([n,t])=>`<div class="deepCard card"><h3>${n}</h3><p>${t}</p><div class="evidenceLine">근거 · 일간 ${c.dayMaster.stem} · 월주 ${c.pillars.month.god} · 현재 대운 ${lk?.god||'-'} · 2026 세운 ${yg||'-'}</div></div>`).join('');
+}
+function starDetails(c){
+ const raw=c.stars?.hits||[], seen=new Set(), hits=raw.filter(h=>{const k=h.name+'|'+(h.basis||'');if(seen.has(k))return false;seen.add(k);return true});
+ return `<div class="deepCard card"><h3>신살·귀인 해설</h3><p>현재 엔진은 50종 카탈로그 중 공식화한 <b>${c.stars?.supportedCount||38}종</b>을 실제 계산합니다. 같은 항목이 여러 기둥에서 잡혀도 화면에서는 의미가 중복되지 않도록 정리했습니다.</p>
+ <div class="starGrid">${hits.map(h=>`<div class="starItem"><b>${esc(h.name)}</b><span>${esc(h.meta?.short||h.basis||'전통 명리의 보조 상징입니다.')}</span>${h.meta?.good?`<span>활용 · ${esc(h.meta.good)}</span>`:''}${h.meta?.watch?`<span>주의 · ${esc(h.meta.watch)}</span>`:''}</div>`).join('')||'<p>현재 표시할 신살 항목이 없습니다.</p>'}</div>
+ <div class="evidenceLine">신살은 원국·오행·십신·대운보다 낮은 우선순위의 보조 정보이며, 하나의 신살로 사건을 단정하지 않습니다.</div></div>`;
+}
+function foundationReport(c){
+ const ex=c.extras||{}, nv=ex.nayin||{}, vd=ex.void||{}, roots=ex.roots||[];
+ const stages=c.twelveStages||{};
+ return `<div class="deepCard card"><h3>12운성 · 공망 · 납음 · 통근</h3>
+ <p><b>12운성</b>은 일간을 기준으로 각 지지에서 기운의 생장 단계를 보는 보조 틀입니다. ${Object.entries(stages).map(([k,v])=>`${({year:'년주',month:'월주',day:'일주',hour:'시주'}[k]||k)} ${v}`).join(' · ')}</p>
+ <p><b>공망</b>은 일주 기준 ${(vd.day||[]).join('·')||'없음'}로 계산됩니다. 공망을 ‘무조건 비어 있다’고 단정하지 않고 해당 영역의 체감 방식이 다를 수 있다는 참고값으로 둡니다.</p>
+ <p><b>납음</b>은 년주 ${nv.year||'-'}, 월주 ${nv.month||'-'}, 일주 ${nv.day||'-'}, 시주 ${nv.hour||'-'}입니다. 납음은 원국의 오행 분포를 대체하지 않는 전통 보조 분류입니다.</p>
+ <p><b>통근</b>은 ${roots.length?roots.map(r=>`${({year:'년지',month:'월지',day:'일지',hour:'시지'}[r.pillar]||r.pillar)} ${r.branch}`).join(', ')+'에서 일간과 같은 천간이 지장간에 확인됩니다.':'현재 지장간에서 일간과 같은 천간이 직접 확인되지 않습니다.'}</p></div>`;
+}
+
+
+function expertSectionHTML(s){return `<article class="expertSection"><div class="eyebrow">${GuiinExpert.esc(s.eyebrow)}</div><h3>${GuiinExpert.esc(s.title)}</h3><p>${GuiinExpert.esc(s.body)}</p>${s.evidence?`<div class="evidence">${GuiinExpert.esc(s.evidence)}</div>`:''}</article>`}
+function expertSectionsHTML(sections){return (sections||[]).map(expertSectionHTML).join('')}
+function expertSummaryHTML(c){
+ const s=GuiinExpert.fullSections(c), stars=GuiinExpert.starGroups(c);
+ return `<div class="expertIntro"><h2>${esc(c.input.name)}님의 사주를 한 문장으로 단정하지 않고, 계절과 명식 전체를 연결해 풀어드립니다.</h2><p>일간 → 월령과 계절 → 오행 → 십성 → 지장간과 관계 → 신살·귀인 → 대운·세운 순서로 읽었습니다.</p></div>`+
+ expertSectionsHTML(s.slice(0,6))+
+ `<button class="ctaGreen" style="width:100%;margin:6px 0" onclick="setTab('stars')">내 신살·귀인 ${stars.total}개 자세히 보기 ›</button>`+
+ expertSectionsHTML(s.slice(6));
+}
+function expertStarsHTML(c){
+ const g=GuiinExpert.starGroups(c);
+ const stats=[['귀인·도움',g.cats.귀인],['매력·인연',g.cats.매력인연],['이동·변화',g.cats.이동변화],['강한 기운',g.cats.강한기운],['관계 신호',g.cats.관계신호]];
+ return `<div class="expertIntro"><h2>내 사주에 들어온 신살·귀인을 개수와 위치까지 확인해요.</h2><p>현재 엔진은 50종 카탈로그 중 공식화한 ${g.supportedCount}종만 실제 계산합니다. 같은 별이 같은 기둥에서 중복 계산된 경우 한 번만 셉니다.</p></div><div class="starSummary">${stats.map(x=>`<div class="starStat"><span>${x[0]}</span><b>${x[1]}개</b></div>`).join('')}</div>`+
+ (g.rows.length?g.rows.map(r=>`<article class="starDetail"><div class="top"><h4>${esc(r.name)} — ${esc(r.title)}</h4><span class="starCount">${r.count}개</span></div><p>${esc(r.body)}</p><div class="starWhere"><b>성립 위치</b> · ${r.where.map(esc).join(' / ')}</div><p class="cautionText">해석 주의 · ${esc(r.watch)}</p></article>`).join(''):`<div class="expertSection"><h3>현재 계산된 신살·귀인이 없습니다.</h3><p>신살이 적다고 나쁜 사주라는 뜻은 아닙니다. 원국·오행·십성·대운이 더 중요한 판단 기준입니다.</p></div>`)+
+ `<div class="disclaimerBox">신살은 전통 명리의 보조 해석입니다. 하나의 신살만으로 결혼·재물·질병·사고·성공을 확정하지 않습니다.</div>`;
+}
+function expertFlowHTML(c){
+ const f=GuiinExpert.flowSections(c,2026);
+ return expertSectionsHTML(f.sections)+`<div class="expertSection"><div class="eyebrow">전체 대운 지도</div><h3>10년마다 어떤 주제가 반복되는지 한눈에 봅니다</h3><div class="daeunList">${f.rows.map(r=>`<div class="daeunItem ${r.current?'current':''}"><b>${r.fromAge}~${r.toAge}세 · ${r.ko} 대운 · ${r.god}${r.current?' · 현재':''}</b><p>${esc(r.body)}</p></div>`).join('')}</div></div>`;
+}
+
+
+function prettySummaryHTML(c){
+ const time=c.input.hourUnknown?'모름':(String(c.input.hour).padStart(2,'0')+':'+String(c.input.minute).padStart(2,'0'));
+ let title='흔들려도, 결국 빛나는 사람입니다.';
+ try{const s=GuiinExpert.fullSections(c); if(s&&s[0]&&s[0].title) title=s[0].title;}catch(e){}
+ const quote='“지금의 선택이 더 큰 행복으로 이어질 것입니다.”';
+ return `<div class="lifeHero card">
+   <h3>${esc(c.input.name)}님은<br>${esc(title)}</h3>
+   <p>${quote}</p>
+   <div class="summaryArt"><img src="input-cat.jpg" alt=""></div>
+ </div>
+ <div class="infoCard card"><h3>기본 정보</h3>
+  <div class="infoGrid">
+   <span>이름</span><b>${esc(c.input.name)}</b>
+   <span>생년월일</span><b>${c.input.year}년 ${c.input.month}월 ${c.input.day}일 (${c.input.calendar||'양력'})</b>
+   <span>태어난 시간</span><b>${time==='모름'?time:'오전 '+time}</b>
+   <span>성별</span><b>${c.input.gender==='여'?'여성':'남성'}</b>
+  </div>
+ </div>
+ <div class="slogan card"><b>타고난 빛이, 언제나 길을 만듭니다.</b></div>
+ <button class="ctaGreen" style="width:100%;margin-top:8px" onclick="setTab('chart')">상세 분석 보기 ›</button>`;
+}
+function wongukHTML(c){
+ const order=['year','month','day','hour'];
+ const lab={year:'년주',month:'월주',day:'일주',hour:'시주'};
+ const ps=c.pillars||{};
+ const cells=order.map(k=>{
+  const p=ps[k]||{};
+  const stem=(p.stem||p.ko||'·')[0]||'·';
+  const branch=(p.branch||(p.ko||'··')[1]||'·');
+  const god=p.god||'';
+  return `<div class="wongukCell"><em>${lab[k]}</em><strong>${esc(stem)}</strong><b>${esc(branch)}</b><span>${esc(god)}</span></div>`;
+ }).join('');
+ const pct=(typeof GuiinExpert!=='undefined'&&GuiinExpert.pct)?GuiinExpert.pct(c):pctElements(c);
+ const els=['목','화','토','금','수'];
+ const colors=['#7ebd7a','#e8847a','#e2b15a','#b7b7b7','#7eb4d8'];
+ const elBox=els.map((e,i)=>`<div class="el"><b>${e}</b><span>${pct[e]||0}%</span></div>`).join('');
+ const bar=els.map((e,i)=>`<i style="width:${pct[e]||0}%;background:${colors[i]}"></i>`).join('');
+ const yin=52,yang=48;
+ return `<div class="wongukCard card"><h3>사주 원국 (사주팔자)</h3><div class="wongukGrid">${cells}</div></div>
+ <div class="wongukCard card"><h3>오행 분포</h3><div class="elements">${elBox}</div><div class="elBarMix">${bar}</div></div>
+ <div class="wongukCard card"><h3>음양 분포</h3><div class="yy"><div class="yin">음<strong>${yin}%</strong></div><div class="yang">양<strong>${yang}%</strong></div></div>
+ <p class="help" style="margin-top:8px">오행이 조화를 이루고 있어, 균형 잡힌 에너지를 가지고 있습니다.</p></div>`;
+}
+function mockPersonalityHTML(c){
+ let secs=[];
+ try{secs=GuiinExpert.personalitySections(c)||[];}catch(e){}
+ const q=secs[0]?.title||'따뜻한 마음과 강한 의지를 가진 당신은, 어떤 상황에서도 다시 일어서는 힘이 있습니다.';
+ const body=secs[0]?.body||secs[1]?.body||'강한 책임감과 추진력을 지니고 있으며, 주변 사람들에게 안정감과 신뢰를 주는 편입니다.';
+ const goods=(secs[1]?.body||'리더십과 결단력 / 따뜻한 배려심 / 현실적인 판단력').split(/[./·\n]/).map(s=>s.trim()).filter(s=>s.length>3).slice(0,4);
+ const cares=(secs[2]?.body||'너무 많은 책임을 혼자 지지 않기 / 감정 소모를 줄이고 휴식 시간 갖기').split(/[./·\n]/).map(s=>s.trim()).filter(s=>s.length>3).slice(0,3);
+ return `<div class="mockQuote card"><p>“${esc(q)}”</p></div>
+ <div class="listCard card"><h3>기본 성향</h3><p class="flowText">${esc(body)}</p></div>
+ <div class="listCard card"><h3>장점</h3>${(goods.length?goods:['꾸준함','배려','결단력']).map(g=>`<div class="bullet"><i></i><span>${esc(g)}</span></div>`).join('')}</div>
+ <div class="listCard card"><h3>보완하면 좋은 점</h3>${(cares.length?cares:['휴식을 챙기기']).map(g=>`<div class="bullet"><i></i><span>${esc(g)}</span></div>`).join('')}</div>
+ <div class="slogan card"><b>당신의 노력은 반드시 좋은 결실로 이어질 것입니다.</b></div>
+ <button class="ctaGold" onclick="setTab('summary')">사주 요약으로 ›</button>`;
+}
+function mockFieldsHTML(c){
+ let secs=[];
+ try{secs=GuiinExpert.fieldSections(c)||[];}catch(e){}
+ const fallback=[['직업운','새로운 도전이 좋은 결과로 이어질 수 있는 시기입니다.'],['재물운','작은 수익이 쌓여 큰 결실이 되는 흐름입니다.'],['연애운','진심이 통하는 인연을 만날 가능성이 높습니다.'],['건강운','충분한 휴식과 규칙적인 생활이 필요합니다.'],['학업/자격운','꾸준한 노력이 실력으로 인정받는 시기입니다.']];
+ const rows=fallback.map((f,i)=>{
+  const s=secs[i];
+  return [s?.title||f[0], s?.body||f[1]];
+ });
+ const icons=[ICONS.brief,ICONS.money,ICONS.heart,ICONS.plus,ICONS.book];
+ return `<div class="categoryList card">${rows.map((r,i)=>`<div class="categoryRow"><div class="catIcon">${icons[i]||ICONS.leaf}</div><div><b>${esc(r[0])}</b><span>${esc(String(r[1]).slice(0,52))}</span></div></div>`).join('')}</div>
+ <div class="slogan card"><b>당신의 오늘이, 더 좋은 내일을 만듭니다.</b></div>`;
+}
+function mockFlowHTML(c){
+ let f={sections:[],rows:[]};
+ try{f=GuiinExpert.flowSections(c,new Date().getFullYear())||f;}catch(e){}
+ const rows=f.rows||[];
+ const cur=rows.find(r=>r.current)||rows[2]||{};
+ const dots=['20대','30대','40대','50대','60대'].map((lab,i)=>{
+  const on=(cur.fromAge&&String(cur.fromAge).startsWith(String(20+i*10))) || i===1;
+  return `<span class="${on?'on':''}"></span>`;
+ }).join('');
+ const body=cur.body||'새로운 기회를 맞이하고, 자신이 원하는 방향으로 나아갈 수 있는 중요한 시기입니다. 꾸준한 노력이 더 큰 성과로 이어질 것입니다.';
+ return `<div class="infoCard card"><h3>대운 흐름 (10년 주기)</h3>
+  <div class="flowTrack">${dots}</div>
+  <div class="flowLabels"><span>20대</span><span>30대</span><span>40대</span><span>50대</span><span>60대</span></div>
+  <p class="flowText" style="margin-top:10px"><b>${esc(cur.ko||'현재 대운')} (${esc(String(cur.fromAge||30))}~${esc(String(cur.toAge||40))}세)</b><br>${esc(body)}</p>
+  <div class="chips" style="margin-top:10px"><span class="chip">도전</span><span class="chip">성장</span><span class="chip">기회</span><span class="chip">재물운</span><span class="chip">인간관계</span></div>
+ </div>
+ <div class="slogan card"><b>지금의 경험이 더 큰 미래를 만듭니다.</b></div>
+ ${(f.sections&&f.sections.length)?expertSectionsHTML(f.sections):''}`;
+}
+function renderYearLuck(){
+ const y=new Date().getFullYear();
+ $('yearView').innerHTML=`<div class="tabs green"><button class="on">대운</button><button onclick="openResultTab('flow')">세운</button><button>월운</button><button>일운</button></div>
+  ${chart?mockFlowHTML(chart):`<div class="infoCard card"><p class="flowText">사주를 먼저 계산하면 내 대운이 표시됩니다.</p><button class="ctaGold" onclick="go('saju')">사주 입력하기 ›</button></div>`}`;
+}
+
+function renderResult(){
+ if(!chart)return;
+ document.querySelectorAll('#resultTabs button').forEach(b=>b.classList.toggle('on',b.dataset.tab===currentTab));
+ const c=chart;
+ const manseTop=(typeof GuiinManse!=='undefined')?GuiinManse.render(c,{title:c.input.name+'님의 만세력',eyebrow:'내 사주'}):'';
+ if(currentTab==='summary'){
+  $('resultView').innerHTML=prettySummaryHTML(c);
+ } else if(currentTab==='personality'){
+  $('resultView').innerHTML=mockPersonalityHTML(c);
+ } else if(currentTab==='fields'){
+  $('resultView').innerHTML=mockFieldsHTML(c);
+ } else if(currentTab==='stars'){
+  $('resultView').innerHTML=manseTop+expertStarsHTML(c);
+ } else if(currentTab==='flow'){
+  $('resultView').innerHTML=mockFlowHTML(c)+manseTop;
+ } else if(currentTab==='chart'){
+  $('resultView').innerHTML=wongukHTML(c)+manseTop;
+ }
+}
+function setTab(t){currentTab=t;renderResult()}
+function advanced(c){return expertStarsHTML(c)+expertSectionsHTML(GuiinExpert.foundationSections(c));}
+let matchAnalysis=null, matchTab='summary', matchBaseHTML='';
+
+function compatEsc(s){
+ return String(s??'').replace(/[&<>"']/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]));
+}
+function renderCompatCards(){
+ if(!matchAnalysis)return;
+ document.querySelectorAll('#matchTabs button').forEach(b=>b.classList.toggle('on',b.dataset.matchTab===matchTab));
+ const sections=GuiinCompat.pick(matchAnalysis,matchTab);
+ const label=matchTab==='summary'?'두 사람의 궁합을 8가지 관점으로 읽습니다.':matchTab==='love'?'끌림·표현·갈등을 중심으로 읽습니다.':matchTab==='marriage'?'생활·책임·장기 관계를 중심으로 읽습니다.':'상대방의 성향과 나와 만났을 때의 반응을 중심으로 읽습니다.';
+ const cards=sections.map((s,i)=>`<div class="compatDetailCard card"><div class="compatNo">${matchTab==='summary'?String(i+1).padStart(2,'0'):'상세'}</div><h3>${compatEsc(s.title)}</h3><p>${compatEsc(s.body)}</p><div class="compatEvidence">왜 이렇게 읽었나요? · ${compatEsc(s.evidence)}</div></div>`).join('');
+ $('matchView').innerHTML=matchBaseHTML+`<div class="compatIntro card"><h3>${matchTab==='summary'?'8가지로 보는 두 사람의 궁합':'선택한 관점의 상세 해석'}</h3><p>${label} 한 가지 합·충이나 점수만으로 좋고 나쁨을 단정하지 않고, 일간·일지·오행·십신·대운을 함께 봅니다.</p></div>`+cards+
+ `<div class="slogan card"><b>궁합은 관계의 결을 읽는 참고 자료입니다.</b><br>실제 관계의 선택과 결과는 두 사람의 대화, 경계, 책임 분담에 따라 달라질 수 있습니다.</div>`;
+}
+function setMatchTab(tab){
+ matchTab=tab||'summary';
+ renderCompatCards();
+ window.scrollTo({top:0,behavior:'smooth'});
+}
+function submitMatch(){
+ try{
+  const a=GuiinSaju.calculate(profileInput('a')), b=GuiinSaju.calculate(profileInput('b'));
+  const pa=GuiinExpert.pct(a),pb=GuiinExpert.pct(b);
+  const distance=['목','화','토','금','수'].reduce((s,e)=>s+Math.abs(pa[e]-pb[e]),0);
+  const balance=Math.max(0,20-Math.round(distance/5));
+  const same=a.dayMaster.el===b.dayMaster.el?4:0;
+  const dayGap=Math.min((a.pillars.day.branchIndex-b.pillars.day.branchIndex+12)%12,(b.pillars.day.branchIndex-a.pillars.day.branchIndex+12)%12);
+  const relationBonus=dayGap===6?-4:(dayGap===4||dayGap===8?4:0);
+  const score=Math.max(60,Math.min(96,72+balance+same+relationBonus));
+  const love=Math.max(55,Math.min(98,score+(dayGap===4||dayGap===8?5:0)));
+  const personality=Math.max(55,Math.min(98,score+Math.round((20-distance/5)/2)));
+  const money=Math.max(55,Math.min(98,Math.round((100-(Math.abs(pa['토']-pb['토'])+Math.abs(pa['금']-pb['금'])))*.35+55)));
+  const future=Math.max(55,Math.min(98,Math.round((score+personality)/2)));
+  const band=score>=86?'서로의 장점을 살릴 여지가 큰 관계입니다.':score>=76?'맞는 부분과 조율할 부분이 함께 있는 관계입니다.':score>=66?'끌림과 차이가 함께 있어 생활 조율이 중요한 관계입니다.':'점수보다 대화와 경계 설정이 특히 중요한 관계입니다.';
+  matchBaseHTML=`<div class="matchHero card"><h3>두 사람의 인연은 특별합니다.</h3><p>“좋은 인연이, 더 행복한 내일을 만듭니다.”</p><div class="matchArt"><img loading="lazy" decoding="async" src="compat-animals.jpg" alt=""></div><div style="font-size:9px;margin-top:7px">귀인사주 참고 궁합 지수</div><div class="score">♥ ${score}<small>점</small></div><p>${band}</p></div>
+   <div class="infoCard card"><div class="pair"><div class="person"><b>나<br>${esc(a.input.name)}</b><br>${a.input.year}.${a.input.month}.${a.input.day}<br>${a.input.gender==='여'?'여성':'남성'}</div><div class="heartSvg">${ICONS.heart}</div><div class="person b"><b>상대방<br>${esc(b.input.name)}</b><br>${b.input.year}.${b.input.month}.${b.input.day}<br>${b.input.gender==='여'?'여성':'남성'}</div></div></div>
+   <div class="infoCard card"><h3>세부 궁합 지수</h3>${[['연애궁합',love,'pink'],['성격궁합',personality,'mint'],['재물궁합',money,'gold'],['미래궁합',future,'purple']].map(x=>`<div class="scoreRow"><span>${x[0]}</span><div class="scoreBar"><i class="${x[2]}" style="width:${x[1]}%"></i></div><b>${x[1]}</b></div>`).join('')}</div>`+
+   ((typeof GuiinManse!=='undefined')?GuiinManse.renderPair(a,b):'');
+  if(typeof GuiinCompat==='undefined') throw new Error('compatibility-interpreter.js가 로드되지 않았습니다.');
+  matchAnalysis=GuiinCompat.build(a,b,score);
+  matchTab='summary';
+  renderCompatCards();
+  go('matchResult');
+ }catch(e){
+  console.error(e);
+  alert('두 사람의 생년월일을 확인해 주세요.');
+ }
+}
+function renderToday(){
+ const d=new Date();
+ const days=['일','월','화','수','목','금','토'];
+ $('todayView').innerHTML=`<div class="todayHero card"><div class="todayArt"><img loading="lazy" decoding="async" src="today-dog.jpg" alt=""></div><h3>오늘도 좋은 일이 찾아와요!</h3><p>“작은 행복이 모여, 큰 행운이 됩니다.”</p></div>
+  <div class="todayDate">${d.getFullYear()}년 ${d.getMonth()+1}월 ${d.getDate()}일 (${days[d.getDay()]})</div>
+  <p class="help" style="text-align:center;margin:0 8px 8px">오늘은 새로운 인연과 기회가 다가오는 날이에요. 평소보다 긍정적인 마음이 좋은 흐름을 만듭니다.</p>
+  <div class="fortuneList card" style="margin-top:9px">${[
+   ['총운','좋은 기운이 흐르는 날이에요.'],['애정운','설레는 인연이 다가올 수 있어요.'],['재물운','작은 수익이 생길 수 있어요.'],['직장운','노력의 결실이 보이는 날이에요.'],['건강운','충분한 휴식이 필요해요.']
+  ].map((x,i)=>`<div class="fortuneRow"><div class="fIcon">${[ICONS.money,ICONS.heart,ICONS.money,ICONS.brief,ICONS.plus][i]}</div><div><b>${x[0]}</b><span>${x[1]}</span></div></div>`).join('')}</div>
+  <div class="slogan card"><b>오늘의 조언</b><br>좋은 사람들과의 소중한 시간을 더 만들어 보세요.</div><button class="ctaGold">상세 운세 보기 ›</button>`;
+}
+restoreProfile();renderToday();
+const COPY_KEY='guiin_copy_v1', COIN_KEY='guiin_coins_v1';
+const defaultCopy={sub:'좋은 인연이, 좋은 운을 만듭니다.',daily:'오늘 나에게 들어오는 기운과 주의할 점',life:'성격, 직업, 재물, 연애, 대운까지',gung:'두 사람의 인연과 갈등, 결혼 흐름까지',welcome:'사주를 먼저 계산해 두면 원국 기준으로 답합니다. 직업, 연애, 올해 흐름 중 무엇이 궁금한가요?'};
+function loadCopy(){try{return Object.assign({},defaultCopy,JSON.parse(localStorage.getItem(COPY_KEY)||'{}'))}catch(e){return Object.assign({},defaultCopy)}}
+function loadWallet(){try{return JSON.parse(localStorage.getItem(COIN_KEY)||'{"coins":0,"ledger":[]}')}catch(e){return {coins:0,ledger:[]}}}
+let siteCopy=loadCopy(), wallet=loadWallet();
+function applyCopy(){
+  document.querySelectorAll('.brand small').forEach(el=>{if(el)el.textContent=siteCopy.sub});
+  const tiles=document.querySelectorAll('.tile p');
+  if(tiles[0])tiles[0].textContent=siteCopy.daily;
+  if(tiles[1])tiles[1].textContent=siteCopy.life;
+  if(tiles[2])tiles[2].textContent=siteCopy.gung;
+  if($('welcomeBot'))$('welcomeBot').textContent=siteCopy.welcome;
+  if($('coinView'))$('coinView').textContent=wallet.coins;
+  if($('fSub')){$('fSub').value=siteCopy.sub;$('fDaily').value=siteCopy.daily;$('fLife').value=siteCopy.life;$('fGung').value=siteCopy.gung;$('fWelcome').value=siteCopy.welcome;}
+  renderLedger();
+}
+function saveCopy(){
+  siteCopy={sub:$('fSub').value.trim()||defaultCopy.sub,daily:$('fDaily').value.trim()||defaultCopy.daily,life:$('fLife').value.trim()||defaultCopy.life,gung:$('fGung').value.trim()||defaultCopy.gung,welcome:$('fWelcome').value.trim()||defaultCopy.welcome};
+  localStorage.setItem(COPY_KEY,JSON.stringify(siteCopy)); applyCopy();
+  $('saveMsg').textContent='저장됐습니다. 홈과 상담 화면에 반영됐어요.';
+}
+function persistWallet(){localStorage.setItem(COIN_KEY,JSON.stringify(wallet)); applyCopy();}
+function renderLedger(){
+  if(!$('ledger'))return;
+  $('ledger').innerHTML=wallet.ledger.slice(0,12).map(r=>`${r.t} · ${r.text} (${r.delta>0?'+':''}${r.delta})`).join('<br>')||'아직 내역이 없습니다.';
+}
+function charge(n){
+  wallet.coins+=n;
+  wallet.ledger.unshift({t:new Date().toLocaleString('ko-KR',{hour12:false}),text:`사주아이 ${n}개 데모 충전`,delta:n});
+  persistWallet();
+  $('payMsg').textContent=`${n}개 충전 완료. 지금 ${wallet.coins}개 보유. 실제 결제는 아직 연결되지 않았습니다.`;
+}
+function replyFor(q){
+  const c=chart;
+  const base=c?`${c.input.name}님 원국은 ${c.pillars.year.ko}·${c.pillars.month.ko}·${c.pillars.day.ko}${c.pillars.hour?'·'+c.pillars.hour.ko:''}입니다. `:'아직 명식이 없어 일반 해설로 답합니다. 사주를 먼저 계산하면 더 정확합니다. ';
+  if(/재물|돈|수입/.test(q)) return base+(c?`월주 십신은 ${c.pillars.month.god}입니다. 재물은 재성 한 글자가 아니라 수입 방식과 대운을 함께 봅니다.`:'작은 수입이 쌓이는지, 지출이 먼저 커지는지를 생활에서 먼저 보세요.');
+  if(/이직|직업|직장/.test(q)) return base+(c?`일간 ${c.dayMaster.stem}과 월주 ${c.pillars.month.god}을 일로 읽을 때는 권한·리듬이 맞는지가 핵심입니다.`:'옮긴다면 연봉보다 역할과 회복 가능한 업무량을 보세요.');
+  if(/연애|결혼|인연/.test(q)) return base+'설렘과 생활 궁합은 별개입니다. 합·충은 사건이 아니라 조율 신호로 봅니다.';
+  return base+'질문을 한 가지로 좁혀주시면 대운·세운과 교차해서 더 구체적으로 볼게요.';
+}
+function sendQ(preset){
+  const input=$('askQ'); const q=(preset||input.value||'').trim(); if(!q)return;
+  if(wallet.coins<1){ $('msgs').innerHTML+=`<div class="sysnote">사주아이가 부족합니다. 충전 후 이어서 질문할 수 있어요.</div>`; go('wallet'); return; }
+  wallet.coins-=1;
+  wallet.ledger.unshift({t:new Date().toLocaleString('ko-KR',{hour12:false}),text:'질문 차감 · '+q.slice(0,18),delta:-1});
+  persistWallet();
+  $('msgs').innerHTML+=`<div class="bubble me">${esc(q)}</div><div class="sysnote">사주아이 1개 차감 · 남은 ${wallet.coins}개</div><div class="bubble bot">${esc(replyFor(q))}</div>`;
+  input.value=''; $('msgs').scrollTop=$('msgs').scrollHeight;
+}
+applyCopy();
+const h=location.hash.replace('#','');if(['home','saju','result','match','matchResult','today','mypage','ask','wallet','admin','guide','manage','yearLuck'].includes(h))go(h);
+</script>
+</body>
+</html>
