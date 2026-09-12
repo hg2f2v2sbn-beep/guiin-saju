@@ -161,7 +161,7 @@ html{background:#efe7d7}.app{background:linear-gradient(180deg,#fffaf0 0%,#fff6e
 .bubble.me{margin-left:auto;background:#285d32;color:#fff;border-bottom-right-radius:4px}
 .bubble.bot{background:#fff;border:1px solid var(--line);border-bottom-left-radius:4px}
 .sysnote{text-align:center;font-size:11px;color:#8a8378;margin:8px 0}
-.composer{display:flex;gap:8px}.composer input{flex:1}
+.composer{display:flex;gap:8px;position:sticky;bottom:76px;z-index:80;pointer-events:auto;background:linear-gradient(180deg,rgba(255,250,240,0),#fffaf0 18%);padding:8px 0 6px}.composer input{flex:1;position:relative;z-index:81}.composer button{position:relative!important;z-index:82!important;pointer-events:auto!important;touch-action:manipulation!important}#ask .qchip{position:relative;z-index:60;pointer-events:auto;touch-action:manipulation}
 .qchip{display:inline-block;background:#f5f0e4;border-radius:999px;padding:6px 10px;font-size:12px;margin:3px 4px 3px 0;border:0}
 .adminNote{font-size:12px;color:#7a7368;line-height:1.5}
 
@@ -434,13 +434,13 @@ html{background:#efe7d7}.app{background:linear-gradient(180deg,#fffaf0 0%,#fff6e
     <div class="bubble bot" id="welcomeBot">사주를 먼저 계산해 두면 원국 기준으로 답합니다. 직업, 연애, 올해 흐름 중 무엇이 궁금한가요?</div>
   </div>
   <div>
-    <button class="qchip" type="button" data-ai-question="올해 재물운이 어떤가요?">올해 재물운</button>
-    <button class="qchip" type="button" data-ai-question="지금 이직해도 될까요?">이직 타이밍</button>
-    <button class="qchip" type="button" data-ai-question="연애운이 언제 들어올까요?">연애 시기</button>
+    <button class="qchip" type="button" onclick="return window.guiinSendAI(event,'올해 재물운이 어떤가요?')" data-ai-question="올해 재물운이 어떤가요?">올해 재물운</button>
+    <button class="qchip" type="button" onclick="return window.guiinSendAI(event,'지금 이직해도 될까요?')" data-ai-question="지금 이직해도 될까요?">이직 타이밍</button>
+    <button class="qchip" type="button" onclick="return window.guiinSendAI(event,'연애운이 언제 들어올까요?')" data-ai-question="연애운이 언제 들어올까요?">연애 시기</button>
   </div>
   <div class="composer" style="margin-top:8px">
     <input id="askQ" maxlength="800" autocomplete="off" placeholder="궁금한 점을 물어보세요">
-    <button id="askSendBtn" type="button" class="ctaGreen" style="min-width:88px;position:relative;z-index:20;pointer-events:auto;touch-action:manipulation">보내기</button>
+    <button id="askSendBtn" type="button" onclick="return window.guiinSendAI(event)" class="ctaGreen" style="min-width:88px;position:relative;z-index:20;pointer-events:auto;touch-action:manipulation">보내기</button>
   </div>
 </section>
 
@@ -548,9 +548,18 @@ function saveProfile(c){
 function restoreProfile(){
  try{
   const v=JSON.parse(localStorage.getItem('guiin_last')); if(!v)return;
-  $('name').value=v.name||'';$('year').value=v.year||'';$('month').value=v.month||'';$('day').value=v.day||'';$('hour').value=v.hour??'';$('minute').value=v.minute??'';
+  if($('name'))$('name').value=v.name||'';
+  if($('year'))$('year').value=v.year||'';
+  if($('month'))$('month').value=v.month||'';
+  if($('day'))$('day').value=v.day||'';
+  if($('hour'))$('hour').value=v.hour??'';
+  if($('minute'))$('minute').value=v.minute??'';
   $('homeName').textContent=(v.name||'사용자')+'님 ›';$('homeBirth').textContent=`${v.year}년 ${v.month}월 ${v.day}일 (${v.calendar||'양력'})`;
   $('myName').textContent=(v.name||'사용자')+'님';$('myBirth').textContent=`${v.year}년 ${v.month}월 ${v.day}일 (${v.calendar||'양력'})`;
+  // 새로고침 후에도 AI 상담이 원국을 쓰도록 저장된 프로필로 chart를 다시 계산
+  if(v.year&&v.month&&v.day&&typeof GuiinSaju!=='undefined'){
+   try{chart=GuiinSaju.calculate(v);}catch(_e){chart=null;}
+  }
  }catch(e){}
 }
 function submitSaju(){
@@ -829,10 +838,14 @@ function guiinAppend(cls,text){
   const d=document.createElement('div'); d.className=cls; d.textContent=text; box.appendChild(d); box.scrollTop=box.scrollHeight;
 }
 function guiinChartPayload(){
-  if(!chart||!chart.pillars)return null;
+  if(!chart||!chart.pillars){
+    return {year:'미계산',month:'미계산',day:'미계산',hour:'출생시간 모름'};
+  }
   const val=p=>p&&((p.ko||'')||(String(p.stem||'')+String(p.branch||'')));
   const out={year:val(chart.pillars.year),month:val(chart.pillars.month),day:val(chart.pillars.day),hour:val(chart.pillars.hour)};
-  if(!out.year||!out.month||!out.day) return null;
+  if(!out.year) out.year='미계산';
+  if(!out.month) out.month='미계산';
+  if(!out.day) out.day='미계산';
   if(!out.hour) out.hour='출생시간 모름';
   return out;
 }
@@ -841,15 +854,17 @@ async function sendQ(preset){
   if(guiinAISending)return;
   const input=$('askQ');
   const q=String(preset || (input?input.value:'') || '').trim();
-  if(!q){ if(input){input.focus();input.placeholder='질문을 입력해 주세요';} return; }
+  if(!q){ if(input){input.focus();input.placeholder='질문을 입력해 주세요';} guiinAppend('sysnote','질문을 입력하거나 아래 칩을 눌러 주세요.'); return; }
 
   let buttons=[];
   let status=null;
   try{
-    const cp=guiinChartPayload();
+    let cp=guiinChartPayload();
     if(!cp){
-      guiinAppend('sysnote','먼저 사주를 계산해 주세요. 계산한 명식을 기준으로 AI가 답변합니다.');
-      return;
+      try{restoreProfile();cp=guiinChartPayload();}catch(_e){}
+    }
+    if(!cp){
+      guiinAppend('sysnote','명식이 없어 일반 해설로 답합니다. 사주를 계산하면 원국 기준으로 더 정확해집니다.');
     }
     let used=0;
     try{used=guiinFreeUsed();}catch(_e){used=0;}
@@ -911,20 +926,31 @@ async function sendQ(preset){
   }
 }
 
-// Bind controls after DOM creation. This avoids inline onclick regressions on iPhone/Safari.
-(function bindAIControls(){
-  const send=$('askSendBtn');
-  if(send){
-    send.addEventListener('click',function(e){e.preventDefault();e.stopPropagation();sendQ();},{passive:false});
-    send.addEventListener('touchend',function(e){e.preventDefault();sendQ();},{passive:false});
+// AI controls: one global entry point used by inline onclick and delegated fallback.
+// This survives iPhone Safari event quirks and prevents silent dead buttons.
+window.guiinSendAI=function(ev,preset){
+  try{
+    if(ev){ev.preventDefault();ev.stopPropagation();}
+    sendQ(preset);
+  }catch(err){
+    console.error('GUIIN_AI_BUTTON_ERROR',err);
+    guiinAppend('sysnote','상담 버튼 오류가 발생했습니다. 페이지를 새로고침한 뒤 다시 시도해 주세요.');
   }
-  document.querySelectorAll('#ask [data-ai-question]').forEach(function(btn){
-    btn.addEventListener('click',function(e){e.preventDefault();sendQ(btn.getAttribute('data-ai-question'));},{passive:false});
-  });
+  return false;
+};
+(function bindAIControls(){
   const input=$('askQ');
   if(input)input.addEventListener('keydown',function(e){
-    if(e.key==='Enter'&&!e.isComposing){e.preventDefault();sendQ();}
+    if(e.key==='Enter'&&!e.isComposing){window.guiinSendAI(e);}
   });
+  // Fallback for browsers that strip/ignore inline handlers.
+  document.addEventListener('click',function(e){
+    const btn=e.target&&e.target.closest?e.target.closest('#askSendBtn,#ask [data-ai-question]'):null;
+    if(!btn)return;
+    // Inline onclick already handled the event in normal browsers.
+    if(e.defaultPrevented)return;
+    window.guiinSendAI(e,btn.getAttribute('data-ai-question')||undefined);
+  },false);
 })();
 
 applyCopy();
