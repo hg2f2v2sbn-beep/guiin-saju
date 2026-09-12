@@ -303,7 +303,7 @@ html{background:#efe7d7}.app{background:linear-gradient(180deg,#fffaf0 0%,#fff6e
     <div class="tile"><div class="ico"><svg viewBox="0 0 24 24"><path d="M12 20s-8-4.8-8-10a4.5 4.5 0 018-2.8A4.5 4.5 0 0120 10c0 5.2-8 10-8 10z" fill="currentColor"/></svg></div><span class="badge">2,900원 · 결제 준비중</span><b>우리 궁합</b><p>두 사람의 인연과 갈등, 결혼 흐름까지</p><button onclick="go('match')">궁합 보기 ›</button></div>
     <div class="tile"><div class="ico"><svg viewBox="0 0 24 24"><path d="M4 20V10h3v10H4zm6 0V5h3v15h-3zm6 0V2h3v18h-3z" fill="currentColor"/></svg></div><b>대운·세운·연운</b><p>10년 단위 대운과 올해의 흐름</p><button onclick="openResultTab('flow')">운의 흐름 보기 ›</button></div>
     <div class="tile"><div class="ico"><svg viewBox="0 0 24 24"><path d="M12 21V10M12 10C6 10 4 7 4 3c5 0 8 2 8 7zm0 0c6 0 8-3 8-7-5 0-8 2-8 7z" fill="currentColor"/></svg></div><b>내 사주관리</b><p>저장한 프로필로 더 빠르고 편리하게</p><button onclick="go('mypage')">내 프로필 보기 ›</button></div>
-    <div class="tile"><div class="ico"><svg viewBox="0 0 24 24"><path d="M12 2l3 6 6 .8-4.5 4.4 1.2 6.2L12 16.5 6.3 19.4l1.2-6.2L3 8.8 9 8z" fill="currentColor"/></svg></div><b>사주에게 묻기</b><p>질문 1회 990원 · 사주아이로 차감되며 이어서 대화</p><button onclick="go('ask')">질문하러 가기 ›</button></div>
+    <div class="tile"><div class="ico"><svg viewBox="0 0 24 24"><path d="M12 2l3 6 6 .8-4.5 4.4 1.2 6.2L12 16.5 6.3 19.4l1.2-6.2L3 8.8 9 8z" fill="currentColor"/></svg></div><b>사주에게 묻기</b><p>처음 3번 무료 · 이후 ☘ 3개 1,100원으로 이어서 상담</p><button onclick="go('ask')">질문하러 가기 ›</button></div>
   </div>
 
   <div class="slogan card"><b>좋은 인연이, 좋은 운을 만듭니다.</b><br>귀인사주는 당신의 오늘이 조금 더 빛나길 응원합니다.</div>
@@ -425,9 +425,9 @@ html{background:#efe7d7}.app{background:linear-gradient(180deg,#fffaf0 0%,#fff6e
   <div class="topbar">
     <button class="ghost" onclick="go('home')" aria-label="뒤로"><svg viewBox="0 0 24 24" width="20" height="20"><path d="M15 5l-7 7 7 7" fill="none" stroke="currentColor" stroke-width="2"/></svg></button>
     <div class="brand"><div class="brandline">사주에게 묻기</div></div>
-    <button class="ghost" onclick="go('wallet')">사주아이</button>
+    <button class="ghost" onclick="go('wallet')" style="font-size:11px;font-weight:900;white-space:nowrap">☘ 충전</button>
   </div>
-  <div class="creditBar"><div><div style="font-size:12px;opacity:.85">보유 사주아이</div><b id="coinView">0</b><span style="font-size:13px"> 개</span></div><button class="ctaGold" style="width:auto;margin:0;padding:10px 14px" onclick="go('wallet')">충전하기</button></div>
+  <div class="creditBar"><div><div style="font-size:12px;opacity:.85">AI 무료 상담</div><b id="freeRemainView">3</b><span style="font-size:13px">회 남음</span><div style="font-size:11px;opacity:.82;margin-top:3px">보유 ☘ <span id="coinView">0</span>개</div></div><button class="ctaGold" style="width:auto;margin:0;padding:10px 14px" onclick="go('wallet')">☘ 충전</button></div>
   <p class="adminNote">AI 상담은 처음 3번 무료입니다. 무료 질문 이후에는 네잎클로버를 사용해 이어서 상담할 수 있어요.</p>
   <div class="msgs" id="msgs">
     <div class="sysnote">귀인사주 상담이 시작되었습니다</div>
@@ -447,16 +447,15 @@ html{background:#efe7d7}.app{background:linear-gradient(180deg,#fffaf0 0%,#fff6e
 <section id="wallet" class="screen">
   <div class="topbar">
     <button class="ghost" onclick="go('ask')" aria-label="뒤로"><svg viewBox="0 0 24 24" width="20" height="20"><path d="M15 5l-7 7 7 7" fill="none" stroke="currentColor" stroke-width="2"/></svg></button>
-    <div class="brand"><div class="brandline">사주아이 충전</div></div>
+    <div class="brand"><div class="brandline">☘ 네잎클로버 충전</div></div>
     <span></span>
   </div>
   <div class="formCard card">
-    <p class="adminNote">1 사주아이 = 990원. 평생사주와 같은 단위입니다. 지금은 결제 준비중이라 데모 충전만 됩니다.</p>
-    <div class="row2">
-      <button class="ctaGold" onclick="charge(1)">1개 · 990원</button>
-      <button class="ctaGold" onclick="charge(3)">3개 · 2,970원</button>
-      <button class="ctaGold" onclick="charge(5)">5개 · 4,950원</button>
-      <button class="ctaGold" onclick="charge(10)">10개 · 9,900원</button>
+    <p class="adminNote">AI 상담은 처음 3번 무료입니다. 이후에는 네잎클로버 1개로 질문 1회를 이용할 수 있어요.</p>
+    <div class="card" style="padding:16px;margin:12px 0;background:#fffaf0">
+      <div style="font-size:12px;color:#8b806f;font-weight:800">AI 상담 이용권</div>
+      <div style="display:flex;justify-content:space-between;align-items:end;margin-top:7px"><div><b style="font-size:22px;color:#285d32">☘ 3개</b><div style="font-size:11px;color:#7e7669;margin-top:4px">AI 상담 질문 3회</div></div><strong style="font-size:22px;color:#2f3028">1,100원</strong></div>
+      <button class="ctaGold" onclick="payNotReady()">1,100원 결제하기</button>
     </div>
     <p id="payMsg" class="adminNote"></p>
   </div>
@@ -800,6 +799,7 @@ function applyCopy(){
   if(tiles[2])tiles[2].textContent=siteCopy.gung;
   if($('welcomeBot'))$('welcomeBot').textContent=siteCopy.welcome;
   if($('coinView'))$('coinView').textContent=wallet.coins;
+  if($('freeRemainView'))$('freeRemainView').textContent=Math.max(0,3-guiinFreeUsed());
   if($('fSub')){$('fSub').value=siteCopy.sub;$('fDaily').value=siteCopy.daily;$('fLife').value=siteCopy.life;$('fGung').value=siteCopy.gung;$('fWelcome').value=siteCopy.welcome;}
   renderLedger();
 }
@@ -813,11 +813,9 @@ function renderLedger(){
   if(!$('ledger'))return;
   $('ledger').innerHTML=wallet.ledger.slice(0,12).map(r=>`${r.t} · ${r.text} (${r.delta>0?'+':''}${r.delta})`).join('<br>')||'아직 내역이 없습니다.';
 }
-function charge(n){
-  wallet.coins+=n;
-  wallet.ledger.unshift({t:new Date().toLocaleString('ko-KR',{hour12:false}),text:`사주아이 ${n}개 데모 충전`,delta:n});
-  persistWallet();
-  $('payMsg').textContent=`${n}개 충전 완료. 지금 ${wallet.coins}개 보유. 실제 결제는 아직 연결되지 않았습니다.`;
+function payNotReady(){
+  const msg=$('payMsg');
+  if(msg)msg.textContent='NHN KCP 결제 연동 준비중입니다. 현재는 실제 결제나 네잎클로버 지급이 진행되지 않습니다.';
 }
 function replyFor(q){
   const c=chart;
@@ -870,7 +868,8 @@ async function sendQ(preset){
     try{used=guiinFreeUsed();}catch(_e){used=0;}
     const isFree=used<3;
     if(!isFree && (!wallet || Number(wallet.coins||0)<1)){
-      guiinAppend('sysnote','무료 질문 3회를 모두 사용했습니다. 네잎클로버를 충전하면 계속 상담할 수 있어요.');
+      guiinAppend('sysnote','무료 질문 3회를 모두 사용했습니다. ☘ 네잎클로버 3개(질문 3회) 1,100원 결제 후 계속 상담할 수 있어요.');
+      setTimeout(()=>go('wallet'),350);
       return;
     }
 
@@ -907,7 +906,7 @@ async function sendQ(preset){
     guiinAppend('bubble bot',String(data.answer));
     guiinAIHistory.push({role:'user',content:q},{role:'assistant',content:String(data.answer)});
     if(guiinAIHistory.length>20)guiinAIHistory=guiinAIHistory.slice(-20);
-    if(isFree){try{guiinSetFreeUsed(used+1);}catch(_e){}}
+    if(isFree){try{guiinSetFreeUsed(used+1);if($('freeRemainView'))$('freeRemainView').textContent=Math.max(0,2-used);}catch(_e){}}
     else{
       wallet.coins=Math.max(0,Number(wallet.coins||0)-1);
       wallet.ledger=Array.isArray(wallet.ledger)?wallet.ledger:[];
