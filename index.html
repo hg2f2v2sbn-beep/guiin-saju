@@ -2602,6 +2602,53 @@ function previewAIQuestion(preset){return sendAIQuestion(preset)}
  const q=$('askQ'); if(q){q.addEventListener('keydown',function(e){if(e.key==='Enter'&&!e.isComposing){e.preventDefault();sendAIQuestion();}});}
  const cs=$('myCustomerCenter'); if(cs){cs.addEventListener('click',function(e){e.preventDefault();if(typeof U32open==='function')U32open();});}
 })();
+
+// GUIIN AI iOS click bridge — keep both quick chips and Send working reliably.
+(function(){
+  async function guiinSendBridge(preset){
+    if(guiinAISending)return;
+    const input=$('askQ');
+    const q=String(preset||input?.value||'').trim();
+    if(!q)return;
+    let compact=null;
+    try{ compact=guiinAIChart(chart)||guiinLoadSavedChart(); }catch(_){ compact=guiinLoadSavedChart(); }
+    if(!compact){toast('사주를 먼저 계산해 주세요.');go('saju');return;}
+    // Worker requires all four chart fields to be strings.
+    compact={year:String(compact.year||''),month:String(compact.month||''),day:String(compact.day||''),hour:String(compact.hour||'시간모름')};
+    if(!compact.year||!compact.month||!compact.day){toast('사주를 먼저 계산해 주세요.');go('saju');return;}
+    if(q.length>800){toast('질문은 800자 이내로 입력해 주세요.');return;}
+    const freeBefore=guiinFreeUsed(), useFree=freeBefore<3;
+    if(!useFree&&(wallet.coins||0)<1){toast('무료 상담 3회를 모두 사용했어요. 네잎클로버를 충전해 주세요.');go('wallet');return;}
+    guiinAddBubble('me',q); if(input)input.value='';
+    const waiting=guiinAddBubble('bot','답변을 준비하고 있어요…');
+    const btn=$('askSendBtn'); guiinAISending=true; if(btn){btn.disabled=true;btn.textContent='답변 중';}
+    try{
+      const res=await fetch(GUIIN_AI_API,{method:'POST',mode:'cors',headers:{'Content-Type':'application/json'},body:JSON.stringify({message:q,chart:compact,history:guiinAIHistory.slice(-10)})});
+      let data={}; try{data=await res.json();}catch(_){ }
+      if(!res.ok)throw new Error(data?.error||('HTTP '+res.status));
+      const answer=String(data?.answer||data?.message||'').trim(); if(!answer)throw new Error('empty_answer');
+      waiting.textContent=answer;
+      if(useFree)localStorage.setItem(GUIIN_AI_FREE_KEY,String(freeBefore+1));
+      else{wallet.coins-=1;wallet.ledger.unshift({t:new Date().toLocaleString('ko-KR',{hour12:false}),text:'AI 질문 · 네잎클로버 1개 사용',delta:-1});persistWallet();}
+      guiinUpdateCreditUI();
+      guiinAIHistory.push({role:'user',content:q},{role:'assistant',content:answer});
+      if(guiinAIHistory.length>20)guiinAIHistory=guiinAIHistory.slice(-20);
+    }catch(err){
+      console.error('GUIIN_AI_CHAT_ERROR',err);
+      waiting.textContent='AI 상담 연결 오류가 발생했어요. 잠시 후 다시 시도해 주세요.';
+      const st=$('aiFreeStatus');if(st)st.textContent='연결 오류 · '+String(err?.message||err||'unknown');
+    }finally{guiinAISending=false;if(btn){btn.disabled=false;btn.textContent='보내기';}}
+  }
+  window.sendAIQuestion=guiinSendBridge;
+  window.previewAIQuestion=guiinSendBridge;
+  document.addEventListener('click',function(e){
+    const send=e.target.closest&&e.target.closest('#askSendBtn');
+    const chip=e.target.closest&&e.target.closest('#ask .qchip');
+    if(send){e.preventDefault();e.stopImmediatePropagation();guiinSendBridge();return;}
+    if(chip){e.preventDefault();e.stopImmediatePropagation();guiinSendBridge(chip.textContent==='올해 재물운'?'올해 재물운이 어떤가요?':chip.textContent==='이직 타이밍'?'지금 이직해도 될까요?':chip.textContent==='연애·관계'?'연애와 관계 흐름을 봐주세요.':'현재 대운과 올해 흐름을 같이 봐주세요.');}
+  },true);
+})();
+
 applyCopy(); guiinUpdateCreditUI();
 const h=location.hash.replace('#','');if(['home','saju','result','match','matchResult','today','mypage','ask','wallet','admin','guide','manage','yearLuck'].includes(h))go(h);
 </script>
