@@ -277,6 +277,10 @@ html{background:#efe7d7}.app{background:linear-gradient(180deg,#fffaf0 0%,#fff6e
 
 /* AUTH — customer login/signup shell; Kakao OAuth requires server/provider setup */
 .authHero{padding:28px 20px 20px;text-align:center}.authMark{width:74px;height:74px;margin:0 auto 14px;border-radius:24px;overflow:hidden;box-shadow:var(--shadow)}.authMark img{width:100%;height:100%;object-fit:cover}.authHero h2{margin:0;color:#285d32;font-size:25px}.authHero p{font-size:12px;line-height:1.7;color:#7e7669}.authCard{padding:18px;margin-top:10px}.authCard label{display:block;font-size:11px;font-weight:800;margin:11px 0 5px;color:#5f655f}.authBtn{width:100%;border:0;border-radius:15px;padding:14px;font-weight:900;margin-top:10px}.authBtn.kakao{background:#FEE500;color:#191919}.authBtn.green{background:#285d32;color:white}.authBtn.light{background:#f5f0e7;color:#4f5751}.authDivider{display:flex;align-items:center;gap:10px;color:#aaa39a;font-size:10px;margin:15px 0}.authDivider:before,.authDivider:after{content:'';height:1px;background:#e9e0d2;flex:1}.authLinks{text-align:center;font-size:11px;color:#7e7669;margin-top:14px}.authLinks button{border:0;background:none;color:#285d32;font-weight:900;padding:4px}.authNotice{font-size:10px;line-height:1.6;color:#8a8378;background:#faf6ed;border-radius:13px;padding:11px;margin-top:12px}
+
+/* 2026-09-12 readability + manse + interaction upgrade */
+.expertSection{padding:20px 18px!important}.expertSection h3{font-size:21px!important;line-height:1.42!important;letter-spacing:-.04em!important;margin-bottom:13px!important}.plainGuide{background:linear-gradient(145deg,#f7fbf3,#fffaf0);border:1px solid #e5ead9;border-radius:16px;padding:15px 14px;margin:10px 0 8px}.plainGuide b{display:block;color:#a87918;font-size:12px;margin:8px 0 3px}.plainGuide b:first-child{margin-top:0}.plainGuide p{font-size:14px!important;line-height:1.72!important;color:#48564e!important;margin:0!important}.whyDetail{margin-top:12px;border-top:1px solid #eee6d8;padding-top:11px}.whyDetail summary{font-size:12px;font-weight:900;color:#6c756e;cursor:pointer}.whyDetail>p{font-size:12px!important;line-height:1.7!important;color:#737b75!important;margin-top:10px!important}.whyDetail .evidence{font-size:10px!important}
+.manseProfile{padding:20px 18px!important}.manseProfile h2{font-size:25px!important}.manseFacts{gap:9px!important}.manseFact{padding:12px 10px!important}.manseFact span{font-size:10px!important}.manseFact b{font-size:13px!important}.manseChartCard{padding:18px 10px!important}.manseTableWrap{margin:0 -2px;padding-bottom:7px!important}.manseTable{min-width:430px!important;border-radius:16px!important}.manseRow{grid-template-columns:58px repeat(4,93px)!important}.manseLabel{font-size:10px!important}.manseCell{padding:11px 5px!important;font-size:11px!important}.manseHead .manseCell{font-size:10px!important}.manseCell .hanja,.manseCell strong{font-size:25px!important;line-height:1.15}.manseCell span{font-size:9px!important}.manseCell small{font-size:8.5px!important;line-height:1.45!important}.manseReadGuide{font-size:12px!important;line-height:1.7!important;padding:13px 14px!important}.manseReadGuide:before{content:'표가 어렵다면 이렇게 보세요 · ';font-weight:900;color:#a87918}.cloverStore .cloverPack{grid-template-columns:64px 1fr!important}.cloverStore .cloverBuy{grid-column:1/-1;display:flex;align-items:center;justify-content:space-between;text-align:left;border-top:1px solid #eee6d8;padding-top:12px}.cloverStore .cloverBuy strong{margin:0!important}.cloverStore .cloverBuy button{padding:11px 15px!important}.todayDetailCard p{font-size:14px!important;line-height:1.8!important}
 </style>
 <!-- GUIIN_RELEASE: 2026-09-12-clover-datefix -->
 </head>
@@ -399,7 +403,7 @@ html{background:#efe7d7}.app{background:linear-gradient(180deg,#fffaf0 0%,#fff6e
     <div class="brand"><div class="brandline">오늘의 운세</div></div>
     <button class="ghost"><svg viewBox="0 0 24 24" width="20" height="20"><path d="M18 8a6 6 0 00-12 0c0 7-3 7-3 9h18c0-2-3-2-3-9M10 21h4" fill="none" stroke="currentColor" stroke-width="1.8"/></svg></button>
   </div>
-  <div class="tabs green"><button class="on">오늘의 운세</button><button>주간 운세</button><button>월간 운세</button></div>
+  <div class="tabs green" id="fortuneTabs"><button class="on" type="button" onclick="renderFortunePeriod('today',this)">오늘의 운세</button><button type="button" onclick="renderFortunePeriod('week',this)">주간 운세</button><button type="button" onclick="renderFortunePeriod('month',this)">월간 운세</button></div>
   <div id="todayView"></div>
 </section>
 
@@ -415,14 +419,14 @@ html{background:#efe7d7}.app{background:linear-gradient(180deg,#fffaf0 0%,#fff6e
   </div>
   <div class="menuCard card">
     <button onclick="go('login')">로그인 · 회원가입 <span class="arr">›</span></button>
-    <button>이용 내역 <span class="arr">›</span></button>
-    <button>결제 내역 <span class="arr">›</span></button>
-    <button>저장한 프로필 <span class="arr">›</span></button>
-    <button>찜한 콘텐츠 <span class="arr">›</span></button>
-    <button>알림 설정 <span class="arr">›</span></button>
-    <button>쿠폰함 <span class="arr">›</span></button>
-    <button>고객센터 <span class="arr">›</span></button>
-    <button>앱 정보 <span class="arr">›</span></button>
+    <button onclick="go('wallet')">이용 내역 <span class="arr">›</span></button>
+    <button onclick="go('wallet')">결제 내역 <span class="arr">›</span></button>
+    <button onclick="go('sajuInput')">저장한 프로필 <span class="arr">›</span></button>
+    <button onclick="serviceNotice('찜한 콘텐츠','찜한 콘텐츠는 회원 계정 저장 기능과 함께 제공될 예정입니다.')">찜한 콘텐츠 <span class="arr">›</span></button>
+    <button onclick="serviceNotice('알림 설정','운세 알림은 로그인 및 알림 권한 연동 후 사용할 수 있습니다.')">알림 설정 <span class="arr">›</span></button>
+    <button onclick="serviceNotice('쿠폰함','현재 사용 가능한 쿠폰이 없습니다.')">쿠폰함 <span class="arr">›</span></button>
+    <button onclick="openCustomerCenter()">고객센터 <span class="arr">›</span></button>
+    <button onclick="serviceNotice('귀인사주','사주 원국·평생사주·궁합·AI 상담을 한곳에서 제공하는 귀인사주입니다.')">앱 정보 <span class="arr">›</span></button>
   </div>
   <div class="slogan card"><b>좋은 인연이, 좋은 하루를 만듭니다.</b><br>귀인사주와 함께할게요.</div>
   <div class="footerArt"><img src="mypage-animals.jpg" alt=""></div>
@@ -457,11 +461,9 @@ html{background:#efe7d7}.app{background:linear-gradient(180deg,#fffaf0 0%,#fff6e
     <div class="brand"><div class="brandline">☘ 행운의클로버 충전</div></div><span></span>
   </div>
   <div class="cloverStore">
-    <div class="cloverHero card"><h2>Good Luck! ☘</h2><p>행운의클로버 1개로 AI 사주 상담 질문 1회를 이용할 수 있어요.<br>처음 3번은 무료입니다.</p></div>
-    <div class="cloverPack card"><div class="clovers">☘☘☘</div><div><h3>행운의클로버</h3><p>클로버 3개</p><span class="bonus">+1 보너스 · 총 4개</span></div><div class="cloverBuy"><strong>1,100원</strong><button onclick="openPaySheet(3,1,1100)">구매하기 ›</button></div></div>
-    <div class="cloverPack card"><div class="clovers">☘☘☘☘☘</div><div><h3>행운의클로버</h3><p>클로버 5개</p><span class="bonus">+2 보너스 · 총 7개</span></div><div class="cloverBuy"><strong>1,800원</strong><button onclick="openPaySheet(5,2,1800)">구매하기 ›</button></div></div>
-    <div class="cloverPack card"><div class="clovers">☘☘☘☘☘</div><div><h3>행운의클로버</h3><p>클로버 10개</p><span class="bonus">+4 보너스 · 총 14개</span></div><div class="cloverBuy"><strong>3,600원</strong><button onclick="openPaySheet(10,4,3600)">구매하기 ›</button></div></div>
-    <div class="infoCard card"><h3>이용 안내</h3><div class="adminNote">✓ 보너스 클로버는 구매 상품에 자동 포함돼요.<br>✓ 클로버 1개당 AI 상담 질문 1회가 차감돼요.<br>✓ KCP 승인 전까지 실제 결제 및 지급은 진행되지 않습니다.</div></div>
+    <div class="cloverHero card"><h2>AI 상담 충전 ☘</h2><p><b>처음 3번은 무료</b>로 질문할 수 있어요.<br>무료 3회를 모두 사용한 뒤에는 <b>질문 3회 = 1,100원</b>입니다.</p></div>
+    <div class="cloverPack card"><div class="clovers">☘☘☘</div><div><h3>네잎클로버 3개</h3><p>AI 사주 상담 질문 3회</p><span class="bonus">질문 1회당 클로버 1개</span></div><div class="cloverBuy"><strong>1,100원</strong><button onclick="openPaySheet(3,0,1100)">1,100원 결제하기 ›</button></div></div>
+    <div class="infoCard card"><h3>이용 안내</h3><div class="adminNote">✓ 처음 3번은 무료예요.<br>✓ 이후 네잎클로버 3개를 1,100원에 충전해 질문 3회를 이용해요.<br>✓ 클로버 1개당 AI 상담 질문 1회가 차감돼요.<br>✓ KCP 승인 전까지 실제 결제 및 지급은 진행되지 않습니다.</div></div>
     <div class="infoCard card"><h3>이용 내역</h3><div id="ledger" class="adminNote">아직 내역이 없습니다.</div></div>
   </div>
 </section>
@@ -705,7 +707,20 @@ function foundationReport(c){
 }
 
 
-function expertSectionHTML(s){return `<article class="expertSection"><div class="eyebrow">${GuiinExpert.esc(s.eyebrow)}</div><h3>${GuiinExpert.esc(s.title)}</h3><p>${GuiinExpert.esc(s.body)}</p>${s.evidence?`<div class="evidence">${GuiinExpert.esc(s.evidence)}</div>`:''}</article>`}
+function plainGuide(s){
+ const z=((s.eyebrow||'')+' '+(s.title||'')+' '+(s.body||'')).toLowerCase();
+ let easy='이 부분은 명리 용어를 외우라는 뜻이 아니라, 실제 생활에서 반복되기 쉬운 패턴을 설명하는 내용입니다.';
+ let life='좋을 때와 힘들 때의 차이를 내 행동·관계·돈·일의 선택에서 확인해 보세요.';
+ let check='한 가지 글자만으로 성격이나 미래를 단정하지 않고, 원국 전체와 현재 운을 함께 봅니다.';
+ if(/성격|기질|나라는|한마디|일간|정화|월령|계절/.test(z)){easy='쉽게 말하면, 겉으로 보이는 첫인상과 가까워졌을 때 드러나는 진짜 성격이 다를 수 있다는 뜻이에요.';life='평소에는 차분하고 세심하게 오래 버티는 힘이 있지만, 피로가 쌓이면 주변 반응을 지나치게 신경 쓰거나 혼자 생각이 길어질 수 있어요. 그래서 감정이 커진 날에는 바로 결론을 내리기보다 시간을 두는 편이 유리합니다.';check='“나는 원래 이런 사람”으로 고정하지 않고, 어떤 상황에서 강해지고 어떤 상황에서 예민해지는지까지 보는 것이 핵심이에요.'}
+ else if(/직업|일|커리어|학업|자격|전문/.test(z)){easy='직업 이름 하나를 찍는 해석이 아니라, 어떤 방식으로 일할 때 실력이 가장 잘 살아나는지를 보는 부분이에요.';life='반복만 하는 자리보다 숙련도가 쌓이고 결과물이 눈에 보이는 일, 내가 판단하거나 책임 범위가 분명한 환경에서 강점이 살아날 가능성이 큽니다. 이직할 때도 회사 이름보다 권한·업무 방식·성장 가능성을 같이 보세요.';check='“무슨 직업이 천직인가?”보다 “어떤 환경에서 오래 잘할 수 있는가?”를 보는 해석입니다.'}
+ else if(/재물|돈|재성|수입|지출/.test(z)){easy='돈복이 있다/없다를 한마디로 말하는 게 아니라, 돈을 버는 방식과 새는 지점을 따로 보는 부분이에요.';life='수입을 만드는 힘이 있어도 지출 습관이나 큰 결정을 잘못 잡으면 체감 재물운은 달라집니다. 고정비·충동지출·투자 한도를 먼저 정해 두면 같은 운에서도 실제로 남는 돈이 달라질 수 있어요.';check='재성 개수만 세지 않고 현재 대운·세운, 수입 구조와 지출 패턴을 함께 봐야 실제 생활에 가까워집니다.'}
+ else if(/연애|인연|관계|결혼|배우자/.test(z)){easy='누가 운명인지 맞히는 게 아니라, 내가 어떤 관계에서 끌리고 어디서 지치기 쉬운지를 보는 부분이에요.';life='설렘이 큰 관계와 오래 편한 관계는 다를 수 있어요. 가까워질수록 감정표현 방식, 연락 빈도, 돈·시간·책임 분담에서 반복되는 갈등이 있는지 보는 게 중요합니다.';check='합이 많다고 무조건 좋은 관계도, 충이 있다고 무조건 헤어지는 관계도 아닙니다. 실제 관계의 조율 방식까지 함께 봅니다.'}
+ else if(/신살|귀인|도화|화개|역마|천을/.test(z)){easy='신살은 무서운 판정표가 아니라, 사람들에게 익숙한 이름으로 특정 성향과 상황을 보조 설명하는 표시예요.';life='예를 들어 도화는 무조건 바람기, 역마는 무조건 떠돌이라는 뜻이 아닙니다. 매력의 드러남, 이동·변화가 잦은 환경처럼 현실적인 모습으로 풀어야 합니다.';check='귀인·신살은 원국과 오행·십신보다 낮은 우선순위로 보고, 하나만으로 사건을 단정하지 않아요.'}
+ else if(/대운|세운|운세|흐름/.test(z)){easy='대운은 10년짜리 큰 배경, 세운은 그 안에서 해마다 바뀌는 분위기라고 생각하면 쉬워요.';life='같은 사람도 어떤 시기에는 일이 커지고, 어떤 시기에는 관계나 돈 문제가 더 중요해질 수 있습니다. 좋은 시기는 활용하고 부담이 큰 시기는 준비와 정리에 쓰는 식으로 읽습니다.';check='“몇 년에 무조건 무슨 일이 생긴다”가 아니라, 그 시기에 커지는 주제와 선택 포인트를 보는 방식입니다.'}
+ return `<div class="plainGuide"><b>쉽게 말하면</b><p>${easy}</p><b>실제 생활에서는</b><p>${life}</p><b>그래서 뭘 보면 되나요?</b><p>${check}</p></div>`;
+}
+function expertSectionHTML(s){return `<article class="expertSection"><div class="eyebrow">${GuiinExpert.esc(s.eyebrow)}</div><h3>${GuiinExpert.esc(s.title)}</h3>${plainGuide(s)}<details class="whyDetail"><summary>왜 이렇게 해석했는지 명리 근거 보기</summary><p>${GuiinExpert.esc(s.body)}</p>${s.evidence?`<div class="evidence">${GuiinExpert.esc(s.evidence)}</div>`:''}</details></article>`}
 function expertSectionsHTML(sections){return (sections||[]).map(expertSectionHTML).join('')}
 function expertSummaryHTML(c){
  const s=GuiinExpert.fullSections(c), stars=GuiinExpert.starGroups(c);
@@ -797,6 +812,31 @@ function submitMatch(){
   alert('두 사람의 생년월일을 확인해 주세요.');
  }
 }
+function serviceNotice(title,msg){alert((title?title+'\n\n':'')+(msg||'준비 중입니다.'));}
+function openCustomerCenter(){
+ if(confirm('귀인사주 카카오 고객센터로 이동할까요?')) window.open('http://pf.kakao.com/_TLTrX/chat','_blank','noopener');
+}
+function setFortuneTabActive(btn){
+ const tabs=document.querySelectorAll('#fortuneTabs button'); tabs.forEach(x=>x.classList.remove('on')); if(btn)btn.classList.add('on');
+}
+function renderFortunePeriod(period,btn){
+ setFortuneTabActive(btn);
+ if(period==='today'){renderToday();return;}
+ const d=new Date(), v=$('todayView'); if(!v)return;
+ const isWeek=period==='week';
+ const title=isWeek?'이번 주 운세':'이번 달 운세';
+ const intro=isWeek?'이번 주는 속도를 내는 날과 정리하는 날을 구분하는 것이 중요해요.':'이번 달은 큰 방향을 먼저 잡고, 돈·관계·일정의 우선순위를 차분히 정리해 보세요.';
+ const rows=isWeek?[
+  ['총운','초반보다 후반으로 갈수록 흐름을 정리하기 좋아요.'],['애정운','말을 아끼기보다 오해가 생기기 전에 부드럽게 표현해 보세요.'],['재물운','충동 지출보다 예정된 지출을 먼저 점검하세요.'],['직장운','한 번에 여러 일을 벌이기보다 중요한 일부터 끝내는 편이 유리해요.'],['건강운','수면과 식사 리듬을 일정하게 유지해 보세요.']
+ ]:[
+  ['총운','이번 달은 선택과 집중이 흐름을 안정시키는 핵심이에요.'],['애정운','새 인연보다 기존 관계의 온도를 살피는 시간이 중요해요.'],['재물운','고정비와 반복 지출을 정리하면 체감 여유가 커질 수 있어요.'],['직장운','역할과 책임의 경계를 분명히 할수록 효율이 좋아져요.'],['건강운','무리한 일정이 누적되지 않도록 회복 시간을 먼저 확보하세요.']
+ ];
+ v.innerHTML=`<div class="todayDate">${d.getFullYear()}년 ${d.getMonth()+1}월 · ${title}</div><div class="todayDetailCard card"><div class="miniTitle">${title}</div><h3>${intro}</h3><p>아래 내용은 생활형 요약입니다. 저장된 사주가 있는 경우 AI 상담에서 원국과 운의 흐름을 함께 질문할 수 있어요.</p></div><div class="fortuneList card" style="margin-top:9px">${rows.map((x,i)=>`<div class="fortuneRow clickable" onclick="openPeriodDetail('${title}','${x[0]}','${x[1]}')"><div class="fIcon">${[ICONS.money,ICONS.heart,ICONS.money,ICONS.brief,ICONS.plus][i]}</div><div><b>${x[0]}</b><span>${x[1]}</span></div></div>`).join('')}</div><button class="ctaGold" type="button" onclick="go('ask')">내 사주로 더 자세히 묻기 ›</button>`;
+}
+function openPeriodDetail(periodTitle,title,summary){
+ const v=$('todayView'); if(!v)return;
+ v.innerHTML=`<div class="todayDetailCard card"><div class="miniTitle">${periodTitle}</div><h3>${title}</h3><p>${summary}</p><p>운세는 확정된 미래가 아니라 현재의 선택을 점검하는 참고 정보로 활용해 주세요. 더 개인적인 해석은 저장된 명식과 운의 흐름을 함께 확인해야 합니다.</p></div><button class="ctaGold" type="button" onclick="renderFortunePeriod('${periodTitle.includes('주')?'week':'month'}',document.querySelectorAll('#fortuneTabs button')[${periodTitle.includes('주')?1:2}])">목록으로 돌아가기 ›</button>`;
+}
 function goToday(){ renderToday(); go('today'); }
 function renderToday(){
  const d=new Date();
@@ -841,12 +881,12 @@ function payNotReady(){
 }
 function openPaySheet(base,bonus,price){
  const sheet=$('paySheet'); if(!sheet)return;
- $('payPackText').textContent=`클로버 ${base}개 + ${bonus}개 보너스 · 총 ${base+bonus}개`;
+ $('payPackText').textContent=bonus>0?`클로버 ${base}개 + ${bonus}개 보너스 · 총 ${base+bonus}개`:`네잎클로버 ${base}개 · AI 상담 질문 ${base}회`;
  $('payPrice').textContent=Number(price).toLocaleString('ko-KR')+'원';
  if($('payMsg'))$('payMsg').textContent=''; sheet.classList.add('on');
 }
 function closePaySheet(){const s=$('paySheet');if(s)s.classList.remove('on')}
-function openTodayDetail(title,summary){
+window.openTodayDetail=function(title,summary){
  go('today');
  const v=$('todayView'); if(!v)return;
  const d=new Date();
@@ -994,6 +1034,15 @@ function emailSignupReady(){const m=$('signupMsg');if(m)m.textContent='회원가
 
 applyCopy();
 const h=location.hash.replace('#','');if(['home','saju','result','match','matchResult','today','mypage','ask','wallet','login','signup'].includes(h))go(h);
+
+// Robust navigation for iPhone/Safari: do not depend only on inline onclick.
+document.addEventListener('click',function(e){
+ const b=e.target.closest('button'); if(!b)return;
+ const txt=(b.textContent||'').replace(/\s+/g,' ').trim();
+ if(/상세 운세 보기/.test(txt)){e.preventDefault();e.stopPropagation();window.openTodayDetail();return;}
+ if(/지금 바로 보기/.test(txt) && b.closest('.tile') && /오늘의 운세/.test(b.closest('.tile').textContent||'')){e.preventDefault();goToday();return;}
+ if(/충전/.test(txt) && (b.closest('#ask')||b.closest('.creditBar'))){e.preventDefault();go('wallet');return;}
+},true);
 </script>
 </body>
 </html>
