@@ -10,24 +10,31 @@ const SYSTEM_PROMPT = `
 - 명식을 다시 계산하거나 임의로 수정하지 마세요.
 - chart에 없는 정보를 사실처럼 만들지 마세요.
 - 한국어로 자연스럽고 쉽게, 질문의 핵심부터 답하세요.
-- 명리학 용어는 바로 쉬운 말로 설명하세요.
+- 명리학 용어는 바로 쉽은 말로 설명하세요.
 - 장점과 주의점을 균형 있게 설명하고 같은 표현을 반복하지 마세요.
 - 운세는 확정된 미래가 아닌 명리학적 경향과 가능성으로 설명하세요.
 - 의료·법률·투자 등의 중요한 판단을 사주만으로 단정하지 마세요.
 `;
 
+function pickOrigin(request) {
+  const origin = request.headers.get("Origin") || "";
+  if (ALLOWED_ORIGINS.has(origin)) return origin;
+  return "";
+}
+
 function corsHeaders(origin) {
   const h = {
     "Access-Control-Allow-Methods": "GET, POST, OPTIONS",
-    "Access-Control-Allow-Headers": "Content-Type",
+    "Access-Control-Allow-Headers": "Content-Type, Accept",
     "Access-Control-Max-Age": "86400",
     "Vary": "Origin"
   };
-  if (origin) h["Access-Control-Allow-Origin"] = origin;
+  // POST 응답에도 반드시 붙여야 브라우저 Failed to fetch 가 안 납니다.
+  h["Access-Control-Allow-Origin"] = origin || "https://gwiinsaju.com";
   return h;
 }
 
-function json(data, status = 200, origin = "") {
+function json(data, status, origin) {
   return new Response(JSON.stringify(data), {
     status,
     headers: {
@@ -59,14 +66,15 @@ function cleanHistory(history) {
 export default {
   async fetch(request, env) {
     const url = new URL(request.url);
-    const origin = request.headers.get("Origin") || "";
-
-    if (!allowedOrigin(origin)) {
-      return json({ error: "origin_not_allowed" }, 403);
-    }
+    const originHeader = request.headers.get("Origin") || "";
+    const origin = pickOrigin(request) || originHeader;
 
     if (request.method === "OPTIONS") {
       return new Response(null, { status: 204, headers: corsHeaders(origin) });
+    }
+
+    if (originHeader && !ALLOWED_ORIGINS.has(originHeader)) {
+      return json({ error: "origin_not_allowed" }, 403, originHeader);
     }
 
     if (request.method === "GET" && (url.pathname === "/" || url.pathname === "/health")) {
