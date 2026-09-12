@@ -324,29 +324,6 @@ html{background:#efe7d7}.app{background:linear-gradient(180deg,#fffaf0 0%,#fff6e
 .creditBar{display:flex;justify-content:space-between;align-items:center;background:linear-gradient(135deg,#285d32,#3d7a48);color:#fff;border-radius:18px;padding:14px 16px;margin:10px 0}.creditBar b{font-size:22px}.msgs{min-height:280px;max-height:48vh;overflow:auto;padding:6px 2px 10px}.bubble{max-width:86%;padding:11px 12px;border-radius:16px;margin:8px 0;font-size:14px;line-height:1.6;white-space:pre-wrap}.bubble.me{margin-left:auto;background:#285d32;color:#fff;border-bottom-right-radius:4px}.bubble.bot{background:#fff;border:1px solid var(--line);border-bottom-left-radius:4px}.sysnote{text-align:center;font-size:11px;line-height:1.55;color:#8a8378;margin:8px 0}.composer{display:flex;gap:8px}.composer input{flex:1}.qchip{display:inline-block;background:#f5f0e4;border-radius:999px;padding:7px 10px;font-size:12px;margin:3px 4px 3px 0;border:0}.adminNote{font-size:11px;color:#7a7368;line-height:1.6}.todayDetailCard{padding:18px;margin-top:10px}.todayDetailCard h3{margin:0 0 8px;color:#285d32}.todayDetailCard p{font-size:13px;line-height:1.75;color:#626861}.fortuneRow.clickable{cursor:pointer}.fortuneRow.clickable:after{content:'›';margin-left:auto;font-size:22px;color:#8d938f}
 @media(max-width:360px){.luckyPack{grid-template-columns:60px 1fr 80px;gap:7px;padding:12px}.premiumGrid{grid-template-columns:1fr}.serviceGrid{grid-template-columns:1fr}.packClover{font-size:19px}}
 
-
-/* TARGETED WEEK-1 PATCH — home 2-column / separated hero / mobile clover copy */
-#home .homeHero{padding:16px!important;background:linear-gradient(180deg,#fffdf7 0%,#fff7df 100%)!important;overflow:hidden!important}
-#home .homeHero .heroText{position:static!important;left:auto!important;right:auto!important;top:auto!important;transform:none!important;pointer-events:auto!important;text-shadow:none!important;padding:2px 4px 12px!important}
-#home .homeHero .heroText .kicker{font-size:11px!important;color:#6f785f!important}
-#home .homeHero .heroText h1{font-size:31px!important;line-height:1.08!important;margin:4px 0 5px!important}
-#home .homeHero .heroText .copy{font-size:11px!important;line-height:1.55!important;color:#68736d!important}
-#home .homeHero .heroArt{height:auto!important;aspect-ratio:16/8.6!important;margin:0 0 12px!important;border-radius:18px!important;overflow:hidden!important}
-#home .homeHero .heroArt img{width:100%!important;height:100%!important;object-fit:cover!important;object-position:center 48%!important}
-#home .homeHero .ctaGreen{position:static!important;left:auto!important;bottom:auto!important;transform:none!important;width:100%!important;min-width:0!important;margin:0!important}
-#home .tiles{grid-template-columns:repeat(2,minmax(0,1fr))!important;gap:10px!important}
-#home .tile{min-height:145px!important;padding:14px 12px 42px!important;border-radius:18px!important}
-#home .tile .badge{display:none!important}
-#home .tile b{font-size:14px!important;line-height:1.3!important}
-#home .tile p{font-size:10px!important;line-height:1.5!important;margin-top:5px!important}
-#home .tile button{left:10px!important;right:10px!important;bottom:9px!important;padding:8px 6px!important;font-size:9.5px!important}
-#home .tile .pet{right:9px!important;bottom:42px!important}
-.luckyPack{grid-template-columns:58px minmax(0,1fr) 86px!important;gap:8px!important}
-.packBody h3{font-size:15px!important;line-height:1.25!important}
-.packBody b{display:block!important;font-size:11px!important;line-height:1.35!important;word-break:keep-all!important}
-.packBody p{font-size:9px!important;line-height:1.4!important}
-.packBonus{font-size:8.5px!important}
-@media(max-width:360px){#home .tiles{gap:8px!important}#home .tile{min-height:140px!important;padding:12px 10px 40px!important}.luckyPack{grid-template-columns:48px minmax(0,1fr) 78px!important;padding:12px 10px!important}.packBody h3{font-size:14px!important}.packBody b{font-size:10px!important}.packClover{font-size:17px!important}.packBuy strong{font-size:15px!important}}
 </style>
 </head>
 <body>
@@ -366,21 +343,21 @@ html{background:#efe7d7}.app{background:linear-gradient(180deg,#fffaf0 0%,#fff6e
   </div>
 
   <div class="homeHero card">
-    <div class="heroText">
-      <div class="kicker">좋은 인연이, 좋은 운을 만드는</div>
-      <h1>귀인사주</h1>
-      <div class="copy">지금의 고민이<br>더 좋은 내일로 이어지길.</div>
-    </div>
     <div class="heroArt">
-      <img decoding="async" fetchpriority="high" src="hero-animals.jpg" alt="클로버 정원의 귀인사주 친구들">
+      <img decoding="async" fetchpriority="high" src="brand-home.jpg" alt="귀인사주">
+      <div class="heroText">
+        <div class="kicker">좋은 인연이, 좋은 운을 만드는</div>
+        <h1>귀인사주</h1>
+        <div class="copy">지금의 고민이<br>더 좋은 내일로 이어지길.</div>
+      </div>
     </div>
     <button class="ctaGreen" onclick="go('ask')">AI 사주상담 시작하기 ›</button>
   </div>
 
   <div class="tiles">
     <div class="tile"><div class="ico"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="4" fill="currentColor"/><g stroke="currentColor" stroke-width="1.7"><path d="M12 1v4M12 19v4M1 12h4M19 12h4M4.2 4.2l2.8 2.8M17 17l2.8 2.8M19.8 4.2L17 7M7 17l-2.8 2.8"/></g></svg></div><b>오늘의 운세</b><p>오늘 나에게 들어오는 기운과 주의할 점</p><button onclick="renderToday();go('today')">지금 바로 보기 ›</button></div>
-    <div class="tile"><div class="ico"><svg viewBox="0 0 24 24"><path d="M6 3h12v18H6z" fill="none" stroke="currentColor" stroke-width="1.7"/><path d="M9 7h6M9 11h6M9 15h4" stroke="currentColor" stroke-width="1.7"/></svg></div><div class="pet"><img src="input-cat.jpg" alt=""></div><b>평생사주</b><p>성격, 직업, 재물, 연애, 가족, 대운까지</p><button onclick="openResultTab('summary')">내 사주 전체 보기 ›</button></div>
-    <div class="tile"><div class="ico"><svg viewBox="0 0 24 24"><path d="M12 20s-8-4.8-8-10a4.5 4.5 0 018-2.8A4.5 4.5 0 0120 10c0 5.2-8 10-8 10z" fill="currentColor"/></svg></div><div class="pet"><img src="compat-animals.jpg" alt=""></div><b>우리 궁합</b><p>두 사람의 끌림, 갈등, 결혼, 재물궁합까지</p><button onclick="go('match')">궁합 보기 ›</button></div>
+    <div class="tile"><div class="ico"><svg viewBox="0 0 24 24"><path d="M6 3h12v18H6z" fill="none" stroke="currentColor" stroke-width="1.7"/><path d="M9 7h6M9 11h6M9 15h4" stroke="currentColor" stroke-width="1.7"/></svg></div><span class="badge">5,900원</span><div class="pet"><img src="input-cat.jpg" alt=""></div><b>평생사주</b><p>성격, 직업, 재물, 연애, 가족, 대운까지</p><button onclick="openResultTab('summary')">내 사주 전체 보기 ›</button></div>
+    <div class="tile"><div class="ico"><svg viewBox="0 0 24 24"><path d="M12 20s-8-4.8-8-10a4.5 4.5 0 018-2.8A4.5 4.5 0 0120 10c0 5.2-8 10-8 10z" fill="currentColor"/></svg></div><span class="badge">7,900원</span><div class="pet"><img src="compat-animals.jpg" alt=""></div><b>우리 궁합</b><p>두 사람의 끌림, 갈등, 결혼, 재물궁합까지</p><button onclick="go('match')">궁합 보기 ›</button></div>
     <div class="tile"><div class="ico"><svg viewBox="0 0 24 24"><path d="M4 20V10h3v10H4zm6 0V5h3v15h-3zm6 0V2h3v18h-3z" fill="currentColor"/></svg></div><b>대운·세운·연운</b><p>10년 단위 대운과 올해의 흐름, 월별 운세</p><button onclick="renderYearLuck();go('yearLuck')">운의 흐름 보기 ›</button></div>
     <div class="tile"><div class="ico"><svg viewBox="0 0 24 24"><path d="M12 21V10M12 10C6 10 4 7 4 3c5 0 8 2 8 7zm0 0c6 0 8-3 8-7-5 0-8 2-8 7z" fill="currentColor"/></svg></div><div class="pet"><img src="compat-animals.jpg" alt=""></div><b>내 사주관리</b><p>저장한 프로필로 더 빠르고 편리하게</p><button onclick="go('manage')">내 프로필 보기 ›</button></div>
     <div class="tile"><div class="ico"><svg viewBox="0 0 24 24"><path d="M12 2l3 6 6 .8-4.5 4.4 1.2 6.2L12 16.5 6.3 19.4l1.2-6.2L3 8.8 9 8z" fill="currentColor"/></svg></div><b>이용가이드</b><p>처음 오셨나요? 귀인사주 이용방법을 안내해드려요.</p><button onclick="go('guide')">가이드 보기 ›</button></div>
@@ -592,14 +569,14 @@ html{background:#efe7d7}.app{background:linear-gradient(180deg,#fffaf0 0%,#fff6e
 </section>
 
 <section id="wallet" class="screen">
-  <div class="topbar"><button class="ghost" onclick="go('ask')">‹</button><div class="brand"><div class="brandline">☘ 행운의 클로버 충전</div><small>더 많은 질문, 더 깊은 사주 해석</small></div><span></span></div>
+  <div class="topbar"><button class="ghost" onclick="go('ask')">‹</button><div class="brand"><div class="brandline">☘ 네잎클로버 충전</div><small>더 많은 질문, 더 깊은 사주 해석</small></div><span></span></div>
   <div class="cloverStore">
-    <div class="storeIntro card"><h2>☘ 행운의 클로버 충전</h2><p>AI에게 더 깊이, 더 많이 물어보세요.</p></div>
-    <div class="storeWish card"><b>좋은 인연, 좋은 하루가 당신 곁에 늘 함께하길 ♡</b><span>행운의 클로버 1개로 AI에게 1번 질문할 수 있어요.</span></div>
-    <div class="luckyPack card"><div class="packClover">☘☘☘</div><div class="packBody"><h3>맛보기 팩</h3><b>3질문 + 보너스 1</b><p>처음 가볍게 시작해요.</p><span class="packBonus">+1 보너스</span></div><div class="packBuy"><strong>1,100원</strong><small>총 4질문</small><button onclick="openPaySheet(3,1,1100)">구매하기 ›</button></div></div>
-    <div class="luckyPack card"><div class="packClover">☘☘<br>☘☘☘</div><div class="packBody"><h3>단골 팩</h3><b>5질문 + 보너스 2</b><p>자주 묻는 분께 알맞아요.</p><span class="packBonus">+2 보너스</span></div><div class="packBuy"><strong>1,650원</strong><small>총 7질문</small><button onclick="openPaySheet(5,2,1650)">구매하기 ›</button></div></div>
-    <div class="luckyPack card best"><div class="packClover">☘☘☘☘<br>☘☘☘☘☘☘</div><div class="packBody"><h3>행운 팩</h3><b>10질문 + 보너스 4</b><p>가장 넉넉한 BEST 팩이에요.</p><span class="packBonus">+4 보너스</span></div><div class="packBuy"><strong>2,750원</strong><small>총 14질문</small><button onclick="openPaySheet(10,4,2750)">구매하기 ›</button></div></div>
-    <div class="utilityCard card"><h3>이용 안내</h3><p>✓ 처음 3번의 무료 질문은 별도로 유지됩니다.<br>✓ 행운의 클로버 1개당 AI 질문 1회입니다.<br>✓ 실제 결제 승인 후에만 서버에서 클로버를 지급해야 합니다.</p><div class="paidDisclaimer">사주와 운세는 전통 명리학을 바탕으로 한 참고 정보이며 의료·법률·투자 등 중요한 의사결정을 대신하지 않습니다.</div></div>
+    <div class="storeIntro card"><h2>☘ 네잎클로버 충전</h2><p>AI에게 더 깊이, 더 많이 물어보세요.</p></div>
+    <div class="storeWish card"><b>좋은 인연, 좋은 하루가 당신 곁에 늘 함께하길 ♡</b><span>클로버 1개로 AI에게 1번 질문할 수 있어요.</span></div>
+    <div class="luckyPack card"><div class="packClover">☘☘☘</div><div class="packBody"><h3>행운의 시작</h3><b>3질문 + 1질문 보너스!</b><p>가볍게 시작해보세요.</p><span class="packBonus">+1 보너스</span></div><div class="packBuy"><strong>1,100원</strong><small>총 4질문</small><button onclick="openPaySheet(3,1,1100)">구매하기 ›</button></div></div>
+    <div class="luckyPack card"><div class="packClover">☘☘<br>☘☘☘</div><div class="packBody"><h3>행운의 확장</h3><b>5질문 + 2질문 보너스!</b><p>더 다양한 질문을 해보세요.</p><span class="packBonus">+2 보너스</span></div><div class="packBuy"><strong>1,650원</strong><small>총 7질문</small><button onclick="openPaySheet(5,2,1650)">구매하기 ›</button></div></div>
+    <div class="luckyPack card best"><div class="packClover">☘☘☘☘<br>☘☘☘☘☘☘</div><div class="packBody"><h3>행운의 클로버</h3><b>10질문 + 4질문 보너스!</b><p>가장 넉넉한 인기 상품이에요.</p><span class="packBonus">+4 보너스</span></div><div class="packBuy"><strong>2,750원</strong><small>총 14질문</small><button onclick="openPaySheet(10,4,2750)">구매하기 ›</button></div></div>
+    <div class="utilityCard card"><h3>이용 안내</h3><p>✓ 처음 3번의 무료 질문은 별도로 유지됩니다.<br>✓ 클로버 1개당 AI 질문 1회입니다.<br>✓ 실제 결제 승인 후에만 서버에서 클로버를 지급해야 합니다.</p><div class="paidDisclaimer">사주와 운세는 전통 명리학을 바탕으로 한 참고 정보이며 의료·법률·투자 등 중요한 의사결정을 대신하지 않습니다.</div></div>
     <div class="utilityCard card"><h3>이용 내역</h3><div id="ledger" class="adminNote">아직 내역이 없습니다.</div></div>
   </div>
 </section>
@@ -619,7 +596,7 @@ html{background:#efe7d7}.app{background:linear-gradient(180deg,#fffaf0 0%,#fff6e
 <section id="privacy" class="screen"><div class="topbar"><button class="ghost" onclick="go('appinfo')">‹</button><div class="brand"><div class="brandline">개인정보처리방침</div></div><span></span></div><div class="pagePad"><div class="card utilityCard"><h3>개인정보 안내</h3><p>회원가입을 실제 연결할 때 수집 항목·이용 목적·보유기간·위탁사·파기 절차를 실제 서버 구성에 맞춰 고지해야 합니다.</p></div></div></section>
 <section id="refund" class="screen"><div class="topbar"><button class="ghost" onclick="go('appinfo')">‹</button><div class="brand"><div class="brandline">환불정책</div></div><span></span></div><div class="pagePad"><div class="card utilityCard"><h3>환불 안내</h3><p>실제 KCP 결제 오픈 전 상품별 제공 시점, 사용한 클로버, 이미 열람한 디지털 콘텐츠의 환불 기준을 최종 확정하고 결제 단계에서 동의받아야 합니다.</p></div></div></section>
 
-<div id="paySheet" class="paySheet" onclick="if(event.target===this)closePaySheet()"><div class="payPanel"><h3>☘ 행운의 클로버 결제</h3><div id="payPackText" class="adminNote"></div><div id="payPrice" class="payPrice"></div><div class="payList">결제 승인 → 서버 주문 저장 → 서버 클로버 지급 순서로 연결할 결제창입니다.</div><button class="primary" onclick="payNotReady()">결제하기</button><button class="secondary" onclick="closePaySheet()">취소</button><p id="payMsg" class="adminNote"></p></div></div>
+<div id="paySheet" class="paySheet" onclick="if(event.target===this)closePaySheet()"><div class="payPanel"><h3>☘ 네잎클로버 결제</h3><div id="payPackText" class="adminNote"></div><div id="payPrice" class="payPrice"></div><div class="payList">결제 승인 → 서버 주문 저장 → 서버 클로버 지급 순서로 연결할 결제창입니다.</div><button class="primary" onclick="payNotReady()">결제하기</button><button class="secondary" onclick="closePaySheet()">취소</button><p id="payMsg" class="adminNote"></p></div></div>
 <div id="premiumSheet" class="premiumSheet" onclick="if(event.target===this)closePremiumPay()"><div class="premiumPanel"><h2>프리미엄 평생사주</h2><div class="price">5,900원</div><p>무료 기본 명식을 확인한 뒤 내 실제 심층 풀이 전체를 열 수 있어요.</p><div class="payList">✓ 성격·기질 장문 분석<br>✓ 직업·적성·재물<br>✓ 연애·결혼·가족 관계<br>✓ 신살·귀인 상세 해설<br>✓ 대운·세운 흐름<br>✓ 모든 전문용어 쉬운 설명<br>✓ 장점·주의점·현실 조언</div><div class="paidDisclaimer">사주 결과는 참고 정보이며 미래를 확정하지 않습니다.</div><button class="primary" onclick="premiumPayNotReady()">5,900원 결제하기</button><button class="secondary" onclick="closePremiumPay()">나중에 보기</button><p id="premiumPayMsg" class="adminNote"></p></div></div>
 <div id="compatSheet" class="premiumSheet" onclick="if(event.target===this)closeCompatPay()"><div class="premiumPanel"><h2>프리미엄 궁합</h2><div class="price">7,900원</div><p>점수보다 두 사람이 실제로 함께 있을 때의 장점과 갈등·회복·생활을 길게 풀어드려요.</p><div class="payList">✓ 끌림과 첫인상<br>✓ 감정표현<br>✓ 대화와 갈등<br>✓ 싸운 뒤 회복<br>✓ 생활궁합<br>✓ 돈과 현실<br>✓ 친밀감<br>✓ 결혼과 장기관계<br>✓ 가족과 경계<br>✓ 현재와 앞으로</div><div class="paidDisclaimer">궁합은 관계를 결정하는 판정표가 아니라 두 사람이 조율할 지점을 이해하는 참고 자료입니다.</div><button class="primary" onclick="compatPayNotReady()">7,900원 결제하기</button><button class="secondary" onclick="closeCompatPay()">나중에 보기</button><p id="compatPayMsg" class="adminNote"></p></div></div>
 
@@ -964,19 +941,8 @@ function renderYearLuck(){
 }
 
 
-const GUIIN_VERIFIED_ENTITLEMENTS={lifetimeSaju:false,compat:false,verifiedAt:null};
-function guiinApplyVerifiedEntitlements(payload){
- if(!payload||payload.verified!==true||payload.source!=='server')return false;
- GUIIN_VERIFIED_ENTITLEMENTS.lifetimeSaju=payload.lifetimeSaju===true;
- GUIIN_VERIFIED_ENTITLEMENTS.compat=payload.compat===true;
- GUIIN_VERIFIED_ENTITLEMENTS.verifiedAt=Date.now();
- if(chart)renderResult();
- if(matchAnalysis)renderCompatCards();
- return true;
-}
-window.guiinApplyVerifiedEntitlements=guiinApplyVerifiedEntitlements;
-function hasPremiumLifetime(){return GUIIN_VERIFIED_ENTITLEMENTS.lifetimeSaju===true;}
-function hasPremiumCompat(){return GUIIN_VERIFIED_ENTITLEMENTS.compat===true;}
+function hasPremiumLifetime(){return false;}
+function hasPremiumCompat(){return false;}
 function premiumSampleHTML(c){
  const n=esc(c?.input?.name||'사용자');
  const domains=[['성격·기질','겉으로 보이는 모습과 가까워졌을 때 드러나는 진짜 성향'],['직업·적성','무슨 직업이 정답인지보다 어떤 환경에서 능력이 살아나는지'],['재물운','버는 힘과 남기는 힘, 돈이 새는 패턴'],['연애·인연','끌리는 관계와 오래 편한 관계의 차이'],['결혼·장기관계','사랑 이후의 생활·돈·책임 분담'],['가족·대인관계','가까운 사람에게 책임을 오래 끌고 가는 방식'],['신살·귀인','도화·역마·화개·귀인을 현실 언어로'],['대운','10년 단위로 반복되는 큰 주제'],['세운·월운','올해와 가까운 시기의 선택 포인트'],['인생 흐름','성격부터 운의 흐름까지 하나로 연결']];
@@ -1133,7 +1099,7 @@ function freeUsed(){const n=Number(localStorage.getItem(FREE_KEY)||0);return Num
 function setFreeUsed(n){localStorage.setItem(FREE_KEY,String(Math.max(0,n)));syncWalletViews();}
 function syncWalletViews(){if($('coinView'))$('coinView').textContent=wallet.coins;if($('freeRemainView'))$('freeRemainView').textContent=Math.max(0,3-freeUsed());renderLedger();}
 function renderLedger(){if(!$('ledger'))return;$('ledger').innerHTML=(wallet.ledger||[]).slice(0,12).map(r=>`${esc(r.t)} · ${esc(r.text)} (${r.delta>0?'+':''}${r.delta})`).join('<br>')||'아직 내역이 없습니다.';}
-function openPaySheet(base,bonus,price){const s=$('paySheet');if(!s)return;$('payPackText').textContent=`행운의 클로버 ${base}개 + 보너스 ${bonus}개 · 총 ${base+bonus}개`;$('payPrice').textContent=Number(price).toLocaleString('ko-KR')+'원';$('payMsg').textContent='';s.classList.add('on');}
+function openPaySheet(base,bonus,price){const s=$('paySheet');if(!s)return;$('payPackText').textContent=`클로버 ${base}개 + ${bonus}개 보너스 · 총 ${base+bonus}개`;$('payPrice').textContent=Number(price).toLocaleString('ko-KR')+'원';$('payMsg').textContent='';s.classList.add('on');}
 function closePaySheet(){const s=$('paySheet');if(s)s.classList.remove('on');}
 function payNotReady(){if($('payMsg'))$('payMsg').textContent='NHN KCP 심사·결제 승인 서버 연동이 완료되기 전이라 현재는 실제 결제나 클로버 지급이 진행되지 않습니다. 승인 전 가짜 결제 성공이나 잔액 지급은 하지 않습니다.';}
 function openPremiumPay(){if($('premiumPayMsg'))$('premiumPayMsg').textContent='';$('premiumSheet')?.classList.add('on');}
@@ -1155,7 +1121,7 @@ async function sendQ(preset){
  const cp=guiinChartPayload();
  if(!cp){guiinAppend('sysnote','AI가 내 사주를 기준으로 답하려면 사주를 먼저 계산해 주세요.');setTimeout(()=>go('saju'),450);return;}
  const used=freeUsed(),isFree=used<3;
- if(!isFree&&Number(wallet.coins||0)<1){guiinAppend('sysnote','무료 질문 3회를 모두 사용했습니다. 행운의 클로버를 충전하면 이어서 질문할 수 있어요.');setTimeout(()=>go('wallet'),450);return;}
+ if(!isFree&&Number(wallet.coins||0)<1){guiinAppend('sysnote','무료 질문 3회를 모두 사용했습니다. 네잎클로버를 충전하면 이어서 질문할 수 있어요.');setTimeout(()=>go('wallet'),450);return;}
  guiinAISending=true;const buttons=Array.from(document.querySelectorAll('#ask .qchip,#ask .composer button'));buttons.forEach(b=>b.disabled=true);guiinAppend('bubble me',q);
  const status=document.createElement('div');status.className='sysnote';status.textContent='답변을 준비하고 있어요…';$('msgs')?.appendChild(status);
  const controller=new AbortController(),timer=setTimeout(()=>controller.abort(),30000);
