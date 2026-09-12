@@ -278,6 +278,7 @@ html{background:#efe7d7}.app{background:linear-gradient(180deg,#fffaf0 0%,#fff6e
 /* AUTH — customer login/signup shell; Kakao OAuth requires server/provider setup */
 .authHero{padding:28px 20px 20px;text-align:center}.authMark{width:74px;height:74px;margin:0 auto 14px;border-radius:24px;overflow:hidden;box-shadow:var(--shadow)}.authMark img{width:100%;height:100%;object-fit:cover}.authHero h2{margin:0;color:#285d32;font-size:25px}.authHero p{font-size:12px;line-height:1.7;color:#7e7669}.authCard{padding:18px;margin-top:10px}.authCard label{display:block;font-size:11px;font-weight:800;margin:11px 0 5px;color:#5f655f}.authBtn{width:100%;border:0;border-radius:15px;padding:14px;font-weight:900;margin-top:10px}.authBtn.kakao{background:#FEE500;color:#191919}.authBtn.green{background:#285d32;color:white}.authBtn.light{background:#f5f0e7;color:#4f5751}.authDivider{display:flex;align-items:center;gap:10px;color:#aaa39a;font-size:10px;margin:15px 0}.authDivider:before,.authDivider:after{content:'';height:1px;background:#e9e0d2;flex:1}.authLinks{text-align:center;font-size:11px;color:#7e7669;margin-top:14px}.authLinks button{border:0;background:none;color:#285d32;font-weight:900;padding:4px}.authNotice{font-size:10px;line-height:1.6;color:#8a8378;background:#faf6ed;border-radius:13px;padding:11px;margin-top:12px}
 </style>
+<!-- GUIIN_RELEASE: 2026-09-12-clover-datefix -->
 </head>
 <body>
 <div class="app">
@@ -434,7 +435,7 @@ html{background:#efe7d7}.app{background:linear-gradient(180deg,#fffaf0 0%,#fff6e
     <button class="ghost" onclick="go('wallet')" style="font-size:11px;font-weight:900;white-space:nowrap">☘ 충전</button>
   </div>
   <div class="creditBar"><div><div style="font-size:12px;opacity:.85">AI 무료 상담</div><b id="freeRemainView">3</b><span style="font-size:13px">회 남음</span><div style="font-size:11px;opacity:.82;margin-top:3px">보유 ☘ <span id="coinView">0</span>개</div></div><button class="ctaGold" style="width:auto;margin:0;padding:10px 14px" onclick="go('wallet')">☘ 충전</button></div>
-  <p class="adminNote">AI 상담은 처음 3번 무료입니다. 무료 질문 이후에는 네잎클로버를 사용해 이어서 상담할 수 있어요.</p>
+  <p class="adminNote">AI 상담은 처음 3번 무료입니다. 무료 질문 이후에는 행운의클로버를 사용해 이어서 상담할 수 있어요.</p>
   <div class="msgs" id="msgs">
     <div class="sysnote">귀인사주 상담이 시작되었습니다</div>
     <div class="bubble bot" id="welcomeBot">사주를 먼저 계산해 두면 원국 기준으로 답합니다. 직업, 연애, 올해 흐름 중 무엇이 궁금한가요?</div>
@@ -453,10 +454,10 @@ html{background:#efe7d7}.app{background:linear-gradient(180deg,#fffaf0 0%,#fff6e
 <section id="wallet" class="screen">
   <div class="topbar">
     <button class="ghost" onclick="go('ask')" aria-label="뒤로"><svg viewBox="0 0 24 24" width="20" height="20"><path d="M15 5l-7 7 7 7" fill="none" stroke="currentColor" stroke-width="2"/></svg></button>
-    <div class="brand"><div class="brandline">☘ 네잎클로버 충전</div></div><span></span>
+    <div class="brand"><div class="brandline">☘ 행운의클로버 충전</div></div><span></span>
   </div>
   <div class="cloverStore">
-    <div class="cloverHero card"><h2>Good Luck! ☘</h2><p>네잎클로버 1개로 AI 사주 상담 질문 1회를 이용할 수 있어요.<br>처음 3번은 무료입니다.</p></div>
+    <div class="cloverHero card"><h2>Good Luck! ☘</h2><p>행운의클로버 1개로 AI 사주 상담 질문 1회를 이용할 수 있어요.<br>처음 3번은 무료입니다.</p></div>
     <div class="cloverPack card"><div class="clovers">☘☘☘</div><div><h3>행운의클로버</h3><p>클로버 3개</p><span class="bonus">+1 보너스 · 총 4개</span></div><div class="cloverBuy"><strong>1,100원</strong><button onclick="openPaySheet(3,1,1100)">구매하기 ›</button></div></div>
     <div class="cloverPack card"><div class="clovers">☘☘☘☘☘</div><div><h3>행운의클로버</h3><p>클로버 5개</p><span class="bonus">+2 보너스 · 총 7개</span></div><div class="cloverBuy"><strong>1,800원</strong><button onclick="openPaySheet(5,2,1800)">구매하기 ›</button></div></div>
     <div class="cloverPack card"><div class="clovers">☘☘☘☘☘</div><div><h3>행운의클로버</h3><p>클로버 10개</p><span class="bonus">+4 보너스 · 총 14개</span></div><div class="cloverBuy"><strong>3,600원</strong><button onclick="openPaySheet(10,4,3600)">구매하기 ›</button></div></div>
@@ -927,7 +928,7 @@ async function sendQ(preset){
         mode:'cors',
         cache:'no-store',
         headers:{'Content-Type':'application/json','Accept':'application/json'},
-        body:JSON.stringify({message:q,chart:cp,history:guiinAIHistory.slice(-8)}),
+        body:JSON.stringify({message:`[현재 날짜: ${new Date().getFullYear()}년 ${new Date().getMonth()+1}월 ${new Date().getDate()}일]\n현재 날짜를 기준으로 답하세요. 과거 연도를 현재/미래처럼 말하지 마세요. 정확한 세운·대운 근거가 전달되지 않은 경우 특정 연도나 계절을 임의로 만들어 단정하지 마세요.\n\n질문: ${q}`,chart:cp,history:guiinAIHistory.slice(-8)}),
         signal:controller.signal
       });
     } finally { clearTimeout(timer); }
