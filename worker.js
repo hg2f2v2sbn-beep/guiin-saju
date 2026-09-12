@@ -29,7 +29,6 @@ function corsHeaders(origin) {
     "Access-Control-Max-Age": "86400",
     "Vary": "Origin"
   };
-  // POST 응답에도 반드시 붙여야 브라우저 Failed to fetch 가 안 납니다.
   h["Access-Control-Allow-Origin"] = origin || "https://gwiinsaju.com";
   return h;
 }
@@ -42,10 +41,6 @@ function json(data, status, origin) {
       ...corsHeaders(origin)
     }
   });
-}
-
-function allowedOrigin(origin) {
-  return !origin || ALLOWED_ORIGINS.has(origin);
 }
 
 function validChart(chart) {
@@ -123,16 +118,17 @@ export default {
             "Content-Type": "application/json"
           },
           body: JSON.stringify({
-            model: "gpt-5.4-mini",
+            model: "gpt-4o-mini",
             messages,
-            max_completion_tokens: 900
+            max_tokens: 900
           })
         });
 
         const data = await response.json();
         if (!response.ok) {
-          console.error("OpenAI request failed", response.status);
-          return json({ error: "ai_request_failed" }, 502, origin);
+          const detail = data?.error?.message || ("openai_" + response.status);
+          console.error("OpenAI request failed", response.status, detail);
+          return json({ error: "ai_request_failed", detail: String(detail).slice(0, 180) }, 502, origin);
         }
 
         const answer = data?.choices?.[0]?.message?.content?.trim();
