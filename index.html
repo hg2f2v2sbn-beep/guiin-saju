@@ -274,6 +274,9 @@ html{background:#efe7d7}.app{background:linear-gradient(180deg,#fffaf0 0%,#fff6e
 
 /* CLOVER STORE + TODAY DETAIL FIX 2026-09-12 */
 .cloverStore{padding:14px 0 8px}.cloverHero{padding:18px;background:linear-gradient(145deg,#eff8e9,#fff6d9);text-align:center}.cloverHero h2{margin:0;color:#285d32;font-size:22px}.cloverHero p{font-size:11px;color:#7e7669;line-height:1.6}.cloverPack{display:grid;grid-template-columns:76px 1fr auto;gap:12px;align-items:center;padding:16px;margin-top:10px}.cloverPack .clovers{font-size:28px;letter-spacing:-8px}.cloverPack h3{margin:0 0 4px;color:#234632;font-size:16px}.cloverPack p{margin:0;font-size:11px;color:#7e7669}.cloverPack .bonus{display:inline-block;margin-top:6px;border-radius:999px;padding:4px 8px;background:#fcebf1;color:#d84c75;font-size:10px;font-weight:900}.cloverBuy{text-align:right}.cloverBuy strong{display:block;font-size:19px;color:#e84972;margin-bottom:7px}.cloverBuy button{border:0;border-radius:999px;background:#285d32;color:#fff;font-weight:900;padding:9px 12px}.paySheet{position:fixed;inset:0;background:rgba(20,30,24,.42);z-index:999;display:none;align-items:flex-end;justify-content:center}.paySheet.on{display:flex}.payPanel{width:min(430px,100%);background:#fffdf7;border-radius:24px 24px 0 0;padding:22px 18px calc(24px + env(safe-area-inset-bottom));box-shadow:0 -10px 30px rgba(0,0,0,.15)}.payPanel h3{margin:0 0 7px;font-size:20px;color:#234632}.payPanel .payPrice{font-size:26px;font-weight:900;color:#285d32;margin:14px 0}.payPanel button{width:100%;border:0;border-radius:15px;padding:14px;font-weight:900;margin-top:8px}.payPanel .primary{background:linear-gradient(135deg,#f6dc8a,#cda34a);color:#2f3028}.payPanel .secondary{background:#f5f0e7;color:#5f655f}.todayDetailCard{padding:18px;margin-top:10px}.todayDetailCard h3{margin:0 0 8px;color:#285d32}.todayDetailCard p{font-size:13px;line-height:1.75;color:#626861}.fortuneRow.clickable{cursor:pointer}.fortuneRow.clickable:after{content:'›';margin-left:auto;font-size:22px;color:#8d938f}
+
+/* AUTH — customer login/signup shell; Kakao OAuth requires server/provider setup */
+.authHero{padding:28px 20px 20px;text-align:center}.authMark{width:74px;height:74px;margin:0 auto 14px;border-radius:24px;overflow:hidden;box-shadow:var(--shadow)}.authMark img{width:100%;height:100%;object-fit:cover}.authHero h2{margin:0;color:#285d32;font-size:25px}.authHero p{font-size:12px;line-height:1.7;color:#7e7669}.authCard{padding:18px;margin-top:10px}.authCard label{display:block;font-size:11px;font-weight:800;margin:11px 0 5px;color:#5f655f}.authBtn{width:100%;border:0;border-radius:15px;padding:14px;font-weight:900;margin-top:10px}.authBtn.kakao{background:#FEE500;color:#191919}.authBtn.green{background:#285d32;color:white}.authBtn.light{background:#f5f0e7;color:#4f5751}.authDivider{display:flex;align-items:center;gap:10px;color:#aaa39a;font-size:10px;margin:15px 0}.authDivider:before,.authDivider:after{content:'';height:1px;background:#e9e0d2;flex:1}.authLinks{text-align:center;font-size:11px;color:#7e7669;margin-top:14px}.authLinks button{border:0;background:none;color:#285d32;font-weight:900;padding:4px}.authNotice{font-size:10px;line-height:1.6;color:#8a8378;background:#faf6ed;border-radius:13px;padding:11px;margin-top:12px}
 </style>
 </head>
 <body>
@@ -410,6 +413,7 @@ html{background:#efe7d7}.app{background:linear-gradient(180deg,#fffaf0 0%,#fff6e
     <div><b id="myName">프로필을 만들어 보세요</b><span id="myBirth">사주를 계산하면 저장할 수 있어요.</span></div>
   </div>
   <div class="menuCard card">
+    <button onclick="go('login')">로그인 · 회원가입 <span class="arr">›</span></button>
     <button>이용 내역 <span class="arr">›</span></button>
     <button>결제 내역 <span class="arr">›</span></button>
     <button>저장한 프로필 <span class="arr">›</span></button>
@@ -421,7 +425,6 @@ html{background:#efe7d7}.app{background:linear-gradient(180deg,#fffaf0 0%,#fff6e
   </div>
   <div class="slogan card"><b>좋은 인연이, 좋은 하루를 만듭니다.</b><br>귀인사주와 함께할게요.</div>
   <div class="footerArt"><img src="mypage-animals.jpg" alt=""></div>
-  <button class="ctaGold" onclick="go('admin')">홈 문구 수정하기 ›</button>
 </section>
 
 <section id="ask" class="screen">
@@ -467,21 +470,33 @@ html{background:#efe7d7}.app{background:linear-gradient(180deg,#fffaf0 0%,#fff6e
   <button class="primary" onclick="payNotReady()">결제하기</button><button class="secondary" onclick="closePaySheet()">취소</button><p id="payMsg" class="adminNote"></p>
 </div></div>
 
-<section id="admin" class="screen">
-  <div class="topbar">
-    <button class="ghost" onclick="go('mypage')" aria-label="뒤로"><svg viewBox="0 0 24 24" width="20" height="20"><path d="M15 5l-7 7 7 7" fill="none" stroke="currentColor" stroke-width="2"/></svg></button>
-    <div class="brand"><div class="brandline">콘텐츠 수정</div></div>
-    <span></span>
+<section id="login" class="screen">
+  <div class="topbar"><button class="ghost" onclick="go('mypage')" aria-label="뒤로">‹</button><div class="brand"><div class="brandline">로그인</div></div><span></span></div>
+  <div class="authHero"><div class="authMark"><img src="clover-mark.jpg" alt=""></div><h2>귀인사주에 오신 걸 환영해요</h2><p>로그인하고 내 사주와 상담 내역을 안전하게 이어보세요.</p></div>
+  <div class="authCard card">
+    <button class="authBtn kakao" type="button" onclick="kakaoLoginReady()">카카오로 3초 만에 시작하기</button>
+    <div class="authDivider">또는</div>
+    <label>이메일</label><input id="loginEmail" type="email" autocomplete="email" placeholder="이메일을 입력해 주세요">
+    <label>비밀번호</label><input id="loginPassword" type="password" autocomplete="current-password" placeholder="비밀번호를 입력해 주세요">
+    <button class="authBtn green" type="button" onclick="emailLoginReady()">로그인</button>
+    <div class="authLinks">아직 회원이 아니신가요? <button type="button" onclick="go('signup')">회원가입</button></div>
+    <div id="loginMsg" class="authNotice">카카오/이메일 실제 로그인은 인증 서버 연결 후 활성화됩니다.</div>
   </div>
-  <div class="formCard card">
-    <p class="adminNote">여기서 고친 문구는 이 기기 홈·상담 화면에 바로 반영됩니다. 서버 배포용이 아니라 브라우저 저장입니다.</p>
-    <label>브랜드 한 줄</label><input id="fSub">
-    <label>오늘의 운세 설명</label><input id="fDaily">
-    <label>평생사주 설명</label><input id="fLife">
-    <label>궁합 설명</label><input id="fGung">
-    <label>상담 첫 인사</label><textarea id="fWelcome" style="width:100%;min-height:88px;border:1px solid #e4dccd;border-radius:13px;padding:10px"></textarea>
-    <button class="ctaGold" onclick="saveCopy()">저장하고 홈에 반영</button>
-    <p id="saveMsg" class="adminNote"></p>
+</section>
+
+<section id="signup" class="screen">
+  <div class="topbar"><button class="ghost" onclick="go('login')" aria-label="뒤로">‹</button><div class="brand"><div class="brandline">회원가입</div></div><span></span></div>
+  <div class="authHero"><div class="authMark"><img src="clover-mark.jpg" alt=""></div><h2>귀인사주 회원가입</h2><p>한 번 가입하면 저장한 사주와 구매 내역을 이어서 볼 수 있어요.</p></div>
+  <div class="authCard card">
+    <button class="authBtn kakao" type="button" onclick="kakaoLoginReady()">카카오로 가입하기</button>
+    <div class="authDivider">또는 이메일로 가입</div>
+    <label>이름</label><input id="signupName" autocomplete="name" placeholder="이름을 입력해 주세요">
+    <label>이메일</label><input id="signupEmail" type="email" autocomplete="email" placeholder="이메일을 입력해 주세요">
+    <label>비밀번호</label><input id="signupPassword" type="password" autocomplete="new-password" placeholder="8자 이상 입력해 주세요">
+    <label class="check"><input id="signupTerms" type="checkbox"> 이용약관 및 개인정보 처리방침에 동의합니다.</label>
+    <button class="authBtn green" type="button" onclick="emailSignupReady()">회원가입</button>
+    <div class="authLinks">이미 회원이신가요? <button type="button" onclick="go('login')">로그인</button></div>
+    <div id="signupMsg" class="authNotice">실제 계정 생성은 인증 서버 연결 후 활성화됩니다.</div>
   </div>
 </section>
 
@@ -972,8 +987,12 @@ window.guiinSendAI=function(ev,preset){
   },false);
 })();
 
+function kakaoLoginReady(){const m=$('loginMsg');if(m)m.textContent='카카오 로그인 화면은 준비됐어요. 실제 카카오 계정 연동은 Kakao Developers 앱 키와 서버 OAuth 연결 후 활성화됩니다.';}
+function emailLoginReady(){const m=$('loginMsg');if(m)m.textContent='이메일 로그인 화면은 준비됐어요. 실제 로그인은 회원 인증 서버 연결 후 활성화됩니다.';}
+function emailSignupReady(){const m=$('signupMsg');if(m)m.textContent='회원가입 화면은 준비됐어요. 실제 계정 저장은 인증 서버 연결 후 활성화됩니다.';}
+
 applyCopy();
-const h=location.hash.replace('#','');if(['home','saju','result','match','matchResult','today','mypage','ask','wallet','admin'].includes(h))go(h);
+const h=location.hash.replace('#','');if(['home','saju','result','match','matchResult','today','mypage','ask','wallet','login','signup'].includes(h))go(h);
 </script>
 </body>
 </html>
