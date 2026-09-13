@@ -1,0 +1,272 @@
+/* GUIIN SAFE THEME — visual-only overrides.
+   기존 사주엔진 / 계산 / 풀이 / onclick을 건드리지 않습니다. */
+
+:root{
+  --gs-bg:#fffaf0;
+  --gs-paper:#fffefb;
+  --gs-navy:#162650;
+  --gs-green:#075b48;
+  --gs-green2:#14775a;
+  --gs-gold:#e5ad2e;
+  --gs-pink:#ff5a86;
+  --gs-line:#eadfce;
+  --gs-muted:#737a77;
+  --gs-shadow:0 10px 28px rgba(67,58,38,.07);
+}
+
+html,body{background:#f1eadf}
+.app{background:linear-gradient(180deg,#fffdf8 0%,#fff9ee 100%)!important}
+.screen{background:transparent!important}
+.card{
+  background:rgba(255,255,255,.96)!important;
+  border:1px solid var(--gs-line)!important;
+  border-radius:24px!important;
+  box-shadow:var(--gs-shadow)!important
+}
+
+.topbar{
+  height:76px!important;
+  background:rgba(255,253,248,.97)!important;
+  border-bottom:0!important;
+  backdrop-filter:blur(14px)!important
+}
+.brand .brandline{
+  font-size:23px!important;
+  color:var(--gs-green)!important;
+  letter-spacing:-.055em!important
+}
+.brand small{
+  font-size:9px!important;
+  color:#777f9a!important;
+  letter-spacing:-.02em!important
+}
+
+/* 완성 시안 이미지를 결과 화면에 통째로 보여주지 않음 */
+.guiinVisualHero .heroPet{display:none!important}
+.guiinVisualHero{
+  min-height:218px!important;
+  padding:24px 34% 22px 20px!important;
+  border-radius:26px!important;
+  border:1px solid #e6ecd5!important;
+  background:
+    radial-gradient(circle at 85% 30%,rgba(114,190,73,.23) 0 6%,transparent 7%),
+    radial-gradient(circle at 75% 58%,rgba(255,255,255,.9) 0 18%,transparent 19%),
+    linear-gradient(140deg,#f5ffe8 0%,#fffbe8 58%,#fff6de 100%)!important;
+  box-shadow:var(--gs-shadow)!important
+}
+.guiinVisualHero:before{
+  content:"☘";
+  left:auto!important;
+  right:42px!important;
+  bottom:24px!important;
+  top:auto!important;
+  font-size:76px!important;
+  opacity:.22!important;
+  color:#53a93b!important;
+  transform:rotate(-12deg)!important
+}
+.guiinVisualHero:after{
+  content:"✿";
+  right:14px!important;
+  top:22px!important;
+  font-size:34px!important;
+  opacity:.25!important;
+  color:#e0ae39!important
+}
+.guiinVisualHero .eyebrow{
+  display:inline-flex!important;
+  padding:6px 10px!important;
+  border-radius:999px!important;
+  background:rgba(255,255,255,.8)!important;
+  color:#158057!important;
+  font-size:10px!important;
+  font-weight:900!important
+}
+.guiinVisualHero h2{
+  font-size:26px!important;
+  line-height:1.28!important;
+  color:var(--gs-green)!important;
+  margin:10px 0 10px!important
+}
+.guiinVisualHero p{
+  font-size:11.5px!important;
+  line-height:1.65!important;
+  color:#5f6c68!important
+}
+.guiinVisualHero.pink{background:linear-gradient(140deg,#fff3f7,#fff9e9)!important}
+.guiinVisualHero.pink:before{color:#f58bab!important}
+.guiinVisualHero.pink h2{color:#cc3d67!important}
+.guiinVisualHero.blue{background:linear-gradient(140deg,#effaff,#fffbea)!important}
+.guiinVisualHero.blue h2{color:#24538c!important}
+.guiinVisualHero.gold{background:linear-gradient(140deg,#fff9df,#fffef6)!important}
+.guiinVisualHero.gold h2{color:#9e681a!important}
+
+/* 홈 */
+#home .profilebar{
+  border-radius:22px!important;
+  padding:11px 12px!important;
+  margin:8px 0 10px!important
+}
+#home .avatar{
+  width:48px!important;height:48px!important;
+  border:2px solid #eee8d5!important
+}
+#home .profilebar .txt b{font-size:14px!important;color:var(--gs-navy)!important}
+#home .picker{
+  background:#faf4ea!important;
+  border:1px solid #eee4d6!important;
+  border-radius:14px!important;
+  padding:9px 11px!important
+}
+#home .homeHero{
+  border-radius:26px!important;
+  overflow:hidden!important;
+  box-shadow:var(--gs-shadow)!important
+}
+#home .homeHero .heroText h1{color:var(--gs-green)!important}
+#home .homeHero .ctaGreen{
+  border-radius:999px!important;
+  background:linear-gradient(135deg,#16785a,#075b48)!important
+}
+#home .tiles{
+  grid-template-columns:repeat(3,minmax(0,1fr))!important;
+  gap:8px!important
+}
+#home .tile{
+  border-radius:20px!important;
+  border:1px solid rgba(229,220,205,.9)!important;
+  box-shadow:0 7px 18px rgba(67,58,38,.045)!important
+}
+#home .tile:nth-child(1){background:linear-gradient(150deg,#fff8d9,#ffefbd)!important}
+#home .tile:nth-child(2){background:linear-gradient(150deg,#fff0f4,#f8dfe8)!important}
+#home .tile:nth-child(3){background:linear-gradient(150deg,#f4ecff,#eadffc)!important}
+#home .tile:nth-child(4){background:linear-gradient(150deg,#ecf9ef,#def3e6)!important}
+#home .tile:nth-child(5){background:linear-gradient(150deg,#edf8ff,#deeffa)!important}
+#home .tile:nth-child(6){background:linear-gradient(150deg,#fff6dd,#f9e9c0)!important}
+#home .tile button{border-radius:999px!important}
+#home .rankRow{display:none!important}
+
+/* 사주 입력 */
+#saju .screenTitle{
+  border-radius:26px!important;
+  background:linear-gradient(145deg,#f7ffe9,#fff8df)!important;
+  border:1px solid #e7edd6!important;
+  box-shadow:var(--gs-shadow)!important
+}
+#saju .screenTitle h2{color:var(--gs-green)!important}
+#saju .formCard{border-radius:24px!important;padding:19px!important}
+#saju input,#saju select{
+  min-height:48px!important;
+  border-radius:15px!important;
+  background:#fffdf9!important
+}
+#saju .seg button{min-height:45px!important;border-radius:15px!important}
+#saju .seg button.on{
+  background:#fff1c9!important;
+  border-color:#e7b134!important;
+  color:#745514!important
+}
+#saju .locationRow{min-height:48px!important;border-radius:15px!important}
+#saju .ctaGold{border-radius:999px!important;padding:15px!important}
+
+/* 사주 결과 */
+#result .tabs{
+  position:sticky;
+  top:76px;
+  z-index:25;
+  background:rgba(255,250,240,.95)!important;
+  backdrop-filter:blur(12px)
+}
+#result .tabs button{
+  border:1px solid #e8dfd3!important;
+  background:#fff!important;
+  border-radius:15px!important;
+  padding:9px 13px!important
+}
+#result .tabs button.on{
+  background:var(--gs-pink)!important;
+  border-color:var(--gs-pink)!important;
+  color:#fff!important
+}
+#resultView .easyIntro,
+#resultView .easyLongCard,
+#resultView .expertSection,
+#resultView .deepCard,
+#resultView .wongukCard,
+#resultView .manseProfile,
+#resultView .manseChartCard,
+#resultView .sampleCard,
+#resultView .premiumHero{border-radius:24px!important}
+#resultView .easyIntro{background:linear-gradient(145deg,#f5fce9,#fff8df)!important}
+#resultView .easyIntro h2,
+#resultView .easyLongCard h3,
+#resultView .expertSection h3{color:var(--gs-navy)!important}
+#resultView .easyBody p,#resultView .expertSection p{line-height:1.9!important}
+#resultView .easyPoint.good{background:#eef9f1!important}
+#resultView .easyPoint.watch{background:#fff2ec!important}
+#resultView .easyPoint.tip{background:#fff9e7!important}
+#resultView .easyPoint.support{background:#f3f8e8!important}
+#resultView .wongukCell{border-radius:16px!important}
+#resultView .el,#resultView .manseEl{border-radius:14px!important}
+#resultView .premiumHero{background:linear-gradient(145deg,#fff8e8,#eef7e7)!important}
+#resultView .premiumLock{border-radius:22px!important}
+
+/* 궁합 */
+#match .formCard,
+#matchResult .matchHero,
+#matchResult .infoCard,
+#matchResult .easyLongCard{border-radius:24px!important}
+#matchResult .tabs button{border-radius:15px!important}
+#matchResult .tabs button.on{background:#9c69d5!important;color:#fff!important}
+#matchView .matchHero{background:linear-gradient(145deg,#fff1f5,#f7efff)!important}
+#matchView .score{color:#e34f77!important}
+#matchView .person{border-radius:16px!important}
+
+/* 오늘의 운세 */
+#today .tabs button{border-radius:15px!important}
+#today .tabs button.on{background:var(--gs-green)!important;color:#fff!important}
+#todayView .todayHero,
+#todayView .fortuneList,
+#todayView .todayDetailCard{border-radius:24px!important}
+#todayView .todayHero{background:linear-gradient(145deg,#fffdf6,#f3fae8)!important}
+#todayView .todayArt{border-radius:18px!important}
+#todayView .fortuneRow{min-height:60px!important}
+#todayView .fortuneRow .fIcon{width:36px!important;height:36px!important;border-radius:12px!important}
+
+/* 대운·세운 */
+#yearLuck .tabs button{border-radius:15px!important}
+#yearLuck .tabs button.on{background:var(--gs-green)!important;color:#fff!important}
+#yearView .easyLongCard,
+#yearView .premiumHero,
+#yearView .sampleCard{border-radius:24px!important}
+
+/* 마이페이지 / 관리 */
+#mypage .profileCard,#mypage .menuCard,#manage .manageCard{border-radius:24px!important}
+#mypage .profileCard{background:linear-gradient(145deg,#fffdf8,#f5f9ed)!important}
+#mypage .bigAvatar{
+  width:70px!important;height:70px!important;
+  border:3px solid #eee4d1!important
+}
+#mypage .menuCard button{min-height:51px!important}
+#manage .tabs button{border-radius:15px!important}
+
+/* 하단 네비 */
+.bottom{
+  height:72px!important;
+  background:rgba(255,255,255,.98)!important;
+  border-top:1px solid #eae1d4!important;
+  box-shadow:0 -7px 20px rgba(60,52,36,.045)!important
+}
+.bottom .flower{
+  width:52px!important;height:52px!important;
+  margin-top:-22px!important;
+  background:linear-gradient(135deg,#e9ba48,#a8781e)!important;
+  box-shadow:0 8px 18px rgba(164,116,27,.25)!important
+}
+
+@media(max-width:370px){
+  .guiinVisualHero{min-height:196px!important;padding:20px 30% 18px 17px!important}
+  .guiinVisualHero h2{font-size:23px!important}
+  #home .tiles{gap:6px!important}
+  #home .tile{padding-left:6px!important;padding-right:6px!important}
+}
