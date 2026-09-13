@@ -41,65 +41,103 @@ html,body{background:#f1eadf}
   letter-spacing:-.02em!important
 }
 
-/* 완성 시안 이미지를 결과 화면에 통째로 보여주지 않음 */
-.guiinVisualHero .heroPet{display:none!important}
+/* 상단 소개 카드 = 텍스트 전용 (이미지 없음). 아래 큰 일러스트는 유지 */
+.guiinVisualHero img,
+.guiinVisualHero .heroPet,
+.guiinVisualHero .heroArt,
+.guiinVisualHero .sideArt,
+.guiinVisualHero .summaryArt{display:none!important}
+
 .guiinVisualHero{
-  min-height:218px!important;
-  padding:24px 34% 22px 20px!important;
+  position:relative!important;
+  min-height:auto!important;
+  padding:22px 20px 20px!important;
   border-radius:26px!important;
   border:1px solid #e6ecd5!important;
   background:
-    radial-gradient(circle at 85% 30%,rgba(114,190,73,.23) 0 6%,transparent 7%),
-    radial-gradient(circle at 75% 58%,rgba(255,255,255,.9) 0 18%,transparent 19%),
+    radial-gradient(circle at 92% 18%,rgba(114,190,73,.18) 0 5%,transparent 6%),
+    radial-gradient(circle at 88% 78%,rgba(255,255,255,.85) 0 14%,transparent 15%),
     linear-gradient(140deg,#f5ffe8 0%,#fffbe8 58%,#fff6de 100%)!important;
-  box-shadow:var(--gs-shadow)!important
+  box-shadow:var(--gs-shadow)!important;
+  overflow:hidden!important
 }
 .guiinVisualHero:before{
-  content:"☘";
+  content:"☘"!important;
+  position:absolute!important;
   left:auto!important;
-  right:42px!important;
-  bottom:24px!important;
+  right:18px!important;
+  bottom:14px!important;
   top:auto!important;
-  font-size:76px!important;
-  opacity:.22!important;
+  font-size:56px!important;
+  opacity:.18!important;
   color:#53a93b!important;
-  transform:rotate(-12deg)!important
+  transform:rotate(-10deg)!important;
+  pointer-events:none!important;
+  z-index:0!important
 }
 .guiinVisualHero:after{
-  content:"✿";
-  right:14px!important;
-  top:22px!important;
-  font-size:34px!important;
-  opacity:.25!important;
-  color:#e0ae39!important
+  content:"✿"!important;
+  position:absolute!important;
+  right:12px!important;
+  top:14px!important;
+  font-size:28px!important;
+  opacity:.22!important;
+  color:#e0ae39!important;
+  pointer-events:none!important;
+  z-index:0!important
+}
+.guiinVisualHero .heroCopy,
+.guiinVisualHero .eyebrow,
+.guiinVisualHero h2,
+.guiinVisualHero p{
+  position:relative!important;
+  z-index:1!important
 }
 .guiinVisualHero .eyebrow{
   display:inline-flex!important;
-  padding:6px 10px!important;
+  padding:6px 12px!important;
   border-radius:999px!important;
-  background:rgba(255,255,255,.8)!important;
+  background:rgba(255,255,255,.85)!important;
   color:#158057!important;
-  font-size:10px!important;
-  font-weight:900!important
+  font-size:11px!important;
+  font-weight:900!important;
+  letter-spacing:-.02em!important
 }
 .guiinVisualHero h2{
-  font-size:26px!important;
-  line-height:1.28!important;
+  font-size:24px!important;
+  line-height:1.32!important;
   color:var(--gs-green)!important;
-  margin:10px 0 10px!important
+  margin:12px 0 10px!important;
+  letter-spacing:-.04em!important;
+  max-width:100%!important
 }
 .guiinVisualHero p{
-  font-size:11.5px!important;
-  line-height:1.65!important;
-  color:#5f6c68!important
+  font-size:13px!important;
+  line-height:1.7!important;
+  color:#5f6c68!important;
+  margin:0!important;
+  max-width:100%!important
 }
-.guiinVisualHero.pink{background:linear-gradient(140deg,#fff3f7,#fff9e9)!important}
+.guiinVisualHero.pink{
+  background:linear-gradient(140deg,#fff3f7,#fff9e9)!important;
+  border-color:#f3d5e0!important
+}
 .guiinVisualHero.pink:before{color:#f58bab!important}
+.guiinVisualHero.pink .eyebrow{color:#c93a68!important;background:rgba(255,255,255,.9)!important}
 .guiinVisualHero.pink h2{color:#cc3d67!important}
-.guiinVisualHero.blue{background:linear-gradient(140deg,#effaff,#fffbea)!important}
+.guiinVisualHero.blue{
+  background:linear-gradient(140deg,#effaff,#fffbea)!important;
+  border-color:#d5e8f3!important
+}
 .guiinVisualHero.blue h2{color:#24538c!important}
-.guiinVisualHero.gold{background:linear-gradient(140deg,#fff9df,#fffef6)!important}
+.guiinVisualHero.blue .eyebrow{color:#2a6aa8!important}
+.guiinVisualHero.gold{
+  background:linear-gradient(140deg,#fff9df,#fffef6)!important;
+  border-color:#f0e0b8!important
+}
 .guiinVisualHero.gold h2{color:#9e681a!important}
+.guiinVisualHero.gold .eyebrow{color:#a67a1c!important}
+.guiinVisualHero.gold:before{color:#d4a82e!important}
 
 /* 홈 */
 #home .profilebar{
@@ -265,8 +303,23 @@ html,body{background:#f1eadf}
 }
 
 @media(max-width:370px){
-  .guiinVisualHero{min-height:196px!important;padding:20px 30% 18px 17px!important}
-  .guiinVisualHero h2{font-size:23px!important}
+  .guiinVisualHero{padding:18px 16px 16px!important}
+  .guiinVisualHero h2{font-size:21px!important}
   #home .tiles{gap:6px!important}
   #home .tile{padding-left:6px!important;padding-right:6px!important}
 }
+
+/* 상단 소개 카드 이미지 완전 제거 — 아래 큰 일러스트(todayArt/matchArt 등)는 유지 */
+.guiinVisualHero img{display:none!important;width:0!important;height:0!important}
+#resultView .easyIntro img,
+#resultView .summaryHero img:not(.summaryArt img){display:none!important}
+
+/* 아래 큰 메인 이미지는 명시적으로 유지 */
+.todayArt,
+.matchArt,
+.summaryArt,
+.heroArt{display:block!important}
+.todayArt img,
+.matchArt img,
+.summaryArt img,
+.heroArt img{display:block!important;width:100%!important;height:100%!important;object-fit:cover!important}
