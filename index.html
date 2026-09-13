@@ -400,7 +400,6 @@ html{background:#efe7d7}.app{background:linear-gradient(180deg,#fffaf0 0%,#fff6e
   font-size:8.5px!important;
 }
 
-/* 큰 일러스트 메인 카드 */
 #home .homeHero{
   position:relative!important;
   padding:0!important;
@@ -470,7 +469,6 @@ html{background:#efe7d7}.app{background:linear-gradient(180deg,#fffaf0 0%,#fff6e
   box-shadow:0 8px 18px rgba(13,93,68,.25)!important;
 }
 
-/* 6개 메뉴 — 참고 이미지처럼 3열 x 2줄 파스텔 카드 */
 #home .tiles{
   display:grid!important;
   grid-template-columns:repeat(3,minmax(0,1fr))!important;
@@ -539,7 +537,6 @@ html{background:#efe7d7}.app{background:linear-gradient(180deg,#fffaf0 0%,#fff6e
   color:#39423d!important;
 }
 
-/* 하단 홈 전용 배너 */
 #home .slogan{
   margin-top:10px!important;
   border-radius:18px!important;
@@ -550,7 +547,6 @@ html{background:#efe7d7}.app{background:linear-gradient(180deg,#fffaf0 0%,#fff6e
   padding:11px 12px!important;
 }
 
-/* 참고 디자인과 맞지 않는 인기순위 블록은 홈에서만 숨김 */
 #home .rankRow{
   display:none!important;
 }
@@ -580,60 +576,234 @@ html{background:#efe7d7}.app{background:linear-gradient(180deg,#fffaf0 0%,#fff6e
 }
 
 
-/* GUIIN 9-PAGE REBUILD — 2026-09-13 */
+/* SITE-WIDE REDESIGN 2026-09-13 — ALL NON-HOME SCREENS */
 :root{
-  --g-bg:#fffaf0;--g-paper:#fffefb;--g-navy:#14244f;--g-green:#075b48;--g-green2:#167b5a;
-  --g-gold:#e7ad26;--g-pink:#ff4f82;--g-lilac:#efe8ff;--g-mint:#eaf9f0;--g-yellow:#fff6d9;
-  --g-line:#eee5d7;--g-muted:#6f7483;--g-shadow:0 8px 24px rgba(51,50,36,.07)
+  --ui-navy:#14234d;
+  --ui-green:#0b5c49;
+  --ui-green-soft:#e9f5ee;
+  --ui-gold:#d3a23a;
+  --ui-cream:#fff9ef;
+  --ui-paper:#fffefa;
+  --ui-line:#eadfce;
+  --ui-muted:#817a70;
 }
-.app{background:linear-gradient(180deg,#fffdf7 0%,#fff9ed 100%)!important}
-.topbar{height:76px!important;background:rgba(255,253,247,.98)!important;border-bottom:0!important;backdrop-filter:blur(14px)!important}
-.brand .brandline{font-size:23px!important;color:#075b48!important;letter-spacing:-.055em!important}
-.brand small{font-size:9px!important;color:#68718e!important;letter-spacing:-.02em!important}
-.card{border:1px solid var(--g-line)!important;border-radius:22px!important;box-shadow:var(--g-shadow)!important;background:rgba(255,255,255,.96)!important}
-.tabs{gap:4px!important;padding:8px 0 10px!important}
-.tabs button{min-height:38px!important;border-radius:14px!important;background:#fff!important;border:1px solid #eee6dc!important;color:#5d6477!important;font-size:10px!important;padding:8px 12px!important}
-.tabs button.on{background:#ff4f82!important;color:#fff!important;border-color:#ff4f82!important;box-shadow:0 8px 16px rgba(255,79,130,.18)!important}
-.tabs.green button.on{background:#075b48!important;border-color:#075b48!important}.tabs.purple button.on{background:#a068d6!important;border-color:#a068d6!important}
-.screenTitle{padding:10px 4px 6px!important}.screenTitle h2{font-size:26px!important;color:var(--g-navy)!important}.screenTitle p{font-size:11px!important;line-height:1.55!important}.screenTitle .mark{width:44px!important;height:44px!important;border-radius:14px!important}.screenTitle .sideArt{width:86px!important;height:72px!important;border-radius:18px!important}
 
-/* shared visual hero reconstructed as real HTML UI */
-.guiinVisualHero{position:relative;overflow:hidden;min-height:205px;margin:8px 0 12px;padding:22px 46% 20px 18px;border-radius:24px;background:linear-gradient(135deg,#f5ffe8 0%,#fffbe6 52%,#fff6df 100%);border:1px solid #e9efd8;box-shadow:var(--g-shadow)}
-.guiinVisualHero:before,.guiinVisualHero:after{content:'☘';position:absolute;color:#77be45;opacity:.16;font-size:68px;line-height:1}.guiinVisualHero:before{left:-12px;bottom:-14px;transform:rotate(-18deg)}.guiinVisualHero:after{right:12px;top:-15px;font-size:48px;transform:rotate(18deg)}
-.guiinVisualHero .heroCopy{position:relative;z-index:2}.guiinVisualHero .eyebrow{font-size:11px;font-weight:900;color:#138354;margin-bottom:7px}.guiinVisualHero h2{font-size:25px;line-height:1.28;letter-spacing:-.055em;color:#075b48;margin:0 0 9px}.guiinVisualHero p{font-size:11px;line-height:1.65;color:#5f6c68;margin:0}.guiinVisualHero .heroPet{position:absolute;z-index:1;right:-8px;bottom:-6px;width:51%;height:92%;object-fit:contain;object-position:right bottom;filter:drop-shadow(0 10px 18px rgba(39,82,48,.12))}.guiinVisualHero .heroAction{display:inline-flex;align-items:center;justify-content:center;margin-top:12px;padding:9px 14px;border-radius:999px;background:#075b48;color:#fff;font-size:10px;font-weight:900;box-shadow:0 7px 16px rgba(7,91,72,.22)}
-.guiinVisualHero.pink{background:linear-gradient(135deg,#fff2f7,#fff9e7)}.guiinVisualHero.pink h2{color:#d62f65}.guiinVisualHero.blue{background:linear-gradient(135deg,#f2fbff,#fffbe8)}.guiinVisualHero.blue h2{color:#174b86}.guiinVisualHero.gold{background:linear-gradient(135deg,#fff9dc,#fffef5)}.guiinVisualHero.gold h2{color:#9f6414}
+.screen:not(#home){
+  background:
+    radial-gradient(circle at 88% 2%,rgba(255,231,165,.22),transparent 27%),
+    linear-gradient(180deg,#fffdf8 0%,#fff8ec 100%)!important;
+}
 
-/* 1 HOME */
-#home .profilebar{margin:6px 0 10px!important;padding:10px 12px!important;border-radius:20px!important}.profilebar .avatar{width:48px!important;height:48px!important;border:2px solid #eef0d7!important}.profilebar .txt b{font-size:14px!important;color:var(--g-navy)!important}.profilebar .picker{border:1px solid #ece4d8!important;background:#fffaf1!important;color:#34405e!important;border-radius:14px!important;padding:10px 12px!important}
-#home .homeHero{padding:0!important;min-height:278px!important;position:relative!important;overflow:hidden!important;border-radius:24px!important;background:#eefae8!important}
-#home .homeHero .heroArt{height:278px!important;margin:0!important;border-radius:0!important}#home .homeHero .heroArt img{height:100%!important;object-fit:cover!important;object-position:center 55%!important}
-#home .homeHero .heroText{position:absolute!important;left:20px!important;right:45%!important;top:28px!important;text-align:left!important;z-index:3!important;text-shadow:0 2px 10px rgba(255,255,255,.95)!important}
-#home .homeHero .kicker{font-size:11px!important;color:#075b48!important;font-weight:900!important}#home .homeHero h1{font-size:35px!important;line-height:1!important;color:#075b48!important;margin:8px 0 12px!important}#home .homeHero .copy{font-size:11px!important;color:#4b5e58!important;line-height:1.6!important}
-#home .homeHero .ctaGreen{position:absolute!important;left:50%!important;bottom:16px!important;transform:translateX(-50%)!important;width:68%!important;margin:0!important;border-radius:999px!important;padding:13px!important;background:linear-gradient(135deg,#117150,#075b48)!important;box-shadow:0 8px 18px rgba(7,91,72,.24)!important;font-size:12px!important}
-#home .tiles{grid-template-columns:repeat(3,minmax(0,1fr))!important;gap:8px!important;margin-top:10px!important}.tile{min-height:138px!important;padding:13px 8px 33px!important;text-align:center!important;border-radius:19px!important}.tile:nth-child(1){background:linear-gradient(145deg,#fff8dc,#fff0bd)!important}.tile:nth-child(2){background:linear-gradient(145deg,#ffeef4,#f9e0e9)!important}.tile:nth-child(3){background:linear-gradient(145deg,#f2eafe,#e9dcfb)!important}.tile:nth-child(4){background:linear-gradient(145deg,#e9f9ef,#dff4e7)!important}.tile:nth-child(5){background:linear-gradient(145deg,#eaf7ff,#deeffa)!important}.tile:nth-child(6){background:linear-gradient(145deg,#fff5da,#faeac1)!important}.tile .ico{width:43px!important;height:43px!important;margin:0 auto 7px!important;border-radius:14px!important;display:grid!important;place-items:center!important;background:rgba(255,255,255,.66)!important}.tile .ico svg{width:28px!important;height:28px!important}.tile .pet{display:none!important}.tile b{font-size:13px!important;color:var(--g-navy)!important}.tile p{font-size:8.6px!important;line-height:1.4!important;color:#6d7480!important}.tile button{left:7px!important;right:7px!important;bottom:7px!important;background:rgba(255,255,255,.68)!important;border-radius:999px!important;font-size:8px!important;padding:6px 4px!important}.rankRow{display:none!important}#home .slogan{margin-top:10px!important;background:linear-gradient(90deg,#f5f9dd,#fff7dd)!important;border-radius:18px!important;text-align:center!important;padding:11px!important;font-size:9.5px!important}
+.screen:not(#home) .topbar{
+  height:72px!important;
+  background:rgba(255,253,248,.96)!important;
+  border-bottom:1px solid rgba(234,223,206,.75)!important;
+  box-shadow:0 3px 14px rgba(78,61,32,.035)!important;
+}
 
-/* 2 SAJU INPUT */
-#saju .screenTitle{min-height:195px;position:relative;overflow:hidden;padding:22px 45% 14px 12px!important;background:linear-gradient(145deg,#f7ffe9,#fffbe8);border:1px solid #e8efd5;border-radius:24px;margin:8px 0 12px}#saju .screenTitle .mark{position:absolute;left:14px;top:14px;width:32px!important;height:32px!important}#saju .screenTitle>div:nth-child(2){padding-top:35px}#saju .screenTitle h2{font-size:25px!important;color:#075b48!important}#saju .screenTitle .sideArt{position:absolute;right:0;bottom:0;width:49%!important;height:88%!important;border-radius:0!important}#saju .screenTitle .sideArt img{object-fit:contain!important;object-position:right bottom!important}
-#saju .formCard{padding:18px!important;border-radius:22px!important;background:#fffefb!important}#saju .formCard label{font-size:11px!important;color:var(--g-navy)!important;font-weight:900!important;margin:13px 0 6px!important}#saju input,#saju select{min-height:47px!important;border-radius:14px!important;background:#fffdf8!important;border:1px solid #e8dfd2!important;font-size:13px!important}#saju .seg button{min-height:44px;border-radius:14px!important;background:#fff!important}.seg button.on{background:#fff4cf!important;border-color:#efbd37!important;color:#674a14!important}#saju .locationRow{border-radius:14px!important;background:#fffdf8!important;min-height:47px!important}#saju .ctaGold{border-radius:999px!important;background:linear-gradient(135deg,#ffd85a,#f1ad1f)!important;color:#14384a!important;font-size:14px!important;padding:15px!important;margin-top:15px!important}
+.screen:not(#home) .brand .brandline{
+  color:var(--ui-navy)!important;
+  font-size:19px!important;
+  letter-spacing:-.035em!important;
+}
 
-/* 3-7 RESULT PAGES */
-#result .tabs{position:sticky;top:72px;z-index:25;background:rgba(255,250,240,.95);backdrop-filter:blur(10px);margin:0 -13px;padding:8px 13px 10px!important}
-#resultView .easyIntro{background:linear-gradient(145deg,#f6ffe9,#fffce9)!important;padding:18px!important}#resultView .easyIntro h2{font-size:22px!important;line-height:1.45!important;color:#075b48!important}#resultView .easyIntro p{font-size:12px!important;line-height:1.75!important}
-#resultView .easyLongCard,#resultView .deepCard,#resultView .expertSection,#resultView .wongukCard,#resultView .manseProfile,#resultView .manseChartCard{border-radius:22px!important;padding:18px!important;margin-top:10px!important;background:#fffefb!important}#resultView .easyLongCard h3,#resultView .deepCard h3,#resultView .expertSection h3{font-size:19px!important;line-height:1.42!important;color:var(--g-navy)!important}.easyKicker,.miniTitle{font-size:10px!important;color:#138354!important;font-weight:900!important}.easyBody p,.deepCard p,.expertSection p{font-size:13.5px!important;line-height:1.9!important;color:#58625d!important}.easyPoint{border-radius:15px!important;padding:12px 13px!important;margin-top:9px!important}.easyPoint.good{background:#edf9ef!important}.easyPoint.watch{background:#fff1ee!important}.easyPoint.tip{background:#f1f4ff!important}.easyPoint.support{background:#fff7d9!important}.easyEvidence,.evidenceLine{border-radius:12px!important;background:#f8f5ef!important;color:#898177!important;font-size:10px!important}
-.wongukGrid{gap:7px!important}.wongukCell{border-radius:15px!important;padding:11px 5px!important}.wongukCell:nth-child(1){background:#edf8ee!important}.wongukCell:nth-child(2){background:#fff4d7!important}.wongukCell:nth-child(3){background:#ffe9ec!important}.wongukCell:nth-child(4){background:#eeeaff!important}.wongukCell strong{font-size:31px!important}.elements,.manseElements{gap:6px!important}.el,.manseEl{border-radius:13px!important;min-height:66px!important;display:flex!important;flex-direction:column!important;justify-content:center!important;align-items:center!important}.el:nth-child(1),.manseEl:nth-child(1){background:#e8f8ef!important}.el:nth-child(2),.manseEl:nth-child(2){background:#ffe8ef!important}.el:nth-child(3),.manseEl:nth-child(3){background:#fff1d8!important}.el:nth-child(4),.manseEl:nth-child(4){background:#f0f0f0!important}.el:nth-child(5),.manseEl:nth-child(5){background:#e8f5ff!important}
-#resultView .starDetail{border-radius:18px!important;background:#fffefb!important;border:1px solid var(--g-line)!important;box-shadow:var(--g-shadow)!important;margin-top:9px!important}.starCount{background:#fff2ce!important;color:#8c6415!important}
-.luckRow{border-radius:15px!important;background:#fffdf8!important;border:1px solid #eee5d6!important}.luckRow.current{background:#fff4cf!important;border-color:#efbd37!important;box-shadow:0 7px 18px rgba(220,162,27,.10)!important}
+.screenTitle{
+  align-items:center!important;
+  padding:16px 4px 12px!important;
+}
 
-/* 8 MATCH */
-#match .screenTitle{padding-top:14px!important}#match .formCard{border-radius:22px!important;padding:18px!important}#matchResult .tabs{position:sticky;top:72px;z-index:22;background:rgba(255,250,240,.95);backdrop-filter:blur(10px)}#matchView .matchHero{padding:0 0 16px!important;overflow:hidden!important;background:linear-gradient(145deg,#fff1f6,#fff9e9)!important}.matchHero h3{font-size:22px!important;color:#dc2e67!important;margin:17px 15px 4px!important}.matchHero>p{font-size:10px!important}.matchArt{height:235px!important;border-radius:0!important;margin:10px 0 0!important}.matchArt img{object-fit:cover!important;object-position:center 50%!important}.score{font-size:46px!important;color:#e83d70!important;margin-top:10px!important}.pair{gap:8px!important}.person{border-radius:18px!important;padding:13px 8px!important;background:#fff8ef!important}.person.b{background:#f2edff!important}.scoreRow{grid-template-columns:62px 1fr 30px!important;padding:9px 0!important}.compatLong{background:#fffefb!important}
+.screenTitle .mark{
+  width:46px!important;
+  height:46px!important;
+  border-radius:16px!important;
+  box-shadow:0 5px 14px rgba(60,50,30,.08)!important;
+}
 
-/* 9 TODAY */
-#today .tabs{position:sticky;top:72px;z-index:22;background:rgba(255,250,240,.95);backdrop-filter:blur(10px)}#todayView .todayDate{font-size:14px!important;color:var(--g-navy)!important;margin:10px 0!important;background:#fff!important;border:1px solid var(--g-line);border-radius:999px;padding:10px 12px;box-shadow:0 4px 12px rgba(60,50,30,.04)}#todayView .todayHero{padding:0 0 12px!important;overflow:hidden!important;background:#fffefb!important}.todayArt{height:250px!important;border-radius:0!important}.todayArt img{object-fit:cover!important;object-position:center 48%!important}.todayHero h3{font-size:20px!important;color:#df6a22!important;margin:12px 12px 3px!important}.todayHero p{font-size:10px!important}.fortuneList{padding:4px 14px!important}.fortuneRow{min-height:61px!important;padding:10px 0!important}.fortuneRow .fIcon{width:39px!important;height:39px!important;border-radius:13px!important}.fortuneRow b{font-size:12px!important;color:var(--g-navy)!important}.fortuneRow span{font-size:9.5px!important;line-height:1.45!important}.todayDetailCard{padding:16px!important}.todayDetailCard h3{font-size:16px!important;line-height:1.5!important;color:var(--g-navy)!important}
+.screenTitle h2{
+  font-size:25px!important;
+  color:var(--ui-navy)!important;
+  line-height:1.15!important;
+}
 
-/* Bottom navigation */
-.bottom{height:72px!important;background:rgba(255,255,255,.97)!important;border-top:1px solid #eee4d8!important;box-shadow:0 -6px 20px rgba(45,40,25,.05)!important}.bottom button{font-size:8.3px!important;color:#66708c!important}.bottom button.active{color:#f3a500!important}.bottom button svg{width:21px!important;height:21px!important}.bottom .flower{width:50px!important;height:50px!important;margin-top:-22px!important;background:linear-gradient(135deg,#e6bd55,#a97718)!important;box-shadow:0 8px 18px rgba(170,119,24,.28)!important}
+.screenTitle p{
+  font-size:10.5px!important;
+  line-height:1.55!important;
+  color:var(--ui-muted)!important;
+}
 
-@media(max-width:370px){.guiinVisualHero{min-height:188px;padding-left:15px}.guiinVisualHero h2{font-size:22px}.guiinVisualHero p{font-size:10px}#home .homeHero{min-height:255px!important}#home .homeHero .heroArt{height:255px!important}#home .tiles{gap:6px!important}.tile{min-height:132px!important;padding:11px 5px 32px!important}.tile b{font-size:12px!important}.tile p{font-size:8px!important}}
+.screenTitle .sideArt{
+  width:76px!important;
+  height:66px!important;
+  border-radius:18px!important;
+  box-shadow:0 5px 14px rgba(60,50,30,.07)!important;
+}
+
+.screen:not(#home) .card{
+  border-color:var(--ui-line)!important;
+  box-shadow:0 7px 22px rgba(83,63,28,.055)!important;
+}
+
+#saju .formCard,
+#match .formCard{padding:19px!important;border-radius:22px!important}
+#saju .formCard label,
+#match .formCard label{font-size:11px!important;color:#505b54!important;margin-top:14px!important}
+#saju input,#saju select,#match input,#match select{min-height:47px!important;border-radius:14px!important;border-color:#e7ddcd!important;background:#fffefa!important;font-size:13px!important}
+#saju .seg button,#match .seg button{border-radius:14px!important;padding:12px 10px!important;background:#fffefa!important}
+#saju .seg button.on,#match .seg button.on{background:#fff2c8!important;border-color:#d9a636!important;color:#775814!important}
+#saju .locationRow{min-height:47px!important;border-radius:14px!important}
+#saju .ctaGold,#match .ctaGold{margin-top:18px!important;padding:15px!important;border-radius:16px!important;box-shadow:0 7px 18px rgba(185,130,25,.18)!important}
+
+#result .tabs,#matchResult .tabs,#today .tabs,#yearLuck .tabs,#manage .tabs{gap:7px!important;padding:11px 1px 8px!important}
+#result .tabs button,#matchResult .tabs button,#today .tabs button,#yearLuck .tabs button,#manage .tabs button{padding:9px 13px!important;border:1px solid #ede4d7!important;background:#fffdfa!important;color:#756f66!important;box-shadow:0 3px 10px rgba(76,59,29,.035)!important}
+#result .tabs button.on,#today .tabs button.on,#yearLuck .tabs button.on,#manage .tabs button.on{background:#0b5c49!important;color:#fff!important;border-color:#0b5c49!important}
+#matchResult .tabs button.on{background:#8f63c4!important;color:#fff!important;border-color:#8f63c4!important}
+
+#resultView{padding-bottom:12px!important}
+#resultView .easyIntro,#resultView .easyLongCard,#resultView .expertSection,#resultView .deepCard,#resultView .infoCard,#resultView .listCard,#resultView .wongukCard,#resultView .manseProfile,#resultView .manseChartCard,#resultView .premiumHero,#resultView .premiumIncluded,#resultView .sampleCard{border-radius:23px!important;overflow:hidden!important}
+#resultView .easyIntro{position:relative!important;background:radial-gradient(circle at 90% 12%,rgba(248,203,104,.30),transparent 27%),linear-gradient(150deg,#fffef9,#f6faed)!important}
+#resultView .easyIntro:after{content:'☘';position:absolute;right:17px;top:12px;font-size:32px;opacity:.11;color:#2b7354}
+#resultView .easyKicker{color:#b88519!important;font-size:11px!important}
+#resultView .easyIntro h2{font-size:23px!important;color:var(--ui-navy)!important}
+#resultView .easyLongCard h3{color:var(--ui-navy)!important;font-size:22px!important}
+#resultView .easyBody p{font-size:15px!important;line-height:1.95!important;color:#545e59!important}
+#resultView .easyPoint{border:1px solid rgba(232,222,204,.7)!important}
+#resultView .easyPoint.good{background:linear-gradient(145deg,#eef9f1,#f8fff8)!important}
+#resultView .easyPoint.watch{background:linear-gradient(145deg,#fff3ec,#fffaf7)!important}
+#resultView .easyPoint.tip{background:linear-gradient(145deg,#f8f5eb,#fffdf8)!important}
+#resultView .easyPoint.support{background:linear-gradient(145deg,#fff8d9,#f3f8e8)!important}
+#resultView .easyEvidence{background:#f8f4ec!important;border:1px dashed #e3d8c5!important}
+#resultView .wongukGrid{gap:8px!important}
+#resultView .wongukCell{border:1px solid rgba(255,255,255,.65)!important;box-shadow:inset 0 0 0 1px rgba(0,0,0,.02)!important}
+#resultView .wongukCell strong{font-size:29px!important}
+#resultView .elements,#resultView .manseElements{gap:7px!important}
+#resultView .el,#resultView .manseEl{border:1px solid rgba(230,221,205,.6)!important;min-height:56px!important}
+
+.premiumPreview{margin-top:10px!important}
+.premiumHero{border:1px solid #ebdfc7!important;background:radial-gradient(circle at 91% 7%,rgba(235,190,77,.24),transparent 28%),linear-gradient(145deg,#fffdf5,#eff7e7)!important}
+.premiumHero .mini{display:inline-block!important;padding:5px 9px!important;border-radius:999px!important;background:#fff0c5!important;color:#8b6515!important}
+.premiumHero h2{color:var(--ui-navy)!important}
+.premiumGrid{gap:9px!important}
+.premiumItem{min-height:74px!important;border:1px solid #eee4d5!important;background:#fffdf8!important;border-radius:15px!important}
+.premiumLock{border-radius:22px!important;border:1px solid #e2c675!important;background:rgba(255,253,247,.98)!important}
+.premiumLock button{border-radius:999px!important;color:#493917!important}
+
+#matchView .matchHero,#matchView .compatIntro,#matchView .compatDetailCard,#matchView .pairManse,#matchView .compatManseIntro{border-radius:23px!important}
+#matchView .matchHero{background:radial-gradient(circle at 85% 15%,rgba(246,175,195,.32),transparent 30%),linear-gradient(150deg,#fff2f6,#f7f0ff)!important}
+#matchView .score{color:#df4b73!important;text-shadow:0 4px 16px rgba(223,75,115,.12)!important}
+#matchView .person{border:1px solid rgba(230,219,210,.7)!important}
+#matchView .compatDetailCard h3{color:var(--ui-navy)!important}
+#matchView .compatEvidence{color:#90877e!important}
+
+#todayView .todayHero,#todayView .todayDetailCard,#todayView .fortuneList,#todayView .infoCard{border-radius:22px!important}
+#todayView .todayDate{color:var(--ui-navy)!important;margin:12px 0!important}
+#todayView .todayHero{background:radial-gradient(circle at 90% 8%,rgba(255,202,93,.24),transparent 28%),linear-gradient(145deg,#fffdf7,#f5fae9)!important}
+#todayView .todayArt{border-radius:18px!important;box-shadow:0 7px 18px rgba(71,59,34,.08)!important}
+#todayView .todayHero h3{color:#d46b27!important;font-size:19px!important}
+#todayView .todayHero p{font-size:10px!important;line-height:1.55!important}
+#todayView .fortuneList{margin-top:9px!important;background:#fffefa!important;border:1px solid var(--ui-line)!important;box-shadow:0 7px 22px rgba(83,63,28,.05)!important}
+#todayView .fortuneRow{min-height:58px!important;padding:11px 2px!important}
+#todayView .fortuneRow .fIcon{width:34px!important;height:34px!important;border-radius:11px!important}
+#todayView .fortuneRow b{font-size:11px!important;color:var(--ui-navy)!important}
+#todayView .fortuneRow span{font-size:9px!important;line-height:1.45!important}
+
+#yearView .yearHero,#yearView .proBox,#yearView .easyLongCard,#yearView .premiumHero,#yearView .sampleCard{border-radius:22px!important}
+#yearView .yearHero{margin-top:5px!important;border:1px solid var(--ui-line)!important;box-shadow:0 8px 22px rgba(83,63,28,.06)!important}
+#yearView .yearNav{padding:10px 7px!important}
+#yearView .yearNav b{color:var(--ui-navy)!important}
+#yearView .yearNav button{width:36px!important;height:36px!important;background:#fffdf9!important;border:1px solid #eadfce!important}
+
+#mypage .profileCard{border-radius:22px!important;background:radial-gradient(circle at 89% 12%,rgba(247,205,107,.22),transparent 27%),#fffefa!important}
+#mypage .bigAvatar{width:68px!important;height:68px!important;border:3px solid #f0e5cf!important}
+#mypage .profileCard b{font-size:16px!important;color:var(--ui-navy)!important}
+#mypage .menuCard{border-radius:22px!important;padding:4px 15px!important}
+#mypage .menuCard button{min-height:49px!important;font-size:11.5px!important;color:#34433d!important}
+#mypage .footerArt{height:auto!important;aspect-ratio:16/7.7!important;border-radius:22px!important;box-shadow:0 7px 20px rgba(83,63,28,.06)!important}
+
+#manage .manageCard{border-radius:22px!important;background:linear-gradient(145deg,#fffdf9,#f5f9ed)!important}
+#manage .manageCard img{width:68px!important;height:68px!important;border:3px solid #f0e5cf!important}
+#manage .btnGhost{border-radius:14px!important;min-height:43px!important}
+
+#guide .guideList{border-radius:22px!important;padding:8px 14px!important}
+#guide .guideRow{min-height:64px!important;padding:12px 5px!important}
+#guide .guideRow .gico{width:39px!important;height:39px!important;border-radius:13px!important;background:linear-gradient(145deg,#eef8e8,#fff6d8)!important}
+#guide .guideRow b{color:var(--ui-navy)!important}
+
+#ask .creditBar{border-radius:22px!important;box-shadow:0 9px 23px rgba(17,87,64,.18)!important}
+#ask .msgs{margin-top:8px!important;padding:12px 4px!important}
+#ask .bubble{border-radius:18px!important;line-height:1.62!important;box-shadow:0 4px 12px rgba(40,48,43,.04)!important}
+#ask .bubble.me{background:linear-gradient(135deg,#176c51,#0b5844)!important}
+#ask .bubble.bot{background:#fffefa!important}
+#ask .qchip{border:1px solid #e7ddce!important;background:#fffaf2!important;color:#586159!important;padding:8px 11px!important}
+#ask .composer{position:sticky!important;bottom:74px!important;z-index:18!important;padding:8px 0 4px!important;background:linear-gradient(180deg,rgba(255,249,239,0),rgba(255,249,239,.96) 28%)!important}
+#ask .composer input{background:#fff!important;border-radius:16px!important}
+#ask .composer .ctaGreen{border-radius:16px!important}
+
+#wallet .storeIntro{border-radius:22px!important;background:radial-gradient(circle at 88% 12%,rgba(255,229,144,.20),transparent 30%),linear-gradient(135deg,#116b50,#074d3b)!important}
+#wallet .storeWish{border-radius:20px!important}
+#wallet .luckyPack{border-radius:21px!important;background:#fffefa!important}
+#wallet .luckyPack.best{border:1.5px solid #e1b142!important;box-shadow:0 10px 24px rgba(179,129,24,.13)!important}
+#wallet .packBuy button{border-radius:999px!important}
+
+#login .authHero,#signup .authHero{padding-top:28px!important}
+#login .authMark,#signup .authMark{width:76px!important;height:76px!important;border-radius:24px!important}
+#login .authHero h2,#signup .authHero h2{color:var(--ui-navy)!important}
+#login .authCard,#signup .authCard{border-radius:22px!important;padding:19px!important}
+#login .authBtn,#signup .authBtn{border-radius:15px!important;min-height:48px!important}
+#login .authBtn.green,#signup .authBtn.green{background:linear-gradient(135deg,#176b51,#0b5743)!important}
+
+#history .utilityCard,#payments .utilityCard,#profiles .utilityCard,#favorites .utilityCard,#notifications .utilityCard,#coupons .utilityCard,#customer .utilityCard,#appinfo .utilityCard,#terms .utilityCard,#privacy .utilityCard,#refund .utilityCard{border-radius:22px!important;background:#fffefa!important}
+.utilityCard h3{color:var(--ui-navy)!important;font-size:18px!important}
+.serviceLink{border-radius:16px!important;background:linear-gradient(145deg,#fffefa,#fbf7ef)!important}
+.serviceLink b{color:var(--ui-navy)!important}
+.softBtn{border-radius:14px!important;background:#fffaf2!important}
+.kakaoSupport{border-radius:15px!important;min-height:48px!important}
+
+.payPanel,.premiumPanel{border-radius:28px 28px 0 0!important;background:#fffdf8!important}
+.payPanel h3,.premiumPanel h2{color:var(--ui-navy)!important}
+.payPanel .primary,.premiumPanel .primary,.payPanel .secondary,.premiumPanel .secondary{border-radius:999px!important}
+
+.bottom{height:72px!important;background:rgba(255,255,255,.97)!important;border-top:1px solid #ece3d5!important;box-shadow:0 -6px 18px rgba(67,55,35,.04)!important}
+.bottom button{font-size:8.3px!important}
+.bottom button svg{width:21px!important;height:21px!important}
+.bottom .flower{width:50px!important;height:50px!important;margin-top:-22px!important;background:linear-gradient(135deg,#e7bd57,#a5761d)!important;box-shadow:0 8px 18px rgba(170,119,24,.28)!important}
+
+@media(max-width:370px){
+  .screenTitle h2{font-size:23px!important}
+  #resultView .easyLongCard h3{font-size:20px!important}
+  #resultView .easyBody p{font-size:14.5px!important}
+  .premiumGrid{grid-template-columns:1fr!important}
+  #matchView .compatDetailCard h3{font-size:20px!important}
+}
+
+
+/* DECORATIVE UI ELEMENTS — no result text baked into images */
+.sectionHero{
+  display:grid;
+  grid-template-columns:1fr 98px;
+  gap:12px;
+  align-items:center;
+  margin:10px 0 12px;
+  padding:16px;
+  border:1px solid rgba(233,223,205,.95);
+  border-radius:24px;
+  background:radial-gradient(circle at 92% 10%, rgba(241,214,127,.26), transparent 24%),linear-gradient(145deg,#fffdf8,#f6faed);
+  box-shadow:0 10px 24px rgba(83,63,28,.06);
+}
+.sectionHero .eyebrow{display:inline-flex;align-items:center;gap:6px;margin-bottom:6px;padding:6px 10px;border-radius:999px;background:#fff4ca;color:#8f6610;font-size:10px;font-weight:900}
+.sectionHero h3{margin:0;font-size:22px;line-height:1.18;color:var(--ui-navy)}
+.sectionHero p{margin:8px 0 0;font-size:11px;line-height:1.6;color:#64716a}
+.sectionHero .art{width:98px;height:98px;border-radius:22px;overflow:hidden;background:#fff;box-shadow:0 6px 16px rgba(76,60,34,.08)}
+.sectionHero .art img{width:100%;height:100%;object-fit:cover;display:block}
+.sectionHero.purple{background:radial-gradient(circle at 92% 10%, rgba(218,195,255,.34), transparent 24%),linear-gradient(145deg,#fff6fd,#f7f1ff)}
+.sectionHero.blue{background:radial-gradient(circle at 92% 10%, rgba(168,219,255,.28), transparent 24%),linear-gradient(145deg,#fbfeff,#eff8ff)}
+.sectionHero.green{background:radial-gradient(circle at 92% 10%, rgba(200,236,177,.28), transparent 24%),linear-gradient(145deg,#fffef9,#eef8e7)}
+.sectionHero.gold{background:radial-gradient(circle at 92% 10%, rgba(255,222,136,.30), transparent 24%),linear-gradient(145deg,#fffef8,#fff5de)}
+@media(max-width:370px){
+  .sectionHero{grid-template-columns:1fr 82px;padding:14px;gap:10px}
+  .sectionHero h3{font-size:20px}
+  .sectionHero .art{width:82px;height:82px;border-radius:18px}
+}
+
 </style>
 </head>
 <body>
@@ -656,7 +826,7 @@ html{background:#efe7d7}.app{background:linear-gradient(180deg,#fffaf0 0%,#fff6e
     <div class="heroText">
       <div class="kicker">좋은 인연이, 좋은 운을 만드는</div>
       <h1>귀인사주</h1>
-      <div class="copy">지금의 고민이<br>더 좋은 내일로 이어지길.</div>
+      <div class="copy">지금의 고민이<br>더 깊은 내일의 기회로.</div>
     </div>
     <div class="heroArt">
       <img decoding="async" fetchpriority="high" src="hero-animals.jpg" alt="클로버 정원의 귀인사주 친구들">
@@ -933,21 +1103,23 @@ const ICONS={
  book:`<svg viewBox="0 0 24 24"><path d="M4 4h7a3 3 0 013 3v13a3 3 0 00-3-3H4V4zm16 0h-7a3 3 0 00-3 3v13a3 3 0 013-3h7V4z" fill="none" stroke="currentColor" stroke-width="1.7"/></svg>`
 };
 
-/* GUIIN 9-PAGE VISUAL HERO HELPERS */
-function guiinVisualHero(kind,name){
- const n=esc(name||chart?.input?.name||'당신');
- const map={
-  summary:{cls:'',img:'summary-cat.jpg',eyebrow:'사주 요약',title:`${n}님은 흔들려도 결국 자기 빛을 찾는 사람입니다.`,copy:'지금의 선택이 더 좋은 내일로 이어지도록, 원국 전체의 흐름을 차분히 풀어볼게요.'},
-  chart:{cls:'blue',img:'result-animals.jpg',eyebrow:'사주 원국',title:'태어난 순간의 네 기둥을 한눈에 봅니다.',copy:'년주·월주·일주·시주와 오행의 균형을 실제 생활 언어로 연결해 설명합니다.'},
-  personality:{cls:'',img:'guide-cat.jpg',eyebrow:'성격 분석',title:'따뜻한 마음과 단단한 기준을 함께 지닌 사람입니다.',copy:'겉으로 보이는 모습과 가까워졌을 때 드러나는 진짜 성향을 함께 살펴봅니다.'},
-  flow:{cls:'gold',img:'result-animals.jpg',eyebrow:'대운·세운',title:'인생의 큰 흐름과 지금의 시기를 함께 봅니다.',copy:'10년의 배경인 대운과 한 해의 강조점인 세운을 연결해 읽습니다.'},
-  fields:{cls:'pink',img:'brand-poster.jpg',eyebrow:'분야별 운세',title:'직업·재물·연애를 현실적인 선택 기준으로 풀어봅니다.',copy:'좋다·나쁘다 한 줄로 끝내지 않고 실제 생활에서 어떻게 나타나는지 설명합니다.'},
-  match:{cls:'pink',img:'compat-animals.jpg',eyebrow:'우리 궁합',title:'두 사람의 인연은 점수보다 생활에서 더 선명해집니다.',copy:'끌림·갈등·돈·생활·결혼까지 서로를 덜 지치게 하는 방법을 함께 봅니다.'},
-  today:{cls:'gold',img:'today-dog.jpg',eyebrow:'오늘의 운세',title:'오늘도 좋은 일이 찾아오도록 흐름을 가볍게 점검해요.',copy:'총운·애정·재물·직장·건강을 생활에서 바로 확인하기 쉽게 정리합니다.'},
-  year:{cls:'gold',img:'result-animals.jpg',eyebrow:'대운 흐름',title:'지금은 어느 10년을 지나고 있는지 살펴봅니다.',copy:'내가 원하는 방향과 현재 운의 배경이 어디에서 만나는지 확인해 보세요.'}
- };
- const x=map[kind]||map.summary;
- return `<section class="guiinVisualHero ${x.cls}"><div class="heroCopy"><div class="eyebrow">${x.eyebrow}</div><h2>${x.title}</h2><p>${x.copy}</p></div><img class="heroPet" loading="lazy" decoding="async" src="${x.img}" alt=""></section>`;
+function uiSectionHero(opts){
+  if(!opts) return '';
+  const tone = opts.tone ? ' '+opts.tone : '';
+  return `<div class="sectionHero${tone}"><div><div class="eyebrow">☘ ${esc(opts.eyebrow||'귀인사주')}</div><h3>${esc(opts.title||'')}</h3><p>${esc(opts.body||'')}</p></div><div class="art"><img loading="lazy" decoding="async" src="${opts.img||'clover-mark.jpg'}" alt=""></div></div>`;
+}
+function resultHeroBlock(tab,c){
+  const n=(c&&c.input&&c.input.name)?c.input.name:'사용자';
+  if(tab==='personality') return uiSectionHero({eyebrow:'성격·기질',title:`${n}님의 타고난 성향과 마음의 결`,body:'사주풀이 원문은 그대로 두고, 읽기 쉬운 카드형 분위기로만 정리합니다.',img:'input-cat.jpg',tone:'purple'});
+  if(tab==='fields') return uiSectionHero({eyebrow:'직업·재물·연애',title:`${n}님의 삶의 중요한 분야를 한눈에`,body:'결과 글씨는 사람마다 다르게 유지되고, 디자인만 통일된 화면으로 보여줍니다.',img:'brand-home.jpg',tone:'gold'});
+  if(tab==='flow') return uiSectionHero({eyebrow:'대운·세운',title:`${n}님의 흐름과 시기 읽기`,body:'원래의 대운 설명과 세운 흐름은 그대로 유지합니다.',img:'today-dog.jpg',tone:'green'});
+  if(tab==='stars') return uiSectionHero({eyebrow:'신살·귀인',title:`${n}님 명식 안의 신호와 도움의 별`,body:'신살과 귀인 설명 문구는 그대로 두고 카드 분위기만 바꿉니다.',img:'clover-mark.jpg',tone:'gold'});
+  if(tab==='chart') return uiSectionHero({eyebrow:'사주 원국',title:`${n}님의 사주 원국과 오행 분포`,body:'표와 데이터는 그대로, 눈에 잘 들어오도록 주변 UI만 정리합니다.',img:'brand-home.jpg',tone:'blue'});
+  return uiSectionHero({eyebrow:'전체 풀이',title:`${n}님의 사주를 차분히 읽어봅니다`,body:'사주설명 문구는 건드리지 않고 화면 구조와 분위기만 새로 다듬었습니다.',img:'hero-animals.jpg',tone:'green'});
+}
+function yearHeroBlock(){
+  const n=chart?.input?.name||'사용자';
+  return uiSectionHero({eyebrow:'운의 흐름',title:`${n}님의 대운·세운·연운`,body:'같은 설명도 더 읽기 편하게. 결과는 그대로, 분위기만 부드럽게 바꿨습니다.',img:'today-dog.jpg',tone:'green'});
 }
 
 let chart=null,currentTab='summary';
@@ -1268,14 +1440,14 @@ function wongukHTML(c){
 }
 function renderYearLuck(){
  if(!chart){
-   $('yearView').innerHTML=`<div class="easyLongCard card"><h3>사주를 먼저 계산해 주세요</h3><div class="easyBody"><p>대운·세운은 원국이 있어야 개인 기준으로 읽을 수 있습니다.</p></div><button class="ctaGold" onclick="go('saju')">사주 입력하기 ›</button></div>`;
+   $('yearView').innerHTML=yearHeroBlock()+`<div class="easyLongCard card"><h3>사주를 먼저 계산해 주세요</h3><div class="easyBody"><p>대운·세운은 원국이 있어야 개인 기준으로 읽을 수 있습니다.</p></div><button class="ctaGold" onclick="go('saju')">사주 입력하기 ›</button></div>`;
    return;
  }
  if(!hasPremiumLifetime()){
-   $('yearView').innerHTML=guiinVisualHero('year',chart.input?.name)+daeunPremiumPreviewHTML(chart);
+   $('yearView').innerHTML=yearHeroBlock()+daeunPremiumPreviewHTML(chart);
    return;
  }
- $('yearView').innerHTML=guiinVisualHero('year',chart.input?.name)+flowReport(chart);
+ $('yearView').innerHTML=yearHeroBlock()+flowReport(chart);
 }
 
 
@@ -1350,20 +1522,19 @@ function renderResult(){
  if(!chart)return;
  document.querySelectorAll('#resultTabs button').forEach(b=>b.classList.toggle('on',b.dataset.tab===currentTab));
  const c=chart;
- const heroKind=currentTab==='summary'?'summary':currentTab==='personality'?'personality':currentTab==='fields'?'fields':currentTab==='flow'?'flow':'chart';
- const visualHero=guiinVisualHero(heroKind,c.input.name);
  const manseTop=(typeof GuiinManse!=='undefined')?GuiinManse.render(c,{title:c.input.name+'님의 만세력',eyebrow:'내 사주'}):'';
+ const hero=resultHeroBlock(currentTab,c);
  if(!hasPremiumLifetime()){
-   if(currentTab==='summary')$('resultView').innerHTML=visualHero+manseTop+longSummaryHTML(c)+premiumSampleHTML(c);
-   else $('resultView').innerHTML=visualHero+manseTop+`<div class="easyIntro card"><div class="easyKicker">프리미엄 심층 풀이</div><h2>${esc(c.input.name)}님의 실제 ${currentTab==='personality'?'성격·기질':currentTab==='fields'?'직업·재물·연애':currentTab==='stars'?'신살·귀인':currentTab==='flow'?'대운·세운':'사주 원국'} 해석은 결제 후 열립니다.</h2><p>결제 전에는 가상 장문 예시로 풀이 방식과 분량을 확인할 수 있고, 실제 개인 해석은 잠금 상태로 유지합니다.</p></div>`+premiumSampleHTML(c);
+   if(currentTab==='summary')$('resultView').innerHTML=hero+manseTop+longSummaryHTML(c)+premiumSampleHTML(c);
+   else $('resultView').innerHTML=hero+manseTop+`<div class="easyIntro card"><div class="easyKicker">프리미엄 심층 풀이</div><h2>${esc(c.input.name)}님의 실제 ${currentTab==='personality'?'성격·기질':currentTab==='fields'?'직업·재물·연애':currentTab==='stars'?'신살·귀인':currentTab==='flow'?'대운·세운':'사주 원국'} 해석은 결제 후 열립니다.</h2><p>결제 전에는 가상 장문 예시로 풀이 방식과 분량을 확인할 수 있고, 실제 개인 해석은 잠금 상태로 유지합니다.</p></div>`+premiumSampleHTML(c);
    return;
  }
- if(currentTab==='summary')$('resultView').innerHTML=visualHero+manseTop+longSummaryHTML(c)+personalityReport(c)+fieldsReport(c);
- else if(currentTab==='personality')$('resultView').innerHTML=visualHero+personalityReport(c);
- else if(currentTab==='fields')$('resultView').innerHTML=visualHero+fieldsReport(c);
- else if(currentTab==='stars')$('resultView').innerHTML=visualHero+starDetails(c)+foundationReport(c);
- else if(currentTab==='flow')$('resultView').innerHTML=visualHero+flowReport(c);
- else if(currentTab==='chart')$('resultView').innerHTML=visualHero+wongukHTML(c)+manseTop+foundationReport(c);
+ if(currentTab==='summary')$('resultView').innerHTML=hero+manseTop+longSummaryHTML(c)+personalityReport(c)+fieldsReport(c);
+ else if(currentTab==='personality')$('resultView').innerHTML=hero+personalityReport(c);
+ else if(currentTab==='fields')$('resultView').innerHTML=hero+fieldsReport(c);
+ else if(currentTab==='stars')$('resultView').innerHTML=hero+starDetails(c)+foundationReport(c);
+ else if(currentTab==='flow')$('resultView').innerHTML=hero+flowReport(c);
+ else if(currentTab==='chart')$('resultView').innerHTML=hero+wongukHTML(c)+manseTop+foundationReport(c);
 }
 function setTab(t){currentTab=t;renderResult();window.scrollTo({top:0,behavior:'smooth'});}
 function advanced(c){return starDetails(c)+foundationReport(c);}
@@ -1396,12 +1567,12 @@ function renderCompatCards(){
  document.querySelectorAll('#matchTabs button').forEach(b=>b.classList.toggle('on',b.dataset.matchTab===matchTab));
  if(!hasPremiumCompat()){
    const free=matchMeta?`<div class="easyLongCard card"><div class="easyKicker">무료 궁합 요약</div><h3>좋은 점과 조심할 점을 먼저 확인해 보세요</h3><div class="easyPoint good"><b>두 사람의 강점</b><p>${matchMeta.good}</p></div><div class="easyPoint watch"><b>두 사람의 약점</b><p>${matchMeta.watch}</p></div><div class="easyPoint tip"><b>관계를 오래 가져가려면</b><p>${matchMeta.tip}</p></div></div>`:'';
-   $('matchView').innerHTML=guiinVisualHero('match',matchMeta?.a?.input?.name)+matchBaseHTML+free+compatPremiumPreviewHTML(); return;
+   $('matchView').innerHTML=matchBaseHTML+free+compatPremiumPreviewHTML(); return;
  }
  const deep=U35Compat.analyze(matchAnalysis.a||matchAnalysis.left||matchAnalysis.chartA||matchMeta?.a,matchAnalysis.b||matchAnalysis.right||matchAnalysis.chartB||matchMeta?.b);
  const sections=(deep&&deep.domains)||[];
  const cards=sections.map((s,i)=>{const g=compatGuide(s[0]);return `<article class="easyLongCard card compatLong"><div class="easyKicker">${String(i+1).padStart(2,'0')} · ${compatEsc(s[0])}</div><h3>${compatEsc(s[1])}</h3><div class="easyBody"><p>${compatEsc(s[2])}</p><p>이 부분은 한 가지 합·충이나 점수만으로 좋고 나쁨을 정하지 않습니다. 두 사람의 원국과 오행 차이, 가까운 관계 자리의 신호를 함께 보고 실제 생활에서 반복될 가능성이 있는 패턴으로 설명합니다.</p></div><div class="easyPoint good"><b>이 관계의 장점</b><p>${g.good}</p></div><div class="easyPoint watch"><b>이 관계에서 조심할 점</b><p>${g.watch}</p></div><div class="easyPoint tip"><b>잘 만나려면</b><p>${g.tip}</p></div><div class="easyPoint support"><b>이 관계에 해주고 싶은 말</b><p>좋은 궁합은 서로 완벽히 같은 관계가 아니라, 다른 점을 안전하게 말하고 조율할 수 있는 관계입니다. 두 사람이 실제 생활에서 서로를 덜 지치게 하고 더 편안하게 만드는지가 점수보다 중요합니다.</p></div></article>`}).join('');
- $('matchView').innerHTML=guiinVisualHero('match',matchMeta?.a?.input?.name)+matchBaseHTML+cards+`<div class="paidDisclaimer">궁합은 미래를 확정하는 판정표가 아니라 두 사람의 차이와 조율 지점을 이해하는 참고 자료입니다.</div>`;
+ $('matchView').innerHTML=matchBaseHTML+cards+`<div class="paidDisclaimer">궁합은 미래를 확정하는 판정표가 아니라 두 사람의 차이와 조율 지점을 이해하는 참고 자료입니다.</div>`;
 }
 function setMatchTab(tab){
  matchTab=tab||'summary';
@@ -1459,12 +1630,12 @@ function renderFortunePeriod(period='today',btn){
  const title=period==='week'?'이번 주 운세':'이번 달 운세';
  const intro=period==='week'?'이번 주는 한 번에 많은 것을 바꾸기보다 중요한 한두 가지를 끝까지 가져가는 흐름을 살펴보세요.':'이번 달은 일·돈·관계에서 반복되는 패턴을 정리하고 다음 선택을 준비하는 흐름을 살펴보세요.';
  const rows=fortuneRows(period),v=$('todayView'); if(!v)return;
- v.innerHTML=guiinVisualHero('today',chart?.input?.name)+`<div class="todayDate">${new Date().getFullYear()}년 ${new Date().getMonth()+1}월 · ${title}</div><div class="todayDetailCard card"><div class="miniTitle">${title}</div><h3>${intro}</h3><p>아래 내용은 생활형 요약입니다. 개인 명식의 대운·세운까지 더 깊게 보고 싶다면 AI 상담에서 이어서 질문할 수 있어요.</p></div><div class="fortuneList card" style="margin-top:9px">${rows.map((x,i)=>`<div class="fortuneRow clickable" data-title="${esc(x[0])}" data-summary="${esc(x[1])}" onclick="openTodayDetail(this.dataset.title,this.dataset.summary)"><div class="fIcon">${[ICONS.money,ICONS.heart,ICONS.money,ICONS.brief,ICONS.plus][i]}</div><div><b>${esc(x[0])}</b><span>${esc(x[1])}</span></div></div>`).join('')}</div><button class="ctaGold" onclick="go('ask')">내 사주로 더 자세히 묻기 ›</button>`;
+ v.innerHTML=`<div class="todayDate">${new Date().getFullYear()}년 ${new Date().getMonth()+1}월 · ${title}</div><div class="todayDetailCard card"><div class="miniTitle">${title}</div><h3>${intro}</h3><p>아래 내용은 생활형 요약입니다. 개인 명식의 대운·세운까지 더 깊게 보고 싶다면 AI 상담에서 이어서 질문할 수 있어요.</p></div><div class="fortuneList card" style="margin-top:9px">${rows.map((x,i)=>`<div class="fortuneRow clickable" data-title="${esc(x[0])}" data-summary="${esc(x[1])}" onclick="openTodayDetail(this.dataset.title,this.dataset.summary)"><div class="fIcon">${[ICONS.money,ICONS.heart,ICONS.money,ICONS.brief,ICONS.plus][i]}</div><div><b>${esc(x[0])}</b><span>${esc(x[1])}</span></div></div>`).join('')}</div><button class="ctaGold" onclick="go('ask')">내 사주로 더 자세히 묻기 ›</button>`;
 }
 function renderToday(){
  const d=new Date(),days=['일','월','화','수','목','금','토'],rows=fortuneRows('today');
  const personal=chart?.dayMaster?`<div class="todayDetailCard card"><div class="miniTitle">내 사주 기준</div><h3>${esc(chart.input?.name||'사용자')}님의 중심 기운은 ${esc(chart.dayMaster.stem||'')}입니다.</h3><p>오늘 운세는 이 중심 기운과 날짜의 흐름을 생활에서 확인하기 쉬운 항목으로 나눠 보여드립니다. 미래를 확정하는 예언이 아니라 선택을 점검하는 참고 정보로 활용해 주세요.</p></div>`:'';
- $('todayView').innerHTML=guiinVisualHero('today',chart?.input?.name)+`<div class="todayHero card"><div class="todayArt"><img loading="lazy" decoding="async" src="today-dog.jpg" alt=""></div><h3>오늘도 좋은 일이 찾아와요!</h3><p>“작은 행복이 모여, 큰 행운이 됩니다.”</p></div><div class="todayDate">${d.getFullYear()}년 ${d.getMonth()+1}월 ${d.getDate()}일 (${days[d.getDay()]})</div>${personal}<div class="fortuneList card" style="margin-top:9px">${rows.map((x,i)=>`<div class="fortuneRow clickable" data-title="${esc(x[0])}" data-summary="${esc(x[1])}" onclick="openTodayDetail(this.dataset.title,this.dataset.summary)"><div class="fIcon">${[ICONS.money,ICONS.heart,ICONS.money,ICONS.brief,ICONS.plus][i]}</div><div><b>${esc(x[0])}</b><span>${esc(x[1])}</span></div></div>`).join('')}</div><div class="slogan card"><b>오늘의 조언</b><br>좋은 흐름은 활용하고, 부담이 큰 결정은 한 번 더 확인해 보세요.</div><button class="ctaGold" onclick="openTodayDetail()">상세 운세 보기 ›</button>`;
+ $('todayView').innerHTML=`<div class="todayHero card"><div class="todayArt"><img loading="lazy" decoding="async" src="today-dog.jpg" alt=""></div><h3>오늘도 좋은 일이 찾아와요!</h3><p>“작은 행복이 모여, 큰 행운이 됩니다.”</p></div><div class="todayDate">${d.getFullYear()}년 ${d.getMonth()+1}월 ${d.getDate()}일 (${days[d.getDay()]})</div>${personal}<div class="fortuneList card" style="margin-top:9px">${rows.map((x,i)=>`<div class="fortuneRow clickable" data-title="${esc(x[0])}" data-summary="${esc(x[1])}" onclick="openTodayDetail(this.dataset.title,this.dataset.summary)"><div class="fIcon">${[ICONS.money,ICONS.heart,ICONS.money,ICONS.brief,ICONS.plus][i]}</div><div><b>${esc(x[0])}</b><span>${esc(x[1])}</span></div></div>`).join('')}</div><div class="slogan card"><b>오늘의 조언</b><br>좋은 흐름은 활용하고, 부담이 큰 결정은 한 번 더 확인해 보세요.</div><button class="ctaGold" onclick="openTodayDetail()">상세 운세 보기 ›</button>`;
 }
 restoreProfile();renderToday();
 
