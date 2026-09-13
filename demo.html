@@ -4,10 +4,10 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <meta name="theme-color" content="#fffaf1">
-<title>[DEMO] 귀인사주 | 업데이트 미리보기</title>
+<title>귀인사주 | 무료 명식 · 평생사주 · 궁합</title>
 <meta name="description" content="무료 사주 명식, 대운·세운·월운·일운, 신살과 궁합을 쉽게 확인하는 귀인사주">
 <link rel="canonical" href="https://gwiinsaju.com/">
-<meta name="robots" content="noindex,nofollow,noarchive">
+<meta name="robots" content="index,follow,max-image-preview:large">
 <meta name="geo.region" content="KR">
 <meta property="og:locale" content="ko_KR">
 <meta property="og:type" content="website">
@@ -22,9 +22,9 @@
 <meta name="twitter:description" content="무료 사주 명식, 대운·세운·월운·일운, 신살과 궁합을 쉽게 확인하는 귀인사주">
 <meta name="twitter:image" content="https://gwiinsaju.com/brand-home.jpg">
 <link rel="icon" href="clover-mark.jpg">
-<link rel="stylesheet" href="guiin-theme-demo.css">
+<link rel="stylesheet" href="guiin-theme.css">
 <script src="saju-engine.js"></script>
-<script src="expert-interpreter-demo.js"></script>
+<script src="expert-interpreter.js"></script>
 <script src="manse-view.js"></script>
 <script src="compatibility-interpreter.js"></script>
 <style>
@@ -574,12 +574,23 @@ html{background:#efe7d7}.app{background:linear-gradient(180deg,#fffaf0 0%,#fff6e
 
 </style>
 
-<style id="guiin-demo-badge-style">
+<style id="guiin-demo-main-sync">
 .demoBadge{
  position:fixed;right:10px;top:10px;z-index:9999;
  padding:6px 9px;border-radius:999px;background:#183f31;color:#fff;
  font-size:10px;font-weight:900;letter-spacing:.04em;
  box-shadow:0 4px 12px rgba(0,0,0,.15);opacity:.88;pointer-events:none
+}
+.guiinVisualHero.withArt{
+ min-height:0!important;
+ padding:18px 20px!important;
+ display:block!important;
+}
+.guiinVisualHero.withArt .heroCopy{
+ padding-right:54px!important;
+}
+.guiinVisualHero.withArt .heroPet{
+ display:none!important;
 }
 </style>
 
@@ -627,6 +638,19 @@ html{background:#efe7d7}.app{background:linear-gradient(180deg,#fffaf0 0%,#fff6e
     <div class="head">🔥 많은 분들이 보고 있어요 <span>더보기 ›</span></div>
     <div class="rankChips">
       <b>1 오늘의 운세</b><b>2 평생사주</b><b>3 사주상담</b><b>4 우리 궁합</b><b>5 2026년 운세</b>
+    </div>
+  </div>
+
+  <div style="margin:14px 0 2px;padding:14px 12px;border-top:1px solid #ece5d7;text-align:center;font-size:8.7px;line-height:1.75;color:#8b8f8c;">
+    <div><b style="color:#667069;">귀인사주</b> · 대표 강진아</div>
+    <div>사업자등록번호 584-69-00863</div>
+    <div>서울특별시 중랑구 용마산로139나길 23(신내동)</div>
+    <div style="margin-top:6px;">
+      <button type="button" onclick="go('terms')" style="border:0;background:none;color:#747b77;padding:2px 5px;font-size:8.7px;text-decoration:underline;">이용약관</button>
+      <span>·</span>
+      <button type="button" onclick="go('privacy')" style="border:0;background:none;color:#747b77;padding:2px 5px;font-size:8.7px;text-decoration:underline;">개인정보처리방침</button>
+      <span>·</span>
+      <button type="button" onclick="go('refund')" style="border:0;background:none;color:#747b77;padding:2px 5px;font-size:8.7px;text-decoration:underline;">환불정책</button>
     </div>
   </div>
 </section>
@@ -856,7 +880,7 @@ html{background:#efe7d7}.app{background:linear-gradient(180deg,#fffaf0 0%,#fff6e
 <section id="notifications" class="screen"><div class="topbar"><button class="ghost" onclick="go('mypage')">‹</button><div class="brand"><div class="brandline">알림 설정</div></div><span></span></div><div class="pagePad"><div class="card utilityCard"><h3>받고 싶은 소식</h3><label class="settingRow"><span><b>오늘의 운세</b><small>매일 운세 알림</small></span><input type="checkbox" data-notify="daily"></label><label class="settingRow"><span><b>운의 변화</b><small>월운·세운 변화 안내</small></span><input type="checkbox" data-notify="flow"></label><label class="settingRow"><span><b>혜택 알림</b><small>쿠폰·이벤트</small></span><input type="checkbox" data-notify="promo"></label><button class="softBtn" onclick="requestGuiinNotification()">이 기기에서 알림 권한 확인하기 ›</button><p class="utilityHint">선호 설정은 현재 기기에 저장됩니다. 실제 푸시 발송은 알림 서버 연결 후 가능합니다.</p></div></div></section>
 <section id="coupons" class="screen"><div class="topbar"><button class="ghost" onclick="go('mypage')">‹</button><div class="brand"><div class="brandline">쿠폰함</div></div><span></span></div><div class="pagePad"><div class="card utilityCard"><h3>쿠폰 · 혜택</h3><p>현재 발급된 쿠폰은 없습니다.</p><div class="trustBox">실제 결제에서는 서버에서 쿠폰 유효성과 최종 결제금액을 다시 검증하는 방식으로 연결해야 합니다.</div></div></div></section>
 <section id="customer" class="screen"><div class="topbar"><button class="ghost" onclick="go('mypage')">‹</button><div class="brand"><div class="brandline">고객센터</div></div><span></span></div><div class="pagePad"><div class="card utilityCard"><h3>무엇을 도와드릴까요?</h3><p>결제·이용·사주 결과 관련 문의를 카카오 고객센터에서 도와드려요.</p><button class="kakaoSupport" onclick="openCustomerCenter()">카카오로 문의하기 ›</button><div class="faq"><details><summary>결제했는데 내용이 열리지 않아요</summary><p>실제 서비스에서는 서버에서 결제 승인 여부를 확인한 뒤 구매한 콘텐츠를 열도록 연결합니다.</p></details><details><summary>출생시간을 모르면 어떻게 하나요?</summary><p>시주 관련 해석의 강도를 낮추고, 출생시간 없이 확인 가능한 부분과 구분해서 설명합니다.</p></details><details><summary>신살이 많으면 안 좋은 사주인가요?</summary><p>아니요. 신살은 보조 정보입니다. 귀인사주는 신살 하나로 사건을 단정하지 않고 원국·오행·십신·대운과 함께 읽습니다.</p></details><details><summary>AI는 무엇을 기준으로 답하나요?</summary><p>귀인사주 엔진이 계산한 명식을 그대로 Worker에 전달하고, AI가 명식을 임의로 다시 계산하지 않도록 구성되어 있습니다.</p></details></div></div></div></section>
-<section id="appinfo" class="screen"><div class="topbar"><button class="ghost" onclick="go('mypage')">‹</button><div class="brand"><div class="brandline">서비스 정보</div></div><span></span></div><div class="pagePad"><div class="card utilityCard"><h3>☘ 귀인사주</h3><p>좋은 인연이, 좋은 운을 만듭니다.</p><div class="infoRows"><div><span>평생사주</span><b>5,900원</b></div><div><span>프리미엄 궁합</span><b>7,900원</b></div><div><span>AI 상담</span><b>처음 3회 무료</b></div><div><span>신살·귀인</span><b>현재 계산 지원 38종</b></div></div><button class="softBtn" onclick="go('terms')">이용약관 ›</button><button class="softBtn" onclick="go('privacy')">개인정보처리방침 ›</button><button class="softBtn" onclick="go('refund')">환불정책 ›</button></div></div></section>
+<section id="appinfo" class="screen"><div class="topbar"><button class="ghost" onclick="go('mypage')">‹</button><div class="brand"><div class="brandline">서비스 정보</div></div><span></span></div><div class="pagePad"><div class="card utilityCard"><h3>☘ 귀인사주</h3><p>좋은 인연이, 좋은 운을 만듭니다.</p><div class="paidDisclaimer"><b>사업자 정보</b><br>상호 귀인사주 · 대표 강진아<br>사업자등록번호 584-69-00863<br>서울특별시 중랑구 용마산로139나길 23(신내동)</div><div class="infoRows"><div><span>평생사주</span><b>5,900원</b></div><div><span>프리미엄 궁합</span><b>7,900원</b></div><div><span>AI 상담</span><b>처음 3회 무료</b></div><div><span>신살·귀인</span><b>현재 계산 지원 38종</b></div></div><button class="softBtn" onclick="go('terms')">이용약관 ›</button><button class="softBtn" onclick="go('privacy')">개인정보처리방침 ›</button><button class="softBtn" onclick="go('refund')">환불정책 ›</button></div></div></section>
 <section id="terms" class="screen"><div class="topbar"><button class="ghost" onclick="go('appinfo')">‹</button><div class="brand"><div class="brandline">이용약관</div></div><span></span></div><div class="pagePad"><div class="card utilityCard"><h3>이용약관 안내</h3><p>유료 디지털 콘텐츠의 제공 시점, 이용 조건, 결제·환불 기준은 실제 PG 오픈 전 최종 약관으로 확정해야 합니다.</p><div class="paidDisclaimer">귀인사주의 사주·운세·AI 상담은 참고 정보이며 의료·법률·투자 등 전문 판단을 대신하지 않습니다.</div></div></div></section>
 <section id="privacy" class="screen"><div class="topbar"><button class="ghost" onclick="go('appinfo')">‹</button><div class="brand"><div class="brandline">개인정보처리방침</div></div><span></span></div><div class="pagePad"><div class="card utilityCard"><h3>개인정보 안내</h3><p>회원가입을 실제 연결할 때 수집 항목·이용 목적·보유기간·위탁사·파기 절차를 실제 서버 구성에 맞춰 고지해야 합니다.</p></div></div></section>
 <section id="refund" class="screen"><div class="topbar"><button class="ghost" onclick="go('appinfo')">‹</button><div class="brand"><div class="brandline">환불정책</div></div><span></span></div><div class="pagePad"><div class="card utilityCard"><h3>환불 안내</h3><p>실제 KCP 결제 오픈 전 상품별 제공 시점, 사용한 클로버, 이미 열람한 디지털 콘텐츠의 환불 기준을 최종 확정하고 결제 단계에서 동의받아야 합니다.</p></div></div></section>
@@ -1035,7 +1059,7 @@ const DM={
  '계':['차분하고 직관적인','흐름을 읽는 힘']
 };
 function saveProfile(c){
- localStorage.setItem('guiin_demo_last',JSON.stringify(c.input));
+ localStorage.setItem('guiin_last',JSON.stringify(c.input));
  $('homeName').textContent=c.input.name+'님 ›';
  $('homeBirth').textContent=`${c.input.year}년 ${c.input.month}월 ${c.input.day}일 (${c.input.calendar})`;
  $('myName').textContent=c.input.name+'님';
@@ -1043,7 +1067,7 @@ function saveProfile(c){
 }
 function restoreProfile(){
  try{
-  const v=JSON.parse(localStorage.getItem('guiin_demo_last')); if(!v)return;
+  const v=JSON.parse(localStorage.getItem('guiin_last')); if(!v)return;
   if($('name'))$('name').value=v.name||''; if($('year'))$('year').value=v.year||''; if($('month'))$('month').value=v.month||''; if($('day'))$('day').value=v.day||''; if($('hour'))$('hour').value=v.hour??''; if($('minute'))$('minute').value=v.minute??'';
   if($('homeName'))$('homeName').textContent=(v.name||'사용자')+'님 ›'; if($('homeBirth'))$('homeBirth').textContent=`${v.year}년 ${v.month}월 ${v.day}일 (${v.calendar||'양력'})`;
   if($('myName'))$('myName').textContent=(v.name||'사용자')+'님'; if($('myBirth'))$('myBirth').textContent=`${v.year}년 ${v.month}월 ${v.day}일 (${v.calendar||'양력'})`;
@@ -1585,7 +1609,7 @@ function renderToday(){
 }
 restoreProfile();renderToday();
 
-const COIN_KEY='guiin_demo_clover_wallet_v1', FREE_KEY='guiin_demo_ai_free_used_v1', NOTIFY_KEY='guiin_demo_notify_v1';
+const COIN_KEY='guiin_clover_wallet_v2', FREE_KEY='guiin_ai_free_used_v2', NOTIFY_KEY='guiin_notify_v1';
 function loadWallet(){try{const x=JSON.parse(localStorage.getItem(COIN_KEY)||'{}');return {coins:Number(x.coins||0),ledger:Array.isArray(x.ledger)?x.ledger:[]};}catch(e){return {coins:0,ledger:[]}}}
 let wallet=loadWallet();
 function persistWallet(){localStorage.setItem(COIN_KEY,JSON.stringify(wallet));syncWalletViews();}
@@ -1605,51 +1629,259 @@ function compatPayNotReady(){if($('compatPayMsg'))$('compatPayMsg').textContent=
 
 const GUIIN_AI_API='https://guiin-saju-api.blue-wls.workers.dev/api/chat';
 let guiinAIHistory=[], guiinAISending=false;
-function guiinAppend(cls,text){const box=$('msgs');if(!box)return;const d=document.createElement('div');d.className=cls;d.textContent=text;box.appendChild(d);box.scrollTop=box.scrollHeight;}
-function guiinChartPayload(){if(!chart||!chart.pillars)return null;const val=p=>p&&((p.ko||'')||(String(p.stem||'')+String(p.branch||'')));const out={year:val(chart.pillars.year),month:val(chart.pillars.month),day:val(chart.pillars.day),hour:val(chart.pillars.hour)||'출생시간 모름'};return out.year&&out.month&&out.day?out:null;}
-async function sendQ(preset){
- if(guiinAISending)return;
- const input=$('askQ'),q=String(preset||(input?input.value:'')||'').trim();
- if(!q){if(input)input.focus();guiinAppend('sysnote','질문을 입력하거나 아래 추천 질문을 눌러 주세요.');return;}
- if(!chart){restoreProfile();}
- const cp=guiinChartPayload();
- if(!cp){guiinAppend('sysnote','AI가 내 사주를 기준으로 답하려면 사주를 먼저 계산해 주세요.');setTimeout(()=>go('saju'),450);return;}
- const used=freeUsed(),isFree=used<3;
- if(!isFree&&Number(wallet.coins||0)<1){guiinAppend('sysnote','무료 질문 3회를 모두 사용했습니다. 행운의 클로버를 충전하면 이어서 질문할 수 있어요.');setTimeout(()=>go('wallet'),450);return;}
- guiinAISending=true;const buttons=Array.from(document.querySelectorAll('#ask .qchip,#ask .composer button'));buttons.forEach(b=>b.disabled=true);guiinAppend('bubble me',q);
- const status=document.createElement('div');status.className='sysnote';status.textContent='답변을 준비하고 있어요…';$('msgs')?.appendChild(status);
- const controller=new AbortController(),timer=setTimeout(()=>controller.abort(),30000);
- try{
-  const detailGuide=`너는 귀인사주의 1:1 사주 상담사입니다. 말투는 카톡으로 실제 상담사가 답하는 것처럼 자연스럽고 따뜻하되 가볍지 않게 쓰세요.
-반드시 사용자의 이름을 자연스럽게 1~3번 넣고, “당신은 ~한 사람입니다”처럼 단정하지 마세요. 첫 문단은 사용자의 이름과 생활 장면으로 시작하세요. 예를 들어 “OO님은 주변에서 야무지다, 맡은 일은 끝까지 한다는 말을 들었을 가능성이 높아요”처럼 공감형으로 열되, 실제 명식 근거와 맞을 때만 사용하세요. “~해서 이렇게 살아오셨을 가능성이 높아요”, “이럴 때 이런 반응이 먼저 나오는 편일 수 있어요”처럼 경향으로 설명하세요.
-답변 흐름은 ①사용자의 상황을 짧게 공감하며 핵심 결론 ②명리에서 왜 그렇게 읽는지 쉬운 말로 설명 ③실제 생활에서 나타날 수 있는 구체적인 장면 ④힘들었을 법한 지점 ⑤이 사람의 장점과 활용법 ⑥지금 바로 할 수 있는 행동 2~4개 ⑦마지막 한마디 순서로 작성하세요.
-전문용어를 쓰면 바로 괄호나 다음 문장에서 일상어로 번역하세요. 예: 정재(계획해서 쌓는 돈의 힘), 편관(압박 속에서도 결단하는 힘). 신살 하나, 합·충 하나, 일간 한 글자만으로 성격이나 사건을 단정하지 마세요.
-직업·재물·연애 질문은 반드시 ‘장점 / 주의점 / 지금 해볼 행동’이 드러나게 쓰고, 궁합 질문은 끌림뿐 아니라 갈등 포인트, 싸운 뒤 회복 방식, 돈·시간·책임 분담, 오래가기 위한 구체적인 약속까지 말하세요.
-대운·세운 질문은 “좋다/나쁘다”로 끝내지 말고 올해 무엇을 늘리고 무엇을 줄이면 좋은지 행동 단위로 제안하세요.
-“~할 수 있습니다”를 반복하지 말고 “그래서 지금은 이걸 먼저 해보세요”, “이 부분은 미리 정해두는 게 좋아요”처럼 명확하게 말하세요.
-문단은 짧게 나누고 한 문장은 지나치게 길게 쓰지 마세요. 위로만 하지 말고 경계 설정·선택·돈·시간·생활 같은 현실적인 대응까지 포함하세요.
-미래를 확정하거나 불안을 조장하지 말고, 사용자의 실제 계산된 명식을 근거로 설명하세요. 의료·법률·투자 판단을 사주로 대신하지 마세요.
-분량은 질문 난이도에 따라 충분히 자세하게 작성하되, 성의 없는 한두 줄 답변은 금지합니다. 마지막은 짧고 힘 있는 한 문장으로 마무리하세요.`;
-  const message=`[현재 날짜: ${new Date().getFullYear()}년 ${new Date().getMonth()+1}월 ${new Date().getDate()}일]\n현재 날짜 기준으로 답하고, 근거 없는 연도·사건은 단정하지 마세요.\n${detailGuide}\n질문: ${q}`;
-  const res=await fetch(GUIIN_AI_API,{method:'POST',mode:'cors',cache:'no-store',headers:{'Content-Type':'application/json','Accept':'application/json'},body:JSON.stringify({message,chart:cp,history:guiinAIHistory.slice(-8)}),signal:controller.signal});
-  let data={};try{data=await res.json();}catch(_e){throw new Error('서버 응답을 읽지 못했습니다.');}
-  if(!res.ok)throw new Error(data.error||('HTTP '+res.status));if(!data?.answer)throw new Error('AI 답변이 비어 있습니다.');
-  status.remove();guiinAppend('bubble bot',String(data.answer));guiinAIHistory.push({role:'user',content:q},{role:'assistant',content:String(data.answer)});if(guiinAIHistory.length>20)guiinAIHistory=guiinAIHistory.slice(-20);
-  if(isFree)setFreeUsed(used+1);else{wallet.coins=Math.max(0,Number(wallet.coins||0)-1);wallet.ledger.unshift({t:new Date().toLocaleString('ko-KR',{hour12:false}),text:'AI 상담 질문 차감 · '+q.slice(0,18),delta:-1});persistWallet();}
-  if(input)input.value='';
- }catch(err){console.error('GUIIN_AI_CHAT_ERROR',err);const msg='상담사가 잠시 자리를 비웠나 봐요. 잠시 후 다시 말을 걸어주세요! 이번 질문은 무료 횟수나 클로버에서 차감되지 않았어요.';status.textContent=msg;}
- finally{clearTimeout(timer);guiinAISending=false;buttons.forEach(b=>b.disabled=false);}
+
+function guiinAppend(cls,text){
+  const box=$('msgs'); if(!box)return;
+  const d=document.createElement('div');
+  d.className=cls;
+  d.textContent=text;
+  box.appendChild(d);
+  box.scrollTop=box.scrollHeight;
 }
-window.guiinSendAI=function(ev,preset){try{if(ev){ev.preventDefault();ev.stopPropagation();}sendQ(preset);}catch(err){console.error(err);guiinAppend('sysnote','상담 버튼 오류가 발생했습니다. 새로고침 후 다시 시도해 주세요.');}return false;};
-(function bindAI(){const input=$('askQ');if(input)input.addEventListener('keydown',e=>{if(e.key==='Enter'&&!e.isComposing)window.guiinSendAI(e);});document.addEventListener('click',e=>{const b=e.target?.closest?.('#askSendBtn,#ask [data-ai-question]');if(!b||e.defaultPrevented)return;window.guiinSendAI(e,b.getAttribute('data-ai-question')||undefined);});})();
+
+function guiinChartPayload(){
+  if(!chart||!chart.pillars)return null;
+
+  const val=p=>p&&((p.ko||'')||(String(p.stem||'')+String(p.branch||'')));
+  const safePlain=v=>{
+    try{return JSON.parse(JSON.stringify(v));}
+    catch(_e){return null;}
+  };
+
+  const now=new Date();
+  const birthYear=Number(chart?.input?.year||now.getFullYear());
+  let age=now.getFullYear()-birthYear;
+
+  if(Number(chart?.input?.month)&&(
+    now.getMonth()+1<Number(chart.input.month)||
+    (now.getMonth()+1===Number(chart.input.month)&&now.getDate()<Number(chart.input.day||1))
+  )) age-=1;
+
+  const currentLuck=Array.isArray(chart?.luck)
+    ? chart.luck.find(x=>{
+        const from=Number(x?.fromAgeExact??x?.fromAge);
+        const to=Number(x?.toAgeExact??x?.toAge);
+        return Number.isFinite(from)&&Number.isFinite(to)&&age>=from&&age<=to;
+      })||null
+    : null;
+
+  let yearFlow=null;
+  try{
+    if(globalThis.GuiinSaju&&typeof globalThis.GuiinSaju.flowForDate==='function'){
+      yearFlow=globalThis.GuiinSaju.flowForDate(
+        now.getFullYear(),now.getMonth()+1,now.getDate(),
+        chart?.pillars?.day?.stemIndex,
+        Number(chart?.input?.hourUnknown?12:(chart?.input?.hour||12)),
+        Number(chart?.input?.minute||0),
+        {dayBoundary:chart?.input?.dayBoundary||'23'}
+      );
+    }
+  }catch(_e){yearFlow=null;}
+
+  const tenGods={},hiddenStems={};
+  ['year','month','day','hour'].forEach(k=>{
+    const p=chart?.pillars?.[k];
+    if(!p)return;
+
+    tenGods[k]={
+      pillar:val(p),
+      god:p.god||null,
+      stem:p.stem||null,
+      branch:p.branch||null
+    };
+
+    const hidden=p.hiddenStems||p.hidden||p.jijanggan||p.hiddenStem;
+    if(hidden)hiddenStems[k]=safePlain(hidden);
+  });
+
+  const realName=String(chart?.input?.name||'').trim();
+
+  const out={
+    name:realName,
+    userName:realName,
+    gender:chart?.input?.gender||chart?.input?.sex||'-',
+    year:val(chart.pillars.year),
+    month:val(chart.pillars.month),
+    day:val(chart.pillars.day),
+    hour:val(chart.pillars.hour)||'출생시간 모름',
+    hourUnknown:!!chart?.input?.hourUnknown,
+    dayMaster:chart?.dayMaster?.stem||chart?.pillars?.day?.stem||'',
+    tenGods,
+    elements:safePlain(chart?.elCount||chart?.elements||null),
+    hiddenStems:Object.keys(hiddenStems).length?hiddenStems:null,
+    relations:safePlain(chart?.relations||null),
+    stars:safePlain(chart?.stars||chart?.starList||null),
+    currentLuck:safePlain(currentLuck),
+    yearFlow:safePlain(yearFlow)
+  };
+
+  return out.year&&out.month&&out.day?out:null;
+}
+
+async function sendQ(preset){
+  if(guiinAISending)return;
+
+  const input=$('askQ');
+  const q=String(preset||(input?input.value:'')||'').trim();
+
+  if(!q){
+    if(input)input.focus();
+    guiinAppend('sysnote','질문을 입력하거나 아래 추천 질문을 눌러 주세요.');
+    return;
+  }
+
+  if(!chart)restoreProfile();
+
+  const cp=guiinChartPayload();
+  if(!cp){
+    guiinAppend('sysnote','AI가 내 사주를 기준으로 답하려면 사주를 먼저 계산해 주세요.');
+    setTimeout(()=>go('saju'),450);
+    return;
+  }
+
+  const used=freeUsed(),isFree=used<3;
+  if(!isFree&&Number(wallet.coins||0)<1){
+    guiinAppend('sysnote','무료 질문 3회를 모두 사용했습니다. 행운의 클로버를 충전하면 이어서 질문할 수 있어요.');
+    setTimeout(()=>go('wallet'),450);
+    return;
+  }
+
+  guiinAISending=true;
+
+  const buttons=Array.from(document.querySelectorAll('#ask .qchip,#ask .composer button'));
+  buttons.forEach(b=>b.disabled=true);
+  guiinAppend('bubble me',q);
+
+  const status=document.createElement('div');
+  status.className='sysnote';
+  status.textContent='답변을 준비하고 있어요…';
+  $('msgs')?.appendChild(status);
+
+  const controller=new AbortController();
+  const timer=setTimeout(()=>controller.abort(),45000);
+
+  try{
+    const detailGuide=`실제 1:1 사주상담처럼 자연스럽고 따뜻하게 답하세요.
+실제 이름이 있으면 필요한 지점에서만 이름+님으로 부르고, 이름이 없으면 호칭을 생략하세요.
+사용자님·고객님·내담자님·회원님·당신 같은 일반 호칭은 쓰지 마세요.
+질문의 핵심부터 답하고 전달된 사주 데이터 안에서만 근거를 설명하세요.
+사용자가 말하지 않은 과거 사건·직업·관계·감정을 실제 있었던 일처럼 지어내지 마세요.
+일간 한 글자나 신살 하나만으로 성격·사건·미래를 단정하지 마세요.
+전문용어는 바로 쉬운 말로 풀고 생활 장면과 현실적인 행동 조언으로 연결하세요.
+같은 말을 반복하지 말고 짧은 문단으로 읽기 좋게 작성하세요.
+화면은 일반 텍스트로 표시되므로 ###, **, __ 같은 마크다운 기호를 사용하지 마세요.
+미래를 확정하거나 공포를 조장하지 말고 의료·법률·투자 판단을 사주로 대신하지 마세요.`;
+
+    const message=`[현재 날짜: ${new Date().getFullYear()}년 ${new Date().getMonth()+1}월 ${new Date().getDate()}일]
+현재 날짜 기준으로 답하고, 근거 없는 연도·사건은 단정하지 마세요.
+${detailGuide}
+질문: ${q}`;
+
+    const res=await fetch(GUIIN_AI_API,{
+      method:'POST',
+      mode:'cors',
+      cache:'no-store',
+      headers:{
+        'Content-Type':'application/json',
+        'Accept':'application/json'
+      },
+      body:JSON.stringify({
+        name:cp.name||'',
+        message,
+        chart:cp,
+        history:guiinAIHistory.slice(-12)
+      }),
+      signal:controller.signal
+    });
+
+    let data={};
+    try{data=await res.json();}
+    catch(_e){throw new Error('서버 응답을 읽지 못했습니다.');}
+
+    if(!res.ok)throw new Error(data.error||('HTTP '+res.status));
+    if(!data?.answer)throw new Error('AI 답변이 비어 있습니다.');
+
+    status.remove();
+
+    const answer=String(data.answer).trim();
+    guiinAppend('bubble bot',answer);
+
+    guiinAIHistory.push(
+      {role:'user',content:q},
+      {role:'assistant',content:answer}
+    );
+
+    if(guiinAIHistory.length>24){
+      guiinAIHistory=guiinAIHistory.slice(-24);
+    }
+
+    if(isFree)setFreeUsed(used+1);
+    else{
+      wallet.coins=Math.max(0,Number(wallet.coins||0)-1);
+      wallet.ledger.unshift({
+        t:new Date().toLocaleString('ko-KR',{hour12:false}),
+        text:'AI 상담 질문 차감 · '+q.slice(0,18),
+        delta:-1
+      });
+      persistWallet();
+    }
+
+    if(input)input.value='';
+
+  }catch(err){
+    console.error('GUIIN_AI_CHAT_ERROR',err);
+
+    status.textContent=
+      err?.name==='AbortError'
+        ? '답변이 조금 늦어지고 있어요. 잠시 후 다시 질문해 주세요. 이번 질문은 차감되지 않았어요.'
+        : '상담사가 잠시 자리를 비웠나 봐요. 잠시 후 다시 말을 걸어주세요! 이번 질문은 무료 횟수나 클로버에서 차감되지 않았어요.';
+
+  }finally{
+    clearTimeout(timer);
+    guiinAISending=false;
+    buttons.forEach(b=>b.disabled=false);
+  }
+}
+
+window.guiinSendAI=function(ev,preset){
+  try{
+    if(ev){
+      ev.preventDefault();
+      ev.stopPropagation();
+    }
+    sendQ(preset);
+  }catch(err){
+    console.error(err);
+    guiinAppend('sysnote','상담 버튼 오류가 발생했습니다. 새로고침 후 다시 시도해 주세요.');
+  }
+  return false;
+};
+
+(function bindAI(){
+  const input=$('askQ');
+
+  if(input){
+    input.addEventListener('keydown',e=>{
+      if(e.key==='Enter'&&!e.isComposing){
+        window.guiinSendAI(e);
+      }
+    });
+  }
+
+  document.addEventListener('click',e=>{
+    const b=e.target?.closest?.('#askSendBtn,#ask [data-ai-question]');
+    if(!b||e.defaultPrevented)return;
+    window.guiinSendAI(e,b.getAttribute('data-ai-question')||undefined);
+  });
+})();
 
 function socialLoginReady(provider){const m=$('loginMsg')||$('signupMsg');if(m)m.textContent=`${provider} 로그인 화면은 준비돼 있습니다. 실제 ${provider} 계정 인증은 해당 OAuth 앱 설정과 회원 서버가 연결된 뒤 활성화됩니다. 현재는 로그인된 척 처리하지 않습니다.`;}
 function emailLoginReady(){if($('loginMsg'))$('loginMsg').textContent='이메일 로그인은 회원 인증 서버 연결 후 활성화됩니다.';}
 function emailSignupReady(){if($('signupMsg'))$('signupMsg').textContent='이메일 회원가입은 회원 DB·인증 서버 연결 후 활성화됩니다.';}
 function openCustomerCenter(){window.open('https://pf.kakao.com/_TLTrX/chat','_blank','noopener');}
-function renderUsageHistory(){const v=$('usageHistoryView');if(!v)return;let p=null;try{p=JSON.parse(localStorage.getItem('guiin_demo_last')||'null');}catch(e){}const rows=[];if(p)rows.push(`<div class="trustBox"><b>${esc(p.name||'사용자')}님의 사주</b><br>${p.year}.${p.month}.${p.day} · 최근 저장 프로필</div>`);if((wallet.ledger||[]).length)rows.push(`<div class="trustBox"><b>AI 상담 이용</b><br>${wallet.ledger.length}건의 기기 내 기록이 있습니다.</div>`);v.innerHTML=rows.join('')||'<p class="utilityHint">아직 이용 내역이 없습니다. 사주를 계산하거나 AI 상담을 이용하면 여기에 표시됩니다.</p>';}
+function renderUsageHistory(){const v=$('usageHistoryView');if(!v)return;let p=null;try{p=JSON.parse(localStorage.getItem('guiin_last')||'null');}catch(e){}const rows=[];if(p)rows.push(`<div class="trustBox"><b>${esc(p.name||'사용자')}님의 사주</b><br>${p.year}.${p.month}.${p.day} · 최근 저장 프로필</div>`);if((wallet.ledger||[]).length)rows.push(`<div class="trustBox"><b>AI 상담 이용</b><br>${wallet.ledger.length}건의 기기 내 기록이 있습니다.</div>`);v.innerHTML=rows.join('')||'<p class="utilityHint">아직 이용 내역이 없습니다. 사주를 계산하거나 AI 상담을 이용하면 여기에 표시됩니다.</p>';}
 function renderPaymentHistory(){const v=$('paymentHistoryView');if(v)v.innerHTML='<p class="utilityHint">아직 서버에서 확인된 실제 결제 내역이 없습니다.</p>';}
-function renderSavedProfile(){const v=$('savedProfileView');if(!v)return;let p=null;try{p=JSON.parse(localStorage.getItem('guiin_demo_last')||'null');}catch(e){}v.innerHTML=p?`<div class="trustBox"><b>${esc(p.name||'사용자')}</b><br>${p.year}년 ${p.month}월 ${p.day}일 (${esc(p.calendar||'양력')})${p.hourUnknown?' · 출생시간 모름':` · ${String(p.hour??0).padStart(2,'0')}:${String(p.minute??0).padStart(2,'0')}`}</div>`:'<p class="utilityHint">저장된 프로필이 없습니다.</p>';}
+function renderSavedProfile(){const v=$('savedProfileView');if(!v)return;let p=null;try{p=JSON.parse(localStorage.getItem('guiin_last')||'null');}catch(e){}v.innerHTML=p?`<div class="trustBox"><b>${esc(p.name||'사용자')}</b><br>${p.year}년 ${p.month}월 ${p.day}일 (${esc(p.calendar||'양력')})${p.hourUnknown?' · 출생시간 모름':` · ${String(p.hour??0).padStart(2,'0')}:${String(p.minute??0).padStart(2,'0')}`}</div>`:'<p class="utilityHint">저장된 프로필이 없습니다.</p>';}
 function loadNotificationPrefs(){let p={};try{p=JSON.parse(localStorage.getItem(NOTIFY_KEY)||'{}');}catch(e){}document.querySelectorAll('[data-notify]').forEach(x=>{x.checked=!!p[x.dataset.notify];x.onchange=()=>{const out={};document.querySelectorAll('[data-notify]').forEach(y=>out[y.dataset.notify]=y.checked);localStorage.setItem(NOTIFY_KEY,JSON.stringify(out));};});}
 async function requestGuiinNotification(){if(!('Notification'in window)){alert('이 브라우저에서는 알림 기능을 지원하지 않습니다.');return;}try{const p=await Notification.requestPermission();alert(p==='granted'?'알림 권한이 허용됐습니다. 실제 정기 발송은 푸시 서버 연결 후 시작됩니다.':'알림 권한이 허용되지 않았습니다.');}catch(e){alert('알림 권한을 확인하지 못했습니다.');}}
 function goToday(){renderToday();go('today');}
