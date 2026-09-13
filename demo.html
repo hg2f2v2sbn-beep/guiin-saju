@@ -594,6 +594,15 @@ html{background:#efe7d7}.app{background:linear-gradient(180deg,#fffaf0 0%,#fff6e
 .guiinVisualHero.withArt .heroPet{display:none!important}
 </style>
 
+
+<style id="guiin-demo-free-style">
+.demoFreeNotice{
+ margin:8px 0 10px;padding:9px 12px;border-radius:14px;
+ background:#eef8e9;border:1px solid #dcebd5;
+ color:#45644b;font-size:10px;line-height:1.55;text-align:center
+}
+</style>
+
 </head>
 <body>
 <div class="demoBadge">DEMO · 테스트용</div>
@@ -1392,8 +1401,8 @@ function guiinApplyVerifiedEntitlements(payload){
  return true;
 }
 window.guiinApplyVerifiedEntitlements=guiinApplyVerifiedEntitlements;
-function hasPremiumLifetime(){return GUIIN_VERIFIED_ENTITLEMENTS.lifetimeSaju===true;}
-function hasPremiumCompat(){return GUIIN_VERIFIED_ENTITLEMENTS.compat===true;}
+function hasPremiumLifetime(){return true;} // DEMO: 평생사주/대운 심층풀이 무료 공개
+function hasPremiumCompat(){return true;} // DEMO: 심층 궁합 무료 공개
 function pickPreviewSamples(key,pool,count=3){
  try{
   const storageKey='guiin_preview_samples_'+key;
@@ -1888,6 +1897,24 @@ window.openTodayDetail=function(title,summary){go('today');const v=$('todayView'
 
 syncWalletViews();
 const h=location.hash.replace('#','');const screens=[...document.querySelectorAll('.screen')].map(x=>x.id);if(h&&screens.includes(h))go(h);
+
+
+(function guiinDemoFreeMode(){
+  const addNotice=()=>{
+    ['result','matchResult','yearLuck'].forEach(id=>{
+      const screen=document.getElementById(id);
+      if(!screen || screen.querySelector('.demoFreeNotice')) return;
+      const top=screen.querySelector('.topbar');
+      if(!top) return;
+      const n=document.createElement('div');
+      n.className='demoFreeNotice';
+      n.textContent='DEMO · 모든 심층 풀이는 결제 없이 공개됩니다.';
+      top.insertAdjacentElement('afterend',n);
+    });
+  };
+  document.addEventListener('DOMContentLoaded',addNotice);
+  setTimeout(addNotice,0);
+})();
 
 </script>
 </body>
