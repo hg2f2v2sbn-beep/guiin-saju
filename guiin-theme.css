@@ -1,5 +1,6 @@
 /* GUIIN SAFE THEME — visual-only overrides.
-   기존 사주엔진 / 계산 / 풀이 / onclick을 건드리지 않습니다. */
+   기존 사주엔진 / 계산 / 풀이 / onclick을 건드리지 않습니다.
+   9개 시안(홈/입력/요약/성격·기질/대운/직업·재물·연애/궁합/오늘의운세/마이페이지) 기준 */
 
 :root{
   --gs-bg:#fffaf0;
@@ -24,6 +25,7 @@ html,body{background:#f1eadf}
   box-shadow:var(--gs-shadow)!important
 }
 
+/* 상단 바 */
 .topbar{
   height:76px!important;
   background:rgba(255,253,248,.97)!important;
@@ -41,7 +43,7 @@ html,body{background:#f1eadf}
   letter-spacing:-.02em!important
 }
 
-/* 상단 소개 카드 = 텍스트 전용 (이미지 없음). 아래 큰 일러스트는 유지 */
+/* ========== 상단 소개 카드 = 텍스트 전용 ========== */
 .guiinVisualHero img,
 .guiinVisualHero .heroPet,
 .guiinVisualHero .heroArt,
@@ -64,10 +66,8 @@ html,body{background:#f1eadf}
 .guiinVisualHero:before{
   content:"☘"!important;
   position:absolute!important;
-  left:auto!important;
   right:18px!important;
   bottom:14px!important;
-  top:auto!important;
   font-size:56px!important;
   opacity:.18!important;
   color:#53a93b!important;
@@ -89,10 +89,7 @@ html,body{background:#f1eadf}
 .guiinVisualHero .heroCopy,
 .guiinVisualHero .eyebrow,
 .guiinVisualHero h2,
-.guiinVisualHero p{
-  position:relative!important;
-  z-index:1!important
-}
+.guiinVisualHero p{position:relative!important;z-index:1!important}
 .guiinVisualHero .eyebrow{
   display:inline-flex!important;
   padding:6px 12px!important;
@@ -100,23 +97,20 @@ html,body{background:#f1eadf}
   background:rgba(255,255,255,.85)!important;
   color:#158057!important;
   font-size:11px!important;
-  font-weight:900!important;
-  letter-spacing:-.02em!important
+  font-weight:900!important
 }
 .guiinVisualHero h2{
   font-size:24px!important;
   line-height:1.32!important;
   color:var(--gs-green)!important;
   margin:12px 0 10px!important;
-  letter-spacing:-.04em!important;
-  max-width:100%!important
+  letter-spacing:-.04em!important
 }
 .guiinVisualHero p{
   font-size:13px!important;
   line-height:1.7!important;
   color:#5f6c68!important;
-  margin:0!important;
-  max-width:100%!important
+  margin:0!important
 }
 .guiinVisualHero.pink{
   background:linear-gradient(140deg,#fff3f7,#fff9e9)!important;
@@ -139,7 +133,7 @@ html,body{background:#f1eadf}
 .guiinVisualHero.gold .eyebrow{color:#a67a1c!important}
 .guiinVisualHero.gold:before{color:#d4a82e!important}
 
-/* 홈 */
+/* ========== 1. 홈 ========== */
 #home .profilebar{
   border-radius:22px!important;
   padding:11px 12px!important;
@@ -161,19 +155,22 @@ html,body{background:#f1eadf}
   overflow:hidden!important;
   box-shadow:var(--gs-shadow)!important
 }
-#home .homeHero .heroText h1{color:var(--gs-green)!important}
+#home .homeHero .heroText h1{color:var(--gs-green)!important;font-size:28px!important}
 #home .homeHero .ctaGreen{
   border-radius:999px!important;
-  background:linear-gradient(135deg,#16785a,#075b48)!important
+  background:linear-gradient(135deg,#16785a,#075b48)!important;
+  padding:14px 22px!important
 }
 #home .tiles{
-  grid-template-columns:repeat(3,minmax(0,1fr))!important;
-  gap:8px!important
+  grid-template-columns:repeat(2,minmax(0,1fr))!important;
+  gap:10px!important
 }
 #home .tile{
   border-radius:20px!important;
   border:1px solid rgba(229,220,205,.9)!important;
-  box-shadow:0 7px 18px rgba(67,58,38,.045)!important
+  box-shadow:0 7px 18px rgba(67,58,38,.045)!important;
+  min-height:130px!important;
+  padding:14px 12px 42px!important
 }
 #home .tile:nth-child(1){background:linear-gradient(150deg,#fff8d9,#ffefbd)!important}
 #home .tile:nth-child(2){background:linear-gradient(150deg,#fff0f4,#f8dfe8)!important}
@@ -181,45 +178,61 @@ html,body{background:#f1eadf}
 #home .tile:nth-child(4){background:linear-gradient(150deg,#ecf9ef,#def3e6)!important}
 #home .tile:nth-child(5){background:linear-gradient(150deg,#edf8ff,#deeffa)!important}
 #home .tile:nth-child(6){background:linear-gradient(150deg,#fff6dd,#f9e9c0)!important}
-#home .tile button{border-radius:999px!important}
+#home .tile b{font-size:14px!important}
+#home .tile p{font-size:10px!important;line-height:1.5!important}
+#home .tile button{border-radius:999px!important;font-size:10px!important;padding:7px!important}
 #home .rankRow{display:none!important}
 
-/* 사주 입력 */
+/* ========== 2. 사주 입력 ========== */
 #saju .screenTitle{
   border-radius:26px!important;
   background:linear-gradient(145deg,#f7ffe9,#fff8df)!important;
   border:1px solid #e7edd6!important;
-  box-shadow:var(--gs-shadow)!important
+  box-shadow:var(--gs-shadow)!important;
+  padding:18px 16px!important
 }
-#saju .screenTitle h2{color:var(--gs-green)!important}
-#saju .formCard{border-radius:24px!important;padding:19px!important}
+#saju .screenTitle h2{color:var(--gs-green)!important;font-size:24px!important}
+#saju .formCard{border-radius:24px!important;padding:20px!important}
 #saju input,#saju select{
-  min-height:48px!important;
+  min-height:50px!important;
   border-radius:15px!important;
-  background:#fffdf9!important
+  background:#fffdf9!important;
+  border:1px solid #e8dfd0!important;
+  font-size:14px!important
 }
-#saju .seg button{min-height:45px!important;border-radius:15px!important}
+#saju .seg button{min-height:48px!important;border-radius:15px!important;font-size:14px!important}
 #saju .seg button.on{
   background:#fff1c9!important;
   border-color:#e7b134!important;
   color:#745514!important
 }
-#saju .locationRow{min-height:48px!important;border-radius:15px!important}
-#saju .ctaGold{border-radius:999px!important;padding:15px!important}
+#saju .locationRow{min-height:50px!important;border-radius:15px!important}
+#saju .ctaGold,
+#saju .ctaGreen{
+  border-radius:999px!important;
+  padding:16px!important;
+  font-size:15px!important;
+  font-weight:900!important
+}
 
-/* 사주 결과 */
+/* ========== 3~6. 사주 결과 (요약/성격/대운/직업) ========== */
 #result .tabs{
   position:sticky;
   top:76px;
   z-index:25;
-  background:rgba(255,250,240,.95)!important;
-  backdrop-filter:blur(12px)
+  background:rgba(255,250,240,.96)!important;
+  backdrop-filter:blur(12px);
+  gap:6px!important;
+  padding:10px 0 8px!important
 }
 #result .tabs button{
   border:1px solid #e8dfd3!important;
   background:#fff!important;
   border-radius:15px!important;
-  padding:9px 13px!important
+  padding:10px 14px!important;
+  font-size:12px!important;
+  font-weight:800!important;
+  color:#6b736e!important
 }
 #result .tabs button.on{
   background:var(--gs-pink)!important;
@@ -235,60 +248,99 @@ html,body{background:#f1eadf}
 #resultView .manseChartCard,
 #resultView .sampleCard,
 #resultView .premiumHero{border-radius:24px!important}
-#resultView .easyIntro{background:linear-gradient(145deg,#f5fce9,#fff8df)!important}
+#resultView .easyIntro{
+  background:linear-gradient(145deg,#f5fce9,#fff8df)!important;
+  padding:18px!important
+}
 #resultView .easyIntro h2,
 #resultView .easyLongCard h3,
-#resultView .expertSection h3{color:var(--gs-navy)!important}
-#resultView .easyBody p,#resultView .expertSection p{line-height:1.9!important}
-#resultView .easyPoint.good{background:#eef9f1!important}
-#resultView .easyPoint.watch{background:#fff2ec!important}
-#resultView .easyPoint.tip{background:#fff9e7!important}
-#resultView .easyPoint.support{background:#f3f8e8!important}
+#resultView .expertSection h3{
+  color:var(--gs-navy)!important;
+  font-size:18px!important;
+  line-height:1.4!important
+}
+#resultView .easyBody p,
+#resultView .expertSection p{
+  line-height:1.9!important;
+  font-size:14px!important;
+  color:#4a534e!important
+}
+#resultView .easyPoint.good{background:#eef9f1!important;border-radius:14px!important}
+#resultView .easyPoint.watch{background:#fff2ec!important;border-radius:14px!important}
+#resultView .easyPoint.tip{background:#fff9e7!important;border-radius:14px!important}
+#resultView .easyPoint.support{background:#f3f8e8!important;border-radius:14px!important}
 #resultView .wongukCell{border-radius:16px!important}
 #resultView .el,#resultView .manseEl{border-radius:14px!important}
 #resultView .premiumHero{background:linear-gradient(145deg,#fff8e8,#eef7e7)!important}
 #resultView .premiumLock{border-radius:22px!important}
 
-/* 궁합 */
+/* ========== 7. 궁합 ========== */
 #match .formCard,
 #matchResult .matchHero,
 #matchResult .infoCard,
 #matchResult .easyLongCard{border-radius:24px!important}
-#matchResult .tabs button{border-radius:15px!important}
+#matchResult .tabs button{border-radius:15px!important;padding:9px 13px!important}
 #matchResult .tabs button.on{background:#9c69d5!important;color:#fff!important}
-#matchView .matchHero{background:linear-gradient(145deg,#fff1f5,#f7efff)!important}
-#matchView .score{color:#e34f77!important}
-#matchView .person{border-radius:16px!important}
+#matchView .matchHero{
+  background:linear-gradient(145deg,#fff1f5,#f7efff)!important;
+  padding:16px!important
+}
+#matchView .matchHero h3{font-size:18px!important;color:#d93d67!important}
+#matchView .score{color:#e34f77!important;font-size:44px!important}
+#matchView .person{border-radius:16px!important;padding:12px!important}
+#match .ctaGold,
+#match .ctaGreen,
+#match button[onclick*="submitMatch"]{
+  border-radius:999px!important;
+  background:linear-gradient(135deg,#b57de0,#9c69d5)!important;
+  color:#fff!important;
+  padding:15px!important;
+  font-weight:900!important
+}
 
-/* 오늘의 운세 */
-#today .tabs button{border-radius:15px!important}
+/* ========== 8. 오늘의 운세 ========== */
+#today .tabs button{border-radius:15px!important;padding:9px 13px!important}
 #today .tabs button.on{background:var(--gs-green)!important;color:#fff!important}
 #todayView .todayHero,
 #todayView .fortuneList,
 #todayView .todayDetailCard{border-radius:24px!important}
-#todayView .todayHero{background:linear-gradient(145deg,#fffdf6,#f3fae8)!important}
-#todayView .todayArt{border-radius:18px!important}
-#todayView .fortuneRow{min-height:60px!important}
-#todayView .fortuneRow .fIcon{width:36px!important;height:36px!important;border-radius:12px!important}
+#todayView .todayHero{
+  background:linear-gradient(145deg,#fffdf6,#f3fae8)!important;
+  padding:14px!important
+}
+#todayView .todayHero h3{font-size:17px!important;color:#ef7a26!important}
+#todayView .todayArt{border-radius:18px!important;overflow:hidden!important}
+#todayView .fortuneRow{
+  min-height:64px!important;
+  padding:12px 0!important
+}
+#todayView .fortuneRow .fIcon{
+  width:38px!important;height:38px!important;
+  border-radius:12px!important
+}
+#todayView .fortuneRow b{font-size:13px!important}
+#todayView .fortuneRow span{font-size:11px!important;line-height:1.5!important}
 
-/* 대운·세운 */
-#yearLuck .tabs button{border-radius:15px!important}
-#yearLuck .tabs button.on{background:var(--gs-green)!important;color:#fff!important}
-#yearView .easyLongCard,
-#yearView .premiumHero,
-#yearView .sampleCard{border-radius:24px!important}
-
-/* 마이페이지 / 관리 */
-#mypage .profileCard,#mypage .menuCard,#manage .manageCard{border-radius:24px!important}
-#mypage .profileCard{background:linear-gradient(145deg,#fffdf8,#f5f9ed)!important}
+/* ========== 9. 마이페이지 ========== */
+#mypage .profileCard,
+#mypage .menuCard,
+#manage .manageCard{border-radius:24px!important}
+#mypage .profileCard{
+  background:linear-gradient(145deg,#fffdf8,#f5f9ed)!important;
+  padding:16px!important
+}
 #mypage .bigAvatar{
-  width:70px!important;height:70px!important;
+  width:72px!important;height:72px!important;
   border:3px solid #eee4d1!important
 }
-#mypage .menuCard button{min-height:51px!important}
+#mypage .menuCard button{
+  min-height:54px!important;
+  font-size:13px!important;
+  padding:14px 0!important
+}
 #manage .tabs button{border-radius:15px!important}
 
-/* 하단 네비 */
+/* ========== 하단 네비 ========== */
 .bottom{
   height:72px!important;
   background:rgba(255,255,255,.98)!important;
@@ -302,24 +354,19 @@ html,body{background:#f1eadf}
   box-shadow:0 8px 18px rgba(164,116,27,.25)!important
 }
 
+/* ========== 공통 가독성 ========== */
+.easyLongCard h3,.expertSection h3,.deepCard h3{color:var(--gs-navy)!important}
+.easyBody p,.expertSection p,.deepCard p{line-height:1.85!important}
+
+/* 아래 큰 메인 이미지는 명시적으로 유지 */
+.todayArt,.matchArt,.summaryArt,.heroArt{display:block!important}
+.todayArt img,.matchArt img,.summaryArt img,.heroArt img{
+  display:block!important;width:100%!important;height:100%!important;object-fit:cover!important
+}
+
 @media(max-width:370px){
   .guiinVisualHero{padding:18px 16px 16px!important}
   .guiinVisualHero h2{font-size:21px!important}
-  #home .tiles{gap:6px!important}
-  #home .tile{padding-left:6px!important;padding-right:6px!important}
+  #home .tiles{gap:8px!important}
+  #home .tile{padding:12px 8px 38px!important}
 }
-
-/* 상단 소개 카드 이미지 완전 제거 — 아래 큰 일러스트(todayArt/matchArt 등)는 유지 */
-.guiinVisualHero img{display:none!important;width:0!important;height:0!important}
-#resultView .easyIntro img,
-#resultView .summaryHero img:not(.summaryArt img){display:none!important}
-
-/* 아래 큰 메인 이미지는 명시적으로 유지 */
-.todayArt,
-.matchArt,
-.summaryArt,
-.heroArt{display:block!important}
-.todayArt img,
-.matchArt img,
-.summaryArt img,
-.heroArt img{display:block!important;width:100%!important;height:100%!important;object-fit:cover!important}
