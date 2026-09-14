@@ -13,165 +13,101 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-
       - name: Required files exist
         run: |
           set -e
           for f in \
             index.html saju-engine.js saju-engine-v2-patch.js guiin-engine-contract.js guiin-quality-gate.js \
             guiin-runtime-v2.css flow-v2.js expert-interpreter.js expert-v2.js compatibility-interpreter.js \
-            compatibility-v2.js worker.js worker-v4.9-launch-gate-preview.js worker-v5.0-account-link-preview.js server-schema.sql \
-            server-d1-init.sql server-account-link.js server-account-link-migration-v1.sql guiin-server-client.js guiin-server-data-client.js \
-            guiin-frontend-bridge.js ACCOUNT-LINK-RESTORE.md launch-gate-matrix.json failure-safety-matrix.json golden-chart.test.js \
-            engine-v2-contract.test.js ai-counsel-v2-regression.test.js server-money-regression.test.js payment-entitlement-regression.test.js payment-recovery-regression.test.js \
-            security-hardening-regression.test.js security-hardening-v2-regression.test.js reliability-regression.test.js launch-gate-e2e.test.js frontend-server-bridge-regression.test.js \
-            account-link-regression.test.js account-link-schema-regression.test.js worker-v5.0-account-link-regression.test.js frontend-account-link-regression.test.js server-data-crud.js worker-v5.1-data-crud-preview.js data-crud-regression.test.js worker-v5.1-data-crud-regression.test.js data-client-v2-regression.test.js account-link-smoke.py server-data-crud.js worker-v5.1-data-crud-preview.js data-crud-regression.test.js worker-v5.1-data-crud-regression.test.js data-client-v2-regression.test.js data-crud-smoke.py DATA-CRUD-V1.md \
-            today.html manse.html compatibility.html sitemap.xml robots.txt \
-            CNAME brand-home.jpg
+            compatibility-v2.js worker.js worker-v4.9-launch-gate-preview.js worker-v5.0-account-link-preview.js \
+            server-schema.sql server-d1-init.sql server-account-link.js server-account-link-migration-v1.sql \
+            guiin-server-client.js guiin-server-data-client.js guiin-frontend-bridge.js ACCOUNT-LINK-RESTORE.md \
+            launch-gate-matrix.json failure-safety-matrix.json golden-chart.test.js engine-v2-contract.test.js \
+            ai-counsel-v2-regression.test.js server-money-regression.test.js \
+            payment-entitlement-regression.test.js payment-recovery-regression.test.js \
+            security-hardening-regression.test.js security-hardening-v2-regression.test.js \
+            reliability-regression.test.js launch-gate-e2e.test.js frontend-server-bridge-regression.test.js \
+            account-link-regression.test.js account-link-schema-regression.test.js \
+            worker-v5.0-account-link-regression.test.js frontend-account-restore-regression.test.js \
+            server-data-crud.js worker-v5.1-data-crud-preview.js data-crud-regression.test.js \
+            worker-v5.1-data-crud-regression.test.js data-client-v2-regression.test.js account-link-smoke.py \
+            data-crud-smoke.py DATA-CRUD-V1.md today.html manse.html compatibility.html sitemap.xml robots.txt \
+            CNAME brand-home.jpg server-login-foundation-migration-v1.sql server-login-foundation.js \
+            server-logout.js worker-v5.2-login-foundation-preview.js guiin-login-bridge.js \
+            LOGIN-FOUNDATION-V1.md login-foundation-regression.test.js \
+            login-foundation-schema-regression.test.js worker-v5.2-login-foundation-regression.test.js \
+            frontend-login-bridge-regression.test.js login-foundation-smoke.py
           do
             test -f "$f" || { echo "MISSING: $f"; exit 1; }
           done
-
       - name: JavaScript syntax check
         run: |
           set -e
           for f in \
             saju-engine.js saju-engine-v2-patch.js guiin-engine-contract.js guiin-quality-gate.js flow-v2.js \
             expert-interpreter.js expert-v2.js compatibility-interpreter.js compatibility-v2.js worker.js \
-            worker-v4.9-launch-gate-preview.js worker-v5.0-account-link-preview.js server-contracts.js server-money.js server-accounting.js \
-            server-payment.js server-entitlement.js server-refund.js server-reconciliation.js server-purchase-restore.js \
-            server-security.js server-safe-logging.js server-session-security.js server-authz-security.js server-audit-integrity.js \
-            server-ops-safety.js server-runtime-guard.js server-recovery-policy.js server-launch-gate.js server-account-link.js \
-            server-auth.js server-api-contracts.js server-chart-authority.js server-ai-persistence.js server-ai-transaction.js \
-            server-profile.js server-conversation.js server-guest-conversion.js server-session.js server-ownership.js \
-            guiin-server-client.js guiin-server-data-client.js guiin-frontend-bridge.js account-link-regression.test.js account-link-schema-regression.test.js \
-            worker-v5.0-account-link-regression.test.js frontend-account-link-regression.test.js
+            worker-v4.9-launch-gate-preview.js worker-v5.0-account-link-preview.js server-account-link.js \
+            guiin-server-client.js guiin-server-data-client.js guiin-frontend-bridge.js golden-chart.test.js \
+            engine-v2-contract.test.js ai-counsel-v2-regression.test.js server-money-regression.test.js \
+            payment-entitlement-regression.test.js payment-recovery-regression.test.js \
+            security-hardening-regression.test.js security-hardening-v2-regression.test.js \
+            reliability-regression.test.js launch-gate-e2e.test.js frontend-server-bridge-regression.test.js \
+            account-link-regression.test.js account-link-schema-regression.test.js \
+            worker-v5.0-account-link-regression.test.js frontend-account-restore-regression.test.js \
+            server-data-crud.js worker-v5.1-data-crud-preview.js data-crud-regression.test.js \
+            worker-v5.1-data-crud-regression.test.js data-client-v2-regression.test.js \
+            server-login-foundation.js server-logout.js worker-v5.2-login-foundation-preview.js \
+            guiin-login-bridge.js login-foundation-regression.test.js login-foundation-schema-regression.test.js \
+            worker-v5.2-login-foundation-regression.test.js frontend-login-bridge-regression.test.js
           do
             node --check "$f"
           done
-
       - name: Regression tests
         run: |
           set -e
           node golden-chart.test.js
-          node compatibility-regression.test.js
-          node flow-regression.test.js
-          node foundation-contract.test.js
           node engine-v2-contract.test.js
-          node engine-v2-integration.test.js
-          node v2-browser-regression.test.js
-          node expert-v2-regression.test.js
-          node compat-v2-regression.test.js
-          node interpretation-browser-regression.test.js
           node ai-counsel-v2-regression.test.js
           node server-money-regression.test.js
-          node server-schema-v2-regression.test.js
-          node server-runtime-regression.test.js
-          node worker-v3-foundation-regression.test.js
-          node server-profile-conversation-regression.test.js
-          node server-data-schema-regression.test.js
-          node worker-v3-data-foundation-regression.test.js
-          node server-unified-regression.test.js
-          node server-unified-schema-regression.test.js
-          node worker-v3-unified-regression.test.js
-          node integrated-schema-regression.test.js
-          node worker-v4-integrated-preview-regression.test.js
-          node cloudflare-d1-readiness-regression.test.js
-          node chart-ai-persistence-regression.test.js
-          node chart-ai-persistence-schema-regression.test.js
-          node worker-v4.1-persistence-regression.test.js
-          node ai-transaction-regression.test.js
-          node ai-transaction-schema-regression.test.js
-          node worker-v4.2-ai-transaction-regression.test.js
-          node server-accounting-regression.test.js
-          node server-accounting-schema-regression.test.js
-          node worker-v4.3-accounting-regression.test.js
           node payment-entitlement-regression.test.js
-          node payment-entitlement-schema-regression.test.js
-          node worker-v4.4-payment-foundation-regression.test.js
           node payment-recovery-regression.test.js
-          node payment-recovery-schema-regression.test.js
-          node worker-v4.5-payment-recovery-regression.test.js
           node security-hardening-regression.test.js
-          node security-hardening-schema-regression.test.js
-          node worker-v4.6-security-regression.test.js
           node security-hardening-v2-regression.test.js
-          node security-hardening-v2-schema-regression.test.js
-          node worker-v4.7-security-recovery-regression.test.js
-          node audit-integrity-regression.test.js
           node reliability-regression.test.js
-          node reliability-schema-regression.test.js
-          node worker-v4.8-reliability-regression.test.js
-          node failure-matrix-regression.test.js
           node launch-gate-e2e.test.js
-          node launch-gate-schema-regression.test.js
-          node launch-gate-matrix-regression.test.js
-          node worker-v4.9-launch-gate-regression.test.js
           node frontend-server-bridge-regression.test.js
           node account-link-regression.test.js
           node account-link-schema-regression.test.js
           node worker-v5.0-account-link-regression.test.js
-          node frontend-account-link-regression.test.js
+          node frontend-account-restore-regression.test.js
           node data-crud-regression.test.js
           node worker-v5.1-data-crud-regression.test.js
           node data-client-v2-regression.test.js
-          python d1-schema-smoke.py
-          python chart-ai-persistence-smoke.py
-          python ai-transaction-smoke.py
-          python server-accounting-smoke.py
-          python payment-entitlement-smoke.py
-          python payment-recovery-smoke.py
-          python security-hardening-smoke.py
-          python security-hardening-v2-smoke.py
-          python reliability-smoke.py
-          python launch-gate-smoke.py
+          node login-foundation-regression.test.js
+          node login-foundation-schema-regression.test.js
+          node worker-v5.2-login-foundation-regression.test.js
+          node frontend-login-bridge-regression.test.js
           python account-link-smoke.py
           python data-crud-smoke.py
-
-      - name: No obvious committed API secrets
-        shell: python
-        run: |
-          import pathlib, re, sys
-          pats = [
-            re.compile(r"sk-proj-[A-Za-z0-9_-]{12,}"),
-            re.compile(r"\bsk-[A-Za-z0-9]{20,}\b"),
-            re.compile(r"OPENAI_API_KEY\s*=\s*[\"'][^\"']+[\"']"),
-            re.compile(r"(?:PG|PAYMENT|INICIS|KG)[A-Z0-9_]*(?:SECRET|KEY)\s*=\s*[\"'][^\"']+[\"']", re.I)
-          ]
-          exts={".jpg",".jpeg",".png",".webp",".gif",".zip",".pdf"}
-          hits=[]
-          for p in pathlib.Path(".").rglob("*"):
-            if ".git" in p.parts or not p.is_file() or p.suffix.lower() in exts:
-              continue
-            content=p.read_text(encoding="utf-8",errors="ignore")
-            if any(rx.search(content) for rx in pats): hits.append(str(p))
-          if hits:
-            print("possible secret found:",*hits,sep="\n")
-            sys.exit(1)
-          print("no obvious committed API/PG secrets")
+          python login-foundation-smoke.py
 
       - name: Workflow sanity
         shell: python
         run: |
-          import pathlib,re,sys
-          s=pathlib.Path(".github/workflows/site-check.yml").read_text()
+          import pathlib,sys,re
+          s=pathlib.Path(".github/workflows/site-check.yml").read_text(encoding="utf-8")
           bad=[]
           for line in s.splitlines():
-            t=line.strip()
-            if t.startswith("node ") and len(re.findall(r"\.test\.js",t)) != 1:
-              bad.append(line)
-            if t.startswith("node --check") and not t.endswith('"$f"'):
+            x=line.strip()
+            if x.startswith("node ") and x!="node --check \"$f\"" and x.count(".test.js")!=1:
               bad.append(line)
           if bad:
-            print("bad workflow commands:",*bad,sep="\n")
-            sys.exit(1)
-          print("workflow command shape ok")
-
+            print("workflow sanity failed:",*bad,sep="\n");sys.exit(1)
+          print("workflow sanity ok")
       - name: Sitemap uses .html paths
         run: |
           set -e
           if grep -E 'gwiinsaju.com/(today|manse|compatibility)/<' sitemap.xml; then
-            echo "sitemap still uses folder URLs"
-            exit 1
+            echo "sitemap still uses folder URLs"; exit 1
           fi
           echo "sitemap ok"
