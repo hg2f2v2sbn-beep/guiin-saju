@@ -1,5 +1,5 @@
 name = "guiin-saju-api-staging"
-main = "worker-v5.3-staging-preview.js"
+main = "worker-v5.5-pg-test-preview.js"
 compatibility_date = "2026-09-14"
 
 [vars]
@@ -17,3 +17,5 @@ database_name = "guiin-saju-staging-db"
 database_id = "PUT_STAGING_D1_DATABASE_ID_HERE"
 
 # OPENAI_API_KEY / SECURITY_HASH_SECRET는 Cloudflare Secret으로만 등록
+
+# PG_TEST_WEBHOOK_SECRET는 Cloudflare Secret으로만 등록
