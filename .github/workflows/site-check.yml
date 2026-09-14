@@ -20,15 +20,17 @@ jobs:
           for f in \
             index.html saju-engine.js saju-engine-v2-patch.js guiin-engine-contract.js guiin-quality-gate.js \
             guiin-runtime-v2.css flow-v2.js expert-interpreter.js expert-v2.js compatibility-interpreter.js compatibility-v2.js \
-            manse-view.js flow-timeline.js worker.js worker-v3-foundation.js worker-v3-data-foundation.js \
-            worker-v3-unified-foundation.js worker-v4-integrated-preview.js worker-v4.1-persistence-preview.js \
-            worker-v4.2-ai-transaction-preview.js worker-v4.3-accounting-preview.js worker-v4.4-payment-foundation-preview.js \
-            server-contracts.js server-money.js server-accounting.js server-payment.js server-entitlement.js \
-            server-schema.sql server-auth.js server-api-contracts.js server-chart-authority.js server-ai-persistence.js \
-            server-ai-transaction.js server-profile.js server-conversation.js server-guest-conversion.js server-session.js server-ownership.js \
+            manse-view.js flow-timeline.js worker.js worker-v3-foundation.js worker-v3-data-foundation.js worker-v3-unified-foundation.js \
+            worker-v4-integrated-preview.js worker-v4.1-persistence-preview.js worker-v4.2-ai-transaction-preview.js \
+            worker-v4.3-accounting-preview.js worker-v4.4-payment-foundation-preview.js worker-v4.5-payment-recovery-preview.js \
+            server-contracts.js server-money.js server-accounting.js server-payment.js server-entitlement.js server-refund.js \
+            server-reconciliation.js server-purchase-restore.js server-schema.sql server-auth.js server-api-contracts.js \
+            server-chart-authority.js server-ai-persistence.js server-ai-transaction.js server-profile.js server-conversation.js \
+            server-guest-conversion.js server-session.js server-ownership.js \
             server-d1-bootstrap.sql server-data-migration.sql server-unified-migration-v2.sql server-chart-ai-migration-v1.sql \
             server-ai-transaction-migration-v1.sql server-accounting-v2-migration.sql server-payment-entitlement-migration-v1.sql \
-            server-d1-safe-bootstrap.sql server-d1-init.sql wrangler.example.toml cloudflare-bindings.example.json CLOUDFLARE-D1-DEPLOY.md \
+            server-payment-recovery-migration-v1.sql server-d1-safe-bootstrap.sql server-d1-init.sql \
+            wrangler.example.toml cloudflare-bindings.example.json CLOUDFLARE-D1-DEPLOY.md \
             guiin-server-client.js guiin-server-data-client.js \
             golden-chart.test.js compatibility-regression.test.js flow-regression.test.js foundation-contract.test.js \
             engine-v2-contract.test.js engine-v2-integration.test.js v2-browser-regression.test.js expert-v2-regression.test.js \
@@ -43,6 +45,8 @@ jobs:
             ai-transaction-smoke.py server-accounting-regression.test.js server-accounting-schema-regression.test.js \
             worker-v4.3-accounting-regression.test.js server-accounting-smoke.py payment-entitlement-regression.test.js \
             payment-entitlement-schema-regression.test.js worker-v4.4-payment-foundation-regression.test.js payment-entitlement-smoke.py \
+            payment-recovery-regression.test.js payment-recovery-schema-regression.test.js \
+            worker-v4.5-payment-recovery-regression.test.js payment-recovery-smoke.py \
             today.html manse.html compatibility.html 2026-fortune.html 2027-fortune.html cheon-eul-gwiin.html \
             saju-compatibility-guide.html sitemap.xml robots.txt CNAME brand-home.jpg
           do
@@ -57,11 +61,11 @@ jobs:
             expert-interpreter.js expert-v2.js compatibility-interpreter.js compatibility-v2.js manse-view.js flow-timeline.js \
             worker.js worker-v3-foundation.js worker-v3-data-foundation.js worker-v3-unified-foundation.js \
             worker-v4-integrated-preview.js worker-v4.1-persistence-preview.js worker-v4.2-ai-transaction-preview.js \
-            worker-v4.3-accounting-preview.js worker-v4.4-payment-foundation-preview.js \
-            server-contracts.js server-money.js server-accounting.js server-payment.js server-entitlement.js \
-            server-auth.js server-api-contracts.js server-chart-authority.js server-ai-persistence.js server-ai-transaction.js \
-            server-profile.js server-conversation.js server-guest-conversion.js server-session.js server-ownership.js \
-            guiin-server-client.js guiin-server-data-client.js \
+            worker-v4.3-accounting-preview.js worker-v4.4-payment-foundation-preview.js worker-v4.5-payment-recovery-preview.js \
+            server-contracts.js server-money.js server-accounting.js server-payment.js server-entitlement.js server-refund.js \
+            server-reconciliation.js server-purchase-restore.js server-auth.js server-api-contracts.js server-chart-authority.js \
+            server-ai-persistence.js server-ai-transaction.js server-profile.js server-conversation.js server-guest-conversion.js \
+            server-session.js server-ownership.js guiin-server-client.js guiin-server-data-client.js \
             golden-chart.test.js compatibility-regression.test.js flow-regression.test.js foundation-contract.test.js \
             engine-v2-contract.test.js engine-v2-integration.test.js v2-browser-regression.test.js expert-v2-regression.test.js \
             compat-v2-regression.test.js interpretation-browser-regression.test.js ai-counsel-v2-regression.test.js \
@@ -74,7 +78,8 @@ jobs:
             ai-transaction-regression.test.js ai-transaction-schema-regression.test.js worker-v4.2-ai-transaction-regression.test.js \
             server-accounting-regression.test.js server-accounting-schema-regression.test.js worker-v4.3-accounting-regression.test.js \
             payment-entitlement-regression.test.js payment-entitlement-schema-regression.test.js \
-            worker-v4.4-payment-foundation-regression.test.js
+            worker-v4.4-payment-foundation-regression.test.js payment-recovery-regression.test.js \
+            payment-recovery-schema-regression.test.js worker-v4.5-payment-recovery-regression.test.js
           do
             node --check "$f"
           done
@@ -123,6 +128,10 @@ jobs:
           node payment-entitlement-schema-regression.test.js
           node worker-v4.4-payment-foundation-regression.test.js
           python payment-entitlement-smoke.py
+          node payment-recovery-regression.test.js
+          node payment-recovery-schema-regression.test.js
+          node worker-v4.5-payment-recovery-regression.test.js
+          python payment-recovery-smoke.py
 
       - name: No obvious committed API secrets
         shell: python
