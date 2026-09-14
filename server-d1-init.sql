@@ -28,10 +28,16 @@ CREATE TABLE IF NOT EXISTS user_sessions (
   id TEXT PRIMARY KEY,
   user_id TEXT NOT NULL,
   token_hash TEXT NOT NULL UNIQUE,
+  token_version INTEGER NOT NULL DEFAULT 1,
   created_at TEXT NOT NULL,
   last_seen_at TEXT NOT NULL,
   expires_at TEXT NOT NULL,
+  absolute_expires_at TEXT,
+  idle_timeout_seconds INTEGER NOT NULL DEFAULT 2592000,
+  rotated_at TEXT,
+  previous_token_hash TEXT,
   revoked_at TEXT,
+  revoke_reason TEXT,
   ip_hash TEXT,
   user_agent_hash TEXT,
   FOREIGN KEY (user_id) REFERENCES users(id)
@@ -42,9 +48,16 @@ CREATE INDEX IF NOT EXISTS idx_user_sessions_user ON user_sessions(user_id, expi
 CREATE TABLE IF NOT EXISTS guest_sessions (
   id TEXT PRIMARY KEY,
   token_hash TEXT NOT NULL UNIQUE,
+  token_version INTEGER NOT NULL DEFAULT 1,
   created_at TEXT NOT NULL,
   last_seen_at TEXT,
   expires_at TEXT NOT NULL,
+  absolute_expires_at TEXT,
+  idle_timeout_seconds INTEGER NOT NULL DEFAULT 15552000,
+  rotated_at TEXT,
+  previous_token_hash TEXT,
+  revoked_at TEXT,
+  revoke_reason TEXT,
   converted_user_id TEXT,
   FOREIGN KEY (converted_user_id) REFERENCES users(id)
 );
@@ -542,6 +555,49 @@ ON security_events(event_type, created_at);
 CREATE INDEX IF NOT EXISTS idx_security_events_subject
 ON security_events(subject_type, subject_id, created_at);
 
+
+CREATE TABLE IF NOT EXISTS admin_security (
+  user_id TEXT PRIMARY KEY,
+  mfa_required INTEGER NOT NULL DEFAULT 1,
+  mfa_verified_at TEXT,
+  access_enabled INTEGER NOT NULL DEFAULT 0,
+  updated_at TEXT NOT NULL,
+  FOREIGN KEY (user_id) REFERENCES users(id)
+);
+
+CREATE TABLE IF NOT EXISTS csrf_nonces (
+  nonce_hash TEXT PRIMARY KEY,
+  subject_type TEXT NOT NULL,
+  subject_id TEXT NOT NULL,
+  expires_at TEXT NOT NULL,
+  used_at TEXT,
+  created_at TEXT NOT NULL
+);
+
+CREATE TABLE IF NOT EXISTS backup_manifests (
+  id TEXT PRIMARY KEY,
+  backup_type TEXT NOT NULL,
+  state TEXT NOT NULL,
+  source_version TEXT,
+  schema_version TEXT,
+  object_count INTEGER,
+  checksum TEXT,
+  created_at TEXT NOT NULL,
+  verified_at TEXT,
+  restore_tested_at TEXT,
+  metadata_json TEXT
+);
+
+CREATE TABLE IF NOT EXISTS recovery_runs (
+  id TEXT PRIMARY KEY,
+  recovery_type TEXT NOT NULL,
+  state TEXT NOT NULL,
+  started_at TEXT NOT NULL,
+  completed_at TEXT,
+  error_code TEXT,
+  metadata_json TEXT
+);
+
 CREATE TABLE IF NOT EXISTS support_cases (
   id TEXT PRIMARY KEY,
   user_id TEXT,
@@ -570,6 +626,8 @@ CREATE TABLE IF NOT EXISTS audit_logs (
   target_id TEXT,
   request_id TEXT,
   metadata_json TEXT,
+  prev_hash TEXT,
+  entry_hash TEXT,
   created_at TEXT NOT NULL
 );
 

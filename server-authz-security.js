@@ -1,0 +1,4 @@
+"use strict";
+function csrfRequired({authMode,method}){return["POST","PUT","PATCH","DELETE"].includes(String(method||"GET").toUpperCase())&&authMode==="cookie"}
+function adminDecision({subject,adminSecurity,mfaFreshSeconds=900,nowMs=Date.now()}){if(!subject||subject.type!=="user")return{allowed:false,reason:"user_required"};if(!adminSecurity||String(adminSecurity.user_id)!==String(subject.id))return{allowed:false,reason:"admin_not_configured"};if(Number(adminSecurity.access_enabled)!==1)return{allowed:false,reason:"admin_disabled"};if(Number(adminSecurity.mfa_required)!==1)return{allowed:false,reason:"mfa_policy_missing"};const t=Date.parse(String(adminSecurity.mfa_verified_at||""));if(!Number.isFinite(t)||nowMs-t>mfaFreshSeconds*1000)return{allowed:false,reason:"mfa_required"};return{allowed:true,reason:null}}
+module.exports={csrfRequired,adminDecision};

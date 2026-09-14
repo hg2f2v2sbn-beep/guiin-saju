@@ -1,0 +1,3 @@
+"use strict";
+function launchGate(x={}){const c={authentication:x.authentication===true,session_protection:x.session_protection===true,rate_limit:x.rate_limit===true,secrets_externalized:x.secrets_externalized===true,payment_idempotency:x.payment_idempotency===true,ai_no_loss:x.ai_no_loss===true,webhook_recovery:x.webhook_recovery===true,refund_recovery:x.refund_recovery===true,audit_integrity:x.audit_integrity===true,backup_verified:x.backup_verified===true,restore_drill:x.restore_drill===true,legal_ready:x.legal_ready===true,pg_verified:x.pg_verified===true};const failed=Object.entries(c).filter(([,v])=>!v).map(([k])=>k);return{ready:failed.length===0,failed,checks:c}}
+module.exports={launchGate};
