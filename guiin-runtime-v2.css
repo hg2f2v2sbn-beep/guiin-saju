@@ -1,0 +1,9 @@
+/* 귀인사주 v2 모바일/접근성 안전 보강 — 기존 디자인을 바꾸지 않는 override */
+html,body{min-height:100%}
+.app,.screen{min-height:100vh;min-height:100dvh}
+.app{padding-bottom:max(76px,calc(76px + env(safe-area-inset-bottom)))}
+.screen{padding-bottom:max(92px,calc(92px + env(safe-area-inset-bottom)))}
+.bottom{height:max(68px,calc(68px + env(safe-area-inset-bottom)));padding-bottom:env(safe-area-inset-bottom)}
+.topbar{padding-top:env(safe-area-inset-top)}
+button:focus-visible,input:focus-visible,select:focus-visible,[tabindex]:focus-visible{outline:2px solid currentColor;outline-offset:2px}
+@media (prefers-reduced-motion:reduce){*,*::before,*::after{scroll-behavior:auto!important;animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important}}
