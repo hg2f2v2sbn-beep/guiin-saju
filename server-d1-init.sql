@@ -62,24 +62,6 @@ CREATE TABLE IF NOT EXISTS guest_sessions (
   FOREIGN KEY (converted_user_id) REFERENCES users(id)
 );
 
-
-CREATE TABLE IF NOT EXISTS account_link_events (
-  id TEXT PRIMARY KEY,
-  guest_session_id TEXT NOT NULL,
-  user_id TEXT NOT NULL,
-  state TEXT NOT NULL,
-  idempotency_key TEXT NOT NULL UNIQUE,
-  summary_json TEXT,
-  created_at TEXT NOT NULL,
-  completed_at TEXT,
-  FOREIGN KEY (guest_session_id) REFERENCES guest_sessions(id),
-  FOREIGN KEY (user_id) REFERENCES users(id),
-  UNIQUE(guest_session_id, user_id)
-);
-
-CREATE INDEX IF NOT EXISTS idx_account_link_user
-ON account_link_events(user_id, created_at);
-
 CREATE TABLE IF NOT EXISTS consents (
   id TEXT PRIMARY KEY,
   user_id TEXT,
@@ -538,6 +520,21 @@ CREATE TABLE IF NOT EXISTS guest_conversions (
 CREATE UNIQUE INDEX IF NOT EXISTS idx_guest_conversion_once
 ON guest_conversions(guest_session_id);
 
+
+CREATE TABLE IF NOT EXISTS guest_conversion_events (
+  id TEXT PRIMARY KEY,
+  guest_conversion_id TEXT NOT NULL,
+  event_type TEXT NOT NULL,
+  from_state TEXT,
+  to_state TEXT NOT NULL,
+  metadata_json TEXT,
+  created_at TEXT NOT NULL,
+  FOREIGN KEY (guest_conversion_id) REFERENCES guest_conversions(id)
+);
+
+CREATE INDEX IF NOT EXISTS idx_guest_conversion_events
+ON guest_conversion_events(guest_conversion_id, created_at);
+
 CREATE TABLE IF NOT EXISTS feature_flags (
   flag_key TEXT PRIMARY KEY,
   enabled INTEGER NOT NULL DEFAULT 0,
@@ -721,6 +718,9 @@ CREATE TABLE IF NOT EXISTS audit_logs (
   entry_hash TEXT,
   created_at TEXT NOT NULL
 );
+
+-- 귀인사주 D1 안전 초기값 v1
+PRAGMA foreign_keys = ON;
 
 INSERT OR IGNORE INTO feature_flags(flag_key, enabled, updated_at, updated_by)
 VALUES

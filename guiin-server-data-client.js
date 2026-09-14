@@ -21,6 +21,7 @@
     return api("/api/profiles",{method:"POST",body:JSON.stringify(profile)});
   }
   function listProfiles(){return api("/api/profiles");}
+  function deleteProfile(id){return api("/api/profiles/"+encodeURIComponent(id),{method:"DELETE"});}
 
   function createChartSnapshot(payload){
     return api("/api/chart-snapshots",{method:"POST",body:JSON.stringify(payload)});
@@ -36,6 +37,7 @@
     })});
   }
   function listConversations(){return api("/api/conversations");}
+  function deleteConversation(id){return api("/api/conversations/"+encodeURIComponent(id),{method:"DELETE"});}
   function listMessages(id){return api("/api/conversations/"+encodeURIComponent(id)+"/messages");}
   function appendMessage(id,message){
     return api("/api/conversations/"+encodeURIComponent(id)+"/messages",{
@@ -44,7 +46,7 @@
   }
 
   return {
-    available:true,api,saveProfile,listProfiles,createChartSnapshot,getChartSnapshot,
-    createConversation,listConversations,listMessages,appendMessage
+    available:true,api,saveProfile,listProfiles,deleteProfile,createChartSnapshot,getChartSnapshot,
+    createConversation,listConversations,deleteConversation,listMessages,appendMessage
   };
 });

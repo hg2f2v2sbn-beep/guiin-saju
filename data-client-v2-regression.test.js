@@ -1,0 +1,1 @@
+"use strict";const fs=require("fs"),assert=require("assert"),s=fs.readFileSync("guiin-server-data-client.js","utf8");for(const x of ["saveProfile","deleteProfile","createChartSnapshot","createConversation","deleteConversation","listMessages","appendMessage"])assert(s.includes(x),x+" missing");console.log("Data client v2: ALL PASS");
