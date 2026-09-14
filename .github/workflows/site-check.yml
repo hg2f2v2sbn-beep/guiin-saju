@@ -23,15 +23,15 @@ jobs:
             manse-view.js flow-timeline.js worker.js worker-v3-foundation.js worker-v3-data-foundation.js worker-v3-unified-foundation.js \
             worker-v4-integrated-preview.js worker-v4.1-persistence-preview.js worker-v4.2-ai-transaction-preview.js \
             worker-v4.3-accounting-preview.js worker-v4.4-payment-foundation-preview.js worker-v4.5-payment-recovery-preview.js \
-            worker-v4.6-security-hardening-preview.js worker-v4.7-security-recovery-preview.js worker-v4.8-reliability-preview.js server-contracts.js server-money.js server-accounting.js server-payment.js \
+            worker-v4.6-security-hardening-preview.js worker-v4.7-security-recovery-preview.js worker-v4.8-reliability-preview.js worker-v4.9-launch-gate-preview.js server-contracts.js server-money.js server-accounting.js server-payment.js \
             server-entitlement.js server-refund.js server-reconciliation.js server-purchase-restore.js server-security.js \
-            server-safe-logging.js server-session-security.js server-authz-security.js server-audit-integrity.js server-ops-safety.js server-runtime-guard.js server-recovery-policy.js server-schema.sql server-auth.js server-api-contracts.js server-chart-authority.js \
+            server-safe-logging.js server-session-security.js server-authz-security.js server-audit-integrity.js server-ops-safety.js server-runtime-guard.js server-recovery-policy.js server-launch-gate.js server-schema.sql server-auth.js server-api-contracts.js server-chart-authority.js \
             server-ai-persistence.js server-ai-transaction.js server-profile.js server-conversation.js server-guest-conversion.js \
             server-session.js server-ownership.js server-d1-bootstrap.sql server-data-migration.sql server-unified-migration-v2.sql \
             server-chart-ai-migration-v1.sql server-ai-transaction-migration-v1.sql server-accounting-v2-migration.sql \
-            server-payment-entitlement-migration-v1.sql server-payment-recovery-migration-v1.sql server-security-migration-v1.sql server-security-v2-migration.sql server-reliability-migration-v1.sql \
+            server-payment-entitlement-migration-v1.sql server-payment-recovery-migration-v1.sql server-security-migration-v1.sql server-security-v2-migration.sql server-reliability-migration-v1.sql server-launch-gate-migration-v1.sql \
             server-d1-safe-bootstrap.sql server-d1-init.sql wrangler.example.toml cloudflare-bindings.example.json \
-            CLOUDFLARE-D1-DEPLOY.md SECURITY-HARDENING.md SECURITY-HARDENING-V2.md RELIABILITY-FAILURE-SAFETY.md failure-safety-matrix.json guiin-server-client.js guiin-server-data-client.js \
+            CLOUDFLARE-D1-DEPLOY.md SECURITY-HARDENING.md SECURITY-HARDENING-V2.md RELIABILITY-FAILURE-SAFETY.md failure-safety-matrix.json LAUNCH-GATE-E2E.md launch-gate-matrix.json guiin-server-client.js guiin-server-data-client.js \
             golden-chart.test.js compatibility-regression.test.js flow-regression.test.js foundation-contract.test.js \
             engine-v2-contract.test.js engine-v2-integration.test.js v2-browser-regression.test.js expert-v2-regression.test.js \
             compat-v2-regression.test.js interpretation-browser-regression.test.js ai-counsel-v2-regression.test.js \
@@ -47,9 +47,10 @@ jobs:
             payment-entitlement-schema-regression.test.js worker-v4.4-payment-foundation-regression.test.js payment-entitlement-smoke.py \
             payment-recovery-regression.test.js payment-recovery-schema-regression.test.js worker-v4.5-payment-recovery-regression.test.js \
             payment-recovery-smoke.py security-hardening-regression.test.js security-hardening-schema-regression.test.js \
-            worker-v4.6-security-regression.test.js security-hardening-v2-regression.test.js security-hardening-v2-schema-regression.test.js worker-v4.7-security-recovery-regression.test.js audit-integrity-regression.test.js reliability-regression.test.js reliability-schema-regression.test.js worker-v4.8-reliability-regression.test.js failure-matrix-regression.test.js security-hardening-smoke.py \
-            security-hardening-v2-regression.test.js security-hardening-v2-schema-regression.test.js worker-v4.7-security-recovery-regression.test.js audit-integrity-regression.test.js reliability-regression.test.js reliability-schema-regression.test.js worker-v4.8-reliability-regression.test.js failure-matrix-regression.test.js security-hardening-v2-smoke.py \
-            reliability-regression.test.js reliability-schema-regression.test.js worker-v4.8-reliability-regression.test.js failure-matrix-regression.test.js reliability-smoke.py \
+            worker-v4.6-security-regression.test.js security-hardening-v2-regression.test.js security-hardening-v2-schema-regression.test.js worker-v4.7-security-recovery-regression.test.js audit-integrity-regression.test.js reliability-regression.test.js reliability-schema-regression.test.js worker-v4.8-reliability-regression.test.js failure-matrix-regression.test.js launch-gate-e2e.test.js launch-gate-schema-regression.test.js launch-gate-matrix-regression.test.js worker-v4.9-launch-gate-regression.test.js security-hardening-smoke.py \
+            security-hardening-v2-regression.test.js security-hardening-v2-schema-regression.test.js worker-v4.7-security-recovery-regression.test.js audit-integrity-regression.test.js reliability-regression.test.js reliability-schema-regression.test.js worker-v4.8-reliability-regression.test.js failure-matrix-regression.test.js launch-gate-e2e.test.js launch-gate-schema-regression.test.js launch-gate-matrix-regression.test.js worker-v4.9-launch-gate-regression.test.js security-hardening-v2-smoke.py \
+            reliability-regression.test.js reliability-schema-regression.test.js worker-v4.8-reliability-regression.test.js failure-matrix-regression.test.js launch-gate-e2e.test.js launch-gate-schema-regression.test.js launch-gate-matrix-regression.test.js worker-v4.9-launch-gate-regression.test.js reliability-smoke.py \
+            launch-gate-e2e.test.js launch-gate-schema-regression.test.js launch-gate-matrix-regression.test.js worker-v4.9-launch-gate-regression.test.js launch-gate-smoke.py \
             today.html manse.html compatibility.html 2026-fortune.html 2027-fortune.html cheon-eul-gwiin.html \
             saju-compatibility-guide.html sitemap.xml robots.txt CNAME brand-home.jpg
           do
@@ -65,9 +66,9 @@ jobs:
             worker.js worker-v3-foundation.js worker-v3-data-foundation.js worker-v3-unified-foundation.js \
             worker-v4-integrated-preview.js worker-v4.1-persistence-preview.js worker-v4.2-ai-transaction-preview.js \
             worker-v4.3-accounting-preview.js worker-v4.4-payment-foundation-preview.js worker-v4.5-payment-recovery-preview.js \
-            worker-v4.6-security-hardening-preview.js worker-v4.7-security-recovery-preview.js worker-v4.8-reliability-preview.js server-contracts.js server-money.js server-accounting.js server-payment.js \
+            worker-v4.6-security-hardening-preview.js worker-v4.7-security-recovery-preview.js worker-v4.8-reliability-preview.js worker-v4.9-launch-gate-preview.js server-contracts.js server-money.js server-accounting.js server-payment.js \
             server-entitlement.js server-refund.js server-reconciliation.js server-purchase-restore.js server-security.js \
-            server-safe-logging.js server-session-security.js server-authz-security.js server-audit-integrity.js server-ops-safety.js server-runtime-guard.js server-recovery-policy.js server-auth.js server-api-contracts.js server-chart-authority.js server-ai-persistence.js \
+            server-safe-logging.js server-session-security.js server-authz-security.js server-audit-integrity.js server-ops-safety.js server-runtime-guard.js server-recovery-policy.js server-launch-gate.js server-auth.js server-api-contracts.js server-chart-authority.js server-ai-persistence.js \
             server-ai-transaction.js server-profile.js server-conversation.js server-guest-conversion.js server-session.js \
             server-ownership.js guiin-server-client.js guiin-server-data-client.js golden-chart.test.js compatibility-regression.test.js \
             flow-regression.test.js foundation-contract.test.js engine-v2-contract.test.js engine-v2-integration.test.js \
@@ -84,7 +85,7 @@ jobs:
             payment-entitlement-regression.test.js payment-entitlement-schema-regression.test.js \
             worker-v4.4-payment-foundation-regression.test.js payment-recovery-regression.test.js \
             payment-recovery-schema-regression.test.js worker-v4.5-payment-recovery-regression.test.js \
-            security-hardening-regression.test.js security-hardening-schema-regression.test.js worker-v4.6-security-regression.test.js security-hardening-v2-regression.test.js security-hardening-v2-schema-regression.test.js worker-v4.7-security-recovery-regression.test.js audit-integrity-regression.test.js reliability-regression.test.js reliability-schema-regression.test.js worker-v4.8-reliability-regression.test.js failure-matrix-regression.test.js
+            security-hardening-regression.test.js security-hardening-schema-regression.test.js worker-v4.6-security-regression.test.js security-hardening-v2-regression.test.js security-hardening-v2-schema-regression.test.js worker-v4.7-security-recovery-regression.test.js audit-integrity-regression.test.js reliability-regression.test.js reliability-schema-regression.test.js worker-v4.8-reliability-regression.test.js failure-matrix-regression.test.js launch-gate-e2e.test.js launch-gate-schema-regression.test.js launch-gate-matrix-regression.test.js worker-v4.9-launch-gate-regression.test.js
           do
             node --check "$f"
           done
@@ -139,18 +140,23 @@ jobs:
           python payment-recovery-smoke.py
           node security-hardening-regression.test.js
           node security-hardening-schema-regression.test.js
-          node worker-v4.6-security-regression.test.js security-hardening-v2-regression.test.js security-hardening-v2-schema-regression.test.js worker-v4.7-security-recovery-regression.test.js audit-integrity-regression.test.js reliability-regression.test.js reliability-schema-regression.test.js worker-v4.8-reliability-regression.test.js failure-matrix-regression.test.js
+          node worker-v4.6-security-regression.test.js security-hardening-v2-regression.test.js security-hardening-v2-schema-regression.test.js worker-v4.7-security-recovery-regression.test.js audit-integrity-regression.test.js reliability-regression.test.js reliability-schema-regression.test.js worker-v4.8-reliability-regression.test.js failure-matrix-regression.test.js launch-gate-e2e.test.js launch-gate-schema-regression.test.js launch-gate-matrix-regression.test.js worker-v4.9-launch-gate-regression.test.js
           python security-hardening-smoke.py
           node security-hardening-v2-regression.test.js
           node security-hardening-v2-schema-regression.test.js
           node worker-v4.7-security-recovery-regression.test.js
-          node audit-integrity-regression.test.js reliability-regression.test.js reliability-schema-regression.test.js worker-v4.8-reliability-regression.test.js failure-matrix-regression.test.js
+          node audit-integrity-regression.test.js reliability-regression.test.js reliability-schema-regression.test.js worker-v4.8-reliability-regression.test.js failure-matrix-regression.test.js launch-gate-e2e.test.js launch-gate-schema-regression.test.js launch-gate-matrix-regression.test.js worker-v4.9-launch-gate-regression.test.js
           python security-hardening-v2-smoke.py
           node reliability-regression.test.js
           node reliability-schema-regression.test.js
           node worker-v4.8-reliability-regression.test.js
-          node failure-matrix-regression.test.js
+          node failure-matrix-regression.test.js launch-gate-e2e.test.js launch-gate-schema-regression.test.js launch-gate-matrix-regression.test.js worker-v4.9-launch-gate-regression.test.js
           python reliability-smoke.py
+          node launch-gate-e2e.test.js
+          node launch-gate-schema-regression.test.js
+          node launch-gate-matrix-regression.test.js
+          node worker-v4.9-launch-gate-regression.test.js
+          python launch-gate-smoke.py
 
       - name: No obvious committed API secrets
         shell: python
