@@ -7,6 +7,9 @@ on:
     branches: [main]
   workflow_dispatch:
 
+permissions:
+  contents: read
+
 jobs:
   check:
     runs-on: ubuntu-latest
@@ -20,6 +23,13 @@ jobs:
             index.html \
             saju-engine.js \
             expert-interpreter.js \
+            compatibility-interpreter.js \
+            manse-view.js \
+            flow-timeline.js \
+            worker.js \
+            golden-chart.test.js \
+            compatibility-regression.test.js \
+            flow-regression.test.js \
             today.html \
             manse.html \
             compatibility.html \
@@ -35,6 +45,36 @@ jobs:
             test -f "$f" || { echo "MISSING: $f"; exit 1; }
           done
           echo "required files ok"
+
+      - name: JavaScript syntax check
+        run: |
+          set -e
+          node --check saju-engine.js
+          node --check expert-interpreter.js
+          node --check compatibility-interpreter.js
+          node --check manse-view.js
+          node --check flow-timeline.js
+          node --check golden-chart.test.js
+          node --check compatibility-regression.test.js
+          node --check flow-regression.test.js
+          echo "javascript syntax ok"
+
+      - name: Golden Chart regression
+        run: |
+          set -e
+          node golden-chart.test.js
+          node compatibility-regression.test.js
+          node flow-regression.test.js
+
+      - name: No obvious committed API secrets
+        run: |
+          set -e
+          if grep -RInE --exclude-dir=.git --exclude='*.jpg' --exclude='*.jpeg' --exclude='*.png' --exclude='*.webp' \
+            '(sk-proj-[A-Za-z0-9_-]{12,}|sk-[A-Za-z0-9]{20,}|OPENAI_API_KEY[[:space:]]*=[[:space:]]*["'\''][^"'\'']+)' .; then
+            echo "possible secret found"
+            exit 1
+          fi
+          echo "no obvious committed API secrets"
 
       - name: No leftover SVG mascots or QA notes
         run: |
