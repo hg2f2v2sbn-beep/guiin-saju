@@ -1,0 +1,23 @@
+{
+  "version": "1.0",
+  "environment": "staging",
+  "worker": "worker-v5.3-staging-preview.js",
+  "required_safe_flags": {
+    "AI_CHAT_ENABLED": "true",
+    "NEW_PAYMENTS_ENABLED": "false",
+    "SERVER_WALLET_ENABLED": "false",
+    "SERVER_FREE_QUOTA_ENABLED": "false"
+  },
+  "checks": [
+    "health_200",
+    "staging_readiness_ready",
+    "database_ready",
+    "guest_session_create",
+    "usage_read",
+    "profile_crud",
+    "conversation_crud",
+    "chart_snapshot",
+    "ai_chat_no_charge",
+    "payments_disabled"
+  ]
+}

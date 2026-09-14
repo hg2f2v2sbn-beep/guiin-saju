@@ -1,0 +1,10 @@
+"use strict";
+const assert=require("assert"),S=require("./cloudflare-staging-config.js");
+const good={ENVIRONMENT:"staging",DB:{prepare(){}},OPENAI_API_KEY:"secret",AI_CHAT_ENABLED:"true",NEW_PAYMENTS_ENABLED:"false",SERVER_WALLET_ENABLED:"false",SERVER_FREE_QUOTA_ENABLED:"false"};
+assert.strictEqual(S.validateStagingConfig(good).ready,true);
+const bad={...good,NEW_PAYMENTS_ENABLED:"true"};
+assert.strictEqual(S.validateStagingConfig(bad).ready,false);
+assert(S.validateStagingConfig(bad).unsafe.includes("NEW_PAYMENTS_ENABLED"));
+const pub=S.publicReadiness(good);
+assert(pub.aiKeyPresent===true&&!JSON.stringify(pub).includes("secret"));
+console.log("Staging config v1: ALL PASS");

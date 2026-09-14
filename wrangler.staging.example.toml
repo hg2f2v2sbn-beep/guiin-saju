@@ -1,0 +1,19 @@
+name = "guiin-saju-api-staging"
+main = "worker-v5.3-staging-preview.js"
+compatibility_date = "2026-09-14"
+
+[vars]
+ENVIRONMENT = "staging"
+AI_CHAT_ENABLED = "true"
+CHAT_MODEL = "gpt-4o-mini"
+NEW_PAYMENTS_ENABLED = "false"
+SERVER_WALLET_ENABLED = "false"
+SERVER_FREE_QUOTA_ENABLED = "false"
+SECURITY_ENFORCEMENT_ENABLED = "false"
+
+[[d1_databases]]
+binding = "DB"
+database_name = "guiin-saju-staging-db"
+database_id = "PUT_STAGING_D1_DATABASE_ID_HERE"
+
+# OPENAI_API_KEY / SECURITY_HASH_SECRET는 Cloudflare Secret으로만 등록
