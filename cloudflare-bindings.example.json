@@ -1,0 +1,23 @@
+{
+  "required_for_ai_now": [
+    "OPENAI_API_KEY"
+  ],
+  "required_for_server_data_later": [
+    "DB"
+  ],
+  "optional": [
+    "AI_IDEMPOTENCY",
+    "CHAT_MODEL"
+  ],
+  "safe_defaults": {
+    "AI_CHAT_ENABLED": "true",
+    "NEW_PAYMENTS_ENABLED": "false",
+    "SERVER_WALLET_ENABLED": "false",
+    "SERVER_FREE_QUOTA_ENABLED": "false"
+  },
+  "notes": [
+    "OPENAI_API_KEY는 Cloudflare Secret로만 저장",
+    "DB는 D1 binding 이름을 정확히 DB로 사용",
+    "실결제/서버차감은 별도 Launch Gate 통과 전 활성화 금지"
+  ]
+}
