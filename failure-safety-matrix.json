@@ -1,0 +1,145 @@
+{
+  "version": "1.0",
+  "scenarios": [
+    {
+      "id": "AI-01",
+      "scenario": "OpenAI timeout before answer",
+      "expected": "reservation release; no charge"
+    },
+    {
+      "id": "AI-02",
+      "scenario": "AI answer created but durable store fails",
+      "expected": "no charge; retry/recovery"
+    },
+    {
+      "id": "AI-03",
+      "scenario": "duplicate AI request",
+      "expected": "idempotent replay; no duplicate charge"
+    },
+    {
+      "id": "AI-04",
+      "scenario": "quality repair fails",
+      "expected": "no charge"
+    },
+    {
+      "id": "WALLET-01",
+      "scenario": "two concurrent clover reservations",
+      "expected": "available balance prevents overspend"
+    },
+    {
+      "id": "WALLET-02",
+      "scenario": "finalize spend fails after STORED",
+      "expected": "recoveryRequired; not reported charged"
+    },
+    {
+      "id": "QUOTA-01",
+      "scenario": "two concurrent final free uses",
+      "expected": "only permitted reservations succeed"
+    },
+    {
+      "id": "PAY-01",
+      "scenario": "browser price tampering",
+      "expected": "server product price wins"
+    },
+    {
+      "id": "PAY-02",
+      "scenario": "provider amount mismatch",
+      "expected": "fulfillment blocked"
+    },
+    {
+      "id": "PAY-03",
+      "scenario": "duplicate provider payment id",
+      "expected": "blocked/idempotent"
+    },
+    {
+      "id": "PAY-04",
+      "scenario": "payment verified, fulfillment fails",
+      "expected": "reconciliation detects and repairs"
+    },
+    {
+      "id": "WEBHOOK-01",
+      "scenario": "same webhook delivered repeatedly",
+      "expected": "one fulfillment"
+    },
+    {
+      "id": "WEBHOOK-02",
+      "scenario": "webhook temporarily lost",
+      "expected": "reconciliation finds mismatch"
+    },
+    {
+      "id": "REFUND-01",
+      "scenario": "refund succeeds but entitlement remains",
+      "expected": "critical reconciliation issue"
+    },
+    {
+      "id": "REFUND-02",
+      "scenario": "clover already used then refund requested",
+      "expected": "automatic refund blocked"
+    },
+    {
+      "id": "AUTH-01",
+      "scenario": "expired session",
+      "expected": "401"
+    },
+    {
+      "id": "AUTH-02",
+      "scenario": "revoked session token replay",
+      "expected": "401"
+    },
+    {
+      "id": "AUTH-03",
+      "scenario": "admin without fresh MFA",
+      "expected": "403"
+    },
+    {
+      "id": "SEC-01",
+      "scenario": "foreign Origin",
+      "expected": "403"
+    },
+    {
+      "id": "SEC-02",
+      "scenario": "oversized body",
+      "expected": "413"
+    },
+    {
+      "id": "SEC-03",
+      "scenario": "rate limit exceeded",
+      "expected": "429"
+    },
+    {
+      "id": "SEC-04",
+      "scenario": "secret accidentally committed",
+      "expected": "CI fails"
+    },
+    {
+      "id": "DB-01",
+      "scenario": "D1 unavailable",
+      "expected": "private writes fail closed; legacy AI only if security enforcement off"
+    },
+    {
+      "id": "DB-02",
+      "scenario": "wallet invariant broken",
+      "expected": "integrity check critical"
+    },
+    {
+      "id": "OPS-01",
+      "scenario": "new deploy unhealthy",
+      "expected": "payments remain off; rollback candidate"
+    },
+    {
+      "id": "OPS-02",
+      "scenario": "backup older than allowed",
+      "expected": "launch gate fails"
+    },
+    {
+      "id": "OPS-03",
+      "scenario": "restore drill missing",
+      "expected": "launch gate fails"
+    },
+    {
+      "id": "LEGAL-01",
+      "scenario": "legal docs not approved",
+      "expected": "payments cannot launch"
+    }
+  ]
+}
