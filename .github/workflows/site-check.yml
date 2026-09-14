@@ -19,40 +19,67 @@ jobs:
           set -e
           for f in \
             index.html saju-engine.js saju-engine-v2-patch.js guiin-engine-contract.js guiin-quality-gate.js \
-            guiin-runtime-v2.css flow-v2.js expert-interpreter.js expert-v2.js compatibility-interpreter.js compatibility-v2.js \
-            manse-view.js flow-timeline.js worker.js worker-v3-foundation.js worker-v3-data-foundation.js worker-v3-unified-foundation.js \
-            worker-v4-integrated-preview.js worker-v4.1-persistence-preview.js worker-v4.2-ai-transaction-preview.js \
-            worker-v4.3-accounting-preview.js worker-v4.4-payment-foundation-preview.js worker-v4.5-payment-recovery-preview.js \
-            worker-v4.6-security-hardening-preview.js worker-v4.7-security-recovery-preview.js worker-v4.8-reliability-preview.js worker-v4.9-launch-gate-preview.js server-contracts.js server-money.js server-accounting.js server-payment.js \
-            server-entitlement.js server-refund.js server-reconciliation.js server-purchase-restore.js server-security.js \
-            server-safe-logging.js server-session-security.js server-authz-security.js server-audit-integrity.js server-ops-safety.js server-runtime-guard.js server-recovery-policy.js server-launch-gate.js server-schema.sql server-auth.js server-api-contracts.js server-chart-authority.js \
-            server-ai-persistence.js server-ai-transaction.js server-profile.js server-conversation.js server-guest-conversion.js \
-            server-session.js server-ownership.js server-d1-bootstrap.sql server-data-migration.sql server-unified-migration-v2.sql \
-            server-chart-ai-migration-v1.sql server-ai-transaction-migration-v1.sql server-accounting-v2-migration.sql \
-            server-payment-entitlement-migration-v1.sql server-payment-recovery-migration-v1.sql server-security-migration-v1.sql server-security-v2-migration.sql server-reliability-migration-v1.sql server-launch-gate-migration-v1.sql \
-            server-d1-safe-bootstrap.sql server-d1-init.sql wrangler.example.toml cloudflare-bindings.example.json \
-            CLOUDFLARE-D1-DEPLOY.md SECURITY-HARDENING.md SECURITY-HARDENING-V2.md RELIABILITY-FAILURE-SAFETY.md failure-safety-matrix.json LAUNCH-GATE-E2E.md launch-gate-matrix.json guiin-server-client.js guiin-server-data-client.js guiin-frontend-bridge.js FRONTEND-SERVER-BRIDGE.md \
-            golden-chart.test.js compatibility-regression.test.js flow-regression.test.js foundation-contract.test.js \
-            engine-v2-contract.test.js engine-v2-integration.test.js v2-browser-regression.test.js expert-v2-regression.test.js \
-            compat-v2-regression.test.js interpretation-browser-regression.test.js ai-counsel-v2-regression.test.js \
-            server-money-regression.test.js server-schema-v2-regression.test.js server-runtime-regression.test.js \
-            worker-v3-foundation-regression.test.js server-profile-conversation-regression.test.js server-data-schema-regression.test.js \
-            worker-v3-data-foundation-regression.test.js server-unified-regression.test.js server-unified-schema-regression.test.js \
-            worker-v3-unified-regression.test.js integrated-schema-regression.test.js worker-v4-integrated-preview-regression.test.js \
-            cloudflare-d1-readiness-regression.test.js d1-schema-smoke.py chart-ai-persistence-regression.test.js \
-            chart-ai-persistence-schema-regression.test.js worker-v4.1-persistence-regression.test.js chart-ai-persistence-smoke.py \
-            ai-transaction-regression.test.js ai-transaction-schema-regression.test.js worker-v4.2-ai-transaction-regression.test.js \
-            ai-transaction-smoke.py server-accounting-regression.test.js server-accounting-schema-regression.test.js \
-            worker-v4.3-accounting-regression.test.js server-accounting-smoke.py payment-entitlement-regression.test.js \
-            payment-entitlement-schema-regression.test.js worker-v4.4-payment-foundation-regression.test.js payment-entitlement-smoke.py \
-            payment-recovery-regression.test.js payment-recovery-schema-regression.test.js worker-v4.5-payment-recovery-regression.test.js \
-            payment-recovery-smoke.py security-hardening-regression.test.js security-hardening-schema-regression.test.js \
-            worker-v4.6-security-regression.test.js security-hardening-v2-regression.test.js security-hardening-v2-schema-regression.test.js worker-v4.7-security-recovery-regression.test.js audit-integrity-regression.test.js reliability-regression.test.js reliability-schema-regression.test.js worker-v4.8-reliability-regression.test.js failure-matrix-regression.test.js launch-gate-e2e.test.js launch-gate-schema-regression.test.js launch-gate-matrix-regression.test.js worker-v4.9-launch-gate-regression.test.js frontend-server-bridge-regression.test.js security-hardening-smoke.py \
-            security-hardening-v2-regression.test.js security-hardening-v2-schema-regression.test.js worker-v4.7-security-recovery-regression.test.js audit-integrity-regression.test.js reliability-regression.test.js reliability-schema-regression.test.js worker-v4.8-reliability-regression.test.js failure-matrix-regression.test.js launch-gate-e2e.test.js launch-gate-schema-regression.test.js launch-gate-matrix-regression.test.js worker-v4.9-launch-gate-regression.test.js frontend-server-bridge-regression.test.js security-hardening-v2-smoke.py \
-            reliability-regression.test.js reliability-schema-regression.test.js worker-v4.8-reliability-regression.test.js failure-matrix-regression.test.js launch-gate-e2e.test.js launch-gate-schema-regression.test.js launch-gate-matrix-regression.test.js worker-v4.9-launch-gate-regression.test.js frontend-server-bridge-regression.test.js reliability-smoke.py \
-            launch-gate-e2e.test.js launch-gate-schema-regression.test.js launch-gate-matrix-regression.test.js worker-v4.9-launch-gate-regression.test.js frontend-server-bridge-regression.test.js launch-gate-smoke.py frontend-server-bridge-regression.test.js \
-            today.html manse.html compatibility.html 2026-fortune.html 2027-fortune.html cheon-eul-gwiin.html \
-            saju-compatibility-guide.html sitemap.xml robots.txt CNAME brand-home.jpg
+            guiin-runtime-v2.css flow-v2.js expert-interpreter.js expert-v2.js compatibility-interpreter.js \
+            compatibility-v2.js manse-view.js flow-timeline.js worker.js worker-v3-foundation.js \
+            worker-v3-data-foundation.js worker-v3-unified-foundation.js worker-v4-integrated-preview.js \
+            worker-v4.1-persistence-preview.js worker-v4.2-ai-transaction-preview.js \
+            worker-v4.3-accounting-preview.js worker-v4.4-payment-foundation-preview.js \
+            worker-v4.5-payment-recovery-preview.js worker-v4.6-security-hardening-preview.js \
+            worker-v4.7-security-recovery-preview.js worker-v4.8-reliability-preview.js \
+            worker-v4.9-launch-gate-preview.js server-contracts.js server-money.js server-accounting.js \
+            server-payment.js server-entitlement.js server-refund.js server-reconciliation.js \
+            server-purchase-restore.js server-security.js server-safe-logging.js server-session-security.js \
+            server-authz-security.js server-audit-integrity.js server-ops-safety.js server-runtime-guard.js \
+            server-recovery-policy.js server-launch-gate.js server-schema.sql server-auth.js \
+            server-api-contracts.js server-chart-authority.js server-ai-persistence.js \
+            server-ai-transaction.js server-profile.js server-conversation.js server-guest-conversion.js \
+            server-session.js server-ownership.js server-d1-bootstrap.sql server-data-migration.sql \
+            server-unified-migration-v2.sql server-chart-ai-migration-v1.sql \
+            server-ai-transaction-migration-v1.sql server-accounting-v2-migration.sql \
+            server-payment-entitlement-migration-v1.sql server-payment-recovery-migration-v1.sql \
+            server-security-migration-v1.sql server-security-v2-migration.sql \
+            server-reliability-migration-v1.sql server-launch-gate-migration-v1.sql \
+            server-d1-safe-bootstrap.sql server-d1-init.sql wrangler.example.toml \
+            cloudflare-bindings.example.json CLOUDFLARE-D1-DEPLOY.md SECURITY-HARDENING.md \
+            SECURITY-HARDENING-V2.md RELIABILITY-FAILURE-SAFETY.md failure-safety-matrix.json \
+            LAUNCH-GATE-E2E.md launch-gate-matrix.json guiin-server-client.js guiin-server-data-client.js \
+            guiin-frontend-bridge.js FRONTEND-SERVER-BRIDGE.md golden-chart.test.js \
+            compatibility-regression.test.js flow-regression.test.js foundation-contract.test.js \
+            engine-v2-contract.test.js engine-v2-integration.test.js v2-browser-regression.test.js \
+            expert-v2-regression.test.js compat-v2-regression.test.js \
+            interpretation-browser-regression.test.js ai-counsel-v2-regression.test.js \
+            server-money-regression.test.js server-schema-v2-regression.test.js \
+            server-runtime-regression.test.js worker-v3-foundation-regression.test.js \
+            server-profile-conversation-regression.test.js server-data-schema-regression.test.js \
+            worker-v3-data-foundation-regression.test.js server-unified-regression.test.js \
+            server-unified-schema-regression.test.js worker-v3-unified-regression.test.js \
+            integrated-schema-regression.test.js worker-v4-integrated-preview-regression.test.js \
+            cloudflare-d1-readiness-regression.test.js d1-schema-smoke.py \
+            chart-ai-persistence-regression.test.js chart-ai-persistence-schema-regression.test.js \
+            worker-v4.1-persistence-regression.test.js chart-ai-persistence-smoke.py \
+            ai-transaction-regression.test.js ai-transaction-schema-regression.test.js \
+            worker-v4.2-ai-transaction-regression.test.js ai-transaction-smoke.py \
+            server-accounting-regression.test.js server-accounting-schema-regression.test.js \
+            worker-v4.3-accounting-regression.test.js server-accounting-smoke.py \
+            payment-entitlement-regression.test.js payment-entitlement-schema-regression.test.js \
+            worker-v4.4-payment-foundation-regression.test.js payment-entitlement-smoke.py \
+            payment-recovery-regression.test.js payment-recovery-schema-regression.test.js \
+            worker-v4.5-payment-recovery-regression.test.js payment-recovery-smoke.py \
+            security-hardening-regression.test.js security-hardening-schema-regression.test.js \
+            worker-v4.6-security-regression.test.js security-hardening-v2-regression.test.js \
+            security-hardening-v2-schema-regression.test.js worker-v4.7-security-recovery-regression.test.js \
+            audit-integrity-regression.test.js reliability-regression.test.js \
+            reliability-schema-regression.test.js worker-v4.8-reliability-regression.test.js \
+            failure-matrix-regression.test.js launch-gate-e2e.test.js launch-gate-schema-regression.test.js \
+            launch-gate-matrix-regression.test.js worker-v4.9-launch-gate-regression.test.js \
+            frontend-server-bridge-regression.test.js security-hardening-smoke.py \
+            security-hardening-v2-smoke.py reliability-smoke.py launch-gate-smoke.py today.html manse.html \
+            compatibility.html 2026-fortune.html 2027-fortune.html cheon-eul-gwiin.html \
+            saju-compatibility-guide.html sitemap.xml robots.txt CNAME brand-home.jpg \
+            server-account-link-migration-v1.sql server-account-link.js guiin-account-restore.js \
+            worker-v5.0-account-link-preview.js ACCOUNT-LINK-RESTORE.md account-link-regression.test.js \
+            account-link-schema-regression.test.js worker-v5.0-account-link-regression.test.js \
+            frontend-account-restore-regression.test.js account-link-smoke.py
           do
             test -f "$f" || { echo "MISSING: $f"; exit 1; }
           done
@@ -62,30 +89,50 @@ jobs:
           set -e
           for f in \
             saju-engine.js saju-engine-v2-patch.js guiin-engine-contract.js guiin-quality-gate.js flow-v2.js \
-            expert-interpreter.js expert-v2.js compatibility-interpreter.js compatibility-v2.js manse-view.js flow-timeline.js \
-            worker.js worker-v3-foundation.js worker-v3-data-foundation.js worker-v3-unified-foundation.js \
-            worker-v4-integrated-preview.js worker-v4.1-persistence-preview.js worker-v4.2-ai-transaction-preview.js \
-            worker-v4.3-accounting-preview.js worker-v4.4-payment-foundation-preview.js worker-v4.5-payment-recovery-preview.js \
-            worker-v4.6-security-hardening-preview.js worker-v4.7-security-recovery-preview.js worker-v4.8-reliability-preview.js worker-v4.9-launch-gate-preview.js server-contracts.js server-money.js server-accounting.js server-payment.js \
-            server-entitlement.js server-refund.js server-reconciliation.js server-purchase-restore.js server-security.js \
-            server-safe-logging.js server-session-security.js server-authz-security.js server-audit-integrity.js server-ops-safety.js server-runtime-guard.js server-recovery-policy.js server-launch-gate.js server-auth.js server-api-contracts.js server-chart-authority.js server-ai-persistence.js \
-            server-ai-transaction.js server-profile.js server-conversation.js server-guest-conversion.js server-session.js \
-            server-ownership.js guiin-server-client.js guiin-server-data-client.js guiin-frontend-bridge.js guiin-frontend-bridge.js FRONTEND-SERVER-BRIDGE.md golden-chart.test.js compatibility-regression.test.js \
-            flow-regression.test.js foundation-contract.test.js engine-v2-contract.test.js engine-v2-integration.test.js \
-            v2-browser-regression.test.js expert-v2-regression.test.js compat-v2-regression.test.js \
-            interpretation-browser-regression.test.js ai-counsel-v2-regression.test.js server-money-regression.test.js \
-            server-schema-v2-regression.test.js server-runtime-regression.test.js worker-v3-foundation-regression.test.js \
-            server-profile-conversation-regression.test.js server-data-schema-regression.test.js worker-v3-data-foundation-regression.test.js \
-            server-unified-regression.test.js server-unified-schema-regression.test.js worker-v3-unified-regression.test.js \
-            integrated-schema-regression.test.js worker-v4-integrated-preview-regression.test.js \
-            cloudflare-d1-readiness-regression.test.js chart-ai-persistence-regression.test.js \
-            chart-ai-persistence-schema-regression.test.js worker-v4.1-persistence-regression.test.js \
-            ai-transaction-regression.test.js ai-transaction-schema-regression.test.js worker-v4.2-ai-transaction-regression.test.js \
-            server-accounting-regression.test.js server-accounting-schema-regression.test.js worker-v4.3-accounting-regression.test.js \
-            payment-entitlement-regression.test.js payment-entitlement-schema-regression.test.js \
-            worker-v4.4-payment-foundation-regression.test.js payment-recovery-regression.test.js \
-            payment-recovery-schema-regression.test.js worker-v4.5-payment-recovery-regression.test.js \
-            security-hardening-regression.test.js security-hardening-schema-regression.test.js worker-v4.6-security-regression.test.js security-hardening-v2-regression.test.js security-hardening-v2-schema-regression.test.js worker-v4.7-security-recovery-regression.test.js audit-integrity-regression.test.js reliability-regression.test.js reliability-schema-regression.test.js worker-v4.8-reliability-regression.test.js failure-matrix-regression.test.js launch-gate-e2e.test.js launch-gate-schema-regression.test.js launch-gate-matrix-regression.test.js worker-v4.9-launch-gate-regression.test.js frontend-server-bridge-regression.test.js
+            expert-interpreter.js expert-v2.js compatibility-interpreter.js compatibility-v2.js manse-view.js \
+            flow-timeline.js worker.js worker-v3-foundation.js worker-v3-data-foundation.js \
+            worker-v3-unified-foundation.js worker-v4-integrated-preview.js worker-v4.1-persistence-preview.js \
+            worker-v4.2-ai-transaction-preview.js worker-v4.3-accounting-preview.js \
+            worker-v4.4-payment-foundation-preview.js worker-v4.5-payment-recovery-preview.js \
+            worker-v4.6-security-hardening-preview.js worker-v4.7-security-recovery-preview.js \
+            worker-v4.8-reliability-preview.js worker-v4.9-launch-gate-preview.js server-contracts.js \
+            server-money.js server-accounting.js server-payment.js server-entitlement.js server-refund.js \
+            server-reconciliation.js server-purchase-restore.js server-security.js server-safe-logging.js \
+            server-session-security.js server-authz-security.js server-audit-integrity.js server-ops-safety.js \
+            server-runtime-guard.js server-recovery-policy.js server-launch-gate.js server-auth.js \
+            server-api-contracts.js server-chart-authority.js server-ai-persistence.js \
+            server-ai-transaction.js server-profile.js server-conversation.js server-guest-conversion.js \
+            server-session.js server-ownership.js guiin-server-client.js guiin-server-data-client.js \
+            guiin-frontend-bridge.js golden-chart.test.js compatibility-regression.test.js \
+            flow-regression.test.js foundation-contract.test.js engine-v2-contract.test.js \
+            engine-v2-integration.test.js v2-browser-regression.test.js expert-v2-regression.test.js \
+            compat-v2-regression.test.js interpretation-browser-regression.test.js \
+            ai-counsel-v2-regression.test.js server-money-regression.test.js \
+            server-schema-v2-regression.test.js server-runtime-regression.test.js \
+            worker-v3-foundation-regression.test.js server-profile-conversation-regression.test.js \
+            server-data-schema-regression.test.js worker-v3-data-foundation-regression.test.js \
+            server-unified-regression.test.js server-unified-schema-regression.test.js \
+            worker-v3-unified-regression.test.js integrated-schema-regression.test.js \
+            worker-v4-integrated-preview-regression.test.js cloudflare-d1-readiness-regression.test.js \
+            chart-ai-persistence-regression.test.js chart-ai-persistence-schema-regression.test.js \
+            worker-v4.1-persistence-regression.test.js ai-transaction-regression.test.js \
+            ai-transaction-schema-regression.test.js worker-v4.2-ai-transaction-regression.test.js \
+            server-accounting-regression.test.js server-accounting-schema-regression.test.js \
+            worker-v4.3-accounting-regression.test.js payment-entitlement-regression.test.js \
+            payment-entitlement-schema-regression.test.js worker-v4.4-payment-foundation-regression.test.js \
+            payment-recovery-regression.test.js payment-recovery-schema-regression.test.js \
+            worker-v4.5-payment-recovery-regression.test.js security-hardening-regression.test.js \
+            security-hardening-schema-regression.test.js worker-v4.6-security-regression.test.js \
+            security-hardening-v2-regression.test.js security-hardening-v2-schema-regression.test.js \
+            worker-v4.7-security-recovery-regression.test.js audit-integrity-regression.test.js \
+            reliability-regression.test.js reliability-schema-regression.test.js \
+            worker-v4.8-reliability-regression.test.js failure-matrix-regression.test.js \
+            launch-gate-e2e.test.js launch-gate-schema-regression.test.js \
+            launch-gate-matrix-regression.test.js worker-v4.9-launch-gate-regression.test.js \
+            frontend-server-bridge-regression.test.js server-account-link.js guiin-account-restore.js \
+            worker-v5.0-account-link-preview.js account-link-regression.test.js \
+            account-link-schema-regression.test.js worker-v5.0-account-link-regression.test.js \
+            frontend-account-restore-regression.test.js
           do
             node --check "$f"
           done
@@ -117,47 +164,52 @@ jobs:
           node integrated-schema-regression.test.js
           node worker-v4-integrated-preview-regression.test.js
           node cloudflare-d1-readiness-regression.test.js
-          python d1-schema-smoke.py
           node chart-ai-persistence-regression.test.js
           node chart-ai-persistence-schema-regression.test.js
           node worker-v4.1-persistence-regression.test.js
-          python chart-ai-persistence-smoke.py
           node ai-transaction-regression.test.js
           node ai-transaction-schema-regression.test.js
           node worker-v4.2-ai-transaction-regression.test.js
-          python ai-transaction-smoke.py
           node server-accounting-regression.test.js
           node server-accounting-schema-regression.test.js
           node worker-v4.3-accounting-regression.test.js
-          python server-accounting-smoke.py
           node payment-entitlement-regression.test.js
           node payment-entitlement-schema-regression.test.js
           node worker-v4.4-payment-foundation-regression.test.js
-          python payment-entitlement-smoke.py
           node payment-recovery-regression.test.js
           node payment-recovery-schema-regression.test.js
           node worker-v4.5-payment-recovery-regression.test.js
-          python payment-recovery-smoke.py
           node security-hardening-regression.test.js
           node security-hardening-schema-regression.test.js
-          node worker-v4.6-security-regression.test.js security-hardening-v2-regression.test.js security-hardening-v2-schema-regression.test.js worker-v4.7-security-recovery-regression.test.js audit-integrity-regression.test.js reliability-regression.test.js reliability-schema-regression.test.js worker-v4.8-reliability-regression.test.js failure-matrix-regression.test.js launch-gate-e2e.test.js launch-gate-schema-regression.test.js launch-gate-matrix-regression.test.js worker-v4.9-launch-gate-regression.test.js frontend-server-bridge-regression.test.js
-          python security-hardening-smoke.py
+          node worker-v4.6-security-regression.test.js
           node security-hardening-v2-regression.test.js
           node security-hardening-v2-schema-regression.test.js
           node worker-v4.7-security-recovery-regression.test.js
-          node audit-integrity-regression.test.js reliability-regression.test.js reliability-schema-regression.test.js worker-v4.8-reliability-regression.test.js failure-matrix-regression.test.js launch-gate-e2e.test.js launch-gate-schema-regression.test.js launch-gate-matrix-regression.test.js worker-v4.9-launch-gate-regression.test.js frontend-server-bridge-regression.test.js
-          python security-hardening-v2-smoke.py
+          node audit-integrity-regression.test.js
           node reliability-regression.test.js
           node reliability-schema-regression.test.js
           node worker-v4.8-reliability-regression.test.js
-          node failure-matrix-regression.test.js launch-gate-e2e.test.js launch-gate-schema-regression.test.js launch-gate-matrix-regression.test.js worker-v4.9-launch-gate-regression.test.js frontend-server-bridge-regression.test.js
-          python reliability-smoke.py
+          node failure-matrix-regression.test.js
           node launch-gate-e2e.test.js
           node launch-gate-schema-regression.test.js
           node launch-gate-matrix-regression.test.js
-          node worker-v4.9-launch-gate-regression.test.js frontend-server-bridge-regression.test.js
-          python launch-gate-smoke.py
+          node worker-v4.9-launch-gate-regression.test.js
           node frontend-server-bridge-regression.test.js
+          node account-link-regression.test.js
+          node account-link-schema-regression.test.js
+          node worker-v5.0-account-link-regression.test.js
+          node frontend-account-restore-regression.test.js
+          python d1-schema-smoke.py
+          python chart-ai-persistence-smoke.py
+          python ai-transaction-smoke.py
+          python server-accounting-smoke.py
+          python payment-entitlement-smoke.py
+          python payment-recovery-smoke.py
+          python security-hardening-smoke.py
+          python security-hardening-v2-smoke.py
+          python reliability-smoke.py
+          python launch-gate-smoke.py
+          python account-link-smoke.py
 
       - name: No obvious committed API secrets
         shell: python
