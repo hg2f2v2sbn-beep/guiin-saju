@@ -1,0 +1,14 @@
+"use strict";
+const assert=require("assert"),F=require("./server-final-launch-gate.js");
+const code=Object.fromEntries(F.CODE_GATES.map(k=>[k,"PASS"]));
+const ext=Object.fromEntries(F.EXTERNAL_GATES.map(k=>[k,"PASS"]));
+let r=F.evaluateFinalLaunch({codeChecks:code,externalChecks:ext,paymentsFlag:false});
+assert.strictEqual(r.codeReady,true);
+assert.strictEqual(r.externalReady,true);
+assert.strictEqual(r.launchReady,true);
+assert.strictEqual(r.paymentsAllowed,false);
+assert.strictEqual(F.productionDecision(r).reason,"payment_flag_off");
+r=F.evaluateFinalLaunch({codeChecks:code,externalChecks:{},paymentsFlag:true});
+assert.strictEqual(r.externalReady,false);
+assert.strictEqual(r.paymentsAllowed,false);
+console.log("Final launch gate v1: ALL PASS");

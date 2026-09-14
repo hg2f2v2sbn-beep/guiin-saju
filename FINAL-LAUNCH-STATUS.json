@@ -1,0 +1,25 @@
+{
+  "version": "1.0",
+  "as_of": "2026-09-14",
+  "code_ready": true,
+  "external_ready": false,
+  "launch_ready": false,
+  "payments_allowed": false,
+  "reason": "Code foundation is complete, but production-only external gates are not yet verified.",
+  "external_blockers": [
+    "D1_STAGING_DEPLOYED",
+    "STAGING_E2E_PASSED",
+    "REAL_LOGIN_PROVIDER_VERIFIED",
+    "SERVER_CHART_AUTHORITY_VERIFIED",
+    "PG_TEST_VERIFIED",
+    "INICIS_WEBHOOK_SIGNATURE_VERIFIED",
+    "MERCHANT_CONTACT_READY",
+    "ECOMMERCE_REPORTING_STATUS_CONFIRMED",
+    "PRIVACY_CONTACT_READY",
+    "PROCESSOR_LIST_CONFIRMED",
+    "OVERSEAS_TRANSFER_DISCLOSURE_CONFIRMED",
+    "UNDER14_POLICY_CONFIRMED",
+    "LEGAL_REVIEW_COMPLETED",
+    "BACKUP_RESTORE_DRILL_PASSED"
+  ]
+}
