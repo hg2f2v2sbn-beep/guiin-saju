@@ -46,7 +46,12 @@ jobs:
             authority-transition-smoke.py server-pg-test-migration-v1.sql server-pg-adapter.js \
             server-webhook-signature.js worker-v5.5-pg-test-preview.js PG-TEST-WEBHOOK-V1.md \
             pg-test-regression.test.js webhook-signature-regression.test.js worker-v5.5-pg-regression.test.js \
-            pg-schema-regression.test.js pg-test-smoke.py
+            pg-schema-regression.test.js pg-test-smoke.py server-legal-migration-v1.sql \
+            server-legal-readiness.js worker-v5.6-legal-failure-gate-preview.js TERMS-DRAFT-V1.md \
+            PRIVACY-DRAFT-V1.md REFUND-DRAFT-V1.md LEGAL-SOURCE-NOTES.md LEGAL-FAILURE-GATE-V1.md \
+            legal-readiness-status.json failure-safety-matrix-v2-100.json legal-readiness-regression.test.js \
+            legal-docs-regression.test.js failure-scenario-regression.test.js \
+            worker-v5.6-legal-regression.test.js legal-schema-regression.test.js legal-smoke.py
           do
             test -f "$f" || { echo "MISSING: $f"; exit 1; }
           done
@@ -76,7 +81,10 @@ jobs:
             frontend-authority-bridge-regression.test.js worker-v5.4-authority-regression.test.js \
             authority-schema-regression.test.js server-pg-adapter.js server-webhook-signature.js \
             worker-v5.5-pg-test-preview.js pg-test-regression.test.js webhook-signature-regression.test.js \
-            worker-v5.5-pg-regression.test.js pg-schema-regression.test.js
+            worker-v5.5-pg-regression.test.js pg-schema-regression.test.js server-legal-readiness.js \
+            worker-v5.6-legal-failure-gate-preview.js legal-readiness-regression.test.js \
+            legal-docs-regression.test.js failure-scenario-regression.test.js \
+            worker-v5.6-legal-regression.test.js legal-schema-regression.test.js
           do
             node --check "$f"
           done
@@ -116,13 +124,31 @@ jobs:
           node webhook-signature-regression.test.js
           node worker-v5.5-pg-regression.test.js
           node pg-schema-regression.test.js
+          node legal-readiness-regression.test.js
+          node legal-docs-regression.test.js
+          node failure-scenario-regression.test.js
+          node worker-v5.6-legal-regression.test.js
+          node legal-schema-regression.test.js
           python account-link-smoke.py
           python data-crud-smoke.py
           python login-foundation-smoke.py
           python staging-init-smoke.py
           python authority-transition-smoke.py
           python pg-test-smoke.py
+          python legal-smoke.py
 
+      - name: Legal drafts must remain fail-closed
+        shell: python
+        run: |
+          import json,sys
+          x=json.load(open("legal-readiness-status.json",encoding="utf-8"))
+          if x.get("status")!="NOT_READY":
+            print("legal readiness must remain NOT_READY until external launch checks are confirmed")
+            sys.exit(1)
+          if not any(v is False for v in x.get("blocked",{}).values()):
+            print("expected unresolved legal launch blockers")
+            sys.exit(1)
+          print("legal launch remains safely blocked")
       - name: Sitemap uses .html paths
         run: |
           set -e
