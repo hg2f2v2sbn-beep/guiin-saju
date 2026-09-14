@@ -216,6 +216,7 @@ CREATE TABLE IF NOT EXISTS wallet_accounts (
   subject_type TEXT NOT NULL,
   subject_id TEXT NOT NULL,
   balance INTEGER NOT NULL DEFAULT 0 CHECK (balance >= 0),
+  reserved_balance INTEGER NOT NULL DEFAULT 0 CHECK (reserved_balance >= 0 AND reserved_balance <= balance),
   version INTEGER NOT NULL DEFAULT 0,
   updated_at TEXT NOT NULL,
   PRIMARY KEY(subject_type, subject_id)
@@ -373,6 +374,9 @@ CREATE TABLE IF NOT EXISTS ai_requests (
   output_tokens INTEGER,
   estimated_cost REAL,
   error_code TEXT,
+  charge_source TEXT,
+  quota_reservation_id TEXT,
+  wallet_reservation_id TEXT,
   created_at TEXT NOT NULL,
   updated_at TEXT NOT NULL,
   completed_at TEXT,

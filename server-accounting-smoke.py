@@ -1,0 +1,12 @@
+import sqlite3,pathlib,datetime
+root=pathlib.Path(__file__).resolve().parent;db=sqlite3.connect(":memory:");db.executescript((root/"server-d1-init.sql").read_text(encoding="utf-8"))
+now=datetime.datetime.now(datetime.timezone.utc).isoformat();exp=(datetime.datetime.now(datetime.timezone.utc)+datetime.timedelta(days=180)).isoformat()
+db.execute("INSERT INTO guest_sessions(id,token_hash,created_at,last_seen_at,expires_at) VALUES(?,?,?,?,?)",("g","h",now,now,exp))
+db.execute("INSERT INTO usage_quotas(id,subject_type,subject_id,quota_key,period_key,used_count,reserved_count,limit_count,updated_at) VALUES(?,?,?,?,?,?,?,?,?)",("q","guest","g","ai_chat_free","lifetime",0,0,3,now))
+db.execute("INSERT INTO wallet_accounts(subject_type,subject_id,balance,reserved_balance,version,updated_at) VALUES(?,?,?,?,?,?)",("guest","g",3,0,0,now))
+db.execute("UPDATE usage_quotas SET reserved_count=reserved_count+1 WHERE id='q' AND used_count+reserved_count<limit_count");assert db.execute("SELECT used_count,reserved_count FROM usage_quotas WHERE id='q'").fetchone()==(0,1)
+db.execute("UPDATE usage_quotas SET used_count=used_count+1,reserved_count=reserved_count-1 WHERE id='q'");assert db.execute("SELECT used_count,reserved_count FROM usage_quotas WHERE id='q'").fetchone()==(1,0)
+db.execute("UPDATE wallet_accounts SET reserved_balance=reserved_balance+1 WHERE subject_id='g' AND balance-reserved_balance>=1");assert db.execute("SELECT balance,reserved_balance FROM wallet_accounts WHERE subject_id='g'").fetchone()==(3,1)
+db.execute("UPDATE wallet_accounts SET reserved_balance=reserved_balance-1 WHERE subject_id='g'");assert db.execute("SELECT balance,reserved_balance FROM wallet_accounts WHERE subject_id='g'").fetchone()==(3,0)
+db.execute("UPDATE wallet_accounts SET reserved_balance=reserved_balance+1 WHERE subject_id='g'");db.execute("UPDATE wallet_accounts SET balance=balance-1,reserved_balance=reserved_balance-1 WHERE subject_id='g'");assert db.execute("SELECT balance,reserved_balance FROM wallet_accounts WHERE subject_id='g'").fetchone()==(2,0)
+print("Server accounting v2 SQLite smoke: ALL PASS")
