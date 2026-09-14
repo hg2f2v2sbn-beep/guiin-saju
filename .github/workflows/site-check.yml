@@ -17,27 +17,23 @@ jobs:
         run: |
           set -e
           for f in \
-            index.html saju-engine.js saju-engine-v2-patch.js guiin-engine-contract.js \
-            guiin-quality-gate.js guiin-runtime-v2.css flow-v2.js expert-interpreter.js \
-            expert-v2.js compatibility-interpreter.js compatibility-v2.js manse-view.js \
-            flow-timeline.js worker.js server-contracts.js server-money.js server-schema.sql \
-            server-auth.js server-api-contracts.js server-d1-bootstrap.sql worker-v3-foundation.js guiin-server-client.js \
-            server-profile.js server-conversation.js server-guest-conversion.js server-data-migration.sql worker-v3-data-foundation.js guiin-server-data-client.js \
-            server-session.js server-ownership.js worker-v3-unified-foundation.js \
-            golden-chart.test.js compatibility-regression.test.js flow-regression.test.js \
-            foundation-contract.test.js engine-v2-contract.test.js engine-v2-integration.test.js \
-            v2-browser-regression.test.js expert-v2-regression.test.js compat-v2-regression.test.js \
-            interpretation-browser-regression.test.js ai-counsel-v2-regression.test.js \
-            server-money-regression.test.js server-schema-v2-regression.test.js \
+            index.html saju-engine.js saju-engine-v2-patch.js guiin-engine-contract.js guiin-quality-gate.js \
+            guiin-runtime-v2.css flow-v2.js expert-interpreter.js expert-v2.js compatibility-interpreter.js compatibility-v2.js \
+            manse-view.js flow-timeline.js worker.js worker-v3-foundation.js worker-v3-data-foundation.js \
+            worker-v3-unified-foundation.js worker-v4-integrated-preview.js server-contracts.js server-money.js \
+            server-schema.sql server-auth.js server-api-contracts.js server-profile.js server-conversation.js \
+            server-guest-conversion.js server-session.js server-ownership.js server-d1-bootstrap.sql server-data-migration.sql \
+            server-unified-migration-v2.sql guiin-server-client.js guiin-server-data-client.js \
+            golden-chart.test.js compatibility-regression.test.js flow-regression.test.js foundation-contract.test.js \
+            engine-v2-contract.test.js engine-v2-integration.test.js v2-browser-regression.test.js \
+            expert-v2-regression.test.js compat-v2-regression.test.js interpretation-browser-regression.test.js \
+            ai-counsel-v2-regression.test.js server-money-regression.test.js server-schema-v2-regression.test.js \
             server-runtime-regression.test.js worker-v3-foundation-regression.test.js \
             server-profile-conversation-regression.test.js server-data-schema-regression.test.js worker-v3-data-foundation-regression.test.js \
             server-unified-regression.test.js server-unified-schema-regression.test.js worker-v3-unified-regression.test.js \
-            server-unified-regression.test.js server-unified-schema-regression.test.js worker-v3-unified-regression.test.js \
-            server-profile-conversation-regression.test.js server-data-schema-regression.test.js worker-v3-data-foundation-regression.test.js \
-            server-unified-regression.test.js server-unified-schema-regression.test.js worker-v3-unified-regression.test.js \
-            server-unified-regression.test.js server-unified-schema-regression.test.js worker-v3-unified-regression.test.js \
-            today.html manse.html compatibility.html 2026-fortune.html 2027-fortune.html \
-            cheon-eul-gwiin.html saju-compatibility-guide.html sitemap.xml robots.txt CNAME brand-home.jpg
+            integrated-schema-regression.test.js worker-v4-integrated-preview-regression.test.js \
+            today.html manse.html compatibility.html 2026-fortune.html 2027-fortune.html cheon-eul-gwiin.html \
+            saju-compatibility-guide.html sitemap.xml robots.txt CNAME brand-home.jpg
           do
             test -f "$f" || { echo "MISSING: $f"; exit 1; }
           done
@@ -46,20 +42,19 @@ jobs:
         run: |
           set -e
           for f in \
-            saju-engine.js saju-engine-v2-patch.js guiin-engine-contract.js guiin-quality-gate.js \
-            flow-v2.js expert-interpreter.js expert-v2.js compatibility-interpreter.js compatibility-v2.js \
-            manse-view.js flow-timeline.js worker.js server-contracts.js server-money.js \
-            server-auth.js server-api-contracts.js worker-v3-foundation.js guiin-server-client.js \
-            server-profile.js server-conversation.js server-guest-conversion.js worker-v3-data-foundation.js guiin-server-data-client.js \
-            server-session.js server-ownership.js worker-v3-unified-foundation.js \
-            golden-chart.test.js compatibility-regression.test.js flow-regression.test.js \
-            foundation-contract.test.js engine-v2-contract.test.js engine-v2-integration.test.js \
-            v2-browser-regression.test.js expert-v2-regression.test.js compat-v2-regression.test.js \
-            interpretation-browser-regression.test.js ai-counsel-v2-regression.test.js \
-            server-money-regression.test.js server-schema-v2-regression.test.js \
-            server-runtime-regression.test.js worker-v3-foundation-regression.test.js \
-            server-profile-conversation-regression.test.js server-data-schema-regression.test.js worker-v3-data-foundation-regression.test.js \
-            server-unified-regression.test.js server-unified-schema-regression.test.js worker-v3-unified-regression.test.js
+            saju-engine.js saju-engine-v2-patch.js guiin-engine-contract.js guiin-quality-gate.js flow-v2.js \
+            expert-interpreter.js expert-v2.js compatibility-interpreter.js compatibility-v2.js manse-view.js flow-timeline.js \
+            worker.js worker-v3-foundation.js worker-v3-data-foundation.js worker-v3-unified-foundation.js worker-v4-integrated-preview.js \
+            server-contracts.js server-money.js server-auth.js server-api-contracts.js server-profile.js server-conversation.js \
+            server-guest-conversion.js server-session.js server-ownership.js guiin-server-client.js guiin-server-data-client.js \
+            golden-chart.test.js compatibility-regression.test.js flow-regression.test.js foundation-contract.test.js \
+            engine-v2-contract.test.js engine-v2-integration.test.js v2-browser-regression.test.js expert-v2-regression.test.js \
+            compat-v2-regression.test.js interpretation-browser-regression.test.js ai-counsel-v2-regression.test.js \
+            server-money-regression.test.js server-schema-v2-regression.test.js server-runtime-regression.test.js \
+            worker-v3-foundation-regression.test.js server-profile-conversation-regression.test.js \
+            server-data-schema-regression.test.js worker-v3-data-foundation-regression.test.js \
+            server-unified-regression.test.js server-unified-schema-regression.test.js worker-v3-unified-regression.test.js \
+            integrated-schema-regression.test.js worker-v4-integrated-preview-regression.test.js
           do
             node --check "$f"
           done
@@ -88,6 +83,8 @@ jobs:
           node server-unified-regression.test.js
           node server-unified-schema-regression.test.js
           node worker-v3-unified-regression.test.js
+          node integrated-schema-regression.test.js
+          node worker-v4-integrated-preview-regression.test.js
 
       - name: No obvious committed API secrets
         shell: python
@@ -103,16 +100,11 @@ jobs:
           for p in pathlib.Path(".").rglob("*"):
             if ".git" in p.parts or not p.is_file() or p.suffix.lower() in exts:
               continue
-            try:
-              text=p.read_text(encoding="utf-8",errors="ignore")
-            except Exception:
-              continue
-            for rx in pats:
-              if rx.search(text):
-                hits.append(str(p))
-                break
+            try: content=p.read_text(encoding="utf-8",errors="ignore")
+            except Exception: continue
+            if any(rx.search(content) for rx in pats): hits.append(str(p))
           if hits:
-            print("possible secret found:", *hits, sep="\n")
+            print("possible secret found:",*hits,sep="\n")
             sys.exit(1)
           print("no obvious committed API secrets")
 
