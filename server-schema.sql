@@ -24,14 +24,45 @@ CREATE TABLE IF NOT EXISTS auth_identities (
 
 CREATE INDEX IF NOT EXISTS idx_auth_email ON auth_identities(email_normalized);
 
+CREATE TABLE IF NOT EXISTS user_sessions (
+  id TEXT PRIMARY KEY,
+  user_id TEXT NOT NULL,
+  token_hash TEXT NOT NULL UNIQUE,
+  created_at TEXT NOT NULL,
+  last_seen_at TEXT NOT NULL,
+  expires_at TEXT NOT NULL,
+  revoked_at TEXT,
+  ip_hash TEXT,
+  user_agent_hash TEXT,
+  FOREIGN KEY (user_id) REFERENCES users(id)
+);
+
+CREATE INDEX IF NOT EXISTS idx_user_sessions_user ON user_sessions(user_id, expires_at);
+
 CREATE TABLE IF NOT EXISTS guest_sessions (
   id TEXT PRIMARY KEY,
   token_hash TEXT NOT NULL UNIQUE,
   created_at TEXT NOT NULL,
+  last_seen_at TEXT,
   expires_at TEXT NOT NULL,
   converted_user_id TEXT,
   FOREIGN KEY (converted_user_id) REFERENCES users(id)
 );
+
+CREATE TABLE IF NOT EXISTS consents (
+  id TEXT PRIMARY KEY,
+  user_id TEXT,
+  guest_session_id TEXT,
+  consent_type TEXT NOT NULL,
+  version TEXT NOT NULL,
+  granted INTEGER NOT NULL,
+  granted_at TEXT NOT NULL,
+  source TEXT,
+  FOREIGN KEY (user_id) REFERENCES users(id),
+  FOREIGN KEY (guest_session_id) REFERENCES guest_sessions(id)
+);
+
+CREATE INDEX IF NOT EXISTS idx_consents_subject ON consents(user_id, guest_session_id, consent_type);
 
 CREATE TABLE IF NOT EXISTS profiles (
   id TEXT PRIMARY KEY,
@@ -59,7 +90,8 @@ CREATE TABLE IF NOT EXISTS profiles (
 
 CREATE TABLE IF NOT EXISTS chart_snapshots (
   id TEXT PRIMARY KEY,
-  user_id TEXT NOT NULL,
+  user_id TEXT,
+  guest_session_id TEXT,
   profile_id TEXT,
   chart_key TEXT NOT NULL,
   calculation_engine_version TEXT,
@@ -69,6 +101,7 @@ CREATE TABLE IF NOT EXISTS chart_snapshots (
   uncertainty_json TEXT,
   created_at TEXT NOT NULL,
   FOREIGN KEY (user_id) REFERENCES users(id),
+  FOREIGN KEY (guest_session_id) REFERENCES guest_sessions(id),
   FOREIGN KEY (profile_id) REFERENCES profiles(id)
 );
 
@@ -79,7 +112,7 @@ CREATE TABLE IF NOT EXISTS products (
   product_code TEXT NOT NULL UNIQUE,
   product_type TEXT NOT NULL,
   name TEXT NOT NULL,
-  price_amount INTEGER NOT NULL,
+  price_amount INTEGER NOT NULL CHECK(price_amount >= 0),
   currency TEXT NOT NULL DEFAULT 'KRW',
   benefits_json TEXT NOT NULL,
   active INTEGER NOT NULL DEFAULT 1,
@@ -90,17 +123,19 @@ CREATE TABLE IF NOT EXISTS products (
 
 CREATE TABLE IF NOT EXISTS orders (
   id TEXT PRIMARY KEY,
-  user_id TEXT NOT NULL,
+  user_id TEXT,
+  guest_session_id TEXT,
   product_id TEXT NOT NULL,
   chart_snapshot_id TEXT,
   idempotency_key TEXT NOT NULL UNIQUE,
   state TEXT NOT NULL,
   product_snapshot_json TEXT NOT NULL,
-  amount INTEGER NOT NULL,
+  amount INTEGER NOT NULL CHECK(amount >= 0),
   currency TEXT NOT NULL DEFAULT 'KRW',
   created_at TEXT NOT NULL,
   updated_at TEXT NOT NULL,
   FOREIGN KEY (user_id) REFERENCES users(id),
+  FOREIGN KEY (guest_session_id) REFERENCES guest_sessions(id),
   FOREIGN KEY (product_id) REFERENCES products(id),
   FOREIGN KEY (chart_snapshot_id) REFERENCES chart_snapshots(id)
 );
@@ -119,6 +154,22 @@ CREATE TABLE IF NOT EXISTS payments (
   FOREIGN KEY (order_id) REFERENCES orders(id)
 );
 
+CREATE TABLE IF NOT EXISTS refunds (
+  id TEXT PRIMARY KEY,
+  payment_id TEXT NOT NULL,
+  order_id TEXT NOT NULL,
+  provider_refund_id TEXT,
+  amount INTEGER NOT NULL CHECK(amount >= 0),
+  currency TEXT NOT NULL DEFAULT 'KRW',
+  state TEXT NOT NULL,
+  reason TEXT,
+  idempotency_key TEXT NOT NULL UNIQUE,
+  requested_at TEXT NOT NULL,
+  completed_at TEXT,
+  FOREIGN KEY (payment_id) REFERENCES payments(id),
+  FOREIGN KEY (order_id) REFERENCES orders(id)
+);
+
 CREATE TABLE IF NOT EXISTS webhook_events (
   id TEXT PRIMARY KEY,
   provider TEXT NOT NULL,
@@ -133,33 +184,58 @@ CREATE TABLE IF NOT EXISTS webhook_events (
 
 CREATE TABLE IF NOT EXISTS entitlements (
   id TEXT PRIMARY KEY,
-  user_id TEXT NOT NULL,
+  user_id TEXT,
+  guest_session_id TEXT,
   order_id TEXT NOT NULL,
   entitlement_type TEXT NOT NULL,
   resource_key TEXT,
-  state TEXT NOT NULL DEFAULT 'active',
+  state TEXT NOT NULL DEFAULT 'ACTIVE',
   granted_at TEXT NOT NULL,
   revoked_at TEXT,
   metadata_json TEXT,
   FOREIGN KEY (user_id) REFERENCES users(id),
+  FOREIGN KEY (guest_session_id) REFERENCES guest_sessions(id),
   FOREIGN KEY (order_id) REFERENCES orders(id)
 );
 
 CREATE INDEX IF NOT EXISTS idx_entitlements_user
 ON entitlements(user_id, state, entitlement_type);
 
+CREATE INDEX IF NOT EXISTS idx_entitlements_guest
+ON entitlements(guest_session_id, state, entitlement_type);
+
 CREATE TABLE IF NOT EXISTS wallet_accounts (
-  user_id TEXT PRIMARY KEY,
+  subject_type TEXT NOT NULL,
+  subject_id TEXT NOT NULL,
   balance INTEGER NOT NULL DEFAULT 0 CHECK (balance >= 0),
+  version INTEGER NOT NULL DEFAULT 0,
   updated_at TEXT NOT NULL,
-  FOREIGN KEY (user_id) REFERENCES users(id)
+  PRIMARY KEY(subject_type, subject_id)
 );
+
+CREATE TABLE IF NOT EXISTS wallet_reservations (
+  id TEXT PRIMARY KEY,
+  subject_type TEXT NOT NULL,
+  subject_id TEXT NOT NULL,
+  request_id TEXT NOT NULL,
+  amount INTEGER NOT NULL CHECK(amount > 0),
+  state TEXT NOT NULL,
+  idempotency_key TEXT NOT NULL UNIQUE,
+  created_at TEXT NOT NULL,
+  updated_at TEXT NOT NULL,
+  expires_at TEXT
+);
+
+CREATE INDEX IF NOT EXISTS idx_wallet_res_subject
+ON wallet_reservations(subject_type, subject_id, state);
 
 CREATE TABLE IF NOT EXISTS wallet_ledger (
   id TEXT PRIMARY KEY,
-  user_id TEXT NOT NULL,
+  subject_type TEXT NOT NULL,
+  subject_id TEXT NOT NULL,
   request_id TEXT,
   order_id TEXT,
+  reservation_id TEXT,
   kind TEXT NOT NULL,
   delta INTEGER NOT NULL,
   balance_after INTEGER NOT NULL CHECK (balance_after >= 0),
@@ -167,9 +243,12 @@ CREATE TABLE IF NOT EXISTS wallet_ledger (
   idempotency_key TEXT NOT NULL UNIQUE,
   note TEXT,
   created_at TEXT NOT NULL,
-  FOREIGN KEY (user_id) REFERENCES users(id),
-  FOREIGN KEY (order_id) REFERENCES orders(id)
+  FOREIGN KEY (order_id) REFERENCES orders(id),
+  FOREIGN KEY (reservation_id) REFERENCES wallet_reservations(id)
 );
+
+CREATE INDEX IF NOT EXISTS idx_wallet_ledger_subject
+ON wallet_ledger(subject_type, subject_id, created_at);
 
 CREATE TABLE IF NOT EXISTS usage_quotas (
   id TEXT PRIMARY KEY,
@@ -177,15 +256,32 @@ CREATE TABLE IF NOT EXISTS usage_quotas (
   subject_id TEXT NOT NULL,
   quota_key TEXT NOT NULL,
   period_key TEXT NOT NULL,
-  used_count INTEGER NOT NULL DEFAULT 0,
-  limit_count INTEGER NOT NULL,
+  used_count INTEGER NOT NULL DEFAULT 0 CHECK(used_count >= 0),
+  reserved_count INTEGER NOT NULL DEFAULT 0 CHECK(reserved_count >= 0),
+  limit_count INTEGER NOT NULL CHECK(limit_count >= 0),
   updated_at TEXT NOT NULL,
   UNIQUE(subject_type, subject_id, quota_key, period_key)
 );
 
+CREATE TABLE IF NOT EXISTS quota_reservations (
+  id TEXT PRIMARY KEY,
+  subject_type TEXT NOT NULL,
+  subject_id TEXT NOT NULL,
+  quota_key TEXT NOT NULL,
+  period_key TEXT NOT NULL,
+  amount INTEGER NOT NULL CHECK(amount > 0),
+  state TEXT NOT NULL,
+  request_id TEXT NOT NULL,
+  idempotency_key TEXT NOT NULL UNIQUE,
+  created_at TEXT NOT NULL,
+  updated_at TEXT NOT NULL,
+  expires_at TEXT
+);
+
 CREATE TABLE IF NOT EXISTS reports (
   id TEXT PRIMARY KEY,
-  user_id TEXT NOT NULL,
+  user_id TEXT,
+  guest_session_id TEXT,
   chart_snapshot_id TEXT NOT NULL,
   report_type TEXT NOT NULL,
   state TEXT NOT NULL,
@@ -197,6 +293,7 @@ CREATE TABLE IF NOT EXISTS reports (
   updated_at TEXT NOT NULL,
   ready_at TEXT,
   FOREIGN KEY (user_id) REFERENCES users(id),
+  FOREIGN KEY (guest_session_id) REFERENCES guest_sessions(id),
   FOREIGN KEY (chart_snapshot_id) REFERENCES chart_snapshots(id)
 );
 
@@ -216,13 +313,15 @@ CREATE TABLE IF NOT EXISTS report_sections (
 
 CREATE TABLE IF NOT EXISTS conversations (
   id TEXT PRIMARY KEY,
-  user_id TEXT NOT NULL,
+  user_id TEXT,
+  guest_session_id TEXT,
   chart_snapshot_id TEXT,
   title TEXT,
   created_at TEXT NOT NULL,
   updated_at TEXT NOT NULL,
   deleted_at TEXT,
   FOREIGN KEY (user_id) REFERENCES users(id),
+  FOREIGN KEY (guest_session_id) REFERENCES guest_sessions(id),
   FOREIGN KEY (chart_snapshot_id) REFERENCES chart_snapshots(id)
 );
 
@@ -275,6 +374,25 @@ CREATE TABLE IF NOT EXISTS feature_flags (
   enabled INTEGER NOT NULL DEFAULT 0,
   updated_at TEXT NOT NULL,
   updated_by TEXT
+);
+
+CREATE TABLE IF NOT EXISTS support_cases (
+  id TEXT PRIMARY KEY,
+  user_id TEXT,
+  guest_session_id TEXT,
+  order_id TEXT,
+  payment_id TEXT,
+  category TEXT NOT NULL,
+  state TEXT NOT NULL,
+  subject TEXT,
+  description TEXT,
+  created_at TEXT NOT NULL,
+  updated_at TEXT NOT NULL,
+  resolved_at TEXT,
+  FOREIGN KEY (user_id) REFERENCES users(id),
+  FOREIGN KEY (guest_session_id) REFERENCES guest_sessions(id),
+  FOREIGN KEY (order_id) REFERENCES orders(id),
+  FOREIGN KEY (payment_id) REFERENCES payments(id)
 );
 
 CREATE TABLE IF NOT EXISTS audit_logs (
