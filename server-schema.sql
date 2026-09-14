@@ -350,6 +350,9 @@ CREATE TABLE IF NOT EXISTS conversation_summaries (
   UNIQUE(conversation_id, summary_version)
 );
 
+CREATE UNIQUE INDEX IF NOT EXISTS idx_conversation_summary_version
+ON conversation_summaries(conversation_id, summary_version);
+
 CREATE TABLE IF NOT EXISTS ai_requests (
   id TEXT PRIMARY KEY,
   user_id TEXT,
@@ -386,6 +389,9 @@ CREATE TABLE IF NOT EXISTS guest_conversions (
   FOREIGN KEY (guest_session_id) REFERENCES guest_sessions(id),
   FOREIGN KEY (user_id) REFERENCES users(id)
 );
+
+CREATE UNIQUE INDEX IF NOT EXISTS idx_guest_conversion_once
+ON guest_conversions(guest_session_id);
 
 CREATE TABLE IF NOT EXISTS feature_flags (
   flag_key TEXT PRIMARY KEY,
