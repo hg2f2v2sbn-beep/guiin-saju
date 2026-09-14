@@ -1612,6 +1612,29 @@ function compatPayNotReady(){if($('compatPayMsg'))$('compatPayMsg').textContent=
 
 const GUIIN_AI_API='https://guiin-saju-api.blue-wls.workers.dev/api/chat';
 let guiinAIHistory=[], guiinAISending=false;
+function guiinAIRequestId(){
+  try{if(globalThis.crypto?.randomUUID)return 'chat_'+crypto.randomUUID();}
+  catch(_e){}
+  return 'chat_'+Date.now().toString(36)+'_'+Math.random().toString(36).slice(2,12);
+}
+function guiinPendingAIKey(q,cp){
+  const base=[q,cp?.year,cp?.month,cp?.day,cp?.hour].join('|');
+  let h=2166136261;
+  for(let i=0;i<base.length;i++){h^=base.charCodeAt(i);h=Math.imul(h,16777619);}
+  return 'guiin_ai_pending_'+(h>>>0).toString(16);
+}
+function guiinRequestIdFor(q,cp){
+  const k=guiinPendingAIKey(q,cp);
+  try{
+    const old=JSON.parse(sessionStorage.getItem(k)||'null');
+    if(old?.id && Date.now()-Number(old.t||0)<5*60*1000)return {id:old.id,key:k};
+  }catch(_e){}
+  const id=guiinAIRequestId();
+  try{sessionStorage.setItem(k,JSON.stringify({id,t:Date.now()}));}catch(_e){}
+  return {id,key:k};
+}
+function guiinClearPendingAI(key){try{sessionStorage.removeItem(key);}catch(_e){}}
+
 
 function guiinAppend(cls,text){
   const box=$('msgs'); if(!box)return;
@@ -1701,7 +1724,7 @@ function guiinChartPayload(){
   return out.year&&out.month&&out.day?out:null;
 }
 
-\n/* GUIIN_V2_AI_PAYLOAD_START */\nguiinChartPayload=function(){\n  if(!chart||!chart.pillars)return null;\n  const safePlain=v=>{try{return JSON.parse(JSON.stringify(v));}catch(_e){return null;}};\n  let facts=null,flow=null;\n  try{if(typeof GuiinEngineContract!=='undefined')facts=GuiinEngineContract.chartFacts(chart);}catch(e){console.warn('GUIIN_CONTRACT_FACTS',e);}\n  try{if(typeof GuiinFlowV2!=='undefined')flow=GuiinFlowV2.currentContext(chart,new Date());}catch(e){console.warn('GUIIN_FLOW_PAYLOAD',e);}\n  if(!facts){\n    const val=p=>p&&((p.ko||'')||(String(p.stem||'')+String(p.branch||'')));\n    facts={schema_version:'2.0.0-fallback',pillars:{year:val(chart.pillars.year),month:val(chart.pillars.month),day:val(chart.pillars.day),hour:val(chart.pillars.hour)},day_master:{stem:chart?.dayMaster?.stem||chart?.pillars?.day?.stem||null},ten_gods:null,hidden_stems:null,element_distribution:safePlain(chart?.elCount||null),element_strength:null,relations:safePlain(chart?.relations||[]),stars:safePlain(chart?.stars||null),daeun:safePlain(chart?.luck||[]),uncertainty:safePlain(chart?.uncertainty||null)};\n  }\n  const name=String(chart?.input?.name||'').trim();\n  return {...facts,name,gender:chart?.input?.gender||chart?.input?.sex||null,current_daeun:safePlain(flow?.current_daeun||null),current_seun:safePlain(flow?.current_seun||null),current_wolun:safePlain(flow?.current_wolun||null),current_ilun:safePlain(flow?.current_ilun||null),flow:safePlain(flow),year:facts?.pillars?.year||'',month:facts?.pillars?.month||'',day:facts?.pillars?.day||'',hour:facts?.pillars?.hour||'출생시간 모름',hourUnknown:!!chart?.input?.hourUnknown,dayMaster:facts?.day_master?.stem||''};\n};\n/* GUIIN_V2_AI_PAYLOAD_END */\n
+\n/* GUIIN_V2_AI_PAYLOAD_START */\nguiinChartPayload=function(){\n  if(!chart||!chart.pillars)return null;\n  const safePlain=v=>{try{return JSON.parse(JSON.stringify(v));}catch(_e){return null;}};\n  let facts=null,flow=null;\n  try{if(typeof GuiinEngineContract!=='undefined')facts=GuiinEngineContract.chartFacts(chart);}catch(e){console.warn('GUIIN_CONTRACT_FACTS',e);}\n  try{if(typeof GuiinFlowV2!=='undefined')flow=GuiinFlowV2.currentContext(chart,new Date());}catch(e){console.warn('GUIIN_FLOW_PAYLOAD',e);}\n  if(!facts){\n    const val=p=>p&&((p.ko||'')||(String(p.stem||'')+String(p.branch||'')));\n    facts={schema_version:'2.0.0-fallback',pillars:{year:val(chart.pillars.year),month:val(chart.pillars.month),day:val(chart.pillars.day),hour:val(chart.pillars.hour)},day_master:{stem:chart?.dayMaster?.stem||chart?.pillars?.day?.stem||null},ten_gods:null,hidden_stems:null,element_distribution:safePlain(chart?.elCount||null),element_strength:null,relations:safePlain(chart?.relations||[]),stars:safePlain(chart?.stars||null),daeun:safePlain(chart?.luck||[]),uncertainty:safePlain(chart?.uncertainty||null)};\n  }\n  const name=String(chart?.input?.name||'').trim();\n  let personModel=null;try{if(typeof GuiinExpert!=='undefined'&&typeof GuiinExpert.personModel==='function')personModel=GuiinExpert.personModel(chart);}catch(e){console.warn('GUIIN_PERSON_MODEL',e);}return {...facts,name,gender:chart?.input?.gender||chart?.input?.sex||null,person_model:safePlain(personModel),current_daeun:safePlain(flow?.current_daeun||null),current_seun:safePlain(flow?.current_seun||null),current_wolun:safePlain(flow?.current_wolun||null),current_ilun:safePlain(flow?.current_ilun||null),flow:safePlain(flow),year:facts?.pillars?.year||'',month:facts?.pillars?.month||'',day:facts?.pillars?.day||'',hour:facts?.pillars?.hour||'출생시간 모름',hourUnknown:!!chart?.input?.hourUnknown,dayMaster:facts?.day_master?.stem||''};\n};\n/* GUIIN_V2_AI_PAYLOAD_END */\n
 async function sendQ(preset){
   if(guiinAISending)return;
 
@@ -1722,6 +1745,8 @@ async function sendQ(preset){
     setTimeout(()=>go('saju'),450);
     return;
   }
+
+  const requestMeta=guiinRequestIdFor(q,cp);
 
   const used=freeUsed(),isFree=used<3;
   if(!isFree&&Number(wallet.coins||0)<1){
@@ -1767,13 +1792,15 @@ ${detailGuide}
       cache:'no-store',
       headers:{
         'Content-Type':'application/json',
-        'Accept':'application/json'
+        'Accept':'application/json',
+        'X-Idempotency-Key':requestMeta.id
       },
       body:JSON.stringify({
+        requestId:requestMeta.id,
         name:cp.name||'',
         message,
         chart:cp,
-        history:guiinAIHistory.slice(-6)
+        history:guiinAIHistory.slice(-8)
       }),
       signal:controller.signal
     });
@@ -1798,6 +1825,8 @@ ${detailGuide}
     if(guiinAIHistory.length>24){
       guiinAIHistory=guiinAIHistory.slice(-24);
     }
+
+    guiinClearPendingAI(requestMeta.key);
 
     if(isFree)setFreeUsed(used+1);
     else{
