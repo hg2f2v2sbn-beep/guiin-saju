@@ -1,0 +1,54 @@
+{
+  "version": "1.0",
+  "rule": "Every required gate must PASS. Any MISSING/FAIL blocks real payments.",
+  "categories": {
+    "calculation": [
+      "engine_golden",
+      "engine_uncertainty"
+    ],
+    "interpretation": [
+      "compatibility_regression",
+      "flow_regression"
+    ],
+    "ai": [
+      "ai_quality_gate",
+      "ai_idempotency",
+      "ai_no_loss"
+    ],
+    "auth": [
+      "server_session",
+      "ownership_isolation",
+      "guest_to_user_restore"
+    ],
+    "money": [
+      "free_quota_atomicity",
+      "wallet_reserve_spend_release"
+    ],
+    "payment": [
+      "order_server_price",
+      "payment_idempotency",
+      "entitlement_idempotency",
+      "webhook_recovery",
+      "refund_recovery",
+      "purchase_restore"
+    ],
+    "security": [
+      "origin_allowlist",
+      "rate_limit",
+      "log_redaction",
+      "session_expiry",
+      "admin_mfa_gate",
+      "secret_scan"
+    ],
+    "operations": [
+      "audit_integrity",
+      "backup_verified",
+      "restore_drill",
+      "integrity_checks"
+    ],
+    "launch": [
+      "legal_ready",
+      "pg_verified"
+    ]
+  }
+}
