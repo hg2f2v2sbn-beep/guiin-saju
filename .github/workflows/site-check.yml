@@ -55,7 +55,10 @@ jobs:
             server-final-launch-migration-v1.sql server-final-launch-gate.js worker-v6.0-final-launch-preview.js \
             30-stage-completion.json FINAL-LAUNCH-STATUS.json FINAL-LAUNCH-GATE-V1.md \
             final-launch-gate-regression.test.js final-stage-regression.test.js final-status-regression.test.js \
-            worker-v6-final-regression.test.js final-schema-regression.test.js final-launch-smoke.py
+            worker-v6-final-regression.test.js final-schema-regression.test.js final-launch-smoke.py \
+            external-gate-evaluator.js staging-e2e-smoke.mjs external-gate-status.json \
+            EXTERNAL-GATE-STAGING-E2E-V1.md external-gate-evaluator-regression.test.js \
+            staging-smoke-regression.test.js external-gate-status-regression.test.js
           do
             test -f "$f" || { echo "MISSING: $f"; exit 1; }
           done
@@ -91,10 +94,13 @@ jobs:
             worker-v5.6-legal-regression.test.js legal-schema-regression.test.js server-final-launch-gate.js \
             worker-v6.0-final-launch-preview.js final-launch-gate-regression.test.js \
             final-stage-regression.test.js final-status-regression.test.js worker-v6-final-regression.test.js \
-            final-schema-regression.test.js
+            final-schema-regression.test.js external-gate-evaluator.js \
+            external-gate-evaluator-regression.test.js staging-smoke-regression.test.js \
+            external-gate-status-regression.test.js
           do
             node --check "$f"
           done
+          node --check staging-e2e-smoke.mjs
       - name: Regression tests
         run: |
           set -e
@@ -141,6 +147,9 @@ jobs:
           node final-status-regression.test.js
           node worker-v6-final-regression.test.js
           node final-schema-regression.test.js
+          node external-gate-evaluator-regression.test.js
+          node staging-smoke-regression.test.js
+          node external-gate-status-regression.test.js
           python account-link-smoke.py
           python data-crud-smoke.py
           python login-foundation-smoke.py
@@ -150,18 +159,16 @@ jobs:
           python legal-smoke.py
           python final-launch-smoke.py
 
-      - name: Final launch must remain fail-closed
+      - name: External gates must remain pending until real staging evidence exists
         shell: python
         run: |
           import json,sys
-          x=json.load(open("FINAL-LAUNCH-STATUS.json",encoding="utf-8"))
+          x=json.load(open("external-gate-status.json",encoding="utf-8"))
+          if x.get("external_ready") is not False:
+            print("external readiness cannot pass without real evidence");sys.exit(1)
           if x.get("payments_allowed") is not False:
-            print("real payments must remain OFF before external gates pass");sys.exit(1)
-          if x.get("launch_ready") is not False:
-            print("production launch must remain blocked before external gates pass");sys.exit(1)
-          if x.get("code_ready") is not True:
-            print("expected code foundation to be 30/30 ready");sys.exit(1)
-          print("final launch is safely fail-closed")
+            print("payments must stay OFF");sys.exit(1)
+          print("external gates remain safely pending")
       - name: Sitemap uses .html paths
         run: |
           set -e
