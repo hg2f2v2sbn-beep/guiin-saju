@@ -23,7 +23,7 @@ jobs:
             flow-timeline.js worker.js server-contracts.js server-schema.sql \
             golden-chart.test.js compatibility-regression.test.js flow-regression.test.js \
             foundation-contract.test.js engine-v2-contract.test.js engine-v2-integration.test.js \
-            v2-browser-regression.test.js expert-v2-regression.test.js compat-v2-regression.test.js interpretation-browser-regression.test.js \
+            v2-browser-regression.test.js expert-v2-regression.test.js compat-v2-regression.test.js interpretation-browser-regression.test.js ai-counsel-v2-regression.test.js \
             today.html manse.html compatibility.html 2026-fortune.html 2027-fortune.html \
             cheon-eul-gwiin.html saju-compatibility-guide.html sitemap.xml robots.txt CNAME brand-home.jpg
           do
@@ -39,7 +39,7 @@ jobs:
             manse-view.js flow-timeline.js worker.js server-contracts.js golden-chart.test.js \
             compatibility-regression.test.js flow-regression.test.js foundation-contract.test.js \
             engine-v2-contract.test.js engine-v2-integration.test.js v2-browser-regression.test.js \
-            expert-v2-regression.test.js compat-v2-regression.test.js interpretation-browser-regression.test.js
+            expert-v2-regression.test.js compat-v2-regression.test.js interpretation-browser-regression.test.js ai-counsel-v2-regression.test.js
           do
             node --check "$f"
           done
@@ -57,6 +57,7 @@ jobs:
           node expert-v2-regression.test.js
           node compat-v2-regression.test.js
           node interpretation-browser-regression.test.js
+          node ai-counsel-v2-regression.test.js
 
       - name: No obvious committed API secrets
         shell: python
