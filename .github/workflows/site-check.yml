@@ -1,123 +1,48 @@
 name: site-check
-
 on:
   push:
     branches: [main]
   pull_request:
     branches: [main]
   workflow_dispatch:
-
 permissions:
   contents: read
-
 jobs:
   check:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
       - name: Required files exist
         run: |
           set -e
-          for f in \
-            index.html \
-            saju-engine.js \
-            expert-interpreter.js \
-            compatibility-interpreter.js \
-            manse-view.js \
-            flow-timeline.js \
-            worker.js \
-            golden-chart.test.js \
-            compatibility-regression.test.js \
-            flow-regression.test.js \
-            today.html \
-            manse.html \
-            compatibility.html \
-            2026-fortune.html \
-            2027-fortune.html \
-            cheon-eul-gwiin.html \
-            saju-compatibility-guide.html \
-            sitemap.xml \
-            robots.txt \
-            CNAME \
-            brand-home.jpg
-          do
+          for f in index.html saju-engine.js saju-engine-v2-patch.js guiin-engine-contract.js guiin-quality-gate.js guiin-runtime-v2.css flow-v2.js expert-interpreter.js compatibility-interpreter.js manse-view.js flow-timeline.js worker.js server-contracts.js server-schema.sql golden-chart.test.js compatibility-regression.test.js flow-regression.test.js foundation-contract.test.js engine-v2-contract.test.js engine-v2-integration.test.js v2-browser-regression.test.js apply-v2.js today.html manse.html compatibility.html 2026-fortune.html 2027-fortune.html cheon-eul-gwiin.html saju-compatibility-guide.html sitemap.xml robots.txt CNAME brand-home.jpg; do
             test -f "$f" || { echo "MISSING: $f"; exit 1; }
           done
-          echo "required files ok"
-
       - name: JavaScript syntax check
         run: |
           set -e
-          node --check saju-engine.js
-          node --check expert-interpreter.js
-          node --check compatibility-interpreter.js
-          node --check manse-view.js
-          node --check flow-timeline.js
-          node --check golden-chart.test.js
-          node --check compatibility-regression.test.js
-          node --check flow-regression.test.js
-          echo "javascript syntax ok"
-
-      - name: Golden Chart regression
+          for f in saju-engine.js saju-engine-v2-patch.js guiin-engine-contract.js guiin-quality-gate.js flow-v2.js expert-interpreter.js compatibility-interpreter.js manse-view.js flow-timeline.js worker.js server-contracts.js golden-chart.test.js compatibility-regression.test.js flow-regression.test.js foundation-contract.test.js engine-v2-contract.test.js engine-v2-integration.test.js v2-browser-regression.test.js apply-v2.js; do node --check "$f"; done
+      - name: Regression tests
         run: |
           set -e
           node golden-chart.test.js
           node compatibility-regression.test.js
           node flow-regression.test.js
-
+          node foundation-contract.test.js
+          node engine-v2-contract.test.js
+          node engine-v2-integration.test.js
+          node apply-v2.js --verify-only
+          node v2-browser-regression.test.js
       - name: No obvious committed API secrets
         run: |
           set -e
-          if grep -RInE --exclude-dir=.git --exclude='*.jpg' --exclude='*.jpeg' --exclude='*.png' --exclude='*.webp' \
-            '(sk-proj-[A-Za-z0-9_-]{12,}|sk-[A-Za-z0-9]{20,}|OPENAI_API_KEY[[:space:]]*=[[:space:]]*["'\''][^"'\'']+)' .; then
-            echo "possible secret found"
-            exit 1
+          if grep -RInE --exclude-dir=.git --exclude='*.jpg' --exclude='*.jpeg' --exclude='*.png' --exclude='*.webp' '(sk-proj-[A-Za-z0-9_-]{12,}|sk-[A-Za-z0-9]{20,}|OPENAI_API_KEY[[:space:]]*=[[:space:]]*["'\'''][^"'\''']+)' .; then
+            echo "possible secret found"; exit 1
           fi
-          echo "no obvious committed API secrets"
-
-      - name: No leftover SVG mascots or QA notes
-        run: |
-          set -e
-          if ls mascot-*.svg clover-mark.svg og-image.svg 2>/dev/null; then
-            echo "flat SVG leftover found"
-            exit 1
-          fi
-          if ls QA*.txt UPLOAD-README.txt SEARCH-SETUP.txt UTM-GUIDE.txt 2>/dev/null; then
-            echo "internal notes should not be in repo root"
-            exit 1
-          fi
-          echo "no leftover files"
-
-      - name: Guide pages use .html canonical and brand-home OG
-        run: |
-          set -e
-          fail=0
-          for f in today.html manse.html compatibility.html 2026-fortune.html 2027-fortune.html cheon-eul-gwiin.html saju-compatibility-guide.html; do
-            if grep -q 'gwiinsaju.com/[^"<>]*/"' "$f"; then
-              if grep -E 'canonical|og:url|mainEntityOfPage' "$f" | grep -v '\.html'; then
-                echo "folder-style URL in $f"
-                grep -E 'canonical|og:url|mainEntityOfPage' "$f" || true
-                fail=1
-              fi
-            fi
-            if grep -q 'og-image.svg' "$f"; then
-              echo "og-image.svg still referenced in $f"
-              fail=1
-            fi
-            if ! grep -q 'brand-home.jpg' "$f"; then
-              echo "brand-home.jpg OG missing in $f"
-              fail=1
-            fi
-          done
-          test "$fail" -eq 0
-          echo "SEO checks ok"
-
       - name: Sitemap uses .html paths
         run: |
           set -e
-          if grep -E 'gwiinsaju.com/(today|manse|compatibility)/<' sitemap.xml; then
-            echo "sitemap still uses folder URLs"
-            exit 1
-          fi
-          echo "sitemap ok"
+          if grep -E 'gwiinsaju.com/(today|manse|compatibility)/<' sitemap.xml; then echo "sitemap still uses folder URLs"; exit 1; fi

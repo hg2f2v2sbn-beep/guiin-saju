@@ -1,0 +1,54 @@
+name: apply-v2-once
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'apply-v2.js'
+      - 'saju-engine-v2-patch.js'
+      - 'flow-v2.js'
+      - 'guiin-engine-contract.js'
+      - 'guiin-runtime-v2.css'
+      - 'v2-browser-regression.test.js'
+  workflow_dispatch:
+permissions:
+  contents: write
+jobs:
+  apply:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: main
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+      - name: Apply v2 to index.html
+        run: |
+          set -e
+          node apply-v2.js
+          node apply-v2.js --verify-only
+      - name: Syntax and regression tests
+        run: |
+          set -e
+          node --check apply-v2.js
+          node --check saju-engine-v2-patch.js
+          node --check flow-v2.js
+          node --check guiin-engine-contract.js
+          node --check engine-v2-contract.test.js
+          node --check engine-v2-integration.test.js
+          node --check v2-browser-regression.test.js
+          node engine-v2-contract.test.js
+          node engine-v2-integration.test.js
+          node v2-browser-regression.test.js
+      - name: Commit index integration if changed
+        run: |
+          set -e
+          if git diff --quiet -- index.html; then
+            echo "index.html already up to date"
+            exit 0
+          fi
+          git config user.name "guiin-v2-bot"
+          git config user.email "actions@users.noreply.github.com"
+          git add index.html
+          git commit -m "Apply Guiin v2 browser integration"
+          git push origin HEAD:main
