@@ -103,6 +103,7 @@ CREATE TABLE IF NOT EXISTS chart_snapshots (
   normalized_input_json TEXT NOT NULL,
   chart_facts_json TEXT NOT NULL,
   uncertainty_json TEXT,
+  verification_state TEXT NOT NULL DEFAULT 'CLIENT_FACTS_UNVERIFIED',
   created_at TEXT NOT NULL,
   FOREIGN KEY (user_id) REFERENCES users(id),
   FOREIGN KEY (guest_session_id) REFERENCES guest_sessions(id),
@@ -112,6 +113,10 @@ CREATE TABLE IF NOT EXISTS chart_snapshots (
 
 CREATE INDEX IF NOT EXISTS idx_chart_key ON chart_snapshots(chart_key, calculation_rule_version);
 CREATE INDEX IF NOT EXISTS idx_chart_snapshots_profile ON chart_snapshots(profile_id, created_at);
+
+CREATE INDEX IF NOT EXISTS idx_chart_subject_key
+ON chart_snapshots(user_id, guest_session_id, chart_key, calculation_rule_version, created_at);
+
 
 CREATE TABLE IF NOT EXISTS products (
   id TEXT PRIMARY KEY,
@@ -376,6 +381,25 @@ CREATE TABLE IF NOT EXISTS ai_requests (
   FOREIGN KEY (conversation_id) REFERENCES conversations(id),
   FOREIGN KEY (chart_snapshot_id) REFERENCES chart_snapshots(id)
 );
+
+
+CREATE TABLE IF NOT EXISTS ai_results (
+  id TEXT PRIMARY KEY,
+  ai_request_id TEXT NOT NULL UNIQUE,
+  request_id TEXT NOT NULL UNIQUE,
+  response_text TEXT NOT NULL,
+  response_json TEXT,
+  quality_json TEXT,
+  chart_snapshot_id TEXT,
+  conversation_id TEXT,
+  created_at TEXT NOT NULL,
+  FOREIGN KEY (ai_request_id) REFERENCES ai_requests(id),
+  FOREIGN KEY (chart_snapshot_id) REFERENCES chart_snapshots(id),
+  FOREIGN KEY (conversation_id) REFERENCES conversations(id)
+);
+
+CREATE INDEX IF NOT EXISTS idx_ai_results_conversation
+ON ai_results(conversation_id, created_at);
 
 CREATE TABLE IF NOT EXISTS guest_conversions (
   id TEXT PRIMARY KEY,
