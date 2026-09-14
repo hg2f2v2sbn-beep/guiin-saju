@@ -62,11 +62,10 @@ CREATE TABLE IF NOT EXISTS consents (
   FOREIGN KEY (guest_session_id) REFERENCES guest_sessions(id)
 );
 
-CREATE INDEX IF NOT EXISTS idx_consents_subject ON consents(user_id, guest_session_id, consent_type);
-
 CREATE TABLE IF NOT EXISTS profiles (
   id TEXT PRIMARY KEY,
-  user_id TEXT NOT NULL,
+  user_id TEXT,
+  guest_session_id TEXT,
   label TEXT,
   display_name TEXT,
   calendar TEXT NOT NULL,
@@ -85,8 +84,13 @@ CREATE TABLE IF NOT EXISTS profiles (
   created_at TEXT NOT NULL,
   updated_at TEXT NOT NULL,
   deleted_at TEXT,
-  FOREIGN KEY (user_id) REFERENCES users(id)
+  FOREIGN KEY (user_id) REFERENCES users(id),
+  FOREIGN KEY (guest_session_id) REFERENCES guest_sessions(id),
+  CHECK ((user_id IS NOT NULL) OR (guest_session_id IS NOT NULL))
 );
+
+CREATE INDEX IF NOT EXISTS idx_profiles_user_active ON profiles(user_id, deleted_at, updated_at);
+CREATE INDEX IF NOT EXISTS idx_profiles_guest_active ON profiles(guest_session_id, deleted_at, updated_at);
 
 CREATE TABLE IF NOT EXISTS chart_snapshots (
   id TEXT PRIMARY KEY,
@@ -102,10 +106,12 @@ CREATE TABLE IF NOT EXISTS chart_snapshots (
   created_at TEXT NOT NULL,
   FOREIGN KEY (user_id) REFERENCES users(id),
   FOREIGN KEY (guest_session_id) REFERENCES guest_sessions(id),
-  FOREIGN KEY (profile_id) REFERENCES profiles(id)
+  FOREIGN KEY (profile_id) REFERENCES profiles(id),
+  CHECK ((user_id IS NOT NULL) OR (guest_session_id IS NOT NULL))
 );
 
 CREATE INDEX IF NOT EXISTS idx_chart_key ON chart_snapshots(chart_key, calculation_rule_version);
+CREATE INDEX IF NOT EXISTS idx_chart_snapshots_profile ON chart_snapshots(profile_id, created_at);
 
 CREATE TABLE IF NOT EXISTS products (
   id TEXT PRIMARY KEY,
@@ -198,11 +204,8 @@ CREATE TABLE IF NOT EXISTS entitlements (
   FOREIGN KEY (order_id) REFERENCES orders(id)
 );
 
-CREATE INDEX IF NOT EXISTS idx_entitlements_user
-ON entitlements(user_id, state, entitlement_type);
-
-CREATE INDEX IF NOT EXISTS idx_entitlements_guest
-ON entitlements(guest_session_id, state, entitlement_type);
+CREATE INDEX IF NOT EXISTS idx_entitlements_user ON entitlements(user_id, state, entitlement_type);
+CREATE INDEX IF NOT EXISTS idx_entitlements_guest ON entitlements(guest_session_id, state, entitlement_type);
 
 CREATE TABLE IF NOT EXISTS wallet_accounts (
   subject_type TEXT NOT NULL,
@@ -226,9 +229,6 @@ CREATE TABLE IF NOT EXISTS wallet_reservations (
   expires_at TEXT
 );
 
-CREATE INDEX IF NOT EXISTS idx_wallet_res_subject
-ON wallet_reservations(subject_type, subject_id, state);
-
 CREATE TABLE IF NOT EXISTS wallet_ledger (
   id TEXT PRIMARY KEY,
   subject_type TEXT NOT NULL,
@@ -246,9 +246,6 @@ CREATE TABLE IF NOT EXISTS wallet_ledger (
   FOREIGN KEY (order_id) REFERENCES orders(id),
   FOREIGN KEY (reservation_id) REFERENCES wallet_reservations(id)
 );
-
-CREATE INDEX IF NOT EXISTS idx_wallet_ledger_subject
-ON wallet_ledger(subject_type, subject_id, created_at);
 
 CREATE TABLE IF NOT EXISTS usage_quotas (
   id TEXT PRIMARY KEY,
@@ -322,8 +319,11 @@ CREATE TABLE IF NOT EXISTS conversations (
   deleted_at TEXT,
   FOREIGN KEY (user_id) REFERENCES users(id),
   FOREIGN KEY (guest_session_id) REFERENCES guest_sessions(id),
-  FOREIGN KEY (chart_snapshot_id) REFERENCES chart_snapshots(id)
+  FOREIGN KEY (chart_snapshot_id) REFERENCES chart_snapshots(id),
+  CHECK ((user_id IS NOT NULL) OR (guest_session_id IS NOT NULL))
 );
+
+CREATE INDEX IF NOT EXISTS idx_conversations_subject_recent ON conversations(user_id, guest_session_id, deleted_at, updated_at);
 
 CREATE TABLE IF NOT EXISTS messages (
   id TEXT PRIMARY KEY,
@@ -335,6 +335,10 @@ CREATE TABLE IF NOT EXISTS messages (
   FOREIGN KEY (conversation_id) REFERENCES conversations(id)
 );
 
+CREATE UNIQUE INDEX IF NOT EXISTS idx_messages_request_role
+ON messages(conversation_id, request_id, role)
+WHERE request_id IS NOT NULL;
+
 CREATE TABLE IF NOT EXISTS conversation_summaries (
   id TEXT PRIMARY KEY,
   conversation_id TEXT NOT NULL,
@@ -342,7 +346,8 @@ CREATE TABLE IF NOT EXISTS conversation_summaries (
   summary_text TEXT NOT NULL,
   through_message_id TEXT,
   created_at TEXT NOT NULL,
-  FOREIGN KEY (conversation_id) REFERENCES conversations(id)
+  FOREIGN KEY (conversation_id) REFERENCES conversations(id),
+  UNIQUE(conversation_id, summary_version)
 );
 
 CREATE TABLE IF NOT EXISTS ai_requests (
@@ -367,6 +372,19 @@ CREATE TABLE IF NOT EXISTS ai_requests (
   FOREIGN KEY (guest_session_id) REFERENCES guest_sessions(id),
   FOREIGN KEY (conversation_id) REFERENCES conversations(id),
   FOREIGN KEY (chart_snapshot_id) REFERENCES chart_snapshots(id)
+);
+
+CREATE TABLE IF NOT EXISTS guest_conversions (
+  id TEXT PRIMARY KEY,
+  guest_session_id TEXT NOT NULL UNIQUE,
+  user_id TEXT NOT NULL,
+  state TEXT NOT NULL,
+  started_at TEXT NOT NULL,
+  completed_at TEXT,
+  error_code TEXT,
+  idempotency_key TEXT NOT NULL UNIQUE,
+  FOREIGN KEY (guest_session_id) REFERENCES guest_sessions(id),
+  FOREIGN KEY (user_id) REFERENCES users(id)
 );
 
 CREATE TABLE IF NOT EXISTS feature_flags (
@@ -406,39 +424,3 @@ CREATE TABLE IF NOT EXISTS audit_logs (
   metadata_json TEXT,
   created_at TEXT NOT NULL
 );
-
-
--- 귀인사주 profile/conversation/guest-conversion migration v1
-PRAGMA foreign_keys = ON;
-
-CREATE TABLE IF NOT EXISTS guest_conversions (
-  id TEXT PRIMARY KEY,
-  guest_session_id TEXT NOT NULL,
-  user_id TEXT NOT NULL,
-  state TEXT NOT NULL,
-  started_at TEXT NOT NULL,
-  completed_at TEXT,
-  error_code TEXT,
-  idempotency_key TEXT NOT NULL UNIQUE,
-  FOREIGN KEY (guest_session_id) REFERENCES guest_sessions(id),
-  FOREIGN KEY (user_id) REFERENCES users(id)
-);
-
-CREATE UNIQUE INDEX IF NOT EXISTS idx_guest_conversion_once
-ON guest_conversions(guest_session_id);
-
-CREATE INDEX IF NOT EXISTS idx_profiles_user_active
-ON profiles(user_id, deleted_at, updated_at);
-
-CREATE INDEX IF NOT EXISTS idx_chart_snapshots_profile
-ON chart_snapshots(profile_id, created_at);
-
-CREATE INDEX IF NOT EXISTS idx_conversations_subject_recent
-ON conversations(user_id, guest_session_id, deleted_at, updated_at);
-
-CREATE UNIQUE INDEX IF NOT EXISTS idx_messages_request_role
-ON messages(conversation_id, request_id, role)
-WHERE request_id IS NOT NULL;
-
-CREATE UNIQUE INDEX IF NOT EXISTS idx_conversation_summary_version
-ON conversation_summaries(conversation_id, summary_version);
