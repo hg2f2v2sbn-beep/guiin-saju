@@ -20,10 +20,10 @@ jobs:
             index.html saju-engine.js saju-engine-v2-patch.js guiin-engine-contract.js guiin-quality-gate.js \
             guiin-runtime-v2.css flow-v2.js expert-interpreter.js expert-v2.js compatibility-interpreter.js compatibility-v2.js \
             manse-view.js flow-timeline.js worker.js worker-v3-foundation.js worker-v3-data-foundation.js \
-            worker-v3-unified-foundation.js worker-v4-integrated-preview.js server-contracts.js server-money.js \
-            server-schema.sql server-auth.js server-api-contracts.js server-profile.js server-conversation.js \
+            worker-v3-unified-foundation.js worker-v4-integrated-preview.js worker-v4.1-persistence-preview.js server-contracts.js server-money.js \
+            server-schema.sql server-auth.js server-api-contracts.js server-chart-authority.js server-ai-persistence.js server-profile.js server-conversation.js \
             server-guest-conversion.js server-session.js server-ownership.js server-d1-bootstrap.sql server-data-migration.sql \
-            server-unified-migration-v2.sql server-d1-safe-bootstrap.sql server-d1-init.sql wrangler.example.toml cloudflare-bindings.example.json CLOUDFLARE-D1-DEPLOY.md guiin-server-client.js guiin-server-data-client.js \
+            server-unified-migration-v2.sql server-chart-ai-migration-v1.sql server-d1-safe-bootstrap.sql server-d1-init.sql wrangler.example.toml cloudflare-bindings.example.json CLOUDFLARE-D1-DEPLOY.md guiin-server-client.js guiin-server-data-client.js \
             golden-chart.test.js compatibility-regression.test.js flow-regression.test.js foundation-contract.test.js \
             engine-v2-contract.test.js engine-v2-integration.test.js v2-browser-regression.test.js \
             expert-v2-regression.test.js compat-v2-regression.test.js interpretation-browser-regression.test.js \
@@ -31,7 +31,7 @@ jobs:
             server-runtime-regression.test.js worker-v3-foundation-regression.test.js \
             server-profile-conversation-regression.test.js server-data-schema-regression.test.js worker-v3-data-foundation-regression.test.js \
             server-unified-regression.test.js server-unified-schema-regression.test.js worker-v3-unified-regression.test.js \
-            integrated-schema-regression.test.js worker-v4-integrated-preview-regression.test.js cloudflare-d1-readiness-regression.test.js d1-schema-smoke.py \
+            integrated-schema-regression.test.js worker-v4-integrated-preview-regression.test.js cloudflare-d1-readiness-regression.test.js d1-schema-smoke.py chart-ai-persistence-regression.test.js chart-ai-persistence-schema-regression.test.js worker-v4.1-persistence-regression.test.js chart-ai-persistence-smoke.py \
             today.html manse.html compatibility.html 2026-fortune.html 2027-fortune.html cheon-eul-gwiin.html \
             saju-compatibility-guide.html sitemap.xml robots.txt CNAME brand-home.jpg
           do
@@ -44,8 +44,8 @@ jobs:
           for f in \
             saju-engine.js saju-engine-v2-patch.js guiin-engine-contract.js guiin-quality-gate.js flow-v2.js \
             expert-interpreter.js expert-v2.js compatibility-interpreter.js compatibility-v2.js manse-view.js flow-timeline.js \
-            worker.js worker-v3-foundation.js worker-v3-data-foundation.js worker-v3-unified-foundation.js worker-v4-integrated-preview.js \
-            server-contracts.js server-money.js server-auth.js server-api-contracts.js server-profile.js server-conversation.js \
+            worker.js worker-v3-foundation.js worker-v3-data-foundation.js worker-v3-unified-foundation.js worker-v4-integrated-preview.js worker-v4.1-persistence-preview.js \
+            server-contracts.js server-money.js server-auth.js server-api-contracts.js server-chart-authority.js server-ai-persistence.js server-profile.js server-conversation.js \
             server-guest-conversion.js server-session.js server-ownership.js guiin-server-client.js guiin-server-data-client.js \
             golden-chart.test.js compatibility-regression.test.js flow-regression.test.js foundation-contract.test.js \
             engine-v2-contract.test.js engine-v2-integration.test.js v2-browser-regression.test.js expert-v2-regression.test.js \
@@ -54,7 +54,7 @@ jobs:
             worker-v3-foundation-regression.test.js server-profile-conversation-regression.test.js \
             server-data-schema-regression.test.js worker-v3-data-foundation-regression.test.js \
             server-unified-regression.test.js server-unified-schema-regression.test.js worker-v3-unified-regression.test.js \
-            integrated-schema-regression.test.js worker-v4-integrated-preview-regression.test.js cloudflare-d1-readiness-regression.test.js
+            integrated-schema-regression.test.js worker-v4-integrated-preview-regression.test.js cloudflare-d1-readiness-regression.test.js chart-ai-persistence-regression.test.js chart-ai-persistence-schema-regression.test.js worker-v4.1-persistence-regression.test.js
           do
             node --check "$f"
           done
@@ -85,8 +85,12 @@ jobs:
           node worker-v3-unified-regression.test.js
           node integrated-schema-regression.test.js
           node worker-v4-integrated-preview-regression.test.js
-          node cloudflare-d1-readiness-regression.test.js
+          node cloudflare-d1-readiness-regression.test.js chart-ai-persistence-regression.test.js chart-ai-persistence-schema-regression.test.js worker-v4.1-persistence-regression.test.js
           python d1-schema-smoke.py
+          node chart-ai-persistence-regression.test.js
+          node chart-ai-persistence-schema-regression.test.js
+          node worker-v4.1-persistence-regression.test.js
+          python chart-ai-persistence-smoke.py
 
       - name: No obvious committed API secrets
         shell: python
