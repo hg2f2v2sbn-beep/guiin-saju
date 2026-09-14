@@ -1,31 +1,39 @@
 /**
- * 귀인사주 profile/conversation 서버 클라이언트.
- * 아직 index.html에 자동 연결하지 않습니다.
+ * 귀인사주 profile/conversation 서버 클라이언트 v2
  */
 (function(root,factory){
-  if(typeof module==="object"&&module.exports)module.exports=factory();
-  else root.GuiinDataClient=factory();
-})(typeof globalThis!=="undefined"?globalThis:this,function(){
+  if(typeof module==="object"&&module.exports)module.exports=factory(
+    typeof require==="function"?require("./guiin-server-client.js"):null
+  );
+  else root.GuiinDataClient=factory(root.GuiinServerClient);
+})(typeof globalThis!=="undefined"?globalThis:this,function(Server){
   "use strict";
-  const API="https://guiin-saju-api.blue-wls.workers.dev";
-  const GUEST_KEY="guiin_guest_token_v1";
+  if(!Server){
+    return {available:false};
+  }
 
-  function token(){try{return localStorage.getItem(GUEST_KEY)||"";}catch(_){return "";}}
   async function api(path,opt={}){
-    const headers={"Accept":"application/json",...(opt.headers||{})};
-    const t=token(); if(t)headers["X-Guiin-Guest"]=t;
-    if(opt.body && !headers["Content-Type"])headers["Content-Type"]="application/json";
-    const r=await fetch(API+path,{...opt,headers,cache:"no-store",mode:"cors"});
-    const d=await r.json().catch(()=>({}));
-    if(!r.ok)throw new Error(d?.error||("HTTP "+r.status));
-    return d;
+    await Server.ensureSession();
+    return Server.request(path,opt);
   }
 
   function saveProfile(profile){
     return api("/api/profiles",{method:"POST",body:JSON.stringify(profile)});
   }
+  function listProfiles(){return api("/api/profiles");}
+
+  function createChartSnapshot(payload){
+    return api("/api/chart-snapshots",{method:"POST",body:JSON.stringify(payload)});
+  }
+  function getChartSnapshot(id){
+    return api("/api/chart-snapshots/"+encodeURIComponent(id));
+  }
+
   function createConversation(title,chartSnapshotId){
-    return api("/api/conversations",{method:"POST",body:JSON.stringify({title,chart_snapshot_id:chartSnapshotId||null})});
+    return api("/api/conversations",{method:"POST",body:JSON.stringify({
+      title:title||null,
+      chart_snapshot_id:chartSnapshotId||null
+    })});
   }
   function listConversations(){return api("/api/conversations");}
   function listMessages(id){return api("/api/conversations/"+encodeURIComponent(id)+"/messages");}
@@ -35,5 +43,8 @@
     });
   }
 
-  return {API,saveProfile,createConversation,listConversations,listMessages,appendMessage};
+  return {
+    available:true,api,saveProfile,listProfiles,createChartSnapshot,getChartSnapshot,
+    createConversation,listConversations,listMessages,appendMessage
+  };
 });
