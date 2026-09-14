@@ -1,0 +1,11 @@
+"use strict";
+const assert=require("assert"),L=require("./server-legal-readiness.js");
+const all=Object.fromEntries(L.REQUIRED_CHECKS.map(k=>[k,"true"]));
+assert.strictEqual(L.legalReadiness(all).ready,true);
+const no={...all,MERCHANT_CONTACT_READY:"false"};
+assert.strictEqual(L.legalReadiness(no).ready,false);
+assert(L.legalReadiness(no).failed.includes("MERCHANT_CONTACT_READY"));
+const p=L.publicLegalReadiness(all);
+assert.strictEqual(p.ready,true);
+assert.strictEqual(L.documentVersion("terms"),"draft-2026-09-14-v1");
+console.log("Legal readiness v1: ALL PASS");

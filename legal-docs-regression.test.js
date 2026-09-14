@@ -1,0 +1,10 @@
+"use strict";
+const fs=require("fs"),assert=require("assert");
+const terms=fs.readFileSync("TERMS-DRAFT-V1.md","utf8");
+const privacy=fs.readFileSync("PRIVACY-DRAFT-V1.md","utf8");
+const refund=fs.readFileSync("REFUND-DRAFT-V1.md","utf8");
+for(const x of ["사업자등록번호","통신판매업","청약철회","시행일"])assert(terms.includes(x),x+" missing in terms");
+for(const x of ["처리 목적","보유기간","제3자 제공","처리위탁","국외","개인정보 보호","만 14세"])assert(privacy.includes(x),x+" missing in privacy");
+for(const x of ["클로버","디지털 콘텐츠","AI","중복결제","청약철회"])assert(refund.includes(x),x+" missing in refund");
+assert(!refund.includes("무조건 환불 불가"));
+console.log("Legal docs v1: ALL PASS");

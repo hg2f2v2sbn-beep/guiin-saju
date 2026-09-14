@@ -1,0 +1,23 @@
+{
+  "version": "1.0",
+  "as_of": "2026-09-14",
+  "status": "NOT_READY",
+  "ready": {
+    "terms_draft_ready": true,
+    "privacy_draft_ready": true,
+    "refund_draft_ready": true,
+    "merchant_name_representative_business_number_address_ready": true,
+    "server_fail_closed_ready": true
+  },
+  "blocked": {
+    "merchant_phone_email_ready": false,
+    "ecommerce_reporting_status_confirmed": false,
+    "privacy_contact_ready": false,
+    "processor_list_confirmed": false,
+    "overseas_transfer_disclosure_confirmed": false,
+    "under14_policy_confirmed": false,
+    "pg_disclosure_confirmed": false,
+    "legal_review_completed": false,
+    "effective_date_confirmed": false
+  }
+}

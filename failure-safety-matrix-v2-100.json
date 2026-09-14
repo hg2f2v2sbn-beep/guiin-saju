@@ -1,0 +1,806 @@
+{
+  "version": "2.0",
+  "count": 100,
+  "scenarios": [
+    {
+      "id": "CALC-01",
+      "category": "CALC",
+      "scenario": "boundary solar term",
+      "expected": "external validation or uncertainty warning; no silent certainty",
+      "blocks_launch": true,
+      "verification": "automated_or_staging"
+    },
+    {
+      "id": "CALC-02",
+      "category": "CALC",
+      "scenario": "unknown birth time",
+      "expected": "do not invent hour pillar",
+      "blocks_launch": true,
+      "verification": "automated_or_staging"
+    },
+    {
+      "id": "CALC-03",
+      "category": "CALC",
+      "scenario": "23:00 day boundary",
+      "expected": "configured boundary applied consistently",
+      "blocks_launch": true,
+      "verification": "automated_or_staging"
+    },
+    {
+      "id": "CALC-04",
+      "category": "CALC",
+      "scenario": "historical timezone",
+      "expected": "warn when precision unsupported",
+      "blocks_launch": false,
+      "verification": "automated_or_staging"
+    },
+    {
+      "id": "CALC-05",
+      "category": "CALC",
+      "scenario": "overseas timezone",
+      "expected": "require/record IANA timezone or uncertainty",
+      "blocks_launch": false,
+      "verification": "automated_or_staging"
+    },
+    {
+      "id": "CALC-06",
+      "category": "CALC",
+      "scenario": "invalid lunar leap month",
+      "expected": "reject input",
+      "blocks_launch": false,
+      "verification": "automated_or_staging"
+    },
+    {
+      "id": "CALC-07",
+      "category": "CALC",
+      "scenario": "unsupported lunar date range",
+      "expected": "clear user-facing error",
+      "blocks_launch": false,
+      "verification": "automated_or_staging"
+    },
+    {
+      "id": "CALC-08",
+      "category": "CALC",
+      "scenario": "engine version mismatch",
+      "expected": "result records engine/rule version",
+      "blocks_launch": false,
+      "verification": "automated_or_staging"
+    },
+    {
+      "id": "CALC-09",
+      "category": "CALC",
+      "scenario": "same chart recalculation",
+      "expected": "same deterministic facts for same version",
+      "blocks_launch": false,
+      "verification": "automated_or_staging"
+    },
+    {
+      "id": "CALC-10",
+      "category": "CALC",
+      "scenario": "corrupt chart payload",
+      "expected": "server refuses authority upgrade",
+      "blocks_launch": false,
+      "verification": "automated_or_staging"
+    },
+    {
+      "id": "AI-01",
+      "category": "AI",
+      "scenario": "model timeout before answer",
+      "expected": "reservation released; no charge",
+      "blocks_launch": true,
+      "verification": "automated_or_staging"
+    },
+    {
+      "id": "AI-02",
+      "category": "AI",
+      "scenario": "model returns malformed JSON",
+      "expected": "repair or fail without charge",
+      "blocks_launch": true,
+      "verification": "automated_or_staging"
+    },
+    {
+      "id": "AI-03",
+      "category": "AI",
+      "scenario": "quality gate repetition",
+      "expected": "repair then fail without charge if unresolved",
+      "blocks_launch": true,
+      "verification": "automated_or_staging"
+    },
+    {
+      "id": "AI-04",
+      "category": "AI",
+      "scenario": "unsupported deterministic claim",
+      "expected": "remove/repair claim",
+      "blocks_launch": false,
+      "verification": "automated_or_staging"
+    },
+    {
+      "id": "AI-05",
+      "category": "AI",
+      "scenario": "duplicate client retry",
+      "expected": "idempotent replay",
+      "blocks_launch": false,
+      "verification": "automated_or_staging"
+    },
+    {
+      "id": "AI-06",
+      "category": "AI",
+      "scenario": "answer generated but DB write fails",
+      "expected": "no final charge",
+      "blocks_launch": false,
+      "verification": "automated_or_staging"
+    },
+    {
+      "id": "AI-07",
+      "category": "AI",
+      "scenario": "DB write succeeds but response lost",
+      "expected": "replay stored result",
+      "blocks_launch": false,
+      "verification": "automated_or_staging"
+    },
+    {
+      "id": "AI-08",
+      "category": "AI",
+      "scenario": "conversation history oversized",
+      "expected": "compact or bound history",
+      "blocks_launch": false,
+      "verification": "automated_or_staging"
+    },
+    {
+      "id": "AI-09",
+      "category": "AI",
+      "scenario": "AI invents birth facts",
+      "expected": "reject/repair against authoritative facts",
+      "blocks_launch": false,
+      "verification": "automated_or_staging"
+    },
+    {
+      "id": "AI-10",
+      "category": "AI",
+      "scenario": "OpenAI unavailable",
+      "expected": "graceful failure; no monetary loss",
+      "blocks_launch": false,
+      "verification": "automated_or_staging"
+    },
+    {
+      "id": "AUTH-01",
+      "category": "AUTH",
+      "scenario": "expired user session",
+      "expected": "401",
+      "blocks_launch": true,
+      "verification": "automated_or_staging"
+    },
+    {
+      "id": "AUTH-02",
+      "category": "AUTH",
+      "scenario": "revoked token replay",
+      "expected": "401",
+      "blocks_launch": true,
+      "verification": "automated_or_staging"
+    },
+    {
+      "id": "AUTH-03",
+      "category": "AUTH",
+      "scenario": "guest token theft attempt",
+      "expected": "ownership check fails",
+      "blocks_launch": true,
+      "verification": "automated_or_staging"
+    },
+    {
+      "id": "AUTH-04",
+      "category": "AUTH",
+      "scenario": "guest linked to other user",
+      "expected": "409",
+      "blocks_launch": false,
+      "verification": "automated_or_staging"
+    },
+    {
+      "id": "AUTH-05",
+      "category": "AUTH",
+      "scenario": "login state replay",
+      "expected": "deny second use",
+      "blocks_launch": false,
+      "verification": "automated_or_staging"
+    },
+    {
+      "id": "AUTH-06",
+      "category": "AUTH",
+      "scenario": "login state expired",
+      "expected": "deny",
+      "blocks_launch": false,
+      "verification": "automated_or_staging"
+    },
+    {
+      "id": "AUTH-07",
+      "category": "AUTH",
+      "scenario": "open redirect attempt",
+      "expected": "deny",
+      "blocks_launch": false,
+      "verification": "automated_or_staging"
+    },
+    {
+      "id": "AUTH-08",
+      "category": "AUTH",
+      "scenario": "admin without MFA",
+      "expected": "403",
+      "blocks_launch": false,
+      "verification": "automated_or_staging"
+    },
+    {
+      "id": "AUTH-09",
+      "category": "AUTH",
+      "scenario": "disabled user account",
+      "expected": "session rejected",
+      "blocks_launch": false,
+      "verification": "automated_or_staging"
+    },
+    {
+      "id": "AUTH-10",
+      "category": "AUTH",
+      "scenario": "logout then token reuse",
+      "expected": "401",
+      "blocks_launch": false,
+      "verification": "automated_or_staging"
+    },
+    {
+      "id": "DATA-01",
+      "category": "DATA",
+      "scenario": "profile cross-user delete",
+      "expected": "404/deny",
+      "blocks_launch": true,
+      "verification": "automated_or_staging"
+    },
+    {
+      "id": "DATA-02",
+      "category": "DATA",
+      "scenario": "conversation cross-user read",
+      "expected": "404/deny",
+      "blocks_launch": true,
+      "verification": "automated_or_staging"
+    },
+    {
+      "id": "DATA-03",
+      "category": "DATA",
+      "scenario": "chart snapshot cross-user read",
+      "expected": "404/deny",
+      "blocks_launch": true,
+      "verification": "automated_or_staging"
+    },
+    {
+      "id": "DATA-04",
+      "category": "DATA",
+      "scenario": "duplicate message request id",
+      "expected": "single stored message",
+      "blocks_launch": false,
+      "verification": "automated_or_staging"
+    },
+    {
+      "id": "DATA-05",
+      "category": "DATA",
+      "scenario": "guest to user profile move",
+      "expected": "ownership preserved",
+      "blocks_launch": false,
+      "verification": "automated_or_staging"
+    },
+    {
+      "id": "DATA-06",
+      "category": "DATA",
+      "scenario": "guest to user order move",
+      "expected": "ownership preserved",
+      "blocks_launch": false,
+      "verification": "automated_or_staging"
+    },
+    {
+      "id": "DATA-07",
+      "category": "DATA",
+      "scenario": "schema migration rerun",
+      "expected": "idempotent CREATEs/no destructive reset",
+      "blocks_launch": false,
+      "verification": "automated_or_staging"
+    },
+    {
+      "id": "DATA-08",
+      "category": "DATA",
+      "scenario": "missing required table",
+      "expected": "CI fails",
+      "blocks_launch": false,
+      "verification": "automated_or_staging"
+    },
+    {
+      "id": "DATA-09",
+      "category": "DATA",
+      "scenario": "corrupt JSON metadata",
+      "expected": "safe parse/fallback",
+      "blocks_launch": false,
+      "verification": "automated_or_staging"
+    },
+    {
+      "id": "DATA-10",
+      "category": "DATA",
+      "scenario": "soft-deleted record listing",
+      "expected": "excluded",
+      "blocks_launch": false,
+      "verification": "automated_or_staging"
+    },
+    {
+      "id": "MONEY-01",
+      "category": "MONEY",
+      "scenario": "two simultaneous wallet reservations",
+      "expected": "cannot overspend available balance",
+      "blocks_launch": true,
+      "verification": "automated_or_staging"
+    },
+    {
+      "id": "MONEY-02",
+      "category": "MONEY",
+      "scenario": "wallet finalize after stored result",
+      "expected": "single spend",
+      "blocks_launch": true,
+      "verification": "automated_or_staging"
+    },
+    {
+      "id": "MONEY-03",
+      "category": "MONEY",
+      "scenario": "wallet release after AI failure",
+      "expected": "balance preserved",
+      "blocks_launch": true,
+      "verification": "automated_or_staging"
+    },
+    {
+      "id": "MONEY-04",
+      "category": "MONEY",
+      "scenario": "quota simultaneous final free use",
+      "expected": "limit not exceeded",
+      "blocks_launch": true,
+      "verification": "automated_or_staging"
+    },
+    {
+      "id": "MONEY-05",
+      "category": "MONEY",
+      "scenario": "signup after guest free use",
+      "expected": "free quota not reset",
+      "blocks_launch": true,
+      "verification": "automated_or_staging"
+    },
+    {
+      "id": "MONEY-06",
+      "category": "MONEY",
+      "scenario": "negative wallet invariant",
+      "expected": "critical integrity alert",
+      "blocks_launch": true,
+      "verification": "automated_or_staging"
+    },
+    {
+      "id": "MONEY-07",
+      "category": "MONEY",
+      "scenario": "reserved balance above balance",
+      "expected": "critical integrity alert",
+      "blocks_launch": true,
+      "verification": "automated_or_staging"
+    },
+    {
+      "id": "MONEY-08",
+      "category": "MONEY",
+      "scenario": "finalize accounting fails",
+      "expected": "recoveryRequired; no false charged status",
+      "blocks_launch": true,
+      "verification": "automated_or_staging"
+    },
+    {
+      "id": "MONEY-09",
+      "category": "MONEY",
+      "scenario": "duplicate ledger idempotency",
+      "expected": "single economic effect",
+      "blocks_launch": true,
+      "verification": "automated_or_staging"
+    },
+    {
+      "id": "MONEY-10",
+      "category": "MONEY",
+      "scenario": "server accounting flag accidentally on in staging",
+      "expected": "readiness fails",
+      "blocks_launch": true,
+      "verification": "automated_or_staging"
+    },
+    {
+      "id": "PAY-01",
+      "category": "PAY",
+      "scenario": "browser price tampering",
+      "expected": "server product snapshot wins",
+      "blocks_launch": true,
+      "verification": "automated_or_staging"
+    },
+    {
+      "id": "PAY-02",
+      "category": "PAY",
+      "scenario": "currency mismatch",
+      "expected": "payment verification fails",
+      "blocks_launch": true,
+      "verification": "automated_or_staging"
+    },
+    {
+      "id": "PAY-03",
+      "category": "PAY",
+      "scenario": "provider amount mismatch",
+      "expected": "fulfillment blocked",
+      "blocks_launch": true,
+      "verification": "automated_or_staging"
+    },
+    {
+      "id": "PAY-04",
+      "category": "PAY",
+      "scenario": "duplicate provider transaction id",
+      "expected": "blocked/idempotent",
+      "blocks_launch": true,
+      "verification": "automated_or_staging"
+    },
+    {
+      "id": "PAY-05",
+      "category": "PAY",
+      "scenario": "payment verified fulfillment fails",
+      "expected": "reconciliation detects",
+      "blocks_launch": true,
+      "verification": "automated_or_staging"
+    },
+    {
+      "id": "PAY-06",
+      "category": "PAY",
+      "scenario": "order idempotency retry",
+      "expected": "single order",
+      "blocks_launch": true,
+      "verification": "automated_or_staging"
+    },
+    {
+      "id": "PAY-07",
+      "category": "PAY",
+      "scenario": "webhook invalid signature",
+      "expected": "401",
+      "blocks_launch": true,
+      "verification": "automated_or_staging"
+    },
+    {
+      "id": "PAY-08",
+      "category": "PAY",
+      "scenario": "webhook duplicate event",
+      "expected": "single processing",
+      "blocks_launch": true,
+      "verification": "automated_or_staging"
+    },
+    {
+      "id": "PAY-09",
+      "category": "PAY",
+      "scenario": "INICIS adapter not configured",
+      "expected": "fail closed",
+      "blocks_launch": true,
+      "verification": "automated_or_staging"
+    },
+    {
+      "id": "PAY-10",
+      "category": "PAY",
+      "scenario": "payments flag on before launch gate",
+      "expected": "payment route disabled",
+      "blocks_launch": true,
+      "verification": "automated_or_staging"
+    },
+    {
+      "id": "REFUND-01",
+      "category": "REFUND",
+      "scenario": "unused clover refund",
+      "expected": "eligible path",
+      "blocks_launch": true,
+      "verification": "automated_or_staging"
+    },
+    {
+      "id": "REFUND-02",
+      "category": "REFUND",
+      "scenario": "partially used pooled clover",
+      "expected": "manual review; no unsafe auto refund",
+      "blocks_launch": true,
+      "verification": "automated_or_staging"
+    },
+    {
+      "id": "REFUND-03",
+      "category": "REFUND",
+      "scenario": "used report refund request",
+      "expected": "apply legal policy, no blanket denial",
+      "blocks_launch": true,
+      "verification": "automated_or_staging"
+    },
+    {
+      "id": "REFUND-04",
+      "category": "REFUND",
+      "scenario": "provider refund amount mismatch",
+      "expected": "verification fails",
+      "blocks_launch": false,
+      "verification": "automated_or_staging"
+    },
+    {
+      "id": "REFUND-05",
+      "category": "REFUND",
+      "scenario": "refund succeeds entitlement active",
+      "expected": "critical reconciliation",
+      "blocks_launch": false,
+      "verification": "automated_or_staging"
+    },
+    {
+      "id": "REFUND-06",
+      "category": "REFUND",
+      "scenario": "refund webhook duplicate",
+      "expected": "single refund effect",
+      "blocks_launch": false,
+      "verification": "automated_or_staging"
+    },
+    {
+      "id": "REFUND-07",
+      "category": "REFUND",
+      "scenario": "refund provider timeout",
+      "expected": "retry without double refund",
+      "blocks_launch": false,
+      "verification": "automated_or_staging"
+    },
+    {
+      "id": "REFUND-08",
+      "category": "REFUND",
+      "scenario": "failed service delivery",
+      "expected": "restore/refund path",
+      "blocks_launch": false,
+      "verification": "automated_or_staging"
+    },
+    {
+      "id": "REFUND-09",
+      "category": "REFUND",
+      "scenario": "duplicate payment full refund",
+      "expected": "full corrective refund path",
+      "blocks_launch": false,
+      "verification": "automated_or_staging"
+    },
+    {
+      "id": "REFUND-10",
+      "category": "REFUND",
+      "scenario": "refund request missing order ownership",
+      "expected": "deny",
+      "blocks_launch": false,
+      "verification": "automated_or_staging"
+    },
+    {
+      "id": "SEC-01",
+      "category": "SEC",
+      "scenario": "foreign Origin API write",
+      "expected": "403",
+      "blocks_launch": true,
+      "verification": "automated_or_staging"
+    },
+    {
+      "id": "SEC-02",
+      "category": "SEC",
+      "scenario": "oversized AI body",
+      "expected": "413",
+      "blocks_launch": true,
+      "verification": "automated_or_staging"
+    },
+    {
+      "id": "SEC-03",
+      "category": "SEC",
+      "scenario": "rate limit exceeded",
+      "expected": "429",
+      "blocks_launch": true,
+      "verification": "automated_or_staging"
+    },
+    {
+      "id": "SEC-04",
+      "category": "SEC",
+      "scenario": "API secret committed",
+      "expected": "CI secret scan fails",
+      "blocks_launch": true,
+      "verification": "automated_or_staging"
+    },
+    {
+      "id": "SEC-05",
+      "category": "SEC",
+      "scenario": "raw auth token in logs",
+      "expected": "redacted",
+      "blocks_launch": true,
+      "verification": "automated_or_staging"
+    },
+    {
+      "id": "SEC-06",
+      "category": "SEC",
+      "scenario": "PII in security metadata",
+      "expected": "redacted/minimized",
+      "blocks_launch": true,
+      "verification": "automated_or_staging"
+    },
+    {
+      "id": "SEC-07",
+      "category": "SEC",
+      "scenario": "SQL injection-like input",
+      "expected": "bound parameters",
+      "blocks_launch": true,
+      "verification": "automated_or_staging"
+    },
+    {
+      "id": "SEC-08",
+      "category": "SEC",
+      "scenario": "admin route direct access",
+      "expected": "403 unless configured and MFA",
+      "blocks_launch": true,
+      "verification": "automated_or_staging"
+    },
+    {
+      "id": "SEC-09",
+      "category": "SEC",
+      "scenario": "missing webhook secret",
+      "expected": "webhook fails closed",
+      "blocks_launch": true,
+      "verification": "automated_or_staging"
+    },
+    {
+      "id": "SEC-10",
+      "category": "SEC",
+      "scenario": "CORS preflight allowed origin",
+      "expected": "only allowlisted origin",
+      "blocks_launch": true,
+      "verification": "automated_or_staging"
+    },
+    {
+      "id": "OPS-01",
+      "category": "OPS",
+      "scenario": "D1 unavailable",
+      "expected": "private writes fail closed",
+      "blocks_launch": true,
+      "verification": "automated_or_staging"
+    },
+    {
+      "id": "OPS-02",
+      "category": "OPS",
+      "scenario": "backup missing",
+      "expected": "launch gate fail",
+      "blocks_launch": true,
+      "verification": "automated_or_staging"
+    },
+    {
+      "id": "OPS-03",
+      "category": "OPS",
+      "scenario": "restore drill stale",
+      "expected": "launch gate fail",
+      "blocks_launch": true,
+      "verification": "automated_or_staging"
+    },
+    {
+      "id": "OPS-04",
+      "category": "OPS",
+      "scenario": "new deploy health fails",
+      "expected": "rollback candidate",
+      "blocks_launch": true,
+      "verification": "automated_or_staging"
+    },
+    {
+      "id": "OPS-05",
+      "category": "OPS",
+      "scenario": "maintenance mode",
+      "expected": "non-health traffic blocked",
+      "blocks_launch": true,
+      "verification": "automated_or_staging"
+    },
+    {
+      "id": "OPS-06",
+      "category": "OPS",
+      "scenario": "read-only mode",
+      "expected": "writes blocked",
+      "blocks_launch": true,
+      "verification": "automated_or_staging"
+    },
+    {
+      "id": "OPS-07",
+      "category": "OPS",
+      "scenario": "AI circuit breaker tripped",
+      "expected": "AI temporarily disabled",
+      "blocks_launch": true,
+      "verification": "automated_or_staging"
+    },
+    {
+      "id": "OPS-08",
+      "category": "OPS",
+      "scenario": "payment circuit breaker tripped",
+      "expected": "payments disabled",
+      "blocks_launch": true,
+      "verification": "automated_or_staging"
+    },
+    {
+      "id": "OPS-09",
+      "category": "OPS",
+      "scenario": "audit integrity mismatch",
+      "expected": "critical incident",
+      "blocks_launch": true,
+      "verification": "automated_or_staging"
+    },
+    {
+      "id": "OPS-10",
+      "category": "OPS",
+      "scenario": "staging readiness incomplete",
+      "expected": "do not promote",
+      "blocks_launch": true,
+      "verification": "automated_or_staging"
+    },
+    {
+      "id": "LEGAL-01",
+      "category": "LEGAL",
+      "scenario": "terms not approved",
+      "expected": "payments blocked",
+      "blocks_launch": true,
+      "verification": "automated_or_staging"
+    },
+    {
+      "id": "LEGAL-02",
+      "category": "LEGAL",
+      "scenario": "privacy policy not approved",
+      "expected": "payments blocked",
+      "blocks_launch": true,
+      "verification": "automated_or_staging"
+    },
+    {
+      "id": "LEGAL-03",
+      "category": "LEGAL",
+      "scenario": "refund policy not approved",
+      "expected": "payments blocked",
+      "blocks_launch": true,
+      "verification": "automated_or_staging"
+    },
+    {
+      "id": "LEGAL-04",
+      "category": "LEGAL",
+      "scenario": "merchant phone/email missing",
+      "expected": "payments blocked",
+      "blocks_launch": true,
+      "verification": "automated_or_staging"
+    },
+    {
+      "id": "LEGAL-05",
+      "category": "LEGAL",
+      "scenario": "ecommerce reporting status unknown",
+      "expected": "payments blocked",
+      "blocks_launch": true,
+      "verification": "automated_or_staging"
+    },
+    {
+      "id": "LEGAL-06",
+      "category": "LEGAL",
+      "scenario": "privacy contact missing",
+      "expected": "payments blocked",
+      "blocks_launch": true,
+      "verification": "automated_or_staging"
+    },
+    {
+      "id": "LEGAL-07",
+      "category": "LEGAL",
+      "scenario": "processor list unconfirmed",
+      "expected": "payments blocked",
+      "blocks_launch": true,
+      "verification": "automated_or_staging"
+    },
+    {
+      "id": "LEGAL-08",
+      "category": "LEGAL",
+      "scenario": "overseas transfer disclosure unconfirmed",
+      "expected": "payments blocked",
+      "blocks_launch": true,
+      "verification": "automated_or_staging"
+    },
+    {
+      "id": "LEGAL-09",
+      "category": "LEGAL",
+      "scenario": "under-14 policy unconfirmed",
+      "expected": "payments blocked",
+      "blocks_launch": true,
+      "verification": "automated_or_staging"
+    },
+    {
+      "id": "LEGAL-10",
+      "category": "LEGAL",
+      "scenario": "PG disclosure/legal review incomplete",
+      "expected": "payments blocked",
+      "blocks_launch": true,
+      "verification": "automated_or_staging"
+    }
+  ]
+}
