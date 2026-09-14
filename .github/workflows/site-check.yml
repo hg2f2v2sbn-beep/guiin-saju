@@ -43,7 +43,10 @@ jobs:
             guiin-authority-bridge.js worker-v5.4-authority-transition-preview.js AUTHORITY-TRANSITION-V1.md \
             authority-transition-regression.test.js frontend-authority-bridge-regression.test.js \
             worker-v5.4-authority-regression.test.js authority-schema-regression.test.js \
-            authority-transition-smoke.py
+            authority-transition-smoke.py server-pg-test-migration-v1.sql server-pg-adapter.js \
+            server-webhook-signature.js worker-v5.5-pg-test-preview.js PG-TEST-WEBHOOK-V1.md \
+            pg-test-regression.test.js webhook-signature-regression.test.js worker-v5.5-pg-regression.test.js \
+            pg-schema-regression.test.js pg-test-smoke.py
           do
             test -f "$f" || { echo "MISSING: $f"; exit 1; }
           done
@@ -71,7 +74,9 @@ jobs:
             guest-conversion-compat-regression.test.js server-authority-transition.js guiin-authority-bridge.js \
             worker-v5.4-authority-transition-preview.js authority-transition-regression.test.js \
             frontend-authority-bridge-regression.test.js worker-v5.4-authority-regression.test.js \
-            authority-schema-regression.test.js
+            authority-schema-regression.test.js server-pg-adapter.js server-webhook-signature.js \
+            worker-v5.5-pg-test-preview.js pg-test-regression.test.js webhook-signature-regression.test.js \
+            worker-v5.5-pg-regression.test.js pg-schema-regression.test.js
           do
             node --check "$f"
           done
@@ -107,11 +112,16 @@ jobs:
           node frontend-authority-bridge-regression.test.js
           node worker-v5.4-authority-regression.test.js
           node authority-schema-regression.test.js
+          node pg-test-regression.test.js
+          node webhook-signature-regression.test.js
+          node worker-v5.5-pg-regression.test.js
+          node pg-schema-regression.test.js
           python account-link-smoke.py
           python data-crud-smoke.py
           python login-foundation-smoke.py
           python staging-init-smoke.py
           python authority-transition-smoke.py
+          python pg-test-smoke.py
 
       - name: Sitemap uses .html paths
         run: |
