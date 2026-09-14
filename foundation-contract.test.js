@@ -18,10 +18,13 @@ ok("대운 선택은 [start,nextStart)", () => {
   assert.strictEqual(E.findCurrentLuckHalfOpen(rows,15).ko,"을축");
 });
 
-ok("시간미상 uncertainty", () => {
-  const u=E.buildUncertainty({input:{hourUnknown:true},calculation:{boundaryDiagnostics:[]}});
+ok("시간미상 uncertainty는 단일 근사값이 아니라 범위", () => {
+  const u=E.buildUncertainty({
+    input:{hourUnknown:true},
+    calculation:{boundaryDiagnostics:[]}
+  });
   assert.strictEqual(u.hour_pillar,"unavailable");
-  assert.strictEqual(u.daeun_transition,"approximate");
+  assert.strictEqual(u.daeun_transition,"range");
 });
 
 ok("오행 분포/강약 분리", () => {
@@ -49,4 +52,4 @@ ok("금액 정규화", () => {
   assert.deepStrictEqual(S.normalizeMoney(5900,"krw"),{amount:5900,currency:"KRW"});
 });
 
-console.log("\nGuiin v2 applied foundation: ALL PASS");
+console.log("\nGuiin v2 foundation contracts: ALL PASS");
