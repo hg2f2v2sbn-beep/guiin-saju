@@ -39,7 +39,11 @@ jobs:
             cloudflare-staging-config.js worker-v5.3-staging-preview.js wrangler.staging.example.toml \
             staging-readiness-manifest.json CLOUDFLARE-STAGING-V1.md staging-config-regression.test.js \
             worker-v5.3-staging-regression.test.js guest-conversion-compat-regression.test.js \
-            staging-init-smoke.py
+            staging-init-smoke.py server-authority-transition-migration-v1.sql server-authority-transition.js \
+            guiin-authority-bridge.js worker-v5.4-authority-transition-preview.js AUTHORITY-TRANSITION-V1.md \
+            authority-transition-regression.test.js frontend-authority-bridge-regression.test.js \
+            worker-v5.4-authority-regression.test.js authority-schema-regression.test.js \
+            authority-transition-smoke.py
           do
             test -f "$f" || { echo "MISSING: $f"; exit 1; }
           done
@@ -64,7 +68,10 @@ jobs:
             worker-v5.2-login-foundation-regression.test.js frontend-login-bridge-regression.test.js \
             server-guest-conversion.js cloudflare-staging-config.js worker-v5.3-staging-preview.js \
             staging-config-regression.test.js worker-v5.3-staging-regression.test.js \
-            guest-conversion-compat-regression.test.js
+            guest-conversion-compat-regression.test.js server-authority-transition.js guiin-authority-bridge.js \
+            worker-v5.4-authority-transition-preview.js authority-transition-regression.test.js \
+            frontend-authority-bridge-regression.test.js worker-v5.4-authority-regression.test.js \
+            authority-schema-regression.test.js
           do
             node --check "$f"
           done
@@ -96,10 +103,15 @@ jobs:
           node staging-config-regression.test.js
           node worker-v5.3-staging-regression.test.js
           node guest-conversion-compat-regression.test.js
+          node authority-transition-regression.test.js
+          node frontend-authority-bridge-regression.test.js
+          node worker-v5.4-authority-regression.test.js
+          node authority-schema-regression.test.js
           python account-link-smoke.py
           python data-crud-smoke.py
           python login-foundation-smoke.py
           python staging-init-smoke.py
+          python authority-transition-smoke.py
 
       - name: Sitemap uses .html paths
         run: |
