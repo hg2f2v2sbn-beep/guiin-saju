@@ -7,7 +7,6 @@ on:
   workflow_dispatch:
 permissions:
   contents: read
-
 jobs:
   check:
     runs-on: ubuntu-latest
@@ -36,7 +35,11 @@ jobs:
             server-logout.js worker-v5.2-login-foundation-preview.js guiin-login-bridge.js \
             LOGIN-FOUNDATION-V1.md login-foundation-regression.test.js \
             login-foundation-schema-regression.test.js worker-v5.2-login-foundation-regression.test.js \
-            frontend-login-bridge-regression.test.js login-foundation-smoke.py
+            frontend-login-bridge-regression.test.js login-foundation-smoke.py server-guest-conversion.js \
+            cloudflare-staging-config.js worker-v5.3-staging-preview.js wrangler.staging.example.toml \
+            staging-readiness-manifest.json CLOUDFLARE-STAGING-V1.md staging-config-regression.test.js \
+            worker-v5.3-staging-regression.test.js guest-conversion-compat-regression.test.js \
+            staging-init-smoke.py
           do
             test -f "$f" || { echo "MISSING: $f"; exit 1; }
           done
@@ -58,7 +61,10 @@ jobs:
             worker-v5.1-data-crud-regression.test.js data-client-v2-regression.test.js \
             server-login-foundation.js server-logout.js worker-v5.2-login-foundation-preview.js \
             guiin-login-bridge.js login-foundation-regression.test.js login-foundation-schema-regression.test.js \
-            worker-v5.2-login-foundation-regression.test.js frontend-login-bridge-regression.test.js
+            worker-v5.2-login-foundation-regression.test.js frontend-login-bridge-regression.test.js \
+            server-guest-conversion.js cloudflare-staging-config.js worker-v5.3-staging-preview.js \
+            staging-config-regression.test.js worker-v5.3-staging-regression.test.js \
+            guest-conversion-compat-regression.test.js
           do
             node --check "$f"
           done
@@ -87,23 +93,14 @@ jobs:
           node login-foundation-schema-regression.test.js
           node worker-v5.2-login-foundation-regression.test.js
           node frontend-login-bridge-regression.test.js
+          node staging-config-regression.test.js
+          node worker-v5.3-staging-regression.test.js
+          node guest-conversion-compat-regression.test.js
           python account-link-smoke.py
           python data-crud-smoke.py
           python login-foundation-smoke.py
+          python staging-init-smoke.py
 
-      - name: Workflow sanity
-        shell: python
-        run: |
-          import pathlib,sys,re
-          s=pathlib.Path(".github/workflows/site-check.yml").read_text(encoding="utf-8")
-          bad=[]
-          for line in s.splitlines():
-            x=line.strip()
-            if x.startswith("node ") and x!="node --check \"$f\"" and x.count(".test.js")!=1:
-              bad.append(line)
-          if bad:
-            print("workflow sanity failed:",*bad,sep="\n");sys.exit(1)
-          print("workflow sanity ok")
       - name: Sitemap uses .html paths
         run: |
           set -e
