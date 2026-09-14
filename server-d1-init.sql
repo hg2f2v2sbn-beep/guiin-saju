@@ -160,10 +160,31 @@ CREATE TABLE IF NOT EXISTS payments (
   approved_amount INTEGER,
   currency TEXT,
   approved_at TEXT,
+  verified_at TEXT,
+  verification_source TEXT,
+  raw_payload_hash TEXT,
   created_at TEXT NOT NULL,
   updated_at TEXT NOT NULL,
   FOREIGN KEY (order_id) REFERENCES orders(id)
 );
+
+
+CREATE TABLE IF NOT EXISTS payment_events (
+  id TEXT PRIMARY KEY,
+  order_id TEXT NOT NULL,
+  payment_id TEXT,
+  event_type TEXT NOT NULL,
+  from_state TEXT,
+  to_state TEXT,
+  request_id TEXT,
+  metadata_json TEXT,
+  created_at TEXT NOT NULL,
+  FOREIGN KEY (order_id) REFERENCES orders(id),
+  FOREIGN KEY (payment_id) REFERENCES payments(id)
+);
+
+CREATE INDEX IF NOT EXISTS idx_payment_events_order
+ON payment_events(order_id, created_at);
 
 CREATE TABLE IF NOT EXISTS refunds (
   id TEXT PRIMARY KEY,
@@ -211,6 +232,10 @@ CREATE TABLE IF NOT EXISTS entitlements (
 
 CREATE INDEX IF NOT EXISTS idx_entitlements_user ON entitlements(user_id, state, entitlement_type);
 CREATE INDEX IF NOT EXISTS idx_entitlements_guest ON entitlements(guest_session_id, state, entitlement_type);
+
+CREATE UNIQUE INDEX IF NOT EXISTS idx_entitlement_grant_once
+ON entitlements(order_id, entitlement_type, COALESCE(resource_key,''));
+
 
 CREATE TABLE IF NOT EXISTS wallet_accounts (
   subject_type TEXT NOT NULL,
