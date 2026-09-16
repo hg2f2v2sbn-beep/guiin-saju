@@ -1,12 +1,12 @@
 {
   "version": "1.0",
-  "as_of": "2026-09-14",
+  "as_of": "2026-09-16",
   "code_ready": true,
   "external_ready": false,
   "payments_allowed": false,
   "gates": {
-    "D1_STAGING_DEPLOYED": "PENDING",
-    "STAGING_E2E_PASSED": "PENDING",
+    "D1_STAGING_DEPLOYED": "PASS",
+    "STAGING_E2E_PASSED": "PASS",
     "REAL_LOGIN_PROVIDER_VERIFIED": "PENDING",
     "SERVER_CHART_AUTHORITY_VERIFIED": "PENDING",
     "PG_TEST_VERIFIED": "PENDING",
