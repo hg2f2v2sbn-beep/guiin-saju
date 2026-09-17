@@ -737,16 +737,8 @@ button{position:relative}
 <style id="GUIIN_INTERPRET_STYLE_V10">
 .deepNarrativeNote{margin:10px 14px;padding:11px 13px;border-radius:14px;background:#f8f4ea;color:#6f675b;font-size:10px;line-height:1.65}
 </style>
-<style id="GUIIN_DEMO_BADGE">
-.guiinDemoBadge{position:fixed;top:calc(14px + env(safe-area-inset-top));right:16px;z-index:9999;background:#275f4c;color:#fff;border-radius:999px;padding:8px 13px;font-size:12px;font-weight:900;letter-spacing:.03em;box-shadow:0 5px 16px rgba(23,63,45,.16);pointer-events:none}
-</style>
-<style id="GUIIN_DEMO_FREE_MODE">
-#wallet,#payments,#paySheet,#premiumSheet,#compatSheet,[data-guiin-nav="wallet"],[data-guiin-nav="payments"],button[onclick^="openPaySheet"],button[onclick="openPremiumPay()"],button[onclick="openCompatPay()"]{display:none!important}
-.guiinDemoFreeNotice{margin:10px 14px 8px;padding:11px 13px;border-radius:14px;background:#eef7ed;color:#2f6444;font-size:11px;font-weight:850;line-height:1.6;border:1px solid rgba(47,100,68,.12)}
-</style>
-</head>
-<body>
-<div class="guiinDemoBadge" aria-label="데모 무료 전체풀이">DEMO · 전체풀이 무료</div>
+<style id="GUIIN_DEMO_BADGE">.guiinDemoBadge{position:fixed;top:calc(14px + env(safe-area-inset-top));right:16px;z-index:9999;background:#275f4c;color:#fff;border-radius:999px;padding:8px 13px;font-size:12px;font-weight:900;box-shadow:0 5px 16px rgba(23,63,45,.16);pointer-events:none}</style><style id="GUIIN_DEMO_FREE_MODE">#wallet,#payments,#paySheet,#premiumSheet,#compatSheet,[data-guiin-nav="wallet"],[data-guiin-nav="payments"],button[onclick^="openPaySheet"],button[onclick="openPremiumPay()"],button[onclick="openCompatPay()"]{display:none!important}.guiinDemoFreeNotice{margin:10px 14px 8px;padding:11px 13px;border-radius:14px;background:#eef7ed;color:#2f6444;font-size:11px;font-weight:850;line-height:1.6}</style></head>
+<body><div class="guiinDemoBadge">DEMO · 전체풀이 무료</div>
 <div class="app">
 
 <section id="home" class="screen active">
@@ -996,10 +988,9 @@ button{position:relative}
     </div>
     <button type="button" onclick="go('saju')" data-guiin-nav="saju">변경</button>
   </div>
-  <div class="guiinDemoFreeNotice">데모에서는 사주·궁합·대운 풀이를 결제 없이 전체 확인할 수 있어요.</div>
-  <div class="creditBar"><div><div style="font-size:12px;opacity:.85">AI 데모 상담</div><b id="freeRemainView">3</b><span style="font-size:13px">회 남음</span></div><span style="font-size:11px;opacity:.84">데모 제공</span></div>
+  <div class="creditBar"><div><div style="font-size:12px;opacity:.85">AI 무료 상담</div><b id="freeRemainView">3</b><span style="font-size:13px">회 남음</span><div style="font-size:11px;opacity:.82;margin-top:3px">보유 ☘ <span id="coinView">0</span>개</div></div><button class="ctaGold" style="width:auto;margin:0;padding:10px 14px" onclick="go('wallet')" data-guiin-nav="wallet">☘ 충전</button></div>
   <div class="askTools">
-    <p class="adminNote">AI 상담은 데모에서 3회만 제공해요. 사주·궁합·대운 풀이는 제한 없이 모두 볼 수 있습니다. 최근 대화는 이 기기에만 저장됩니다.</p>
+    <p class="adminNote">처음 3번은 무료예요. 답변 실패 시 무료 횟수나 클로버는 차감되지 않습니다. 최근 대화는 이 기기에만 저장됩니다.</p>
     <button type="button" onclick="clearAIChat()">대화 지우기</button>
   </div>
   <div class="msgs" id="msgs" aria-live="polite">
@@ -1854,8 +1845,8 @@ function guiinApplyVerifiedEntitlements(payload){
  return true;
 }
 window.guiinApplyVerifiedEntitlements=guiinApplyVerifiedEntitlements;
-function hasPremiumLifetime(){return true; /* DEMO FREE */}
-function hasPremiumCompat(){return true; /* DEMO FREE */}
+function hasPremiumLifetime(){return true;}
+function hasPremiumCompat(){return true;}
 function pickPreviewSamples(key,pool,count=3){
  try{
   const storageKey='guiin_preview_samples_'+key;
@@ -2029,6 +2020,48 @@ function compatPairProfile(a,b){
  return COMPAT_PAIR_PROFILE[key]||{fit:'서로 다른 강점을 역할로 나누면 보완 관계가 될 수 있습니다.',friction:'표현과 결정 속도의 차이를 성격 문제로 단정하지 않는 게 중요합니다.'};
 }
 
+
+function compatDayVoice(c){
+ const stem=c?.dayMaster?.stem||c?.pillars?.day?.stem||'';
+ return GUIIN_DAYMASTER_NARRATIVE?.[stem]||{image:'자기만의 기질',core:'자기 방식의 판단',soft:'가까운 사람을 챙기는 면',shadow:'피로가 쌓이면 자기 방식이 강해질 수 있음'};
+}
+function compatAgeGap(a,b){
+ const ay=Number(a?.input?.year||0),by=Number(b?.input?.year||0);
+ return ay&&by?Math.abs(ay-by):0;
+}
+function compatNarrativeMeta(a,b){
+ const A=sajuInsightProfile(a),B=sajuInsightProfile(b);
+ const aName=String(a?.input?.name||'A'),bName=String(b?.input?.name||'B');
+ const ae=A.top,be=B.top,pair=compatPairProfile(ae,be);
+ return {A,B,aName,bName,ae,be,pair,aDay:compatDayVoice(a),bDay:compatDayVoice(b),ageGap:compatAgeGap(a,b)};
+}
+function compatEvidence(a,b,kind){
+ const m=compatNarrativeMeta(a,b),p=[];
+ if(kind==='core'){p.push(`${m.aName} ${a.dayMaster?.stem||''} 일간`,`${m.bName} ${b.dayMaster?.stem||''} 일간`,`중심 오행 ${m.ae} ↔ ${m.be}`);}
+ if(kind==='daily'){p.push(`${m.aName} 월주 ${m.A.mg}`,`${m.bName} 월주 ${m.B.mg}`);}
+ if(kind==='relation'){const ar=relationSummary(a),br=relationSummary(b);if(ar)p.push(`${m.aName}: ${ar}`);if(br)p.push(`${m.bName}: ${br}`);}
+ return p.filter(Boolean).join(' / ');
+}
+function compatDeepSections(a,b){
+ const m=compatNarrativeMeta(a,b),sameStem=(a.dayMaster?.stem||'')===(b.dayMaster?.stem||''),sameElem=m.ae===m.be;
+ const ageText=m.ageGap?`두 사람은 ${m.ageGap}년의 나이 차이가 있지만, 나이 차이 자체가 궁합의 좋고 나쁨을 결정하지는 않습니다. 실제로는 역할과 의사결정 방식이 더 중요합니다.`:'';
+ const first=sameStem?`같은 ${a.dayMaster?.stem||''} 일간이라 기본 감각은 닮았지만, 같은 약점도 함께 커질 수 있는 관계`:`${m.aDay.image}와 ${m.bDay.image}처럼 서로 다른 방식이 만나 보완과 긴장을 함께 만드는 관계`;
+ return [
+  {key:'summary',k:'한마디로',t:first,b:`<p>${sameElem?`둘 다 ${m.ae} 기운을 강하게 쓰기 때문에 통하는 지점은 빠르지만 지칠 때 반응도 비슷할 수 있습니다.`:`${m.aName}님은 ${m.ae} 기운의 ${m.A.p.praise}을, ${m.bName}님은 ${m.be} 기운의 ${m.B.p.praise}을 주로 씁니다.`}</p><p>${m.pair.fit} ${ageText}</p>`,g:'서로의 강점을 역할로 나누면 관계가 훨씬 편해질 수 있습니다.',w:m.pair.friction,tip:'“누가 맞나”보다 “이 상황에서 누가 무엇을 더 잘하나”를 기준으로 역할을 나눠보세요.',ev:compatEvidence(a,b,'core')},
+  {key:'elements',k:'오행의 조화',t:`${m.ae}와 ${m.be}의 조합은 ${sameElem?'닮은 리듬':'서로 다른 리듬'}을 만듭니다.`,b:`<p>${m.aName}님은 ${m.A.top} ${m.A.e.top[1]}%가, ${m.bName}님은 ${m.B.top} ${m.B.e.top[1]}%가 두드러집니다.</p><p>${m.pair.fit} 반대로 ${m.pair.friction}</p>`,g:`${m.aName}님의 ${m.A.p.praise}과 ${m.bName}님의 ${m.B.p.praise}을 역할로 나누면 보완 효과가 큽니다.`,w:'오행 차이를 성격 결함으로 해석하면 갈등이 굳어질 수 있습니다.',tip:'서로가 잘하는 일과 힘들어하는 일을 3개씩 적어서 실제 생활 역할로 나눠보세요.',ev:compatEvidence(a,b,'core')},
+  {key:'fit',k:'잘 맞는 부분',t:'서로의 장점을 살려줄 때는 관계가 빠르게 가까워질 수 있습니다.',b:`<p>${m.aName}님은 ${m.aDay.core}, ${m.bName}님은 ${m.bDay.core}이 강점으로 읽힙니다. 두 힘이 충돌하지 않고 연결되면 한 사람은 방향을 잡고 다른 사람은 속도나 완성도를 보태는 식의 시너지가 생길 수 있습니다.</p>`,g:'상대의 다른 방식을 내 단점의 반대편이 아니라 보완 기능으로 볼 수 있습니다.',w:'상대가 내 방식대로 움직여주길 기대하면 좋은 궁합도 피곤해질 수 있습니다.',tip:'상대가 해준 것 중 “내 방식과 달랐지만 도움이 된 것”을 자주 말로 확인해 주세요.',ev:compatEvidence(a,b,'core')},
+  {key:'clash',k:'부딪히는 부분',t:'갈등은 사랑의 크기보다 말투·속도·경계에서 생길 가능성이 큽니다.',b:`<p>${m.aName}님은 힘들 때 ${m.aDay.shadow}, ${m.bName}님은 ${m.bDay.shadow}. 두 반응이 동시에 나오면 한쪽은 압박받고 다른 쪽은 무시당한다고 느낄 수 있습니다.</p><p>${m.pair.friction}</p>`,g:'갈등 패턴을 미리 알면 회복 속도를 빠르게 만들 수 있습니다.',w:'감정이 올라온 상태에서 관계 전체를 평가하거나 큰 결론을 바로 내리는 것',tip:'20~30분 멈춘 뒤 다시 이야기할 시간을 정해두세요.',ev:compatEvidence(a,b,'relation')||compatEvidence(a,b,'core')},
+  {key:'love',k:'연애 궁합',t:'끌림보다 중요한 건 “사랑을 확인하는 방식”이 서로 맞는지입니다.',b:`<p>${m.aName}님은 ${m.aDay.soft}, ${m.bName}님은 ${m.bDay.soft}. 이 방식이 다르면 한쪽은 행동으로 충분히 표현했다고 느끼고 다른 쪽은 말이나 반응이 부족하다고 느낄 수 있습니다.</p><p>연락 빈도·표현 강도·혼자 있는 시간·질투 기준을 애정의 크기와 동일시하지 않는 게 중요합니다.</p>`,g:'상대의 사랑 표현 방식을 번역해 이해하기 시작하면 친밀감이 오래 갑니다.',w:'답장 속도나 만나는 횟수를 사랑의 증거로 재는 것',tip:'“내가 사랑받는다고 느끼는 행동 3가지”를 서로 말해보세요.',ev:compatEvidence(a,b,'core')},
+  {key:'marriage',k:'결혼·동거 궁합',t:'장기 관계는 설렘보다 생활 운영 방식이 더 중요합니다.',b:`<p>돈·집안일·가족·반려동물·개인시간·수면·여행처럼 반복되는 생활 규칙에서 차이가 가장 현실적으로 드러납니다.</p><p>${m.aName}님은 월주 ${m.A.mg}, ${m.bName}님은 월주 ${m.B.mg}의 사회적 태도를 자주 쓰는 편이라 책임 분담부터 맞추는 게 중요합니다.</p>`,g:'공동 목표와 역할이 분명할수록 두 사람의 장점이 실제 생활에서 시너지가 됩니다.',w:'한 사람이 계속 관리하고 다른 사람은 따라가기만 하는 구조가 굳어지는 것',tip:'살 곳·돈·집안일·가족 경계·혼자 있는 시간을 미리 문장으로 합의해보세요.',ev:compatEvidence(a,b,'daily')},
+  {key:'family',k:'가족·주변인',t:'가족 문제는 사랑보다 “경계와 편들기 방식”에서 갈등이 생기기 쉽습니다.',b:`<p>사주만으로 양가 가족이 실제로 어떻게 행동할지 단정할 수는 없습니다. 가족 요청에 어디까지 응할지, 누구의 가족 문제를 누가 해결할지 기준이 없으면 피로가 커질 수 있습니다.</p><p>${ageText}</p>`,g:'서로의 가족을 존중하되 둘의 관계 기준을 먼저 세우면 안정감이 커집니다.',w:'상대 가족 문제를 대신 해결하거나 가족 앞에서 서로를 혼자 두는 것',tip:'명절·돈·돌봄·방문 빈도처럼 민감한 주제는 감정이 생기기 전에 원칙을 정해두세요.',ev:compatEvidence(a,b,'daily')},
+  {key:'mirror',k:'서로가 보는 나',t:'내가 단점이라 느끼는 모습이 상대에게는 장점으로 보일 수 있습니다.',b:`<p>${m.aName}님의 ${m.aDay.shadow}은 ${m.bName}님에게는 때로 ${m.aDay.core}처럼 보일 수 있습니다. 반대로 ${m.bName}님의 ${m.bDay.shadow}도 ${m.aName}님에게는 추진력이나 솔직함으로 느껴질 수 있습니다.</p>`,g:'서로에게서 내가 몰랐던 장점을 발견할 수 있습니다.',w:'상대의 장점을 당연하게 여기고 문제만 말하는 것',tip:'일주일에 한 번 상대에게 고마웠던 행동 하나를 구체적으로 말해보세요.',ev:compatEvidence(a,b,'core')},
+  {key:'line',k:'관계를 위한 한 줄',t:'서로를 바꾸는 관계보다, 서로의 다른 사용법을 배우는 관계가 오래 갑니다.',b:`<p>${m.aName}님과 ${m.bName}님의 궁합은 점수 하나로 결론낼 수 없습니다. 잘 맞는 영역과 조율이 필요한 영역이 동시에 있고, 실제 만족도는 대화·돈·생활·경계에서 어떤 선택을 하는지에 따라 달라질 수 있습니다.</p>`,g:'서로 다른 장점을 존중하면 관계가 성장의 도구가 될 수 있습니다.',w:'사주 결과를 상대를 통제하거나 비난하는 근거로 쓰는 것',tip:'문제가 생기면 궁합 결과보다 실제로 있었던 사실과 서로의 요청부터 확인하세요.',ev:compatEvidence(a,b,'relation')||compatEvidence(a,b,'core')}
+ ];
+}
+function compatDeepCard(s,i){
+ return easyCard(`${String(i+1).padStart(2,'0')} · ${s.k}`,s.t,s.b,s.g,s.w,s.tip,s.ev);
+}
+
 function compatGuide(title,aName='나',bName='상대방',meta={}){
  const ae=meta.ae||'',be=meta.be||'',gapEl=meta.gapEl||'',gapVal=Number(meta.gapVal||0);
  const aStyle=compatElementStyle(ae),bStyle=compatElementStyle(be),pair=compatPairProfile(ae,be);
@@ -2164,31 +2197,34 @@ function compatDomainCard(s,i,deep){
 function renderCompatCards(){
  if(!matchAnalysis)return;
  document.querySelectorAll('#matchTabs button').forEach(b=>b.classList.toggle('on',b.dataset.matchTab===matchTab));
+ const a=matchAnalysis.a||matchAnalysis.left||matchAnalysis.chartA||matchMeta?.a;
+ const b=matchAnalysis.b||matchAnalysis.right||matchAnalysis.chartB||matchMeta?.b;
+ if(!a||!b)return;
  if(!hasPremiumCompat()){
    const free=matchMeta?`<div class="easyLongCard card"><div class="easyKicker">무료 궁합 요약</div><h3>좋은 점과 조심할 점을 먼저 확인해 보세요</h3><div class="easyPoint good"><b>두 사람의 강점</b><p>${matchMeta.good}</p></div><div class="easyPoint watch"><b>두 사람의 약점</b><p>${matchMeta.watch}</p></div><div class="easyPoint tip"><b>관계를 오래 가져가려면</b><p>${matchMeta.tip}</p></div></div>`:'';
    $('matchView').innerHTML=guiinVisualHero('match',matchMeta?.a?.input?.name)+matchBaseHTML+free+compatPremiumPreviewHTML()+tailQuestionsHTML('궁합'); return;
  }
- const deep=U35Compat.analyze(matchAnalysis.a||matchAnalysis.left||matchAnalysis.chartA||matchMeta?.a,matchAnalysis.b||matchAnalysis.right||matchAnalysis.chartB||matchMeta?.b);
- const sections=(deep&&deep.domains)||[];
- let chosen=[];
- if(matchTab==='love') chosen=[0,1,6];
- else if(matchTab==='marriage') chosen=[4,5,7,8];
- else if(matchTab==='partner') chosen=[2,3,9];
- else chosen=[0,2,4,7];
- const cards=chosen.map((idx,n)=>compatDomainCard(sections[idx],n,deep)).join('');
- const summary=matchTab==='summary'?compatSummaryHTML(deep):'';
- const tabLead={
-  summary:'두 사람의 핵심 패턴을 먼저 보고, 실제 생활에서 어디서 편하고 어디서 지치는지 정리했습니다.',
-  love:'끌림·표현·친밀감에서 서로가 어떻게 사랑을 느끼는지 집중해서 봅니다.',
-  marriage:'돈·생활·가족·장기관계처럼 같이 살 때 현실적으로 중요한 부분을 봅니다.',
-  partner:'상대방의 반응 방식과 갈등·회복 패턴을 중심으로 봅니다.'
+ const sections=compatDeepSections(a,b);
+ const map={
+   summary:['summary','elements','fit','clash','line'],
+   love:['love','fit','clash','mirror','line'],
+   marriage:['marriage','family','elements','clash','line'],
+   partner:['mirror','clash','fit','family','line']
+ };
+ const wanted=map[matchTab]||map.summary;
+ const chosen=wanted.map(k=>sections.find(s=>s.key===k)).filter(Boolean);
+ const lead={
+  summary:'두 사람의 핵심 구조와 보완점, 갈등 패턴을 한 번에 정리했습니다.',
+  love:'끌림과 애정표현, 질투·연락·거리감처럼 연애에서 체감되는 부분을 봅니다.',
+  marriage:'같이 살 때 중요한 돈·집안일·가족·개인시간을 중심으로 봅니다.',
+  partner:'상대가 나를 어떻게 느낄 수 있는지와 갈등·회복 패턴을 봅니다.'
  }[matchTab]||'';
  $('matchView').innerHTML=
    guiinVisualHero('match',matchMeta?.a?.input?.name)+
    matchBaseHTML+
-   `<div class="easyIntro card"><div class="easyKicker">${compatEsc(matchTab==='summary'?'궁합 요약':matchTab==='love'?'연애 궁합':matchTab==='marriage'?'결혼 궁합':'상대방 분석')}</div><h2>${compatEsc(tabLead)}</h2></div>`+
-   summary+cards+
-   `<div class="paidDisclaimer">궁합은 관계를 단정하는 판정표가 아니라, 두 사람이 실제 생활에서 반복할 수 있는 패턴과 조율 지점을 이해하기 위한 참고 해석입니다.</div>`+
+   `<div class="easyIntro card"><div class="easyKicker">${compatEsc(matchTab==='summary'?'궁합 요약':matchTab==='love'?'연애 궁합':matchTab==='marriage'?'결혼·동거 궁합':'상대방 분석')}</div><h2>${compatEsc(lead)}</h2></div>`+
+   chosen.map((s,i)=>compatDeepCard(s,i)).join('')+
+   `<div class="paidDisclaimer">궁합은 천생연분·악연을 판정하는 표가 아니라, 두 사람이 실제 생활에서 반복할 수 있는 패턴과 조율 지점을 이해하기 위한 참고 해석입니다.</div>`+
    tailQuestionsHTML('궁합');
  setTimeout(()=>guiinTextSimilarityReport('matchView'),0);
 }
