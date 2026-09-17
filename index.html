@@ -2004,28 +2004,15 @@ async function sendQ(preset){
 
   const status=document.createElement('div');
   status.className='sysnote';
-  status.textContent='답변을 준비하고 있어요…';
+  status.textContent='사주 근거를 확인해 답변을 만들고 있어요…';
   $('msgs')?.appendChild(status);
 
   const controller=new AbortController();
   const timer=setTimeout(()=>controller.abort(),45000);
 
   try{
-    const detailGuide=`실제 1:1 사주상담처럼 자연스럽고 따뜻하게 답하세요.
-실제 이름이 있으면 필요한 지점에서만 이름+님으로 부르고, 이름이 없으면 호칭을 생략하세요.
-사용자님·고객님·내담자님·회원님·당신 같은 일반 호칭은 쓰지 마세요.
-질문의 핵심부터 답하고 전달된 사주 데이터 안에서만 근거를 설명하세요.
-사용자가 말하지 않은 과거 사건·직업·관계·감정을 실제 있었던 일처럼 지어내지 마세요.
-일간 한 글자나 신살 하나만으로 성격·사건·미래를 단정하지 마세요.
-전문용어는 바로 쉬운 말로 풀고 생활 장면과 현실적인 행동 조언으로 연결하세요.
-같은 말을 반복하지 말고 짧은 문단으로 읽기 좋게 작성하세요.
-화면은 일반 텍스트로 표시되므로 ###, **, __ 같은 마크다운 기호를 사용하지 마세요.
-미래를 확정하거나 공포를 조장하지 말고 의료·법률·투자 판단을 사주로 대신하지 마세요.`;
-
-    const message=`[현재 날짜: ${new Date().getFullYear()}년 ${new Date().getMonth()+1}월 ${new Date().getDate()}일]
-현재 날짜 기준으로 답하고, 근거 없는 연도·사건은 단정하지 마세요.
-${detailGuide}
-질문: ${q}`;
+    const requestId=guiinRandomId('chat_');
+    const message=q;
 
     const res=await fetch(GUIIN_AI_API,{
       method:'POST',
@@ -2033,13 +2020,15 @@ ${detailGuide}
       cache:'no-store',
       headers:guiinAuthHeaders({
         'Content-Type':'application/json',
-        'Accept':'application/json'
+        'Accept':'application/json',
+        'X-Idempotency-Key':requestId
       }),
       body:JSON.stringify({
+        requestId,
         name:cp.name||'',
         message,
         chart:cp,
-        history:guiinAIHistory.slice(-6)
+        history:guiinAIHistory.slice(-4)
       }),
       signal:controller.signal
     });
