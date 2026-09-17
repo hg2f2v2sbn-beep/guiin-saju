@@ -744,9 +744,32 @@ button{position:relative}
 }
 </style>
 
+
+<style id="GUIIN_DEMO_FREE_MODE">
+/* 데모에서는 결제/충전 UI를 노출하지 않습니다. */
+#wallet,
+#payments,
+#paySheet,
+#premiumSheet,
+#compatSheet,
+[data-guiin-nav="wallet"],
+[data-guiin-nav="payments"],
+button[onclick^="openPaySheet"],
+button[onclick="openPremiumPay()"],
+button[onclick="openCompatPay()"]{
+  display:none!important;
+}
+.guiinDemoFreeNotice{
+  margin:10px 14px 8px;padding:11px 13px;border-radius:14px;
+  background:#eef7ed;color:#2f6444;font-size:11px;font-weight:850;line-height:1.6;
+  border:1px solid rgba(47,100,68,.12);
+}
+</style>
+
 </head>
 <body>
-<div class="guiinDemoBadge" aria-label="데모 테스트용">DEMO · 테스트용</div>
+<div class="guiinDemoBadge" aria-label="데모 테스트용">DEMO · 전체풀이 무료</div>
+<div id="demoFreeTopNotice" style="display:none">데모 전체풀이 무료</div>
 
 <div class="app">
 
@@ -997,9 +1020,10 @@ button{position:relative}
     </div>
     <button type="button" onclick="go('saju')" data-guiin-nav="saju">변경</button>
   </div>
-  <div class="creditBar"><div><div style="font-size:12px;opacity:.85">AI 무료 상담</div><b id="freeRemainView">3</b><span style="font-size:13px">회 남음</span><div style="font-size:11px;opacity:.82;margin-top:3px">보유 ☘ <span id="coinView">0</span>개</div></div><button class="ctaGold" style="width:auto;margin:0;padding:10px 14px" onclick="go('wallet')" data-guiin-nav="wallet">☘ 충전</button></div>
+  <div class="guiinDemoFreeNotice">데모에서는 사주·궁합·대운 풀이를 결제 없이 전체 확인할 수 있어요.</div>
+  <div class="creditBar"><div><div style="font-size:12px;opacity:.85">AI 데모 상담</div><b id="freeRemainView">3</b><span style="font-size:13px">회 남음</span></div><span style="font-size:11px;opacity:.84">데모 제공</span></div>
   <div class="askTools">
-    <p class="adminNote">처음 3번은 무료예요. 답변 실패 시 무료 횟수나 클로버는 차감되지 않습니다. 최근 대화는 이 기기에만 저장됩니다.</p>
+    <p class="adminNote">AI 상담은 데모에서 3회만 제공해요. 사주·궁합·대운 풀이 자체는 제한 없이 모두 볼 수 있습니다. 최근 대화는 이 기기에만 저장됩니다.</p>
     <button type="button" onclick="clearAIChat()">대화 지우기</button>
   </div>
   <div class="msgs" id="msgs" aria-live="polite">
@@ -1728,8 +1752,8 @@ function guiinApplyVerifiedEntitlements(payload){
  return true;
 }
 window.guiinApplyVerifiedEntitlements=guiinApplyVerifiedEntitlements;
-function hasPremiumLifetime(){return GUIIN_VERIFIED_ENTITLEMENTS.lifetimeSaju===true;}
-function hasPremiumCompat(){return GUIIN_VERIFIED_ENTITLEMENTS.compat===true;}
+function hasPremiumLifetime(){return true; /* DEMO FREE: 전체 사주풀이 공개 */}
+function hasPremiumCompat(){return true; /* DEMO FREE: 전체 궁합풀이 공개 */}
 function pickPreviewSamples(key,pool,count=3){
  try{
   const storageKey='guiin_preview_samples_'+key;
@@ -2169,7 +2193,7 @@ let wallet=loadWallet();
 function persistWallet(){localStorage.setItem(COIN_KEY,JSON.stringify(wallet));syncWalletViews();}
 function freeUsed(){const n=Number(localStorage.getItem(FREE_KEY)||0);return Number.isFinite(n)?Math.max(0,n):0;}
 function setFreeUsed(n){localStorage.setItem(FREE_KEY,String(Math.max(0,n)));syncWalletViews();}
-function syncWalletViews(){if($('coinView'))$('coinView').textContent=wallet.coins;if($('freeRemainView'))$('freeRemainView').textContent=Math.max(0,3-freeUsed());renderLedger();}
+function syncWalletViews(){if($('freeRemainView'))$('freeRemainView').textContent=Math.max(0,3-freeUsed());}
 function renderLedger(){if(!$('ledger'))return;$('ledger').innerHTML=(wallet.ledger||[]).slice(0,12).map(r=>`${esc(r.t)} · ${esc(r.text)} (${r.delta>0?'+':''}${r.delta})`).join('<br>')||'아직 내역이 없습니다.';}
 let guiinPaymentState={checked:false,enabled:false,error:false};
 
@@ -2500,9 +2524,8 @@ async function sendQ(preset){
   }
 
   const used=freeUsed(),isFree=used<3;
-  if(!isFree&&Number(wallet.coins||0)<1){
-    guiinAppend('sysnote','무료 질문 3회를 모두 사용했습니다. 행운의 클로버를 충전하면 이어서 질문할 수 있어요.');
-    setTimeout(()=>go('wallet'),450);
+  if(!isFree){
+    guiinAppend('sysnote','데모 AI 상담 3회를 모두 사용했어요. 사주·궁합·대운 풀이는 계속 제한 없이 확인할 수 있습니다.');
     return;
   }
 
@@ -2567,15 +2590,6 @@ async function sendQ(preset){
     persistAIHistory();
 
     if(isFree)setFreeUsed(used+1);
-    else{
-      wallet.coins=Math.max(0,Number(wallet.coins||0)-1);
-      wallet.ledger.unshift({
-        t:new Date().toLocaleString('ko-KR',{hour12:false}),
-        text:'AI 상담 질문 차감 · '+q.slice(0,18),
-        delta:-1
-      });
-      persistWallet();
-    }
 
     if(input)input.value='';
 
