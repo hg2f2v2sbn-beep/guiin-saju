@@ -595,6 +595,54 @@ html{background:#efe7d7}.app{background:linear-gradient(180deg,#fffaf0 0%,#fff6e
 .tailQuestionChips button{border:1px solid #e6ddcc;background:#f7f4ec;border-radius:999px;padding:8px 10px;font-size:10px;font-weight:800;color:#43554b}
 
 
+
+/* MASTER v3 — mobile end-to-end polish */
+html{-webkit-text-size-adjust:100%}
+body{padding-bottom:calc(82px + env(safe-area-inset-bottom))}
+.screen{padding-bottom:calc(92px + env(safe-area-inset-bottom))}
+.topbar{padding-top:max(0px,env(safe-area-inset-top))}
+.bottom{
+  height:calc(72px + env(safe-area-inset-bottom))!important;
+  padding-bottom:env(safe-area-inset-bottom)!important;
+}
+.tabs{
+  display:flex!important;
+  overflow-x:auto!important;
+  overscroll-behavior-x:contain;
+  -webkit-overflow-scrolling:touch;
+  scrollbar-width:none;
+}
+.tabs::-webkit-scrollbar{display:none}
+.tabs button{
+  flex:0 0 auto!important;
+  min-height:42px!important;
+  white-space:nowrap!important;
+  padding-left:13px!important;
+  padding-right:13px!important;
+}
+input,select,textarea{font-size:16px!important}
+button,.guideRow,.serviceLink,.settingRow{min-height:44px}
+.row3 input,.row2 input{min-width:0}
+.formCard input:focus,.formCard select:focus,.chatInput:focus{
+  outline:2px solid rgba(239,189,55,.28);
+  outline-offset:1px;
+  border-color:#e5b12e!important;
+}
+.formMsg{margin-top:9px!important;min-height:0}
+.formMsg:empty{display:none}
+.mobileHint{
+  font-size:10px;line-height:1.6;color:#8b8175;margin:8px 2px 0;
+}
+.resultReadingNote{
+  margin:10px 0 0;padding:10px 12px;border-radius:13px;
+  background:#f7f9f2;color:#6b746d;font-size:10px;line-height:1.65;
+}
+@media(max-width:380px){
+  .pagePad{padding-left:12px!important;padding-right:12px!important}
+  .formCard{padding-left:15px!important;padding-right:15px!important}
+  .row3{gap:6px!important}.row2{gap:7px!important}
+}
+
 /* 2026-09-17 mobile interaction hardening */
 button,[onclick],.guideRow,.fortuneRow.clickable{touch-action:manipulation;-webkit-tap-highlight-color:rgba(201,155,52,.14)}
 button{position:relative}
@@ -713,14 +761,14 @@ button{position:relative}
     <div class="sideArt"><img loading="lazy" decoding="async" src="input-cat.jpg" alt=""></div>
   </div>
   <div class="formCard card">
-    <label>이름</label><input id="name" placeholder="이름을 입력해 주세요">
+    <label>이름</label><input id="name" autocomplete="off" placeholder="이름을 입력해 주세요">
     <label>성별</label><div class="seg" id="genderSeg"><button class="on" data-v="여">여성</button><button data-v="남">남성</button></div>
     <label>생년월일</label><div class="seg" id="calendarSeg"><button class="on" data-v="양력">양력</button><button data-v="음력">음력</button></div>
     <div id="leapRow" class="hidden"><label class="check"><input id="leapMonth" type="checkbox">윤달</label></div>
     <div class="row3" style="margin-top:7px"><input id="year" type="number" inputmode="numeric" placeholder="1991"><input id="month" type="number" inputmode="numeric" placeholder="11"><input id="day" type="number" inputmode="numeric" placeholder="23"></div>
     <label>출생 시간</label><div class="row2"><input id="hour" type="number" inputmode="numeric" placeholder="07"><input id="minute" type="number" inputmode="numeric" placeholder="40"></div>
     <label class="check"><input id="hourUnknown" type="checkbox">출생시간을 모릅니다.</label>
-    <div class="help">출생시간을 정확히 모르더라도 기본 분석은 가능합니다.</div>
+    <div class="help">출생시간을 정확히 모르더라도 기본 분석은 가능합니다.</div><div class="mobileHint">시간을 모르면 ‘출생시간을 모릅니다’를 체크하세요. 임의의 시간을 넣는 것보다 정확합니다.</div>
     <label>출생지 (선택)</label><div class="locationRow"><span>서울특별시</span><span>›</span></div>
     <div class="hidden"><select id="dayBoundaryMode"><option value="23" selected>23</option></select><input id="applyTrueSolar" type="checkbox"><input id="birthLongitudeApply" value="126.98"></div>
     <button class="ctaGold" onclick="submitSaju()">사주 보기 ›</button>
@@ -751,15 +799,15 @@ button{position:relative}
     <div><h2>궁합</h2><p>두 사람의 명식을 같은 기준으로 비교해요.</p></div>
   </div>
   <div class="formCard card">
-    <label>나</label><input id="aName" placeholder="이름">
+    <label>나</label><input id="aName" autocomplete="off" placeholder="이름">
     <div class="seg" id="aGender"><button class="on" data-v="여">여성</button><button data-v="남">남성</button></div>
-    <div class="row3" style="margin-top:7px"><input id="aYear" type="number" placeholder="년"><input id="aMonth" type="number" placeholder="월"><input id="aDay" type="number" placeholder="일"></div>
-    <div class="row2" style="margin-top:7px"><input id="aHour" type="number" placeholder="시"><input id="aMin" type="number" placeholder="분"></div>
-    <label>상대</label><input id="bName" placeholder="이름">
+    <div class="row3" style="margin-top:7px"><input id="aYear" type="number" inputmode="numeric" placeholder="년"><input id="aMonth" type="number" inputmode="numeric" placeholder="월"><input id="aDay" type="number" inputmode="numeric" placeholder="일"></div>
+    <div class="row2" style="margin-top:7px"><input id="aHour" type="number" inputmode="numeric" placeholder="시"><input id="aMin" type="number" inputmode="numeric" placeholder="분"></div>
+    <label>상대</label><input id="bName" autocomplete="off" placeholder="이름">
     <div class="seg" id="bGender"><button class="on" data-v="여">여성</button><button data-v="남">남성</button></div>
-    <div class="row3" style="margin-top:7px"><input id="bYear" type="number" placeholder="년"><input id="bMonth" type="number" placeholder="월"><input id="bDay" type="number" placeholder="일"></div>
-    <div class="row2" style="margin-top:7px"><input id="bHour" type="number" placeholder="시"><input id="bMin" type="number" placeholder="분"></div>
-    <button class="ctaGold" onclick="submitMatch()">궁합 보기 ›</button><div id="matchFormMsg" class="formMsg error" role="alert" aria-live="polite"></div>
+    <div class="row3" style="margin-top:7px"><input id="bYear" type="number" inputmode="numeric" placeholder="년"><input id="bMonth" type="number" inputmode="numeric" placeholder="월"><input id="bDay" type="number" inputmode="numeric" placeholder="일"></div>
+    <div class="row2" style="margin-top:7px"><input id="bHour" type="number" inputmode="numeric" placeholder="시"><input id="bMin" type="number" inputmode="numeric" placeholder="분"></div>
+    <div class="mobileHint">두 사람 모두 출생시간을 모르면 시·분은 비워도 됩니다. 궁합은 입력된 범위 안에서 해석 강도를 조절합니다.</div><button class="ctaGold" onclick="submitMatch()">궁합 보기 ›</button><div id="matchFormMsg" class="formMsg error" role="alert" aria-live="polite"></div>
   </div>
 </section>
 
@@ -1106,7 +1154,10 @@ function emptyStateHTML(title,body,buttonHtml=''){
 function profileInput(prefix=''){
  const name=$(prefix?prefix+'Name':'name').value||'사용자';
  const gender=segVal(prefix?prefix+'Gender':'genderSeg')||'여';
- return {name,gender,calendar:prefix?'양력':(segVal('calendarSeg')||'양력'),year:intVal(prefix?prefix+'Year':'year'),month:intVal(prefix?prefix+'Month':'month'),day:intVal(prefix?prefix+'Day':'day'),hour:intVal(prefix?prefix+'Hour':'hour',12),minute:intVal(prefix?prefix+'Min':'minute',0),hourUnknown:false,leapMonth:prefix?false:($('leapMonth')?.checked||false),dayBoundary:'23',trueSolarApply:false,longitude:126.98};
+ const hourEl=$(prefix?prefix+'Hour':'hour');
+ const minEl=$(prefix?prefix+'Min':'minute');
+ const blankHour=hourEl && String(hourEl.value||'').trim()==='';
+ return {name,gender,calendar:prefix?'양력':(segVal('calendarSeg')||'양력'),year:intVal(prefix?prefix+'Year':'year'),month:intVal(prefix?prefix+'Month':'month'),day:intVal(prefix?prefix+'Day':'day'),hour:blankHour?12:intVal(prefix?prefix+'Hour':'hour',12),minute:blankHour?0:intVal(prefix?prefix+'Min':'minute',0),hourUnknown:blankHour,leapMonth:prefix?false:($('leapMonth')?.checked||false),dayBoundary:'23',trueSolarApply:false,longitude:126.98};
 }
 const DM={
  '갑':['곧고 성장지향적인','새로운 길을 만드는 힘'],
@@ -1166,7 +1217,7 @@ function submitSaju(){
   showGuiinPopup('앗, 사주 조각을 맞추는 중에 잠시 길을 잃었어요. 생년월일과 성별을 다시 한번 확인해 주시겠어요?','사주를 완성하지 못했어요');
  }finally{if(btn&&document.querySelector('#result.active')==null)btn.disabled=false;}
 }
-document.querySelectorAll('#resultTabs button').forEach(b=>b.onclick=()=>{currentTab=b.dataset.tab;renderResult()});
+document.querySelectorAll('#resultTabs button').forEach(b=>b.onclick=()=>{currentTab=b.dataset.tab;renderResult();try{document.getElementById('resultTabs')?.scrollIntoView({block:'start',behavior:'smooth'});}catch(_e){}});
 function openResultTab(t){if(chart){currentTab=t;renderResult();go('result')}else go('saju')}
 
 function uniq(arr){return [...new Set((arr||[]).filter(Boolean))]}
@@ -1246,8 +1297,8 @@ function readingSupportText(kicker,title){
  return '지금까지 힘들었던 순간에도 당신이 버텨온 방식에는 이유가 있습니다. 강점은 더 잘 쓰고, 나를 지치게 했던 습관은 조금씩 덜어내면 됩니다. 사주는 자신을 몰아붙이는 말보다 나를 이해하는 언어가 되어야 합니다.';
 }
 function easyCard(kicker,title,body,good,watch,tip,evidence,support){
- const warm=support||readingSupportText(kicker,title);
- return `<article class="easyLongCard card"><div class="easyKicker">${esc(kicker)}</div><h3>${esc(title)}</h3><div class="easyBody">${body}</div>${good?`<div class="easyPoint good"><b>이 부분은 확실한 강점</b><p>${good}</p></div>`:''}${watch?`<div class="easyPoint watch"><b>약점이 튀어나오는 순간</b><p>${watch}</p></div>`:''}${tip?`<div class="easyPoint tip"><b>실제로 이렇게 하면 좋아요</b><p>${tip}</p></div>`:''}${warm?`<div class="easyPoint support"><b>이 사주에 꼭 해주고 싶은 말</b><p>${warm}</p></div>`:''}${evidence?`<div class="easyEvidence">${evidence}</div>`:''}</article>`;
+ const warm=support||'';
+ return `<article class="easyLongCard card"><div class="easyKicker">${esc(kicker)}</div><h3>${esc(title)}</h3><div class="easyBody">${body}</div>${good?`<div class="easyPoint good"><b>강점</b><p>${good}</p></div>`:''}${watch?`<div class="easyPoint watch"><b>이럴 때 힘들 수 있어요</b><p>${watch}</p></div>`:''}${tip?`<div class="easyPoint tip"><b>현실적인 조언</b><p>${tip}</p></div>`:''}${warm?`<div class="easyPoint support"><b>꼭 기억하면 좋은 말</b><p>${warm}</p></div>`:''}${evidence?`<div class="easyEvidence">${evidence}</div>`:''}</article>`;
 }
 
 const SAJU_ELEMENT_PROFILE={
@@ -1775,6 +1826,7 @@ function setMatchTab(tab){
  window.scrollTo({top:0,behavior:'smooth'});
 }
 function submitMatch(){
+ const matchCalcBtn=document.querySelector('#match .ctaGold'); if(matchCalcBtn)matchCalcBtn.disabled=true;
  setFormMessage('matchFormMsg','');
  const btn=document.querySelector('#match .ctaGold'); if(btn)btn.disabled=true;
  try{
