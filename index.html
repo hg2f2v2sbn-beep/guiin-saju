@@ -596,6 +596,51 @@ html{background:#efe7d7}.app{background:linear-gradient(180deg,#fffaf0 0%,#fff6e
 
 
 
+
+
+/* MASTER v5 — 결제 오픈 전 안전장치 / 오류 복구 */
+.payReadiness{
+  margin:12px 0 2px;padding:10px 12px;border-radius:13px;
+  background:#f5f0e7;color:#71695e;font-size:10px;font-weight:800;line-height:1.55;
+}
+.payReadiness.ready{background:#eef7ed;color:#2f6a45}
+.payReadiness.wait{background:#fff5df;color:#806525}
+.payReadiness.error{background:#f8eeee;color:#845353}
+.payPanel .primary:disabled,.premiumPanel .primary:disabled{
+  opacity:.55;filter:grayscale(.12);cursor:not-allowed;
+}
+.netNotice{
+  display:none;position:fixed;left:50%;transform:translateX(-50%);
+  bottom:calc(84px + env(safe-area-inset-bottom));z-index:1400;
+  width:min(390px,calc(100% - 28px));padding:10px 12px;border-radius:14px;
+  background:#2f3d34;color:#fff;font-size:11px;line-height:1.55;
+  box-shadow:0 8px 24px rgba(0,0,0,.18);text-align:center;
+}
+.netNotice.on{display:block}
+
+/* MASTER v4 — AI 상담 / 로그인 안정화 */
+.askContext{
+  display:flex;align-items:center;justify-content:space-between;gap:12px;
+  margin:0 14px 8px;padding:13px 14px;background:#f7faf3;
+}
+.askContext div{min-width:0}
+.askContext span{display:block;font-size:9px;font-weight:900;color:#738477;margin-bottom:3px}
+.askContext b{display:block;font-size:13px;color:#254b36;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.askContext small{display:block;font-size:10px;line-height:1.55;color:#7b817d;margin-top:3px}
+.askContext button,.askTools button{
+  border:0;border-radius:12px;background:#edf1e8;color:#3f5e4c;
+  font-size:10px;font-weight:900;padding:9px 11px;white-space:nowrap;
+}
+.askTools{display:flex;align-items:flex-start;gap:8px;margin:0 14px 8px}
+.askTools .adminNote{flex:1;margin:0}
+.askTools button{flex:0 0 auto}
+.msgs{scroll-behavior:smooth}
+.bubble.bot{white-space:pre-wrap;line-height:1.72}
+.bubble.me{white-space:pre-wrap}
+.composer input:disabled{opacity:.7}
+.aiWaitDots::after{content:'…';animation:guiinDots 1.4s steps(4,end) infinite}
+@keyframes guiinDots{0%{content:''}25%{content:'.'}50%{content:'..'}75%,100%{content:'...'}}
+
 /* MASTER v3 — mobile end-to-end polish */
 html{-webkit-text-size-adjust:100%}
 body{padding-bottom:calc(82px + env(safe-area-inset-bottom))}
@@ -847,7 +892,7 @@ button{position:relative}
     <div><b id="myName">프로필을 만들어 보세요</b><span id="myBirth">사주를 계산하면 저장할 수 있어요.</span></div>
   </div>
   <div class="menuCard card">
-    <button id="accountEntryBtn" onclick="guiinAuthSession()?logoutGuiin():go('login')">로그인 · 회원가입 <span class="arr">›</span></button>
+    <button id="accountEntryBtn" onclick="go('login')" data-guiin-nav="login">로그인 · 회원가입 <span class="arr">›</span></button>
     <button onclick="go('history')" data-guiin-nav="history">이용 내역 <span class="arr">›</span></button>
     <button onclick="go('payments')" data-guiin-nav="payments">결제 내역 <span class="arr">›</span></button>
     <button onclick="go('profiles')" data-guiin-nav="profiles">저장한 프로필 <span class="arr">›</span></button>
@@ -932,9 +977,20 @@ button{position:relative}
     <button class="ghost" onclick="go('wallet')" style="font-size:11px;font-weight:900;white-space:nowrap" data-guiin-nav="wallet">☘ 충전</button>
   </div>
   <div class="pageIllustration"><img loading="lazy" decoding="async" src="summary-cat.jpg" alt="사주 상담을 도와주는 고양이 일러스트"></div>
+  <div id="askContextCard" class="askContext card">
+    <div>
+      <span>현재 상담 기준</span>
+      <b id="askContextTitle">사주를 먼저 입력해 주세요</b>
+      <small id="askContextMeta">명식이 있으면 그 결과를 기준으로 답해요.</small>
+    </div>
+    <button type="button" onclick="go('saju')" data-guiin-nav="saju">변경</button>
+  </div>
   <div class="creditBar"><div><div style="font-size:12px;opacity:.85">AI 무료 상담</div><b id="freeRemainView">3</b><span style="font-size:13px">회 남음</span><div style="font-size:11px;opacity:.82;margin-top:3px">보유 ☘ <span id="coinView">0</span>개</div></div><button class="ctaGold" style="width:auto;margin:0;padding:10px 14px" onclick="go('wallet')" data-guiin-nav="wallet">☘ 충전</button></div>
-  <p class="adminNote">처음 3번은 무료입니다. 계산된 귀인사주 명식을 그대로 AI에 전달해 답변하며, 답변 실패 시 무료 횟수나 클로버가 차감되지 않습니다.</p>
-  <div class="msgs" id="msgs">
+  <div class="askTools">
+    <p class="adminNote">처음 3번은 무료예요. 답변 실패 시 무료 횟수나 클로버는 차감되지 않습니다. 최근 대화는 이 기기에만 저장됩니다.</p>
+    <button type="button" onclick="clearAIChat()">대화 지우기</button>
+  </div>
+  <div class="msgs" id="msgs" aria-live="polite">
     <div class="sysnote">귀인사주 상담이 시작되었습니다</div>
     <div class="bubble bot" id="welcomeBot">사주를 먼저 계산해 두면 원국 기준으로 답합니다. 직업, 재물, 연애, 올해 흐름 중 무엇이 궁금한가요?</div>
   </div>
@@ -1002,11 +1058,12 @@ button{position:relative}
   </div>
 </div>
 
-<div id="paySheet" class="paySheet" onclick="if(event.target===this)closePaySheet()"><div class="payPanel"><h3>☘ 행운의 클로버 결제</h3><div id="payPackText" class="adminNote"></div><div id="payPrice" class="payPrice"></div><div class="payList">결제 승인 → 서버 주문 저장 → 서버 클로버 지급 순서로 연결할 결제창입니다.</div><button class="primary" onclick="payNotReady()">결제하기</button><button class="secondary" onclick="closePaySheet()">취소</button><p id="payMsg" class="adminNote"></p></div></div>
-<div id="premiumSheet" class="premiumSheet" onclick="if(event.target===this)closePremiumPay()"><div class="premiumPanel"><h2>프리미엄 평생사주</h2><div class="price">5,900원</div><p>무료 기본 명식을 확인한 뒤 내 실제 심층 풀이 전체를 열 수 있어요.</p><div class="payList">✓ 성격·기질 장문 분석<br>✓ 직업·적성·재물<br>✓ 연애·결혼·가족 관계<br>✓ 신살·귀인 상세 해설<br>✓ 대운·세운 흐름<br>✓ 모든 전문용어 쉬운 설명<br>✓ 장점·주의점·현실 조언</div><div class="paidDisclaimer">사주 결과는 참고 정보이며 미래를 확정하지 않습니다.</div><button class="primary" onclick="premiumPayNotReady()">5,900원 결제하기</button><button class="secondary" onclick="closePremiumPay()">나중에 보기</button><p id="premiumPayMsg" class="adminNote"></p></div></div>
-<div id="compatSheet" class="premiumSheet" onclick="if(event.target===this)closeCompatPay()"><div class="premiumPanel"><h2>프리미엄 궁합</h2><div class="price">7,900원</div><p>점수보다 두 사람이 실제로 함께 있을 때의 장점과 갈등·회복·생활을 길게 풀어드려요.</p><div class="payList">✓ 끌림과 첫인상<br>✓ 감정표현<br>✓ 대화와 갈등<br>✓ 싸운 뒤 회복<br>✓ 생활궁합<br>✓ 돈과 현실<br>✓ 친밀감<br>✓ 결혼과 장기관계<br>✓ 가족과 경계<br>✓ 현재와 앞으로</div><div class="paidDisclaimer">궁합은 관계를 결정하는 판정표가 아니라 두 사람이 조율할 지점을 이해하는 참고 자료입니다.</div><button class="primary" onclick="compatPayNotReady()">7,900원 결제하기</button><button class="secondary" onclick="closeCompatPay()">나중에 보기</button><p id="compatPayMsg" class="adminNote"></p></div></div>
+<div id="paySheet" class="paySheet" onclick="if(event.target===this)closePaySheet()"><div class="payPanel"><h3>☘ 행운의 클로버 결제</h3><div id="payPackText" class="adminNote"></div><div id="payPrice" class="payPrice"></div><div class="payList">결제 승인 → 서버 주문 저장 → 서버 클로버 지급 순서로 연결할 결제창입니다.</div><div id="walletPayReadiness" class="payReadiness">결제 상태 확인 중…</div><button id="walletPayBtn" class="primary" onclick="payNotReady()">결제하기</button><button class="secondary" onclick="closePaySheet()">취소</button><p id="payMsg" class="adminNote"></p></div></div>
+<div id="premiumSheet" class="premiumSheet" onclick="if(event.target===this)closePremiumPay()"><div class="premiumPanel"><h2>프리미엄 평생사주</h2><div class="price">5,900원</div><p>무료 기본 명식을 확인한 뒤 내 실제 심층 풀이 전체를 열 수 있어요.</p><div class="payList">✓ 성격·기질 장문 분석<br>✓ 직업·적성·재물<br>✓ 연애·결혼·가족 관계<br>✓ 신살·귀인 상세 해설<br>✓ 대운·세운 흐름<br>✓ 모든 전문용어 쉬운 설명<br>✓ 장점·주의점·현실 조언</div><div class="paidDisclaimer">사주 결과는 참고 정보이며 미래를 확정하지 않습니다.</div><div id="premiumPayReadiness" class="payReadiness">결제 상태 확인 중…</div><button id="premiumPayBtn" class="primary" onclick="premiumPayNotReady()">5,900원 결제하기</button><button class="secondary" onclick="closePremiumPay()">나중에 보기</button><p id="premiumPayMsg" class="adminNote"></p></div></div>
+<div id="compatSheet" class="premiumSheet" onclick="if(event.target===this)closeCompatPay()"><div class="premiumPanel"><h2>프리미엄 궁합</h2><div class="price">7,900원</div><p>점수보다 두 사람이 실제로 함께 있을 때의 장점과 갈등·회복·생활을 길게 풀어드려요.</p><div class="payList">✓ 끌림과 첫인상<br>✓ 감정표현<br>✓ 대화와 갈등<br>✓ 싸운 뒤 회복<br>✓ 생활궁합<br>✓ 돈과 현실<br>✓ 친밀감<br>✓ 결혼과 장기관계<br>✓ 가족과 경계<br>✓ 현재와 앞으로</div><div class="paidDisclaimer">궁합은 관계를 결정하는 판정표가 아니라 두 사람이 조율할 지점을 이해하는 참고 자료입니다.</div><div id="compatPayReadiness" class="payReadiness">결제 상태 확인 중…</div><button id="compatPayBtn" class="primary" onclick="compatPayNotReady()">7,900원 결제하기</button><button class="secondary" onclick="closeCompatPay()">나중에 보기</button><p id="compatPayMsg" class="adminNote"></p></div></div>
 
 
+<div id="netNotice" class="netNotice" role="status" aria-live="polite"></div>
 <nav class="bottom">
   <button id="navHome" class="active" onclick="go('home')" data-guiin-nav="home"><svg viewBox="0 0 24 24"><path d="M4 11l8-7 8 7v9H6v-9" fill="none" stroke="currentColor" stroke-width="1.7"/><path d="M9 20v-6h6v6" fill="none" stroke="currentColor" stroke-width="1.7"/></svg>홈</button>
   <button id="navSaju" onclick="openResultTab('summary')"><svg viewBox="0 0 24 24"><circle cx="12" cy="8" r="3" fill="none" stroke="currentColor" stroke-width="1.7"/><path d="M6 21c0-4 2.5-7 6-7s6 3 6 7" fill="none" stroke="currentColor" stroke-width="1.7"/></svg>내 사주</button>
@@ -1062,6 +1119,7 @@ function go(id){
  if(id==='today')renderToday();
  if(id==='history')renderUsageHistory();
  if(id==='payments')renderPaymentHistory();
+ if(id==='ask'){syncAskContext();syncWalletViews();}
  if(id==='profiles')renderSavedProfile();
  if(id==='notifications')loadNotificationPrefs();
  if(id==='wallet')renderLedger();
@@ -1914,6 +1972,7 @@ function renderToday(){
  $('todayView').innerHTML=guiinVisualHero('today',chart?.input?.name)+`<div class="todayHero card"><div class="todayArt"><img loading="lazy" decoding="async" src="today-dog.jpg" alt=""></div><h3>오늘도 좋은 일이 찾아와요!</h3><p>“작은 행복이 모여, 큰 행운이 됩니다.”</p></div><div class="todayDate">${d.getFullYear()}년 ${d.getMonth()+1}월 ${d.getDate()}일 (${days[d.getDay()]})</div>${personal}<div class="fortuneList card" style="margin-top:9px">${rows.map((x,i)=>`<div class="fortuneRow clickable" data-title="${esc(x[0])}" data-summary="${esc(x[1])}" onclick="openTodayDetail(this.dataset.title,this.dataset.summary)"><div class="fIcon">${[ICONS.money,ICONS.heart,ICONS.money,ICONS.brief,ICONS.plus][i]}</div><div><b>${esc(x[0])}</b><span>${esc(x[1])}</span></div></div>`).join('')}</div><div class="slogan card"><b>오늘의 조언</b><br>좋은 흐름은 활용하고, 부담이 큰 결정은 한 번 더 확인해 보세요.</div><button class="ctaGold" onclick="openTodayDetail()">상세 운세 보기 ›</button>${tailQuestionsHTML('오늘')}`;
 }
 restoreProfile();renderToday();
+loadAIHistory();restoreAIChatBubbles();syncAskContext();
 
 const COIN_KEY='guiin_clover_wallet_v2', FREE_KEY='guiin_ai_free_used_v2', NOTIFY_KEY='guiin_notify_v1';
 function loadWallet(){try{const x=JSON.parse(localStorage.getItem(COIN_KEY)||'{}');return {coins:Number(x.coins||0),ledger:Array.isArray(x.ledger)?x.ledger:[]};}catch(e){return {coins:0,ledger:[]}}}
@@ -1923,22 +1982,77 @@ function freeUsed(){const n=Number(localStorage.getItem(FREE_KEY)||0);return Num
 function setFreeUsed(n){localStorage.setItem(FREE_KEY,String(Math.max(0,n)));syncWalletViews();}
 function syncWalletViews(){if($('coinView'))$('coinView').textContent=wallet.coins;if($('freeRemainView'))$('freeRemainView').textContent=Math.max(0,3-freeUsed());renderLedger();}
 function renderLedger(){if(!$('ledger'))return;$('ledger').innerHTML=(wallet.ledger||[]).slice(0,12).map(r=>`${esc(r.t)} · ${esc(r.text)} (${r.delta>0?'+':''}${r.delta})`).join('<br>')||'아직 내역이 없습니다.';}
-function openPaySheet(base,bonus,price){const s=$('paySheet');if(!s)return;$('payPackText').textContent=`행운의 클로버 ${base}개 + 보너스 ${bonus}개 · 총 ${base+bonus}개`;$('payPrice').textContent=Number(price).toLocaleString('ko-KR')+'원';$('payMsg').textContent='';s.classList.add('on');}
+let guiinPaymentState={checked:false,enabled:false,error:false};
+
+function setPaymentReadinessUI(){
+  const state=guiinPaymentState;
+  const configs=[
+    ['walletPayReadiness','walletPayBtn'],
+    ['premiumPayReadiness','premiumPayBtn'],
+    ['compatPayReadiness','compatPayBtn']
+  ];
+  for(const [rid,bid] of configs){
+    const r=$(rid),b=$(bid);
+    if(!r||!b)continue;
+    r.className='payReadiness '+(state.error?'error':state.enabled?'ready':'wait');
+    if(state.error){
+      r.textContent='결제 서버 상태를 확인하지 못했어요. 현재 구매는 진행하지 않습니다.';
+      b.disabled=true;
+    }else if(state.enabled){
+      r.textContent='결제 서버 준비가 확인됐어요.';
+      b.disabled=false;
+    }else{
+      r.textContent='현재 결제 오픈 전 점검 중이에요. 실수로 결제되지 않도록 구매 버튼을 잠가두었어요.';
+      b.disabled=true;
+    }
+  }
+}
+async function refreshPaymentReadiness(){
+  try{
+    const res=await fetch(GUIIN_API_BASE+'/health',{cache:'no-store',headers:{'Accept':'application/json'}});
+    const data=await res.json().catch(()=>({}));
+    if(!res.ok)throw new Error('health_failed');
+    guiinPaymentState={checked:true,enabled:data?.paymentsEnabled===true,error:false};
+  }catch(_e){
+    guiinPaymentState={checked:true,enabled:false,error:true};
+  }
+  setPaymentReadinessUI();
+  return guiinPaymentState;
+}
+function openPaySheet(base,bonus,price){
+  const s=$('paySheet');if(!s)return;
+  $('payPackText').textContent=`행운의 클로버 ${base}개 + 보너스 ${bonus}개 · 총 ${base+bonus}개`;
+  $('payPrice').textContent=Number(price).toLocaleString('ko-KR')+'원';
+  $('payMsg').textContent='';
+  s.classList.add('on');
+  refreshPaymentReadiness();
+}
 function closePaySheet(){const s=$('paySheet');if(s)s.classList.remove('on');}
-function payNotReady(){if($('payMsg'))$('payMsg').textContent='현재 실제 결제 오픈 전 점검 단계예요. 결제 승인과 클로버 지급이 서버에서 완전히 확인된 뒤 구매 기능을 열 예정입니다.';}
-function openPremiumPay(){if($('premiumPayMsg'))$('premiumPayMsg').textContent='';$('premiumSheet')?.classList.add('on');}
+function payNotReady(){if($('payMsg'))$('payMsg').textContent='현재는 실제 결제를 받지 않아요. 승인·클로버 지급·구매 복원·환불까지 모두 검증된 뒤 버튼을 열 예정입니다.';}
+function openPremiumPay(){if($('premiumPayMsg'))$('premiumPayMsg').textContent='';$('premiumSheet')?.classList.add('on');refreshPaymentReadiness();}
 function closePremiumPay(){$('premiumSheet')?.classList.remove('on');}
-function premiumPayNotReady(){if($('premiumPayMsg'))$('premiumPayMsg').textContent='현재 실제 결제 오픈 전 점검 단계예요. 결제 승인·구매 복원·환불 흐름 확인이 끝난 뒤 안전하게 오픈할 예정입니다.';}
-function openCompatPay(){if($('compatPayMsg'))$('compatPayMsg').textContent='';$('compatSheet')?.classList.add('on');}
+function premiumPayNotReady(){if($('premiumPayMsg'))$('premiumPayMsg').textContent='현재는 실제 결제를 받지 않아요. 결제 승인·구매 복원·환불 흐름을 최종 검증한 뒤 오픈할 예정입니다.';}
+function openCompatPay(){if($('compatPayMsg'))$('compatPayMsg').textContent='';$('compatSheet')?.classList.add('on');refreshPaymentReadiness();}
 function closeCompatPay(){$('compatSheet')?.classList.remove('on');}
-function compatPayNotReady(){if($('compatPayMsg'))$('compatPayMsg').textContent='현재 실제 결제 오픈 전 점검 단계예요. 결제 후 궁합 권한이 계정에 정확히 복원되는 것까지 확인한 뒤 오픈할 예정입니다.';}
+function compatPayNotReady(){if($('compatPayMsg'))$('compatPayMsg').textContent='현재는 실제 결제를 받지 않아요. 결제 후 궁합 권한이 계정에 정확히 복원되는 것까지 확인한 뒤 오픈할 예정입니다.';}
 
 const GUIIN_API_BASE='https://guiin-saju-api-staging.blue-wls.workers.dev';
 const GUIIN_AI_API=GUIIN_API_BASE+'/api/chat';
 const GUIIN_AUTH_KEY='guiin_user_session_v1';
 const GUIIN_GUEST_KEY='guiin_guest_session_v1';
+const GUIIN_AI_HISTORY_KEY='guiin_ai_history_v1';
 let guiinAIHistory=[], guiinAISending=false;
 let guiinCurrentUser=null;
+
+
+function showNetNotice(msg,ms=3200){
+  const n=$('netNotice');if(!n)return;
+  n.textContent=msg;n.classList.add('on');
+  clearTimeout(showNetNotice._t);
+  showNetNotice._t=setTimeout(()=>n.classList.remove('on'),ms);
+}
+window.addEventListener('offline',()=>showNetNotice('인터넷 연결이 끊겼어요. 입력한 내용은 그대로 두고, 연결이 돌아오면 다시 시도해 주세요.',5000));
+window.addEventListener('online',()=>showNetNotice('인터넷 연결이 다시 확인됐어요.',2500));
 
 function guiinRandomId(prefix='g_'){
   try{
@@ -1969,6 +2083,10 @@ function guiinAuthHeaders(extra={}){
   return h;
 }
 async function guiinApi(path,options={}){
+  if(typeof navigator!=='undefined'&&navigator.onLine===false){
+    showNetNotice('인터넷 연결을 확인해 주세요.');
+    throw new Error('offline');
+  }
   const init={...options};
   init.headers=guiinAuthHeaders(options.headers||{});
   return fetch(GUIIN_API_BASE+path,init);
@@ -1982,6 +2100,54 @@ function guiinAppend(cls,text){
   d.textContent=text;
   box.appendChild(d);
   box.scrollTop=box.scrollHeight;
+}
+
+
+function loadAIHistory(){
+  try{
+    const arr=JSON.parse(localStorage.getItem(GUIIN_AI_HISTORY_KEY)||'[]');
+    guiinAIHistory=Array.isArray(arr)?arr.filter(x=>x&&(x.role==='user'||x.role==='assistant')&&typeof x.content==='string').slice(-12):[];
+  }catch(_e){guiinAIHistory=[];}
+}
+function persistAIHistory(){
+  try{localStorage.setItem(GUIIN_AI_HISTORY_KEY,JSON.stringify(guiinAIHistory.slice(-12)));}catch(_e){}
+}
+function restoreAIChatBubbles(){
+  const box=$('msgs'); if(!box)return;
+  box.querySelectorAll('.bubble.saved').forEach(x=>x.remove());
+  for(const item of guiinAIHistory){
+    const d=document.createElement('div');
+    d.className='bubble saved '+(item.role==='user'?'me':'bot');
+    d.textContent=item.content;
+    box.appendChild(d);
+  }
+  box.scrollTop=box.scrollHeight;
+}
+function clearAIChat(){
+  guiinAIHistory=[];
+  try{localStorage.removeItem(GUIIN_AI_HISTORY_KEY);}catch(_e){}
+  const box=$('msgs');
+  if(box){
+    box.querySelectorAll('.bubble.me,.bubble.bot:not(#welcomeBot)').forEach(x=>x.remove());
+    const w=$('welcomeBot');
+    if(w)w.textContent='새 상담을 시작할게요. 직업, 재물, 연애, 올해 흐름 중 무엇이 궁금한가요?';
+    box.scrollTop=0;
+  }
+}
+function syncAskContext(){
+  const title=$('askContextTitle'),meta=$('askContextMeta'),welcome=$('welcomeBot');
+  if(!title||!meta)return;
+  if(!chart||!chart?.pillars){
+    title.textContent='사주를 먼저 입력해 주세요';
+    meta.textContent='명식이 있으면 그 결과를 기준으로 답해요.';
+    if(welcome)welcome.textContent='사주를 먼저 계산해 두면 원국 기준으로 답합니다. 직업, 재물, 연애, 올해 흐름 중 무엇이 궁금한가요?';
+    return;
+  }
+  const name=String(chart?.input?.name||'사용자').trim()||'사용자';
+  const dm=chart?.dayMaster?.stem||chart?.pillars?.day?.stem||'';
+  title.textContent=name+'님의 사주로 상담 중';
+  meta.textContent=dm?`일간 ${dm} · 계산된 원국과 현재 흐름을 함께 참고합니다.`:'계산된 원국과 현재 흐름을 함께 참고합니다.';
+  if(welcome)welcome.textContent=`${name}님의 계산된 사주를 기준으로 답할게요. 직업, 재물, 연애, 올해 흐름 중 무엇이 가장 궁금한가요?`;
 }
 
 function guiinChartPayload(){
@@ -2098,11 +2264,12 @@ async function sendQ(preset){
   guiinAppend('bubble me',q);
 
   const status=document.createElement('div');
-  status.className='sysnote';
-  status.textContent='사주 근거를 확인해 답변을 만들고 있어요…';
+  status.className='sysnote aiWaitDots';
+  status.textContent='사주 근거를 확인해 답변을 만들고 있어요';
   $('msgs')?.appendChild(status);
 
   const controller=new AbortController();
+  const waitHint=setTimeout(()=>{if(status?.isConnected){status.classList.remove('aiWaitDots');status.textContent='조금만 더 확인하고 있어요. 답변이 길어져도 중복 없이 정리할게요…';}},7000);
   const timer=setTimeout(()=>controller.abort(),45000);
 
   try{
@@ -2145,9 +2312,10 @@ async function sendQ(preset){
       {role:'assistant',content:answer}
     );
 
-    if(guiinAIHistory.length>24){
-      guiinAIHistory=guiinAIHistory.slice(-24);
+    if(guiinAIHistory.length>12){
+      guiinAIHistory=guiinAIHistory.slice(-12);
     }
+    persistAIHistory();
 
     if(isFree)setFreeUsed(used+1);
     else{
@@ -2172,8 +2340,10 @@ async function sendQ(preset){
 
   }finally{
     clearTimeout(timer);
+    clearTimeout(waitHint);
     guiinAISending=false;
     buttons.forEach(b=>b.disabled=false);
+    syncWalletViews();
   }
 }
 
@@ -2237,13 +2407,28 @@ async function refreshGuiinUser(){
   try{
     const res=await guiinApi('/api/me',{method:'GET',cache:'no-store',headers:{'Accept':'application/json'}});
     const data=await res.json().catch(()=>({}));
-    if(!res.ok||!data?.authenticated)throw new Error(data?.error||'session_invalid');
+
+    // 실제 인증 거절일 때만 저장된 로그인 세션을 지웁니다.
+    // 네트워크 오류나 서버 5xx 때문에 사용자가 갑자기 로그아웃되는 일을 막습니다.
+    if(res.status===401||res.status===403||((res.ok)&&data?.authenticated===false)){
+      try{localStorage.removeItem(GUIIN_AUTH_KEY);}catch(_e){}
+      guiinCurrentUser=null;
+      syncAuthUI();
+      return null;
+    }
+
+    if(!res.ok){
+      console.warn('GUIIN_AUTH_REFRESH_TEMPORARY_ERROR',res.status,data?.error||'temporary_error');
+      syncAuthUI();
+      return null;
+    }
+
     guiinCurrentUser=data.user||null;
     syncAuthUI();
     return guiinCurrentUser;
   }catch(err){
-    console.warn('GUIIN_AUTH_SESSION_INVALID',err);
-    try{localStorage.removeItem(GUIIN_AUTH_KEY);}catch(_e){}
+    console.warn('GUIIN_AUTH_REFRESH_NETWORK_ERROR',err);
+    // 일시적인 통신 실패에서는 로컬 로그인 토큰을 유지합니다.
     syncAuthUI();
     return null;
   }
@@ -2251,7 +2436,7 @@ async function refreshGuiinUser(){
 function syncAuthUI(){
   const s=guiinAuthSession(),u=guiinCurrentUser;
   const entry=$('accountEntryBtn');
-  if(entry)entry.innerHTML=s?'로그인 계정 · 로그아웃 <span class="arr">›</span>':'로그인 · 회원가입 <span class="arr">›</span>';
+  if(entry)entry.innerHTML=s?'로그인 계정 관리 <span class="arr">›</span>':'로그인 · 회원가입 <span class="arr">›</span>';
 
   const guestUI=$('loginGuestUI');
   const signedUI=$('loginSignedIn');
