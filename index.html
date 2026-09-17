@@ -1442,12 +1442,12 @@ function sajuDayVoice(c){
  return SAJU_DAYMASTER_VOICE[stem]||{tone:'자기 방식으로 상황을 판단하는 편',strength:'자기만의 균형감',stress:'과부하가 오면 평소 장점이 고집처럼 보일 수 있음',relation:'관계에서도 자기 리듬과 안전감을 중요하게 느끼는 편'};
 }
 function sajuSeasonName(c){
- const m=Number(c?.input?.month||0);
- if([3,4].includes(m))return '봄';
- if([5,6,7].includes(m))return '여름';
- if([8,9].includes(m))return '가을';
- if([11,12,1].includes(m))return '겨울';
- return '환절기';
+ const b=String(c?.pillars?.month?.branch||'');
+ if('寅卯辰'.includes(b))return '봄';
+ if('巳午未'.includes(b))return '여름';
+ if('申酉戌'.includes(b))return '가을';
+ if('亥子丑'.includes(b))return '겨울';
+ return seasonPlain(c)?.name||'태어난 계절';
 }
 function sajuBalanceBand(c){
  const x=sajuInsightProfile(c);
@@ -1455,6 +1455,26 @@ function sajuBalanceBand(c){
  if(gap>=28)return {key:'strong',text:`${x.top} 쪽이 분명하게 앞서 있어, 장점을 빠르게 쓰는 대신 ${x.low} 기능을 의식적으로 보완하는 게 중요합니다.`};
  if(gap>=15)return {key:'tilted',text:`${x.top} 쪽이 조금 더 강해, 익숙한 방식으로 문제를 풀 때는 빠르지만 다른 방식도 함께 써야 균형이 좋아집니다.`};
  return {key:'balanced',text:'오행 한쪽으로 크게 치우치기보다 여러 방식을 번갈아 쓰는 편이라, 상황에 따라 장점이 다르게 드러날 수 있습니다.'};
+}
+
+
+function guiinRuntimeSelfCheck(){
+ const issues=[];
+ try{
+  if(typeof GuiinSaju==='undefined')issues.push('missing_GuiinSaju');
+  if(typeof GuiinExpert==='undefined')issues.push('missing_GuiinExpert');
+  if(typeof GuiinCompat==='undefined')issues.push('missing_GuiinCompat');
+  if(typeof compatPairProfile!=='function')issues.push('missing_compatPairProfile');
+  if(typeof compatDeepSections!=='function')issues.push('missing_compatDeepSections');
+  if(typeof krJosa!=='function')issues.push('missing_krJosa');
+  if(typeof sajuSeasonName!=='function')issues.push('missing_sajuSeasonName');
+ }catch(e){issues.push('self_check_exception');}
+ try{
+   sessionStorage.setItem('guiin_runtime_selfcheck_v12',JSON.stringify({
+     ok:issues.length===0,issues,at:new Date().toISOString()
+   }));
+ }catch(_e){}
+ return {ok:issues.length===0,issues};
 }
 
 function guiinChartSignature(c){
@@ -1472,7 +1492,7 @@ function sajuPersonalSignature(c){
  return {
   x,dv,season,bal,
   monthScene:SAJU_MONTH_GOD_SCENE[x.mg]||x.mgEasy,
-  seasonVoice:SAJU_SEASON_VOICE[season]||SAJU_SEASON_VOICE['환절기']
+  seasonVoice:SAJU_SEASON_VOICE[season]||'태어난 달의 기운이 일간의 표현 방식을 조절하는 계절 기운'
  };
 }
 
@@ -2037,7 +2057,7 @@ function compatNarrativeMeta(a,b){
 }
 function compatEvidence(a,b,kind){
  const m=compatNarrativeMeta(a,b),p=[];
- if(kind==='core'){p.push(`${m.aName} ${a.dayMaster?.stem||''} 일간`,`${m.bName} ${b.dayMaster?.stem||''} 일간`,`중심 오행 ${m.ae} ↔ ${m.be}`);}
+ if(kind==='core'){p.push(`${m.aName} ${a.dayMaster?.stem||a.pillars?.day?.stem||''} 일간`,`${m.bName} ${b.dayMaster?.stem||b.pillars?.day?.stem||''} 일간`,`중심 오행 ${m.ae} ↔ ${m.be}`);}
  if(kind==='daily'){p.push(`${m.aName} 월주 ${m.A.mg}`,`${m.bName} 월주 ${m.B.mg}`);}
  if(kind==='relation'){const ar=relationSummary(a),br=relationSummary(b);if(ar)p.push(`${m.aName}: ${ar}`);if(br)p.push(`${m.bName}: ${br}`);}
  return p.filter(Boolean).join(' / ');
@@ -2048,7 +2068,7 @@ function compatDeepSections(a,b){
  const first=sameStem?`같은 ${a.dayMaster?.stem||''} 일간이라 기본 감각은 닮았지만, 같은 약점도 함께 커질 수 있는 관계`:`${m.aDay.image}와 ${m.bDay.image}처럼 서로 다른 방식이 만나 보완과 긴장을 함께 만드는 관계`;
  return [
   {key:'summary',k:'한마디로',t:first,b:`<p>${sameElem?`둘 다 ${m.ae} 기운을 강하게 쓰기 때문에 통하는 지점은 빠르지만 지칠 때 반응도 비슷할 수 있습니다.`:`${m.aName}님은 ${m.ae} 기운의 ${m.A.p.praise}을, ${m.bName}님은 ${m.be} 기운의 ${m.B.p.praise}을 주로 씁니다.`}</p><p>${m.pair.fit} ${ageText}</p>`,g:'서로의 강점을 역할로 나누면 관계가 훨씬 편해질 수 있습니다.',w:m.pair.friction,tip:'“누가 맞나”보다 “이 상황에서 누가 무엇을 더 잘하나”를 기준으로 역할을 나눠보세요.',ev:compatEvidence(a,b,'core')},
-  {key:'elements',k:'오행의 조화',t:`${m.ae}와 ${m.be}의 조합은 ${sameElem?'닮은 리듬':'서로 다른 리듬'}을 만듭니다.`,b:`<p>${m.aName}님은 ${m.A.top} ${m.A.e.top[1]}%가, ${m.bName}님은 ${m.B.top} ${m.B.e.top[1]}%가 두드러집니다.</p><p>${m.pair.fit} 반대로 ${m.pair.friction}</p>`,g:`${m.aName}님의 ${m.A.p.praise}과 ${m.bName}님의 ${m.B.p.praise}을 역할로 나누면 보완 효과가 큽니다.`,w:'오행 차이를 성격 결함으로 해석하면 갈등이 굳어질 수 있습니다.',tip:'서로가 잘하는 일과 힘들어하는 일을 3개씩 적어서 실제 생활 역할로 나눠보세요.',ev:compatEvidence(a,b,'core')},
+  {key:'elements',k:'오행의 조화',t:`${m.ae}와 ${m.be}의 조합은 ${sameElem?'닮은 리듬':'서로 다른 리듬'}을 만듭니다.`,b:`<p>${m.aName}님은 ${m.A.top} ${m.A.e.top[1]}%가, ${m.bName}님은 ${m.B.top} ${m.B.e.top[1]}%가 두드러집니다.</p><p>${m.pair.fit} 반대로 ${m.pair.friction}</p>`,g:`${m.aName}님이 잘하는 “${m.A.p.praise}”과 ${m.bName}님이 잘하는 “${m.B.p.praise}”을 서로 다른 역할로 나누면 보완 효과가 큽니다.`,w:'오행 차이를 성격 결함으로 해석하면 갈등이 굳어질 수 있습니다.',tip:'서로가 잘하는 일과 힘들어하는 일을 3개씩 적어서 실제 생활 역할로 나눠보세요.',ev:compatEvidence(a,b,'core')},
   {key:'fit',k:'잘 맞는 부분',t:'서로의 장점을 살려줄 때는 관계가 빠르게 가까워질 수 있습니다.',b:`<p>${m.aName}님은 ${m.aDay.core}, ${m.bName}님은 ${m.bDay.core}이 강점으로 읽힙니다. 두 힘이 충돌하지 않고 연결되면 한 사람은 방향을 잡고 다른 사람은 속도나 완성도를 보태는 식의 시너지가 생길 수 있습니다.</p>`,g:'상대의 다른 방식을 내 단점의 반대편이 아니라 보완 기능으로 볼 수 있습니다.',w:'상대가 내 방식대로 움직여주길 기대하면 좋은 궁합도 피곤해질 수 있습니다.',tip:'상대가 해준 것 중 “내 방식과 달랐지만 도움이 된 것”을 자주 말로 확인해 주세요.',ev:compatEvidence(a,b,'core')},
   {key:'clash',k:'부딪히는 부분',t:'갈등은 사랑의 크기보다 말투·속도·경계에서 생길 가능성이 큽니다.',b:`<p>${m.aName}님은 힘들 때 ${m.aDay.shadow}, ${m.bName}님은 ${m.bDay.shadow}. 두 반응이 동시에 나오면 한쪽은 압박받고 다른 쪽은 무시당한다고 느낄 수 있습니다.</p><p>${m.pair.friction}</p>`,g:'갈등 패턴을 미리 알면 회복 속도를 빠르게 만들 수 있습니다.',w:'감정이 올라온 상태에서 관계 전체를 평가하거나 큰 결론을 바로 내리는 것',tip:'20~30분 멈춘 뒤 다시 이야기할 시간을 정해두세요.',ev:compatEvidence(a,b,'relation')||compatEvidence(a,b,'core')},
   {key:'love',k:'연애 궁합',t:'끌림보다 중요한 건 “사랑을 확인하는 방식”이 서로 맞는지입니다.',b:`<p>${m.aName}님은 ${m.aDay.soft}, ${m.bName}님은 ${m.bDay.soft}. 이 방식이 다르면 한쪽은 행동으로 충분히 표현했다고 느끼고 다른 쪽은 말이나 반응이 부족하다고 느낄 수 있습니다.</p><p>연락 빈도·표현 강도·혼자 있는 시간·질투 기준을 애정의 크기와 동일시하지 않는 게 중요합니다.</p>`,g:'상대의 사랑 표현 방식을 번역해 이해하기 시작하면 친밀감이 오래 갑니다.',w:'답장 속도나 만나는 횟수를 사랑의 증거로 재는 것',tip:'“내가 사랑받는다고 느끼는 행동 3가지”를 서로 말해보세요.',ev:compatEvidence(a,b,'core')},
@@ -2259,7 +2279,8 @@ function submitMatch(){
   const band=score>=86?'서로의 장점을 살릴 여지가 큰 관계입니다.':score>=76?'맞는 부분과 조율할 부분이 함께 있는 관계입니다.':score>=66?'끌림과 차이가 함께 있어 생활 조율이 중요한 관계입니다.':'점수보다 대화와 경계 설정이 특히 중요한 관계입니다.';
   matchMeta={a,b,good:score>=82?'기본적인 호감과 상호 보완 가능성이 큰 편입니다. 서로 다른 강점을 역할로 나누면 함께 있을 때 혼자보다 선택지가 넓어질 수 있습니다.':'차이가 분명한 만큼 서로에게 없는 방식을 배우게 되는 관계입니다. 맞는 부분만 찾기보다 각자의 강점을 역할로 나누는 것이 중요합니다.',watch:dayGap===6?'일지의 충 신호가 있어 감정의 속도나 생활 리듬이 다를 때 갈등이 크게 느껴질 수 있습니다. 다툼 자체보다 다툰 뒤 어떻게 회복하는지가 핵심입니다.':'감정이 좋을 때는 차이를 매력으로 느끼지만, 피곤할 때는 같은 차이가 답답함으로 느껴질 수 있습니다. 특히 책임과 돈 문제를 말없이 넘기지 않는 것이 중요합니다.',tip:'연락·돈·시간·집안일·가족·혼자 있는 시간에 대한 기준을 구체적으로 맞추세요. 좋은 궁합은 점수보다 반복되는 갈등을 두 사람이 실제로 조율할 수 있을 때 오래 갑니다.'};
   const matchHeadline=score>=86?'서로의 장점을 살리기 좋은 관계예요.':score>=76?'잘 맞는 부분과 조율할 부분이 함께 보여요.':score>=66?'끌림과 차이가 함께 있는 관계예요.':'점수보다 대화 방식이 더 중요한 관계예요.';
-  const pairLead=m?.pair?.fit||'두 사람의 생활 패턴을 함께 확인해 보세요.';
+  const pairNow=compatPairProfile(a.dayMaster?.el||a.pillars?.day?.stemEl||'토',b.dayMaster?.el||b.pillars?.day?.stemEl||'토');
+  const pairLead=pairNow?.fit||'두 사람의 생활 패턴을 함께 확인해 보세요.';
   matchBaseHTML=`<div class="matchHero card"><h3>${matchHeadline}</h3><p>${esc(pairLead)} 점수보다 실제 생활에서 반복되는 패턴을 함께 보세요.</p><div class="matchArt"><img loading="lazy" decoding="async" src="compat-animals.jpg" alt=""></div><div style="font-size:9px;margin-top:7px">귀인사주 참고 궁합 지수</div><div class="score">♥ ${score}<small>점</small></div><p>${band}</p></div>
    <div class="infoCard card"><div class="pair"><div class="person"><b>나<br>${esc(a.input.name)}</b><br>${a.input.year}.${a.input.month}.${a.input.day}<br>${a.input.gender==='여'?'여성':'남성'}</div><div class="heartSvg">${ICONS.heart}</div><div class="person b"><b>상대방<br>${esc(b.input.name)}</b><br>${b.input.year}.${b.input.month}.${b.input.day}<br>${b.input.gender==='여'?'여성':'남성'}</div></div></div>
    <div class="infoCard card"><h3>세부 궁합 지수</h3>${[['연애궁합',love,'pink'],['성격궁합',personality,'mint'],['재물궁합',money,'gold'],['미래궁합',future,'purple']].map(x=>`<div class="scoreRow"><span>${x[0]}</span><div class="scoreBar"><i class="${x[2]}" style="width:${x[1]}%"></i></div><b>${x[1]}</b></div>`).join('')}</div>`+
@@ -2946,6 +2967,7 @@ Object.assign(window,{
   if(h&&screens.includes(h))go(h);
   await refreshGuiinUser();
   syncAuthUI();
+try{guiinRuntimeSelfCheck();}catch(_e){}
 })();
 
 </script>
