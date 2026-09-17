@@ -734,6 +734,9 @@ button{position:relative}
 })();
 </script>
 
+<style id="GUIIN_INTERPRET_STYLE_V10">
+.deepNarrativeNote{margin:10px 14px;padding:11px 13px;border-radius:14px;background:#f8f4ea;color:#6f675b;font-size:10px;line-height:1.65}
+</style>
 <style id="GUIIN_DEMO_BADGE">
 .guiinDemoBadge{position:fixed;top:calc(14px + env(safe-area-inset-top));right:16px;z-index:9999;background:#275f4c;color:#fff;border-radius:999px;padding:8px 13px;font-size:12px;font-weight:900;letter-spacing:.03em;box-shadow:0 5px 16px rgba(23,63,45,.16);pointer-events:none}
 </style>
@@ -1514,47 +1517,143 @@ function sajuVariant(c){
  return SAJU_RESULT_VARIANTS[x.top]||SAJU_RESULT_VARIANTS['토'];
 }
 
-function longSummaryHTML(c){
- const x=sajuInsightProfile(c), season=seasonPlain(c), rel=relationSummary(c),sig=sajuPersonalSignature(c);
- const name=esc(c.input.name);
- const v=sajuVariant(c);
- const title=`${name}님은 ${esc(sig.dv.tone)}이고, ${x.top} 기운의 ${esc(x.p.praise)}이 핵심 강점으로 읽힙니다.`;
- const body=`<p><b>먼저 결론부터 말하면</b>, ${name}님은 ${esc(sig.dv.tone)}입니다. ${esc(c.dayMaster.stem)} 일간의 ${esc(sig.dv.strength)}과 ${x.top} 기운의 ${ELEMENT_EASY[x.top]}이 함께 강점으로 읽힙니다.</p>
- <p><b>실제 생활에서는</b> ${esc(x.p.scene)} 특히 ${esc(sig.monthScene)}이 반복되는 환경에서 본인다운 방식이 더 뚜렷하게 나타날 수 있습니다.</p>
- <p><b>왜 이렇게 보이나요?</b> 오행은 ${x.top} ${x.e.top[1]}%가 가장 높고 ${x.low} ${x.e.low[1]}%가 상대적으로 낮습니다. ${esc(sig.seasonVoice)}과 월주의 ${esc(x.mg)}이 함께 있어, 같은 ${x.top} 기운이라도 계절과 사회적 역할에 따라 표현 방식이 달라집니다.</p>
- <p><b>균형은 이렇게 봅니다.</b> ${esc(sig.bal.text)} 힘들 때는 ${esc(sig.dv.stress)}. 이때 ${x.low} 쪽을 억지로 키우기보다 ${esc(x.lowP.need)}을 실제 습관으로 만드는 게 도움이 됩니다.</p>
- <p><b>관계에서는</b> ${esc(sig.dv.relation)}이며, 현재 원국의 관계 신호는 ${esc(rel)}입니다. 이 신호 하나로 좋고 나쁨을 정하지 않고 실제 반응 패턴을 참고합니다.</p>`;
- return easyCard('전체 풀이 핵심',title,body,
-  x.p.praise,
-  x.p.blind,
-  `${x.p.need}. 중요한 선택은 “남들이 뭐라고 할까”보다 내가 오래 버틸 수 있는 구조인지, 결과가 남는지, 회복할 여지가 있는지를 함께 보세요.`,
-  evidenceText(c));
+
+function krHasBatchim(word){
+ const s=String(word||'').trim();
+ if(!s)return false;
+ const code=s.charCodeAt(s.length-1);
+ if(code<0xAC00||code>0xD7A3)return false;
+ return ((code-0xAC00)%28)!==0;
 }
-function personalityReport(c){
- const x=sajuInsightProfile(c), name=esc(c.input.name), rel=relationSummary(c);
- const v=sajuVariant(c);
- let html=`<div class="easyIntro card"><div class="easyKicker">성격·기질 핵심</div><h2>${name}님은 ${v.personality}</h2><p>${esc(sig.dv.tone)}이며, 사회생활에서는 ${esc(sig.monthScene)}이 먼저 드러날 수 있습니다. ${ELEMENT_EASY[x.top]}은 자연스럽게 잘 쓰는 편이고 ${x.low} 기운은 의식적으로 보완할수록 균형이 좋아집니다.</p></div>`;
+function krJosa(word,pair){
+ const s=String(word||'');
+ const [a,b]=String(pair||'').split('/');
+ if(!b)return s+a;
+ if(pair==='로/으로'){
+   const code=s.charCodeAt(s.length-1);
+   if(code>=0xAC00&&code<=0xD7A3){
+     const jong=(code-0xAC00)%28;
+     return s+(jong===0||jong===8?'로':'으로');
+   }
+ }
+ return s+(krHasBatchim(s)?a:b);
+}
+function krJoin(word,pair){ return krJosa(word,pair); }
+
+const GUIIN_DAYMASTER_NARRATIVE={
+ '갑':{image:'큰 나무',headline:'겉으로는 단단하지만 속에서는 계속 더 나아갈 방향을 찾는 사람',core:'큰 그림을 잡고 앞으로 밀어가는 힘',soft:'사람을 키우고 가능성을 믿어주는 면',shadow:'방향이 막히면 조급함과 고집이 같이 올라올 수 있음'},
+ '을':{image:'덩굴과 꽃',headline:'부드러워 보여도 환경을 읽고 자기 길을 끝내 만드는 사람',core:'유연하게 연결하고 살아남는 힘',soft:'상대의 분위기와 필요를 세심하게 읽는 면',shadow:'계속 맞춰주다 보면 속으로 피로와 서운함이 쌓일 수 있음'},
+ '병':{image:'태양',headline:'사람과 공간의 분위기를 빠르게 밝히는 존재감 있는 사람',core:'표현하고 움직이며 판을 데우는 힘',soft:'좋아하는 사람에게 아낌없이 에너지를 주는 면',shadow:'반응이 없으면 지치거나 감정이 급하게 커질 수 있음'},
+ '정':{image:'촛불과 등불',headline:'겉은 차분해도 속에는 오래 타는 따뜻함과 예민한 감각이 있는 사람',core:'작은 차이를 알아채고 필요한 곳을 오래 비추는 힘',soft:'가까운 사람을 섬세하게 챙기고 의미를 오래 기억하는 면',shadow:'마음을 알아주길 기다리다 서운함을 혼자 키울 수 있음'},
+ '무':{image:'큰 산',headline:'쉽게 흔들리지 않고 결국 현실을 붙잡아주는 묵직한 사람',core:'버티고 지키며 중심을 세우는 힘',soft:'내 사람과 내 자리를 오래 책임지는 면',shadow:'힘들어도 버티다가 변화 시점을 놓칠 수 있음'},
+ '기':{image:'밭과 흙',headline:'눈에 띄기보다 실제로 필요한 것을 하나씩 챙겨 결과를 만드는 사람',core:'관리하고 돌보고 현실을 굴리는 힘',soft:'사소한 필요까지 놓치지 않고 챙기는 면',shadow:'남의 몫까지 떠안아 본인 피로를 뒤늦게 알아차릴 수 있음'},
+ '경':{image:'큰 쇠와 칼',headline:'애매함보다 분명함을 택하고 문제를 정리할 때 강한 사람',core:'결단하고 쳐내며 개선하는 힘',soft:'믿는 사람에게는 의외로 책임감과 의리가 강한 면',shadow:'답답함이 길어지면 말이 단호해지고 거리 두기가 빨라질 수 있음'},
+ '신':{image:'보석과 세공된 금속',headline:'겉은 세련되고 차분하지만 속에는 높은 기준과 섬세함을 품은 사람',core:'정교하게 다듬고 완성도를 높이는 힘',soft:'마음에 들어온 사람과 일을 오래 아끼고 관리하는 면',shadow:'기준이 높아질수록 자신과 타인 모두에게 까다로워질 수 있음'},
+ '임':{image:'큰 강과 바다',headline:'한쪽만 보지 않고 여러 가능성을 동시에 읽는 넓은 사람',core:'흐름을 읽고 사람과 정보를 연결하는 힘',soft:'상대의 사정과 맥락을 크게 보려는 면',shadow:'생각이 많아지면 결정을 미루거나 감정 경계가 흐려질 수 있음'},
+ '계':{image:'비와 이슬',headline:'조용해 보여도 작은 변화와 감정을 누구보다 빠르게 감지하는 사람',core:'관찰하고 스며들며 섬세하게 조정하는 힘',soft:'상대가 말하지 않은 감정까지 알아차리는 면',shadow:'속으로 정리하는 시간이 길어져 상대가 마음을 놓칠 수 있음'}
+};
+
+function guiinNarrative(c){
+ const stem=c?.dayMaster?.stem||c?.pillars?.day?.stem||'정';
+ const day=GUIIN_DAYMASTER_NARRATIVE[stem]||GUIIN_DAYMASTER_NARRATIVE['정'];
  const sig=sajuPersonalSignature(c);
- html+=easyCard('남들이 보는 나',`${name}님은 ${esc(sig.dv.tone)}이라, 처음과 가까워진 뒤의 인상이 조금 다를 수 있습니다.`,
- `<p>${name}님은 ${esc(x.stem.image)}에 비유되는 ${esc(c.dayMaster.stem)} 일간입니다. 겉에서는 ${esc(sig.monthScene)}이 먼저 보이고, 가까워질수록 ${esc(sig.dv.strength)}과 ${esc(x.stem.core)}이 더 선명하게 드러날 수 있습니다.</p>
- <p><b>칭찬을 듣기 쉬운 지점</b>은 말보다 결과로 보여주는 부분입니다. 약속을 잡으면 지키고, 맡은 일을 끝까지 가져가고, 필요한 순간에는 기준을 세워주는 역할에서 신뢰를 얻기 쉽습니다.</p>`,
- x.p.praise,
- `사람들이 기대는 역할을 오래 맡으면 “내가 안 하면 안 된다”는 생각이 강해져 부담이 누적될 수 있습니다.`,
- `부탁을 받았을 때 바로 “응” 하기 전에 시간·비용·체력을 먼저 계산해보세요.`,evidenceText(c));
- html+=easyCard('속마음과 감정',`${name}님은 ${esc(sig.dv.relation)}이라 감정이 쌓이는 방식도 본인만의 리듬이 있습니다.`,
- `<p>가까운 관계에서는 ${esc(sig.dv.relation)}입니다. 특히 ${esc(sig.dv.stress)} 때문에 평소보다 말수가 줄거나 반대로 기준이 강해질 수 있습니다. 상대가 결과만 보지 않도록 과정에서 작은 감정을 먼저 말하는 게 중요합니다.</p>
- <p>현재 원국의 관계 신호는 <b>${esc(rel)}</b>입니다. 이 신호는 특정 사건을 예언하는 것이 아니라, 관계 안에서 어떤 반응이 반복되기 쉬운지를 참고하는 기준입니다.</p>`,
- `한번 믿은 사람에게 꾸준히 마음을 쓰고, 관계를 가볍게 버리지 않는 힘이 있습니다.`,
- `감정이 한계까지 쌓인 뒤 한 번에 결론을 내리면 상대는 과정을 이해하지 못하고, 본인도 뒤늦게 허탈할 수 있습니다.`,
- `서운함이 3번 쌓이기 전에 한 번은 말하는 규칙을 만들어보세요. “사실-내 감정-내가 원하는 것” 순서로 말하면 훨씬 덜 지칩니다.`,evidenceText(c,`관계 신호 ${rel}`));
- html+=easyCard('일할 때의 성격',`지시받는 사람보다 “어떻게 하면 더 낫게 할지” 판단할 여지가 있을 때 실력이 잘 나옵니다.`,
- `<p>${x.top} 기운이 두드러져 ${ELEMENT_EASY[x.top]}을 자연스럽게 쓰는 편입니다. 그래서 기준이 없는 일, 역할이 계속 바뀌는 일보다 내 책임과 결과가 분명한 환경에서 만족도가 높아질 수 있습니다.</p>
- <p>반대로 성과보다 감정노동이 크고, 책임만 많고 결정권은 없는 환경에서는 실력보다 피로가 먼저 쌓일 수 있습니다.</p>`,
- `문제를 발견하면 그냥 넘기기보다 개선점을 찾고, 반복하면 자기 방식으로 숙련시키는 힘이 있습니다.`,
- x.p.blind,
- `${x.p.need}. 동시에 “이 일을 왜 하는지”와 “내가 어디까지 책임지는지”를 문장으로 정해두세요.`,evidenceText(c));
+ const x=sig.x;
+ return {stem,day,sig,x};
+}
+function evidenceCompact(c,keys=[]){
+ const x=sajuInsightProfile(c), out=[];
+ if(keys.includes('day'))out.push(`${c.dayMaster?.stem||c.pillars?.day?.stem||''} 일간`);
+ if(keys.includes('month'))out.push(`월주 ${x.mg}`);
+ if(keys.includes('elements'))out.push(`오행 ${x.top} ${x.e.top[1]}% · ${x.low} ${x.e.low[1]}%`);
+ if(keys.includes('relation'))out.push(`관계 신호 ${relationSummary(c)}`);
+ if(keys.includes('luck')){
+   const lk=currentLuck(c), yf=currentYearFlow(c);
+   if(lk)out.push(`${lk.ko} 대운(${lk.god})`);
+   if(yf?.gods?.year)out.push(`${new Date().getFullYear()}년 ${yf.gods.year}`);
+ }
+ return out.filter(Boolean).join(' / ');
+}
+
+
+function longSummaryHTML(c){
+ const {day,sig,x,stem}=guiinNarrative(c);
+ const name=esc(c.input.name);
+ const rel=relationSummary(c);
+ const topWord=`${x.top} 기운`;
+ const lowWord=`${x.low} 기운`;
+ const title=`한마디로 · ${day.headline}`;
+ const body=`<p><b>${name}님을 한 문장으로 표현하면</b>, ${esc(day.image)} 같은 사람에 가깝습니다. 겉으로는 ${esc(sig.dv.tone)}이지만 안쪽에는 ${esc(day.soft)}이 함께 있어, 처음 보는 인상과 가까워진 뒤의 인상이 조금 다를 수 있습니다.</p>
+ <p><b>사주의 중심은 ${esc(stem)} 일간</b>이고, 현재 오행에서는 ${krJoin(x.top,'이/가')} ${x.e.top[1]}%로 가장 두드러집니다. 그래서 ${esc(x.p.praise)}이 생활 전반에서 자연스럽게 나오기 쉽습니다. 반대로 ${krJoin(x.low,'은/는')} ${x.e.low[1]}%로 낮아, ${esc(x.lowP.need)}처럼 의식적으로 꺼내야 하는 기능이 생길 수 있습니다.</p>
+ <p><b>월주의 ${esc(x.mg)}</b>은 사회생활에서 ${esc(sig.monthScene)}을 자주 쓰게 만드는 신호로 봅니다. 즉 타고난 성향만 있는 사람이 아니라, 밖에서는 결과를 만들고 책임지는 방식까지 함께 발달했을 가능성이 있습니다.</p>
+ <p><b>이 사주의 반전 매력</b>은 ${esc(day.core)}과 ${esc(day.soft)}이 같이 있다는 점입니다. 잘 쓰면 섬세하면서도 실무적이고, 따뜻하면서도 기준이 분명한 사람이 됩니다. 다만 힘들 때는 ${esc(day.shadow)}. 이때 강한 ${topWord}만 더 세게 쓰기보다 ${lowWord} 쪽 기능을 생활 습관으로 보완하는 편이 훨씬 낫습니다.</p>
+ <p><b>관계에서는</b> ${esc(sig.dv.relation)}입니다. 원국에는 ${esc(rel)} 신호가 보이지만, 이건 특정 사건을 예언하는 표지가 아니라 “관계에서 어떤 반응이 반복될 수 있는가”를 참고하는 보조 근거로만 씁니다.</p>`;
+ return `<div class="easyIntro card"><div class="easyKicker">전체 풀이 핵심</div><h2>${title}</h2><p>${name}님의 일간·오행·월주 십성·관계 신호를 한 문장씩 연결해서 읽습니다.</p></div>`+
+ easyCard('오행으로 보는 사주',`${krJoin(x.top,'이/가')} 강점이지만, ${krJoin(x.low,'은/는')} 생활 습관으로 보완해야 더 편해집니다.`,
+ `<p>${esc(sig.bal.text)} ${name}님은 특히 ${esc(x.p.scene)}</p>
+ <p>오행은 “좋은 기운/나쁜 기운”으로 자르기보다, 내가 자동으로 잘 쓰는 기능과 의식적으로 챙겨야 하는 기능을 나눠보는 데 쓰는 편이 정확합니다.</p>`,
+ `강한 ${topWord} 덕분에 ${esc(x.p.praise)}`,
+ `${esc(x.p.blind)}`,
+ `${esc(x.lowP.need)}을 작게라도 반복해 보세요.`,
+ evidenceCompact(c,['day','month','elements']))+
+ easyCard('쓴소리 조금 할게요',`잘하는 걸 너무 오래 혼자 떠안으면 장점이 그대로 피로가 될 수 있습니다.`,
+ `<p>${name}님의 약점은 능력이 부족해서 생기기보다, <b>잘하는 방식을 너무 오래 혼자 쓰는 데서</b> 생길 가능성이 큽니다. ${esc(day.shadow)} ${esc(sig.dv.stress)} 같은 장면이 겹치면 “왜 나만 이렇게까지 해야 하지?”라는 마음이 늦게 올라올 수 있습니다.</p>
+ <p>이럴 때는 더 잘하려고 버티는 것보다 역할·시간·돈·감정의 경계를 다시 정하는 편이 실제 운용에는 도움이 됩니다.</p>`,
+ `스스로 기준을 세우면 다시 정리하고 회복하는 힘이 있습니다.`,
+ `도움을 늦게 요청하고, 이미 지친 뒤에야 선을 그을 수 있습니다.`,
+ `문제가 생겼을 때 “내가 해결할 수 있나?”보다 “이게 정말 내 몫인가?”를 먼저 확인해보세요.`,
+ evidenceCompact(c,['day','elements']))+
+ easyCard('나만의 매력',`${esc(day.soft)}이 ${name}님의 가장 오래 가는 매력입니다.`,
+ `<p>${name}님은 단순히 강하거나 차가운 사람으로 읽히지 않습니다. ${esc(day.image)}처럼 겉에서는 기준과 완성도가 먼저 보일 수 있지만, 가까운 사람에게는 ${esc(day.soft)}이 더 선명하게 드러날 수 있습니다.</p>
+ <p>억지로 모두에게 좋은 사람이 되기보다, 내가 중요하게 생각하는 사람과 일에 에너지를 선별해서 쓰는 편이 이 사주의 장점을 훨씬 깨끗하게 살립니다.</p>`,
+ `${esc(day.core)}`,
+ `내 기준을 스스로에게도 너무 엄격하게 적용할 수 있습니다.`,
+ `잘한 일을 작게라도 기록해두세요. 결과보다 부족한 점만 보는 습관을 줄이는 데 도움이 됩니다.`,
+ evidenceCompact(c,['day','month']));
+}
+
+
+function personalityReport(c){
+ const {day,sig,x,stem}=guiinNarrative(c);
+ const name=esc(c.input.name), rel=relationSummary(c);
+ let html=`<div class="easyIntro card"><div class="easyKicker">나라는 사람</div><h2>${name}님은 ${day.headline}</h2><p>${esc(day.image)}에 비유되는 ${stem} 일간의 기질과 ${x.top} 기운의 현실적인 표현 방식을 함께 봅니다.</p></div>`;
+ html+=easyCard('겉으로 보이는 나',`처음에는 ${esc(sig.monthScene)}이 먼저 보이고, 가까워질수록 ${esc(day.soft)}이 드러납니다.`,
+ `<p>사람들이 처음 보는 ${name}님은 ${esc(sig.dv.tone)} 쪽으로 느낄 수 있습니다. 일을 함께 해보면 ${esc(day.core)}이 보이고, 가까워질수록 ${esc(day.soft)}이 나타날 수 있습니다.</p>
+ <p>그래서 어떤 사람에게는 단단하고 빈틈없는 사람, 또 어떤 사람에게는 의외로 정이 많고 섬세한 사람으로 기억될 수 있습니다.</p>`,
+ `${esc(sig.dv.strength)}을 결과로 바꾸는 힘`,
+ `기대받는 역할을 오래 맡으면 본인 피로를 뒤늦게 알아차릴 수 있습니다.`,
+ `부탁을 받았을 때 즉답하기보다 시간·비용·체력을 먼저 계산해보세요.`,
+ evidenceCompact(c,['day','month']));
+ html+=easyCard('속마음과 감정',`감정이 없는 사람이 아니라, 감정을 바로 다 보여주지 않는 사람에 가깝습니다.`,
+ `<p>${name}님은 ${esc(sig.dv.relation)}입니다. 특히 ${esc(day.shadow)} 이런 패턴이 반복되면 겉으로는 괜찮아 보여도 속에서는 이미 여러 번 생각을 끝낸 뒤일 수 있습니다.</p>
+ <p>원국의 관계 신호는 <b>${esc(rel)}</b>입니다. 이 신호는 사랑의 성공·실패를 정하는 게 아니라, 감정이 가까워질 때 어떤 반응이 반복되기 쉬운지를 참고하는 근거입니다.</p>`,
+ `가까운 사람의 작은 변화와 말의 뉘앙스를 잘 알아차립니다.`,
+ `서운함을 설명하기 전에 혼자 결론을 내릴 수 있습니다.`,
+ `감정이 3번 쌓이기 전에 한 번은 “사실-감정-요청” 순서로 말해보세요.`,
+ evidenceCompact(c,['day','relation']));
+ html+=easyCard('일할 때의 나',`${esc(sig.dv.strength)}을 쓸 수 있고, 결과와 권한이 연결된 환경에서 실력이 잘 나옵니다.`,
+ `<p>${x.top} 기운이 두드러져 ${ELEMENT_EASY[x.top]}을 자연스럽게 씁니다. 여기에 월주의 ${esc(x.mg)}이 더해져 사회에서는 ${esc(sig.monthScene)}이 반복되기 쉽습니다.</p>
+ <p>반대로 책임은 큰데 결정권이 없거나, 결과보다 감정노동이 훨씬 큰 환경에서는 능력보다 피로가 먼저 쌓일 수 있습니다.</p>`,
+ `문제를 발견하면 개선점을 찾아 자기 방식으로 숙련시키는 힘`,
+ `${esc(x.p.blind)}`,
+ `“내가 어디까지 책임지는가”를 역할 설명처럼 문장으로 정해두세요.`,
+ evidenceCompact(c,['month','elements']));
+ html+=easyCard('가족과 가까운 사람에게',`잘 챙기는 사람일수록 가족 문제까지 내 몫으로 만들지 않는 연습이 중요합니다.`,
+ `<p>사주만으로 어린 시절의 구체적인 사건이나 부모와의 관계를 사실처럼 단정할 수는 없습니다. 다만 ${name}님처럼 ${esc(sig.dv.relation)}인 사람은 가까운 사이일수록 책임감과 감정 부담을 더 많이 가져갈 수 있습니다.</p>
+ <p>가족·연인·친구를 도와주는 것과 대신 살아주는 것은 다릅니다. 가까운 사람일수록 “도와줄 수 있는 범위”를 먼저 정하는 게 관계를 오래 지키는 데 도움이 됩니다.</p>`,
+ `내 사람에게 오래 마음을 쓰고 쉽게 버리지 않는 힘`,
+ `상대 문제를 해결하는 역할이 고정되면 관계가 피로해질 수 있습니다.`,
+ `도움 요청을 받으면 돈·시간·감정 세 가지 중 어디까지 가능한지 먼저 정하세요.`,
+ evidenceCompact(c,['relation']));
+ html+=easyCard('곁에 두면 편한 사람',`감정의 크기보다 말이 통하고 경계를 존중하는 사람이 잘 맞습니다.`,
+ `<p>${name}님에게 좋은 사람은 무조건 밝거나 강한 사람이 아니라, 약속을 지키고 감정을 과장하지 않으며 서로의 시간을 존중하는 사람입니다.</p>
+ <p>특히 ${x.low} 기능을 자연스럽게 쓰는 사람은 ${name}님이 놓치기 쉬운 부분을 보완해 줄 수 있지만, 오행만 보고 사람을 고르는 식으로 단순화하지는 않는 게 좋습니다.</p>`,
+ `서로 다른 장점을 역할로 나눌 때 관계가 오래 갑니다.`,
+ `상대가 계속 기대기만 하면 돌봄 관계로 굳어질 수 있습니다.`,
+ `편안함·존중·책임 분담 세 가지가 동시에 있는지 보세요.`,
+ evidenceCompact(c,['elements','relation']));
  return html;
 }
+
 function flowReport(c){
  const lk=currentLuck(c), yf=currentYearFlow(c), nowYear=new Date().getFullYear(), age=nowYear-c.input.year;
  const yrGod=yf?.gods?.year||'', transit=yf?.pillars?.year; let trs=[];
@@ -1612,39 +1711,58 @@ function flowReport(c){
  <div class="evidenceLine"><b>대운 시작</b> · ${c.startAgeText||c.startAge+'세'} · ${c.forward?'순행':'역행'}</div></div>
  <div class="deepCard card"><h3>10년 단위로 보면 이렇게 흘러갑니다</h3><div class="luckGrid">${luckRows}</div></div>`;
 }
+
 function fieldsReport(c){
- const x=sajuInsightProfile(c), lk=currentLuck(c), yf=currentYearFlow(c), yg=yf?.gods?.year||'', nowYear=new Date().getFullYear();
+ const {day,sig,x}=guiinNarrative(c);
+ const lk=currentLuck(c), yf=currentYearFlow(c), yg=yf?.gods?.year||'', nowYear=new Date().getFullYear();
  const name=esc(c.input.name);
  const common=`현재는 ${lk?`${lk.ko} 대운(${lk.god})`:'대운 흐름'} 위에 ${nowYear}년의 ${yg||'세운'} 주제가 겹쳐 있습니다.`;
- const v=sajuVariant(c);
- let out=`<div class="easyIntro card"><div class="easyKicker">직업·재물·연애</div><h2>${name}님은 ${esc(sig.dv.strength)}을 살릴 수 있는 환경에서 강점이 오래가고, ${v.fields}</h2><p>${esc(sig.bal.text)} 월주의 ${esc(x.mg)}과 ${x.top} 기운을 함께 보면서 직업·돈·연애가 실제 생활에서 어떻게 다르게 나타나는지 나눠서 봅니다.</p></div>`;
- const sig=sajuPersonalSignature(c);
- out+=easyCard('직업',`${esc(sig.dv.strength)}을 실제 성과로 바꿀 수 있고, ${esc(sig.monthScene)}이 존중되는 환경이 잘 맞습니다.`, 
- `<p><b>잘 맞는 일의 조건</b>은 “내가 판단할 여지가 있는가, 결과가 눈에 보이는가, 기술이 쌓이는가, 회복할 시간이 남는가”입니다. ${name}님의 월주 ${esc(x.mg)}은 ${esc(x.mgEasy)}과 연결되고, ${x.top} 기운이 두드러져 ${ELEMENT_EASY[x.top]}을 실제 결과로 바꾸는 환경에서 강점이 살아나기 쉽습니다.</p>
- <p><b>실제 직장에서는</b> 남이 시키는 일만 반복하는 자리보다 문제를 발견하고 개선하거나, 맡은 영역을 자기 방식으로 운영하는 역할에서 만족도가 높을 수 있습니다. ${common}</p>`,
- x.p.praise,
- `권한은 없는데 책임만 늘어나거나, 사람 눈치를 보느라 기준을 바꾸는 일이 반복되면 능력보다 먼저 소진될 수 있습니다.`,
- `이직·업종 변경을 볼 때 연봉 옆에 “결정권 / 기술 축적 / 결과물 / 회복 가능성” 네 칸을 만들어 점수화해보세요.`,evidenceText(c,`직업 핵심 ${x.mg}`));
- out+=easyCard('재물',sig.bal.key==='strong'?'버는 힘과 쓰는 습관의 속도가 달라질 수 있어, 자동으로 남기는 구조가 특히 중요합니다.':sig.bal.key==='tilted'?'돈은 감각보다 기준을 세울수록 안정되는 편입니다.':'한 가지 방식보다 상황에 맞는 수입·관리 전략을 나누는 편이 안정적입니다.',
- `<p>${name}님의 오행은 ${x.top} ${x.e.top[1]}%가 높고 ${x.low} ${x.e.low[1]}%가 낮습니다. 강한 쪽은 수입을 만드는 방식에 자연스럽게 쓰이고, 낮은 쪽은 예산·저축·리스크 관리처럼 습관으로 보완해야 안정됩니다.</p>
- <p><b>돈에서 자주 생길 수 있는 문제</b>는 바쁠 때 편의를 위해 쓰는 돈, 관계 때문에 대신 부담하는 돈, “이번 한 번만” 하는 큰 지출입니다. ${common}</p>`,
- `숫자를 확인하고 기준을 세우기 시작하면 작은 돈도 꾸준히 쌓는 힘을 만들 수 있습니다.`,
- `수입이 늘어난 만큼 고정비와 생활 수준도 같이 올라가면 체감 재물운은 약해질 수 있습니다.`,
- `월급·매출이 들어오면 고정비, 생활비, 저축을 먼저 분리하고 남은 돈만 쓰는 구조를 만들어보세요.`,evidenceText(c,'재물은 오행·십성·대운·세운을 함께 봄'));
- out+=easyCard('연애',`${name}님은 ${esc(sig.dv.relation)}이라, 상대가 사랑을 표현하는 방식보다 내가 관계 안에서 편안한지가 더 중요합니다.`, 
- `<p><b>연애에서 중요한 건</b> 상대가 나를 좋아하느냐만이 아니라, 그 사람과 있을 때 내가 편안한가입니다. 관계 신호는 <b>${esc(relationSummary(c))}</b>로 확인되며, 합·충 하나로 이별이나 결혼을 단정하지 않습니다.</p>
- <p><b>실제 관계에서는</b> 상대의 사정까지 이해하다가 내 몫이 커질 수 있습니다. 애정표현, 돈, 연락, 가족, 생활 리듬에서 “누가 얼마나 맡는지”가 불분명하면 사랑보다 피로가 먼저 쌓일 수 있습니다.</p>`,
- `신뢰가 생긴 사람에게 꾸준하고 쉽게 포기하지 않는 힘이 있습니다.`,
- `참는 것을 사랑이라고 생각하면 마음이 이미 지친 뒤에야 문제를 크게 말하게 될 수 있습니다.`,
- `좋아하는 마음과 별개로 “이 관계에서 내가 계속 떠안는 것이 무엇인지”를 한 달에 한 번은 점검해보세요.`,evidenceText(c,`관계 ${relationSummary(c)}`));
- out+=easyCard('결혼·동거','설렘보다 돈·집안일·가족·혼자 있는 시간을 나눌 수 있어야 오래 편합니다.',
- `<p>장기 관계에서는 애정의 크기보다 생활 운영이 중요합니다. 누가 돈을 관리하는지, 누가 더 많이 돌보는지, 양가 가족의 요구에 어디까지 응할지, 각자 혼자 있는 시간은 얼마나 필요한지를 구체적으로 정해야 합니다.</p>
- <p>좋은 궁합도 책임이 한쪽에 몰리면 오래 버티기 어렵고, 차이가 있어도 역할 분담과 대화가 되는 관계라면 충분히 안정될 수 있습니다.</p>`,
- `내 사람이라고 느끼면 책임을 오래 가져가고 관계를 쉽게 버리지 않는 힘이 있습니다.`,
- `상대의 문제까지 내 몫처럼 해결하려 들면 사랑과 돌봄의 경계가 흐려질 수 있습니다.`,
- `결혼·동거 전에는 돈, 집안일, 가족, 반려동물·돌봄, 여행, 혼자 있는 시간을 문장으로 합의해보세요.`,evidenceText(c));
+ let out=`<div class="easyIntro card"><div class="easyKicker">직업·재물·연애</div><h2>${name}님은 ${esc(day.core)}을 실제 결과로 연결할 때 만족도가 높아질 수 있습니다.</h2><p>직업·돈·연애는 같은 명식이라도 보는 근거를 다르게 나눠서 해석합니다.</p></div>`;
+ out+=easyCard('나에게 맞는 일',`“내 이름을 걸 수 있는 결과물”이 남는 일이 잘 맞는 편입니다.`,
+ `<p>${name}님의 월주 ${esc(x.mg)}은 ${esc(sig.monthScene)}과 연결되고, ${x.top} 기운은 ${ELEMENT_EASY[x.top]}을 자연스럽게 쓰게 합니다. 그래서 단순 반복보다 <b>판단할 여지·기술 축적·결과물·운영권</b>이 있는 일이 잘 맞을 가능성이 큽니다.</p>
+ <p>꼭 프리랜서나 창업이어야 한다는 뜻은 아닙니다. 조직 안에서도 맡은 영역의 기준을 세우거나 전문성을 쌓을 수 있다면 충분히 강점이 살아납니다. ${common}</p>`,
+ `${esc(sig.dv.strength)}을 전문성으로 바꾸는 힘`,
+ `권한 없이 책임만 커지거나, 사람 눈치 때문에 기준을 계속 바꾸는 환경`,
+ `직업 선택 때 연봉 외에 “결정권 / 기술축적 / 결과물 / 회복 가능성”을 같이 점검하세요.`,
+ evidenceCompact(c,['month','elements','luck']));
+ out+=easyCard('재물운',`돈복을 “많이 들어온다”보다 “어떤 구조에서 남길 수 있나”로 보는 편이 정확합니다.`,
+ `<p>${name}님은 ${x.top} 기운이 강해 익숙한 방식으로 수입을 만드는 추진력이 생길 수 있지만, ${x.low} 쪽 기능은 관리 습관으로 보완하는 편이 좋습니다.</p>
+ <p>귀인사주에서는 횡재·투자 성공·부자 확정처럼 단정하지 않습니다. 대신 현재 명식에서는 <b>수입을 만드는 힘과 돈을 남기는 구조를 따로 보는 것</b>이 중요합니다. ${common}</p>`,
+ `기준을 세우면 작은 돈도 체계적으로 관리할 수 있습니다.`,
+ `바쁠 때 편의비용, 관계 때문에 대신 부담하는 돈, 고정비 증가`,
+ `입금 직후 고정비·생활비·저축을 먼저 나누고 남은 돈만 쓰는 구조를 만드세요.`,
+ evidenceCompact(c,['elements','luck']));
+ out+=easyCard('연애운',`좋아하는 마음보다 “이 관계에서 내가 편안한가”가 더 중요한 사람입니다.`,
+ `<p>${name}님은 ${esc(sig.dv.relation)}입니다. 그래서 호감이 커져도 상대의 사정까지 이해하다 보면 본인 몫이 늘어날 수 있습니다.</p>
+ <p>관계 신호는 <b>${esc(relationSummary(c))}</b>로 보이지만, 이걸 배우자 복이나 이별 시기처럼 확정적으로 읽지는 않습니다. 실제로는 연락·돈·가족·생활 리듬에서 역할이 어떻게 나뉘는지가 만족도에 더 직접적인 영향을 줍니다.</p>`,
+ `한번 신뢰한 사람에게 꾸준하고 쉽게 포기하지 않는 힘`,
+ `참는 걸 사랑이라고 생각하면 지친 뒤에야 크게 말할 수 있습니다.`,
+ `한 달에 한 번 “내가 계속 떠안는 것이 있는가”를 체크해보세요.`,
+ evidenceCompact(c,['day','relation']));
+ out+=easyCard('결혼·동거',`설렘보다 생활 운영 규칙이 맞아야 오래 편한 관계가 됩니다.`,
+ `<p>장기 관계에서는 돈·집안일·가족·반려동물·돌봄·혼자 있는 시간처럼 반복되는 현실 규칙이 중요합니다. 좋은 궁합도 책임이 한쪽으로 몰리면 피곤해지고, 차이가 있어도 역할을 합의할 수 있으면 안정될 수 있습니다.</p>
+ <p>명식은 관계 성향을 참고하는 도구일 뿐 “이 사람과 반드시 결혼한다”거나 “배우자가 어떤 성별·직업이다”라고 단정하지 않습니다.</p>`,
+ `내 사람에게 오래 책임을 가져가는 힘`,
+ `상대 문제까지 내 몫처럼 해결하려 들면 사랑과 돌봄의 경계가 흐려질 수 있습니다.`,
+ `결혼·동거 전 돈·집안일·가족·돌봄·개인시간을 실제 문장으로 합의해보세요.`,
+ evidenceCompact(c,['relation']));
+ out+=easyCard('머물면 좋은 환경',`운을 바꾸는 장소보다, ${name}님의 에너지가 회복되는 환경을 찾는 게 더 현실적입니다.`,
+ `<p>${x.low} 기운을 보완한다는 이유로 특정 도시·방향·색깔이 행운을 보장한다고 말하지는 않습니다. 대신 ${esc(x.lowP.need)}이 실제로 잘 되는 환경을 찾아보는 건 도움이 됩니다.</p>
+ <p>예를 들어 조용히 생각할 시간이 필요한 사람은 소음이 적은 공간, 활동성이 필요한 사람은 산책과 이동이 쉬운 환경처럼 <b>생활 조건을 명리 상징과 연결해 보는 방식</b>이 더 실용적입니다.</p>`,
+ `내 컨디션이 좋아지는 조건을 찾으면 실력도 안정적으로 유지됩니다.`,
+ `“좋은 방향·좋은 색”만 믿고 실제 생활 조건을 놓치는 것`,
+ `최근 3개월 동안 컨디션이 좋았던 장소와 나빴던 장소의 공통점을 기록해보세요.`,
+ evidenceCompact(c,['elements']));
+ out+=easyCard('마지막 한마디',`${name}님은 이미 잘 버티는 사람이어서, 앞으로는 “더 버티기”보다 “덜 소모되는 방식”을 찾는 게 중요합니다.`,
+ `<p>${esc(day.image)} 같은 사람은 작아 보여도 오래 갑니다. ${name}님의 강점은 완벽해서가 아니라 ${esc(day.core)}과 ${esc(day.soft)}을 동시에 가지고 있다는 데 있습니다.</p>
+ <p>명리는 미래를 확정하는 판정표가 아니라, 이미 가진 패턴을 이해하고 선택을 조금 더 편하게 만드는 참고 도구로 써주세요.</p>`,
+ `자기 기준을 다시 세우면 회복하고 정리하는 힘`,
+ `잘하는 걸 계속 증명하려다 본인 회복을 뒤로 미루는 것`,
+ `다음 선택에서는 “할 수 있나?”와 함께 “이걸 하고도 내가 괜찮을까?”를 같이 물어보세요.`,
+ evidenceCompact(c,['day','elements','luck']));
  return out;
 }
+
 function starDetails(c){
  const raw=c.stars?.hits||[], seen=new Set(), hits=raw.filter(h=>{const k=h.name+'|'+(h.basis||'');if(seen.has(k))return false;seen.add(k);return true});
  const starEasy={
