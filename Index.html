@@ -577,13 +577,55 @@ html{background:#efe7d7}.app{background:linear-gradient(180deg,#fffaf0 0%,#fff6e
 button,[onclick],.guideRow,.fortuneRow.clickable{touch-action:manipulation;-webkit-tap-highlight-color:rgba(201,155,52,.14)}
 button{position:relative}
 </style>
+
+<script>
+/* GUIIN MOBILE NAVIGATION FALLBACK — independent of the main app script */
+(function(){
+  function nav(id){
+    if(!id) return;
+    var screens=document.querySelectorAll('.screen');
+    var target=document.getElementById(id);
+    if(!target) return;
+    screens.forEach(function(s){s.classList.remove('active');});
+    target.classList.add('active');
+
+    document.querySelectorAll('.bottom button').forEach(function(b){b.classList.remove('active');});
+    var navBtn =
+      id==='home' ? document.getElementById('navHome') :
+      id==='mypage' ? document.getElementById('navMy') :
+      id==='history' ? document.getElementById('navHistory') :
+      document.getElementById('navSaju');
+    if(navBtn) navBtn.classList.add('active');
+
+    try{ history.replaceState(null,'','#'+id); }catch(_e){}
+    try{ window.scrollTo({top:0,left:0,behavior:'instant'}); }catch(_e){ window.scrollTo(0,0); }
+  }
+
+  /* Define a usable go() before the large application script runs. */
+  if(typeof window.go!=='function') window.go=nav;
+  if(typeof window.goToday!=='function') window.goToday=function(){nav('today');};
+
+  /* iPhone/Safari safety: handle navigation at document level as well. */
+  document.addEventListener('click',function(e){
+    var el=e.target && e.target.closest ? e.target.closest('[data-guiin-nav]') : null;
+    if(!el) return;
+    var id=el.getAttribute('data-guiin-nav');
+    if(!id) return;
+    e.preventDefault();
+    nav(id);
+  },true);
+
+  window.__guiinFallbackNav=nav;
+})();
+</script>
+
 </head>
 <body>
 <div class="app">
 
 <section id="home" class="screen active">
   <div class="topbar">
-    <button class="ghost" aria-label="메뉴" onclick="go('mypage')"><svg viewBox="0 0 24 24" width="21" height="21"><path d="M4 7h16M4 12h16M4 17h16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg></button>
+    <button class="ghost" aria-label="메뉴" onclick="go('mypage')" data-guiin-nav="mypage"><svg viewBox="0 0 24 24" width="21" height="21"><path d="M4 7h16M4 12h16M4 17h16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg></button>
     <div class="brand"><div class="brandline"><span class="logo-dot"><img loading="lazy" decoding="async" src="clover-mark.jpg" alt=""></span>귀인사주</div><small>좋은 인연이, 좋은 운을 만듭니다.</small></div>
     <button class="ghost" aria-label="알림"><svg viewBox="0 0 24 24" width="20" height="20"><path d="M18 8a6 6 0 00-12 0c0 7-3 7-3 9h18c0-2-3-2-3-9M10 21h4" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg></button>
   </div>
@@ -591,7 +633,7 @@ button{position:relative}
   <div class="profilebar card">
     <div class="avatar"><img loading="lazy" decoding="async" src="clover-mark.jpg" alt=""></div>
     <div class="txt"><b id="homeName">반가워요! ›</b><small id="homeBirth">오늘도 좋은 하루 되세요!</small></div>
-    <button class="picker" onclick="go('mypage')">다른 프로필 선택 ›</button>
+    <button class="picker" onclick="go('mypage')" data-guiin-nav="mypage">다른 프로필 선택 ›</button>
   </div>
 
   <div class="homeHero card">
@@ -603,16 +645,16 @@ button{position:relative}
     <div class="heroArt">
       <img decoding="async" fetchpriority="high" src="hero-animals.jpg" alt="클로버 정원의 귀인사주 친구들">
     </div>
-    <button class="ctaGreen" onclick="go('ask')">AI 사주상담 시작하기 ›</button>
+    <button class="ctaGreen" onclick="go('ask')" data-guiin-nav="ask">AI 사주상담 시작하기 ›</button>
   </div>
 
   <div class="tiles">
     <div class="tile"><div class="ico"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="4" fill="currentColor"/><g stroke="currentColor" stroke-width="1.7"><path d="M12 1v4M12 19v4M1 12h4M19 12h4M4.2 4.2l2.8 2.8M17 17l2.8 2.8M19.8 4.2L17 7M7 17l-2.8 2.8"/></g></svg></div><b>오늘의 운세</b><p>오늘 나에게 들어오는 기운과 주의할 점</p><button onclick="renderToday();go('today')">지금 바로 보기 ›</button></div>
     <div class="tile"><div class="ico"><svg viewBox="0 0 24 24"><path d="M6 3h12v18H6z" fill="none" stroke="currentColor" stroke-width="1.7"/><path d="M9 7h6M9 11h6M9 15h4" stroke="currentColor" stroke-width="1.7"/></svg></div><div class="pet"><img src="input-cat.jpg" alt=""></div><b>평생사주</b><p>성격, 직업, 재물, 연애, 가족, 대운까지</p><button onclick="openResultTab('summary')">내 사주 전체 보기 ›</button></div>
-    <div class="tile"><div class="ico"><svg viewBox="0 0 24 24"><path d="M12 20s-8-4.8-8-10a4.5 4.5 0 018-2.8A4.5 4.5 0 0120 10c0 5.2-8 10-8 10z" fill="currentColor"/></svg></div><div class="pet"><img src="compat-animals.jpg" alt=""></div><b>우리 궁합</b><p>두 사람의 끌림, 갈등, 결혼, 재물궁합까지</p><button onclick="go('match')">궁합 보기 ›</button></div>
+    <div class="tile"><div class="ico"><svg viewBox="0 0 24 24"><path d="M12 20s-8-4.8-8-10a4.5 4.5 0 018-2.8A4.5 4.5 0 0120 10c0 5.2-8 10-8 10z" fill="currentColor"/></svg></div><div class="pet"><img src="compat-animals.jpg" alt=""></div><b>우리 궁합</b><p>두 사람의 끌림, 갈등, 결혼, 재물궁합까지</p><button onclick="go('match')" data-guiin-nav="match">궁합 보기 ›</button></div>
     <div class="tile"><div class="ico"><svg viewBox="0 0 24 24"><path d="M4 20V10h3v10H4zm6 0V5h3v15h-3zm6 0V2h3v18h-3z" fill="currentColor"/></svg></div><b>대운·세운·연운</b><p>10년 단위 대운과 올해의 흐름, 월별 운세</p><button onclick="renderYearLuck();go('yearLuck')">운의 흐름 보기 ›</button></div>
-    <div class="tile"><div class="ico"><svg viewBox="0 0 24 24"><path d="M12 21V10M12 10C6 10 4 7 4 3c5 0 8 2 8 7zm0 0c6 0 8-3 8-7-5 0-8 2-8 7z" fill="currentColor"/></svg></div><div class="pet"><img src="compat-animals.jpg" alt=""></div><b>내 사주관리</b><p>저장한 프로필로 더 빠르고 편리하게</p><button onclick="go('manage')">내 프로필 보기 ›</button></div>
-    <div class="tile"><div class="ico"><svg viewBox="0 0 24 24"><path d="M12 2l3 6 6 .8-4.5 4.4 1.2 6.2L12 16.5 6.3 19.4l1.2-6.2L3 8.8 9 8z" fill="currentColor"/></svg></div><b>이용가이드</b><p>처음 오셨나요? 귀인사주 이용방법을 안내해드려요.</p><button onclick="go('guide')">가이드 보기 ›</button></div>
+    <div class="tile"><div class="ico"><svg viewBox="0 0 24 24"><path d="M12 21V10M12 10C6 10 4 7 4 3c5 0 8 2 8 7zm0 0c6 0 8-3 8-7-5 0-8 2-8 7z" fill="currentColor"/></svg></div><div class="pet"><img src="compat-animals.jpg" alt=""></div><b>내 사주관리</b><p>저장한 프로필로 더 빠르고 편리하게</p><button onclick="go('manage')" data-guiin-nav="manage">내 프로필 보기 ›</button></div>
+    <div class="tile"><div class="ico"><svg viewBox="0 0 24 24"><path d="M12 2l3 6 6 .8-4.5 4.4 1.2 6.2L12 16.5 6.3 19.4l1.2-6.2L3 8.8 9 8z" fill="currentColor"/></svg></div><b>이용가이드</b><p>처음 오셨나요? 귀인사주 이용방법을 안내해드려요.</p><button onclick="go('guide')" data-guiin-nav="guide">가이드 보기 ›</button></div>
   </div>
 
   <div class="slogan card"><b>좋은 인연이, 좋은 운을 만듭니다.</b><br>귀인사주는 당신의 오늘이 조금 더 빛나길 응원합니다.</div>
@@ -628,18 +670,18 @@ button{position:relative}
     <div>사업자등록번호 584-69-00863</div>
     <div>서울특별시 중랑구 용마산로139나길 23(신내동)</div>
     <div style="margin-top:6px;">
-      <button type="button" onclick="go('terms')" style="border:0;background:none;color:#747b77;padding:2px 5px;font-size:8.7px;text-decoration:underline;">이용약관</button>
+      <button type="button" onclick="go('terms')" style="border:0;background:none;color:#747b77;padding:2px 5px;font-size:8.7px;text-decoration:underline;" data-guiin-nav="terms">이용약관</button>
       <span>·</span>
-      <button type="button" onclick="go('privacy')" style="border:0;background:none;color:#747b77;padding:2px 5px;font-size:8.7px;text-decoration:underline;">개인정보처리방침</button>
+      <button type="button" onclick="go('privacy')" style="border:0;background:none;color:#747b77;padding:2px 5px;font-size:8.7px;text-decoration:underline;" data-guiin-nav="privacy">개인정보처리방침</button>
       <span>·</span>
-      <button type="button" onclick="go('refund')" style="border:0;background:none;color:#747b77;padding:2px 5px;font-size:8.7px;text-decoration:underline;">환불정책</button>
+      <button type="button" onclick="go('refund')" style="border:0;background:none;color:#747b77;padding:2px 5px;font-size:8.7px;text-decoration:underline;" data-guiin-nav="refund">환불정책</button>
     </div>
   </div>
 </section>
 
 <section id="saju" class="screen">
   <div class="topbar">
-    <button class="ghost" onclick="go('home')" aria-label="뒤로"><svg viewBox="0 0 24 24" width="20" height="20"><path d="M15 5l-7 7 7 7" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+    <button class="ghost" onclick="go('home')" aria-label="뒤로" data-guiin-nav="home"><svg viewBox="0 0 24 24" width="20" height="20"><path d="M15 5l-7 7 7 7" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
     <div class="brand"><div class="brandline">사주 입력</div></div>
     <button class="ghost" aria-label="알림"><svg viewBox="0 0 24 24" width="20" height="20"><path d="M18 8a6 6 0 00-12 0c0 7-3 7-3 9h18c0-2-3-2-3-9M10 21h4" fill="none" stroke="currentColor" stroke-width="1.8"/></svg></button>
   </div>
@@ -667,7 +709,7 @@ button{position:relative}
 
 <section id="result" class="screen">
   <div class="topbar">
-    <button class="ghost" onclick="go('home')" aria-label="뒤로"><svg viewBox="0 0 24 24" width="20" height="20"><path d="M15 5l-7 7 7 7" fill="none" stroke="currentColor" stroke-width="2"/></svg></button>
+    <button class="ghost" onclick="go('home')" aria-label="뒤로" data-guiin-nav="home"><svg viewBox="0 0 24 24" width="20" height="20"><path d="M15 5l-7 7 7 7" fill="none" stroke="currentColor" stroke-width="2"/></svg></button>
     <div class="brand"><div class="brandline"><span class="logo-dot"><img loading="lazy" decoding="async" src="clover-mark.jpg" alt=""></span>귀인사주</div></div>
     <button class="ghost"><svg viewBox="0 0 24 24" width="20" height="20"><path d="M18 8a6 6 0 00-12 0c0 7-3 7-3 9h18c0-2-3-2-3-9M10 21h4" fill="none" stroke="currentColor" stroke-width="1.8"/></svg></button>
   </div>
@@ -679,7 +721,7 @@ button{position:relative}
 
 <section id="match" class="screen">
   <div class="topbar">
-    <button class="ghost" onclick="go('home')" aria-label="뒤로"><svg viewBox="0 0 24 24" width="20" height="20"><path d="M15 5l-7 7 7 7" fill="none" stroke="currentColor" stroke-width="2"/></svg></button>
+    <button class="ghost" onclick="go('home')" aria-label="뒤로" data-guiin-nav="home"><svg viewBox="0 0 24 24" width="20" height="20"><path d="M15 5l-7 7 7 7" fill="none" stroke="currentColor" stroke-width="2"/></svg></button>
     <div class="brand"><div class="brandline">우리 궁합</div></div>
     <button class="ghost"><svg viewBox="0 0 24 24" width="20" height="20"><path d="M18 8a6 6 0 00-12 0c0 7-3 7-3 9h18c0-2-3-2-3-9M10 21h4" fill="none" stroke="currentColor" stroke-width="1.8"/></svg></button>
   </div>
@@ -702,7 +744,7 @@ button{position:relative}
 
 <section id="matchResult" class="screen">
   <div class="topbar">
-    <button class="ghost" onclick="go('match')" aria-label="뒤로"><svg viewBox="0 0 24 24" width="20" height="20"><path d="M15 5l-7 7 7 7" fill="none" stroke="currentColor" stroke-width="2"/></svg></button>
+    <button class="ghost" onclick="go('match')" aria-label="뒤로" data-guiin-nav="match"><svg viewBox="0 0 24 24" width="20" height="20"><path d="M15 5l-7 7 7 7" fill="none" stroke="currentColor" stroke-width="2"/></svg></button>
     <div class="brand"><div class="brandline"><span class="logo-dot"><img loading="lazy" decoding="async" src="clover-mark.jpg" alt=""></span>우리 궁합</div></div>
     <button class="ghost"><svg viewBox="0 0 24 24" width="20" height="20"><path d="M12 20s-8-4.8-8-10a4.5 4.5 0 018-2.8A4.5 4.5 0 0120 10c0 5.2-8 10-8 10z" fill="none" stroke="currentColor" stroke-width="1.7"/></svg></button>
   </div>
@@ -717,7 +759,7 @@ button{position:relative}
 
 <section id="today" class="screen">
   <div class="topbar">
-    <button class="ghost" onclick="go('home')" aria-label="뒤로"><svg viewBox="0 0 24 24" width="20" height="20"><path d="M15 5l-7 7 7 7" fill="none" stroke="currentColor" stroke-width="2"/></svg></button>
+    <button class="ghost" onclick="go('home')" aria-label="뒤로" data-guiin-nav="home"><svg viewBox="0 0 24 24" width="20" height="20"><path d="M15 5l-7 7 7 7" fill="none" stroke="currentColor" stroke-width="2"/></svg></button>
     <div class="brand"><div class="brandline">오늘의 운세</div></div>
     <button class="ghost"><svg viewBox="0 0 24 24" width="20" height="20"><path d="M18 8a6 6 0 00-12 0c0 7-3 7-3 9h18c0-2-3-2-3-9M10 21h4" fill="none" stroke="currentColor" stroke-width="1.8"/></svg></button>
   </div>
@@ -727,7 +769,7 @@ button{position:relative}
 
 <section id="mypage" class="screen">
   <div class="topbar">
-    <button class="ghost" onclick="go('home')" aria-label="뒤로"><svg viewBox="0 0 24 24" width="20" height="20"><path d="M15 5l-7 7 7 7" fill="none" stroke="currentColor" stroke-width="2"/></svg></button>
+    <button class="ghost" onclick="go('home')" aria-label="뒤로" data-guiin-nav="home"><svg viewBox="0 0 24 24" width="20" height="20"><path d="M15 5l-7 7 7 7" fill="none" stroke="currentColor" stroke-width="2"/></svg></button>
     <div class="brand"><div class="brandline"><span class="logo-dot"><img loading="lazy" decoding="async" src="clover-mark.jpg" alt=""></span>마이페이지</div></div>
     <button class="ghost"><svg viewBox="0 0 24 24" width="20" height="20"><circle cx="12" cy="12" r="3" fill="none" stroke="currentColor" stroke-width="1.7"/><path d="M12 2v3M12 19v3M2 12h3M19 12h3M4.9 4.9l2.1 2.1M17 17l2.1 2.1M19.1 4.9L17 7M7 17l-2.1 2.1" stroke="currentColor" stroke-width="1.7"/></svg></button>
   </div>
@@ -737,14 +779,14 @@ button{position:relative}
   </div>
   <div class="menuCard card">
     <button id="accountEntryBtn" onclick="guiinAuthSession()?logoutGuiin():go('login')">로그인 · 회원가입 <span class="arr">›</span></button>
-    <button onclick="go('history')">이용 내역 <span class="arr">›</span></button>
-    <button onclick="go('payments')">결제 내역 <span class="arr">›</span></button>
-    <button onclick="go('profiles')">저장한 프로필 <span class="arr">›</span></button>
-    <button onclick="go('favorites')">찜한 콘텐츠 <span class="arr">›</span></button>
-    <button onclick="go('notifications')">알림 설정 <span class="arr">›</span></button>
-    <button onclick="go('coupons')">쿠폰함 <span class="arr">›</span></button>
-    <button onclick="go('customer')">고객센터 <span class="arr">›</span></button>
-    <button onclick="go('appinfo')">앱 정보 <span class="arr">›</span></button>
+    <button onclick="go('history')" data-guiin-nav="history">이용 내역 <span class="arr">›</span></button>
+    <button onclick="go('payments')" data-guiin-nav="payments">결제 내역 <span class="arr">›</span></button>
+    <button onclick="go('profiles')" data-guiin-nav="profiles">저장한 프로필 <span class="arr">›</span></button>
+    <button onclick="go('favorites')" data-guiin-nav="favorites">찜한 콘텐츠 <span class="arr">›</span></button>
+    <button onclick="go('notifications')" data-guiin-nav="notifications">알림 설정 <span class="arr">›</span></button>
+    <button onclick="go('coupons')" data-guiin-nav="coupons">쿠폰함 <span class="arr">›</span></button>
+    <button onclick="go('customer')" data-guiin-nav="customer">고객센터 <span class="arr">›</span></button>
+    <button onclick="go('appinfo')" data-guiin-nav="appinfo">앱 정보 <span class="arr">›</span></button>
   </div>
   <div class="slogan card"><b>좋은 인연이, 좋은 하루를 만듭니다.</b><br>귀인사주와 함께할게요.</div>
   <div class="footerArt"><img loading="lazy" decoding="async" src="mypage-animals.jpg" alt=""></div>
@@ -754,7 +796,7 @@ button{position:relative}
 
 <section id="yearLuck" class="screen">
   <div class="topbar">
-    <button class="ghost" onclick="go('home')" aria-label="뒤로"><svg viewBox="0 0 24 24" width="20" height="20"><path d="M15 5l-7 7 7 7" fill="none" stroke="currentColor" stroke-width="2"/></svg></button>
+    <button class="ghost" onclick="go('home')" aria-label="뒤로" data-guiin-nav="home"><svg viewBox="0 0 24 24" width="20" height="20"><path d="M15 5l-7 7 7 7" fill="none" stroke="currentColor" stroke-width="2"/></svg></button>
     <div class="brand"><div class="brandline">대운·세운·연운</div></div>
     <button class="ghost"></button>
   </div>
@@ -765,11 +807,11 @@ button{position:relative}
 
 <section id="manage" class="screen">
   <div class="topbar">
-    <button class="ghost" onclick="go('home')" aria-label="뒤로"><svg viewBox="0 0 24 24" width="20" height="20"><path d="M15 5l-7 7 7 7" fill="none" stroke="currentColor" stroke-width="2"/></svg></button>
+    <button class="ghost" onclick="go('home')" aria-label="뒤로" data-guiin-nav="home"><svg viewBox="0 0 24 24" width="20" height="20"><path d="M15 5l-7 7 7 7" fill="none" stroke="currentColor" stroke-width="2"/></svg></button>
     <div class="brand"><div class="brandline">내 사주관리</div></div>
     <button class="ghost"></button>
   </div>
-  <div class="tabs green"><button class="on">내 프로필</button><button>가족 프로필</button><button onclick="go('saju')">프로필 추가 ›</button></div>
+  <div class="tabs green"><button class="on">내 프로필</button><button>가족 프로필</button><button onclick="go('saju')" data-guiin-nav="saju">프로필 추가 ›</button></div>
   <div class="pageIllustration"><img loading="lazy" decoding="async" src="mypage-animals.jpg" alt="프로필을 함께 관리하는 귀인사주 친구들"></div>
   <div class="manageCard card" style="margin-top:10px">
     <img src="compat-animals.jpg" alt="">
@@ -780,19 +822,19 @@ button{position:relative}
     </div>
   </div>
   <div class="btnRow">
-    <button class="btnGhost" onclick="go('saju')">프로필 수정</button>
+    <button class="btnGhost" onclick="go('saju')" data-guiin-nav="saju">프로필 수정</button>
     <button class="btnGhost" onclick="openResultTab('summary')">사주 다시 보기</button>
   </div>
   <div class="infoCard card" style="margin-top:12px">
     <h3>저장한 프로필</h3>
-    <button class="btnGhost" style="width:100%" onclick="go('saju')">+ 새 프로필 추가하기 ›</button>
+    <button class="btnGhost" style="width:100%" onclick="go('saju')" data-guiin-nav="saju">+ 새 프로필 추가하기 ›</button>
   </div>
   <div class="slogan card"><b>소중한 사람들의 사주도 함께 저장해보세요.</b><br>좋은 인연이 더 좋은 운을 만들어줍니다.</div>
 </section>
 
 <section id="guide" class="screen">
   <div class="topbar">
-    <button class="ghost" onclick="go('home')" aria-label="뒤로"><svg viewBox="0 0 24 24" width="20" height="20"><path d="M15 5l-7 7 7 7" fill="none" stroke="currentColor" stroke-width="2"/></svg></button>
+    <button class="ghost" onclick="go('home')" aria-label="뒤로" data-guiin-nav="home"><svg viewBox="0 0 24 24" width="20" height="20"><path d="M15 5l-7 7 7 7" fill="none" stroke="currentColor" stroke-width="2"/></svg></button>
     <div class="brand"><div class="brandline">이용가이드</div></div>
     <button class="ghost"></button>
   </div>
@@ -804,9 +846,9 @@ button{position:relative}
   <div class="pageIllustration"><img loading="lazy" decoding="async" src="guide-cat.jpg" alt="사주책을 읽는 고양이 일러스트"></div>
   <div class="card guideList">
     <div class="guideRow"><div class="gico">?</div><div><b>귀인사주란?</b><span>좋은 인연과 운을 쉽게 읽는 사주</span></div></div>
-    <div class="guideRow" onclick="go('saju')"><div class="gico">☰</div><div><b>서비스 이용방법</b><span>생년월일만 넣으면 명식이 나옵니다</span></div></div>
+    <div class="guideRow" onclick="go('saju')" data-guiin-nav="saju"><div class="gico">☰</div><div><b>서비스 이용방법</b><span>생년월일만 넣으면 명식이 나옵니다</span></div></div>
     <div class="guideRow" onclick="renderToday();go('today')"><div class="gico">☀</div><div><b>운세 항목 안내</b><span>오늘·대운·분야별 운세를 나눠 보여요</span></div></div>
-    <div class="guideRow" onclick="go('ask')"><div class="gico">💬</div><div><b>자주 묻는 질문</b><span>AI 사주상담에서 이어서 물어볼 수 있어요</span></div></div>
+    <div class="guideRow" onclick="go('ask')" data-guiin-nav="ask"><div class="gico">💬</div><div><b>자주 묻는 질문</b><span>AI 사주상담에서 이어서 물어볼 수 있어요</span></div></div>
     <div class="guideRow"><div class="gico">☎</div><div><b>고객센터</b><span>이용 중 궁금한 점을 남겨 주세요</span></div></div>
   </div>
   <div class="slogan card"><b>언제나, 좋은 인연이 함께하길.</b><br>귀인사주가 응원합니다.</div>
@@ -816,12 +858,12 @@ button{position:relative}
 
 <section id="ask" class="screen">
   <div class="topbar">
-    <button class="ghost" onclick="go('home')" aria-label="뒤로">‹</button>
+    <button class="ghost" onclick="go('home')" aria-label="뒤로" data-guiin-nav="home">‹</button>
     <div class="brand"><div class="brandline">사주에게 묻기</div></div>
-    <button class="ghost" onclick="go('wallet')" style="font-size:11px;font-weight:900;white-space:nowrap">☘ 충전</button>
+    <button class="ghost" onclick="go('wallet')" style="font-size:11px;font-weight:900;white-space:nowrap" data-guiin-nav="wallet">☘ 충전</button>
   </div>
   <div class="pageIllustration"><img loading="lazy" decoding="async" src="summary-cat.jpg" alt="사주 상담을 도와주는 고양이 일러스트"></div>
-  <div class="creditBar"><div><div style="font-size:12px;opacity:.85">AI 무료 상담</div><b id="freeRemainView">3</b><span style="font-size:13px">회 남음</span><div style="font-size:11px;opacity:.82;margin-top:3px">보유 ☘ <span id="coinView">0</span>개</div></div><button class="ctaGold" style="width:auto;margin:0;padding:10px 14px" onclick="go('wallet')">☘ 충전</button></div>
+  <div class="creditBar"><div><div style="font-size:12px;opacity:.85">AI 무료 상담</div><b id="freeRemainView">3</b><span style="font-size:13px">회 남음</span><div style="font-size:11px;opacity:.82;margin-top:3px">보유 ☘ <span id="coinView">0</span>개</div></div><button class="ctaGold" style="width:auto;margin:0;padding:10px 14px" onclick="go('wallet')" data-guiin-nav="wallet">☘ 충전</button></div>
   <p class="adminNote">처음 3번은 무료입니다. 계산된 귀인사주 명식을 그대로 AI에 전달해 답변하며, 답변 실패 시 무료 횟수나 클로버가 차감되지 않습니다.</p>
   <div class="msgs" id="msgs">
     <div class="sysnote">귀인사주 상담이 시작되었습니다</div>
@@ -839,7 +881,7 @@ button{position:relative}
 </section>
 
 <section id="wallet" class="screen">
-  <div class="topbar"><button class="ghost" onclick="go('ask')">‹</button><div class="brand"><div class="brandline">☘ 행운의 클로버 충전</div><small>더 많은 질문, 더 깊은 사주 해석</small></div><span></span></div>
+  <div class="topbar"><button class="ghost" onclick="go('ask')" data-guiin-nav="ask">‹</button><div class="brand"><div class="brandline">☘ 행운의 클로버 충전</div><small>더 많은 질문, 더 깊은 사주 해석</small></div><span></span></div>
   <div class="cloverStore">
     <div class="pageIllustration"><img loading="lazy" decoding="async" src="brand-home.jpg" alt="행운의 클로버 일러스트"></div>
     <div class="storeIntro card"><h2>☘ 행운의 클로버 충전</h2><p>AI에게 더 깊이, 더 많이 물어보세요.</p></div>
@@ -852,20 +894,20 @@ button{position:relative}
   </div>
 </section>
 
-<section id="login" class="screen"><div class="topbar"><button class="ghost" onclick="go('mypage')">‹</button><div class="brand"><div class="brandline">로그인</div></div><span></span></div><div class="authHero"><div class="authMark"><img src="clover-mark.jpg" alt=""></div><h2>귀인사주에 오신 걸 환영해요</h2><p>로그인하면 저장한 사주·구매내역·상담기록을 이어볼 수 있어요.</p></div><div class="authCard card"><button class="authBtn kakao" onclick="startKakaoLogin()">카카오로 시작하기</button><button class="authBtn google" onclick="socialLoginReady('구글')">Google로 계속하기</button><button class="authBtn apple" onclick="socialLoginReady('애플')">Apple로 계속하기</button><div class="authDivider">또는 이메일</div><label>이메일</label><input id="loginEmail" type="email" autocomplete="email" placeholder="이메일"><label>비밀번호</label><input id="loginPassword" type="password" autocomplete="current-password" placeholder="비밀번호"><button class="authBtn green" onclick="emailLoginReady()">로그인</button><div class="authLinks">아직 회원이 아니신가요? <button onclick="go('signup')">회원가입</button></div><div id="loginMsg" class="authNotice">소셜 로그인은 실제 OAuth 서버 연결 후 계정이 생성됩니다. 로그인된 척 처리하지 않습니다.</div></div></section>
-<section id="signup" class="screen"><div class="topbar"><button class="ghost" onclick="go('login')">‹</button><div class="brand"><div class="brandline">회원가입</div></div><span></span></div><div class="authHero"><div class="authMark"><img src="clover-mark.jpg" alt=""></div><h2>귀인사주 회원가입</h2><p>내 사주와 상담·구매내역을 한 계정에 보관할 수 있도록 준비된 화면입니다.</p></div><div class="authCard card"><button class="authBtn kakao" onclick="startKakaoLogin()">카카오로 가입하기</button><button class="authBtn google" onclick="socialLoginReady('구글')">Google로 가입하기</button><button class="authBtn apple" onclick="socialLoginReady('애플')">Apple로 가입하기</button><div class="authDivider">또는 이메일</div><label>이름</label><input id="signupName" autocomplete="name" placeholder="이름"><label>이메일</label><input id="signupEmail" type="email" autocomplete="email" placeholder="이메일"><label>비밀번호</label><input id="signupPassword" type="password" autocomplete="new-password" placeholder="8자 이상"><label class="check"><input id="signupTerms" type="checkbox"> 이용약관 및 개인정보처리방침에 동의합니다.</label><button class="authBtn green" onclick="emailSignupReady()">회원가입</button><div id="signupMsg" class="authNotice">실제 계정 생성은 인증 서버 연결 후 활성화됩니다.</div></div></section>
+<section id="login" class="screen"><div class="topbar"><button class="ghost" onclick="go('mypage')" data-guiin-nav="mypage">‹</button><div class="brand"><div class="brandline">로그인</div></div><span></span></div><div class="authHero"><div class="authMark"><img src="clover-mark.jpg" alt=""></div><h2>귀인사주에 오신 걸 환영해요</h2><p>로그인하면 저장한 사주·구매내역·상담기록을 이어볼 수 있어요.</p></div><div class="authCard card"><button class="authBtn kakao" onclick="startKakaoLogin()">카카오로 시작하기</button><button class="authBtn google" onclick="socialLoginReady('구글')">Google로 계속하기</button><button class="authBtn apple" onclick="socialLoginReady('애플')">Apple로 계속하기</button><div class="authDivider">또는 이메일</div><label>이메일</label><input id="loginEmail" type="email" autocomplete="email" placeholder="이메일"><label>비밀번호</label><input id="loginPassword" type="password" autocomplete="current-password" placeholder="비밀번호"><button class="authBtn green" onclick="emailLoginReady()">로그인</button><div class="authLinks">아직 회원이 아니신가요? <button onclick="go('signup')" data-guiin-nav="signup">회원가입</button></div><div id="loginMsg" class="authNotice">소셜 로그인은 실제 OAuth 서버 연결 후 계정이 생성됩니다. 로그인된 척 처리하지 않습니다.</div></div></section>
+<section id="signup" class="screen"><div class="topbar"><button class="ghost" onclick="go('login')" data-guiin-nav="login">‹</button><div class="brand"><div class="brandline">회원가입</div></div><span></span></div><div class="authHero"><div class="authMark"><img src="clover-mark.jpg" alt=""></div><h2>귀인사주 회원가입</h2><p>내 사주와 상담·구매내역을 한 계정에 보관할 수 있도록 준비된 화면입니다.</p></div><div class="authCard card"><button class="authBtn kakao" onclick="startKakaoLogin()">카카오로 가입하기</button><button class="authBtn google" onclick="socialLoginReady('구글')">Google로 가입하기</button><button class="authBtn apple" onclick="socialLoginReady('애플')">Apple로 가입하기</button><div class="authDivider">또는 이메일</div><label>이름</label><input id="signupName" autocomplete="name" placeholder="이름"><label>이메일</label><input id="signupEmail" type="email" autocomplete="email" placeholder="이메일"><label>비밀번호</label><input id="signupPassword" type="password" autocomplete="new-password" placeholder="8자 이상"><label class="check"><input id="signupTerms" type="checkbox"> 이용약관 및 개인정보처리방침에 동의합니다.</label><button class="authBtn green" onclick="emailSignupReady()">회원가입</button><div id="signupMsg" class="authNotice">실제 계정 생성은 인증 서버 연결 후 활성화됩니다.</div></div></section>
 
-<section id="history" class="screen"><div class="topbar"><button class="ghost" onclick="go('mypage')">‹</button><div class="brand"><div class="brandline">이용 내역</div></div><span></span></div><div class="pagePad"><div class="card utilityCard"><h3>최근 이용 내역</h3><div id="usageHistoryView"></div></div></div></section>
-<section id="payments" class="screen"><div class="topbar"><button class="ghost" onclick="go('mypage')">‹</button><div class="brand"><div class="brandline">결제 내역</div></div><span></span></div><div class="pagePad"><div class="card utilityCard"><h3>결제 내역</h3><div id="paymentHistoryView"></div><p class="utilityHint">실제 KCP 승인 내역만 표시하도록 서버 연결할 화면입니다. 가상 결제는 구매로 표시하지 않습니다.</p></div></div></section>
-<section id="profiles" class="screen"><div class="topbar"><button class="ghost" onclick="go('mypage')">‹</button><div class="brand"><div class="brandline">저장한 프로필</div></div><span></span></div><div class="pagePad"><div class="card utilityCard"><h3>내 사주 프로필</h3><div id="savedProfileView"></div><button class="ctaGold" onclick="go('saju')">새 사주 입력하기 ›</button></div></div></section>
-<section id="favorites" class="screen"><div class="topbar"><button class="ghost" onclick="go('mypage')">‹</button><div class="brand"><div class="brandline">찜한 콘텐츠</div></div><span></span></div><div class="pagePad"><div class="card utilityCard"><h3>자주 보는 서비스</h3><div class="serviceGrid"><button class="serviceLink" onclick="openResultTab('summary')"><b>평생사주</b><span>장문 심층 리포트</span></button><button class="serviceLink" onclick="goToday()"><b>오늘의 운세</b><span>오늘·주간·월간</span></button><button class="serviceLink" onclick="go('match')"><b>우리 궁합</b><span>장점·갈등·장기관계</span></button><button class="serviceLink" onclick="go('ask')"><b>AI 사주상담</b><span>내 명식으로 질문</span></button></div></div></div></section>
-<section id="notifications" class="screen"><div class="topbar"><button class="ghost" onclick="go('mypage')">‹</button><div class="brand"><div class="brandline">알림 설정</div></div><span></span></div><div class="pagePad"><div class="card utilityCard"><h3>받고 싶은 소식</h3><label class="settingRow"><span><b>오늘의 운세</b><small>매일 운세 알림</small></span><input type="checkbox" data-notify="daily"></label><label class="settingRow"><span><b>운의 변화</b><small>월운·세운 변화 안내</small></span><input type="checkbox" data-notify="flow"></label><label class="settingRow"><span><b>혜택 알림</b><small>쿠폰·이벤트</small></span><input type="checkbox" data-notify="promo"></label><button class="softBtn" onclick="requestGuiinNotification()">이 기기에서 알림 권한 확인하기 ›</button><p class="utilityHint">선호 설정은 현재 기기에 저장됩니다. 실제 푸시 발송은 알림 서버 연결 후 가능합니다.</p></div></div></section>
-<section id="coupons" class="screen"><div class="topbar"><button class="ghost" onclick="go('mypage')">‹</button><div class="brand"><div class="brandline">쿠폰함</div></div><span></span></div><div class="pagePad"><div class="card utilityCard"><h3>쿠폰 · 혜택</h3><p>현재 발급된 쿠폰은 없습니다.</p><div class="trustBox">실제 결제에서는 서버에서 쿠폰 유효성과 최종 결제금액을 다시 검증하는 방식으로 연결해야 합니다.</div></div></div></section>
-<section id="customer" class="screen"><div class="topbar"><button class="ghost" onclick="go('mypage')">‹</button><div class="brand"><div class="brandline">고객센터</div></div><span></span></div><div class="pagePad"><div class="card utilityCard"><h3>무엇을 도와드릴까요?</h3><p>결제·이용·사주 결과 관련 문의를 카카오 고객센터에서 도와드려요.</p><button class="kakaoSupport" onclick="openCustomerCenter()">카카오로 문의하기 ›</button><div class="faq"><details><summary>결제했는데 내용이 열리지 않아요</summary><p>실제 서비스에서는 서버에서 결제 승인 여부를 확인한 뒤 구매한 콘텐츠를 열도록 연결합니다.</p></details><details><summary>출생시간을 모르면 어떻게 하나요?</summary><p>시주 관련 해석의 강도를 낮추고, 출생시간 없이 확인 가능한 부분과 구분해서 설명합니다.</p></details><details><summary>신살이 많으면 안 좋은 사주인가요?</summary><p>아니요. 신살은 보조 정보입니다. 귀인사주는 신살 하나로 사건을 단정하지 않고 원국·오행·십신·대운과 함께 읽습니다.</p></details><details><summary>AI는 무엇을 기준으로 답하나요?</summary><p>귀인사주 엔진이 계산한 명식을 그대로 Worker에 전달하고, AI가 명식을 임의로 다시 계산하지 않도록 구성되어 있습니다.</p></details></div></div></div></section>
-<section id="appinfo" class="screen"><div class="topbar"><button class="ghost" onclick="go('mypage')">‹</button><div class="brand"><div class="brandline">서비스 정보</div></div><span></span></div><div class="pagePad"><div class="card utilityCard"><h3>☘ 귀인사주</h3><p>좋은 인연이, 좋은 운을 만듭니다.</p><div class="paidDisclaimer"><b>사업자 정보</b><br>상호 귀인사주 · 대표 강진아<br>사업자등록번호 584-69-00863<br>서울특별시 중랑구 용마산로139나길 23(신내동)</div><div class="infoRows"><div><span>평생사주</span><b>5,900원</b></div><div><span>프리미엄 궁합</span><b>7,900원</b></div><div><span>AI 상담</span><b>처음 3회 무료</b></div><div><span>신살·귀인</span><b>현재 계산 지원 38종</b></div></div><button class="softBtn" onclick="go('terms')">이용약관 ›</button><button class="softBtn" onclick="go('privacy')">개인정보처리방침 ›</button><button class="softBtn" onclick="go('refund')">환불정책 ›</button></div></div></section>
-<section id="terms" class="screen"><div class="topbar"><button class="ghost" onclick="go('appinfo')">‹</button><div class="brand"><div class="brandline">이용약관</div></div><span></span></div><div class="pagePad"><div class="card utilityCard"><h3>이용약관 안내</h3><p>유료 디지털 콘텐츠의 제공 시점, 이용 조건, 결제·환불 기준은 실제 PG 오픈 전 최종 약관으로 확정해야 합니다.</p><div class="paidDisclaimer">귀인사주의 사주·운세·AI 상담은 참고 정보이며 의료·법률·투자 등 전문 판단을 대신하지 않습니다.</div></div></div></section>
-<section id="privacy" class="screen"><div class="topbar"><button class="ghost" onclick="go('appinfo')">‹</button><div class="brand"><div class="brandline">개인정보처리방침</div></div><span></span></div><div class="pagePad"><div class="card utilityCard"><h3>개인정보 안내</h3><p>회원가입을 실제 연결할 때 수집 항목·이용 목적·보유기간·위탁사·파기 절차를 실제 서버 구성에 맞춰 고지해야 합니다.</p></div></div></section>
-<section id="refund" class="screen"><div class="topbar"><button class="ghost" onclick="go('appinfo')">‹</button><div class="brand"><div class="brandline">환불정책</div></div><span></span></div><div class="pagePad"><div class="card utilityCard"><h3>환불 안내</h3><p>실제 KCP 결제 오픈 전 상품별 제공 시점, 사용한 클로버, 이미 열람한 디지털 콘텐츠의 환불 기준을 최종 확정하고 결제 단계에서 동의받아야 합니다.</p></div></div></section>
+<section id="history" class="screen"><div class="topbar"><button class="ghost" onclick="go('mypage')" data-guiin-nav="mypage">‹</button><div class="brand"><div class="brandline">이용 내역</div></div><span></span></div><div class="pagePad"><div class="card utilityCard"><h3>최근 이용 내역</h3><div id="usageHistoryView"></div></div></div></section>
+<section id="payments" class="screen"><div class="topbar"><button class="ghost" onclick="go('mypage')" data-guiin-nav="mypage">‹</button><div class="brand"><div class="brandline">결제 내역</div></div><span></span></div><div class="pagePad"><div class="card utilityCard"><h3>결제 내역</h3><div id="paymentHistoryView"></div><p class="utilityHint">실제 KCP 승인 내역만 표시하도록 서버 연결할 화면입니다. 가상 결제는 구매로 표시하지 않습니다.</p></div></div></section>
+<section id="profiles" class="screen"><div class="topbar"><button class="ghost" onclick="go('mypage')" data-guiin-nav="mypage">‹</button><div class="brand"><div class="brandline">저장한 프로필</div></div><span></span></div><div class="pagePad"><div class="card utilityCard"><h3>내 사주 프로필</h3><div id="savedProfileView"></div><button class="ctaGold" onclick="go('saju')" data-guiin-nav="saju">새 사주 입력하기 ›</button></div></div></section>
+<section id="favorites" class="screen"><div class="topbar"><button class="ghost" onclick="go('mypage')" data-guiin-nav="mypage">‹</button><div class="brand"><div class="brandline">찜한 콘텐츠</div></div><span></span></div><div class="pagePad"><div class="card utilityCard"><h3>자주 보는 서비스</h3><div class="serviceGrid"><button class="serviceLink" onclick="openResultTab('summary')"><b>평생사주</b><span>장문 심층 리포트</span></button><button class="serviceLink" onclick="goToday()" data-guiin-nav="today"><b>오늘의 운세</b><span>오늘·주간·월간</span></button><button class="serviceLink" onclick="go('match')" data-guiin-nav="match"><b>우리 궁합</b><span>장점·갈등·장기관계</span></button><button class="serviceLink" onclick="go('ask')" data-guiin-nav="ask"><b>AI 사주상담</b><span>내 명식으로 질문</span></button></div></div></div></section>
+<section id="notifications" class="screen"><div class="topbar"><button class="ghost" onclick="go('mypage')" data-guiin-nav="mypage">‹</button><div class="brand"><div class="brandline">알림 설정</div></div><span></span></div><div class="pagePad"><div class="card utilityCard"><h3>받고 싶은 소식</h3><label class="settingRow"><span><b>오늘의 운세</b><small>매일 운세 알림</small></span><input type="checkbox" data-notify="daily"></label><label class="settingRow"><span><b>운의 변화</b><small>월운·세운 변화 안내</small></span><input type="checkbox" data-notify="flow"></label><label class="settingRow"><span><b>혜택 알림</b><small>쿠폰·이벤트</small></span><input type="checkbox" data-notify="promo"></label><button class="softBtn" onclick="requestGuiinNotification()">이 기기에서 알림 권한 확인하기 ›</button><p class="utilityHint">선호 설정은 현재 기기에 저장됩니다. 실제 푸시 발송은 알림 서버 연결 후 가능합니다.</p></div></div></section>
+<section id="coupons" class="screen"><div class="topbar"><button class="ghost" onclick="go('mypage')" data-guiin-nav="mypage">‹</button><div class="brand"><div class="brandline">쿠폰함</div></div><span></span></div><div class="pagePad"><div class="card utilityCard"><h3>쿠폰 · 혜택</h3><p>현재 발급된 쿠폰은 없습니다.</p><div class="trustBox">실제 결제에서는 서버에서 쿠폰 유효성과 최종 결제금액을 다시 검증하는 방식으로 연결해야 합니다.</div></div></div></section>
+<section id="customer" class="screen"><div class="topbar"><button class="ghost" onclick="go('mypage')" data-guiin-nav="mypage">‹</button><div class="brand"><div class="brandline">고객센터</div></div><span></span></div><div class="pagePad"><div class="card utilityCard"><h3>무엇을 도와드릴까요?</h3><p>결제·이용·사주 결과 관련 문의를 카카오 고객센터에서 도와드려요.</p><button class="kakaoSupport" onclick="openCustomerCenter()">카카오로 문의하기 ›</button><div class="faq"><details><summary>결제했는데 내용이 열리지 않아요</summary><p>실제 서비스에서는 서버에서 결제 승인 여부를 확인한 뒤 구매한 콘텐츠를 열도록 연결합니다.</p></details><details><summary>출생시간을 모르면 어떻게 하나요?</summary><p>시주 관련 해석의 강도를 낮추고, 출생시간 없이 확인 가능한 부분과 구분해서 설명합니다.</p></details><details><summary>신살이 많으면 안 좋은 사주인가요?</summary><p>아니요. 신살은 보조 정보입니다. 귀인사주는 신살 하나로 사건을 단정하지 않고 원국·오행·십신·대운과 함께 읽습니다.</p></details><details><summary>AI는 무엇을 기준으로 답하나요?</summary><p>귀인사주 엔진이 계산한 명식을 그대로 Worker에 전달하고, AI가 명식을 임의로 다시 계산하지 않도록 구성되어 있습니다.</p></details></div></div></div></section>
+<section id="appinfo" class="screen"><div class="topbar"><button class="ghost" onclick="go('mypage')" data-guiin-nav="mypage">‹</button><div class="brand"><div class="brandline">서비스 정보</div></div><span></span></div><div class="pagePad"><div class="card utilityCard"><h3>☘ 귀인사주</h3><p>좋은 인연이, 좋은 운을 만듭니다.</p><div class="paidDisclaimer"><b>사업자 정보</b><br>상호 귀인사주 · 대표 강진아<br>사업자등록번호 584-69-00863<br>서울특별시 중랑구 용마산로139나길 23(신내동)</div><div class="infoRows"><div><span>평생사주</span><b>5,900원</b></div><div><span>프리미엄 궁합</span><b>7,900원</b></div><div><span>AI 상담</span><b>처음 3회 무료</b></div><div><span>신살·귀인</span><b>현재 계산 지원 38종</b></div></div><button class="softBtn" onclick="go('terms')" data-guiin-nav="terms">이용약관 ›</button><button class="softBtn" onclick="go('privacy')" data-guiin-nav="privacy">개인정보처리방침 ›</button><button class="softBtn" onclick="go('refund')" data-guiin-nav="refund">환불정책 ›</button></div></div></section>
+<section id="terms" class="screen"><div class="topbar"><button class="ghost" onclick="go('appinfo')" data-guiin-nav="appinfo">‹</button><div class="brand"><div class="brandline">이용약관</div></div><span></span></div><div class="pagePad"><div class="card utilityCard"><h3>이용약관 안내</h3><p>유료 디지털 콘텐츠의 제공 시점, 이용 조건, 결제·환불 기준은 실제 PG 오픈 전 최종 약관으로 확정해야 합니다.</p><div class="paidDisclaimer">귀인사주의 사주·운세·AI 상담은 참고 정보이며 의료·법률·투자 등 전문 판단을 대신하지 않습니다.</div></div></div></section>
+<section id="privacy" class="screen"><div class="topbar"><button class="ghost" onclick="go('appinfo')" data-guiin-nav="appinfo">‹</button><div class="brand"><div class="brandline">개인정보처리방침</div></div><span></span></div><div class="pagePad"><div class="card utilityCard"><h3>개인정보 안내</h3><p>회원가입을 실제 연결할 때 수집 항목·이용 목적·보유기간·위탁사·파기 절차를 실제 서버 구성에 맞춰 고지해야 합니다.</p></div></div></section>
+<section id="refund" class="screen"><div class="topbar"><button class="ghost" onclick="go('appinfo')" data-guiin-nav="appinfo">‹</button><div class="brand"><div class="brandline">환불정책</div></div><span></span></div><div class="pagePad"><div class="card utilityCard"><h3>환불 안내</h3><p>실제 KCP 결제 오픈 전 상품별 제공 시점, 사용한 클로버, 이미 열람한 디지털 콘텐츠의 환불 기준을 최종 확정하고 결제 단계에서 동의받아야 합니다.</p></div></div></section>
 
 
 <div id="guiinToastLayer" class="guiinToastLayer" role="dialog" aria-modal="true" aria-live="assertive" onclick="if(event.target===this)closeGuiinPopup()">
@@ -883,11 +925,11 @@ button{position:relative}
 
 
 <nav class="bottom">
-  <button id="navHome" class="active" onclick="go('home')"><svg viewBox="0 0 24 24"><path d="M4 11l8-7 8 7v9H6v-9" fill="none" stroke="currentColor" stroke-width="1.7"/><path d="M9 20v-6h6v6" fill="none" stroke="currentColor" stroke-width="1.7"/></svg>홈</button>
+  <button id="navHome" class="active" onclick="go('home')" data-guiin-nav="home"><svg viewBox="0 0 24 24"><path d="M4 11l8-7 8 7v9H6v-9" fill="none" stroke="currentColor" stroke-width="1.7"/><path d="M9 20v-6h6v6" fill="none" stroke="currentColor" stroke-width="1.7"/></svg>홈</button>
   <button id="navSaju" onclick="openResultTab('summary')"><svg viewBox="0 0 24 24"><circle cx="12" cy="8" r="3" fill="none" stroke="currentColor" stroke-width="1.7"/><path d="M6 21c0-4 2.5-7 6-7s6 3 6 7" fill="none" stroke="currentColor" stroke-width="1.7"/></svg>내 사주</button>
-  <button class="flower" onclick="go('ask')" aria-label="사주에게 묻기"><svg viewBox="0 0 24 24"><g fill="currentColor"><ellipse cx="12" cy="6.8" rx="3" ry="4.5"/><ellipse cx="17.2" cy="12" rx="4.5" ry="3"/><ellipse cx="12" cy="17.2" rx="3" ry="4.5"/><ellipse cx="6.8" cy="12" rx="4.5" ry="3"/></g><circle cx="12" cy="12" r="2.1" fill="#fff8dc"/></svg></button>
-  <button id="navHistory" onclick="go('history')"><svg viewBox="0 0 24 24"><rect x="5" y="4" width="14" height="16" rx="2" fill="none" stroke="currentColor" stroke-width="1.7"/><path d="M8 8h8M8 12h8M8 16h5" stroke="currentColor" stroke-width="1.7"/></svg>이용내역</button>
-  <button id="navMy" onclick="go('mypage')"><svg viewBox="0 0 24 24"><circle cx="12" cy="8" r="3" fill="none" stroke="currentColor" stroke-width="1.7"/><path d="M6 21c0-4 2.5-7 6-7s6 3 6 7" fill="none" stroke="currentColor" stroke-width="1.7"/></svg>마이페이지</button>
+  <button class="flower" onclick="go('ask')" aria-label="사주에게 묻기" data-guiin-nav="ask"><svg viewBox="0 0 24 24"><g fill="currentColor"><ellipse cx="12" cy="6.8" rx="3" ry="4.5"/><ellipse cx="17.2" cy="12" rx="4.5" ry="3"/><ellipse cx="12" cy="17.2" rx="3" ry="4.5"/><ellipse cx="6.8" cy="12" rx="4.5" ry="3"/></g><circle cx="12" cy="12" r="2.1" fill="#fff8dc"/></svg></button>
+  <button id="navHistory" onclick="go('history')" data-guiin-nav="history"><svg viewBox="0 0 24 24"><rect x="5" y="4" width="14" height="16" rx="2" fill="none" stroke="currentColor" stroke-width="1.7"/><path d="M8 8h8M8 12h8M8 16h5" stroke="currentColor" stroke-width="1.7"/></svg>이용내역</button>
+  <button id="navMy" onclick="go('mypage')" data-guiin-nav="mypage"><svg viewBox="0 0 24 24"><circle cx="12" cy="8" r="3" fill="none" stroke="currentColor" stroke-width="1.7"/><path d="M6 21c0-4 2.5-7 6-7s6 3 6 7" fill="none" stroke="currentColor" stroke-width="1.7"/></svg>마이페이지</button>
 </nav>
 </div>
 
@@ -942,6 +984,9 @@ function go(id){
  if(id==='wallet')renderLedger();
  history.replaceState(null,'','#'+id); window.scrollTo(0,0);
 }
+window.go=go;
+window.goToday=window.goToday||function(){go('today');};
+
 function bindSeg(id,cb){
  const box=$(id); if(!box)return;
  box.querySelectorAll('button').forEach(b=>b.onclick=()=>{box.querySelectorAll('button').forEach(x=>x.classList.remove('on'));b.classList.add('on');cb&&cb(b.dataset.v)});
@@ -1353,7 +1398,7 @@ function wongukHTML(c){
 }
 function renderYearLuck(){
  if(!chart){
-   $('yearView').innerHTML=`<div class="easyLongCard card"><h3>사주를 먼저 계산해 주세요</h3><div class="easyBody"><p>대운·세운은 원국이 있어야 개인 기준으로 읽을 수 있습니다.</p></div><button class="ctaGold" onclick="go('saju')">사주 입력하기 ›</button></div>`;
+   $('yearView').innerHTML=`<div class="easyLongCard card"><h3>사주를 먼저 계산해 주세요</h3><div class="easyBody"><p>대운·세운은 원국이 있어야 개인 기준으로 읽을 수 있습니다.</p></div><button class="ctaGold" onclick="go('saju')" data-guiin-nav="saju">사주 입력하기 ›</button></div>`;
    return;
  }
  if(!hasPremiumLifetime()){
@@ -1582,11 +1627,11 @@ function renderFortunePeriod(period='today',btn){
  const title=period==='week'?'이번 주 운세':'이번 달 운세';
  const intro=period==='week'?'이번 주는 한 번에 많은 것을 바꾸기보다 중요한 한두 가지를 끝까지 가져가는 흐름을 살펴보세요.':'이번 달은 일·돈·관계에서 반복되는 패턴을 정리하고 다음 선택을 준비하는 흐름을 살펴보세요.';
  const rows=fortuneRows(period),v=$('todayView'); if(!v)return;
- v.innerHTML=guiinVisualHero('today',chart?.input?.name)+`<div class="todayDate">${new Date().getFullYear()}년 ${new Date().getMonth()+1}월 · ${title}</div><div class="todayDetailCard card"><div class="miniTitle">${title}</div><h3>${intro}</h3><p>아래 내용은 생활형 요약입니다. 개인 명식의 대운·세운까지 더 깊게 보고 싶다면 AI 상담에서 이어서 질문할 수 있어요.</p></div><div class="fortuneList card" style="margin-top:9px">${rows.map((x,i)=>`<div class="fortuneRow clickable" data-title="${esc(x[0])}" data-summary="${esc(x[1])}" onclick="openTodayDetail(this.dataset.title,this.dataset.summary)"><div class="fIcon">${[ICONS.money,ICONS.heart,ICONS.money,ICONS.brief,ICONS.plus][i]}</div><div><b>${esc(x[0])}</b><span>${esc(x[1])}</span></div></div>`).join('')}</div><button class="ctaGold" onclick="go('ask')">내 사주로 더 자세히 묻기 ›</button>`;
+ v.innerHTML=guiinVisualHero('today',chart?.input?.name)+`<div class="todayDate">${new Date().getFullYear()}년 ${new Date().getMonth()+1}월 · ${title}</div><div class="todayDetailCard card"><div class="miniTitle">${title}</div><h3>${intro}</h3><p>아래 내용은 생활형 요약입니다. 개인 명식의 대운·세운까지 더 깊게 보고 싶다면 AI 상담에서 이어서 질문할 수 있어요.</p></div><div class="fortuneList card" style="margin-top:9px">${rows.map((x,i)=>`<div class="fortuneRow clickable" data-title="${esc(x[0])}" data-summary="${esc(x[1])}" onclick="openTodayDetail(this.dataset.title,this.dataset.summary)"><div class="fIcon">${[ICONS.money,ICONS.heart,ICONS.money,ICONS.brief,ICONS.plus][i]}</div><div><b>${esc(x[0])}</b><span>${esc(x[1])}</span></div></div>`).join('')}</div><button class="ctaGold" onclick="go('ask')" data-guiin-nav="ask">내 사주로 더 자세히 묻기 ›</button>`;
 }
 function renderToday(){
  const d=new Date(),days=['일','월','화','수','목','금','토'],rows=fortuneRows('today');
- const personal=chart?.dayMaster?`<div class="todayDetailCard card"><div class="miniTitle">내 사주 기준</div><h3>${esc(chart.input?.name||'사용자')}님의 중심 기운은 ${esc(chart.dayMaster.stem||'')}입니다.</h3><p>오늘 날짜의 흐름과 ${esc(chart.input?.name||'사용자')}님의 일간·일지 정보를 함께 섞어 생활형 운세를 보여드려요. 미래를 확정하는 예언이 아니라 오늘의 선택을 점검하는 참고 정보로 활용해 주세요.</p></div>`:`<div class="todayDetailCard card"><div class="miniTitle">기본 오늘 운세</div><h3>내 사주를 입력하면 오늘 운세가 더 개인화돼요.</h3><p>지금은 날짜 기준의 기본 운세예요. 생년월일을 한 번 입력해두면 일간·일지를 함께 반영해 매일 다른 흐름으로 보여드릴게요.</p><button class="softBtn" onclick="go('saju')">내 사주 입력하기 ›</button></div>`;
+ const personal=chart?.dayMaster?`<div class="todayDetailCard card"><div class="miniTitle">내 사주 기준</div><h3>${esc(chart.input?.name||'사용자')}님의 중심 기운은 ${esc(chart.dayMaster.stem||'')}입니다.</h3><p>오늘 날짜의 흐름과 ${esc(chart.input?.name||'사용자')}님의 일간·일지 정보를 함께 섞어 생활형 운세를 보여드려요. 미래를 확정하는 예언이 아니라 오늘의 선택을 점검하는 참고 정보로 활용해 주세요.</p></div>`:`<div class="todayDetailCard card"><div class="miniTitle">기본 오늘 운세</div><h3>내 사주를 입력하면 오늘 운세가 더 개인화돼요.</h3><p>지금은 날짜 기준의 기본 운세예요. 생년월일을 한 번 입력해두면 일간·일지를 함께 반영해 매일 다른 흐름으로 보여드릴게요.</p><button class="softBtn" onclick="go('saju')" data-guiin-nav="saju">내 사주 입력하기 ›</button></div>`;
  $('todayView').innerHTML=guiinVisualHero('today',chart?.input?.name)+`<div class="todayHero card"><div class="todayArt"><img loading="lazy" decoding="async" src="today-dog.jpg" alt=""></div><h3>오늘도 좋은 일이 찾아와요!</h3><p>“작은 행복이 모여, 큰 행운이 됩니다.”</p></div><div class="todayDate">${d.getFullYear()}년 ${d.getMonth()+1}월 ${d.getDate()}일 (${days[d.getDay()]})</div>${personal}<div class="fortuneList card" style="margin-top:9px">${rows.map((x,i)=>`<div class="fortuneRow clickable" data-title="${esc(x[0])}" data-summary="${esc(x[1])}" onclick="openTodayDetail(this.dataset.title,this.dataset.summary)"><div class="fIcon">${[ICONS.money,ICONS.heart,ICONS.money,ICONS.brief,ICONS.plus][i]}</div><div><b>${esc(x[0])}</b><span>${esc(x[1])}</span></div></div>`).join('')}</div><div class="slogan card"><b>오늘의 조언</b><br>좋은 흐름은 활용하고, 부담이 큰 결정은 한 번 더 확인해 보세요.</div><button class="ctaGold" onclick="openTodayDetail()">상세 운세 보기 ›</button>${tailQuestionsHTML('오늘')}`;
 }
 restoreProfile();renderToday();
