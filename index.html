@@ -1453,6 +1453,17 @@ function sajuBalanceBand(c){
  if(gap>=15)return {key:'tilted',text:`${x.top} 쪽이 조금 더 강해, 익숙한 방식으로 문제를 풀 때는 빠르지만 다른 방식도 함께 써야 균형이 좋아집니다.`};
  return {key:'balanced',text:'오행 한쪽으로 크게 치우치기보다 여러 방식을 번갈아 쓰는 편이라, 상황에 따라 장점이 다르게 드러날 수 있습니다.'};
 }
+
+function guiinChartSignature(c){
+ try{
+  const x=sajuInsightProfile(c),season=sajuSeasonName(c),bal=sajuBalanceBand(c);
+  return [
+    c?.dayMaster?.stem||c?.pillars?.day?.stem||'?',
+    x.top||'?',x.low||'?',x.mg||'?',season||'?',bal.key||'?'
+  ].join('|');
+ }catch(_e){return 'unknown';}
+}
+
 function sajuPersonalSignature(c){
  const x=sajuInsightProfile(c),dv=sajuDayVoice(c),season=sajuSeasonName(c),bal=sajuBalanceBand(c);
  return {
@@ -1498,7 +1509,7 @@ function longSummaryHTML(c){
  const x=sajuInsightProfile(c), season=seasonPlain(c), rel=relationSummary(c),sig=sajuPersonalSignature(c);
  const name=esc(c.input.name);
  const v=sajuVariant(c);
- const title=`${name}님은 ${v.summary}`;
+ const title=`${name}님은 ${esc(sig.dv.tone)}이고, ${x.top} 기운의 ${esc(x.p.praise)}이 핵심 강점으로 읽힙니다.`;
  const body=`<p><b>먼저 결론부터 말하면</b>, ${name}님은 ${esc(sig.dv.tone)}입니다. ${esc(c.dayMaster.stem)} 일간의 ${esc(sig.dv.strength)}과 ${x.top} 기운의 ${ELEMENT_EASY[x.top]}이 함께 강점으로 읽힙니다.</p>
  <p><b>실제 생활에서는</b> ${esc(x.p.scene)} 특히 ${esc(sig.monthScene)}이 반복되는 환경에서 본인다운 방식이 더 뚜렷하게 나타날 수 있습니다.</p>
  <p><b>왜 이렇게 보이나요?</b> 오행은 ${x.top} ${x.e.top[1]}%가 가장 높고 ${x.low} ${x.e.low[1]}%가 상대적으로 낮습니다. ${esc(sig.seasonVoice)}과 월주의 ${esc(x.mg)}이 함께 있어, 같은 ${x.top} 기운이라도 계절과 사회적 역할에 따라 표현 방식이 달라집니다.</p>
@@ -1513,7 +1524,7 @@ function longSummaryHTML(c){
 function personalityReport(c){
  const x=sajuInsightProfile(c), name=esc(c.input.name), rel=relationSummary(c);
  const v=sajuVariant(c);
- let html=`<div class="easyIntro card"><div class="easyKicker">성격·기질 핵심</div><h2>${name}님은 ${v.personality}</h2><p>${ELEMENT_EASY[x.top]}은 자연스럽게 잘 쓰는 편이고, ${x.low} 기운 쪽은 의식적으로 보완할수록 균형이 좋아집니다. 첫인상과 실제 속마음을 따로 나눠서 봅니다.</p></div>`;
+ let html=`<div class="easyIntro card"><div class="easyKicker">성격·기질 핵심</div><h2>${name}님은 ${v.personality}</h2><p>${esc(sig.dv.tone)}이며, 사회생활에서는 ${esc(sig.monthScene)}이 먼저 드러날 수 있습니다. ${ELEMENT_EASY[x.top]}은 자연스럽게 잘 쓰는 편이고 ${x.low} 기운은 의식적으로 보완할수록 균형이 좋아집니다.</p></div>`;
  const sig=sajuPersonalSignature(c);
  html+=easyCard('남들이 보는 나',`${name}님은 ${esc(sig.dv.tone)}이라, 처음과 가까워진 뒤의 인상이 조금 다를 수 있습니다.`,
  `<p>${name}님은 ${esc(x.stem.image)}에 비유되는 ${esc(c.dayMaster.stem)} 일간입니다. 겉에서는 ${esc(sig.monthScene)}이 먼저 보이고, 가까워질수록 ${esc(sig.dv.strength)}과 ${esc(x.stem.core)}이 더 선명하게 드러날 수 있습니다.</p>
@@ -1597,7 +1608,7 @@ function fieldsReport(c){
  const name=esc(c.input.name);
  const common=`현재는 ${lk?`${lk.ko} 대운(${lk.god})`:'대운 흐름'} 위에 ${nowYear}년의 ${yg||'세운'} 주제가 겹쳐 있습니다.`;
  const v=sajuVariant(c);
- let out=`<div class="easyIntro card"><div class="easyKicker">직업·재물·연애</div><h2>${name}님은 ${v.fields}</h2><p>월주의 ${esc(x.mg)}과 ${x.top} 기운을 함께 보면서, 직업·돈·연애가 실제 생활에서 어떻게 다르게 나타나는지 나눠서 봅니다.</p></div>`;
+ let out=`<div class="easyIntro card"><div class="easyKicker">직업·재물·연애</div><h2>${name}님은 ${esc(sig.dv.strength)}을 살릴 수 있는 환경에서 강점이 오래가고, ${v.fields}</h2><p>${esc(sig.bal.text)} 월주의 ${esc(x.mg)}과 ${x.top} 기운을 함께 보면서 직업·돈·연애가 실제 생활에서 어떻게 다르게 나타나는지 나눠서 봅니다.</p></div>`;
  const sig=sajuPersonalSignature(c);
  out+=easyCard('직업',`${esc(sig.dv.strength)}을 실제 성과로 바꿀 수 있고, ${esc(sig.monthScene)}이 존중되는 환경이 잘 맞습니다.`, 
  `<p><b>잘 맞는 일의 조건</b>은 “내가 판단할 여지가 있는가, 결과가 눈에 보이는가, 기술이 쌓이는가, 회복할 시간이 남는가”입니다. ${name}님의 월주 ${esc(x.mg)}은 ${esc(x.mgEasy)}과 연결되고, ${x.top} 기운이 두드러져 ${ELEMENT_EASY[x.top]}을 실제 결과로 바꾸는 환경에서 강점이 살아나기 쉽습니다.</p>
@@ -1821,6 +1832,7 @@ function guiinTextSimilarityReport(rootId){
 
 function renderResult(){
  const view=$('resultView'); if(!view)return;
+ if(chart)try{view.dataset.chartSignature=guiinChartSignature(chart);}catch(_e){}
  if(!chart||!chart.pillars){
    view.innerHTML=emptyStateHTML('아직 사주 결과가 없어요.','생년월일을 입력하면 사주 요약부터 차근차근 보여드릴게요.','<button class="ctaGold" onclick="go(\'saju\')">사주 입력하러 가기 ›</button>');
    return;
@@ -2084,7 +2096,8 @@ function submitMatch(){
   const band=score>=86?'서로의 장점을 살릴 여지가 큰 관계입니다.':score>=76?'맞는 부분과 조율할 부분이 함께 있는 관계입니다.':score>=66?'끌림과 차이가 함께 있어 생활 조율이 중요한 관계입니다.':'점수보다 대화와 경계 설정이 특히 중요한 관계입니다.';
   matchMeta={a,b,good:score>=82?'기본적인 호감과 상호 보완 가능성이 큰 편입니다. 서로 다른 강점을 역할로 나누면 함께 있을 때 혼자보다 선택지가 넓어질 수 있습니다.':'차이가 분명한 만큼 서로에게 없는 방식을 배우게 되는 관계입니다. 맞는 부분만 찾기보다 각자의 강점을 역할로 나누는 것이 중요합니다.',watch:dayGap===6?'일지의 충 신호가 있어 감정의 속도나 생활 리듬이 다를 때 갈등이 크게 느껴질 수 있습니다. 다툼 자체보다 다툰 뒤 어떻게 회복하는지가 핵심입니다.':'감정이 좋을 때는 차이를 매력으로 느끼지만, 피곤할 때는 같은 차이가 답답함으로 느껴질 수 있습니다. 특히 책임과 돈 문제를 말없이 넘기지 않는 것이 중요합니다.',tip:'연락·돈·시간·집안일·가족·혼자 있는 시간에 대한 기준을 구체적으로 맞추세요. 좋은 궁합은 점수보다 반복되는 갈등을 두 사람이 실제로 조율할 수 있을 때 오래 갑니다.'};
   const matchHeadline=score>=86?'서로의 장점을 살리기 좋은 관계예요.':score>=76?'잘 맞는 부분과 조율할 부분이 함께 보여요.':score>=66?'끌림과 차이가 함께 있는 관계예요.':'점수보다 대화 방식이 더 중요한 관계예요.';
-  matchBaseHTML=`<div class="matchHero card"><h3>${matchHeadline}</h3><p>궁합 점수보다 실제 생활에서 반복되는 패턴을 함께 보세요.</p><div class="matchArt"><img loading="lazy" decoding="async" src="compat-animals.jpg" alt=""></div><div style="font-size:9px;margin-top:7px">귀인사주 참고 궁합 지수</div><div class="score">♥ ${score}<small>점</small></div><p>${band}</p></div>
+  const pairLead=m?.pair?.fit||'두 사람의 생활 패턴을 함께 확인해 보세요.';
+  matchBaseHTML=`<div class="matchHero card"><h3>${matchHeadline}</h3><p>${esc(pairLead)} 점수보다 실제 생활에서 반복되는 패턴을 함께 보세요.</p><div class="matchArt"><img loading="lazy" decoding="async" src="compat-animals.jpg" alt=""></div><div style="font-size:9px;margin-top:7px">귀인사주 참고 궁합 지수</div><div class="score">♥ ${score}<small>점</small></div><p>${band}</p></div>
    <div class="infoCard card"><div class="pair"><div class="person"><b>나<br>${esc(a.input.name)}</b><br>${a.input.year}.${a.input.month}.${a.input.day}<br>${a.input.gender==='여'?'여성':'남성'}</div><div class="heartSvg">${ICONS.heart}</div><div class="person b"><b>상대방<br>${esc(b.input.name)}</b><br>${b.input.year}.${b.input.month}.${b.input.day}<br>${b.input.gender==='여'?'여성':'남성'}</div></div></div>
    <div class="infoCard card"><h3>세부 궁합 지수</h3>${[['연애궁합',love,'pink'],['성격궁합',personality,'mint'],['재물궁합',money,'gold'],['미래궁합',future,'purple']].map(x=>`<div class="scoreRow"><span>${x[0]}</span><div class="scoreBar"><i class="${x[2]}" style="width:${x[1]}%"></i></div><b>${x[1]}</b></div>`).join('')}</div>`+
    ((typeof GuiinManse!=='undefined')?GuiinManse.renderPair(a,b):'');
