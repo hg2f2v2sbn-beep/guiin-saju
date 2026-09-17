@@ -1401,10 +1401,44 @@ function sajuInsightProfile(c){
  return {e,top,low,stem,p,lowP,mg,mgEasy:GOD_EASY[mg]||'사회생활에서 반복되는 태도'};
 }
 
+
+const SAJU_RESULT_VARIANTS={
+ '목':{
+  summary:'가만히 버티기보다 방향이 생기면 움직이면서 답을 찾는 사람에 가깝습니다.',
+  personality:'처음에는 유연해 보여도, 마음속에는 “이쪽으로 가야 한다”는 방향감이 분명한 편입니다.',
+  fields:'한 자리에 오래 머무는 것보다 성장과 확장이 보이는 환경에서 힘이 살아납니다.'
+ },
+ '화':{
+  summary:'마음이 움직이면 속도가 붙고, 사람과 상황에 온도를 만들어내는 힘이 큰 사람입니다.',
+  personality:'반응이 빠르고 표현력이 살아 있어, 가까워질수록 감정과 기준이 더 선명하게 보일 수 있습니다.',
+  fields:'사람의 반응이나 결과가 바로 보이는 환경에서 추진력과 존재감이 살아납니다.'
+ },
+ '토':{
+  summary:'눈에 띄게 앞서기보다, 결국 현실을 정리하고 끝까지 책임지는 힘이 큰 사람입니다.',
+  personality:'처음에는 무던해 보여도, 가까워질수록 책임감과 자기 기준이 단단한 편입니다.',
+  fields:'역할과 책임이 분명하고, 쌓은 만큼 결과가 남는 환경에서 강점이 오래 갑니다.'
+ },
+ '금':{
+  summary:'무엇을 남기고 무엇을 덜어낼지 판단하는 힘이 강하고, 완성도를 높이는 데 강한 사람입니다.',
+  personality:'처음에는 차분해 보여도, 실제로는 맞고 틀림과 기준이 상당히 분명한 편입니다.',
+  fields:'전문성·품질·정확한 판단이 필요한 환경에서 실력이 가장 또렷하게 드러납니다.'
+ },
+ '수':{
+  summary:'겉으로는 조용해 보여도 상황과 사람의 흐름을 빠르게 읽고, 머릿속에서 여러 가능성을 연결하는 사람입니다.',
+  personality:'바로 반응하기보다 한 번 더 생각하고, 가까워질수록 섬세한 감각과 복잡한 속마음이 드러날 수 있습니다.',
+  fields:'정보·사람·변화를 읽고 연결해야 하는 환경에서 감각과 유연성이 강점이 됩니다.'
+ }
+};
+function sajuVariant(c){
+ const x=sajuInsightProfile(c);
+ return SAJU_RESULT_VARIANTS[x.top]||SAJU_RESULT_VARIANTS['토'];
+}
+
 function longSummaryHTML(c){
  const x=sajuInsightProfile(c), season=seasonPlain(c), rel=relationSummary(c);
  const name=esc(c.input.name);
- const title=`${name}님은 “버티는 사람”보다, 자기 기준이 생기면 끝까지 밀고 가는 사람에 가깝습니다.`;
+ const v=sajuVariant(c);
+ const title=`${name}님은 ${v.summary}`;
  const body=`<p><b>먼저 결론부터 말하면</b>, ${name}님 사주는 ${esc(x.stem.core)}과 ${ELEMENT_EASY[x.top]}이 가장 눈에 띕니다. 남들이 보기에는 차분하거나 무던해 보여도, 안에서는 “이건 맞다 / 이건 아니다”라는 자기 기준이 생각보다 분명할 수 있습니다.</p>
  <p><b>실제 생활에서는</b> ${esc(x.p.scene)} 특히 일이 꼬였을 때 남들이 포기하는 지점에서 다시 정리하고, 내 방식으로 답을 찾는 힘이 장점으로 작동하기 쉽습니다.</p>
  <p><b>왜 이렇게 보이나요?</b> 중심 기운은 ${esc(c.dayMaster.stem)} 일간이고, 오행은 ${x.top} ${x.e.top[1]}%가 가장 높고 ${x.low} ${x.e.low[1]}%가 상대적으로 낮습니다. ${season.body} 월주의 ${esc(x.mg)}은 ${esc(x.mgEasy)}과 연결돼 사회생활에서 어떤 태도가 반복되는지도 같이 보여줍니다.</p>
@@ -1418,7 +1452,8 @@ function longSummaryHTML(c){
 }
 function personalityReport(c){
  const x=sajuInsightProfile(c), name=esc(c.input.name), rel=relationSummary(c);
- let html=`<div class="easyIntro card"><div class="easyKicker">성격·기질 핵심</div><h2>${name}님은 처음엔 무난해 보여도, 가까워질수록 기준과 고집이 선명해지는 타입일 수 있어요.</h2><p>첫인상과 실제 속마음, 칭찬받는 부분, 예민해지는 순간을 따로 나눠서 봅니다.</p></div>`;
+ const v=sajuVariant(c);
+ let html=`<div class="easyIntro card"><div class="easyKicker">성격·기질 핵심</div><h2>${name}님은 ${v.personality}</h2><p>${ELEMENT_EASY[x.top]}은 자연스럽게 잘 쓰는 편이고, ${x.low} 기운 쪽은 의식적으로 보완할수록 균형이 좋아집니다. 첫인상과 실제 속마음을 따로 나눠서 봅니다.</p></div>`;
  html+=easyCard('남들이 보는 나','처음에는 부드럽거나 차분해 보여도, 일을 함께 해보면 기준이 분명한 사람으로 기억되기 쉽습니다.',
  `<p>${name}님은 ${esc(x.stem.image)}에 비유되는 ${esc(c.dayMaster.stem)} 일간입니다. 겉에서는 ${esc(x.mgEasy)}을 중요하게 여기는 모습이 먼저 보이고, 실제로 가까워지면 ${esc(x.stem.core)}이 더 선명하게 드러날 수 있습니다.</p>
  <p><b>칭찬을 듣기 쉬운 지점</b>은 말보다 결과로 보여주는 부분입니다. 약속을 잡으면 지키고, 맡은 일을 끝까지 가져가고, 필요한 순간에는 기준을 세워주는 역할에서 신뢰를 얻기 쉽습니다.</p>`,
@@ -1456,8 +1491,23 @@ function flowReport(c){
   '정인':['공부를 실제 일에 연결하기','도움을 먼저 요청하기','회복 시간을 일정에 넣기']
  };
  const actions=actionMap[yrGod]||['올해 꼭 끝낼 일 한두 가지 정하기','돈·시간·체력을 한꺼번에 쓰지 않기','큰 결정은 감정이 가라앉은 뒤 보기'];
+
+ const flowHeadlineMap={
+  '비견':'내 기준을 다시 세우고, 혼자 짊어진 역할을 조정하는 흐름',
+  '겁재':'사람·돈·시간의 경계를 분명히 해야 손실을 줄이는 흐름',
+  '식신':'꾸준히 만든 것을 실제 결과로 남기는 흐름',
+  '상관':'답답했던 것을 표현하고 방식 자체를 바꿔보는 흐름',
+  '편재':'기회가 넓어지는 만큼 돈과 사람을 선별해야 하는 흐름',
+  '정재':'생활과 돈의 기반을 안정시키는 흐름',
+  '편관':'책임과 압박을 줄이고 우선순위를 분명히 해야 하는 흐름',
+  '정관':'책임·평판·장기계획을 현실적으로 정리하는 흐름',
+  '편인':'생각을 작게 실험으로 바꿔야 답이 보이는 흐름',
+  '정인':'배움과 회복을 실제 기반으로 연결하는 흐름'
+ };
+ const flowHeadline=flowHeadlineMap[yrGod]||'무엇을 더할지보다 무엇을 남길지 정하는 흐름';
+
  const luckRows=(c.luck||[]).map(x=>{const cur=lk&&x.ko===lk.ko&&x.fromAge===lk.fromAge;return `<div class="luckRow ${cur?'current':''}"><b>${x.fromAge}~${x.toAge}세 · ${x.ko} 대운 ${cur?'· 현재':''}</b><p>${x.god} · ${GOD_DESC[x.god]||'환경과 역할 변화'}가 이 시기의 장기 배경으로 작동합니다.</p></div>`}).join('');
- return `<div class="deepCard card"><div class="miniTitle">지금 내 운의 핵심</div><h3>${esc(c.input.name)}님은 지금 “무조건 더 하기”보다 무엇을 남기고 무엇을 덜어낼지 정하는 게 중요한 시기로 읽힙니다.</h3>
+ return `<div class="deepCard card"><div class="miniTitle">지금 내 운의 핵심</div><h3>${esc(c.input.name)}님은 지금 ${flowHeadline}으로 읽힙니다.</h3>
  <p class="reportLead">현재 만 ${age}세 기준 ${lk?`<b>${lk.ko} 대운(${lk.fromAge}~${lk.toAge}세)</b>`:'현재 대운'} 위에 ${nowYear}년 <b>${yrGod||'세운'}</b> 주제가 겹칩니다.</p>
  <div class="easyPoint good"><b>지금 밀어도 좋은 것</b><p>${actions[0]}. ${actions[1]}.</p></div>
  <div class="easyPoint watch"><b>지금 특히 조심할 것</b><p>모든 문제를 한 번에 해결하려는 마음, 감정이 올라온 순간의 큰 결정, 책임을 혼자 떠안는 습관은 줄이는 편이 좋습니다.</p></div>
@@ -1470,7 +1520,8 @@ function fieldsReport(c){
  const x=sajuInsightProfile(c), lk=currentLuck(c), yf=currentYearFlow(c), yg=yf?.gods?.year||'', nowYear=new Date().getFullYear();
  const name=esc(c.input.name);
  const common=`현재는 ${lk?`${lk.ko} 대운(${lk.god})`:'대운 흐름'} 위에 ${nowYear}년의 ${yg||'세운'} 주제가 겹쳐 있습니다.`;
- let out=`<div class="easyIntro card"><div class="easyKicker">직업·재물·연애</div><h2>${name}님은 “뭘 해야 성공한다”보다, 어떤 환경을 고르면 실력이 오래 가는지가 더 중요한 사주로 읽힙니다.</h2><p>직업, 돈, 연애를 각각 실제 생활 장면으로 나눠서 봅니다.</p></div>`;
+ const v=sajuVariant(c);
+ let out=`<div class="easyIntro card"><div class="easyKicker">직업·재물·연애</div><h2>${name}님은 ${v.fields}</h2><p>월주의 ${esc(x.mg)}과 ${x.top} 기운을 함께 보면서, 직업·돈·연애가 실제 생활에서 어떻게 다르게 나타나는지 나눠서 봅니다.</p></div>`;
  out+=easyCard('직업','결정권은 없는데 책임만 큰 자리보다, 기준과 결과가 분명한 일이 잘 맞습니다.',
  `<p><b>잘 맞는 일의 조건</b>은 “내가 판단할 여지가 있는가, 결과가 눈에 보이는가, 기술이 쌓이는가, 회복할 시간이 남는가”입니다. ${name}님의 월주 ${esc(x.mg)}은 ${esc(x.mgEasy)}과 연결되고, ${x.top} 기운이 두드러져 ${ELEMENT_EASY[x.top]}을 실제 결과로 바꾸는 환경에서 강점이 살아나기 쉽습니다.</p>
  <p><b>실제 직장에서는</b> 남이 시키는 일만 반복하는 자리보다 문제를 발견하고 개선하거나, 맡은 영역을 자기 방식으로 운영하는 역할에서 만족도가 높을 수 있습니다. ${common}</p>`,
@@ -1674,6 +1725,23 @@ function daeunPremiumPreviewHTML(c){
  const samples=pickPreviewSamples('daeun',pool,3);
  return `<div class="premiumPreview"><div class="premiumHero card"><div class="mini">프리미엄 평생사주에 포함 · 대운 상세</div><h2>${n}님의 실제 대운은 결제 후 장문으로 열립니다.</h2><p>대운은 사건을 맞히는 표가 아니라 10년의 큰 배경을 읽는 기능입니다. 기회만 말하지 않고 부담, 회복, 관계, 돈, 지금 이 시기에 해주고 싶은 말까지 함께 풀어드립니다.</p></div><div class="sampleNotice">아래 3개는 ${n}님의 실제 대운 결과가 아니라, 결제 후 제공되는 설명 방식과 깊이를 보여주는 가상 예시입니다.</div>${samples.map(x=>previewSampleCard(x,'예시 화면 · 실제 내 대운 결과 아님')).join('')}<div class="premiumLock"><strong>내 실제 대운·세운 상세 열기</strong><p>대운·세운 상세는 프리미엄 평생사주 5,900원에 포함됩니다.</p><button onclick="openPremiumPay()">프리미엄 평생사주 5,900원 ›</button></div></div>`;
 }
+
+function guiinTextSimilarityReport(rootId){
+ try{
+  const root=document.getElementById(rootId); if(!root)return null;
+  const parts=[...root.querySelectorAll('h2,h3,p,.easyPoint')].map(x=>x.textContent.replace(/\s+/g,' ').trim()).filter(x=>x.length>=28);
+  const norm=s=>s.replace(/[0-9]+(?:\.[0-9]+)?/g,'#').replace(/[“”"'·,:;()]/g,'').toLowerCase();
+  const seen=new Map(),dups=[];
+  for(const p of parts){
+    const k=norm(p);
+    if(seen.has(k))dups.push(p); else seen.set(k,p);
+  }
+  const report={screen:rootId,blocks:parts.length,exactLikeDuplicates:dups.length,examples:dups.slice(0,3),at:new Date().toISOString()};
+  try{sessionStorage.setItem('guiin_text_qa_'+rootId,JSON.stringify(report));}catch(_e){}
+  return report;
+ }catch(_e){return null;}
+}
+
 function renderResult(){
  const view=$('resultView'); if(!view)return;
  if(!chart||!chart.pillars){
@@ -1697,6 +1765,7 @@ function renderResult(){
   else if(currentTab==='flow') body=visualHero+flowReport(c);
   else if(currentTab==='chart') body=visualHero+wongukHTML(c)+manseTop+foundationReport(c);
   view.innerHTML=(body?body+tailQuestionsHTML('사주'):emptyStateHTML('결과를 준비하지 못했어요.','화면을 새로고침하지 말고 다른 탭을 눌렀다가 다시 돌아와 주세요.'));
+ setTimeout(()=>guiinTextSimilarityReport('resultView'),0);
  }catch(e){
   console.error('GUIIN_RESULT_RENDER_ERROR',e);
   view.innerHTML=emptyStateHTML('결과를 불러오는 중 문제가 생겼어요.','입력한 정보는 그대로예요. 잠시 후 다시 시도하거나 사주 입력 화면에서 다시 계산해 주세요.','<button class="ctaGold" onclick="renderResult()">다시 불러오기 ›</button>');
@@ -1720,45 +1789,48 @@ function compatElementStyle(el){
  };
  return map[el]||{gift:'서로에게 필요한 역할을 만드는 힘',shadow:'표현 방식의 차이가 오해로 이어질 수 있음'};
 }
-function compatGuide(title,aName='나',bName='상대방'){
+function compatGuide(title,aName='나',bName='상대방',meta={}){
+ const ae=meta.ae||'',be=meta.be||'',gapEl=meta.gapEl||'',gapVal=Number(meta.gapVal||0);
+ const aStyle=compatElementStyle(ae),bStyle=compatElementStyle(be);
+ const personal=`${aName}님은 ${ae?ae+' 기운의 '+aStyle.gift:'자기 방식의 강점'}을, ${bName}님은 ${be?be+' 기운의 '+bStyle.gift:'자기 방식의 강점'}을 관계 안에서 주로 쓰는 편으로 볼 수 있습니다.${gapEl?` 두 사람의 차이가 가장 큰 쪽은 ${gapEl} 기운(${gapVal}%p)입니다.`:''}`;
  const t=String(title||'');
  if(/끌림|첫인상|애정|연애/.test(t))return {
-  scene:`${aName}님은 관심이 생기면 관계의 분위기와 반응을 빠르게 읽는 쪽이고, ${bName}님은 자기 속도대로 확신이 생겨야 표현이 커지는 쪽으로 나타날 수 있습니다.`,
+  scene:`${personal} 끌림과 표현에서는 ${aName}님과 ${bName}님이 서로 다른 속도로 확신을 보여줄 수 있습니다.`,
   good:'처음 만났을 때 서로에게 없는 분위기가 매력으로 느껴져 친해지는 속도가 빠를 수 있습니다.',
   watch:'끌림이 강한 만큼 “나만큼 좋아하면 이렇게 해야지”라는 기준을 상대에게 그대로 대입하면 서운함이 커집니다.',
   danger:'답장 속도·만나는 횟수·표현 강도를 사랑의 크기로 재기 시작하면 관계가 금방 피곤해질 수 있습니다.',
   action:['좋아하는 표현 방식을 서로 3가지씩 말하기','연락 빈도를 애정의 증거로 쓰지 않기','혼자 있고 싶은 시간과 만나고 싶은 시간을 미리 합의하기']
  };
  if(/대화|갈등|싸움|회복/.test(t))return {
-  scene:`문제가 생기면 한쪽은 “지금 바로 얘기해서 끝내자” 쪽으로, 다른 쪽은 “생각할 시간이 필요하다” 쪽으로 움직일 가능성이 있습니다.`,
+  scene:`${personal} 갈등이 생기면 ${aName}님과 ${bName}님이 문제를 정리하는 속도와 기준이 달라질 수 있습니다.`,
   good:'갈등을 피하지만 않는다면 문제의 핵심을 빠르게 찾아 실제로 관계를 개선하는 힘이 있습니다.',
   watch:'누가 맞는지부터 가리기 시작하면 내용보다 말투·속도·압박감이 더 큰 상처를 남깁니다.',
   danger:'같은 문제로 싸우면서도 싸우는 방식만 반복되면 작은 갈등도 관계 전체에 대한 불신으로 번질 수 있습니다.',
   action:['감정이 올라오면 20~30분 멈추기','사실-감정-요청 순서로 말하기','오늘 결론을 못 내리면 다시 이야기할 시간을 정해두기']
  };
  if(/생활|돈|재물|현실/.test(t))return {
-  scene:'데이트비·고정비·집안일·수면시간·개인시간처럼 사소해 보이는 생활 규칙에서 “왜 나만 더 하지?”라는 감정이 생기기 쉬운 영역입니다.',
+  scene:`${personal} 생활에서는 데이트비·고정비·집안일·개인시간처럼 반복되는 현실 기준에서 차이가 체감되기 쉽습니다.`,
   good:'역할을 분명히 나누면 한 사람의 추진력과 다른 사람의 현실 감각이 만나 꽤 강한 생활 파트너십이 될 수 있습니다.',
   watch:'돈이나 돌봄을 한 사람이 계속 더 부담하면 사랑보다 의무감이 먼저 커집니다.',
   danger:'“이 정도는 알아서 해주겠지”가 쌓이면 돈 문제처럼 보이지만 실제로는 존중받지 못한다는 감정으로 번질 수 있습니다.',
   action:['공동비용과 개인비용을 분리하기','집안일·돌봄을 말이 아니라 항목으로 나누기','한 달에 한 번 부담이 한쪽으로 쏠리지 않았는지 확인하기']
  };
  if(/결혼|장기|가족/.test(t))return {
-  scene:'결혼이나 동거처럼 관계가 길어질수록 사랑의 크기보다 거주 방식·돈·가족 경계·개인시간에서 차이가 더 선명해질 수 있습니다.',
+  scene:`${personal} 장기관계에서는 거주 방식·돈·가족 경계·개인시간처럼 실제 운영 규칙에서 두 사람의 차이가 더 선명해질 수 있습니다.`,
   good:'공동 목표가 생기면 서로를 현실적으로 끌어주고 생활을 굴리는 힘이 강해질 수 있습니다.',
   watch:'양가 가족 문제나 돈 문제를 “나중에 얘기하자”고 미루면 감정 문제가 아니라 구조적인 갈등이 됩니다.',
   danger:'한 사람이 계속 양보하고 다른 사람은 그걸 기본값으로 받아들이면 관계의 균형이 빠르게 무너집니다.',
   action:['살 곳·돈 관리·집안일·돌봄을 결혼 전 문장으로 합의하기','양가 가족 요청에 대한 공통 기준 만들기','각자의 혼자 있는 시간까지 생활 규칙에 포함하기']
  };
  if(/친밀|감정|표현/.test(t))return {
-  scene:'한 사람은 행동으로 챙겨주는 것을 사랑이라고 느끼고, 다른 사람은 말과 반응이 있어야 사랑받는다고 느낄 수 있습니다.',
+  scene:`${personal} 친밀감에서는 각자가 사랑을 확인하는 방식이 다를 수 있어, 표현을 번역해 주는 과정이 중요합니다.`,
   good:'서로의 감정 언어를 알게 되면 작은 표현 하나도 큰 안정감을 주는 관계가 될 수 있습니다.',
   watch:'마음을 알아서 알아주길 기대하면 “나는 이렇게 많이 하는데 왜 몰라?”라는 억울함이 생깁니다.',
   danger:'표현 방식의 차이를 사랑의 부족함으로 해석하면 서로 충분히 좋아하면서도 외로운 관계가 될 수 있습니다.',
   action:['“나는 이럴 때 사랑받는다고 느껴”를 문장으로 말하기','서운함을 쌓지 말고 하루 안에 작은 표현으로 알리기','상대가 잘하는 표현 방식도 사랑으로 인정하기']
  };
  return {
-  scene:'두 사람의 차이가 같은 상황을 서로 다르게 해석하게 만들 수 있습니다.',
+  scene:`${personal} 같은 상황도 서로 다른 기준으로 해석할 수 있어, 차이를 성격 문제로 단정하지 않는 게 중요합니다.`,
   good:'다른 점을 역할로 나누면 서로의 부족한 부분을 자연스럽게 보완할 수 있습니다.',
   watch:'내 방식이 정상이고 상대가 이상하다고 보기 시작하면 차이가 갈등으로 굳어집니다.',
   danger:'설득과 교정이 많아질수록 상대는 사랑보다 평가받는 느낌을 받을 수 있습니다.',
@@ -1799,7 +1871,7 @@ const U35Compat=(()=>{
     why:`${aName}님의 중심 기운은 ${ae}, ${bName}님의 중심 기운은 ${be} 쪽입니다. 두 사람 사이에서 차이가 가장 크게 보이는 오행은 ${gapEl}이며 약 ${gapVal}%p 차이가 납니다.`,
     praiseA:`${aName}님은 ${aStyle.gift}이 장점으로 살아날 수 있습니다.`,
     praiseB:`${bName}님은 ${bStyle.gift}이 장점으로 살아날 수 있습니다.`,
-    risk:`${aName}님 쪽에서는 ${aStyle.shadow}, ${bName}님 쪽에서는 ${bStyle.shadow}이 갈등 때 두드러질 수 있습니다.`
+    risk:`${aName}님은 갈등 때 ${aStyle.shadow}, ${bName}님은 ${bStyle.shadow}. 특히 ${gapEl} 기운 차이가 큰 상황에서는 같은 일을 두고 중요도를 다르게 느낄 수 있습니다.`
    },
    domains:[
     ['끌림과 첫인상',r[0],r[1]],
@@ -1834,7 +1906,7 @@ function compatSummaryHTML(deep){
 }
 function compatDomainCard(s,i,deep){
  const m=deep?.meta||{};
- const g=compatGuide(s[0],m.aName,m.bName);
+ const g=compatGuide(s[0],m.aName,m.bName,m);
  const acts=(g.action||[]).map(x=>`<li>${compatEsc(x)}</li>`).join('');
  return `<article class="easyLongCard card compatLong">
    <div class="easyKicker">${String(i+1).padStart(2,'0')} · ${compatEsc(s[0])}</div>
@@ -1878,6 +1950,7 @@ function renderCompatCards(){
    summary+cards+
    `<div class="paidDisclaimer">궁합은 관계를 단정하는 판정표가 아니라, 두 사람이 실제 생활에서 반복할 수 있는 패턴과 조율 지점을 이해하기 위한 참고 해석입니다.</div>`+
    tailQuestionsHTML('궁합');
+ setTimeout(()=>guiinTextSimilarityReport('matchView'),0);
 }
 function setMatchTab(tab){
  matchTab=tab||'summary';
