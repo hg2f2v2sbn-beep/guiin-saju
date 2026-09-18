@@ -3162,16 +3162,22 @@ function guiinRouteAuthenticatedAwayFromAuth(){
 function syncAuthUI(){
   const s=guiinAuthSession();
   if(s&&!guiinCurrentUser){
-    try{guiinCurrentUser=JSON.parse(localStorage.getItem('guiin_verified_user_v1')||'null');}catch(_e){}
+    try{
+      const raw=localStorage.getItem('guiin_verified_user_v1')||sessionStorage.getItem('guiin_verified_user_v1')||'null';
+      guiinCurrentUser=JSON.parse(raw);
+    }catch(_e){}
   }
   const u=guiinCurrentUser;
   const entry=$('accountEntryBtn');
   if(entry){
     if(s){
-      entry.innerHTML='카카오 계정 · 로그인됨 <span class="arr">›</span>';
-      entry.setAttribute('data-guiin-nav','mypage');
-      entry.setAttribute('aria-label','카카오 로그인 계정');
+      // 로그인된 상태에서는 '로그인 · 회원가입' 메뉴 자체를 숨깁니다.
+      entry.style.display='none';
+      entry.setAttribute('aria-hidden','true');
+      entry.removeAttribute('data-guiin-nav');
     }else{
+      entry.style.display='';
+      entry.removeAttribute('aria-hidden');
       entry.innerHTML='로그인 · 회원가입 <span class="arr">›</span>';
       entry.setAttribute('data-guiin-nav','login');
       entry.setAttribute('aria-label','로그인 또는 회원가입');
