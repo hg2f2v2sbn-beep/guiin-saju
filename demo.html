@@ -2581,6 +2581,8 @@ const GUIIN_GUEST_KEY='guiin_guest_session_v1';
 const GUIIN_AI_HISTORY_KEY='guiin_ai_history_v1';
 let guiinAIHistory=[], guiinAISending=false;
 let guiinCurrentUser=null;
+window.window.guiinPendingKakaoHandoff='';
+window.guiinHandoffExchangeInProgress=false;
 
 
 
@@ -3197,11 +3199,20 @@ function handleGuiinAuthCallback(){
   const p=new URLSearchParams(raw);
   const q=new URLSearchParams(location.search);
   const markedReturn=q.get('guiin_auth_return')==='kakao';
+  const handoff=q.get('handoff')||'';
   const provider=p.get('guiin_auth');
   const token=p.get('token')||'';
   const userId=p.get('user_id')||'';
   const err=p.get('error')||'';
   const stage=p.get('stage')||'';
+
+  if(markedReturn&&handoff){
+    window.guiinPendingKakaoHandoff=handoff;
+    const next=location.pathname+'#loginComplete';
+    try{history.replaceState(null,'',next);}catch(_e){}
+    go('loginComplete');
+    return true;
+  }
 
   if(provider==='kakao'&&token.startsWith('usr_')){
     try{
@@ -3256,6 +3267,63 @@ function guiinSetLoginCompleteState(kind,title,copy,state,retryMode){
     b.onclick=retryMode==='login'?()=>go('login'):()=>guiinRetryLoginVerification();
   }
 }
+
+async function guiinExchangeKakaoHandoff(code){
+  const handoff=String(code||'').trim();
+  if(!handoff.startsWith('ah_'))return {ok:false,error:'auth_handoff_invalid'};
+
+  if(window.guiinHandoffExchangeInProgress){
+    return {ok:false,error:'auth_handoff_exchange_in_progress'};
+  }
+  window.guiinHandoffExchangeInProgress=true;
+
+  const controller=new AbortController();
+  const timer=setTimeout(()=>controller.abort(),8000);
+
+  try{
+    const res=await fetch(guiinStableApiBase()+'/api/auth/kakao/handoff',{
+      method:'POST',
+      mode:'cors',
+      cache:'no-store',
+      headers:{'Content-Type':'application/json','Accept':'application/json'},
+      body:JSON.stringify({code:handoff}),
+      signal:controller.signal
+    });
+    const data=await res.json().catch(()=>({}));
+
+    if(!res.ok||!data?.token||!String(data.token).startsWith('usr_')){
+      // 다른 경로/탭에서 먼저 교환에 성공했다면 공유 localStorage 세션을 인정합니다.
+      const existing=guiinAuthSession();
+      if(data?.error==='auth_handoff_already_used'&&existing?.token){
+        window.guiinPendingKakaoHandoff='';
+        return {ok:true,token:existing.token,userId:existing.userId||''};
+      }
+      return {ok:false,error:data?.error||('HTTP '+res.status)};
+    }
+
+    try{
+      localStorage.setItem(GUIIN_AUTH_KEY,JSON.stringify({
+        token:data.token,
+        userId:data.userId||'',
+        provider:'kakao',
+        savedAt:Date.now()
+      }));
+      localStorage.setItem('guiin_last_login_at',String(Date.now()));
+    }catch(_e){}
+
+    window.guiinPendingKakaoHandoff='';
+    return {ok:true,token:data.token,userId:data.userId||''};
+  }catch(err){
+    return {
+      ok:false,
+      error:err?.name==='AbortError'?'auth_handoff_timeout':String(err?.message||err||'handoff_network_error')
+    };
+  }finally{
+    clearTimeout(timer);
+    window.guiinHandoffExchangeInProgress=false;
+  }
+}
+
 async function guiinVerifyUserToken(rawToken){
   const token=String(rawToken||guiinAuthSession()?.token||'').trim();
   if(!token.startsWith('usr_'))return {ok:false,status:401,error:'local_user_token_missing',user:null};
@@ -3432,6 +3500,30 @@ Object.assign(window,{
   let h=location.hash.replace('#','');
   if(handledAuth)h=location.hash.replace('#','');
 
+  if(h==='loginComplete'&&window.guiinPendingKakaoHandoff){
+    guiinSetLoginCompleteState(
+      '',
+      '카카오 로그인을 연결하고 있어요',
+      '카카오 인증은 완료됐어요.<br>귀인사주 계정으로 안전하게 연결할게요.',
+      '로그인 세션을 연결하는 중이에요…',
+      null
+    );
+    const exchanged=await guiinExchangeKakaoHandoff(window.guiinPendingKakaoHandoff);
+    if(exchanged.ok){
+      await guiinCompleteLoginFlow(exchanged.token);
+    }else{
+      guiinSetLoginCompleteState(
+        'error',
+        '로그인 연결을 완료하지 못했어요',
+        '카카오 인증은 완료됐지만 귀인사주 세션 연결에 실패했어요.<br>다시 로그인해 주세요.',
+        exchanged.error||'auth_handoff_failed',
+        'login'
+      );
+    }
+    try{guiinRuntimeSelfCheck();}catch(_e){}
+    return;
+  }
+
   if(h==='loginComplete'&&guiinAuthSession()?.token){
     await guiinCompleteLoginFlow();
     try{guiinRuntimeSelfCheck();}catch(_e){}
@@ -3472,5 +3564,68 @@ document.addEventListener('visibilitychange',()=>{
 });
 
 </script>
+
+<script>
+/* GUIIN AUTH HANDOFF RESCUE — main runtime가 중간에 멈춰도 1회용 코드로 세션 복구 */
+(function(){
+  async function rescue(){
+    try{
+      var existing='';
+      try{
+        var parsed=JSON.parse(localStorage.getItem('guiin_user_session_v1')||'null');
+        existing=(parsed&&parsed.token)||'';
+      }catch(_e){}
+      if(String(existing).indexOf('usr_')===0)return;
+      if(window.guiinHandoffExchangeInProgress)return;
+
+      var q=new URLSearchParams(location.search);
+      var code=String(window.guiinPendingKakaoHandoff||q.get('handoff')||'');
+      if(code.indexOf('ah_')!==0)return;
+
+      window.guiinHandoffExchangeInProgress=true;
+      var controller=new AbortController();
+      var timer=setTimeout(function(){controller.abort();},8000);
+
+      try{
+        var r=await fetch('https://guiin-saju-api-staging.blue-wls.workers.dev/api/auth/kakao/handoff',{
+          method:'POST',
+          mode:'cors',
+          cache:'no-store',
+          headers:{'Content-Type':'application/json','Accept':'application/json'},
+          body:JSON.stringify({code:code}),
+          signal:controller.signal
+        });
+        var d=await r.json().catch(function(){return {};});
+        if(!r.ok || !d.token || String(d.token).indexOf('usr_')!==0)return;
+
+        localStorage.setItem('guiin_user_session_v1',JSON.stringify({
+          token:d.token,userId:d.userId||'',provider:'kakao',savedAt:Date.now()
+        }));
+        window.guiinPendingKakaoHandoff='';
+        try{history.replaceState(null,'',location.pathname+'#loginComplete');}catch(_e){}
+
+        if(window.guiinCompleteLoginFlow){
+          await window.guiinCompleteLoginFlow(d.token);
+        }else{
+          var btn=document.getElementById('accountEntryBtn');
+          if(btn)btn.innerHTML='카카오 로그인됨 <span class="arr">›</span>';
+          var lo=document.getElementById('mypageLogoutBtn');
+          if(lo)lo.style.display='flex';
+          document.querySelectorAll('.screen').forEach(function(s){s.classList.remove('active');});
+          var mp=document.getElementById('mypage');
+          if(mp)mp.classList.add('active');
+          try{history.replaceState(null,'',location.pathname+'#mypage');}catch(_e){}
+        }
+      }finally{
+        clearTimeout(timer);
+        window.guiinHandoffExchangeInProgress=false;
+      }
+    }catch(_e){}
+  }
+
+  [1200,4500,9000].forEach(function(ms){setTimeout(rescue,ms);});
+})();
+</script>
+
 </body>
 </html>
