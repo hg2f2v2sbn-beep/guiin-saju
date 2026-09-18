@@ -732,6 +732,9 @@ button{position:relative}
       id==='history' ? document.getElementById('navHistory') :
       document.getElementById('navSaju');
     if(navBtn) navBtn.classList.add('active');
+    if(id==='mypage'&&typeof window.syncAuthUI==='function'){
+      try{window.syncAuthUI();}catch(_e){}
+    }
     var bottom=document.querySelector('.bottom');
     if(bottom) bottom.style.display=id==='loginComplete'?'none':'';
 
@@ -1170,6 +1173,7 @@ function go(id){
  else if($('navSaju'))$('navSaju').classList.add('active');
  const bottomNav=document.querySelector('.bottom');
  if(bottomNav)bottomNav.style.display=id==='loginComplete'?'none':'';
+ if(id==='mypage')syncAuthUI();
  if(id==='today')renderToday();
  if(id==='history')renderUsageHistory();
  if(id==='payments')renderPaymentHistory();
@@ -2581,7 +2585,7 @@ const GUIIN_GUEST_KEY='guiin_guest_session_v1';
 const GUIIN_AI_HISTORY_KEY='guiin_ai_history_v1';
 let guiinAIHistory=[], guiinAISending=false;
 let guiinCurrentUser=null;
-window.window.guiinPendingKakaoHandoff='';
+window.guiinPendingKakaoHandoff='';
 window.guiinHandoffExchangeInProgress=false;
 
 
@@ -3135,7 +3139,17 @@ function syncAuthUI(){
   }
   const u=guiinCurrentUser;
   const entry=$('accountEntryBtn');
-  if(entry)entry.innerHTML=s?'카카오 로그인됨 <span class="arr">›</span>':'로그인 · 회원가입 <span class="arr">›</span>';
+  if(entry){
+    if(s){
+      entry.innerHTML='카카오 계정 · 로그인됨 <span class="arr">›</span>';
+      entry.setAttribute('data-guiin-nav','mypage');
+      entry.setAttribute('aria-label','카카오 로그인 계정');
+    }else{
+      entry.innerHTML='로그인 · 회원가입 <span class="arr">›</span>';
+      entry.setAttribute('data-guiin-nav','login');
+      entry.setAttribute('aria-label','로그인 또는 회원가입');
+    }
+  }
   const myLogout=$('mypageLogoutBtn');
   if(myLogout)myLogout.style.display=s?'flex':'none';
 
@@ -3155,11 +3169,14 @@ function syncAuthUI(){
 
   if(entry){
     entry.onclick=s
-      ? ()=>showGuiinPopup(
-          (u?.display_name?`${u.display_name}님`:'카카오 계정')+'으로 로그인되어 있어요. 로그아웃은 아래 로그아웃 버튼에서 할 수 있어요.',
-          '로그인 계정'
-        )
-      : ()=>go('login');
+      ? (ev)=>{
+          ev?.preventDefault?.();
+          showGuiinPopup(
+            (u?.display_name?`${u.display_name}님`:'카카오 계정')+'으로 로그인되어 있어요. 로그아웃은 아래 로그아웃 버튼에서 할 수 있어요.',
+            '카카오 로그인 계정'
+          );
+        }
+      : (ev)=>{ev?.preventDefault?.();go('login');};
   }
 
   if(s?.token)setTimeout(guiinRouteAuthenticatedAwayFromAuth,0);
@@ -3488,7 +3505,7 @@ syncWalletViews();
 /* Explicitly expose core actions for mobile WebViews and inline button handlers. */
 Object.assign(window,{
   go,openResultTab,renderToday,renderFortunePeriod,renderYearLuck,
-  submitSaju,submitMatch,setMatchTab,setTab,startKakaoLogin,logoutGuiin,
+  submitSaju,submitMatch,setMatchTab,setTab,startKakaoLogin,logoutGuiin,syncAuthUI,
   guiinCompleteLoginFlow,guiinRetryLoginVerification,
   openPaySheet,closePaySheet,openPremiumPay,closePremiumPay,
   openCompatPay,closeCompatPay,openCustomerCenter
