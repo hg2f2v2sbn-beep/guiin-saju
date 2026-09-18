@@ -3002,25 +3002,67 @@ function logoutGuiin(){
   guiinApi('/api/auth/logout',{method:'POST',cache:'no-store',headers:{'Accept':'application/json'}})
     .catch(()=>{}).finally(finish);
 }
+function guiinAuthErrorMessage(code,stage){
+  const map={
+    login_state_required:'로그인 상태값이 없어 인증을 완료하지 못했어요.',
+    login_state_not_found:'로그인 요청 정보를 찾지 못했어요. 카카오 로그인을 처음부터 다시 시도해 주세요.',
+    login_state_expired:'로그인 시간이 만료됐어요. 카카오 로그인을 다시 시도해 주세요.',
+    login_state_already_used:'이미 처리된 로그인 요청이에요. 카카오 로그인을 새로 시작해 주세요.',
+    kakao_access_denied:'카카오 동의가 취소됐어요.',
+    kakao_authorization_failed:'카카오 인증이 완료되지 않았어요.',
+    kakao_authorization_code_missing:'카카오 인증 코드가 전달되지 않았어요.',
+    kakao_token_exchange_failed:'카카오 토큰 발급에 실패했어요. Redirect URI·Client Secret 설정을 확인해 주세요.',
+    kakao_userinfo_failed:'카카오 사용자 정보를 불러오지 못했어요.',
+    user_not_active:'사용할 수 없는 계정 상태예요.',
+    auth_fragment_missing:'로그인 결과가 브라우저에서 유실됐어요. Safari에서 다시 로그인해 주세요.'
+  };
+  const base=map[code]||'카카오 로그인 처리 중 오류가 발생했어요.';
+  return `${base} (${code}${stage?' · '+stage:''})`;
+}
 function handleGuiinAuthCallback(){
   const raw=location.hash.startsWith('#')?location.hash.slice(1):'';
-  if(!raw.includes('guiin_auth='))return false;
   const p=new URLSearchParams(raw);
+  const q=new URLSearchParams(location.search);
+  const markedReturn=q.get('guiin_auth_return')==='kakao';
   const provider=p.get('guiin_auth');
   const token=p.get('token')||'';
   const userId=p.get('user_id')||'';
   const err=p.get('error')||'';
+  const stage=p.get('stage')||'';
+
   if(provider==='kakao'&&token.startsWith('usr_')){
-    try{localStorage.setItem(GUIIN_AUTH_KEY,JSON.stringify({token,userId,provider:'kakao',savedAt:Date.now()}));localStorage.setItem('guiin_last_login_at',String(Date.now()));}catch(_e){}
-    history.replaceState(null,'',location.pathname+location.search+'#mypage');
-    showGuiinPopup('카카오 로그인이 완료됐어요. 이제 저장한 사주와 이용내역을 계정으로 이어갈 수 있어요.','로그인 완료');
+    try{
+      localStorage.setItem(GUIIN_AUTH_KEY,JSON.stringify({
+        token,userId,provider:'kakao',savedAt:Date.now()
+      }));
+      localStorage.setItem('guiin_last_login_at',String(Date.now()));
+    }catch(_e){}
+    guiinCurrentUser={id:userId,provider:'kakao'};
+    syncAuthUI();
+    history.replaceState(null,'',location.pathname+'#mypage');
     return true;
   }
+
   if(err){
-    history.replaceState(null,'',location.pathname+location.search+'#login');
-    const m=$('loginMsg');if(m)m.textContent='카카오 로그인에 실패했어요. 다시 시도해 주세요. ('+err+')';
+    const msg=guiinAuthErrorMessage(err,stage);
+    history.replaceState(null,'',location.pathname+'#login');
+    const m=$('loginMsg');if(m)m.textContent=msg;
+    syncAuthUI();
+    showGuiinPopup(msg,'카카오 로그인 오류');
     return true;
   }
+
+  // Worker가 카카오 콜백에서 돌아왔다는 표식은 있는데 fragment가 없다면
+  // 모바일 브라우저에서 hash가 유실된 것으로 구분합니다.
+  if(markedReturn){
+    const msg=guiinAuthErrorMessage('auth_fragment_missing','frontend');
+    history.replaceState(null,'',location.pathname+'#login');
+    const m=$('loginMsg');if(m)m.textContent=msg;
+    syncAuthUI();
+    showGuiinPopup(msg,'카카오 로그인 오류');
+    return true;
+  }
+
   return false;
 }
 function emailLoginReady(){if($('loginMsg'))$('loginMsg').textContent='이메일 로그인은 회원 인증 서버 연결 후 활성화됩니다.';}
