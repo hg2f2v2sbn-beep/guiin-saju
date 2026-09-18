@@ -2707,6 +2707,30 @@ function syncAskContext(){
   if(welcome)welcome.textContent=`${name}님의 계산된 사주를 기준으로 답할게요. 직업, 재물, 연애, 올해 흐름 중 무엇이 가장 궁금한가요?`;
 }
 
+
+function guiinAIStableKey(question,chartPayload){
+  const basis=String(question||'')+'|'+String(chartPayload?.day||'')+'|'+String(chartPayload?.year||'')+'|'+String(chartPayload?.month||'');
+  let h=2166136261;
+  for(let i=0;i<basis.length;i++){
+    h^=basis.charCodeAt(i);
+    h=Math.imul(h,16777619);
+  }
+  return 'guiin_ai_pending_'+(h>>>0).toString(36);
+}
+function guiinAIRequestMeta(question,chartPayload){
+  const key=guiinAIStableKey(question,chartPayload);
+  let id='';
+  try{id=sessionStorage.getItem(key)||'';}catch(_e){}
+  if(!/^[A-Za-z0-9._:-]{12,180}$/.test(id)){
+    id=guiinRandomId('chat_');
+    try{sessionStorage.setItem(key,id);}catch(_e){}
+  }
+  return {key,id};
+}
+function guiinClearPendingAI(key){
+  try{sessionStorage.removeItem(key);}catch(_e){}
+}
+
 function guiinChartPayload(){
   if(!chart||!chart.pillars)return null;
 
@@ -2764,6 +2788,39 @@ function guiinChartPayload(){
 
   const realName=String(chart?.input?.name||'').trim();
 
+  const safePersonModelFallback=()=>{
+    const src=chart?.elCount||chart?.elements||{};
+    const total=Object.values(src||{}).reduce((a,b)=>a+(Number(b)||0),0)||1;
+    const ranked=['목','화','토','금','수']
+      .map(element=>[element,Math.round(((Number(src?.[element])||0)/total)*100)])
+      .sort((a,b)=>b[1]-a[1]);
+    const strongest=ranked[0]||['-',0],lowest=ranked[ranked.length-1]||['-',0];
+    return {
+      schema_version:'2.0.0-frontend-bridge',
+      name:realName||null,
+      day_master:chart?.dayMaster?.stem||chart?.pillars?.day?.stem||null,
+      month_command:{
+        pillar:val(chart?.pillars?.month),
+        god:chart?.pillars?.month?.god||null
+      },
+      strongest_element:{element:strongest[0],percent:strongest[1]},
+      lowest_element:{element:lowest[0],percent:lowest[1]},
+      relation_signals:Array.isArray(chart?.relations)
+        ? chart.relations.map(x=>x?.type||x?.name||x?.relation).filter(Boolean).slice(0,12)
+        : [],
+      uncertainty:{
+        birth_time_unknown:!!chart?.input?.hourUnknown,
+        hour_pillar:chart?.input?.hourUnknown?'unavailable':'available'
+      }
+    };
+  };
+  let personModel=null;
+  try{
+    personModel=(globalThis.GuiinExpert&&typeof GuiinExpert.personModel==='function')
+      ? GuiinExpert.personModel(chart)
+      : safePersonModelFallback();
+  }catch(_e){personModel=safePersonModelFallback();}
+
   const out={
     name:realName,
     userName:realName,
@@ -2780,7 +2837,8 @@ function guiinChartPayload(){
     relations:safePlain(chart?.relations||null),
     stars:safePlain(chart?.stars||chart?.starList||null),
     currentLuck:safePlain(currentLuck),
-    yearFlow:safePlain(yearFlow)
+    yearFlow:safePlain(yearFlow),
+    person_model:safePlain(personModel)
   };
 
   return out.year&&out.month&&out.day?out:null;
@@ -2829,8 +2887,8 @@ async function sendQ(preset){
   const waitHint=setTimeout(()=>{if(status?.isConnected){status.classList.remove('aiWaitDots');status.textContent='조금만 더 확인하고 있어요. 답변이 길어져도 중복 없이 정리할게요…';}},7000);
   const timer=setTimeout(()=>controller.abort(),45000);
 
+  const requestMeta=guiinAIRequestMeta(q,cp);
   try{
-    const requestId=guiinRandomId('chat_');
     const message=q;
 
     const res=await fetch(GUIIN_AI_API,{
@@ -2840,10 +2898,10 @@ async function sendQ(preset){
       headers:guiinAuthHeaders({
         'Content-Type':'application/json',
         'Accept':'application/json',
-        'X-Idempotency-Key':requestId
+        'X-Idempotency-Key':requestMeta.id
       }),
       body:JSON.stringify({
-        requestId,
+        requestId:requestMeta.id,
         name:cp.name||'',
         message,
         chart:cp,
@@ -2886,6 +2944,7 @@ async function sendQ(preset){
     }
 
     if(input)input.value='';
+    guiinClearPendingAI(requestMeta.key);
 
   }catch(err){
     console.error('GUIIN_AI_CHAT_ERROR',err);
