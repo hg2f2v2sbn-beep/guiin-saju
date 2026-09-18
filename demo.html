@@ -2925,31 +2925,12 @@ async function startKakaoLogin(){
   const m=$('loginMsg')||$('signupMsg');
   if(m)m.textContent='카카오 로그인 페이지를 여는 중이에요…';
   try{
-    // OAuth 시작 요청에서는 불필요한 세션/인증 헤더를 붙이지 않습니다.
-    // 모바일 Safari·인앱 브라우저에서 CORS 변수를 줄이고 Worker의 공개 로그인 시작 API와 맞춥니다.
     const redirectPath=(location.pathname&&location.pathname!=='/')?location.pathname:'/';
-    const res=await fetch(GUIIN_API_BASE+'/api/auth/login/start',{
-      method:'POST',
-      mode:'cors',
-      cache:'no-store',
-      headers:{
-        'Content-Type':'application/json',
-        'Accept':'application/json'
-      },
-      body:JSON.stringify({provider:'kakao',redirectPath})
-    });
-    const data=await res.json().catch(()=>({}));
-    if(!res.ok)throw new Error(data?.error||('http_'+res.status));
-    if(!data?.authUrl)throw new Error('kakao_auth_url_missing');
-    if(m)m.textContent='카카오 로그인으로 이동합니다…';
-    window.location.href=data.authUrl;
+    const target=GUIIN_API_BASE+'/api/auth/kakao/start?redirectPath='+encodeURIComponent(redirectPath);
+    window.location.assign(target);
   }catch(err){
-    const code=String(err?.message||err||'kakao_login_start_failed');
     console.error('GUIIN_KAKAO_LOGIN_START_ERROR',err);
-    let msg='카카오 로그인을 시작하지 못했어요. 잠시 후 다시 시도해 주세요.';
-    if(code==='provider_not_configured')msg='카카오 로그인 설정을 확인하고 있어요. 잠시 후 다시 시도해 주세요.';
-    else if(code==='database_unavailable'||code==='server_runtime_unavailable')msg='로그인 서버 연결이 잠시 불안정해요. 잠시 후 다시 시도해 주세요.';
-    else if(code==='Failed to fetch'||/network|fetch/i.test(code))msg='로그인 서버에 연결하지 못했어요. 인터넷 연결 후 다시 시도해 주세요.';
+    const msg='카카오 로그인 페이지를 열지 못했어요. 잠시 후 다시 시도해 주세요.';
     if(m)m.textContent=msg;
     showGuiinPopup(msg,'로그인 연결 오류');
   }
