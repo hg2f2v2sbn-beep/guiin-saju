@@ -1,0 +1,129 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#fffaf1">
+<title>귀인사주 · 로그인 연결</title>
+<style>
+:root{--bg:#fffaf1;--paper:#fffefa;--ink:#203128;--sub:#7c837d;--green:#285d32;--line:#ece5d7}
+*{box-sizing:border-box}html,body{margin:0;min-height:100%;background:var(--bg);font-family:-apple-system,BlinkMacSystemFont,"Apple SD Gothic Neo","Noto Sans KR",sans-serif;color:var(--ink)}
+.wrap{min-height:100vh;display:flex;align-items:center;justify-content:center;padding:28px}
+.card{width:min(440px,100%);background:var(--paper);border:1px solid var(--line);border-radius:28px;padding:34px 24px;text-align:center;box-shadow:0 10px 34px rgba(62,53,40,.08)}
+.mark{font-size:48px;line-height:1;margin-bottom:14px}h1{font-size:25px;margin:0;color:#285d32;letter-spacing:-.04em}p{font-size:14px;line-height:1.7;color:var(--sub);word-break:keep-all}
+.state{margin-top:18px;padding:14px 12px;border-radius:16px;background:#f3f7ed;font-size:13px;font-weight:800;line-height:1.55}
+.spin{width:34px;height:34px;border:3px solid #e2e8dc;border-top-color:#2d6c46;border-radius:50%;margin:20px auto 4px;animation:s .8s linear infinite}@keyframes s{to{transform:rotate(360deg)}}
+button{display:none;width:100%;border:0;border-radius:15px;padding:14px;margin-top:16px;background:#285d32;color:white;font-weight:900;font-size:15px}
+.err .spin{display:none}.err .state{background:#fff1ee;color:#8c5149}.ok .spin{display:none}.ok .state{background:#edf8ef;color:#225a3c}
+</style>
+</head>
+<body>
+<div class="wrap"><main id="card" class="card">
+  <div class="mark">🍀</div>
+  <h1 id="title">카카오 로그인을 연결하고 있어요</h1>
+  <p id="copy">카카오 인증은 완료됐어요.<br>귀인사주 계정으로 안전하게 연결한 뒤 마이페이지로 이동할게요.</p>
+  <div class="spin" aria-hidden="true"></div>
+  <div id="state" class="state" role="status" aria-live="polite">로그인 세션을 확인하는 중이에요…</div>
+  <button id="retry" type="button">다시 시도하기</button>
+</main></div>
+<script>
+(function(){
+  'use strict';
+  var API='https://guiin-saju-api-staging.blue-wls.workers.dev';
+  var KEY='guiin_user_session_v1';
+  var q=new URLSearchParams(location.search);
+  var code=String(q.get('handoff')||'');
+  var returnPath=q.get('returnPath')==='/demo.html'?'/demo.html':'/';
+  var card=document.getElementById('card'),title=document.getElementById('title'),copy=document.getElementById('copy'),state=document.getElementById('state'),retry=document.getElementById('retry');
+
+  function readSession(){
+    try{
+      var raw=localStorage.getItem(KEY)||sessionStorage.getItem(KEY)||'null';
+      var x=JSON.parse(raw);
+      return x&&typeof x.token==='string'&&x.token.indexOf('usr_')===0?x:null;
+    }catch(_e){return null;}
+  }
+  function storeSession(v){
+    var raw=JSON.stringify(v),ok=false;
+    try{localStorage.setItem(KEY,raw);ok=localStorage.getItem(KEY)===raw;}catch(_e){}
+    try{sessionStorage.setItem(KEY,raw);ok=ok||sessionStorage.getItem(KEY)===raw;}catch(_e){}
+    return ok;
+  }
+  function fail(msg,detail){
+    card.className='card err';
+    title.textContent='로그인 연결을 완료하지 못했어요';
+    copy.textContent='카카오 인증은 완료됐지만 귀인사주 로그인 세션을 저장하지 못했어요.';
+    state.textContent=msg+(detail?' · '+detail:'');
+    retry.style.display='block';
+  }
+  function success(user){
+    card.className='card ok';
+    title.textContent='로그인이 완료됐어요';
+    copy.textContent=(user&&user.display_name?user.display_name+'님':'카카오 계정')+'으로 귀인사주에 연결됐어요.';
+    state.textContent='마이페이지로 이동합니다…';
+    setTimeout(function(){location.replace(returnPath+'#mypage');},450);
+  }
+  async function verify(token){
+    try{
+      var r=await fetch(API+'/api/me',{method:'GET',mode:'cors',cache:'no-store',headers:{'Accept':'application/json','Authorization':'Bearer '+token}});
+      var d=await r.json().catch(function(){return {};});
+      return {ok:!!(r.ok&&d.authenticated===true&&d.user),status:r.status,error:d.error||'',user:d.user||null};
+    }catch(e){
+      return {ok:false,status:0,error:String(e&&e.message||e||'network_error'),user:null};
+    }
+  }
+  async function run(){
+    retry.style.display='none';
+    card.className='card';
+
+    var existing=readSession();
+    if(existing&&existing.token){
+      var checked=await verify(existing.token);
+      if(checked.ok){
+        try{localStorage.setItem('guiin_verified_user_v1',JSON.stringify(checked.user));sessionStorage.setItem('guiin_verified_user_v1',JSON.stringify(checked.user));}catch(_e){}
+        success(checked.user);
+        return;
+      }
+    }
+
+    if(code.indexOf('ah_')!==0){
+      fail('1회용 로그인 코드가 없습니다.','auth_handoff_missing');
+      return;
+    }
+
+    try{history.replaceState(null,'','/auth.html');}catch(_e){}
+
+    try{
+      state.textContent='카카오 인증 정보를 귀인사주 세션으로 연결하고 있어요…';
+      var r=await fetch(API+'/api/auth/kakao/handoff',{method:'POST',mode:'cors',cache:'no-store',headers:{'Content-Type':'application/json','Accept':'application/json'},body:JSON.stringify({code:code})});
+      var d=await r.json().catch(function(){return {};});
+      if(!r.ok||!d.token||String(d.token).indexOf('usr_')!==0){
+        fail('세션 교환에 실패했어요.',d.error||('HTTP '+r.status));
+        return;
+      }
+
+      var session={token:d.token,userId:d.userId||'',provider:'kakao',savedAt:Date.now()};
+      if(!storeSession(session)){
+        fail('브라우저 저장소에 로그인 정보를 저장하지 못했어요.','storage_write_failed');
+        return;
+      }
+
+      var v=await verify(d.token);
+      if(!v.ok){
+        fail('로그인 세션 검증에 실패했어요.',v.error||('HTTP '+v.status));
+        return;
+      }
+
+      try{localStorage.setItem('guiin_verified_user_v1',JSON.stringify(v.user));sessionStorage.setItem('guiin_verified_user_v1',JSON.stringify(v.user));}catch(_e){}
+      success(v.user);
+    }catch(e){
+      fail('로그인 서버 연결에 실패했어요.',String(e&&e.message||e||'network_error'));
+    }
+  }
+
+  retry.addEventListener('click',run);
+  run();
+})();
+</script>
+</body>
+</html>
