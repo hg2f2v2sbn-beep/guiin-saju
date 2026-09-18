@@ -1,5 +1,5 @@
 /**
- * 귀인사주 Deep Interpretation V3 · QA R2
+ * 귀인사주 Deep Interpretation V3 · QA R3
  * 목적: 기존 계산 엔진은 그대로 두고, 출력 해석만 더 구조적·개인화·교차형으로 강화합니다.
  * 원칙: 월령/일간/통근/오행/십성/합충형파해/12운성/대운·세운 순으로 근거를 쌓고,
  *       신살은 보조 근거로만 사용합니다. 미래 사건은 확정하지 않습니다.
@@ -442,7 +442,7 @@
 
     rows.push(section('이 명식의 핵심 패턴',
       `${n}님에게 반복될 가능성이 높은 패턴은 네 가지로 압축됩니다.`,
-      signatures.map((x,i)=>`${i+1}. ${x.name} · ${x.text}`).join('\n\n')+`\n\n이 중 가장 먼저 확인할 것은 “${hi[0]}을 너무 많이 쓰는 순간”과 “${lo[0]} 기능을 뒤늦게 챙기는 순간”입니다. 둘이 같은 시기에 겹치면 강점이 피로로 뒤집히는 속도가 빨라집니다.`,
+      signatures.map((x,i)=>`${i+1}. ${x.name} · ${x.text}`).join('\n\n')+`\n\n이 중 가장 먼저 확인할 것은 “${josa(hi[0],'을/를')} 너무 많이 쓰는 순간”과 “${lo[0]} 기능을 뒤늦게 챙기는 순간”입니다. 둘이 같은 시기에 겹치면 강점이 피로로 뒤집히는 속도가 빨라집니다.`,
       c,[`중심 ${hi[0]} ${hi[1]}%`,`보완 ${lo[0]} ${lo[1]}%`,`월주 ${mg}`]
     ));
 
@@ -520,7 +520,7 @@
       const luckHit=tx.luckRelations.list?.[0], yearHit=tx.yearRelations.list?.[0];
       rows.push(section('지금의 시간축',
         `${n}님의 현재 운은 “무슨 십성이 왔나”보다 원국의 어느 자리를 건드리는지가 핵심입니다.`,
-        `${lk?`현재 대운 ${lk.ko}(${lk.god})은 ${GOD[lk.god]?.core||'특정 역할'}을 장기 주제로 올립니다.`:''}${yg?` ${tx.year}년 천간 십성은 ${yg}입니다.`:''}\n\n대운 교차 · ${tx.luckRelations.text}\n세운 교차 · ${tx.yearRelations.text}\n\n${luckHit||yearHit?`현재는 ${luckHit?.label||yearHit?.label||'원국 특정 자리'} 쪽이 직접 건드려져, 그 영역의 기존 방식을 그대로 유지하기보다 조정해야 한다는 체감이 커질 수 있습니다.`:'강한 직접 충돌보다 기본 십성 주제가 반복되는 시기라, 사건 하나보다 생활의 누적 변화를 보는 편이 맞습니다.'} 합은 연결·조정 압력을, 충·형·해·파는 기존 방식을 수정해야 하는 압력을 상징적으로 봅니다. 사건을 확정해서 예언하지는 않습니다.`,
+        `${lk?`현재 대운 ${lk.ko}(${lk.god})${hasBatchim(lk.god)?'은':'는'} ${josa(GOD[lk.god]?.core||'특정 역할','을/를')} 장기 주제로 올립니다.`:''}${yg?` ${tx.year}년 천간 십성은 ${yg}입니다.`:''}\n\n대운 교차 · ${tx.luckRelations.text}\n세운 교차 · ${tx.yearRelations.text}\n\n${luckHit||yearHit?`현재는 ${luckHit?.label||yearHit?.label||'원국 특정 자리'} 쪽이 직접 건드려져, 그 영역의 기존 방식을 그대로 유지하기보다 조정해야 한다는 체감이 커질 수 있습니다.`:'강한 직접 충돌보다 기본 십성 주제가 반복되는 시기라, 사건 하나보다 생활의 누적 변화를 보는 편이 맞습니다.'} 합은 연결·조정 압력을, 충·형·해·파는 기존 방식을 수정해야 하는 압력을 상징적으로 봅니다. 사건을 확정해서 예언하지는 않습니다.`,
         c,[lk?`대운 ${lk.ko} ${lk.god}`:null,yg?`${tx.year} 세운 ${yg}`:null,tx.luckRelations.text,tx.yearRelations.text]
       ));
     }
@@ -548,7 +548,7 @@
   function personModel(c){
     const m=primaryMechanism(c), lk=currentLuck(c), yg=yearGod(c), rel=relationList(c);
     return {
-      version:'deep-v3-qa2',
+      version:'deep-v3-qa3',
       core_thesis:m.thesis,
       structure:{
         day_pillar:c?.pillars?.day?.ko||null,
@@ -688,15 +688,15 @@
       evidence:`과사용 ${A.hi[0]}/${B.hi[0]} · 지지력 차이 ${gap} · 월주 ${A.mg}/${B.mg}`});
 
     sections.push({id:'contact',category:'love',title:'연락과 거리감은 같은 기준으로 재면 안 됩니다',body:
-      `${nA}님에게는 ${contactNeed(A)}하고, ${nB}님에게는 ${contactNeed(B)}합니다. 따라서 연락 횟수가 같아도 만족도는 다를 수 있습니다.\n\n${A.mg===B.mg?`월주 십성이 둘 다 ${A.mg}이라 기본적인 연락 기대가 닮을 수 있지만, 일지와 조후가 달라 “언제 답해야 충분한가”는 다를 수 있습니다.`:`${nA}님의 ${josa(A.mg,'은/는')} ${GOD[A.mg]?.core||A.mg}, ${nB}님의 ${josa(B.mg,'은/는')} ${josa(GOD[B.mg]?.core||B.mg,'을/를')} 먼저 쓰므로 한쪽은 설명을, 다른 쪽은 행동을 애정 표현으로 느끼는 식의 차이가 생길 수 있습니다.`}\n\n두 사람에게 맞는 합의는 횟수를 정하는 것보다 “바쁠 때 최소한 무엇을 알려줄지 / 혼자 있는 시간을 언제 보장할지 / 중요한 일은 어느 시간 안에 공유할지”를 정하는 방식입니다.`,
+      `${nA}님에게는 ${contactNeed(A)}하고, ${nB}님에게는 ${contactNeed(B)}합니다. 따라서 연락 횟수가 같아도 만족도는 다를 수 있습니다.\n\n${A.mg===B.mg?`월주 십성이 둘 다 ${A.mg}이라 기본적인 연락 기대가 닮을 수 있지만, 일지와 조후가 달라 “언제 답해야 충분한가”는 다를 수 있습니다.`:`${nA}님은 ${A.mg}에서 ${josa(GOD[A.mg]?.core||A.mg,'을/를')} 먼저 쓰고, ${nB}님은 ${B.mg}에서 ${josa(GOD[B.mg]?.core||B.mg,'을/를')} 먼저 쓰므로 한쪽은 설명을, 다른 쪽은 행동을 애정 표현으로 느끼는 식의 차이가 생길 수 있습니다.`}\n\n두 사람에게 맞는 합의는 횟수를 정하는 것보다 “바쁠 때 최소한 무엇을 알려줄지 / 혼자 있는 시간을 언제 보장할지 / 중요한 일은 어느 시간 안에 공유할지”를 정하는 방식입니다.`,
       evidence:`월주 십성 ${A.mg} ↔ ${B.mg} · 일지 ${A.branch}/${B.branch}`});
 
     sections.push({id:'repair',category:'love',title:'싸운 뒤 회복 속도와 필요한 증거가 다릅니다',body:
-      `${nA}님은 ${recoveryNeed(A)}이고, ${nB}님은 ${recoveryNeed(B)}입니다. 한쪽이 “이제 끝났다”고 느끼는 시점과 다른 쪽이 실제로 풀리는 시점이 다를 수 있습니다.\n\n${leadNeg?`${leadNeg.type}(${leadNeg.desc})가 대표 긴장 신호라, 같은 주제가 다시 나오지 않게 만드는 “다음 행동”이 화해의 핵심입니다.`:'강한 직접 충돌보다 기대 역할 차이가 중요하므로, 사과의 문구보다 상대가 원했던 역할을 이해했는지 확인하는 것이 중요합니다.'}\n\n${A.hi[0]===B.hi[0]?`둘 다 ${A.hi[0]} 기능을 강하게 써서 동시에 같은 방식으로 해결하려 들 수 있습니다. 한 사람은 말하고 한 사람은 정리하는 식으로 역할을 잠깐 나누면 속도가 오히려 빨라집니다.`:`회복 방식이 다르므로 “내가 풀렸으니 너도 풀렸겠지”를 가정하지 않는 것이 좋습니다.`}`,
+      `${nA}님은 ${recoveryNeed(A)}이고, ${nB}님은 ${recoveryNeed(B)}입니다. 한쪽이 “이제 끝났다”고 느끼는 시점과 다른 쪽이 실제로 풀리는 시점이 다를 수 있습니다.\n\n${leadNeg?`대표 긴장 신호는 ${leadNeg.type}(${leadNeg.desc})입니다. 같은 주제가 다시 나오지 않게 만드는 “다음 행동”이 화해의 핵심입니다.`:'강한 직접 충돌보다 기대 역할 차이가 중요하므로, 사과의 문구보다 상대가 원했던 역할을 이해했는지 확인하는 것이 중요합니다.'}\n\n${A.hi[0]===B.hi[0]?`둘 다 ${A.hi[0]} 기능을 강하게 써서 동시에 같은 방식으로 해결하려 들 수 있습니다. 한 사람은 말하고 한 사람은 정리하는 식으로 역할을 잠깐 나누면 속도가 오히려 빨라집니다.`:`회복 방식이 다르므로 “내가 풀렸으니 너도 풀렸겠지”를 가정하지 않는 것이 좋습니다.`}`,
       evidence:`회복 모드 ${A.hi[0]}/${B.hi[0]} · 긴장 ${hitSummary(neg.slice(0,3))}`});
 
     sections.push({id:'boundary',category:'marriage',title:'가족·친구·돌봄이 들어오면 누구의 책임이 커지는가',body:
-      `${nA}님은 ${A.mg}의 함정인 “${GOD[A.mg]?.trap||'과사용'}”, ${nB}님은 ${B.mg}의 “${GOD[B.mg]?.trap||'과사용'}”이 제3자 문제에서 과해질 수 있습니다.\n\n특히 ${livingNeed(A)}를 중요하게 보는 ${nA}님과 ${livingNeed(B)}를 중요하게 보는 ${nB}님은 가족 일정·친구 부탁·반려동물·간병처럼 관계 밖의 책임이 들어올 때 우선순위가 달라질 수 있습니다.\n\n${A.lo[0]===B.lo[0]?`둘 다 ${A.lo[0]} 기능이 상대적으로 낮아 그 역할을 상대가 알아서 해주길 기대하면 공백이 생기기 쉽습니다.`:`${nA}님의 ${josa(`약한 ${A.lo[0]}`,'과/와')} ${nB}님의 약한 ${B.lo[0]}은 서로 다른 영역이라 역할 분담으로 보완할 여지가 있습니다.`} 제3자에게 도움을 줄 때는 결정권·비용·기간 세 항목을 둘 사이에서 먼저 합의하는 편이 좋습니다.`,
+      `제3자 문제가 끼면 ${nA}님에게서는 ${A.mg}의 함정인 ${josa(GOD[A.mg]?.trap||'과사용','이/가')} 과해질 수 있고, ${nB}님에게서는 ${B.mg}의 ${josa(GOD[B.mg]?.trap||'과사용','이/가')} 과해질 수 있습니다.\n\n특히 ${livingNeed(A)}를 중요하게 보는 ${nA}님과 ${livingNeed(B)}를 중요하게 보는 ${nB}님은 가족 일정·친구 부탁·반려동물·간병처럼 관계 밖의 책임이 들어올 때 우선순위가 달라질 수 있습니다.\n\n${A.lo[0]===B.lo[0]?`둘 다 ${A.lo[0]} 기능이 상대적으로 낮아 그 역할을 상대가 알아서 해주길 기대하면 공백이 생기기 쉽습니다.`:`${nA}님의 ${josa(`약한 ${A.lo[0]}`,'과/와')} ${nB}님의 ${josa(`약한 ${B.lo[0]}`,'은/는')} 서로 다른 영역이라 역할 분담으로 보완할 여지가 있습니다.`} 제3자에게 도움을 줄 때는 결정권·비용·기간 세 항목을 둘 사이에서 먼저 합의하는 편이 좋습니다.`,
       evidence:`월주 ${A.mg}/${B.mg} · 일지 ${A.branch}/${B.branch} · 약한 오행 ${A.lo[0]}/${B.lo[0]}`});
 
     sections.push({id:'money',category:'marriage',title:'돈과 생활비에서 역할이 고정되는 순간을 봐야 합니다',body:
@@ -719,7 +719,7 @@
       `${balance>=2?`붙는 신호가 긴장 신호보다 많은 관계라, 친밀함을 만드는 것보다 친밀함 속에서 역할이 한쪽으로 고정되지 않게 하는 것이 더 중요합니다.`:balance<=-2?`긴장 신호가 더 눈에 띄는 관계라, 감정의 크기로 버티기보다 반복되는 마찰을 규칙으로 바꿀 수 있는지가 핵심입니다.`:`붙는 힘과 긴장이 함께 있어, 잘 맞는 부분과 수정해야 할 부분을 섞지 않는 것이 핵심입니다.`}\n\n${sameEl?`같은 ${A.dm} 계열을 기본 언어로 써 “말 안 해도 알겠지”가 생기기 쉽습니다. 닮았다는 이유로 확인을 생략하지 않는 편이 좋습니다.`:`${josa(A.dm,'과/와')} ${B.dm}의 기능이 달라 상대의 방식이 내 기준에 비효율적으로 보여도, 실제로는 내가 약한 기능을 맡고 있을 수 있습니다.`}\n\n이 관계를 오래 운영하는 질문은 하나입니다. “지금 문제는 애정 부족인가, 아니면 연락·돈·시간·돌봄·경계 중 어느 규칙이 비어 있는가?” 규칙이 비어 있다면 감정을 더 증명하기보다 그 규칙부터 합의하는 편이 낫습니다.`,
       evidence:`긍정 교차 ${pos.length} · 긴장 교차 ${neg.length} · 교차 십신 ${aSees}/${bSees}`});
 
-    return {meta:{version:'deep-v3-qa2',aName:nA,bName:nB,score:Number.isFinite(score)?score:null,crossTenGod:{aSeesB:aSees,bSeesA:bSees},positiveSignals:pos,negativeSignals:neg,allSignals:hits},sections};
+    return {meta:{version:'deep-v3-qa3',aName:nA,bName:nB,score:Number.isFinite(score)?score:null,crossTenGod:{aSeesB:aSees,bSeesA:bSees},positiveSignals:pos,negativeSignals:neg,allSignals:hits},sections};
   }
 
   function compatPick(analysis,tab){
