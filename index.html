@@ -324,6 +324,20 @@ html{background:#efe7d7}.app{background:linear-gradient(180deg,#fffaf0 0%,#fff6e
 .authSignedIn p{margin:0 0 14px;color:#777269;font-size:12px;line-height:1.65}
 .authSignedIn .signedUser{margin:12px 0;padding:12px;border-radius:14px;background:#f5f8ef;color:#29463a;font-size:12px;font-weight:850}
 .authSignedIn .authLogout{width:100%;border:0;border-radius:15px;padding:14px;background:#f1ede5;color:#4f5751;font-weight:900}
+.loginCompleteWrap{min-height:calc(100vh - 110px);display:flex;align-items:center;justify-content:center;padding:28px 10px}
+.loginCompleteCard{width:100%;padding:30px 22px;text-align:center;background:linear-gradient(145deg,#fffef9,#f7fbea);border-radius:26px}
+.loginCompleteMark{width:82px;height:82px;margin:0 auto 16px;border-radius:27px;overflow:hidden;box-shadow:var(--shadow);background:#eff7df}
+.loginCompleteMark img{width:100%;height:100%;object-fit:cover}
+.loginCompleteCard h2{margin:0;color:#285d32;font-size:25px;letter-spacing:-.04em}
+.loginCompleteCard p{margin:10px 0 0;color:#777269;font-size:12px;line-height:1.75;word-break:keep-all}
+.loginCompleteState{margin:18px 0 0;padding:14px;border-radius:16px;background:#f4f8ee;color:#315343;font-size:12px;font-weight:800;line-height:1.6}
+.loginCompleteSpinner{width:30px;height:30px;margin:17px auto 2px;border:3px solid #e1e7d9;border-top-color:#2d6c46;border-radius:50%;animation:guiinSpin .85s linear infinite}
+.loginCompleteRetry{display:none;width:100%;border:0;border-radius:15px;padding:14px;margin-top:14px;background:#285d32;color:#fff;font-weight:900}
+.loginCompleteCard.ok .loginCompleteSpinner{display:none}
+.loginCompleteCard.ok .loginCompleteState{background:#edf8ef;color:#225a3c}
+.loginCompleteCard.error .loginCompleteSpinner{display:none}
+.loginCompleteCard.error .loginCompleteState{background:#fff1ee;color:#8c5149}
+
 
 
 .cloverStore{padding:10px 0 24px}.storeIntro{padding:18px;background:linear-gradient(135deg,#147b58,#075b43);color:#fff}.storeIntro h2{margin:0 0 4px;font-size:23px}.storeIntro p{margin:0;opacity:.92;font-size:12px}.storeWish{padding:15px;margin-top:10px;text-align:center;background:#fffdf7}.storeWish b{display:block;font-size:16px;color:#173e31}.storeWish span{font-size:11px;color:#777}.luckyPack{display:grid;grid-template-columns:72px 1fr 92px;gap:9px;align-items:center;padding:15px;margin-top:10px}.luckyPack.best{position:relative;border-color:#e6c05b}.luckyPack.best:before{content:'BEST';position:absolute;left:0;top:0;background:#e8ad2d;color:#fff;font-weight:900;font-size:10px;padding:5px 10px;border-radius:18px 0 12px 0}.packClover{font-size:22px;line-height:1.2;text-align:center}.packBody h3{margin:0 0 3px;font-size:16px;color:#123c2e}.packBody b{font-size:12px;color:#d78e08}.packBody p{margin:3px 0 0;font-size:10px;color:#777}.packBonus{display:inline-block;margin-top:5px;padding:4px 7px;border-radius:999px;background:#fff1c7;color:#9b6c00;font-size:9px;font-weight:900}.packBuy{text-align:right}.packBuy strong{display:block;font-size:17px;color:#d9890d}.packBuy small{display:block;font-size:8px;color:#888;margin:2px 0 7px}.packBuy button{border:0;border-radius:999px;background:linear-gradient(135deg,#f1bd3d,#d99b14);color:#fff;font-weight:900;padding:9px 8px;font-size:10px;width:100%}
@@ -718,6 +732,8 @@ button{position:relative}
       id==='history' ? document.getElementById('navHistory') :
       document.getElementById('navSaju');
     if(navBtn) navBtn.classList.add('active');
+    var bottom=document.querySelector('.bottom');
+    if(bottom) bottom.style.display=id==='loginComplete'?'none':'';
 
     try{ history.replaceState(null,'','#'+id); }catch(_e){}
     try{ window.scrollTo({top:0,left:0,behavior:'instant'}); }catch(_e){ window.scrollTo(0,0); }
@@ -1046,6 +1062,23 @@ button{position:relative}
   </div>
 </section>
 <section id="signup" class="screen"><div class="topbar"><button class="ghost" onclick="go('login')" data-guiin-nav="login">‹</button><div class="brand"><div class="brandline">회원가입</div></div><span></span></div><div class="authHero"><div class="authMark"><img src="clover-mark.jpg" alt=""></div><h2>귀인사주 회원가입</h2><p>내 사주와 상담·구매내역을 한 계정에 보관할 수 있도록 준비된 화면입니다.</p></div><div class="authCard card"><button class="authBtn kakao" onclick="startKakaoLogin()">카카오로 가입하기</button><button class="authBtn google" onclick="socialLoginReady('구글')">Google로 가입하기</button><button class="authBtn apple" onclick="socialLoginReady('애플')">Apple로 가입하기</button><div class="authDivider">또는 이메일</div><label>이름</label><input id="signupName" autocomplete="name" placeholder="이름"><label>이메일</label><input id="signupEmail" type="email" autocomplete="email" placeholder="이메일"><label>비밀번호</label><input id="signupPassword" type="password" autocomplete="new-password" placeholder="8자 이상"><label class="check"><input id="signupTerms" type="checkbox"> 이용약관 및 개인정보처리방침에 동의합니다.</label><button class="authBtn green" onclick="emailSignupReady()">회원가입</button><div id="signupMsg" class="authNotice">실제 계정 생성은 인증 서버 연결 후 활성화됩니다.</div></div></section>
+<section id="loginComplete" class="screen">
+  <div class="topbar">
+    <span></span>
+    <div class="brand"><div class="brandline">로그인 완료</div></div>
+    <span></span>
+  </div>
+  <div class="loginCompleteWrap">
+    <div id="loginCompleteCard" class="loginCompleteCard card">
+      <div class="loginCompleteMark"><img src="clover-mark.jpg" alt=""></div>
+      <h2 id="loginCompleteTitle">카카오 계정을 확인하고 있어요</h2>
+      <p id="loginCompleteCopy">로그인 정보를 안전하게 확인한 뒤<br>마이페이지로 자동 이동할게요.</p>
+      <div id="loginCompleteSpinner" class="loginCompleteSpinner" aria-hidden="true"></div>
+      <div id="loginCompleteState" class="loginCompleteState" role="status" aria-live="polite">회원 정보를 불러오는 중이에요…</div>
+      <button id="loginCompleteRetry" class="loginCompleteRetry" type="button" onclick="guiinRetryLoginVerification()">다시 확인하기</button>
+    </div>
+  </div>
+</section>
 
 <section id="history" class="screen"><div class="topbar"><button class="ghost" onclick="go('mypage')" data-guiin-nav="mypage">‹</button><div class="brand"><div class="brandline">이용 내역</div></div><span></span></div><div class="pagePad"><div class="card utilityCard"><h3>최근 이용 내역</h3><div id="usageHistoryView"></div></div></div></section>
 <section id="payments" class="screen"><div class="topbar"><button class="ghost" onclick="go('mypage')" data-guiin-nav="mypage">‹</button><div class="brand"><div class="brandline">결제 내역</div></div><span></span></div><div class="pagePad"><div class="card utilityCard"><h3>결제 내역</h3><div id="paymentHistoryView"></div><p class="utilityHint">실제 KCP 승인 내역만 표시하도록 서버 연결할 화면입니다. 가상 결제는 구매로 표시하지 않습니다.</p></div></div></section>
@@ -1129,6 +1162,8 @@ function go(id){
  else if(id==='mypage'&&$('navMy'))$('navMy').classList.add('active');
  else if(id==='history'&&$('navHistory'))$('navHistory').classList.add('active');
  else if($('navSaju'))$('navSaju').classList.add('active');
+ const bottomNav=document.querySelector('.bottom');
+ if(bottomNav)bottomNav.style.display=id==='loginComplete'?'none':'';
  if(id==='today')renderToday();
  if(id==='history')renderUsageHistory();
  if(id==='payments')renderPaymentHistory();
@@ -3171,10 +3206,11 @@ function handleGuiinAuthCallback(){
     }catch(_e){}
     guiinCurrentUser={id:userId,provider:'kakao'};
     syncAuthUI();
-    // iPhone/Safari가 로그인 전 화면을 복원하지 못하도록 성공 후 마이페이지 URL로 완전히 교체합니다.
-    const next=location.pathname+'#mypage';
+    // OAuth 토큰 fragment를 즉시 URL에서 지우고 전용 로그인 완료 화면으로 이동합니다.
+    // 여기서 /api/me 확인까지 끝난 뒤에만 마이페이지로 보냅니다.
+    const next=location.pathname+'#loginComplete';
     try{history.replaceState(null,'',next);}catch(_e){}
-    try{window.location.replace(next);}catch(_e){go('mypage');}
+    try{window.location.replace(next);}catch(_e){go('loginComplete');}
     return true;
   }
 
@@ -3200,6 +3236,85 @@ function handleGuiinAuthCallback(){
 
   return false;
 }
+
+function guiinSetLoginCompleteState(kind,title,copy,state,retryMode){
+  const card=$('loginCompleteCard'),h=$('loginCompleteTitle'),p=$('loginCompleteCopy'),s=$('loginCompleteState'),b=$('loginCompleteRetry');
+  if(card){card.classList.remove('ok','error');if(kind)card.classList.add(kind);}
+  if(h)h.textContent=title||'카카오 계정을 확인하고 있어요';
+  if(p)p.innerHTML=copy||'로그인 정보를 안전하게 확인한 뒤<br>마이페이지로 자동 이동할게요.';
+  if(s)s.textContent=state||'회원 정보를 불러오는 중이에요…';
+  if(b){
+    b.style.display=retryMode?'block':'none';
+    b.disabled=false;
+    b.textContent=retryMode==='login'?'카카오 로그인 다시 하기':'다시 확인하기';
+    b.onclick=retryMode==='login'?()=>go('login'):()=>guiinRetryLoginVerification();
+  }
+}
+async function guiinCompleteLoginFlow(){
+  go('loginComplete');
+  guiinSetLoginCompleteState(
+    '',
+    '카카오 계정을 확인하고 있어요',
+    '로그인 정보를 안전하게 확인한 뒤<br>마이페이지로 자동 이동할게요.',
+    '회원 정보를 불러오는 중이에요…',
+    null
+  );
+
+  const before=guiinAuthSession();
+  if(!before?.token){
+    guiinSetLoginCompleteState(
+      'error',
+      '로그인 정보를 확인하지 못했어요',
+      '카카오 로그인을 다시 연결하면 바로 이어서 사용할 수 있어요.',
+      '저장된 로그인 세션이 없습니다.',
+      'login'
+    );
+    return false;
+  }
+
+  const user=await refreshGuiinUser();
+  const after=guiinAuthSession();
+
+  if(user&&after?.token){
+    syncAuthUI();
+    const label=user?.display_name||user?.nickname||user?.name||'카카오 계정';
+    guiinSetLoginCompleteState(
+      'ok',
+      '로그인이 완료됐어요',
+      `${label}으로 귀인사주에 연결되었어요.<br>마이페이지로 이동할게요.`,
+      '카카오 계정 연결 완료',
+      null
+    );
+    setTimeout(()=>go('mypage'),650);
+    return true;
+  }
+
+  if(!after?.token){
+    guiinSetLoginCompleteState(
+      'error',
+      '로그인 확인에 실패했어요',
+      '로그인 세션이 만료되었거나 사용할 수 없어요.<br>카카오 로그인을 다시 시도해 주세요.',
+      '계정 인증이 완료되지 않았습니다.',
+      'login'
+    );
+    return false;
+  }
+
+  guiinSetLoginCompleteState(
+    'error',
+    '서버 연결을 확인하지 못했어요',
+    '로그인 정보는 이 기기에 안전하게 남아 있어요.<br>잠시 후 다시 확인해 주세요.',
+    '회원 정보를 불러오지 못했습니다.',
+    'retry'
+  );
+  return false;
+}
+async function guiinRetryLoginVerification(){
+  const b=$('loginCompleteRetry');
+  if(b){b.disabled=true;b.textContent='확인 중…';}
+  return guiinCompleteLoginFlow();
+}
+
 function emailLoginReady(){if($('loginMsg'))$('loginMsg').textContent='이메일 로그인은 회원 인증 서버 연결 후 활성화됩니다.';}
 function emailSignupReady(){if($('signupMsg'))$('signupMsg').textContent='이메일 회원가입은 회원 DB·인증 서버 연결 후 활성화됩니다.';}
 function openCustomerCenter(){window.open('https://pf.kakao.com/_TLTrX/chat','_blank','noopener');}
@@ -3238,6 +3353,7 @@ syncWalletViews();
 Object.assign(window,{
   go,openResultTab,renderToday,renderFortunePeriod,renderYearLuck,
   submitSaju,submitMatch,setMatchTab,setTab,startKakaoLogin,logoutGuiin,
+  guiinCompleteLoginFlow,guiinRetryLoginVerification,
   openPaySheet,closePaySheet,openPremiumPay,closePremiumPay,
   openCompatPay,closeCompatPay,openCustomerCenter
 });
@@ -3247,18 +3363,29 @@ Object.assign(window,{
   const screens=[...document.querySelectorAll('.screen')].map(x=>x.id);
   let h=location.hash.replace('#','');
   if(handledAuth)h=location.hash.replace('#','');
+
+  if(h==='loginComplete'&&guiinAuthSession()?.token){
+    await guiinCompleteLoginFlow();
+    try{guiinRuntimeSelfCheck();}catch(_e){}
+    return;
+  }
+
   if(guiinAuthSession()?.token&&(h==='login'||h==='signup'||!h))h='mypage';
   if(h&&screens.includes(h))go(h);
   await refreshGuiinUser();
   syncAuthUI();
   guiinRouteAuthenticatedAwayFromAuth();
-try{guiinRuntimeSelfCheck();}catch(_e){}
+  try{guiinRuntimeSelfCheck();}catch(_e){}
 })();
 
 // iPhone Safari/인앱브라우저가 로그인 전 화면을 뒤로가기 캐시로 복원해도
 // 저장된 세션을 다시 읽어 로그인 화면에 머물지 않게 합니다.
 window.addEventListener('pageshow',()=>{
   if(!guiinAuthSession()?.token)return;
+  if(location.hash==='#loginComplete'){
+    guiinCompleteLoginFlow();
+    return;
+  }
   refreshGuiinUser().finally(()=>{
     syncAuthUI();
     guiinRouteAuthenticatedAwayFromAuth();
@@ -3266,6 +3393,10 @@ window.addEventListener('pageshow',()=>{
 });
 document.addEventListener('visibilitychange',()=>{
   if(document.visibilityState!=='visible'||!guiinAuthSession()?.token)return;
+  if(location.hash==='#loginComplete'){
+    guiinCompleteLoginFlow();
+    return;
+  }
   refreshGuiinUser().finally(()=>{
     syncAuthUI();
     guiinRouteAuthenticatedAwayFromAuth();
