@@ -737,7 +737,12 @@ button{position:relative}
 <style id="GUIIN_INTERPRET_STYLE_V10">
 .deepNarrativeNote{margin:10px 14px;padding:11px 13px;border-radius:14px;background:#f8f4ea;color:#6f675b;font-size:10px;line-height:1.65}
 </style>
-<style id="GUIIN_DEMO_BADGE">.guiinDemoBadge{position:fixed;top:calc(14px + env(safe-area-inset-top));right:16px;z-index:9999;background:#275f4c;color:#fff;border-radius:999px;padding:8px 13px;font-size:12px;font-weight:900;box-shadow:0 5px 16px rgba(23,63,45,.16);pointer-events:none}</style><style id="GUIIN_DEMO_FREE_MODE">#wallet,#payments,#paySheet,#premiumSheet,#compatSheet,[data-guiin-nav="wallet"],[data-guiin-nav="payments"],button[onclick^="openPaySheet"],button[onclick="openPremiumPay()"],button[onclick="openCompatPay()"]{display:none!important}</style></head>
+<style id="GUIIN_DEMO_BADGE">
+.guiinDemoBadge{position:fixed;top:calc(14px + env(safe-area-inset-top));right:16px;z-index:9999;background:#275f4c;color:#fff;border-radius:999px;padding:8px 13px;font-size:12px;font-weight:900;box-shadow:0 5px 16px rgba(23,63,45,.16);pointer-events:none}
+</style><style id="GUIIN_DEMO_FREE_MODE">
+#wallet,#payments,#paySheet,#premiumSheet,#compatSheet,[data-guiin-nav="wallet"],[data-guiin-nav="payments"],button[onclick^="openPaySheet"],button[onclick="openPremiumPay()"],button[onclick="openCompatPay()"]{display:none!important}
+.guiinDemoFreeNotice{margin:10px 14px 8px;padding:11px 13px;border-radius:14px;background:#eef7ed;color:#2f6444;font-size:11px;font-weight:850;line-height:1.6}
+</style></head>
 <body><div class="guiinDemoBadge">DEMO · 전체풀이 무료</div>
 <div class="app">
 
@@ -988,7 +993,8 @@ button{position:relative}
     </div>
     <button type="button" onclick="go('saju')" data-guiin-nav="saju">변경</button>
   </div>
-  <div class="creditBar"><div><div style="font-size:12px;opacity:.85">AI 무료 상담</div><b id="freeRemainView">3</b><span style="font-size:13px">회 남음</span><div style="font-size:11px;opacity:.82;margin-top:3px">보유 ☘ <span id="coinView">0</span>개</div></div><button class="ctaGold" style="width:auto;margin:0;padding:10px 14px" onclick="go('wallet')" data-guiin-nav="wallet">☘ 충전</button></div>
+  <div class="guiinDemoFreeNotice">데모에서는 사주·궁합·대운 풀이를 결제 없이 전체 확인할 수 있어요. AI 상담은 3회만 제공됩니다.</div>
+<div class="creditBar"><div><div style="font-size:12px;opacity:.85">AI 무료 상담</div><b id="freeRemainView">3</b><span style="font-size:13px">회 남음</span><div style="font-size:11px;opacity:.82;margin-top:3px">보유 ☘ <span id="coinView">0</span>개</div></div><button class="ctaGold" style="width:auto;margin:0;padding:10px 14px" onclick="go('wallet')" data-guiin-nav="wallet">☘ 충전</button></div>
   <div class="askTools">
     <p class="adminNote">처음 3번은 무료예요. 답변 실패 시 무료 횟수나 클로버는 차감되지 않습니다. 최근 대화 기록은 이 기기에 저장되며, 답변 생성 시 필요한 대화가 서버로 전송될 수 있어요.</p>
     <button type="button" onclick="clearAIChat()">대화 지우기</button>
@@ -1950,8 +1956,8 @@ function guiinApplyVerifiedEntitlements(payload){
  return true;
 }
 window.guiinApplyVerifiedEntitlements=guiinApplyVerifiedEntitlements;
-function hasPremiumLifetime(){return true;}
-function hasPremiumCompat(){return true;}
+function hasPremiumLifetime(){return true; /* DEMO FREE */}
+function hasPremiumCompat(){return true; /* DEMO FREE */}
 function pickPreviewSamples(key,pool,count=3){
  try{
   const storageKey='guiin_preview_samples_'+key;
@@ -2466,7 +2472,7 @@ let wallet=loadWallet();
 function persistWallet(){localStorage.setItem(COIN_KEY,JSON.stringify(wallet));syncWalletViews();}
 function freeUsed(){const n=Number(localStorage.getItem(FREE_KEY)||0);return Number.isFinite(n)?Math.max(0,n):0;}
 function setFreeUsed(n){localStorage.setItem(FREE_KEY,String(Math.max(0,n)));syncWalletViews();}
-function syncWalletViews(){if($('coinView'))$('coinView').textContent=wallet.coins;if($('freeRemainView'))$('freeRemainView').textContent=Math.max(0,3-freeUsed());renderLedger();}
+function syncWalletViews(){if($('freeRemainView'))$('freeRemainView').textContent=Math.max(0,3-freeUsed());}
 function renderLedger(){if(!$('ledger'))return;$('ledger').innerHTML=(wallet.ledger||[]).slice(0,12).map(r=>`${esc(r.t)} · ${esc(r.text)} (${r.delta>0?'+':''}${r.delta})`).join('<br>')||'아직 내역이 없습니다.';}
 let guiinPaymentState={checked:false,enabled:false,error:false};
 
@@ -2919,20 +2925,33 @@ async function startKakaoLogin(){
   const m=$('loginMsg')||$('signupMsg');
   if(m)m.textContent='카카오 로그인 페이지를 여는 중이에요…';
   try{
+    // OAuth 시작 요청에서는 불필요한 세션/인증 헤더를 붙이지 않습니다.
+    // 모바일 Safari·인앱 브라우저에서 CORS 변수를 줄이고 Worker의 공개 로그인 시작 API와 맞춥니다.
+    const redirectPath=(location.pathname&&location.pathname!=='/')?location.pathname:'/';
     const res=await fetch(GUIIN_API_BASE+'/api/auth/login/start',{
       method:'POST',
       mode:'cors',
       cache:'no-store',
-      headers:guiinAuthHeaders({'Content-Type':'application/json','Accept':'application/json'}),
-      body:JSON.stringify({provider:'kakao',redirectPath:'/'})
+      headers:{
+        'Content-Type':'application/json',
+        'Accept':'application/json'
+      },
+      body:JSON.stringify({provider:'kakao',redirectPath})
     });
     const data=await res.json().catch(()=>({}));
-    if(!res.ok||!data?.authUrl)throw new Error(data?.error||'kakao_login_start_failed');
-    location.assign(data.authUrl);
+    if(!res.ok)throw new Error(data?.error||('http_'+res.status));
+    if(!data?.authUrl)throw new Error('kakao_auth_url_missing');
+    if(m)m.textContent='카카오 로그인으로 이동합니다…';
+    window.location.href=data.authUrl;
   }catch(err){
+    const code=String(err?.message||err||'kakao_login_start_failed');
     console.error('GUIIN_KAKAO_LOGIN_START_ERROR',err);
-    if(m)m.textContent='카카오 로그인을 시작하지 못했어요. 잠시 후 다시 시도해 주세요.';
-    showGuiinPopup('카카오 로그인을 시작하지 못했어요. 잠시 후 다시 시도해 주세요.','로그인 연결 오류');
+    let msg='카카오 로그인을 시작하지 못했어요. 잠시 후 다시 시도해 주세요.';
+    if(code==='provider_not_configured')msg='카카오 로그인 설정을 확인하고 있어요. 잠시 후 다시 시도해 주세요.';
+    else if(code==='database_unavailable'||code==='server_runtime_unavailable')msg='로그인 서버 연결이 잠시 불안정해요. 잠시 후 다시 시도해 주세요.';
+    else if(code==='Failed to fetch'||/network|fetch/i.test(code))msg='로그인 서버에 연결하지 못했어요. 인터넷 연결 후 다시 시도해 주세요.';
+    if(m)m.textContent=msg;
+    showGuiinPopup(msg,'로그인 연결 오류');
   }
 }
 function socialLoginReady(provider){const m=$('loginMsg')||$('signupMsg');if(m)m.textContent=`${provider} 로그인은 아직 연결 전입니다. 카카오 로그인은 지금 사용할 수 있어요.`;}
