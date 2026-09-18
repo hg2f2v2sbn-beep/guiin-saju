@@ -2925,7 +2925,7 @@ async function startKakaoLogin(){
   const m=$('loginMsg')||$('signupMsg');
   if(m)m.textContent='카카오 로그인 페이지를 여는 중이에요…';
   try{
-    const redirectPath=(location.pathname&&location.pathname!=='/')?location.pathname:'/';
+    const redirectPath='/demo.html';
     const target=GUIIN_API_BASE+'/api/auth/kakao/start?redirectPath='+encodeURIComponent(redirectPath);
     window.location.assign(target);
   }catch(err){
