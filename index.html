@@ -1112,6 +1112,8 @@ let chart=null,currentTab='summary';
 
 function esc(s){return String(s??'').replace(/[&<>"']/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]))}
 function go(id){
+ // 로그인 세션이 이미 있으면 로그인/회원가입 화면으로 다시 보내지 않습니다.
+ if((id==='login'||id==='signup')&&guiinAuthSession()?.token)id='mypage';
  document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));
  const el=$(id); if(!el)return;
  el.classList.add('active');
@@ -3013,6 +3015,17 @@ async function refreshGuiinUser(){
     return null;
   }
 }
+function guiinRouteAuthenticatedAwayFromAuth(){
+  const s=guiinAuthSession();
+  if(!s?.token)return false;
+  const active=document.querySelector('.screen.active')?.id||'';
+  const hash=location.hash.replace('#','');
+  if(active==='login'||active==='signup'||hash==='login'||hash==='signup'){
+    go('mypage');
+    return true;
+  }
+  return false;
+}
 function syncAuthUI(){
   const s=guiinAuthSession(),u=guiinCurrentUser;
   const entry=$('accountEntryBtn');
@@ -3033,6 +3046,17 @@ function syncAuthUI(){
 
   const msg=$('loginMsg');
   if(msg)msg.textContent=s?(u?.display_name?`${u.display_name}님으로 로그인되어 있습니다.`:'카카오 계정으로 로그인되어 있습니다.'):'카카오 로그인을 사용할 수 있어요.';
+
+  if(entry){
+    entry.onclick=s
+      ? ()=>showGuiinPopup(
+          (u?.display_name?`${u.display_name}님`:'카카오 계정')+'으로 로그인되어 있어요. 로그아웃은 아래 로그아웃 버튼에서 할 수 있어요.',
+          '로그인 계정'
+        )
+      : ()=>go('login');
+  }
+
+  if(s?.token)setTimeout(guiinRouteAuthenticatedAwayFromAuth,0);
 }
 function logoutGuiin(){
   const s=guiinAuthSession();
@@ -3158,8 +3182,26 @@ Object.assign(window,{
   if(h&&screens.includes(h))go(h);
   await refreshGuiinUser();
   syncAuthUI();
+  guiinRouteAuthenticatedAwayFromAuth();
 try{guiinRuntimeSelfCheck();}catch(_e){}
 })();
+
+// iPhone Safari/인앱브라우저가 로그인 전 화면을 뒤로가기 캐시로 복원해도
+// 저장된 세션을 다시 읽어 로그인 화면에 머물지 않게 합니다.
+window.addEventListener('pageshow',()=>{
+  if(!guiinAuthSession()?.token)return;
+  refreshGuiinUser().finally(()=>{
+    syncAuthUI();
+    guiinRouteAuthenticatedAwayFromAuth();
+  });
+});
+document.addEventListener('visibilitychange',()=>{
+  if(document.visibilityState!=='visible'||!guiinAuthSession()?.token)return;
+  refreshGuiinUser().finally(()=>{
+    syncAuthUI();
+    guiinRouteAuthenticatedAwayFromAuth();
+  });
+});
 
 </script>
 </body>
