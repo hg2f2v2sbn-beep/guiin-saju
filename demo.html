@@ -901,6 +901,7 @@ button{position:relative}
   </div>
   <div class="menuCard card">
     <button id="accountEntryBtn" onclick="go('login')" data-guiin-nav="login">로그인 · 회원가입 <span class="arr">›</span></button>
+    <button id="mypageLogoutBtn" type="button" onclick="logoutGuiin()" style="display:none">로그아웃 <span class="arr">›</span></button>
     <button onclick="go('history')" data-guiin-nav="history">이용 내역 <span class="arr">›</span></button>
     <button onclick="go('payments')" data-guiin-nav="payments">결제 내역 <span class="arr">›</span></button>
     <button onclick="go('profiles')" data-guiin-nav="profiles">저장한 프로필 <span class="arr">›</span></button>
@@ -2923,14 +2924,52 @@ window.guiinSendAI=function(ev,preset){
 
 async function startKakaoLogin(){
   const m=$('loginMsg')||$('signupMsg');
-  if(m)m.textContent='카카오 로그인 페이지를 여는 중이에요…';
+  if(m)m.textContent='카카오 로그인 상태를 확인하고 있어요…';
+
   try{
-    const redirectPath='/demo.html';
-    const target=GUIIN_API_BASE+'/api/auth/kakao/start?redirectPath='+encodeURIComponent(redirectPath);
-    window.location.assign(target);
+    // 이미 로컬 로그인 토큰이 있으면 재인증보다 현재 상태 안내를 우선합니다.
+    const existing=guiinAuthSession();
+    if(existing?.token){
+      await refreshGuiinUser();
+      const stillSigned=guiinAuthSession();
+      if(stillSigned?.token){
+        syncAuthUI();
+        const msg='이미 카카오 계정 로그인 정보가 있어요. 마이페이지에서 계정 상태를 확인하거나 로그아웃 후 다시 로그인할 수 있어요.';
+        if(m)m.textContent=msg;
+        showGuiinPopup(msg,'이미 로그인되어 있어요');
+        go('mypage');
+        return;
+      }
+    }
+
+    const apiBase=(typeof GUIIN_API_BASE==='string'?GUIIN_API_BASE.trim():'');
+    if(!apiBase||!/^https:\/\//i.test(apiBase))throw new Error('api_base_invalid');
+
+    // 메인과 데모가 같은 코드를 써도 복귀 경로가 섞이지 않도록 현재 실제 path만 허용합니다.
+    const redirectPath=location.pathname==='/demo.html'?'/demo.html':'/';
+    const u=new URL('/api/auth/kakao/start',apiBase);
+    u.searchParams.set('redirectPath',redirectPath);
+    const target=u.toString();
+
+    console.info('GUIIN_KAKAO_LOGIN_START',{
+      page:location.pathname,
+      apiBase,
+      redirectPath,
+      target
+    });
+    if(m)m.textContent='카카오 로그인 페이지로 이동합니다…';
+
+    // location.assign 대신 href 이동을 사용해 모바일 WebView 호환성을 높입니다.
+    window.location.href=target;
   }catch(err){
+    const code=String(err?.message||err||'kakao_login_start_failed');
     console.error('GUIIN_KAKAO_LOGIN_START_ERROR',err);
-    const msg='카카오 로그인 페이지를 열지 못했어요. 잠시 후 다시 시도해 주세요.';
+    try{guiinRememberClientError('kakao_login_start',code);}catch(_e){}
+    const detail=
+      code==='api_base_invalid'
+        ? '로그인 서버 주소 설정을 확인해 주세요.'
+        : '카카오 로그인 시작 중 오류가 발생했어요.';
+    const msg=`${detail} (${code})`;
     if(m)m.textContent=msg;
     showGuiinPopup(msg,'로그인 연결 오류');
   }
@@ -2973,6 +3012,8 @@ function syncAuthUI(){
   const s=guiinAuthSession(),u=guiinCurrentUser;
   const entry=$('accountEntryBtn');
   if(entry)entry.innerHTML=s?'로그인 계정 관리 <span class="arr">›</span>':'로그인 · 회원가입 <span class="arr">›</span>';
+  const myLogout=$('mypageLogoutBtn');
+  if(myLogout)myLogout.style.display=s?'flex':'none';
 
   const guestUI=$('loginGuestUI');
   const signedUI=$('loginSignedIn');
@@ -3036,6 +3077,7 @@ function handleGuiinAuthCallback(){
     guiinCurrentUser={id:userId,provider:'kakao'};
     syncAuthUI();
     history.replaceState(null,'',location.pathname+'#mypage');
+    go('mypage');
     return true;
   }
 
