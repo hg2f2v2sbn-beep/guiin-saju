@@ -2530,6 +2530,7 @@ function closeCompatPay(){$('compatSheet')?.classList.remove('on');}
 function compatPayNotReady(){if($('compatPayMsg'))$('compatPayMsg').textContent='현재는 실제 결제를 받지 않아요. 결제 후 궁합 권한이 계정에 정확히 복원되는 것까지 확인한 뒤 오픈할 예정입니다.';}
 
 const GUIIN_API_BASE='https://guiin-saju-api-staging.blue-wls.workers.dev';
+function guiinStableApiBase(){return 'https://guiin-saju-api-staging.blue-wls.workers.dev';}
 const GUIIN_AI_API=GUIIN_API_BASE+'/api/chat';
 const GUIIN_AUTH_KEY='guiin_user_session_v1';
 const GUIIN_GUEST_KEY='guiin_guest_session_v1';
@@ -2642,7 +2643,7 @@ async function guiinApi(path,options={}){
   }
   const init={...options};
   init.headers=guiinAuthHeaders(options.headers||{});
-  return fetch(GUIIN_API_BASE+path,init);
+  return fetch(guiinStableApiBase()+path,init);
 }
 
 
@@ -2942,7 +2943,7 @@ async function startKakaoLogin(){
       }
     }
 
-    const apiBase=(typeof GUIIN_API_BASE==='string'?GUIIN_API_BASE.trim():'');
+    const apiBase=guiinStableApiBase();
     if(!apiBase||!/^https:\/\//i.test(apiBase))throw new Error('api_base_invalid');
 
     // 메인과 데모가 같은 코드를 써도 복귀 경로가 섞이지 않도록 현재 실제 path만 허용합니다.
