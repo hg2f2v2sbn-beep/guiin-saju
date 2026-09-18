@@ -696,8 +696,15 @@ button{position:relative}
 <script>
 /* GUIIN MOBILE NAVIGATION FALLBACK — independent of the main app script */
 (function(){
+  function hasSignedInSession(){
+    try{
+      var x=JSON.parse(localStorage.getItem('guiin_user_session_v1')||'null');
+      return !!(x&&typeof x.token==='string'&&x.token.indexOf('usr_')===0);
+    }catch(_e){return false;}
+  }
   function nav(id){
     if(!id) return;
+    if((id==='login'||id==='signup')&&hasSignedInSession()) id='mypage';
     var screens=document.querySelectorAll('.screen');
     var target=document.getElementById(id);
     if(!target) return;
@@ -3025,7 +3032,7 @@ function guiinRouteAuthenticatedAwayFromAuth(){
 function syncAuthUI(){
   const s=guiinAuthSession(),u=guiinCurrentUser;
   const entry=$('accountEntryBtn');
-  if(entry)entry.innerHTML=s?'로그인 계정 관리 <span class="arr">›</span>':'로그인 · 회원가입 <span class="arr">›</span>';
+  if(entry)entry.innerHTML=s?'카카오 로그인됨 <span class="arr">›</span>':'로그인 · 회원가입 <span class="arr">›</span>';
   const myLogout=$('mypageLogoutBtn');
   if(myLogout)myLogout.style.display=s?'flex':'none';
 
@@ -3101,8 +3108,10 @@ function handleGuiinAuthCallback(){
     }catch(_e){}
     guiinCurrentUser={id:userId,provider:'kakao'};
     syncAuthUI();
-    history.replaceState(null,'',location.pathname+'#mypage');
-    go('mypage');
+    // iPhone/Safari가 로그인 전 화면을 복원하지 못하도록 성공 후 마이페이지 URL로 완전히 교체합니다.
+    const next=location.pathname+'#mypage';
+    try{history.replaceState(null,'',next);}catch(_e){}
+    try{window.location.replace(next);}catch(_e){go('mypage');}
     return true;
   }
 
@@ -3175,6 +3184,7 @@ Object.assign(window,{
   const screens=[...document.querySelectorAll('.screen')].map(x=>x.id);
   let h=location.hash.replace('#','');
   if(handledAuth)h=location.hash.replace('#','');
+  if(guiinAuthSession()?.token&&(h==='login'||h==='signup'||!h))h='mypage';
   if(h&&screens.includes(h))go(h);
   await refreshGuiinUser();
   syncAuthUI();
