@@ -189,7 +189,7 @@ function chart(name="테스트"){
   const idx=fs.readFileSync("index.html","utf8");
   const demo=fs.readFileSync("demo.html","utf8");
   for(const [name,html] of [["index",idx],["demo",demo]]){
-    assert(html.includes('member-data-v1.js?v=20260918c'),`${name}: member data script missing`);
+    assert(html.includes('member-data-v1.js?v=20260919a'),`${name}: member data script missing`);
     assert(html.includes("GuiinMemberData?.syncProfile"),`${name}: profile sync hook missing`);
     assert(html.includes("GuiinMemberData?.renderProfiles"),`${name}: profile list hook missing`);
     assert(html.includes("GuiinMemberData?.renderHistory"),`${name}: history hook missing`);

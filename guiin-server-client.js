@@ -1,20 +1,29 @@
 /**
- * 귀인사주 서버 클라이언트 v2
- * 서버가 준비되면 무료질문/클로버/구매복원을 서버 기준으로 읽기 위한 공용 클라이언트.
- * 현재 index.html에 강제로 연결하지 않는다.
+ * 귀인사주 서버 클라이언트 v3 · runtime environment aware
  */
 (function(root,factory){
-  if(typeof module==="object"&&module.exports)module.exports=factory();
-  else root.GuiinServerClient=factory();
-})(typeof globalThis!=="undefined"?globalThis:this,function(){
+  if(typeof module==="object"&&module.exports)module.exports=factory(root);
+  else root.GuiinServerClient=factory(root);
+})(typeof globalThis!=="undefined"?globalThis:this,function(root){
   "use strict";
 
-  const API="https://guiin-saju-api.blue-wls.workers.dev";
+  const DEFAULT_API="https://guiin-saju-api-staging.blue-wls.workers.dev";
   const GUEST_KEY="guiin_guest_token_v1";
   const USER_KEY="guiin_user_token_v1";
 
-  function storageGet(k){try{return localStorage.getItem(k)||"";}catch(_){return "";}}
-  function storageSet(k,v){try{if(v)localStorage.setItem(k,String(v));else localStorage.removeItem(k);}catch(_){}}
+  function apiBase(){
+    try{
+      const runtime=root?.GuiinRuntimeConfig;
+      if(runtime&&typeof runtime.apiBase==="function"){
+        const v=String(runtime.apiBase()||"").trim();
+        if(/^https:\/\//i.test(v))return v.replace(/\/+$/,"");
+      }
+    }catch(_){}
+    return DEFAULT_API;
+  }
+
+  function storageGet(k){try{return root?.localStorage?.getItem(k)||"";}catch(_){return "";}}
+  function storageSet(k,v){try{if(v)root?.localStorage?.setItem(k,String(v));else root?.localStorage?.removeItem(k);}catch(_){}}
   function guestToken(){return storageGet(GUEST_KEY);}
   function userToken(){return storageGet(USER_KEY);}
   function setGuestToken(v){storageSet(GUEST_KEY,v);}
@@ -30,8 +39,8 @@
 
   async function request(path,opt={}){
     const headers=authHeaders(opt.headers||{});
-    if(opt.body && !headers["Content-Type"])headers["Content-Type"]="application/json";
-    const r=await fetch(API+path,{...opt,headers,cache:"no-store",mode:"cors"});
+    if(opt.body&&!headers["Content-Type"])headers["Content-Type"]="application/json";
+    const r=await root.fetch(apiBase()+path,{...opt,headers,cache:"no-store",mode:"cors"});
     const d=await r.json().catch(()=>({}));
     if(!r.ok){
       const e=new Error(d?.error||("HTTP "+r.status));
@@ -41,9 +50,8 @@
   }
 
   async function createGuest(){
-    const r=await fetch(API+"/api/session/guest",{
-      method:"POST",mode:"cors",cache:"no-store",
-      headers:{"Accept":"application/json"}
+    const r=await root.fetch(apiBase()+"/api/session/guest",{
+      method:"POST",mode:"cors",cache:"no-store",headers:{"Accept":"application/json"}
     });
     const d=await r.json().catch(()=>({}));
     if(!r.ok||!d?.guestToken){
@@ -60,51 +68,25 @@
     const d=await createGuest();
     return d.guestToken;
   }
-
-  async function ensureSession(){
-    if(userToken())return {type:"user"};
-    await ensureGuest();
-    return {type:"guest"};
-  }
-
-  async function usage(){
-    await ensureSession();
-    return request("/api/me/usage");
-  }
-
-  async function purchases(){
-    await ensureSession();
-    return request("/api/me/purchases");
-  }
-
-  async function restoreSummary(){
-    await ensureSession();
-    return request("/api/me/restore-summary");
-  }
-
-  async function authStatus(){
-    await ensureSession();
-    return request("/api/auth/status");
-  }
-
+  async function ensureSession(){if(userToken())return {type:"user"};await ensureGuest();return {type:"guest"};}
+  async function usage(){await ensureSession();return request("/api/me/usage");}
+  async function purchases(){await ensureSession();return request("/api/me/purchases");}
+  async function restoreSummary(){await ensureSession();return request("/api/me/restore-summary");}
+  async function authStatus(){await ensureSession();return request("/api/auth/status");}
   async function chat(payload,{idempotencyKey,signal}={}){
     await ensureSession();
     const key=String(idempotencyKey||payload?.requestId||"");
     return request("/api/chat",{
       method:"POST",
       headers:key?{"X-Idempotency-Key":key}:{},
-      body:JSON.stringify(payload||{}),
-      signal
+      body:JSON.stringify(payload||{}),signal
     });
   }
-
-  function clearSession(){
-    setGuestToken("");
-    setUserToken("");
-  }
+  function clearSession(){setGuestToken("");setUserToken("");}
 
   return {
-    API,GUEST_KEY,USER_KEY,
+    get API(){return apiBase();},
+    GUEST_KEY,USER_KEY,apiBase,
     guestToken,userToken,setGuestToken,setUserToken,authHeaders,
     request,createGuest,ensureGuest,ensureSession,
     usage,purchases,restoreSummary,authStatus,chat,clearSession

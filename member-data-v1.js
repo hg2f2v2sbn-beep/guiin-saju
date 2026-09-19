@@ -47,6 +47,13 @@
   }
   function apiBase(){
     try{
+      const runtime=root.GuiinRuntimeConfig;
+      if(runtime&&typeof runtime.apiBase==="function"){
+        const v=String(runtime.apiBase()||"").trim();
+        if(/^https:\/\//i.test(v))return v.replace(/\/+$/,"");
+      }
+    }catch(_){}
+    try{
       if(typeof root.guiinStableApiBase==="function"){
         const v=String(root.guiinStableApiBase()||"").trim();
         if(/^https:\/\//i.test(v))return v.replace(/\/+$/,"");
