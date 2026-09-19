@@ -42,6 +42,7 @@
 <script src="manse-view.js"></script>
 <script src="compatibility-interpreter.js"></script>
 <script src="deep-interpretation-v3.js?v=20260918e"></script>
+<script src="member-data-v1.js?v=20260918c"></script>
 <style>
 :root{
  --bg:#fffaf1;--paper:#fffefa;--ink:#203128;--sub:#7c837d;--line:#ece5d7;
@@ -1303,6 +1304,7 @@ function saveProfile(c){
  $('homeBirth').textContent=`${c.input.year}년 ${c.input.month}월 ${c.input.day}일 (${c.input.calendar})`;
  $('myName').textContent=c.input.name+'님';
  $('myBirth').textContent=`${c.input.year}년 ${c.input.month}월 ${c.input.day}일 (${c.input.calendar})`;
+ try{window.GuiinMemberData?.syncProfile?.(c).catch(err=>console.warn('GUIIN_PROFILE_SYNC_DEFERRED',err?.message||err));}catch(_e){}
 }
 function restoreProfile(){
  try{
@@ -1311,7 +1313,7 @@ function restoreProfile(){
   if($('homeName'))$('homeName').textContent=(v.name||'사용자')+'님 ›'; if($('homeBirth'))$('homeBirth').textContent=`${v.year}년 ${v.month}월 ${v.day}일 (${v.calendar||'양력'})`;
   if($('myName'))$('myName').textContent=(v.name||'사용자')+'님'; if($('myBirth'))$('myBirth').textContent=`${v.year}년 ${v.month}월 ${v.day}일 (${v.calendar||'양력'})`;
   if($('manageName')){$('manageName').textContent=(v.name||'사용자');$('manageBirth').textContent=`${v.year}년 ${v.month}월 ${v.day}일 (${v.calendar||'양력'})`;}
-  if(!chart&&window.GuiinSaju){try{chart=GuiinSaju.calculate(v);}catch(_e){}}
+  if(window.GuiinSaju){try{chart=GuiinSaju.calculate(v);}catch(_e){}}
  }catch(e){}
 }
 function submitSaju(){
@@ -2442,6 +2444,15 @@ function submitMatch(){
   const bm=validateBirthInput(bi,{label:'상대방 생년월일',calendar:'양력'});
   if(bm){setFormMessage('matchFormMsg','상대방 정보: '+bm);showGuiinPopup('앗, 사주 조각을 맞추는 중에 잠시 길을 잃었어요. 생년월일과 성별을 다시 한번 확인해 주시겠어요?','궁합 정보를 다시 확인해 주세요');return;}
   const mv=$('matchView');if(mv)mv.innerHTML=resultLoadingHTML((ai.name||'나')+' · '+(bi.name||'상대방'));go('matchResult');const a=GuiinSaju.calculate(ai), b=GuiinSaju.calculate(bi);
+  try{
+    Promise.allSettled([
+      window.GuiinMemberData?.syncProfile?.(a),
+      window.GuiinMemberData?.syncProfile?.(b)
+    ]).then(rows=>{
+      const failed=rows.filter(x=>x&&x.status==='rejected');
+      if(failed.length)console.warn('GUIIN_COMPAT_PROFILE_SYNC_DEFERRED',failed.map(x=>x.reason?.message||String(x.reason)));
+    });
+  }catch(err){console.warn('GUIIN_COMPAT_PROFILE_SYNC_DEFERRED',err?.message||err);}
   const pa=GuiinExpert.pct(a),pb=GuiinExpert.pct(b);
   const distance=['목','화','토','금','수'].reduce((s,e)=>s+Math.abs(pa[e]-pb[e]),0);
   const balance=Math.max(0,20-Math.round(distance/5));
@@ -2703,9 +2714,20 @@ function guiinClearAuthSessionStorage(){
   try{sessionStorage.removeItem(GUIIN_AUTH_KEY);}catch(_e){}
 }
 function guiinAuthHeaders(extra={}){
-  const h={...extra,'X-Session-ID':guiinGuestSession()};
+  const h={...extra};
   const s=guiinAuthSession();
-  if(s?.token)h.Authorization='Bearer '+s.token;
+  if(s?.token){
+    h.Authorization='Bearer '+s.token;
+  }else{
+    let gst='';
+    try{gst=window.GuiinMemberData?.serverGuestToken?.()||'';}catch(_e){}
+    if(gst){
+      h['X-Guiin-Guest']=gst;
+      h['X-Session-ID']=gst;
+    }else{
+      h['X-Session-ID']=guiinGuestSession();
+    }
+  }
   return h;
 }
 async function guiinApi(path,options={}){
@@ -2736,7 +2758,10 @@ function loadAIHistory(){
   }catch(_e){guiinAIHistory=[];}
 }
 function persistAIHistory(){
-  try{localStorage.setItem(GUIIN_AI_HISTORY_KEY,JSON.stringify(guiinAIHistory.slice(-12)));}catch(_e){}
+  try{
+    localStorage.setItem(GUIIN_AI_HISTORY_KEY,JSON.stringify(guiinAIHistory.slice(-12)));
+    window.GuiinMemberData?.markAIHistoryOwner?.();
+  }catch(_e){}
 }
 function restoreAIChatBubbles(){
   const box=$('msgs'); if(!box)return;
@@ -2752,6 +2777,7 @@ function restoreAIChatBubbles(){
 function clearAIChat(){
   guiinAIHistory=[];
   try{localStorage.removeItem(GUIIN_AI_HISTORY_KEY);}catch(_e){}
+  try{window.GuiinMemberData?.clearConversationContext?.(chart);}catch(_e){}
   const box=$('msgs');
   if(box){
     box.querySelectorAll('.bubble.me,.bubble.bot:not(#welcomeBot)').forEach(x=>x.remove());
@@ -2957,6 +2983,15 @@ async function sendQ(preset){
   const timer=setTimeout(()=>controller.abort(),45000);
 
   const requestMeta=guiinAIRequestMeta(q,cp);
+  let serverContext=null;
+  try{
+    if(window.GuiinMemberData){
+      await window.GuiinMemberData.ensureServerGuest?.();
+      serverContext=await window.GuiinMemberData.ensureConversation?.(chart,q);
+    }
+  }catch(err){
+    console.warn('GUIIN_MEMBER_CONTEXT_DEFERRED',err?.message||err);
+  }
   try{
     const message=q;
 
@@ -2974,7 +3009,9 @@ async function sendQ(preset){
         name:cp.name||'',
         message,
         chart:cp,
-        history:guiinAIHistory.slice(-4)
+        history:guiinAIHistory.slice(-4),
+        conversationId:serverContext?.conversationId||null,
+        chartSnapshotId:serverContext?.chartSnapshotId||null
       }),
       signal:controller.signal
     });
@@ -3084,6 +3121,7 @@ async function startKakaoLogin(){
       }
     }
 
+    try{await window.GuiinMemberData?.ensureServerGuest?.();}catch(err){console.warn('GUIIN_GUEST_SESSION_PREP_DEFERRED',err?.message||err);}
     const apiBase=guiinStableApiBase();
     if(!apiBase||!/^https:\/\//i.test(apiBase))throw new Error('api_base_invalid');
 
@@ -3226,7 +3264,19 @@ function logoutGuiin(){
       guiinClearAuthSessionStorage();
       localStorage.removeItem('guiin_verified_user_v1');
     }catch(_e){}
+    try{clearAIChat();}catch(_e){}
+    chart=null;
+    matchAnalysis=null;
+    matchMeta=null;
+    matchBaseHTML='';
+    try{
+      if($('homeName'))$('homeName').textContent='반가워요! ›';
+      if($('homeBirth'))$('homeBirth').textContent='오늘도 좋은 하루 되세요!';
+      if($('myName'))$('myName').textContent='프로필을 만들어 보세요';
+      if($('myBirth'))$('myBirth').textContent='사주를 계산하면 저장할 수 있어요.';
+    }catch(_e){}
     guiinCurrentUser=null;syncAuthUI();go('home');
+    try{window.GuiinMemberData?.afterLogout?.().catch(()=>{});}catch(_e){}
   };
   if(!s?.token){finish();return;}
   guiinApi('/api/auth/logout',{method:'POST',cache:'no-store',headers:{'Accept':'application/json'}})
@@ -3457,6 +3507,7 @@ async function guiinCompleteLoginFlow(explicitToken=''){
       localStorage.setItem('guiin_verified_user_v1',JSON.stringify(result.user));
     }catch(_e){}
     syncAuthUI();
+    try{window.GuiinMemberData?.afterLogin?.().catch(err=>console.warn('GUIIN_MEMBER_LOGIN_SYNC_DEFERRED',err?.message||err));}catch(_e){}
 
     const label=result.user?.display_name||result.user?.nickname||result.user?.name||'카카오 계정';
     guiinSetLoginCompleteState(
@@ -3509,7 +3560,7 @@ async function guiinRetryLoginVerification(){
 function emailLoginReady(){if($('loginMsg'))$('loginMsg').textContent='이메일 로그인은 회원 인증 서버 연결 후 활성화됩니다.';}
 function emailSignupReady(){if($('signupMsg'))$('signupMsg').textContent='이메일 회원가입은 회원 DB·인증 서버 연결 후 활성화됩니다.';}
 function openCustomerCenter(){window.open('https://pf.kakao.com/_TLTrX/chat','_blank','noopener');}
-function renderUsageHistory(){const v=$('usageHistoryView');if(!v)return;let p=null;try{p=JSON.parse(localStorage.getItem('guiin_last')||'null');}catch(e){}const rows=[];if(p)rows.push(`<div class="trustBox"><b>${esc(p.name||'사용자')}님의 사주</b><br>${p.year}.${p.month}.${p.day} · 최근 저장 프로필</div>`);if((wallet.ledger||[]).length)rows.push(`<div class="trustBox"><b>AI 상담 이용</b><br>${wallet.ledger.length}건의 기기 내 기록이 있습니다.</div>`);v.innerHTML=rows.join('')||'<p class="utilityHint">아직 이용 내역이 없습니다. 사주를 계산하거나 AI 상담을 이용하면 여기에 표시됩니다.</p>';}
+function renderUsageHistory(){const v=$('usageHistoryView');if(!v)return;let p=null;try{p=JSON.parse(localStorage.getItem('guiin_last')||'null');}catch(e){}const rows=[];if(p)rows.push(`<div class="trustBox"><b>${esc(p.name||'사용자')}님의 사주</b><br>${p.year}.${p.month}.${p.day} · 최근 저장 프로필</div>`);if((wallet.ledger||[]).length)rows.push(`<div class="trustBox"><b>AI 상담 이용</b><br>${wallet.ledger.length}건의 기기 내 기록이 있습니다.</div>`);v.innerHTML=rows.join('')||'<p class="utilityHint">아직 이용 내역이 없습니다. 사주를 계산하거나 AI 상담을 이용하면 여기에 표시됩니다.</p>';try{window.GuiinMemberData?.renderHistory?.(v).catch(err=>console.warn('GUIIN_HISTORY_SYNC_DEFERRED',err?.message||err));}catch(_e){}}
 async function renderPaymentHistory(){
  const v=$('paymentHistoryView');if(!v)return;
  const s=guiinAuthSession();
@@ -3532,7 +3583,7 @@ async function renderPaymentHistory(){
   v.innerHTML='<p class="utilityHint">결제 내역을 불러오지 못했어요. 잠시 후 다시 확인해 주세요.</p>';
  }
 }
-function renderSavedProfile(){const v=$('savedProfileView');if(!v)return;let p=null;try{p=JSON.parse(localStorage.getItem('guiin_last')||'null');}catch(e){}v.innerHTML=p?`<div class="trustBox"><b>${esc(p.name||'사용자')}</b><br>${p.year}년 ${p.month}월 ${p.day}일 (${esc(p.calendar||'양력')})${p.hourUnknown?' · 출생시간 모름':` · ${String(p.hour??0).padStart(2,'0')}:${String(p.minute??0).padStart(2,'0')}`}</div>`:'<p class="utilityHint">저장된 프로필이 없습니다.</p>';}
+function renderSavedProfile(){const v=$('savedProfileView');if(!v)return;let p=null;try{p=JSON.parse(localStorage.getItem('guiin_last')||'null');}catch(e){}v.innerHTML=p?`<div class="trustBox"><b>${esc(p.name||'사용자')}</b><br>${p.year}년 ${p.month}월 ${p.day}일 (${esc(p.calendar||'양력')})${p.hourUnknown?' · 출생시간 모름':` · ${String(p.hour??0).padStart(2,'0')}:${String(p.minute??0).padStart(2,'0')}`}</div>`:'<p class="utilityHint">저장된 프로필이 없습니다.</p>';try{window.GuiinMemberData?.renderProfiles?.(v).catch(err=>console.warn('GUIIN_PROFILE_LIST_DEFERRED',err?.message||err));}catch(_e){}}
 function loadNotificationPrefs(){let p={};try{p=JSON.parse(localStorage.getItem(NOTIFY_KEY)||'{}');}catch(e){}document.querySelectorAll('[data-notify]').forEach(x=>{x.checked=!!p[x.dataset.notify];x.onchange=()=>{const out={};document.querySelectorAll('[data-notify]').forEach(y=>out[y.dataset.notify]=y.checked);localStorage.setItem(NOTIFY_KEY,JSON.stringify(out));};});}
 function goToday(){renderToday();go('today');}
 window.openTodayDetail=function(title,summary){go('today');const v=$('todayView');if(!v)return;const d=new Date();v.innerHTML=`<div class="todayDate">${d.getFullYear()}년 ${d.getMonth()+1}월 ${d.getDate()}일</div><div class="todayDetailCard card"><div class="miniTitle">오늘의 상세 운세</div><h3>${esc(title||'오늘의 종합운')}</h3><p>${esc(summary||'오늘의 흐름을 생활에서 확인하기 쉬운 기준으로 자세히 살펴볼게요.')}</p><p>오늘의 운세는 확정된 미래가 아니라 현재 선택을 점검하는 참고 정보입니다. 중요한 결정을 사주 하나로 단정하지 말고 실제 상황과 함께 판단해 주세요.</p></div><button class="ctaGold" onclick="renderToday()">오늘의 운세로 돌아가기 ›</button>`;};
@@ -3662,7 +3713,8 @@ document.addEventListener('visibilitychange',()=>{
           await window.guiinCompleteLoginFlow(d.token);
         }else{
           var btn=document.getElementById('accountEntryBtn');
-          if(btn)btn.innerHTML='카카오 로그인됨 <span class="arr">›</span>';
+          if(btn){btn.style.display='none';btn.setAttribute('aria-hidden','true');btn.removeAttribute('data-guiin-nav');}
+          try{window.GuiinMemberData?.afterLogin?.().catch(function(){});}catch(_e){}
           var lo=document.getElementById('mypageLogoutBtn');
           if(lo)lo.style.display='flex';
           document.querySelectorAll('.screen').forEach(function(s){s.classList.remove('active');});
