@@ -1,0 +1,78 @@
+name: engine-v3-gate
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  engine-v3-gate:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '24'
+
+      - name: Required core files
+        run: |
+          set -e
+          for f in \
+            index.html demo.html \
+            saju-engine.js saju-engine-v2-patch.js guiin-engine-contract.js \
+            expert-interpreter.js compatibility-interpreter.js deep-interpretation-v3.js guiin-runtime-config.js member-data-v1.js guiin-server-client.js \
+            flow-timeline.js \
+            golden-chart.test.js engine-v2-contract.test.js engine-v2-integration.test.js \
+            flow-regression.test.js compatibility-regression.test.js \
+            engine-final-gate.test.js deep-v3-regression.test.js member-data-regression.test.js environment-regression.test.js
+          do
+            test -f "$f" || { echo "MISSING: $f"; exit 1; }
+          done
+
+      - name: Core JavaScript syntax
+        run: |
+          set -e
+          for f in \
+            saju-engine.js saju-engine-v2-patch.js guiin-engine-contract.js \
+            expert-interpreter.js compatibility-interpreter.js deep-interpretation-v3.js guiin-runtime-config.js member-data-v1.js guiin-server-client.js \
+            flow-timeline.js engine-final-gate.test.js deep-v3-regression.test.js member-data-regression.test.js environment-regression.test.js
+          do
+            node --check "$f"
+          done
+
+      - name: Existing calculation baselines
+        run: |
+          set -e
+          node golden-chart.test.js
+          node engine-v2-contract.test.js
+          node engine-v2-integration.test.js
+          node flow-regression.test.js
+          node compatibility-regression.test.js
+
+      - name: Engine final gate
+        run: node engine-final-gate.test.js
+
+      - name: Deep V3 interpretation gate
+        run: node deep-v3-regression.test.js
+
+      - name: Member data bridge gate
+        run: node member-data-regression.test.js
+
+      - name: Staging production separation gate
+        run: node environment-regression.test.js
+
+      - name: Member server and schema contracts
+        run: |
+          set -e
+          node server-data-schema-regression.test.js
+          node chart-ai-persistence-schema-regression.test.js
+          node account-link-schema-regression.test.js
+          node worker-v5.1-data-crud-regression.test.js
