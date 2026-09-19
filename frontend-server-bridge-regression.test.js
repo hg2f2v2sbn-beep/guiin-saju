@@ -6,8 +6,8 @@ const Bridge=require(BridgeFactoryPath);
 
 function ok(l,f){try{f();console.log("PASS",l)}catch(e){console.error("FAIL",l);throw e}}
 
-ok("client API is fixed to current worker",()=>{
-  assert.strictEqual(Client.API,"https://guiin-saju-api.blue-wls.workers.dev");
+ok("client API defaults safely to staging until production is verified",()=>{
+  assert.strictEqual(Client.API,"https://guiin-saju-api-staging.blue-wls.workers.dev");
 });
 ok("auth headers prefer user token over guest",()=>{
   // Node test has no localStorage; verify function exists and returns Accept safely.
