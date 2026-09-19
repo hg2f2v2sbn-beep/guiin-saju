@@ -1,0 +1,47 @@
+# 귀인사주 PRODUCTION Worker 예시
+# 실제 배포 전 database_id만 Cloudflare에서 만든 production D1 ID로 교체합니다.
+# OPENAI / Kakao / SECURITY secret 값은 절대로 이 파일에 적지 않습니다.
+
+name = "guiin-saju-api"
+main = "worker-production-candidate.js"
+compatibility_date = "2026-09-19"
+
+[vars]
+ENVIRONMENT = "production"
+AI_CHAT_ENABLED = "true"
+CHAT_MODEL = "gpt-4o-mini"
+
+# 회원/카카오
+LOGIN_KAKAO_ENABLED = "true"
+KAKAO_FRONTEND_ORIGIN = "https://gwiinsaju.com"
+KAKAO_REDIRECT_URI = "https://guiin-saju-api.blue-wls.workers.dev/api/auth/kakao/callback"
+
+# 서버 권위 전환은 검증 전 SHADOW 유지
+CLIENT_AUTHORITY_MODE = "SHADOW"
+
+# 결제/서버 차감은 production 인프라 구축 중에도 OFF
+NEW_PAYMENTS_ENABLED = "false"
+SERVER_WALLET_ENABLED = "false"
+SERVER_FREE_QUOTA_ENABLED = "false"
+
+# 보안 enforcement는 production smoke가 끝난 뒤 별도 검증하여 전환
+SECURITY_ENFORCEMENT_ENABLED = "false"
+
+# Launch gate 역시 아직 OFF
+FINAL_CODE_GATE_VERIFIED = "false"
+
+[[d1_databases]]
+binding = "DB"
+database_name = "guiin-saju-production-db"
+database_id = "PUT_PRODUCTION_D1_DATABASE_ID_HERE"
+
+# 선택: AI idempotency KV를 사용할 때만 설정
+# [[kv_namespaces]]
+# binding = "AI_IDEMPOTENCY"
+# id = "PUT_PRODUCTION_KV_NAMESPACE_ID_HERE"
+
+# Cloudflare Secrets로만 등록
+# OPENAI_API_KEY
+# KAKAO_REST_API_KEY
+# KAKAO_CLIENT_SECRET
+# SECURITY_HASH_SECRET

@@ -1,0 +1,25 @@
+{
+  "version": "1.0",
+  "environment": "production",
+  "worker_name": "guiin-saju-api",
+  "worker_candidate": "worker-production-candidate.js",
+  "d1_database_name": "guiin-saju-production-db",
+  "frontend_active_environment": "staging",
+  "production_frontend_switch_allowed": false,
+  "payments_allowed": false,
+  "gates": {
+    "PRODUCTION_WORKER_CREATED": "PENDING",
+    "PRODUCTION_D1_CREATED": "PENDING",
+    "PRODUCTION_D1_SCHEMA_APPLIED": "PENDING",
+    "PRODUCTION_SECRETS_CONFIGURED": "PENDING",
+    "PRODUCTION_HEALTH_PASSED": "PENDING",
+    "KAKAO_PRODUCTION_REDIRECT_REGISTERED": "PENDING",
+    "KAKAO_PRODUCTION_LOGIN_PASSED": "PENDING",
+    "PROFILE_CRUD_PASSED": "PENDING",
+    "CONVERSATION_CRUD_PASSED": "PENDING",
+    "AI_CHAT_PASSED": "PENDING",
+    "LOGOUT_SESSION_REVOKE_PASSED": "PENDING",
+    "PAYMENTS_CONFIRMED_OFF": "PENDING",
+    "FRONTEND_SWITCHED_TO_PRODUCTION": "BLOCKED"
+  }
+}
