@@ -20,14 +20,14 @@ ok("runtime config exists",()=>{
   assert(R);
   assert.strictEqual(R.VERSION,"runtime-env-v1");
 });
-ok("active environment is staging",()=>{
-  assert.strictEqual(R.activeEnvironment(),"staging");
-  assert.strictEqual(R.apiBase(),"https://guiin-saju-api-staging.blue-wls.workers.dev");
+ok("active environment is production",()=>{
+  assert.strictEqual(R.activeEnvironment(),"production");
+  assert.strictEqual(R.apiBase(),"https://guiin-saju-api.blue-wls.workers.dev");
 });
-ok("production is fail-closed",()=>{
-  assert.strictEqual(R.productionVerified(),false);
+ok("production cutover is verified",()=>{
+  assert.strictEqual(R.productionVerified(),true);
   assert.strictEqual(R.candidateBase("production"),"https://guiin-saju-api.blue-wls.workers.dev");
-  assert.notStrictEqual(R.apiBase(),R.candidateBase("production"));
+  assert.strictEqual(R.apiBase(),R.candidateBase("production"));
 });
 ok("runtime cannot be switched by URL/localStorage",()=>{
   assert(!/URLSearchParams|location\.search|getItem\(["']api_env/.test(runtimeSrc));
@@ -36,7 +36,7 @@ ok("runtime cannot be switched by URL/localStorage",()=>{
 for(const name of ["index.html","demo.html"]){
   const html=fs.readFileSync(name,"utf8");
   ok(`${name} loads config before member data`,()=>{
-    const r=html.indexOf("guiin-runtime-config.js?v=20260919a");
+    const r=html.indexOf("guiin-runtime-config.js?v=20260920prod1");
     const m=html.indexOf("member-data-v1.js?v=20260919a");
     assert(r>=0&&m>r);
   });
@@ -68,10 +68,10 @@ ok("member data prefers runtime config",()=>{
 });
 
 const common=fs.readFileSync("guiin-server-client.js","utf8");
-ok("legacy common client no longer defaults to production",()=>{
+ok("legacy common client remains runtime-config controlled",()=>{
   assert(common.includes('const DEFAULT_API="https://guiin-saju-api-staging.blue-wls.workers.dev"'));
   assert(common.includes("GuiinRuntimeConfig"));
   assert(!common.includes('const API="https://guiin-saju-api.blue-wls.workers.dev"'));
 });
 
-console.log("\nEnvironment Separation Gate: ALL PASS");
+console.log("\nEnvironment Production Cutover Gate: ALL PASS");

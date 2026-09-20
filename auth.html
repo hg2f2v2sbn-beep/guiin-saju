@@ -26,13 +26,18 @@ button{display:none;width:100%;border:0;border-radius:15px;padding:14px;margin-t
   <div id="state" class="state" role="status" aria-live="polite">로그인 세션을 확인하는 중이에요…</div>
   <button id="retry" type="button">다시 시도하기</button>
 </main></div>
+<script src="guiin-runtime-config.js?v=20260920prod1"></script>
 <script>
 (function(){
   'use strict';
-  var STAGING_API='https://guiin-saju-api-staging.blue-wls.workers.dev';
-  var PRODUCTION_API='https://guiin-saju-api.blue-wls.workers.dev';
   var KEY='guiin_user_session_v1';
-  var PROD_KEY='guiin_user_session_production_v1';
+  var runtime=globalThis.GuiinRuntimeConfig;
+  var API=String(runtime&&typeof runtime.apiBase==='function'
+    ? runtime.apiBase()
+    : 'https://guiin-saju-api-staging.blue-wls.workers.dev').replace(/\/+$/,'');
+  var ENV=runtime&&typeof runtime.activeEnvironment==='function'
+    ? runtime.activeEnvironment()
+    : 'staging';
   var q=new URLSearchParams(location.search);
   var code=String(q.get('handoff')||'');
   var returnPath=q.get('returnPath')==='/demo.html'?'/demo.html':'/';
@@ -94,7 +99,7 @@ button{display:none;width:100%;border:0;border-radius:15px;padding:14px;margin-t
       return {ok:false,status:v.status,error:v.error||('HTTP '+v.status)};
     }
 
-    var verifiedKey=envName==='production'?'guiin_verified_user_production_v1':'guiin_verified_user_v1';
+    var verifiedKey='guiin_verified_user_v1';
     try{localStorage.setItem(verifiedKey,JSON.stringify(v.user));sessionStorage.setItem(verifiedKey,JSON.stringify(v.user));}catch(_e){}
     return {ok:true,user:v.user,envName:envName};
   }
@@ -102,32 +107,17 @@ button{display:none;width:100%;border:0;border-radius:15px;padding:14px;margin-t
     retry.style.display='none';
     card.className='card';
 
-    // handoff가 있으면 기존 staging 세션보다 먼저 반드시 교환합니다.
-    // production smoke는 production 전용 저장키를 써서 현재 staging 세션을 덮어쓰지 않습니다.
     if(code.indexOf('ah_')===0){
       try{history.replaceState(null,'','/auth.html');}catch(_e){}
       state.textContent='카카오 인증 정보를 귀인사주 세션으로 연결하고 있어요…';
 
       try{
-        var prod=await exchangeAt(PRODUCTION_API,PROD_KEY,'production');
-        if(prod.ok){
-          success(prod.user,'production');
+        var exchanged=await exchangeAt(API,KEY,ENV);
+        if(exchanged.ok){
+          success(exchanged.user,ENV);
           return;
         }
-
-        // 정상 사이트의 staging 로그인도 계속 유지하기 위해 production에 없는 handoff만 staging으로 재시도합니다.
-        if(prod.error!=='auth_handoff_not_found'&&prod.error!=='auth_handoff_invalid'){
-          fail('Production 세션 교환에 실패했어요.',prod.error||('HTTP '+prod.status));
-          return;
-        }
-
-        var stage=await exchangeAt(STAGING_API,KEY,'staging');
-        if(stage.ok){
-          success(stage.user,'staging');
-          return;
-        }
-
-        fail('세션 교환에 실패했어요.',stage.error||prod.error||'handoff_exchange_failed');
+        fail('세션 교환에 실패했어요.',exchanged.error||('HTTP '+exchanged.status));
         return;
       }catch(e){
         fail('로그인 서버 연결에 실패했어요.',String(e&&e.message||e||'network_error'));
@@ -135,13 +125,15 @@ button{display:none;width:100%;border:0;border-radius:15px;padding:14px;margin-t
       }
     }
 
-    // handoff가 없을 때만 기존 staging 로그인 세션을 확인합니다.
     var existing=readSession(KEY);
     if(existing&&existing.token){
-      var checked=await verify(existing.token,STAGING_API);
+      var checked=await verify(existing.token,API);
       if(checked.ok){
-        try{localStorage.setItem('guiin_verified_user_v1',JSON.stringify(checked.user));sessionStorage.setItem('guiin_verified_user_v1',JSON.stringify(checked.user));}catch(_e){}
-        success(checked.user,'staging');
+        try{
+          localStorage.setItem('guiin_verified_user_v1',JSON.stringify(checked.user));
+          sessionStorage.setItem('guiin_verified_user_v1',JSON.stringify(checked.user));
+        }catch(_e){}
+        success(checked.user,ENV);
         return;
       }
     }

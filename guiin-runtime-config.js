@@ -6,8 +6,8 @@
   "use strict";
 
   const VERSION="runtime-env-v1";
-  const ACTIVE_ENVIRONMENT="staging";
-  const PRODUCTION_VERIFIED=false;
+  const ACTIVE_ENVIRONMENT="production";
+  const PRODUCTION_VERIFIED=true;
 
   const API_BASES=Object.freeze({
     staging:"https://guiin-saju-api-staging.blue-wls.workers.dev",
