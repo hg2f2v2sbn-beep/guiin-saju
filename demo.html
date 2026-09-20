@@ -42,7 +42,7 @@
 <script src="manse-view.js"></script>
 <script src="compatibility-interpreter.js"></script>
 <script src="deep-interpretation-v3.js?v=20260918e"></script>
-<script src="guiin-runtime-config.js?v=20260920prod1"></script>
+<script src="guiin-runtime-config.js?v=20260919a"></script>
 <script src="member-data-v1.js?v=20260919a"></script>
 <style>
 :root{
@@ -2540,7 +2540,6 @@ function renderToday(){
  $('todayView').innerHTML=guiinVisualHero('today',chart?.input?.name)+`<div class="todayHero card"><div class="todayArt"><img loading="lazy" decoding="async" src="today-dog.jpg" alt=""></div><h3>오늘도 좋은 일이 찾아와요!</h3><p>“작은 행복이 모여, 큰 행운이 됩니다.”</p></div><div class="todayDate">${d.getFullYear()}년 ${d.getMonth()+1}월 ${d.getDate()}일 (${days[d.getDay()]})</div>${personal}<div class="fortuneList card" style="margin-top:9px">${rows.map((x,i)=>`<div class="fortuneRow clickable" data-title="${esc(x[0])}" data-summary="${esc(x[1])}" onclick="openTodayDetail(this.dataset.title,this.dataset.summary)"><div class="fIcon">${[ICONS.money,ICONS.heart,ICONS.money,ICONS.brief,ICONS.plus][i]}</div><div><b>${esc(x[0])}</b><span>${esc(x[1])}</span></div></div>`).join('')}</div><div class="slogan card"><b>오늘의 조언</b><br>좋은 흐름은 활용하고, 부담이 큰 결정은 한 번 더 확인해 보세요.</div><button class="ctaGold" onclick="openTodayDetail()">상세 운세 보기 ›</button>${tailQuestionsHTML('오늘')}`;
 }
 restoreProfile();renderToday();
-loadAIHistory();restoreAIChatBubbles();syncAskContext();
 setTimeout(guiinPreflight,0);
 
 const COIN_KEY='guiin_clover_wallet_v2', FREE_KEY='guiin_ai_free_used_v2', NOTIFY_KEY='guiin_notify_v1';
@@ -2626,6 +2625,7 @@ const GUIIN_GUEST_KEY='guiin_guest_session_v1';
 const GUIIN_AI_HISTORY_KEY='guiin_ai_history_v1';
 let guiinAIHistory=[], guiinAISending=false;
 let guiinCurrentUser=null;
+loadAIHistory();restoreAIChatBubbles();syncAskContext();
 window.guiinPendingKakaoHandoff='';
 window.guiinHandoffExchangeInProgress=false;
 
@@ -2730,7 +2730,7 @@ function guiinStoreAuthSession(value){
   return stored;
 }
 function guiinClearAuthSessionStorage(){
-  try{guiinClearAuthSessionStorage();}catch(_e){}
+  try{localStorage.removeItem(GUIIN_AUTH_KEY);}catch(_e){}
   try{sessionStorage.removeItem(GUIIN_AUTH_KEY);}catch(_e){}
 }
 function guiinAuthHeaders(extra={}){
@@ -3289,7 +3289,7 @@ function logoutGuiin(){
     try{window.GuiinMemberData?.afterLogout?.().catch(()=>{});}catch(_e){}
   };
   if(!s?.token){finish();return;}
-  guiinApi('/api/auth/logout',{method:'POST',cache:'no-store',headers:{'Accept':'application/json'}})
+  guiinApi('/api/auth/logout',{method:'POST',cache:'no-store',headers:{'Accept':'application/json','Content-Type':'application/json'},body:'{}'})
     .catch(()=>{}).finally(finish);
 }
 function guiinAuthErrorMessage(code,stage){
@@ -3702,7 +3702,8 @@ document.addEventListener('visibilitychange',()=>{
       var timer=setTimeout(function(){controller.abort();},8000);
 
       try{
-        var r=await fetch('https://guiin-saju-api-staging.blue-wls.workers.dev/api/auth/kakao/handoff',{
+        var rescueBase=String(globalThis.GuiinRuntimeConfig&&typeof globalThis.GuiinRuntimeConfig.apiBase==='function'?globalThis.GuiinRuntimeConfig.apiBase():'https://guiin-saju-api-staging.blue-wls.workers.dev').replace(/\/+$/,'');
+        var r=await fetch(rescueBase+'/api/auth/kakao/handoff',{
           method:'POST',
           mode:'cors',
           cache:'no-store',
