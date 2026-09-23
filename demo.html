@@ -2666,19 +2666,19 @@ function guiinExactAgeGapV5(a,b){
 function guiinCompatSignalV5(a,b){
   try{
     const pa=guiinPersonV5(a),pb=guiinPersonV5(b),age=guiinExactAgeGapV5(a,b);
-    let sig={combine:0,tension:0,types:[]};try{sig=(globalThis.GuiinCompat&&typeof GuiinCompat.relationSignals==='function')?GuiinCompat.relationSignals(a,b):sig;}catch(_e){}
+    let sig={combine:0,tension:0,types:[],hits:[]};try{sig=(globalThis.GuiinCompat&&typeof GuiinCompat.relationSignals==='function')?GuiinCompat.relationSignals(a,b):sig;}catch(_e){}
     let dayRel='직접 관계 없음';try{dayRel=(globalThis.GuiinCompat&&typeof GuiinCompat.dayBranchRelation==='function')?GuiinCompat.dayBranchRelation(a,b):dayRel;}catch(_e){}
     const oppositeTemp=(pa.season.heat<=-0.8&&pb.season.heat>=0.8)||(pb.season.heat<=-0.8&&pa.season.heat>=0.8);
     const sameStem=pa.stem&&pa.stem===pb.stem;
-    let archetype='보완·생활조율형';
-    if(sig.combine>0&&sig.tension>0)archetype='끌림과 충돌이 함께 큰 혼합형';
-    if(sig.tension>sig.combine+2)archetype='강한 자극·조율형';
-    else if(sig.combine>=sig.tension+2)archetype=oppositeTemp?'기운 보완형·결속형':'결속·생활동반자형';
-    else if(sameStem)archetype=oppositeTemp?'같은 본질·반대 온도의 보완형':'닮은 기질·거울형';
-    const destiny=sig.combine>=sig.tension+2&&dayRel==='육합'?'전통 명리식 ‘천생연분형’ 요소가 비교적 선명한 편':sig.combine>=sig.tension?'천생연분형 요소와 조율 요소가 함께 있는 편':'강한 끌림이 있더라도 오래 가려면 생활 조율이 더 중요한 편';
+    let archetype='차이를 조율하며 맞춰가는 관계';
+    if(sig.tension>sig.combine+2)archetype=oppositeTemp?'보완성은 크지만 마찰 관리가 중요한 관계':'끌림과 마찰이 함께 큰 조율형 관계';
+    else if(sig.combine>=sig.tension+2)archetype=oppositeTemp?'서로 다른 온도가 잘 보완되는 결속형 관계':'생활 호흡이 비교적 잘 맞는 결속형 관계';
+    else if(sameStem)archetype=oppositeTemp?'본질은 닮고 표현 온도는 다른 보완형 관계':'닮은 기질이 서로를 비추는 거울형 관계';
+    else if(sig.combine>0&&sig.tension>0)archetype='붙는 힘과 부딪히는 힘이 함께 있는 혼합형 관계';
+    const destiny=sig.combine>=sig.tension+2&&dayRel==='육합'?'결속 신호가 비교적 선명한 편':sig.combine>=sig.tension?'결속과 조율 신호가 함께 있는 편':'끌림이 있어도 생활 조율의 비중이 큰 편';
     const space=(pa.ind.level==='강한 편'?2:pa.ind.level==='있는 편'?1:0)+(pb.ind.level==='강한 편'?2:pb.ind.level==='있는 편'?1:0);
     return {pa,pb,age,sig,dayRel,oppositeTemp,sameStem,archetype,destiny,space};
-  }catch(_e){return {pa:guiinPersonV5(a),pb:guiinPersonV5(b),age:guiinExactAgeGapV5(a,b),sig:{combine:0,tension:0,types:[]},dayRel:'직접 관계 없음',oppositeTemp:false,sameStem:false,archetype:'생활조율형',destiny:'관계의 지속성은 실제 선택과 조율을 함께 봐야 합니다.',space:0};}
+  }catch(_e){return {pa:guiinPersonV5(a),pb:guiinPersonV5(b),age:guiinExactAgeGapV5(a,b),sig:{combine:0,tension:0,types:[],hits:[]},dayRel:'직접 관계 없음',oppositeTemp:false,sameStem:false,archetype:'생활 조율형 관계',destiny:'관계의 지속성은 실제 선택과 조율을 함께 봐야 합니다.',space:0};}
 }
 function guiinCommonRelationYearsV5(a,b){
   try{
@@ -2691,40 +2691,82 @@ function guiinCommonRelationYearsV5(a,b){
     return rows.sort((x,y)=>y.score-x.score||x.year-y.year).slice(0,3);
   }catch(_e){return [];}
 }
+function guiinCompatClampV56(n,min,max){return Math.max(min,Math.min(max,Math.round(Number(n)||0)));}
+function guiinCompatHitSummaryV56(sig,kind){
+  const labels={year:'년주',month:'월주',day:'일주',hour:'시주'};
+  const wanted=kind==='combine'?new Set(['천간합','육합']):new Set(['충','형','파','해']);
+  const rows=(sig?.hits||[]).filter(h=>wanted.has(String(h?.type||''))).sort((a,b)=>Number(b.weight||0)-Number(a.weight||0));
+  if(!rows.length)return kind==='combine'?'직접 확인되는 합 신호가 많지 않음':'강한 충·형·파·해 신호가 두드러지지 않음';
+  return rows.slice(0,5).map(h=>`${labels[h.ak]||h.ak}↔${labels[h.bk]||h.bk} ${h.type}${Number(h.weight||0)>1?`(${h.weight})`:''}`).join(' · ');
+}
+function guiinCompatMetricsV56(a,b){
+  const pa=GuiinExpert.pct(a),pb=GuiinExpert.pct(b),q=guiinCompatSignalV5(a,b);
+  const distance=['목','화','토','금','수'].reduce((s,e)=>s+Math.abs(Number(pa[e]||0)-Number(pb[e]||0)),0);
+  const elementFit=Math.max(0,14-Math.round(distance/8));
+  const combineBoost=Math.min(10,Math.round(Number(q.sig.combine||0)*1.5));
+  const tensionCost=Math.min(14,Math.round(Number(q.sig.tension||0)*1.25));
+  const dayAdjust=({육합:5,충:-6,해:-4,파:-3,형:-4,'직접 관계 없음':0})[q.dayRel]||0;
+  const climateAdjust=q.oppositeTemp?4:0;
+  const sameStemAdjust=q.sameStem?2:0;
+  const score=guiinCompatClampV56(68+elementFit+combineBoost-tensionCost+dayAdjust+climateAdjust+sameStemAdjust,55,94);
+  const love=guiinCompatClampV56(score+(q.oppositeTemp?4:0)+Math.min(3,Number(q.sig.combine||0))-Math.round(Number(q.sig.tension||0)*.35),55,96);
+  const personality=guiinCompatClampV56(68+elementFit+(q.sameStem?5:0)+Math.min(4,Number(q.sig.combine||0))-Math.min(10,Math.round(Number(q.sig.tension||0)*.8)),55,95);
+  const moneyGap=Math.abs(Number(pa['토']||0)-Number(pb['토']||0))+Math.abs(Number(pa['금']||0)-Number(pb['금']||0));
+  const money=guiinCompatClampV56(86-Math.round(moneyGap*.42)-Math.min(6,Math.round(Number(q.sig.tension||0)*.35)),55,94);
+  const al=currentLuck(a),bl=currentLuck(b),sameLuck=!!(al&&bl&&al.ko===bl.ko&&al.god===bl.god);
+  const future=guiinCompatClampV56((score+personality+money)/3-Math.min(5,Math.round(Number(q.sig.tension||0)*.4))+(sameLuck?2:0),55,94);
+  const band=score>=86?'보완성과 결속 신호가 큰 편이지만 갈등 관리도 함께 봐야 합니다.':score>=78?'서로 끌리고 보완되는 부분이 있으나 생활 조율이 관계의 질을 크게 좌우합니다.':score>=68?'장점과 차이가 함께 커서 구체적인 합의가 중요한 관계입니다.':'감정의 끌림보다 생활 규칙과 갈등 회복 능력을 먼저 확인하는 편이 좋습니다.';
+  return {score,love,personality,money,future,band,distance,elementFit,combineBoost,tensionCost,dayAdjust,climateAdjust,sameStemAdjust,q};
+}
+function guiinPairYearRowsV56(a,b){
+  const now=new Date().getFullYear(),rows=[];
+  for(let y=now;y<=now+3;y++){
+    const A=guiinYearSignalV5(a,y),B=guiinYearSignalV5(b,y); if(!A||!B)continue;
+    const same=A.topKey===B.topKey;
+    const tension=Number(A.tension||0)+Number(B.tension||0);
+    rows.push({year:y,A,B,same,tension,labelA:guiinYearLabelV5(A.topKey),labelB:guiinYearLabelV5(B.topKey)});
+  }
+  return rows;
+}
+function guiinCompatCrossV56(a,b){
+  try{return globalThis.GuiinCompat&&typeof GuiinCompat.crossTenGod==='function'?GuiinCompat.crossTenGod(a,b):{aSeesB:'-',bSeesA:'-'};}catch(_e){return {aSeesB:'-',bSeesA:'-'};}
+}
+
 function guiinCompatScoreEvidenceHTML(a,b,score){
   try{
-    const q=guiinCompatSignalV5(a,b),yrs=guiinCommonRelationYearsV5(a,b),climate=q.oppositeTemp?`${q.pa.name}님의 ${q.pa.season.climate} ↔ ${q.pb.name}님의 ${q.pb.season.climate}가 서로 다른 온도를 만들어 보완성이 있습니다.`:`두 사람의 계절 온도는 보완 하나만으로 결론내리지 않고 성격·생활 신호를 같이 봅니다.`;
-    return `<div class="deepCard card"><div class="miniTitle">왜 ${Number(score||0)}점으로 계산됐을까?</div><h3>${esc(q.archetype)} · 점수보다 합이 생기는 이유와 깨지는 이유를 같이 봅니다.</h3>
-      <div class="easyPoint good"><b>붙게 만드는 신호</b><p>교차 원국의 합 계열 가중치 ${Number(q.sig.combine||0)} · 일지 관계 ${esc(q.dayRel)}. ${esc(climate)}</p></div>
-      <div class="easyPoint watch"><b>싸움을 키울 수 있는 신호</b><p>충·형·파·해 계열 가중치 ${Number(q.sig.tension||0)}. 두 사람의 강한 성격 자체보다 간섭·속도·말투·생활 역할이 겹칠 때 이 신호가 체감되기 쉽습니다.</p></div>
-      <div class="easyPoint tip"><b>장기 인연 참고</b><p>${esc(q.destiny)}${yrs.length?` 앞으로 몇 년 비교에서는 ${yrs.map(x=>x.year+'년').join(' · ')}이 두 사람 모두 관계·도움 신호가 상대적으로 겹치는 후보 구간입니다.`:''}</p></div>
-      ${q.age.text?`<p class="reportLead">실제 생년월일 차이 · 약 ${esc(q.age.text)} · 나이 차이 자체보다 역할·돈·생활 결정권이 어떻게 나뉘는지가 더 중요합니다.</p>`:''}</div>`;
+    const q=guiinCompatSignalV5(a,b),m=guiinCompatMetricsV56(a,b),climate=q.oppositeTemp?`${q.pa.name}님의 ${q.pa.season.climate}와 ${q.pb.name}님의 ${q.pb.season.climate}가 서로 다른 온도를 만들어 보완성이 있습니다.`:`계절의 온도보다 두 사람의 월주·오행·생활 반응 차이가 더 중요하게 작동합니다.`;
+    const combineText=guiinCompatHitSummaryV56(q.sig,'combine'),tensionText=guiinCompatHitSummaryV56(q.sig,'tension');
+    return `<div class="deepCard card"><div class="miniTitle">왜 ${Number(score||0)}점으로 계산됐을까?</div><h3>${esc(q.archetype)} · 끌림과 생활 마찰을 따로 계산해 함께 봅니다.</h3>
+      <div class="easyPoint good"><b>붙게 만드는 신호</b><p>결속 가중치 ${Number(q.sig.combine||0)} · ${esc(combineText)}. ${esc(climate)}</p></div>
+      <div class="easyPoint watch"><b>부딪힐 수 있는 신호</b><p>마찰 가중치 ${Number(q.sig.tension||0)} · ${esc(tensionText)}. 이 값이 크다고 나쁜 관계라는 뜻은 아니지만, 좋아하는 마음만으로 해결되지 않는 생활 조율이 필요하다는 뜻입니다.</p></div>
+      <div class="easyPoint tip"><b>점수 읽는 법</b><p>오행 유사도·합 신호·일지 관계·계절 보완은 점수를 올리고, 충·형·파·해가 겹칠수록 조율 비용을 반영해 낮춥니다. 그래서 <b>끌림 점수는 높아도 갈등 관리 점수는 낮을 수 있습니다.</b></p></div>
+      <div class="compatEvidence">오행 거리 ${m.distance} · 결속 보정 +${m.combineBoost} · 마찰 보정 -${m.tensionCost} · 일지 ${esc(q.dayRel)}</div>
+    </div>`;
   }catch(_e){return '';}
 }
 function guiinCompatV5Sections(a,b){
-  const q=guiinCompatSignalV5(a,b),A=q.pa,B=q.pb,yrs=guiinCommonRelationYearsV5(a,b),al=currentLuck(a),bl=currentLuck(b);
-  const tempText=q.oppositeTemp?`${A.name}님과 ${B.name}님은 태어난 계절의 온도가 반대쪽이라 서로가 가진 부족한 분위기를 채워주는 보완성이 생길 수 있습니다.`:`두 사람은 계절 온도보다 월주 십성·오행·생활 반응의 조합에서 관계의 색깔이 더 선명하게 드러납니다.`;
+  const q=guiinCompatSignalV5(a,b),A=q.pa,B=q.pb,al=currentLuck(a),bl=currentLuck(b),tg=guiinCompatCrossV56(a,b),years=guiinPairYearRowsV56(a,b);
+  const tempText=q.oppositeTemp?`${A.name}님은 ${A.season.season}, ${B.name}님은 ${B.season.season}의 온도를 가지고 있어 서로에게 없는 분위기가 처음에는 강한 매력으로 느껴질 수 있습니다.`:`두 사람은 계절 차이 하나보다 월주 십성·오행·갈등 반응을 함께 볼 때 관계의 색깔이 더 분명해집니다.`;
   const sameLuck=al&&bl&&al.ko===bl.ko&&al.god===bl.god;
-  const currentText=sameLuck?`두 사람 모두 현재 ${al.ko} 대운(${al.god})이라는 같은 이름의 대운에 있지만, 원국이 다르기 때문에 같은 사건을 겪는다는 뜻은 아닙니다. ${A.name}님에게는 ${A.mg}·${A.top} 구조와, ${B.name}님에게는 ${B.mg}·${B.top} 구조와 각각 다르게 결합됩니다.`:`${A.name}님은 ${al?`${al.ko} 대운(${al.god})`:'현재 대운'}, ${B.name}님은 ${bl?`${bl.ko} 대운(${bl.god})`:'현재 대운'}에 있어 지금 삶에서 중요하게 느끼는 과제가 서로 다를 수 있습니다.`;
-  const spaceText=q.space>=3?'두 사람 모두 자기 영역과 선택권의 필요가 큰 편이라 24시간 붙어 지내기보다 각자 할 일을 하고 다시 만나는 구조가 관계를 오래 유지하는 데 더 유리할 수 있습니다.':q.space>=2?'가까움과 개인시간의 균형이 중요합니다. 한쪽이 상대 일정을 지나치게 관리하면 사랑보다 간섭으로 느껴질 수 있습니다.':'함께하는 시간 자체보다 각자가 편안함을 느끼는 연락·거리 기준을 맞추는 것이 중요합니다.';
-  const compareClash=`${A.name}님은 ${A.attachmentText} 반면 ${B.name}님은 ${B.attachmentText} 갈등이 생기면 ${A.name}님은 ${A.anger} ${B.name}님은 ${B.anger}`;
-  const longText=yrs.length?`${yrs.map(x=>x.year+'년').join(' · ')}은 앞으로 몇 년 비교에서 두 사람의 관계·도움 신호가 상대적으로 함께 올라오는 후보 구간입니다. 이때 관계를 공식화하거나 같이 살기 위한 현실 조건을 논의하기는 좋지만, 결혼 자체를 보장하는 시기로 보지는 않습니다.`:'장기 흐름은 각자의 대운과 실제 생활 조건을 함께 확인해야 합니다.';
+  const currentText=sameLuck?`현재 두 사람은 모두 ${al.ko} 대운(${al.god})으로 계산되지만, ${A.name}님은 ${A.mg}·${A.top} 구조, ${B.name}님은 ${B.mg}·${B.top} 구조 위에서 그 운을 받기 때문에 체감과 실제 과제는 같지 않습니다.`:`현재 ${A.name}님은 ${al?`${al.ko} 대운(${al.god})`:'현재 대운'}, ${B.name}님은 ${bl?`${bl.ko} 대운(${bl.god})`:'현재 대운'}에 있어 삶에서 중요하게 느끼는 과제가 서로 다를 수 있습니다.`;
+  const spaceText=q.space>=3?'두 사람 모두 자기 영역과 선택권의 필요가 커서 오래 붙어 있는 것보다 각자 할 일을 하고 다시 만나는 구조가 안정적일 수 있습니다.':q.space>=2?'가까움과 개인시간의 균형이 중요합니다. 일정·친구·외출을 지나치게 확인하면 사랑보다 간섭으로 느껴질 수 있습니다.':'함께하는 시간의 양보다 연락과 거리 기준을 미리 맞추는 것이 중요합니다.';
+  const pairView=`${A.name}님이 ${B.name}님을 ${tg.aSeesB}로 느끼고, ${B.name}님은 ${A.name}님을 ${tg.bSeesA}로 받아들이는 교차 십신이 계산됩니다.`;
+  const conflictLoop=`${A.name}님은 ${A.anger} 반면 ${B.name}님은 ${B.anger} 그래서 한쪽이 참고 있다가 뒤늦게 강하게 말하고, 다른 한쪽이 압박을 느껴 더 빨리 결론내거나 거리를 두면 “왜 갑자기 그래?”와 “왜 내 말을 안 들어?”가 반복되는 식의 루프가 생길 수 있습니다.`;
+  const yearHtml=years.length?years.map(r=>`<p><b>${r.year}년</b> · ${A.name} ${r.labelA} / ${B.name} ${r.labelB}${r.same?' · 같은 주제가 겹쳐 속도를 맞추기 쉬운 편':' · 서로 다른 과제가 커져 일정과 우선순위를 맞추는 일이 중요'}${r.tension>=3?' · 두 사람 합산 긴장 신호가 커 큰 결정을 서두르기보다 확인 과정이 필요':''}</p>`).join(''):'<p>연도별 흐름을 계산하지 못해 현재 대운 중심으로 안내합니다.</p>';
+  const gapText=q.age.text?`실제 생년월일 차이는 약 ${q.age.text}입니다. 나이 차이가 궁합의 좋고 나쁨을 정하지는 않지만, 돈·돌봄·의사결정이 한 사람에게 몰리는지 확인하는 기준으로는 중요합니다.`:'';
   return [
-    {key:'summary',tabs:['summary','marriage'],k:'이 관계의 정체',t:`${q.archetype}으로 읽힙니다.`,b:`<p>${esc(tempText)}</p><p>합 계열 가중치 ${Number(q.sig.combine||0)}, 긴장 계열 가중치 ${Number(q.sig.tension||0)}, 일지 관계는 ${esc(q.dayRel)}입니다. 즉 “잘 맞는다/안 맞는다” 한 줄보다 <b>왜 붙고 왜 싸우는지</b>를 같이 보는 궁합입니다.</p>`,g:'서로 다른 기능을 역할로 나누면 혼자일 때보다 선택지가 넓어질 수 있습니다.',w:'좋을 때의 끌림만 믿고 생활 규칙을 미루면 긴장 신호가 반복될 수 있습니다.',tip:'연락·돈·시간·사생활·가족·혼자 있는 시간을 실제 규칙으로 합의하세요.',ev:`합 ${q.sig.combine} · 긴장 ${q.sig.tension} · 일지 ${q.dayRel}`},
-    {key:'attraction',tabs:['summary','love'],k:'왜 서로에게 끌렸을까',t:q.oppositeTemp?'기운은 반대인데 필요한 온도를 서로 가지고 있는 보완형 끌림이 있습니다.':'닮은 점과 다른 점이 동시에 호기심을 만드는 관계입니다.',b:`<p>${esc(tempText)}</p><p>${A.name}님은 ${esc(A.lifeValue)}을 중요하게 보고, ${B.name}님은 ${esc(B.lifeValue)}을 중요하게 봅니다. 이 차이가 처음에는 매력과 신선함이 되지만 가까워지면 생활 기준의 차이로도 나타날 수 있습니다.</p>`,g:'상대에게 내가 없는 기능이 보일 때 서로에게 도움이 되는 관계가 될 수 있습니다.',w:'상대의 다른 기질을 고쳐야 할 단점으로 보기 시작하는 순간 보완성이 갈등으로 바뀝니다.',tip:'처음 상대에게 좋았던 점이 지금 어떤 도움으로 남아 있는지 각각 세 가지씩 말해보세요.',ev:`계절 ${A.season.season}/${B.season.season} · 월주 ${A.mg}/${B.mg}`},
-    {key:'partnerA',tabs:['summary','partner'],k:`${A.name}님은 어떤 사람?`,t:`${A.name}님은 ${A.core}`,b:`<p><b>삶의 기준</b> · ${esc(A.lifeValue)}</p><p><b>사람을 만나는 방식</b> · ${esc(A.people)}</p><p><b>일의 기질</b> · ${esc(A.firstPath)} 실제 직군은 ${A.jobs.map(esc).join(' · ')} 같은 예시를 볼 수 있습니다.</p><p><b>좋을 때</b> · ${esc(A.gift)}</p><p><b>힘들 때</b> · ${esc(A.rough)}</p>`,g:`${A.name}님의 가장 잘난 점은 ${A.gift}입니다.`,w:`가장 고쳐야 할 점은 ${A.shadow}`,tip:'좋은 모습과 스트레스 받을 때 모습을 같은 사람의 두 면으로 보세요.',ev:`${A.season.season} · ${A.stem} 일간 · 월주 ${A.mg} · ${A.top} 중심`},
-    {key:'partnerB',tabs:['summary','partner'],k:`${B.name}님은 어떤 사람?`,t:`${B.name}님은 ${B.core}`,b:`<p><b>삶의 기준</b> · ${esc(B.lifeValue)}</p><p><b>사람을 만나는 방식</b> · ${esc(B.people)}</p><p><b>일의 기질</b> · ${esc(B.firstPath)} 실제 직군은 ${B.jobs.map(esc).join(' · ')} 같은 예시를 볼 수 있습니다.</p><p><b>좋을 때</b> · ${esc(B.gift)}</p><p><b>힘들 때</b> · ${esc(B.rough)}</p>`,g:`${B.name}님의 가장 잘난 점은 ${B.gift}입니다.`,w:`가장 고쳐야 할 점은 ${B.shadow}`,tip:'상대가 편안할 때와 압박받을 때의 행동을 분리해서 이해하세요.',ev:`${B.season.season} · ${B.stem} 일간 · 월주 ${B.mg} · ${B.top} 중심`},
-    {key:'fit',tabs:['summary','love','marriage'],k:'성격적으로 잘 맞는 부분',t:'비슷한 부분은 빠른 공감을 만들고, 다른 부분은 서로의 빈 곳을 채울 수 있습니다.',b:`<p>${A.name}님의 강점은 <b>${esc(A.gift)}</b>, ${B.name}님의 강점은 <b>${esc(B.gift)}</b>입니다. 두 강점을 같은 방식으로 쓰라고 요구하지 않고 역할로 나누면 시너지가 생깁니다.</p><p>${esc(tempText)}</p>`,g:'서로가 상대의 부족한 부분을 대신 해주는 게 아니라, 다른 강점을 인정할 때 가장 잘 맞습니다.',w:'“나는 이렇게 하는데 왜 너는 못 해?”가 반복되면 닮은 점보다 차이가 더 크게 느껴집니다.',tip:'서로 잘하는 일 세 가지를 정하고 생활·돈·관계에서 실제 역할로 나눠보세요.',ev:`월주 ${A.mg} ↔ ${B.mg} · 일지 ${q.dayRel}`},
-    {key:'clash',tabs:['summary','love','marriage'],k:'둘이 만났을 때 가장 많이 부딪힐 점',t:'사랑의 크기보다 불편함을 처리하는 속도와 간섭의 경계에서 큰 싸움이 생길 수 있습니다.',b:`<p>${esc(compareClash)}</p><p>${esc(spaceText)}</p><p>그래서 한 사람은 “왜 나를 몰아붙여?”라고 느끼고, 다른 사람은 “왜 말을 안 하고 피하지?” 혹은 “왜 내 생활까지 간섭하지?”라고 느끼는 식의 엇갈림이 생길 수 있습니다.</p>`,g:'갈등 원인을 알면 같은 싸움을 성격 전체의 문제로 확대하지 않을 수 있습니다.',w:'화가 난 순간 관계 전체·이별·과거 문제까지 한꺼번에 꺼내는 것',tip:'감정이 올라오면 즉시 결론내기보다 다시 이야기할 정확한 시간을 정해두세요.',ev:`관계 반응 ${A.attachment} ↔ ${B.attachment} · 긴장 ${q.sig.tension}`},
-    {key:'edges',tabs:['summary','partner'],k:'각자의 잘난 점과 못난 점',t:'좋은 궁합은 상대의 장점만 보는 게 아니라 내 못난 부분이 관계에서 어떻게 튀는지도 보는 것입니다.',b:`<div class="easyPoint good"><b>${esc(A.name)}님의 잘난 점</b><p>${esc(A.gift)}</p></div><div class="easyPoint watch"><b>${esc(A.name)}님이 고칠 점</b><p>${esc(A.rough)}</p></div><div class="easyPoint good"><b>${esc(B.name)}님의 잘난 점</b><p>${esc(B.gift)}</p></div><div class="easyPoint watch"><b>${esc(B.name)}님이 고칠 점</b><p>${esc(B.rough)}</p></div>`,g:'서로의 좋은 기능을 알아주면 상대를 바꾸려는 힘이 줄어듭니다.',w:'상대의 단점만 모아 사람 전체를 평가하는 것',tip:'각자 “내가 먼저 고칠 것 1개 / 상대에게 부탁할 것 1개”만 정하세요.',ev:`월주 ${A.mg}/${B.mg} · 성향 신호 비교`},
-    {key:'space',tabs:['love','partner','marriage'],k:'사람을 만나는 방식·각자의 공간',t:q.space>=3?'이 관계는 붙어 있는 시간보다 떨어져 있는 시간을 어떻게 쓰는지가 중요합니다.':'함께하는 시간과 각자의 생활을 어느 정도 나눌지 합의가 필요합니다.',b:`<p>${esc(A.name)}님 · ${esc(A.people)}</p><p>${esc(B.name)}님 · ${esc(B.people)}</p><p>${esc(spaceText)}</p>`,g:'각자 자기 삶을 유지하면서 만날수록 만나는 시간이 더 즐거워질 수 있습니다.',w:'연락·친구·외출·혼자 있는 시간을 상대의 사랑을 검사하는 도구로 쓰는 것',tip:'각자 간섭받기 싫은 영역과 꼭 공유하고 싶은 영역을 따로 적어보세요.',ev:`독립성 ${A.ind.level} ↔ ${B.ind.level}`},
-    {key:'attachment',tabs:['love','partner'],k:'연락·애착·거리 반응',t:`${A.name}님은 ${A.attachment}, ${B.name}님은 ${B.attachment} 반응이 상대적으로 눈에 띕니다.`,b:`<p>${esc(A.name)}님은 ${esc(A.attachmentText)}</p><p>${esc(B.name)}님은 ${esc(B.attachmentText)}</p><p>한 사람은 바로 확인하고 다른 사람은 혼자 생각할 시간이 필요한 경우, 같은 침묵을 한쪽은 거절로 느끼고 다른 쪽은 정리 시간으로 느낄 수 있습니다.</p>`,g:'서로의 불안 반응을 알면 연락 문제를 사랑의 크기로 오해하는 일이 줄어듭니다.',w:'상대를 “불안형/회피형” 같은 고정된 성격으로 낙인찍는 것',tip:'싸웠을 때 연락을 언제 다시 할지, 혼자 있고 싶을 때 어떻게 말할지를 미리 정하세요.',ev:`${A.mg} ↔ ${B.mg} · 원국 긴장신호`},
-    {key:'boredom',tabs:['love','partner'],k:'권태·친밀감·새로운 자극',t:`${A.name}님은 권태 ${A.boredom}, ${B.name}님은 ${B.boredom}으로 읽힐 수 있습니다.`,b:`<p>${esc(A.name)}님 · ${esc(A.boredomText)} 친밀감은 ${esc(A.intimacy)}.</p><p>${esc(B.name)}님 · ${esc(B.boredomText)} 친밀감은 ${esc(B.intimacy)}.</p><p>권태와 성적·신체적 친밀감은 외도 가능성을 뜻하지 않습니다. 두 사람이 안정과 새 자극을 얼마나 다르게 필요로 하는지 보는 항목입니다.</p>`,g:'필요한 변화의 양을 알면 안정된 관계 안에서도 활력을 만들 수 있습니다.',w:'지루함이 느껴졌다는 이유로 관계가 끝났다고 단정하는 것',tip:'익숙한 루틴 하나와 새로운 경험 하나를 동시에 유지해보세요.',ev:`권태 ${A.boredom}/${B.boredom} · 친밀감 ${A.intimacy}/${B.intimacy}`},
-    {key:'workMoney',tabs:['marriage','partner'],k:'직업·돈·삶의 방향이 맞을까',t:'장기 관계에서는 사랑보다 “어떤 삶을 만들고 싶은 사람인가”가 더 크게 작용합니다.',b:`<p>${esc(A.name)}님은 ${esc(A.lifeValue)}을 중요하게 보고, 돈은 ${esc(A.money)}입니다.</p><p>${esc(B.name)}님은 ${esc(B.lifeValue)}을 중요하게 보고, 돈은 ${esc(B.money)}입니다.</p><p>둘의 직업 기질이 다르면 한 사람은 안정·축적을, 다른 사람은 경험·표현·확장을 우선할 수 있습니다. 이것은 누가 맞는 문제가 아니라 공동 목표를 어떻게 잡느냐의 문제입니다.</p>`,g:'서로 다른 돈 버는 방식을 인정하면 한쪽은 수입을 만들고 다른 쪽은 지키는 식의 역할 분담도 가능합니다.',w:'데이트비·생활비·가족지원·저축을 사랑의 크기로 계산하는 것',tip:'공동비용, 개인비용, 저축, 가족지원 네 항목을 숫자로 합의하세요.',ev:`직업모드 ${A.career?.work_mode||'-'} ↔ ${B.career?.work_mode||'-'}`},
-    {key:'marriage',tabs:['marriage'],k:'동거·결혼생활',t:'결혼형 관계인지 보는 핵심은 설렘보다 반복되는 생활을 같이 굴릴 수 있는가입니다.',b:`<p>${esc(spaceText)}</p><p>돈·집안일·반려동물·수면·외출·친구·가족·개인시간을 누가 관리하는지가 장기 만족도를 크게 좌우합니다.</p><p>${q.age.text?`두 사람의 실제 생년월일 차이는 약 ${esc(q.age.text)}입니다. 나이 차이보다 한쪽이 보호자·관리자 역할로 굳어지는지를 더 중요하게 봐야 합니다.`:''}</p>`,g:'각자의 역할과 결정권을 문장으로 합의할 수 있다면 장기생활의 안정성이 높아질 수 있습니다.',w:'한 사람이 계속 책임지고 다른 사람은 따라가기만 하는 구조가 굳어지는 것',tip:'같이 살기 전 돈·집안일·가족·개인시간·반려동물 책임을 실제 항목으로 나누세요.',ev:`일지 ${q.dayRel} · 독립성 ${A.ind.level}/${B.ind.level}`},
-    {key:'family',tabs:['marriage'],k:'가족·외부 문제',t:'좋은 궁합도 가족·돈·거주지 같은 외부 문제가 경계를 넘으면 피로해질 수 있습니다.',b:`<p>부모나 가족의 실제 행동을 사주로 정할 수는 없지만, ${A.name}님과 ${B.name}님의 독립성·책임 성향을 보면 가족 요청을 누가 어디까지 떠안을지 미리 정하는 것이 중요합니다.</p><p>특히 한쪽이 가족 문제를 해결하는 역할로 고정되면 둘 사이의 문제보다 외부 책임 때문에 관계가 지칠 수 있습니다.</p>`,g:'서로의 가족을 존중하되 커플의 기준을 먼저 세울 수 있습니다.',w:'상대 가족의 문제까지 사랑의 증명처럼 대신 해결하는 것',tip:'방문·돌봄·금전지원·명절 기준을 갈등이 생기기 전에 합의하세요.',ev:`독립성 ${A.ind.level}/${B.ind.level} · 생활경계`},
-    {key:'timing',tabs:['summary','love','marriage'],k:'지금과 앞으로의 관계 속도',t:currentText,b:`<p>${esc(currentText)}</p><p>${esc(longText)}</p>`,g:'같은 시기에 서로의 삶의 우선순위가 맞으면 관계 논의가 자연스럽게 진전될 수 있습니다.',w:'좋은 연도 하나만 보고 결혼·이별을 확정하는 것',tip:'좋은 흐름은 결정을 대신하는 예언이 아니라 대화·준비·실행을 하기 쉬운 시기로 활용하세요.',ev:`현재 ${al?.ko||'-'}(${al?.god||'-'}) ↔ ${bl?.ko||'-'}(${bl?.god||'-'})`},
-    {key:'destiny',tabs:['summary','love','marriage','partner'],k:'천생연분일까, 오래갈 인연일까?',t:q.destiny,b:`<p>${esc(q.destiny)} 원국만 놓고 “반드시 결혼한다/헤어진다”를 확정할 수는 없지만, 이 관계가 오래가기 쉬운 조건은 분명히 볼 수 있습니다.</p><p>${esc(spaceText)}</p><p><b>결혼까지 이어지는 데 필요한 조건</b> · 감정이 좋을 때뿐 아니라 돈·시간·사생활·가족·일의 우선순위를 합의할 수 있는가입니다. ${esc(longText)}</p>`,g:'좋은 합과 보완 신호가 실제 생활의 협력으로 이어지면 장기 인연의 힘이 커집니다.',w:'강한 끌림이나 점수 하나를 “운명”의 증거로 삼는 것',tip:'이 사람과 함께 있을 때 내가 더 편안하고 성장하는지, 아니면 계속 관리자·구원자 역할이 되는지를 현실에서 확인하세요.',ev:`${q.archetype} · 합 ${q.sig.combine} / 긴장 ${q.sig.tension} · 일지 ${q.dayRel}`}
+    {key:'summary',tabs:['summary','marriage'],k:'이 관계의 핵심 구조',t:`${q.archetype}로 읽힙니다.`,b:`<p>${esc(tempText)}</p><p>${esc(pairView)}</p><p>결속 신호 ${Number(q.sig.combine||0)}, 마찰 신호 ${Number(q.sig.tension||0)}, 일지 관계 ${esc(q.dayRel)}를 함께 보면 “잘 맞는다/안 맞는다”보다 <b>끌리는 이유와 싸우는 이유가 동시에 존재하는 관계</b>인지가 더 중요합니다.</p>`,g:'서로 다른 강점을 역할로 나누고 상대의 방식 자체를 존중할 때 관계의 장점이 살아납니다.',w:'좋을 때의 끌림을 근거로 생활 규칙을 미루면 같은 갈등이 반복될 수 있습니다.',tip:'연락·돈·시간·사생활·가족·개인시간에서 서로 절대 양보하기 어려운 기준을 먼저 적어보세요.',ev:`결속 ${q.sig.combine} · 마찰 ${q.sig.tension} · 일지 ${q.dayRel}`},
+    {key:'attraction',tabs:['summary','love'],k:'왜 서로에게 끌렸을까',t:q.oppositeTemp?'닮은 중심과 다른 온도가 동시에 매력으로 작동할 수 있습니다.':'닮은 점과 다른 점이 동시에 호기심을 만드는 관계입니다.',b:`<p>${esc(tempText)}</p><p>${esc(pairView)}</p><p>${A.name}님은 ${esc(A.lifeValue)}을 중요하게 보고, ${B.name}님은 ${esc(B.lifeValue)}을 중요하게 봅니다. 처음에는 이 차이가 “나에게 없는 점”으로 보이지만, 가까워질수록 생활 기준의 차이로 체감될 수 있습니다.</p>`,g:'상대에게 없는 기능을 대신 채워주기보다 서로 다른 방식이 있다는 사실을 인정할 때 보완성이 커집니다.',w:'처음 좋았던 차이를 나중에 “왜 나처럼 못 하지?”라는 불만으로 바꾸는 것',tip:'처음 상대에게 끌렸던 행동 3개와 지금 힘든 행동 3개가 사실 같은 기질의 양면인지 비교해보세요.',ev:`교차 십신 ${tg.aSeesB} ↔ ${tg.bSeesA} · 계절 ${A.season.season}/${B.season.season}`},
+    {key:'partnerA',tabs:['summary','partner'],k:`관계 안의 ${A.name}님`,t:`${A.name}님은 ${A.core}`,b:`<p>이 관계에서 중요하게 여기는 기준은 <b>${esc(A.lifeValue)}</b>에 가깝습니다. ${esc(A.people)}</p><p>편안할 때는 ${esc(A.gift)}이 장점으로 보이지만, 압박이 커지면 ${esc(A.rough)}</p><p>따라서 상대가 봐야 할 핵심은 “평소의 좋은 모습”과 “지쳤을 때의 방어 반응”을 같은 사람의 두 면으로 이해하는 것입니다.</p>`,g:`${A.name}님의 관계 강점은 ${A.gift}입니다.`,w:`스트레스가 오래 누적되면 ${A.shadow}`,tip:`${A.name}님이 힘들다고 말하기 전 나타나는 행동 신호를 둘이 한두 개 정해두세요.`,ev:`${A.season.season} · ${A.stem} 일간 · 월주 ${A.mg} · ${A.top} 중심`},
+    {key:'partnerB',tabs:['summary','partner'],k:`관계 안의 ${B.name}님`,t:`${B.name}님은 ${B.core}`,b:`<p>이 관계에서 중요하게 여기는 기준은 <b>${esc(B.lifeValue)}</b>에 가깝습니다. ${esc(B.people)}</p><p>편안할 때는 ${esc(B.gift)}이 장점으로 보이지만, 압박이 커지면 ${esc(B.rough)}</p><p>상대를 이해할 때는 “원래 그런 사람”이라고 고정하기보다 어떤 상황에서 이 반응이 커지는지를 같이 보는 편이 정확합니다.</p>`,g:`${B.name}님의 관계 강점은 ${B.gift}입니다.`,w:`스트레스가 오래 누적되면 ${B.shadow}`,tip:`${B.name}님이 혼자 정리할 시간이 필요한지, 바로 대화하는 편이 나은지 실제 경험으로 기준을 정해보세요.`,ev:`${B.season.season} · ${B.stem} 일간 · 월주 ${B.mg} · ${B.top} 중심`},
+    {key:'fit',tabs:['summary','love'],k:'둘이 잘 맞을 때 실제 모습',t:'좋은 궁합은 비슷해서 편한 부분과 달라서 도움이 되는 부분이 동시에 작동합니다.',b:`<p>${A.name}님의 강점은 <b>${esc(A.gift)}</b>, ${B.name}님의 강점은 <b>${esc(B.gift)}</b>입니다. 생활에서는 한 사람이 다른 사람을 따라 하는 것보다 각자 잘하는 영역을 맡았을 때 만족도가 높아질 수 있습니다.</p><p>${esc(spaceText)}</p>`,g:'서로의 강점을 인정하고 역할을 나누면 함께 있을 때 혼자보다 선택지가 넓어질 수 있습니다.',w:'상대의 방식이 나와 다르다는 이유로 능력·성의 부족으로 해석하는 것',tip:'데이트·생활·돈·일에서 “이건 네가 더 잘한다 / 이건 내가 더 잘한다”를 실제로 나눠보세요.',ev:`월주 ${A.mg} ↔ ${B.mg} · 일지 ${q.dayRel}`},
+    {key:'clash',tabs:['summary','love','marriage'],k:'싸움이 커지는 순서',t:'문제 자체보다 두 사람이 불편함을 처리하는 순서가 다를 때 싸움이 커질 수 있습니다.',b:`<p>${esc(conflictLoop)}</p><p>${esc(spaceText)}</p><p>따라서 갈등의 핵심은 누가 더 예민한가가 아니라 <b>누가 먼저 확인하고, 누가 먼저 거리를 두며, 언제 다시 대화할지</b>가 맞지 않는 데 있을 수 있습니다.</p>`,g:'갈등 순서를 알아두면 한 번의 싸움을 관계 전체의 문제로 확대하는 일을 줄일 수 있습니다.',w:'화가 난 순간 이별·과거 문제·돈·가족 문제까지 한꺼번에 꺼내는 것',tip:'대화를 멈춰야 할 때는 “언제 다시 이야기할지”까지 같이 정하세요. 침묵의 길이를 상대가 추측하게 두지 않는 것이 중요합니다.',ev:`관계 반응 ${A.attachment} ↔ ${B.attachment} · 마찰 ${q.sig.tension}`},
+    {key:'attachment',tabs:['love','summary'],k:'연락·거리·확인 욕구',t:`${A.name}님과 ${B.name}님은 관계가 흔들릴 때 확인하는 방식이 다를 수 있습니다.`,b:`<p>${A.name}님 · ${esc(A.attachmentText)}</p><p>${B.name}님 · ${esc(B.attachmentText)}</p><p>한 사람에게 필요한 확인이 다른 사람에게는 간섭처럼 느껴질 수 있고, 한 사람에게 필요한 혼자 있는 시간이 다른 사람에게는 무관심처럼 느껴질 수 있습니다. 그래서 연락 횟수보다 <b>연락이 줄었을 때 어떤 설명을 해주는가</b>가 더 중요합니다.</p>`,g:'서로의 불안 반응을 알면 연락 문제를 사랑의 크기로 오해하는 일이 줄어듭니다.',w:'연락량·외출·친구관계를 사랑을 증명하는 시험으로 사용하는 것',tip:'평소 연락 기준 / 바쁠 때 연락 기준 / 싸웠을 때 다시 연락할 시간을 세 가지로 나눠 합의하세요.',ev:`${A.mg} ↔ ${B.mg} · 독립성 ${A.ind.level}/${B.ind.level}`},
+    {key:'boredom',tabs:['love','partner'],k:'권태·친밀감·새로운 자극',t:`${A.name}님은 권태 ${A.boredom}, ${B.name}님은 ${B.boredom}으로 읽힐 수 있습니다.`,b:`<p>${A.name}님 · ${esc(A.boredomText)} 친밀감은 ${esc(A.intimacy)}.</p><p>${B.name}님 · ${esc(B.boredomText)} 친밀감은 ${esc(B.intimacy)}.</p><p>권태는 외도나 이별을 예언하는 항목이 아닙니다. 두 사람이 안정과 새 자극을 얼마나 다르게 필요로 하는지 확인하는 참고 기준입니다.</p>`,g:'필요한 변화의 양을 알면 안정된 관계 안에서도 활력을 만들 수 있습니다.',w:'지루함이 느껴졌다는 이유만으로 관계 자체가 끝났다고 결론내리는 것',tip:'익숙한 루틴 하나는 유지하고, 둘이 처음 해보는 경험 하나를 정기적으로 추가해보세요.',ev:`권태 ${A.boredom}/${B.boredom} · 친밀감 ${A.intimacy}/${B.intimacy}`},
+    {key:'workMoney',tabs:['summary','marriage','partner'],k:'돈·일·책임을 같이 굴릴 수 있을까',t:'장기 관계에서는 애정 표현만큼 돈과 책임의 분배가 중요합니다.',b:`<p>${A.name}님은 ${esc(A.lifeValue)}을 중요하게 보고 돈은 ${esc(A.money)}입니다.</p><p>${B.name}님은 ${esc(B.lifeValue)}을 중요하게 보고 돈은 ${esc(B.money)}입니다.</p><p>직업 기질이 다르면 한 사람은 안정·축적, 다른 사람은 경험·전문성·확장을 더 우선할 수 있습니다. 이것은 누가 맞는 문제가 아니라 <b>공동비용과 개인 선택권을 어떻게 나눌지</b>의 문제입니다.</p>`,g:'서로 다른 돈 버는 방식과 일의 우선순위를 인정하면 역할 분담이 장점이 될 수 있습니다.',w:'데이트비·생활비·선물·가족지원을 사랑의 크기와 직접 연결하는 것',tip:'공동비용 / 각자 자유비 / 저축 / 가족지원 / 반려동물·돌봄 비용을 따로 적고 한도를 정하세요.',ev:`직업모드 ${A.career?.work_mode||'-'} ↔ ${B.career?.work_mode||'-'}`},
+    {key:'marriage',tabs:['marriage','summary'],k:'동거·결혼에서 확인할 것',t:'결혼형 관계인지는 설렘보다 반복되는 생활을 둘이 함께 운영할 수 있는지에서 더 잘 드러납니다.',b:`<p>${esc(spaceText)}</p><p>돈·집안일·수면·외출·친구·가족·반려동물·개인시간을 누가 기억하고 누가 실행하는지까지 나누는 것이 중요합니다.</p>${gapText?`<p>${esc(gapText)}</p>`:''}<p>한 사람이 계속 계획하고 챙기고 비용을 부담하고, 다른 사람이 따라가는 구조가 오래 굳어지면 연인보다 관리자와 피관리자처럼 느껴질 수 있습니다.</p>`,g:'생활 책임과 결정권을 같이 나누면 장기 관계의 안정성이 올라갈 수 있습니다.',w:'한 사람이 모든 일정·돈·돌봄을 관리하는 구조가 당연해지는 것',tip:'같이 살기 전 “누가 무엇을 기억하고, 누가 무엇을 돈 내고, 누가 무엇을 실행할지”를 실제 항목으로 나눠보세요.',ev:`일지 ${q.dayRel} · 독립성 ${A.ind.level}/${B.ind.level}`},
+    {key:'timing',tabs:['summary','love','marriage'],k:'지금부터 4년의 관계 속도',t:'좋은 해를 고르는 것보다 두 사람의 삶의 우선순위가 같은 해와 다른 해를 구분해서 보는 편이 정확합니다.',b:`<p>${esc(currentText)}</p>${yearHtml}`,g:'둘의 우선순위가 비슷한 해에는 관계의 다음 단계를 논의하기가 상대적으로 수월할 수 있습니다.',w:'특정 연도를 결혼·이별이 정해진 해처럼 받아들이는 것',tip:'해마다 “우리 관계에서 올해 가장 중요한 현실 문제 1개”만 정해 점검하세요.',ev:`현재 ${al?.ko||'-'}(${al?.god||'-'}) ↔ ${bl?.ko||'-'}(${bl?.god||'-'})`},
+    {key:'destiny',tabs:['summary','love','marriage','partner'],k:'이 관계가 오래가려면',t:q.destiny,b:`<p>${esc(q.destiny)}입니다. 원국 궁합만으로 결혼이나 이별을 확정할 수는 없지만, 오래가기 위해 필요한 조건은 비교적 선명하게 볼 수 있습니다.</p><p>${esc(spaceText)}</p><p><b>핵심은</b> 좋아하는 마음을 반복해서 증명하는 것보다 돈·시간·개인공간·가족·일·돌봄의 책임을 실제로 나눌 수 있는가입니다.</p>`,g:'결속과 보완 신호가 생활 협력으로 이어질 때 관계의 장점이 오래 유지됩니다.',w:'점수나 강한 끌림을 “운명”의 증거로 사용해 현실 문제를 미루는 것',tip:'이 관계에서 내가 더 편안하고 성장하는지, 아니면 계속 관리자·구원자·감정조절자 역할을 맡는지 현실 행동으로 확인하세요.',ev:`${q.archetype} · 결속 ${q.sig.combine} / 마찰 ${q.sig.tension} · 일지 ${q.dayRel}`}
   ];
 }
 
@@ -3420,26 +3462,16 @@ function submitMatch(){
       if(failed.length)console.warn('GUIIN_COMPAT_PROFILE_SYNC_DEFERRED',failed.map(x=>x.reason?.message||String(x.reason)));
     });
   }catch(err){console.warn('GUIIN_COMPAT_PROFILE_SYNC_DEFERRED',err?.message||err);}
-  const pa=GuiinExpert.pct(a),pb=GuiinExpert.pct(b);
-  const distance=['목','화','토','금','수'].reduce((s,e)=>s+Math.abs(pa[e]-pb[e]),0);
-  const balance=Math.max(0,20-Math.round(distance/5));
-  const same=a.dayMaster.el===b.dayMaster.el?4:0;
-  const dayGap=Math.min((a.pillars.day.branchIndex-b.pillars.day.branchIndex+12)%12,(b.pillars.day.branchIndex-a.pillars.day.branchIndex+12)%12);
-  const relationBonus=dayGap===6?-4:(dayGap===4||dayGap===8?4:0);
-  const score=Math.max(60,Math.min(96,72+balance+same+relationBonus));
-  const love=Math.max(55,Math.min(98,score+(dayGap===4||dayGap===8?5:0)));
-  const personality=Math.max(55,Math.min(98,score+Math.round((20-distance/5)/2)));
-  const money=Math.max(55,Math.min(98,Math.round((100-(Math.abs(pa['토']-pb['토'])+Math.abs(pa['금']-pb['금'])))*.35+55)));
-  const future=Math.max(55,Math.min(98,Math.round((score+personality)/2)));
-  const band=score>=86?'서로의 장점을 살릴 여지가 큰 관계입니다.':score>=76?'맞는 부분과 조율할 부분이 함께 있는 관계입니다.':score>=66?'끌림과 차이가 함께 있어 생활 조율이 중요한 관계입니다.':'점수보다 대화와 경계 설정이 특히 중요한 관계입니다.';
+  const compatMetrics=guiinCompatMetricsV56(a,b);
+  const {score,love,personality,money,future,band}=compatMetrics;
   matchMeta={a,b,score,love,personality,money,future,good:score>=82?'기본적인 호감과 상호 보완 가능성이 큰 편입니다. 서로 다른 강점을 역할로 나누면 함께 있을 때 혼자보다 선택지가 넓어질 수 있습니다.':'차이가 분명한 만큼 서로에게 없는 방식을 배우게 되는 관계입니다. 맞는 부분만 찾기보다 각자의 강점을 역할로 나누는 것이 중요합니다.',watch:dayGap===6?'일지의 충 신호가 있어 감정의 속도나 생활 리듬이 다를 때 갈등이 크게 느껴질 수 있습니다. 다툼 자체보다 다툰 뒤 어떻게 회복하는지가 핵심입니다.':'감정이 좋을 때는 차이를 매력으로 느끼지만, 피곤할 때는 같은 차이가 답답함으로 느껴질 수 있습니다. 특히 책임과 돈 문제를 말없이 넘기지 않는 것이 중요합니다.',tip:'연락·돈·시간·집안일·가족·혼자 있는 시간에 대한 기준을 구체적으로 맞추세요. 좋은 궁합은 점수보다 반복되는 갈등을 두 사람이 실제로 조율할 수 있을 때 오래 갑니다.'};
-  const matchHeadline=score>=86?'서로의 장점을 살리기 좋은 관계예요.':score>=76?'잘 맞는 부분과 조율할 부분이 함께 보여요.':score>=66?'끌림과 차이가 함께 있는 관계예요.':'점수보다 대화 방식이 더 중요한 관계예요.';
+  const matchHeadline=score>=86?'보완성과 결속이 큰 관계예요.':score>=78?'끌림과 조율이 함께 필요한 관계예요.':score>=68?'차이를 맞춰갈수록 좋아지는 관계예요.':'점수보다 생활 합의가 더 중요한 관계예요.';
   const pairNow=compatPairProfile(a.dayMaster?.el||a.pillars?.day?.stemEl||'토',b.dayMaster?.el||b.pillars?.day?.stemEl||'토');
   const pairStructure=guiinCompatSignalV5(a,b);
-  const pairLead=pairStructure?.archetype?`${pairStructure.archetype}. ${pairStructure.oppositeTemp?'태어난 계절의 온도는 서로 보완되는 면이 있습니다.':'성격과 생활 리듬의 합을 함께 봐야 합니다.'}`:(pairNow?.fit||'두 사람의 생활 패턴을 함께 확인해 보세요.');
+  const pairLead=pairStructure?.archetype?`${pairStructure.archetype}. ${pairStructure.oppositeTemp?'서로 다른 계절의 온도는 끌림이 될 수 있지만 실제 생활 조율을 함께 봐야 합니다.':'성격과 생활 리듬의 합을 함께 봐야 합니다.'}`:(pairNow?.fit||'두 사람의 생활 패턴을 함께 확인해 보세요.');
   matchBaseHTML=`<div class="matchHero card"><h3>${matchHeadline}</h3><p>${esc(pairLead)} 점수보다 실제 생활에서 반복되는 패턴을 함께 보세요.</p><div class="matchArt"><img loading="lazy" decoding="async" src="compat-animals.jpg" alt=""></div><div style="font-size:9px;margin-top:7px">귀인사주 참고 궁합 지수</div><div class="score">♥ ${score}<small>점</small></div><p>${band}</p></div>
    <div class="infoCard card"><div class="pair"><div class="person"><b>나<br>${esc(a.input.name)}</b><br>${a.input.year}.${a.input.month}.${a.input.day}<br>${a.input.gender==='여'?'여성':'남성'}</div><div class="heartSvg">${ICONS.heart}</div><div class="person b"><b>상대방<br>${esc(b.input.name)}</b><br>${b.input.year}.${b.input.month}.${b.input.day}<br>${b.input.gender==='여'?'여성':'남성'}</div></div></div>
-   <div class="infoCard card"><h3>세부 궁합 지수</h3>${[['연애궁합',love,'pink'],['성격궁합',personality,'mint'],['재물궁합',money,'gold'],['미래궁합',future,'purple']].map(x=>`<div class="scoreRow"><span>${x[0]}</span><div class="scoreBar"><i class="${x[2]}" style="width:${x[1]}%"></i></div><b>${x[1]}</b></div>`).join('')}</div>`+
+   <div class="infoCard card"><h3>세부 궁합 지수</h3>${[['연애·끌림',love,'pink'],['성격·대화',personality,'mint'],['돈·생활',money,'gold'],['장기조율',future,'purple']].map(x=>`<div class="scoreRow"><span>${x[0]}</span><div class="scoreBar"><i class="${x[2]}" style="width:${x[1]}%"></i></div><b>${x[1]}</b></div>`).join('')}</div>`+
    guiinRenderMansePair(a,b);
   if(typeof GuiinCompat==='undefined') throw new Error('compatibility-interpreter.js가 로드되지 않았습니다.');
   matchAnalysis=GuiinCompat.build(a,b,score);
