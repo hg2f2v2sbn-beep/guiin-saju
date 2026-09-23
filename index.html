@@ -169,6 +169,23 @@ img{max-width:100%;height:auto;display:block}
 .noCropArt img{width:132px;height:96px;object-fit:contain!important;object-position:center bottom!important;border-radius:0!important}
 
 
+
+/* 6.0 신살·귀인 설명 진입 카드 */
+.starGuideEntry{margin:10px 0 14px;padding:15px 16px;background:linear-gradient(145deg,#fffaf0,#f5f9ed);border:1px solid #eadfca}
+.starGuideEntry .starGuideTop{display:flex;gap:10px;align-items:flex-start}
+.starGuideEntry .starGuideIcon{width:36px;height:36px;border-radius:12px;background:#edf6df;display:grid;place-items:center;font-size:20px;flex:none}
+.starGuideEntry h3{font-size:16px;line-height:1.45;margin:0 0 4px;color:#234535}
+.starGuideEntry p{font-size:12px;line-height:1.65;color:#766f64;margin:0}
+.starGuideEntry button{width:100%;margin-top:11px;border:0;border-radius:14px;padding:12px 14px;background:#285d32;color:#fff;font-weight:900;font-size:13px}
+.starGuideEntry .starGuideCount{display:inline-block;margin-top:7px;border-radius:999px;background:#fff2cb;color:#8a6718;padding:5px 9px;font-size:11px;font-weight:800}
+.starGlossary{padding:14px 16px;margin:12px 0;background:#fffdf8}
+.starGlossary summary{font-weight:900;color:#285d32;cursor:pointer;font-size:14px}
+.starGlossaryGrid{display:grid;gap:8px;margin-top:12px}
+.starGlossaryRow{padding:11px 12px;border:1px solid #eee4d4;border-radius:13px;background:#fff}
+.starGlossaryRow b{display:block;font-size:13px;color:#263d33;margin-bottom:4px}
+.starGlossaryRow span{display:block;font-size:12px;line-height:1.6;color:#6c716c}
+.starCountBadge{display:inline-block;margin-left:6px;padding:3px 7px;border-radius:999px;background:#fff0c5;color:#8d6814;font-size:10px;font-weight:800;vertical-align:middle}
+
 /* 6.0 expert interpretation */
 .expertIntro{padding:20px;background:linear-gradient(135deg,#f4f8e6,#fff8df);border:1px solid #eee4c7;border-radius:22px;margin:8px 0}.expertIntro h2{font-size:22px;line-height:1.4;color:#173c2f;margin:0 0 8px}.expertIntro p{font-size:14px;line-height:1.7;color:#68736d;margin:0}.expertSection{background:#fff;border:1px solid #eee8dc;border-radius:20px;padding:20px 18px;margin:10px 0}.expertSection .eyebrow{font-size:11px;color:#c79831;font-weight:800;margin-bottom:7px}.expertSection h3{font-size:20px;line-height:1.45;color:#1f352d;margin:0 0 12px}.expertSection p{font-size:15px;line-height:1.9;color:#555f5a;margin:0;word-break:keep-all}.expertSection .evidence{font-size:12px;line-height:1.65;color:#8a867e;background:#faf7f1;border-radius:12px;padding:10px 12px;margin-top:14px}.starSummary{display:grid;grid-template-columns:repeat(2,1fr);gap:8px;margin:10px 0}.starStat{background:#fff;border:1px solid #eee5d6;border-radius:16px;padding:13px}.starStat span{display:block;font-size:11px;color:#888}.starStat b{display:block;font-size:20px;color:#1e5a44;margin-top:4px}.starDetail{background:#fff;border:1px solid #eee8dc;border-radius:18px;padding:16px;margin:9px 0}.starDetail .top{display:flex;align-items:flex-start;justify-content:space-between;gap:10px}.starDetail h4{font-size:17px;line-height:1.45;margin:0;color:#263b33}.starCount{flex:none;background:#fff3c9;color:#9a6b00;border-radius:999px;padding:5px 9px;font-weight:800;font-size:12px}.starDetail p{font-size:14px;line-height:1.75;color:#5d655f;margin:9px 0}.starWhere{font-size:12px;color:#918c83;line-height:1.6}.cautionText{font-size:12px!important;color:#8d786f!important;background:#fff7f3;border-radius:10px;padding:9px 10px}.daeunList{display:grid;gap:8px}.daeunItem{border:1px solid #eee5d8;border-radius:15px;padding:13px 14px;background:#fff}.daeunItem.current{border-color:#e5b637;background:#fff9e9}.daeunItem b{font-size:14px;color:#234336}.daeunItem p{font-size:13px;line-height:1.65;margin:5px 0 0;color:#69716c}.disclaimerBox{font-size:12px;line-height:1.65;color:#827d74;padding:13px 14px;background:#f9f7f2;border-radius:14px;margin:10px 0}
 
@@ -2033,6 +2050,15 @@ function guiinStarStats(c){
   return {unique:unique||0,total:Math.round(total||0)};
  }catch(_e){return {unique:0,total:0};}
 }
+
+function guiinStarGuideButtonHTML(c){
+ try{
+  const st=guiinStarStats(c);
+  if(!st.unique&&!st.total)return '';
+  return `<div class="starGuideEntry card"><div class="starGuideTop"><div class="starGuideIcon">☘</div><div><h3>내 신살·귀인 뜻도 자세히 볼까요?</h3><p>천을귀인·도화살·화개살처럼 지금 명식에 실제로 성립한 신살이 어떤 뜻인지, 좋은 방향과 주의할 점까지 하나씩 풀어드립니다.</p><span class="starGuideCount">고유 ${st.unique}종 · 총 ${st.total}건</span></div></div><button type="button" onclick="setTab('stars')">신살·귀인 자세한 설명 보기 ›</button></div>`;
+ }catch(_e){return ''}
+}
+
 function guiinEnhanceManseHTML(html,c){
  try{
   let out=String(html||'');
@@ -2279,31 +2305,80 @@ function fieldsReport(c){
  return out;
 }
 
+const GUIIN_STAR_GUIDE_V60={
+ '천을귀인':{plain:'전통 명리에서 어려운 순간에 사람·정보·기회 같은 도움의 통로가 열리기 쉬운 귀인으로 봅니다.',good:'혼자 막혀 있던 문제에서 조언자·고객·동료·소개·정보처럼 해결의 실마리를 만나는 힘으로 쓰일 수 있습니다.',watch:'누군가가 반드시 나타나 무조건 해결해준다는 뜻은 아닙니다. 도움을 알아보고 연결하는 행동이 함께 있어야 장점이 살아납니다.'},
+ '천덕귀인':{plain:'갈등이나 거친 상황에서 한 번 더 부드럽게 풀어갈 여지를 보는 귀인입니다.',good:'사람 사이의 마찰을 완충하고 신뢰를 회복하는 힘으로 쓰기 좋습니다.',watch:'모든 갈등이 저절로 사라진다는 뜻은 아니며, 말과 행동으로 관계를 정리하는 과정이 필요합니다.'},
+ '월덕귀인':{plain:'사회생활에서 평판·신뢰·도움을 주고받는 흐름을 보는 귀인입니다.',good:'약속을 지키고 관계를 꾸준히 쌓을수록 소개·협업·도움으로 연결되기 쉽습니다.',watch:'평판만 좋으면 성공이 보장된다는 뜻은 아닙니다.'},
+ '문창귀인':{plain:'글·말·기획·설명처럼 생각을 정리해 전달하는 능력을 보는 귀인입니다.',good:'문서, 콘텐츠, 교육, 상담, 기획처럼 표현을 결과물로 만드는 데 강점이 될 수 있습니다.',watch:'생각이 많아 표현만 늘고 실행이 늦어지지 않도록 마무리 힘을 같이 쓰는 게 좋습니다.'},
+ '문곡귀인':{plain:'감수성·표현력·학문·예술적 이해와 연결해 보는 귀인입니다.',good:'창작, 언어, 음악, 디자인, 공부처럼 섬세한 표현을 자기 방식으로 깊게 만들 수 있습니다.',watch:'감정과 생각이 복잡해질 때 혼자 안으로만 들어가지 않도록 표현 통로를 만드는 편이 좋습니다.'},
+ '태극귀인':{plain:'한 번 겪은 일을 깊이 이해하고 다시 중심을 잡는 힘과 연결해 보는 귀인입니다.',good:'경험을 자기 지혜로 바꾸고, 어려운 시기를 지나며 기준을 세우는 데 강점이 될 수 있습니다.',watch:'힘든 일을 겪어야만 성장한다는 뜻으로 받아들이지는 않습니다.'},
+ '복성귀인':{plain:'생활 속에서 작은 복과 도움, 안정적인 흐름을 누리는 힘을 보는 귀인입니다.',good:'사람·생활·재물에서 크게 흔들리지 않도록 실속을 챙기는 쪽으로 쓰일 수 있습니다.',watch:'행운이 자동으로 들어온다는 뜻은 아니며, 기본 생활과 선택이 더 중요합니다.'},
+ '학당귀인':{plain:'배움·자격·기술 습득을 자기 것으로 만드는 힘과 연결해 보는 귀인입니다.',good:'새로운 분야를 배우고 전문성으로 쌓아가는 과정에서 강점이 드러날 수 있습니다.',watch:'공부를 많이 한다는 뜻보다 배운 것을 실제로 써먹는지가 중요합니다.'},
+ '암록':{plain:'겉으로 크게 드러나지 않아도 실속·숨은 도움·조용한 성과가 쌓이는 흐름을 보는 별입니다.',good:'티 내지 않고 쌓은 실력이나 관계가 나중에 실제 도움으로 돌아올 수 있습니다.',watch:'기다리기만 하면 숨은 복이 생긴다는 뜻은 아닙니다.'},
+ '건록':{plain:'자기 힘으로 서고 일과 생활의 기반을 유지하려는 힘을 보는 별입니다.',good:'자립심, 꾸준함, 직업 지속력처럼 내 힘으로 기반을 만드는 데 강점이 될 수 있습니다.',watch:'혼자 다 해야 한다는 압박으로 바뀌면 도움을 받기 어려워질 수 있습니다.'},
+ '삼기':{plain:'서로 다른 재능이나 조건이 한데 모여 독특한 장점으로 쓰일 가능성을 보는 전통 신호입니다.',good:'한 가지 능력보다 여러 강점을 조합해 자기만의 방식으로 만드는 데 유리하게 쓸 수 있습니다.',watch:'특별한 운명이나 큰 성공을 보장하는 표시는 아닙니다.'},
+ '도화살':{plain:'사람의 시선과 관심이 모이는 방식, 분위기와 매력의 표현을 보는 별입니다.',good:'대인관계·서비스·영업·콘텐츠·창작처럼 사람에게 인상을 남기는 영역에서 장점이 될 수 있습니다.',watch:'연애가 많다거나 외도를 한다는 뜻으로 단정하지 않습니다. 관심이 많을수록 관계 경계를 분명히 하는 게 좋습니다.'},
+ '홍염살':{plain:'호감·감정·매력이 비교적 선명하게 전달되는 성향을 보는 별입니다.',good:'감정 표현과 친화력이 필요한 관계·서비스·창작 분야에서 매력으로 쓰일 수 있습니다.',watch:'감정의 속도가 너무 빨라지면 상대와 내 기대 차이를 놓치기 쉬우니 관계의 속도를 확인하는 편이 좋습니다.'},
+ '화개살':{plain:'혼자 깊이 파고드는 시간, 내면세계, 예술·철학·전문성에 몰입하는 힘을 보는 별입니다.',good:'혼자 연구하고 창작하거나 한 분야를 오래 파는 힘으로 연결될 수 있습니다.',watch:'혼자 있는 시간이 필요하다는 뜻이지 사람과 인연이 없다는 뜻은 아닙니다.'},
+ '역마살':{plain:'이동·변화·새 환경에 반응하는 힘을 보는 별입니다.',good:'출장·이직·이동·새로운 경험처럼 환경이 바뀔 때 오히려 에너지가 살아날 수 있습니다.',watch:'무조건 이사하거나 해외에 나가야 한다는 뜻은 아니며, 지나친 변화로 생활 기반이 흔들리지 않게 조절하는 게 중요합니다.'},
+ '지살':{plain:'밖으로 움직이고 새로운 환경과 접촉하려는 힘을 보는 12신살 중 하나입니다.',good:'새로운 사람·장소·일을 직접 경험하며 기회를 넓히는 데 활용할 수 있습니다.',watch:'움직임이 많을수록 휴식과 정리 시간을 같이 확보해야 피로가 누적되지 않습니다.'},
+ '월살':{plain:'일이 한 번에 매끄럽게 풀리기보다 잠시 멈춰 점검하고 정리할 필요가 생기는 흐름을 보는 보조 신호입니다.',good:'서두르지 않고 빠진 부분을 보완하며 방향을 다시 잡는 힘으로 쓸 수 있습니다.',watch:'무조건 막히는 운이라는 뜻은 아니며, 답답함을 이유로 모든 계획을 포기할 필요는 없습니다.'},
+ '천살':{plain:'내가 통제하기 어려운 외부 변수와 마주할 때의 반응을 보는 전통 보조 신호입니다.',good:'예상 밖의 상황에서 무리하게 통제하려 하기보다 상황을 읽고 대응하는 힘으로 쓸 수 있습니다.',watch:'큰 재난이나 불행을 뜻한다고 단정하지 않습니다.'},
+ '재살':{plain:'경쟁·긴장·방어가 필요한 장면에서 반응이 빨라질 수 있음을 보는 전통 신호입니다.',good:'위기 대응, 문제 해결, 승부가 필요한 상황에서 집중력으로 쓰일 수 있습니다.',watch:'항상 위험한 일이 생긴다는 뜻은 아니며, 긴장 상태를 오래 유지하지 않는 것이 중요합니다.'},
+ '겁살':{plain:'갑작스러운 변화나 경쟁 속에서 내 것을 지키려는 힘이 커질 수 있음을 보는 전통 신호입니다.',good:'변화가 빠른 상황에서 결단하고 손실을 줄이는 힘으로 활용할 수 있습니다.',watch:'빼앗기거나 손해를 본다는 예언이 아니며, 급한 선택과 과한 승부를 줄이는 쪽으로 참고합니다.'},
+ '망신살':{plain:'말·행동·평판처럼 내 모습이 밖으로 드러나는 장면을 의식하게 만드는 신호입니다.',good:'사람 앞에 나서거나 자신을 알리는 활동에서 존재감을 키우는 힘이 될 수 있습니다.',watch:'구설이 반드시 생긴다는 뜻은 아니며, 감정이 올라왔을 때 말과 공개 행동을 한 번 더 확인하는 편이 좋습니다.'},
+ '장성살':{plain:'주도권·자신감·리더십처럼 앞으로 나서는 힘을 보는 별입니다.',good:'책임을 맡고 결정을 내려야 할 때 추진력과 존재감으로 쓰일 수 있습니다.',watch:'내 기준이 강해질수록 상대의 속도와 의견을 같이 보는 것이 중요합니다.'},
+ '반안살':{plain:'흔들리던 흐름이 자리를 잡고 생활·직업·관계가 안정되는 방향을 보는 12신살입니다.',good:'자리·직책·생활 기반을 정리하고 안정적으로 유지하는 힘으로 활용할 수 있습니다.',watch:'가만히 있어도 안정이 찾아온다는 뜻은 아니며, 유지할 구조를 만드는 행동이 필요합니다.'},
+ '육해살':{plain:'겉으로 큰 충돌은 없어도 작은 불편과 오해가 누적되는 지점을 보는 전통 신호입니다.',good:'미세한 문제를 빨리 알아차리고 관계·생활을 세밀하게 조정하는 힘으로 쓸 수 있습니다.',watch:'사람 관계가 반드시 나빠진다는 뜻은 아닙니다. 말하지 않은 기대를 오래 쌓아두지 않는 게 중요합니다.'},
+ '해살':{plain:'겉으로 큰 충돌은 없어도 작은 불편과 오해가 누적되는 지점을 보는 전통 신호입니다.',good:'미세한 문제를 빨리 알아차리고 관계·생활을 세밀하게 조정하는 힘으로 쓸 수 있습니다.',watch:'사람 관계가 반드시 나빠진다는 뜻은 아닙니다. 말하지 않은 기대를 오래 쌓아두지 않는 게 중요합니다.'},
+ '원진살':{plain:'가까운 관계에서 끌림과 서운함이 같이 커질 수 있는 지점을 보는 신호입니다.',good:'감정의 미세한 변화를 잘 읽고 관계에서 필요한 것을 구체적으로 말하는 힘으로 바꿀 수 있습니다.',watch:'특정 사람과 반드시 나쁜 인연이 된다는 뜻은 아닙니다. 애매한 기대를 오래 쌓지 않는 것이 중요합니다.'},
+ '귀문관살':{plain:'생각과 감각이 예민하고 한 가지에 깊게 몰입하는 성향을 참고하는 별입니다.',good:'관찰·분석·창작·연구처럼 남들이 놓치는 부분을 깊게 보는 힘으로 쓰일 수 있습니다.',watch:'정신질환이나 이상 행동을 뜻한다고 해석하지 않습니다. 생각이 과하게 길어질 때는 생활 리듬을 챙기는 편이 좋습니다.'},
+ '고란살':{plain:'가까운 관계에서도 자기 기준과 독립성이 강하게 느껴질 수 있는 전통 관계 신호입니다.',good:'관계 안에서도 자기 삶과 판단을 지키는 힘으로 쓸 수 있습니다.',watch:'결혼운이 나쁘거나 혼자 살아야 한다는 뜻은 아닙니다. 가까운 관계일수록 역할과 거리를 말로 맞추는 편이 좋습니다.'},
+ '고신살':{plain:'혼자 버티거나 자기 안에서 문제를 정리하려는 경향을 보는 전통 관계 신호입니다.',good:'독립적으로 생각하고 스스로 정리하는 힘으로 활용할 수 있습니다.',watch:'평생 외롭다는 뜻은 아니며, 힘들 때 도움을 요청하는 통로를 일부러 만드는 것이 좋습니다.'},
+ '과숙살':{plain:'관계에서 감정 표현을 아끼거나 혼자 감당하는 시간이 길어질 수 있음을 보는 전통 신호입니다.',good:'감정에 휩쓸리지 않고 자기 중심을 지키는 힘으로 쓰일 수 있습니다.',watch:'배우자 운이 없다는 식으로 단정하지 않습니다. 필요한 말까지 참지 않는 것이 중요합니다.'},
+ '양인살':{plain:'밀어붙이는 힘과 자기 보호 본능이 강해질 수 있음을 보는 별입니다.',good:'결단력·승부력·위기 대처가 필요한 장면에서 강한 추진력으로 쓰일 수 있습니다.',watch:'힘이 과해지면 말투나 행동이 거칠어질 수 있어 속도를 낮추는 장치가 필요합니다.'},
+ '괴강살':{plain:'자기 기준·결단·책임감이 강하게 드러나는 성향을 보는 별입니다.',good:'어려운 결정을 피하지 않고 중심을 잡는 리더십으로 활용할 수 있습니다.',watch:'고집이 세다는 한마디로 끝내기보다 다른 사람의 선택권을 침범하지 않는지 함께 보는 게 중요합니다.'},
+ '백호살':{plain:'압박이 큰 상황에서 에너지가 강하게 집중되는 양상을 보는 전통 신호입니다.',good:'위기 대응·집중력·강한 실행력이 필요한 장면에서 힘으로 쓸 수 있습니다.',watch:'사고나 질병을 예언하는 표지로 사용하지 않습니다. 과로와 무리한 행동을 줄이는 생활 관리가 우선입니다.'},
+ '현침살':{plain:'말·손기술·관찰처럼 섬세하고 날카로운 감각을 보는 별입니다.',good:'정밀 작업, 미용, 의료·기술, 글·분석처럼 세밀함이 필요한 일에서 장점이 될 수 있습니다.',watch:'말이 너무 직선적으로 나가거나 작은 흠을 오래 붙잡지 않도록 완급을 조절하는 게 좋습니다.'},
+ '탕화살':{plain:'감정과 행동의 열기가 갑자기 커질 수 있는 순간을 보는 전통 신호입니다.',good:'열정과 추진력이 필요한 때 빠르게 움직이는 힘으로 쓸 수 있습니다.',watch:'화재·사고를 확정하는 신호가 아닙니다. 감정이 과열될 때 즉시 결론 내리지 않는 습관이 도움이 됩니다.'},
+ '낙정관살':{plain:'답답함이나 고립감을 느끼는 상황에서 생각이 깊어질 수 있음을 보는 전통 신호입니다.',good:'혼란한 상황에서도 문제의 원인을 차분히 파악하고 빠져나올 길을 찾는 힘으로 바꿀 수 있습니다.',watch:'큰 불행이나 사고를 뜻한다고 단정하지 않습니다. 혼자 감당하는 시간이 길어지지 않게 도움을 요청하는 게 좋습니다.'},
+ '상문살':{plain:'주변의 무거운 일이나 정리해야 할 감정에 영향을 많이 받을 수 있음을 보는 전통 보조 신호입니다.',good:'사람의 힘든 상황을 세심하게 살피고 정리·돌봄 역할을 해내는 힘으로 쓰일 수 있습니다.',watch:'상실이나 죽음을 예언하는 신호로 사용하지 않습니다.'},
+ '조객살':{plain:'주변 사람의 일이나 외부 일정이 내 생활 리듬에 영향을 주기 쉬운 흐름을 보는 전통 신호입니다.',good:'사람을 연결하고 외부 상황에 유연하게 대응하는 힘으로 활용할 수 있습니다.',watch:'나쁜 소식이 생긴다는 뜻은 아니며, 남의 일까지 전부 내 책임으로 떠안지 않는 것이 중요합니다.'},
+ '공망':{plain:'어떤 영역을 남들과 조금 다르게 체감하거나 기대한 방식보다 늦게 자리 잡을 수 있음을 보는 보조 개념입니다.',good:'당연하다고 여긴 기준을 다시 보고 자기 방식으로 채워가는 힘으로 활용할 수 있습니다.',watch:'그 영역이 사라지거나 실패한다는 뜻은 아닙니다. 실제 경험과 원국 전체를 함께 봐야 합니다.'}
+};
+
 function starDetails(c){
- const raw=c.stars?.hits||[], seen=new Set(), hits=raw.filter(h=>{const k=h.name+'|'+(h.basis||'');if(seen.has(k))return false;seen.add(k);return true});
- const starEasy={
-  '천을귀인':'막히는 순간에 사람·정보·기회 같은 도움의 통로가 생기기 쉬운 별로 설명합니다. 혼자 모든 것을 해결한다기보다 필요한 순간에 연결고리가 생기는 쪽에 가깝습니다.',
-  '문창귀인':'글·말·설명·기획처럼 생각을 정리해 전달하는 능력과 연결해 보는 귀인입니다.',
-  '학당귀인':'배움, 자격, 기술 습득과 연결해 보는 별입니다. 공부를 많이 한다는 뜻보다 배운 것을 자기 것으로 만드는 힘을 봅니다.',
-  '도화살':'사람의 시선과 관심이 모이는 방식, 분위기와 매력의 표현을 보는 별입니다. 연애가 많다는 뜻으로 단정하지 않습니다.',
-  '홍염살':'감정과 매력이 비교적 선명하게 전달되는 성향을 보는 별입니다. 호감과 관계의 속도가 빨라질 수 있는 점을 함께 봅니다.',
-  '역마살':'이동·변화·새로운 환경에 반응하는 힘을 보는 별입니다. 무조건 이사나 해외운이라는 뜻은 아닙니다.',
-  '화개살':'혼자 깊이 파고드는 시간, 감수성, 예술·전문성·내면 세계와 연결해서 보는 별입니다.',
-  '괴강살':'기준과 결단이 강해지는 성향을 보는 별입니다. 강한 사주라는 한마디보다 어떤 상황에서 고집과 추진력으로 나타나는지 봅니다.',
-  '양인살':'밀어붙이는 힘과 자기 보호 본능이 강해지는 신호로 봅니다. 잘 쓰면 결단력, 과하면 충돌로 나타날 수 있습니다.',
-  '귀문관살':'생각과 감각이 예민해지는 방식, 한 가지에 깊이 몰입하는 성향을 참고하는 신살입니다.',
-  '원진살':'관계에서 끌림과 서운함이 같이 커질 수 있는 지점을 참고하는 신호입니다. 특정 사람과 반드시 나쁜 관계가 된다는 뜻은 아닙니다.'
+ const raw=Array.isArray(c?.stars?.hits)?c.stars.hits:[];
+ const counts=(c?.stars?.counts&&typeof c.stars.counts==='object')?c.stars.counts:{};
+ const grouped=new Map();
+ const add=(name,h={})=>{
+  if(!name)return;
+  if(!grouped.has(name))grouped.set(name,{name,count:0,where:[],meta:h?.meta||{}});
+  const g=grouped.get(name);g.count+=1;
+  const w=h?.where||h?.pillar||h?.basis||'';
+  if(w&&!g.where.includes(String(w)))g.where.push(String(w));
+  if(h?.meta&&!Object.keys(g.meta||{}).length)g.meta=h.meta;
  };
- const rows=hits.map((h,i)=>{
-   const name=h.name||'신살';
-   const plain=starEasy[name]||h.meta?.short||'전통 명리에서 원국의 특정 관계를 보조적으로 설명하는 표시입니다. 이름만으로 사건을 단정하지 않고 실제 성향과 생활 패턴에 연결해 읽습니다.';
-   const good=h.meta?.good||(/귀인|문창|학당|천덕|월덕/.test(name)?'사람의 도움, 배움, 설명력처럼 이미 가진 장점을 실제 결과로 연결할 때 긍정적으로 쓰일 수 있습니다.':/도화|홍염/.test(name)?'사람에게 호감이나 인상을 남기는 힘을 관계·영업·서비스·창작처럼 사람과 만나는 영역에 활용할 수 있습니다.':/역마/.test(name)?'환경 변화에 적응하고 새로운 경험을 쌓는 힘으로 활용할 수 있습니다.':'강하게 나타나는 에너지를 일·관계·창작·전문성처럼 구체적인 결과로 연결하면 장점이 됩니다.');
-   const watch=h.meta?.watch||(/도화|홍염|원진/.test(name)?'관심과 감정의 강도가 커질수록 관계의 경계와 속도를 의식적으로 조절하는 것이 좋습니다.':/양인|괴강|백호/.test(name)?'결단력이 강해질수록 상대의 속도와 입장을 놓치지 않도록 한 번 더 확인하는 것이 좋습니다.':'신살 이름 하나를 사건 예언처럼 받아들이지 말고 원국 전체와 현재 생활을 함께 보세요.');
-   const where=h.where||h.pillar||h.basis||'';
-   return `<article class="easyLongCard card starLong"><div class="easyKicker">${String(i+1).padStart(2,'0')} · ${esc(name)}</div><h3>${esc(name)}이 있다는 건, 실제 생활에서는 이렇게 읽습니다</h3><div class="easyBody"><p><b>쉽게 말하면</b> · ${esc(plain)}</p><p>이 별이 있다고 해서 좋은 일이나 나쁜 일이 자동으로 생기는 것은 아닙니다. 귀인사주에서는 일간·월령·오행·십신을 먼저 보고, 신살은 “그 성향이 어느 장면에서 더 눈에 띄는가”를 설명하는 보조 정보로 사용합니다.</p></div><div class="easyPoint good"><b>좋은 방향으로 쓰면</b><p>${esc(good)}</p></div><div class="easyPoint watch"><b>과해질 때 조심할 점</b><p>${esc(watch)}</p></div><div class="easyPoint tip"><b>내 생활에서 확인할 것</b><p>${/관|도화|홍염|원진/.test(name)?'사람을 만날 때 감정의 속도, 경계, 상대에게 기대하는 역할을 살펴보세요.':/역마/.test(name)?'이동이 잦을 때 오히려 에너지가 살아나는지, 반대로 정착과 회복이 필요한지 실제 생활 패턴을 확인해 보세요.':'이 별의 이름보다 내가 반복해서 잘하는 행동과 피곤해지는 상황을 먼저 확인하면 해석이 훨씬 정확해집니다.'}</p></div><div class="easyPoint support"><b>이 별을 너무 무겁게 받아들이지 마세요</b><p>${esc(readingSupportText('신살·귀인',name))}</p></div><div class="easyEvidence">성립 근거 · ${esc(String(where||'엔진 계산 기준 충족'))}</div></article>`;
+ raw.forEach(h=>add(typeof h==='string'?h:(h?.name||h?.star||''),typeof h==='string'?{}:h));
+ Object.entries(counts).forEach(([name,n])=>{
+  const num=Math.max(0,Number(n)||0);if(!num)return;
+  if(!grouped.has(name))grouped.set(name,{name,count:num,where:[],meta:{}});
+  else grouped.get(name).count=Math.max(grouped.get(name).count,num);
+ });
+ const cards=[...grouped.values()].map((g,i)=>{
+   const name=g.name||'신살';
+   const guide=GUIIN_STAR_GUIDE_V60[name]||{};
+   const plain=guide.plain||g.meta?.short||'전통 명리에서 원국의 특정 관계를 보조적으로 설명하는 표시입니다. 이름만으로 사건을 단정하지 않고 실제 성향과 생활 패턴에 연결해 읽습니다.';
+   const good=guide.good||g.meta?.good||'강하게 나타나는 에너지를 일·관계·창작·전문성처럼 구체적인 결과로 연결하면 장점이 됩니다.';
+   const watch=guide.watch||g.meta?.watch||'신살 이름 하나를 사건 예언처럼 받아들이지 말고 원국 전체와 현재 생활을 함께 보세요.';
+   const where=g.where.length?g.where.join(' · '):'엔진 계산 기준 충족';
+   const life=/관|도화|홍염|원진|고신|과숙|고란/.test(name)?'사람을 만날 때 감정의 속도, 경계, 상대에게 기대하는 역할을 살펴보세요.':/역마|지살/.test(name)?'이동이 잦을 때 오히려 에너지가 살아나는지, 반대로 정착과 회복이 필요한지 실제 생활 패턴을 확인해 보세요.':/문창|문곡|학당/.test(name)?'배운 것과 생각을 글·말·기술·결과물로 남길 때 이 별의 장점이 잘 드러나는지 확인해 보세요.':'이 별의 이름보다 내가 반복해서 잘하는 행동과 피곤해지는 상황을 먼저 확인하면 해석이 훨씬 정확해집니다.';
+   return `<article class="easyLongCard card starLong"><div class="easyKicker">${String(i+1).padStart(2,'0')} · ${esc(name)}${g.count>1?`<span class="starCountBadge">${g.count}건</span>`:''}</div><h3>${esc(name)}이 있다는 건, 실제 생활에서는 이렇게 읽습니다</h3><div class="easyBody"><p><b>한마디로</b> · ${esc(plain)}</p><p>신살은 사주의 주인공이 아니라 보조 설명입니다. 같은 별도 일간·월령·오행·십신·대운과 어떤 자리에서 만나는지에 따라 체감이 달라질 수 있습니다.</p></div><div class="easyPoint good"><b>좋은 방향으로 쓰면</b><p>${esc(good)}</p></div><div class="easyPoint watch"><b>과해질 때 조심할 점</b><p>${esc(watch)}</p></div><div class="easyPoint tip"><b>내 생활에서 확인할 것</b><p>${esc(life)}</p></div><div class="easyEvidence">성립 위치·근거 · ${esc(where)}</div></article>`;
  }).join('');
- return `<div class="easyIntro card"><div class="easyKicker">신살·귀인</div><h2>신살 이름만 툭 던지지 않을게요. 왜 눈에 띄는지, 실제 생활에서는 어떻게 느껴지는지, 잘 쓰는 방법까지 같이 풀어드릴게요.</h2><p>현재 엔진은 50종 카탈로그 가운데 공식화한 <b>${c.stars?.supportedCount||38}종</b>만 실제 계산합니다. 신살은 원국보다 우선하지 않으며, 하나의 별로 연애·돈·결혼·사고를 단정하지 않습니다.</p></div>${rows||'<div class="easyLongCard card"><h3>현재 표시할 신살·귀인이 없습니다.</h3><div class="easyBody"><p>신살이 적다고 나쁜 사주라는 뜻은 아닙니다. 원국의 계절·오행·십신·대운이 더 중요한 판단 기준입니다.</p></div></div>'}`;
+ const glossary=Object.entries(GUIIN_STAR_GUIDE_V60).filter(([name])=>name!=='해살').map(([name,v])=>`<div class="starGlossaryRow"><b>${esc(name)}</b><span>${esc(v.plain)}</span></div>`).join('');
+ return `<div class="easyIntro card"><div class="easyKicker">신살·귀인</div><h2>내 명식에 실제로 들어온 신살을 하나씩 쉬운 말로 풀어드립니다.</h2><p>예를 들어 천을귀인은 “힘든 순간에 도움의 실마리를 만나는 힘”으로 읽습니다. 다만 누군가가 무조건 나타나 모든 문제를 해결해준다는 뜻은 아닙니다. 원국과 현재 흐름을 먼저 보고 신살은 보조 근거로 사용합니다.</p></div>${cards||'<div class="easyLongCard card"><h3>현재 표시할 신살·귀인이 없습니다.</h3><div class="easyBody"><p>신살이 적다고 나쁜 사주라는 뜻은 아닙니다. 원국의 계절·오행·십신·대운이 더 중요한 판단 기준입니다.</p></div></div>'}<details class="starGlossary card"><summary>귀인사주가 설명하는 38종 신살·귀인 전체 뜻 보기</summary><div class="starGlossaryGrid">${glossary}</div></details>`;
 }
+
 
 function foundationReport(c){
  const ex=c.extras||{}, nv=ex.nayin||{}, vd=ex.void||{}, roots=ex.roots||[];
@@ -3261,7 +3336,7 @@ function renderResult(){
   const c=chart;
   const heroKind=currentTab==='summary'?'summary':currentTab==='personality'?'personality':currentTab==='fields'?'fields':currentTab==='flow'?'flow':'chart';
   const visualHero=guiinVisualHero(heroKind,c.input.name)+unknownTimeNoticeHTML(c);
-  const manseTop=guiinRenderManse(c,{title:c.input.name+'님의 만세력',eyebrow:'내 사주'});
+  const manseTop=guiinRenderManse(c,{title:c.input.name+'님의 만세력',eyebrow:'내 사주'})+guiinStarGuideButtonHTML(c);
   let body='';
   if(!hasPremiumLifetime()){
     if(currentTab==='summary') body=visualHero+manseTop+guiinFreeSummaryHTML(c)+premiumSampleHTML(c);
