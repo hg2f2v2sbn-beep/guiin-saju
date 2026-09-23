@@ -2564,6 +2564,45 @@ function guiinMoneyStyleV5(c){
   };
   return map[mg]||'한 번의 횡재보다 자기 강점을 반복 가능한 수입 구조로 바꾸는 것이 중요한 타입';
 }
+
+function guiinCareerProfileData(c){
+  try{
+    const mg=c?.pillars?.month?.god||'';
+    const x=(()=>{try{return sajuInsightProfile(c)}catch(_e){return null}})();
+    const top=x?.top||'';
+    const modeMap={
+      비견:'자기주도·독립형',겁재:'현장대응·성과형',식신:'기술축적·서비스형',상관:'창작·기획·개선형',편재:'사업·영업·확장형',정재:'운영·관리·축적형',편관:'책임·문제해결형',정관:'전문성·신뢰·관리형',편인:'전문기술·연구형',정인:'교육·지식·지원형'
+    };
+    const godJobs={
+      비견:['독립형 전문직','프리랜서','개인 브랜드','팀 리드','자영업'],
+      겁재:['영업','협상','현장 운영','프로젝트 리드','성과형 업무'],
+      식신:['미용·뷰티','기술 서비스','콘텐츠 제작','강사·교육','케어·서비스','요식·생활서비스'],
+      상관:['크리에이터','디자인·미용','기획·마케팅','강의·컨설팅','콘텐츠·미디어','문제개선 업무'],
+      편재:['사업·자영업','영업','유통·판매','고객 관리','브랜드 운영','네트워크형 업무'],
+      정재:['운영·관리','회계·정산','매장 운영','행정','품질·일정 관리','장기계약형 업무'],
+      편관:['현장 책임자','관리자','프로젝트 리드','고난도 전문직','위기대응 업무'],
+      정관:['교육·강사','관리·행정','품질·규정','조직 책임자','자격 기반 전문직','공적인 역할'],
+      편인:['전문기술','디자인·창작','연구·분석','상담·해석','특수 분야 전문가','1인 전문업'],
+      정인:['강사·교육','상담·지원','연구','문서·기획','자격 기반 전문직','지식 서비스']
+    };
+    const elJobs={
+      목:['교육·육성','브랜딩·기획','성장형 서비스'],
+      화:['미용·뷰티','콘텐츠·강의','홍보·표현 업무'],
+      토:['운영·관리','매장·현장 운영','생활 서비스'],
+      금:['정밀기술','디자인·품질','기준·검수 업무'],
+      수:['상담·연구','정보·기획','분석·연결 업무']
+    };
+    const jobs=[...(godJobs[mg]||['전문기술','서비스','기획','교육']),...(elJobs[top]||[])];
+    const unique=[...new Set(jobs)].slice(0,8);
+    const caution=({
+      비견:'결정권 없이 지시만 받는 환경',겁재:'사람 문제와 경쟁이 과도한 환경',식신:'기술은 쌓이지 않고 반복 감정노동만 많은 환경',상관:'표현과 개선 권한이 전혀 없는 환경',편재:'기회는 많지만 현금흐름과 약속이 관리되지 않는 환경',정재:'안정을 이유로 성장과 보상이 멈춘 환경',편관:'책임만 크고 위임·회복이 없는 환경',정관:'책임과 기준은 많은데 권한·보상이 불분명한 환경',편인:'깊이 파고들 시간 없이 계속 표면적인 일만 바뀌는 환경',정인:'배우기만 하고 실제 결과·수입으로 연결되지 않는 환경'
+    })[mg]||'강점을 쓰지 못하고 감정노동만 반복되는 환경';
+    return {work_mode:modeMap[mg]||'전문성·역할 적합형',job_examples:unique,caution,month_god:mg,dominant_element:top};
+  }catch(_e){
+    return {work_mode:'전문성·역할 적합형',job_examples:['전문기술','서비스','기획','교육'],caution:'강점을 쓰지 못하고 소진만 반복되는 환경',month_god:null,dominant_element:null};
+  }
+}
+
 function guiinPersonV5(c){
   try{
     const n=String(c?.input?.name||'사용자'),mg=c?.pillars?.month?.god||'',s=guiinSeasonV5(c),x=sajuInsightProfile(c),rp=guiinRelationshipTraitProfile(c),career=guiinCareerProfileData(c),ind=guiinIndependenceV5(c);
@@ -2589,10 +2628,10 @@ function guiinYearSignalV5(c,year){
     if(!globalThis.GuiinFortuneV2||typeof GuiinFortuneV2.yearSignal!=='function')return null;
     const z=GuiinFortuneV2.yearSignal(c,year);if(!z)return null;
     const sc=z.scores||{},keys=['career','money','relationship','support','speech','caution'];
-    const sorted=keys.map(k=>[k,Number(sc[k]||0)]).sort((a,b)=>b[1]-a[1]);
+    const sorted=keys.map(k=>({key:k,score:Number(sc[k]||0)})).sort((a,b)=>b.score-a.score);
     const rel=Array.isArray(z.relations)?z.relations:[];
     const tension=rel.filter(x=>['충','형','파','해'].includes(String(x))).length;
-    return {...z,topKey:sorted[0]?.[0]||'career',topScore:sorted[0]?.[1]||0,tension};
+    return {...z,topKey:sorted[0]?.key||'career',topScore:sorted[0]?.score||0,tension};
   }catch(_e){return null;}
 }
 function guiinYearLabelV5(k){return ({career:'일·성과',money:'돈·현실',relationship:'연애·관계',support:'도움·연결',speech:'말·오해',caution:'정리·조정'})[k]||'생활 변화';}
@@ -2743,7 +2782,20 @@ function guiinDaeunRoadmapV51(c,lk){
   }catch(_e){return {age:null,remain:null,next:null,currentUse:'지금 잘하는 일을 한 방향으로 누적하는 능력',nextUse:'다음 환경에서 필요한 능력을 미리 준비하는 것'};}
 }
 function guiinThreeStrengthsV51(c,p){
-  const arr=[p?.gift,p?.career?.work_mode?`${p.career.work_mode}을 실제 결과로 연결하는 힘`:null,p?.trait?.forceLabel?`${p.trait.forceLabel}의 주도성과 버티는 힘`:null,p?.people?`관계에서는 ${p.people}`:null].filter(Boolean);
+  const mg=p?.mg||c?.pillars?.month?.god||'';
+  const top=p?.top||'';
+  const byGod={
+    비견:'남의 기준에 휩쓸리기보다 자기 기준을 세우고 끝까지 밀고 가는 힘',겁재:'경쟁과 변수 속에서도 바로 대응하고 다시 판을 짜는 추진력',식신:'기술·서비스·생활 감각을 꾸준히 반복해 실제 결과로 남기는 힘',상관:'문제점을 빨리 발견하고 더 나은 방식으로 바꾸는 표현·개선 능력',편재:'사람·고객·기회를 연결해 판을 넓히는 현실 감각',정재:'돈·일정·생활을 안정적으로 관리하고 축적하는 힘',편관:'압박이 있는 상황에서도 책임을 피하지 않고 결론을 만드는 힘',정관:'약속·기준·신뢰를 오래 지켜 공식적인 자리와 평판으로 만드는 힘',편인:'남들이 쉽게 지나치는 부분을 깊게 파고 자기 전문성으로 만드는 힘',정인:'배우고 정리한 것을 지식·자격·신뢰로 축적하는 힘'
+  };
+  const byElement={목:'새 방향을 만들고 성장 가능성을 발견하는 힘',화:'표현과 실행으로 분위기와 사람을 움직이는 힘',토:'현실적인 문제를 끝까지 관리하고 마무리하는 힘',금:'기준을 세우고 디테일과 완성도를 높이는 힘',수:'상황과 사람의 맥락을 읽고 여러 정보를 연결하는 힘'};
+  const arr=[
+    p?.gift,
+    byGod[mg],
+    p?.career?.work_mode?`${p.career.work_mode}을 실제 결과로 연결하는 힘`:null,
+    p?.trait?.forceLabel?`${p.trait.forceLabel}의 주도성과 버티는 힘`:null,
+    byElement[top],
+    '필요한 순간에는 자기 속도를 다시 정리하고 회복 방향을 잡는 힘'
+  ].filter(Boolean);
   return [...new Set(arr)].slice(0,3);
 }
 function guiinThreePatternsV51(c,p){
@@ -2753,7 +2805,7 @@ function guiinThreePatternsV51(c,p){
 /* legacy guiinLifeNarrativeHTML V5.1 removed in v5.3; V5.1 helpers retained */
 
 /* ========================================================================
-   GUIIN LIFE STORY V5.4 — 2026-09-23
+   GUIIN LIFE STORY V5.5 — 2026-09-23
    상담형 서사 강화: 겉/속의 차이, 선택-갈등-회복 루프, 강점의 대가,
    대운별 인생 챕터, 과거 검증 질문, 현재 선택 기준을 하나의 흐름으로 연결.
    사건을 만들어내지 않고 실제 계산값만 근거로 사용합니다.
@@ -2851,60 +2903,160 @@ function guiinNowIntersectionV53(c,p,lk,z){
 function guiinRelationshipCompassV53(p){
   const t=p?.trait||{};
   const independent=/강한|있는/.test(String(p?.ind?.level||''));
+  const pullByGod={
+    비견:'자기 기준이 있으면서 상대의 선택권도 존중하는 사람',겁재:'반응이 빠르고 함께 움직일 수 있으면서도 힘겨루기를 하지 않는 사람',식신:'편안하고 생활감이 있으며 말보다 행동이 꾸준한 사람',상관:'대화가 통하고 자기 생각이 분명하면서 표현을 막지 않는 사람',편재:'활동적이고 센스가 있으며 새로운 경험을 함께할 수 있는 사람',정재:'생활이 안정적이고 약속·돈·시간의 기준이 분명한 사람',편관:'결단력과 존재감이 있으면서도 통제하지 않고 안전감을 주는 사람',정관:'예의와 책임감이 있고 관계를 애매하게 끌지 않는 사람',편인:'자기 세계와 전문성이 있으면서 혼자 생각할 시간을 존중하는 사람',정인:'따뜻하고 이해심이 있으면서 돌봄을 한쪽에만 맡기지 않는 사람'
+  };
+  const pullPerson=pullByGod[p?.mg]||'말과 행동이 맞고 자기 몫을 하는 사람';
   return {
-    pull:`처음에는 ${p?.people||'말이 통하고 자기 몫을 하는 사람'}에게 끌릴 수 있습니다. 특히 자기 삶이 있으면서도 반응이 분명한 사람에게 호감이 생기기 쉽습니다.`,
-    comfort:independent?'오래 편한 관계는 붙어 있는 시간의 양보다 서로의 생활과 선택권을 존중하면서 약속을 지키는 관계에 가깝습니다.':'오래 편한 관계는 반응이 안정적이고 생활의 예측 가능성이 있는 관계에 가깝습니다.',
-    conflict:`갈등 때는 ${t?.angerText||p?.anger||'반응 속도가 달라질 수 있고'} ${t?.cutoffText||p?.cutoff||'신뢰가 깨지면 거리를 둘 수 있습니다.'}`,
-    repair:`회복은 상대가 마음을 알아맞히는 것보다 “연락·시간·돈·혼자 있는 시간에서 내가 필요한 최소 기준”을 구체적으로 합의할 때 빨라집니다.`
+    pull:`처음에는 ${pullPerson}에게 마음이 움직이기 쉽습니다. 특히 자기 삶이 있으면서도 호감과 약속에 대한 반응이 분명한 사람에게 편안함과 매력을 함께 느낄 수 있습니다.`,
+    comfort:independent?'오래 편한 관계는 붙어 있는 시간의 양보다 서로의 생활과 선택권을 존중하면서 약속을 지키는 관계에 가깝습니다. 가까워도 각자의 시간과 책임이 분명할수록 애정이 의무로 바뀌는 것을 줄일 수 있습니다.':'오래 편한 관계는 반응이 안정적이고 생활의 예측 가능성이 있는 관계에 가깝습니다. 감정 표현의 크기보다 약속과 행동이 꾸준한지가 더 중요하게 느껴질 수 있습니다.',
+    conflict:`갈등 때는 ${t?.angerText||p?.anger||'압박이 커질수록 반응 속도가 달라질 수 있습니다.'} ${t?.cutoffText||p?.cutoff||'신뢰가 깨진다고 느끼면 거리를 둘 수 있습니다.'}`,
+    repair:`회복은 상대가 마음을 알아맞히는 것보다 “연락·시간·돈·혼자 있는 시간·책임 분담에서 내가 필요한 최소 기준”을 구체적으로 합의할 때 빨라집니다. 사과 한 번보다 같은 문제가 반복되지 않도록 생활 규칙을 바꾸는 것이 더 중요할 수 있습니다.`
   };
 }
+
+/* ========================================================================
+   GUIIN LIFE STORY V5.5 — LONG CONSULTATION LAYER — 2026-09-23
+   요약 카드 나열이 아니라 실제 상담처럼 성격→관계→일→돈→대운을 연결한다.
+   계산되지 않은 사건은 만들지 않고, 모든 서술은 원국/구조화된 해석값의 범위 안에서만 쓴다.
+   ======================================================================== */
+function guiinV55List3(items,fallbacks=[]){
+  const out=[];
+  for(const x of [...(items||[]),...(fallbacks||[])]){
+    const s=String(x||'').trim();
+    if(!s||out.includes(s))continue;
+    out.push(s); if(out.length===3)break;
+  }
+  return out;
+}
+function guiinGodDeepV55(g){
+  return ({
+    비견:{social:'사회에서는 내 기준과 결정권을 지키려는 힘이 먼저 작동합니다.',stress:'누군가 계속 방향을 정해주거나 간섭하면 내용보다 “내 선택권이 없다”는 느낌에 더 지칠 수 있습니다.',work:'결정권이 있는 역할·독립적인 전문성·개인 브랜드처럼 내 판단이 결과와 연결되는 환경이 잘 맞습니다.'},
+    겁재:{social:'사람과 경쟁·분배·주도권을 빠르게 읽고 움직이는 힘이 강합니다.',stress:'억울하거나 뒤처진다고 느끼면 속도가 빨라져 사람 문제까지 승부처럼 받아들일 수 있습니다.',work:'영업·프로젝트·협상·현장처럼 반응 속도와 추진력을 바로 써야 하는 환경에서 장점이 살아납니다.'},
+    식신:{social:'사회에서는 꾸준히 만들고 돌보고 결과를 쌓는 태도가 강점으로 드러납니다.',stress:'당장 싸우기보다 참고 생활을 유지하려다가 피로가 한계에 닿은 뒤에야 서운함을 크게 느낄 수 있습니다.',work:'기술·서비스·콘텐츠·교육처럼 반복할수록 솜씨와 단골·평판이 쌓이는 일이 잘 맞습니다.'},
+    상관:{social:'문제점과 비효율을 빨리 발견하고 자기 방식으로 개선하려는 힘이 강합니다.',stress:'답답함이 오래 쌓이면 설명보다 지적과 결론이 먼저 나가 상대가 공격받는다고 느낄 수 있습니다.',work:'기획·창작·콘텐츠·디자인·상담·개선형 업무처럼 표현과 자유도가 있는 일이 잘 맞습니다.'},
+    편재:{social:'사람·고객·기회를 넓게 보며 상황에 따라 빠르게 움직이는 힘이 있습니다.',stress:'약속과 일이 동시에 많아지면 중요한 것과 재미있는 것이 섞여 시간·돈이 흩어질 수 있습니다.',work:'사업·영업·유통·고객관리·네트워크처럼 시장 반응을 바로 읽는 환경이 잘 맞습니다.'},
+    정재:{social:'사회에서는 안정성과 실속을 챙기고 계획을 지키는 태도가 강점으로 보입니다.',stress:'불확실성이 커지면 돈·시간·생활을 더 세게 통제하려고 하거나 필요한 변화까지 늦출 수 있습니다.',work:'운영·관리·정산·매장·장기계약처럼 꾸준함과 정확성이 결과로 남는 일이 잘 맞습니다.'},
+    편관:{social:'압박이 와도 피하지 않고 책임과 결론을 만들어내는 힘이 먼저 작동합니다.',stress:'힘든 상황을 버틸 수 있다는 이유로 다른 사람 몫까지 가져오면 어느 순간 말과 판단이 지나치게 단호해질 수 있습니다.',work:'책임 범위가 분명하고 난도가 높은 전문직·현장 책임·관리 역할에서 집중력이 살아납니다.'},
+    정관:{social:'사회에서는 약속·기준·책임을 지키며 신뢰를 쌓는 방식이 중요합니다.',stress:'내가 지켜온 기준이 반복해서 무너지면 실망을 오래 참다가 갑자기 냉정해질 수 있습니다.',work:'경력·자격·관리·교육·공식 역할처럼 책임과 권한이 함께 주어지는 환경에서 강점이 안정됩니다.'},
+    편인:{social:'남들과 다른 관점으로 깊게 파고들고 쉽게 속을 다 보여주지 않는 편입니다.',stress:'생각을 혼자 오래 정리하면 상대는 이유를 모른 채 거리감만 느낄 수 있습니다.',work:'전문기술·연구·상담·분석·창작처럼 깊이가 경쟁력이 되는 분야가 잘 맞습니다.'},
+    정인:{social:'배우고 이해하고 보호하는 태도가 사회와 관계에서 자연스럽게 드러날 수 있습니다.',stress:'상대를 이해하는 데 에너지를 많이 쓰다가 내 욕구와 피로를 늦게 알아차릴 수 있습니다.',work:'교육·자격·상담·지원·문서·연구처럼 지식과 신뢰가 축적되는 환경이 잘 맞습니다.'}
+  })[g]||{social:'사회에서는 자기 방식의 강점을 반복해서 쓰며 역할을 만들어갑니다.',stress:'피로가 커지면 평소 장점이 고집이나 거리두기로 보일 수 있습니다.',work:'자기 강점이 실제 결과와 경력으로 남는 환경이 잘 맞습니다.'};
+}
+function guiinCoreConsultV55(c,p,strength,io,loop,axes){
+  const name=esc(p.name), dv=(()=>{try{return sajuDayVoice(c)}catch(_e){return null}})()||{};
+  const god=guiinGodDeepV55(p.mg), roots=Number(strength?.roots||0), relCount=Number(axes?.harmony||0)+Number(axes?.tension||0);
+  const top=p.top||'주된', low=p.low||'보완할';
+  return `<div class="deepCard card"><div class="miniTitle">${name}님을 한 사람으로 길게 읽으면</div><h3>겉으로 보이는 힘, 속에서 필요한 것, 압박받을 때의 반응까지 하나의 흐름으로 연결합니다.</h3>
+    <p>${name}님의 중심은 <b>${esc(p.stem)} 일간</b>이고 ${esc(p.season.season)}의 월령 안에서 태어났습니다. 같은 ${esc(p.stem)} 일간이어도 계절이 달라지면 힘을 쓰는 방식이 달라지는데, ${esc(p.season.season)}은 ${esc(p.season.label||'태어난 계절의 환경')}이라는 배경을 만듭니다. 그래서 일간 한 글자의 이미지보다 “언제 힘이 살아나고 언제 쉽게 소모되는가”를 같이 봐야 ${name}님다운 결이 나옵니다.</p>
+    <p>${dv.tone?`${name}님은 기본적으로 ${esc(dv.tone)}이고, `:''}${esc(god.social)} 월주의 <b>${esc(p.mg||'십성')}</b>은 바깥생활에서 ${esc(p.gift)}을 반복해서 쓰게 합니다. 즉 겉으로는 ${esc(io.outer)} 그러나 이것만 보면 절반짜리 해석입니다. 속에서는 ${esc(io.inner)} 그래서 다른 사람은 “잘 버티는 사람”으로 보는데 본인은 이미 오래전부터 피곤했을 수 있는 식의 온도 차이가 생길 수 있습니다.</p>
+    <p>오행 분포에서는 <b>${esc(top)}</b> 기능을 비교적 자주 쓰고 <b>${esc(low)}</b> 기능은 의식적으로 챙겨야 균형이 오래 갑니다. 이것을 곧바로 신강·신약이나 용신으로 바꾸어 단정하지는 않습니다. 다만 평소 자동으로 꺼내 쓰는 기능이 무엇인지, 반대로 지칠 때 빠지기 쉬운 기능이 무엇인지를 생활 언어로 확인하는 데는 유용합니다.</p>
+    <p>결정할 때는 ${esc(loop.decide)} 중요한 건 이 신중함 또는 결단력이 항상 같은 속도로 작동하지 않는다는 점입니다. 내가 납득한 문제는 비교적 빠르게 움직일 수 있지만, 책임이 크거나 관계가 얽힌 문제는 “결정 후 내가 감당할 비용”까지 같이 보느라 시간이 더 걸릴 수 있습니다. 그래서 겉으로는 결단력 있어 보이면서도 특정 문제에서는 오래 생각하는 모습이 함께 나타날 수 있습니다.</p>
+    <p>압박이 쌓이면 ${esc(loop.stress)} ${esc(god.stress)} 이때 주변에서는 갑자기 고집이 세졌다고 느낄 수 있지만, 실제로는 이미 여러 번 참거나 정리한 뒤 마지막 기준을 지키려는 반응일 수 있습니다. 특히 책임·시간·돈·감정 중 두세 가지가 한꺼번에 겹칠 때는 “더 잘해야지”보다 먼저 내 몫과 남의 몫을 분리하는 것이 중요합니다.</p>
+    <p>회복은 ${esc(loop.recover)} ${roots?`원국에서 통근이 ${roots}곳 확인되어, 흔들린 뒤에도 다시 자기 기준을 세우는 내부 지지대를 참고할 수 있습니다.`:'통근 하나만으로 회복력을 단정하지 않고 계절·오행·생활조건을 함께 봅니다.'} 원국 관계 신호는 합 ${axes.harmony}개, 긴장 ${axes.tension}개${relCount?`로 ${relCount}개의 주요 관계 구조를 함께 참고합니다.`:'이며 강한 관계 신호가 적어 기본 기질의 비중을 더 높여 봅니다.'}</p>
+    <div class="easyPoint good"><b>핵심</b><p>잘하는 것을 더 많이 하는 것보다, <b>잘하는 힘을 언제 끄고 쉬어야 하는지</b> 아는 것이 ${name}님의 장점을 오래 쓰는 방법입니다.</p></div></div>`;
+}
+function guiinRelationConsultV55(c,p,rel){
+  const name=esc(p.name), t=p.trait||{};
+  return `<div class="deepCard card"><div class="miniTitle">사람·연애·가족을 깊게 보면</div><h3>좋아하는 마음의 크기보다 어떤 관계 구조에서 편안함이 오래 가는지를 봅니다.</h3>
+    <p>${esc(rel.pull)} 여기서 “끌리는 사람”은 외모나 직업을 맞힌다는 뜻이 아니라, ${name}님이 어떤 태도와 분위기에 마음을 열기 쉬운지를 말합니다. 처음의 설렘과 장기적인 안정 조건은 다를 수 있기 때문에 두 가지를 반드시 나눠 보는 편이 좋습니다.</p>
+    <p>${esc(rel.comfort)} ${t?.socialText?esc(t.socialText):''} 그래서 사랑한다고 해서 모든 시간을 붙어 보내거나 모든 선택을 같이 해야 편한 것은 아닐 수 있습니다. 오히려 자기 생활을 존중받으면서 약속해야 할 부분은 정확히 지켜지는 관계에서 애정이 더 오래 유지될 수 있습니다.</p>
+    <p>갈등에서는 ${esc(rel.conflict)} 중요한 건 이것을 “성격이 나쁘다”로 보는 게 아니라 <b>어느 지점에서 방어 반응이 시작되는가</b>를 아는 것입니다. 서운함을 오래 참고 난 뒤의 단호함과 처음부터 공격적인 태도는 전혀 다른 패턴입니다. ${name}님에게는 갈등이 생겼을 때 사실·감정·요청을 한 번에 섞지 않고 각각 나눠 말하는 방식이 도움이 될 수 있습니다.</p>
+    <p>${t?.jealousyText?`질투나 확인 욕구는 ${esc(t.jealousyText)} `:''}이런 반응이 있다고 해서 불안형·회피형 같은 심리학적 진단을 사주로 확정하지 않습니다. 다만 관계가 흔들릴 때 확인을 더 많이 하는지, 혼자 정리할 시간이 더 필요한지처럼 반복되는 반응의 방향을 참고할 수 있습니다.</p>
+    <p>${esc(rel.repair)} 특히 돈·연락·외출·친구·가족·돌봄처럼 반복해서 부딪히는 문제는 “다음부터 잘하자”보다 <b>누가 무엇을 어느 정도 맡는지</b>를 실제 문장으로 합의해야 같은 갈등이 줄어듭니다.</p>
+    <p>가족 관계도 구체적인 과거 사건을 사주로 만들어내지는 않습니다. 다만 가까운 사이일수록 책임을 더 많이 떠안는 구조가 있는지, 부탁을 거절하기 어려운지, 사랑과 책임을 같은 것으로 느끼는지를 살펴보는 것이 중요합니다. 가족을 사랑하는 것과 가족의 몫까지 대신 책임지는 것은 분리해도 됩니다.</p>
+    <div class="easyPoint tip"><b>관계에서 확인할 기준</b><p>“이 사람을 좋아하나?”와 함께 “이 사람 옆에서 내가 계속 설명·수습·부담을 맡고 있지는 않은가?”를 같이 확인해보세요.</p></div></div>`;
+}
+function guiinWorkConsultV55(c,p,road,lk){
+  const name=esc(p.name), god=guiinGodDeepV55(p.mg), jobs=guiinV55List3(p.jobs,["전문기술","서비스","기획"]), ind=p.ind?.level||'균형형';
+  const next=road?.next;
+  return `<div class="deepCard card"><div class="miniTitle">직업·일·사업을 상담하듯 풀면</div><h3>직업명 하나보다 어떤 기능을 써야 덜 지치고 결과가 남는지를 먼저 봅니다.</h3>
+    <p>${name}님의 일 기질은 <b>${esc(p.gift)}</b>을 실제 결과로 만드는 데 있습니다. ${esc(god.work)} 그래서 단순히 “무슨 직업이 맞다”보다, 일을 하면서 내 판단·기술·고객·결과물이 쌓이는지 보는 것이 더 중요합니다.</p>
+    <p>실제 직군 예시로는 <b>${jobs.map(esc).join(' · ')}</b> 같은 방향을 우선 볼 수 있습니다. 이 직업들 자체가 정답이라는 뜻은 아닙니다. 공통점은 내 손기술·설명력·운영력·전문성을 반복해서 쓸수록 다음 고객과 경력으로 이어지는 구조라는 점입니다. 같은 직업이라도 권한이 없고 감정노동만 큰 환경이라면 맞지 않을 수 있고, 반대로 조직 안에서도 내 전문영역과 책임 범위가 분명하면 충분히 잘 맞을 수 있습니다.</p>
+    <p>독립성은 <b>${esc(ind)}</b>으로 읽힙니다. 독립성이 있다는 것이 반드시 창업해야 한다는 뜻은 아닙니다. 중요한 건 “내가 판단할 수 있는 영역이 있는가”입니다. 회사에서도 담당 영역이 분명하면 편할 수 있고, 자영업이어도 모든 고객 요구에 끌려다니면 오히려 더 소모될 수 있습니다.</p>
+    <p>현재 ${lk?`<b>${esc(lk.ko)} 대운(${esc(lk.god)})</b>`:'대운'}에서는 ${esc(road.currentUse)}을 남기는 것이 핵심입니다. 지금 시기의 성과는 단순히 바빴다는 기록보다 자격·경력·고객·가격·매출·포트폴리오처럼 다음 단계에서도 다시 쓸 수 있는 형태로 남겨야 합니다.</p>
+    <p>${next?`다음 <b>${esc(next.ko)} 대운(${esc(next.god)})</b>에서는 ${esc(road.nextUse)}이 더 중요해집니다. 지금 만든 기반이 있어야 다음 운의 책임과 기회를 “부담”이 아니라 “선택 가능한 카드”로 쓸 수 있습니다.`:'다음 대운은 현재 쌓는 기술과 기반을 어떻게 이어갈지 보는 방향으로 연결합니다.'}</p>
+    <div class="easyPoint good"><b>잘 맞는 환경</b><p>결과가 눈에 보이고, 잘할수록 단가·권한·평판 중 하나라도 누적되는 곳.</p></div>
+    <div class="easyPoint watch"><b>소모되기 쉬운 환경</b><p>책임은 커지는데 결정권과 보상은 없고, 사람의 기분을 맞추는 일이 실무보다 더 큰 곳.</p></div></div>`;
+}
+function guiinMoneyConsultV55(c,p,money){
+  const name=esc(p.name);
+  return `<div class="deepCard card"><div class="miniTitle">재물운을 ‘돈 버는 구조’로 보면</div><h3>재물복을 큰돈 한 번이 아니라 들어오는 돈·남는 돈·다시 벌 수 있는 자산으로 나눠 봅니다.</h3>
+    <p>${name}님의 수입 방식은 ${esc(money.earn)}입니다. 돈운이 좋다는 말을 “갑자기 큰돈이 생긴다”로 해석하기보다 <b>${esc(money.vehicle)}</b>처럼 반복 가능한 통로를 얼마나 안정적으로 만드느냐가 중요합니다.</p>
+    <p>돈을 지키는 방식은 ${esc(money.keep)} 벌 수 있는 능력과 남길 수 있는 능력은 다른 문제라, 매출이나 월수입이 커져도 생활비·사업비·관계비용이 같이 커지면 실제 자산은 남지 않을 수 있습니다.</p>
+    <p>특히 새는 장면은 <b>${esc(money.leak)}</b>입니다. 이 부분은 “돈복이 없다”는 뜻이 아니라, 내가 스트레스를 줄이거나 관계를 유지하기 위해 돈을 쓰는 방식이 반복될 수 있다는 뜻입니다. 반복되는 지출은 의지보다 구조로 막는 편이 좋습니다.</p>
+    <p>자산화의 핵심은 돈 자체뿐 아니라 <b>기술·경력·고객·평판·콘텐츠·운영 시스템</b> 중 하나를 몇 년 동안 남기는 것입니다. 오늘의 노동이 끝나도 다음 달에 다시 돈을 만들 수 있는 것이 하나씩 늘어날수록 재물운의 체감도 안정될 수 있습니다.</p>
+    <div class="easyPoint tip"><b>현실적인 돈 관리</b><p>입금되는 날 저축·세금/고정비·생활비·자유비를 먼저 분리하고, 사람을 위해 대신 부담하는 돈에는 월 한도를 정하는 방식이 잘 맞습니다.</p></div></div>`;
+}
+function guiinLuckDetailV55(g,phase){
+  const d=({
+    비견:'나만의 기준과 독립성을 만드는 시기라, “내가 무엇을 선택하고 무엇을 거절할지”가 중요한 주제가 됩니다.',겁재:'사람·경쟁·분배를 배우는 시기라 관계의 폭보다 누구와 무엇을 나눌지 경계를 세우는 힘이 중요합니다.',식신:'기술과 생활 기반을 반복해서 쌓는 시기라 한 번의 성과보다 오래 할 수 있는 루틴과 실력이 자산이 됩니다.',상관:'표현과 변화가 커지는 시기라 기존 방식의 답답함을 고치고 자기 목소리와 결과물을 밖으로 꺼내는 일이 중요합니다.',편재:'사람·시장·기회가 넓어지는 시기라 확장 능력과 함께 현금·시간·약속을 관리하는 힘이 필요합니다.',정재:'생활·돈·축적이 핵심이 되는 시기라 안정적인 수입과 자산, 반복 가능한 생활 기반을 만드는 일이 중요합니다.',편관:'책임과 도전이 커질 수 있는 시기라 버티는 힘보다 우선순위·위임·회복을 함께 배우는 것이 중요합니다.',정관:'자리·책임·신뢰가 핵심이 되는 시기라 경력과 자격, 공식적인 역할을 현실적인 권한과 보상으로 연결하는 것이 중요합니다.',편인:'전문성과 자기 세계를 깊게 만드는 시기라 남들과 같은 속도보다 대체하기 어려운 분야를 파고드는 것이 중요합니다.',정인:'배움·자격·지원·안정이 핵심이 되는 시기라 지식과 경험을 다음 단계의 기반으로 정리하는 것이 중요합니다.'
+  })[g]||'생활의 역할과 기반을 다시 정리하면서 다음 단계에 필요한 힘을 만드는 시기입니다.';
+  const tail=phase==='지나온 챕터'?'이 구간의 실제 사건을 사주가 맞혔다고 단정하기보다, 그 시기에 어떤 역할을 많이 했고 무엇을 배웠는지 기억과 대조해 보는 방식이 정확합니다.':phase==='현재 챕터'?'지금은 이 주제를 “알고 있는 것”에서 끝내지 말고 실제 경력·돈·관계의 기준으로 남겨야 다음 챕터로 자연스럽게 이어집니다.':'아직 오지 않은 사건을 확정하지 않고, 지금부터 어떤 준비를 해두면 선택지가 넓어지는지를 보는 준비 구간으로 활용하는 편이 좋습니다.';
+  return `${d} ${tail}`;
+}
+function guiinYearExtraV55(z,past=false){
+  if(!z)return '';
+  const map={career:'직업명 자체보다 역할·책임·성과가 어떻게 바뀌는지를 보세요. 새로운 일을 시작했는지뿐 아니라 기존 일을 더 크게 맡거나 경력을 정리한 것도 같은 주제에 들어갑니다.',money:'큰돈 사건보다 수입·가격·고정비·계약·부채처럼 돈의 구조가 달라지는 장면을 함께 보세요.',relationship:'새 인연만 뜻하지 않습니다. 기존 연애·가족·친구 관계에서 거리와 역할을 다시 정하는 것도 관계운의 변화입니다.',support:'귀인은 특정 사람이 반드시 나타난다는 뜻이 아니라 정보·소개·협업·배움처럼 혼자서는 얻기 어려운 연결이 유용해지는 흐름입니다.',speech:'말실수 예언이 아니라 계약·문자·약속·설명처럼 표현의 정확성이 결과에 더 큰 영향을 줄 수 있다는 신호입니다.',caution:'무조건 나쁜 해라는 뜻이 아니라 오래된 방식 중 하나를 손보거나 정리할 필요가 커지는 흐름으로 활용하는 편이 좋습니다.'};
+  const x=map[z.topKey]||'한 가지 사건을 맞히기보다 그 해에 반복해서 중요했던 생활 주제를 돌아보세요.';
+  return past?`${x} 실제 기억과 맞지 않는다면 억지로 끼워 맞추지 않는 것이 맞습니다.`:`${x} 준비할 수 있는 부분만 현실 계획으로 옮기고 결과를 확정적으로 기대하지는 마세요.`;
+}
+
 function guiinLifeNarrativeHTML(c){
   try{
     const p=guiinPersonV5(c), name=esc(p.name), lk=currentLuck(c), now=new Date().getFullYear(), current=guiinYearSignalV5(c,now);
-    const stage=guiinCurrentStageV51(c,current), money=guiinMoneyProfileV51(c,p), road=guiinDaeunRoadmapV51(c,lk), strengths=guiinThreeStrengthsV51(c,p), patterns=guiinThreePatternsV51(c,p);
+    const stage=guiinCurrentStageV51(c,current), money=guiinMoneyProfileV51(c,p), road=guiinDaeunRoadmapV51(c,lk);
+    const strengths=guiinV55List3(guiinThreeStrengthsV51(c,p),[p.gift,'상황을 현실적으로 정리하고 결과로 남기는 힘','흔들린 뒤에도 자기 기준을 다시 세우는 회복력']);
+    const patterns=guiinV55List3(guiinThreePatternsV51(c,p),[p.shadow,'압박이 커질 때 혼자 책임을 늘리는 패턴','관계에서 참다가 늦게 경계를 세우는 패턴']);
     const axes=guiinRelationAxesV53(c), strength=guiinStrengthAxisV53(c,p), io=guiinInnerOuterV53(c,p), loop=guiinDecisionLoopV53(c,p), rel=guiinRelationshipCompassV53(p), nowMix=guiinNowIntersectionV53(c,p,lk,current), chapters=guiinLifeChaptersV53(c,lk);
     const prev=[]; for(let y=now-4;y<now;y++){const z=guiinYearSignalV5(c,y); if(z)prev.push(z);}
     const fut=[]; for(let y=now+1;y<=now+3;y++){const z=guiinYearSignalV5(c,y); if(z)fut.push(z);}
     const nextYear=fut[0]||null;
     const evidence=(()=>{try{return evidenceText(c)}catch(_e){return `명리 근거 · ${p.season.season} ${c?.pillars?.month?.branch||''}월 · ${p.stem} 일간 · 월주 ${p.mg||'-'} · 오행 ${p.top||'-'} 중심`;}})();
-    const starText=guiinStarNamesV5(c).slice(0,5).join(' · ');
-    const relationText=axes.labels.slice(0,5).join(' · ');
+    const starText=guiinStarNamesV5(c).slice(0,7).join(' · ');
+    const relationText=axes.labels.slice(0,6).join(' · ');
     const nextD=road.next?`${road.next.ko} 대운(${road.next.god}, ${road.next.fromAge}~${road.next.toAge}세)`:'다음 대운 계산값';
-    const pastHTML=prev.map(z=>`<div class="easyPoint"><b>${z.year}년 · ${guiinYearLabelV5(z.topKey)}</b><p>${esc(guiinYearPhraseV5(z,true))}</p><p class="reportLead"><b>기억과 대조</b> · ${esc(guiinPastVerifyQuestionV53(z))}</p></div>`).join('');
-    const futureHTML=fut.map(z=>`<div class="easyPoint tip"><b>${z.year}년 · ${guiinYearLabelV5(z.topKey)}</b><p>${esc(guiinYearPhraseV5(z,false))}</p></div>`).join('');
-    const chapterHTML=chapters.map(x=>`<div class="easyPoint ${x.phase==='현재 챕터'?'good':x.phase==='앞으로의 챕터'?'tip':''}"><b>${esc(x.phase)} · ${esc(String(x.from))}~${esc(String(x.to))}세 · ${esc(x.ko)} ${esc(x.god)}</b><p><b>${esc(x.theme)}</b>이 핵심 주제입니다. ${esc(x.text)}</p></div>`).join('');
+    const pastHTML=prev.map(z=>`<div class="easyPoint"><b>${z.year}년 · ${guiinYearLabelV5(z.topKey)}</b><p>${esc(guiinYearPhraseV5(z,true))}</p><p>${esc(guiinYearExtraV55(z,true))}</p><p class="reportLead"><b>기억과 대조</b> · ${esc(guiinPastVerifyQuestionV53(z))}</p></div>`).join('');
+    const futureHTML=fut.map(z=>`<div class="easyPoint tip"><b>${z.year}년 · ${guiinYearLabelV5(z.topKey)}</b><p>${esc(guiinYearPhraseV5(z,false))}</p><p>${esc(guiinYearExtraV55(z,false))}</p></div>`).join('');
+    const chapterHTML=chapters.map(x=>`<div class="easyPoint ${x.phase==='현재 챕터'?'good':x.phase==='앞으로의 챕터'?'tip':''}"><b>${esc(x.phase)} · ${esc(String(x.from))}~${esc(String(x.to))}세 · ${esc(x.ko)} ${esc(x.god)}</b><p><b>${esc(x.theme)}</b>이 핵심 주제입니다. ${esc(guiinLuckDetailV55(x.god,x.phase))}</p></div>`).join('');
     return `<div class="deepCard card"><div class="miniTitle">한 사람으로 읽은 ${name}님의 핵심</div><h3>${esc(p.season.season)}에 태어난 ${esc(p.image)} · 일간 한 글자보다 계절·월령·오행·통근·관계 신호를 함께 봅니다.</h3>
       <p>${esc(p.core)} 월주의 ${esc(p.mg||'십성')}은 사회에서 <b>${esc(p.gift)}</b>을 반복해서 쓰게 하고, ${esc(strength.label)}이라 ${esc(strength.tone)}</p>
-      <div class="easyPoint good"><b>핵심 강점</b><p>${strengths.map(esc).join(' · ')||esc(p.gift)}</p></div>
+      <p>${name}님을 한 단어로 고정하지 않는 이유는, 같은 사람이 일할 때·사랑할 때·압박받을 때 전혀 다른 기능을 쓸 수 있기 때문입니다. 아래에서는 “나는 원래 이런 사람”이라는 문장보다 어떤 상황에서 어떤 반응이 나오는지를 순서대로 풀어봅니다.</p>
+      <div class="easyPoint good"><b>핵심 강점 3개</b><p>${strengths.map((x,i)=>`${i+1}) ${esc(x)}`).join('<br>')}</p></div>
       <div class="easyPoint watch"><b>강점의 대가</b><p>${esc(guiinCostOfStrengthV53(p))}</p></div>
       <p class="reportLead">${esc(evidence)}${relationText?` · 원국 관계 ${esc(relationText)}`:''}${starText?` · 실제 성립 신살 ${esc(starText)}`:''}</p></div>
+    ${guiinCoreConsultV55(c,p,strength,io,loop,axes)}
     <div class="deepCard card"><div class="miniTitle">겉으로 보이는 모습 ↔ 속에서 필요한 것</div><h3>사람들이 보는 모습과 내가 실제로 편해지는 조건은 같지 않을 수 있습니다.</h3>
-      <div class="easyPoint"><b>겉으로는</b><p>${esc(io.outer)}</p></div><div class="easyPoint"><b>속에서는</b><p>${esc(io.inner)}</p></div><div class="easyPoint tip"><b>균형 포인트</b><p>${esc(io.contrast)}</p></div></div>
+      <div class="easyPoint"><b>겉으로는</b><p>${esc(io.outer)}</p></div><div class="easyPoint"><b>속에서는</b><p>${esc(io.inner)}</p></div><div class="easyPoint tip"><b>균형 포인트</b><p>${esc(io.contrast)}</p></div>
+      <p>이 차이를 모르면 스스로도 “나는 왜 멀쩡하다가 갑자기 다 싫어지지?”라고 느낄 수 있습니다. 하지만 대개 갑자기 변한 것이 아니라, 겉으로 역할을 유지하는 동안 안쪽의 회복 조건이 오래 부족했던 경우가 많습니다. 쉬는 시간을 남는 시간으로 두지 말고 일정에 먼저 넣는 편이 좋습니다.</p></div>
     <div class="deepCard card"><div class="miniTitle">결정하고, 부딪히고, 다시 회복하는 방식</div><h3>성격을 형용사가 아니라 반복되는 행동 순서로 봅니다.</h3>
       <div class="easyPoint"><b>결정할 때</b><p>${esc(loop.decide)}</p></div><div class="easyPoint watch"><b>압박이 쌓이면</b><p>${esc(loop.stress)}</p></div><div class="easyPoint good"><b>회복 스위치</b><p>${esc(loop.recover)}</p></div>
+      <p>이 패턴은 직장과 연애에서 모양만 달리해 반복될 수 있습니다. 일에서는 책임이 몰릴 때, 관계에서는 상대의 기대와 내 기준이 계속 어긋날 때 같은 반응이 나올 수 있습니다. 따라서 문제를 해결할 때 “무슨 일이 생겼나”뿐 아니라 “내가 지금 선택권·휴식·경계 중 무엇을 잃었나”를 함께 보는 것이 좋습니다.</p>
       <p class="reportLead">원국 관계 신호 · 합 ${axes.harmony} / 긴장 ${axes.tension} · 통근 ${strength.roots}개 확인</p></div>
-    <div class="deepCard card"><div class="miniTitle">사람·연애·가족에서 반복되기 쉬운 패턴</div><h3>누구를 좋아하느냐보다 어떤 관계에서 오래 편한지를 같이 봅니다.</h3>
-      <div class="easyPoint"><b>끌림</b><p>${esc(rel.pull)}</p></div><div class="easyPoint good"><b>오래 편한 관계</b><p>${esc(rel.comfort)}</p></div><div class="easyPoint watch"><b>갈등이 생기면</b><p>${esc(rel.conflict)}</p></div><div class="easyPoint tip"><b>회복 방법</b><p>${esc(rel.repair)}</p></div></div>
-    <div class="deepCard card"><div class="miniTitle">일하는 기질 · 1지망 삶</div><h3>${esc(p.firstPath)}</h3><p>실제 직군 예시는 <b>${p.jobs.map(esc).join(' · ')}</b>처럼 자기 기능이 결과물로 남는 분야를 우선 볼 수 있습니다.</p>
-      <div class="easyPoint good"><b>1지망에 가까운 환경</b><p>${esc(p.gift)}과 ${esc(p.career?.work_mode||'전문성')}을 충분히 쓰고, 내가 만든 결과·기술·고객·평판이 누적되는 구조입니다.</p></div>
-      <div class="easyPoint watch"><b>2지망처럼 느껴지는 환경</b><p>조건은 안정적이어도 자기 강점과 결정권을 거의 쓰지 못하고 소진만 반복되면 답답함이 커질 수 있습니다. 이때는 직업명을 바꾸기 전에 “내가 쓰는 기능”부터 바꾸는 게 먼저입니다.</p></div></div>
-    <div class="deepCard card"><div class="miniTitle">돈 · 버는 힘과 남기는 힘</div><h3>${esc(money.earn)}</h3><div class="easyPoint good"><b>돈이 들어오는 통로</b><p>${esc(money.vehicle)}</p></div><div class="easyPoint"><b>돈을 지키는 방식</b><p>${esc(money.keep)}</p></div><div class="easyPoint watch"><b>돈이 새는 장면</b><p>${esc(money.leak)}</p></div><div class="easyPoint tip"><b>자산으로 남기는 법</b><p>기술·경력·고객·평판·콘텐츠 중 하나를 최소 몇 년 누적해 “다시 팔 수 있는 자산”으로 만드는 것이 핵심입니다. 운이 좋아질 때는 그 누적을 더 큰 단가·매출·자리로 바꾸는 데 쓰세요.</p></div></div>
-    <div class="deepCard card"><div class="miniTitle">대운으로 보는 인생 챕터</div><h3>10년 운을 좋다/나쁘다로 자르지 않고, 그 시기에 반복해서 배우는 과제로 읽습니다.</h3>${chapterHTML||'<p>대운 계산값을 불러오지 못했습니다.</p>'}</div>
-    <div class="deepCard card"><div class="miniTitle">최근 4년 · 과거 검증</div><h3>“맞다”를 강요하지 않고, 실제 기억과 계산된 주제를 대조하는 구간입니다.</h3>${pastHTML||'<p>연도별 계산값을 불러오지 못했습니다.</p>'}</div>
+    ${guiinRelationConsultV55(c,p,rel)}
+    ${guiinWorkConsultV55(c,p,road,lk)}
+    ${guiinMoneyConsultV55(c,p,money)}
+    <div class="deepCard card"><div class="miniTitle">대운으로 보는 인생 챕터</div><h3>10년 운을 좋다/나쁘다로 자르지 않고, 그 시기에 반복해서 배우는 과제로 읽습니다.</h3>
+      <p>대운은 사건표가 아니라 장기 배경입니다. 같은 대운이라도 직업·가족·연애·돈 중 어디에서 그 주제가 나타나는지는 실제 삶에 따라 달라집니다. 그래서 지나온 대운은 기억과 대조하고, 현재 대운은 남길 것을 정하고, 다음 대운은 준비할 것을 보는 방식으로 씁니다.</p>${chapterHTML||'<p>대운 계산값을 불러오지 못했습니다.</p>'}</div>
+    <div class="deepCard card"><div class="miniTitle">최근 4년 · 과거 검증</div><h3>“맞다”를 강요하지 않고, 실제 기억과 계산된 주제를 대조하는 구간입니다.</h3>
+      <p>연도별 흐름은 “그 해에 반드시 이 일이 있었다”라고 맞히는 용도가 아닙니다. 실제 기억에서 비슷한 주제가 있었는지 확인하고, 전혀 맞지 않으면 억지로 끼워 맞추지 않는 것이 맞습니다.</p>${pastHTML||'<p>연도별 계산값을 불러오지 못했습니다.</p>'}</div>
     <div class="deepCard card"><div class="miniTitle">지금의 인생 위치</div><h3>${esc(stage.label)}</h3><p>${esc(stage.text)}</p><div class="easyPoint"><b>10년 배경 × 올해의 강조점</b><p>${esc(nowMix.conflict)}</p></div>
+      <p>지금 해야 할 일은 모든 영역을 동시에 바꾸는 것이 아니라, 현재 대운의 장기 과제와 올해의 강조점이 겹치는 한두 영역을 우선 정리하는 것입니다. 좋은 운도 준비된 기반이 없으면 바쁨으로 끝날 수 있고, 부담이 있는 운도 기준을 정해두면 구조를 바꾸는 계기로 쓸 수 있습니다.</p>
       <div class="easyPoint good"><b>지금 남겨야 할 것</b><p>${esc(road.currentUse)}을 기록·경력·수입·관계의 기준처럼 눈에 보이는 형태로 남기세요.</p></div>
       <div class="easyPoint watch"><b>지금 줄여야 할 것</b><p>${esc(patterns[0]||p.shadow)} 같은 패턴이 반복될 때 “더 노력”으로 덮지 말고 역할·시간·돈·관계 경계를 먼저 조정하는 게 좋습니다.</p></div></div>
-    <div class="deepCard card"><div class="miniTitle">앞으로 1년</div><h3>${nextYear?`${nextYear.year}년은 ${guiinYearLabelV5(nextYear.topKey)} 쪽이 상대적으로 눈에 띕니다.`:'다음 해의 흐름을 계산하고 있습니다.'}</h3><p>${nextYear?esc(guiinYearPhraseV5(nextYear,false)):'대운과 다음 세운을 함께 확인합니다.'}</p><div class="easyPoint tip"><b>준비 원칙</b><p>다음 해에 들어가서 갑자기 바꾸기보다, 올해부터 필요한 기술·현금·관계 기준을 하나씩 준비하면 운의 체감 차이가 커질 수 있습니다.</p></div></div>
-    <div class="deepCard card"><div class="miniTitle">앞으로 3년</div><h3>세 해를 각각 보되, 한 방향으로 무엇을 누적할지를 더 중요하게 봅니다.</h3>${futureHTML||'<p>향후 연도 계산값을 불러오지 못했습니다.</p>'}</div>
+    <div class="deepCard card"><div class="miniTitle">앞으로 1년</div><h3>${nextYear?`${nextYear.year}년은 ${guiinYearLabelV5(nextYear.topKey)} 쪽이 상대적으로 눈에 띕니다.`:'다음 해의 흐름을 계산하고 있습니다.'}</h3><p>${nextYear?esc(guiinYearPhraseV5(nextYear,false)):'대운과 다음 세운을 함께 확인합니다.'}</p>${nextYear?`<p>${esc(guiinYearExtraV55(nextYear,false))}</p>`:''}<div class="easyPoint tip"><b>준비 원칙</b><p>다음 해에 들어가서 갑자기 바꾸기보다, 올해부터 필요한 기술·현금·관계 기준을 하나씩 준비하면 운의 체감 차이가 커질 수 있습니다.</p></div></div>
+    <div class="deepCard card"><div class="miniTitle">앞으로 3년</div><h3>세 해를 각각 보되, 한 방향으로 무엇을 누적할지를 더 중요하게 봅니다.</h3>
+      <p>세운은 해마다 강조점이 바뀌지만, 그때마다 삶의 방향을 전부 바꾸는 것은 오히려 피곤할 수 있습니다. 3년 동안 유지할 큰 축 하나를 정하고, 각 해의 흐름을 그 축을 강화하거나 조정하는 데 쓰는 편이 좋습니다.</p>${futureHTML||'<p>향후 연도 계산값을 불러오지 못했습니다.</p>'}</div>
     <div class="deepCard card"><div class="miniTitle">현재 대운의 남은 기간 → 다음 대운</div><h3>${lk?`${esc(lk.ko)} 대운을 남은 약 ${road.remain==null?'-':road.remain}년 동안 어떻게 쓰느냐가 다음 흐름의 재료가 됩니다.`:'현재 대운의 남은 구간을 계산합니다.'}</h3>
-      <p><b>현재 대운에서 쌓을 것</b> · ${esc(road.currentUse)}</p><p><b>${esc(nextD)}에서 더 중요해질 것</b> · ${esc(road.nextUse)}</p><div class="easyPoint tip"><b>연결해서 보면</b><p>대운이 바뀐다고 사람이 하루아침에 다른 인생으로 넘어가지는 않습니다. 지금 만든 기술·돈·고객·경력·생활기반이 다음 운에서 어떤 크기로 쓰이는지가 중요합니다.</p></div></div>
+      <p><b>현재 대운에서 쌓을 것</b> · ${esc(road.currentUse)}</p><p><b>${esc(nextD)}에서 더 중요해질 것</b> · ${esc(road.nextUse)}</p><div class="easyPoint tip"><b>연결해서 보면</b><p>대운이 바뀐다고 사람이 하루아침에 다른 인생으로 넘어가지는 않습니다. 지금 만든 기술·돈·고객·경력·생활기반이 다음 운에서 어떤 크기로 쓰이는지가 중요합니다. 전환 직전에는 새 일을 무리하게 많이 벌이기보다 다음 10년에 가져갈 것과 버릴 것을 정리하는 편이 좋습니다.</p></div></div>
     <div class="deepCard card"><div class="miniTitle">${name}님의 인생 사용설명서</div><h3>더 버티는 법보다, 내 강점을 덜 소모되게 쓰는 법을 정리합니다.</h3>
       <div class="easyPoint good"><b>계속 가져갈 장점 3개</b><p>${strengths.map((x,i)=>`${i+1}) ${esc(x)}`).join('<br>')}</p></div><div class="easyPoint watch"><b>고칠 패턴 3개</b><p>${patterns.map((x,i)=>`${i+1}) ${esc(x)}`).join('<br>')}</p></div>
       <div class="easyPoint tip"><b>앞으로 3년의 한 문장</b><p>${esc(road.currentUse)}을 한 방향으로 누적하되, ${esc(guiinCostOfStrengthV53(p))} 이 대가가 커지는 순간에는 속도를 줄이세요.</p></div>
-      <div class="easyPoint"><b>돈</b><p>${esc(money.keep)}</p></div><div class="easyPoint"><b>관계</b><p>${esc(rel.repair)}</p></div><div class="easyPoint"><b>일</b><p>${esc(p.firstPath)}</p></div></div>`;
-  }catch(_e){console.warn('GUIIN_LIFE_V53_FALLBACK',_e?.message||_e);return '';}
+      <div class="easyPoint"><b>돈의 기준 3개</b><p>1) 반복 가능한 수입 통로를 키우기<br>2) 관계·편의비용의 월 한도를 정하기<br>3) 기술·경력·고객 중 하나를 자산으로 남기기</p></div>
+      <div class="easyPoint"><b>관계의 기준 3개</b><p>1) 혼자 있는 시간과 연락 기준을 말로 합의하기<br>2) 사랑과 책임 분담을 같은 것으로 보지 않기<br>3) 같은 갈등이 반복되면 사과보다 생활 규칙을 바꾸기</p></div>
+      <div class="easyPoint"><b>일의 기준 3개</b><p>1) 결정권이 있는가<br>2) 잘할수록 기술·단가·평판이 누적되는가<br>3) 일을 하고도 회복할 시간이 남는가</p></div></div>`;
+  }catch(_e){console.warn('GUIIN_LIFE_V55_FALLBACK',_e?.message||_e);return '';}
 }
-
 function renderResult(){
  const view=$('resultView'); if(!view)return;
  if(chart)try{view.dataset.chartSignature=guiinChartSignature(chart);}catch(_e){}
@@ -3145,8 +3297,8 @@ const U35Compat=(()=>{
    ?['좋을 때는 강하게 끌리고, 부딪힐 때는 차이가 크게 느껴지는 관계','일지 충 신호가 있어 감정·생활 속도 차이가 가까운 관계에서 크게 체감될 수 있습니다. 이별의 확정 신호가 아니라 조율이 필요한 지점을 보여주는 쪽에 가깝습니다.']
    :['큰 합·충 하나보다 생활 속 작은 차이가 더 중요한 관계','강한 합·충 하나로 관계가 결정되기보다 실제 말투·연락·돈·생활 규칙이 만족도를 더 크게 좌우할 수 있습니다.'];
   const pa=pct(a),pb=pct(b);
-  const gaps=E.map(x=>[x,Math.abs((pa[x]||0)-(pb[x]||0))]).sort((x,y)=>y[1]-x[1]);
-  const gapEl=gaps[0][0], gapVal=Math.round(gaps[0][1]);
+  const gaps=E.map(x=>({el:x,gap:Math.abs((pa[x]||0)-(pb[x]||0))})).sort((x,y)=>y.gap-x.gap);
+  const gapEl=gaps[0]?.el||'토', gapVal=Math.round(Number(gaps[0]?.gap||0));
   const aStyle=compatElementStyle(ae), bStyle=compatElementStyle(be), pair=compatPairProfile(ae,be);
 
   return {
@@ -3365,7 +3517,7 @@ function guiinFreeUsageKey(){
 }
 function freeUsed(){const n=Number(localStorage.getItem(guiinFreeUsageKey())||0);return Number.isFinite(n)?Math.max(0,n):0;}
 function setFreeUsed(n){localStorage.setItem(guiinFreeUsageKey(),String(Math.max(0,n)));syncWalletViews();}
-function syncWalletViews(){if($('coinView'))$('coinView').textContent=wallet.coins;if($('freeRemainView'))$('freeRemainView').textContent=Math.max(0,3-freeUsed());renderLedger();}
+function syncWalletViews(){if($('coinView'))$('coinView').textContent=String(wallet.coins);if($('freeRemainView'))$('freeRemainView').textContent=String(Math.max(0,3-freeUsed()));renderLedger();}
 function renderLedger(){if(!$('ledger'))return;$('ledger').innerHTML=(wallet.ledger||[]).slice(0,12).map(r=>`${esc(r.t)} · ${esc(r.text)} (${r.delta>0?'+':''}${r.delta})`).join('<br>')||'아직 내역이 없습니다.';}
 let guiinPaymentState={checked:false,enabled:false,error:false};
 
@@ -3710,9 +3862,9 @@ function guiinChartPayload(){
     const src=chart?.elCount||chart?.elements||{};
     const total=Object.values(src||{}).reduce((a,b)=>a+(Number(b)||0),0)||1;
     const ranked=['목','화','토','금','수']
-      .map(element=>[element,Math.round(((Number(src?.[element])||0)/total)*100)])
-      .sort((a,b)=>b[1]-a[1]);
-    const strongest=ranked[0]||['-',0],lowest=ranked[ranked.length-1]||['-',0];
+      .map(element=>({element,percent:Math.round(((Number(src?.[element])||0)/total)*100)}))
+      .sort((a,b)=>b.percent-a.percent);
+    const strongest=ranked[0]||{element:'-',percent:0},lowest=ranked[ranked.length-1]||{element:'-',percent:0};
     const roots=Array.isArray(chart?.extras?.roots)?safePlain(chart.extras.roots):[];
     let story=null,relationship=null,decision=null,innerOuter=null,strengthAxis=null,compass=null,yearSignal=null;
     try{story=(typeof guiinPersonV5==='function')?guiinPersonV5(chart):null;}catch(_e){story=null;}
@@ -3743,8 +3895,8 @@ function guiinChartPayload(){
       day_master:chart?.dayMaster?.stem||chart?.pillars?.day?.stem||null,
       month_command:{pillar:val(chart?.pillars?.month),god:mg},
       season:safePlain(story?.season||null),
-      strongest_element:{element:strongest[0],percent:strongest[1]},
-      lowest_element:{element:lowest[0],percent:lowest[1]},
+      strongest_element:{element:strongest.element,percent:strongest.percent},
+      lowest_element:{element:lowest.element,percent:lowest.percent},
       roots,root_count:roots.length,
       structure:{strength:safePlain(strengthAxis)},
       relation_signals:Array.isArray(chart?.relations)
