@@ -612,6 +612,25 @@ html{background:#efe7d7}.app{background:linear-gradient(180deg,#fffaf0 0%,#fff6e
 }
 
 
+
+/* v6.3 — result share / PDF / follow-up tools */
+.resultActionBar{display:grid;grid-template-columns:repeat(3,1fr);gap:7px;margin:7px 0 10px;position:relative;z-index:3}
+.resultActionBar button{border:1px solid #e8dfd2;background:#fffdf8;color:#365247;border-radius:13px;padding:9px 6px;font-size:9.5px;font-weight:900;box-shadow:0 3px 10px rgba(70,58,42,.04)}
+.resultActionBar button.primaryAction{background:#edf7ee;border-color:#d9e9dc;color:#1d6949}
+.resultActionBar button:active{transform:translateY(1px)}
+.guiinShareToast{position:fixed;left:50%;bottom:86px;transform:translateX(-50%);z-index:3200;max-width:calc(100% - 34px);background:#213b31;color:#fff;border-radius:999px;padding:10px 15px;font-size:10px;font-weight:800;box-shadow:0 10px 30px rgba(18,35,27,.22);opacity:0;pointer-events:none;transition:opacity .18s}
+.guiinShareToast.on{opacity:1}
+@media(max-width:360px){.resultActionBar{gap:5px}.resultActionBar button{font-size:8.7px;padding:8px 4px}}
+@media print{
+  html,body{background:#fff!important}
+  body *{visibility:hidden!important}
+  #result.active,#result.active *,#matchResult.active,#matchResult.active *{visibility:visible!important}
+  #result.active,#matchResult.active{display:block!important;position:absolute!important;left:0!important;top:0!important;width:100%!important;max-width:none!important;padding:0!important;background:#fff!important}
+  #result .topbar,#resultTabs,#matchResult .topbar,#matchTabs,.resultActionBar,.bottom,.demoBadge,.tailQuestions{display:none!important}
+  #resultView,#matchView{width:100%!important}
+  .card,.deepCard,.expertSection,.starDetail{box-shadow:none!important;break-inside:avoid}
+}
+
 /* GUIIN MASTER STABILITY — inline errors / empty states */
 .formMsg,.screenNotice{
   display:none;
@@ -935,6 +954,11 @@ button{position:relative}
   <div class="tabs" id="resultTabs">
     <button class="on" data-tab="summary">전체 풀이</button><button data-tab="personality">성격·기질</button><button data-tab="flow">인생 흐름</button><button data-tab="fields">직업·재물·연애</button><button data-tab="stars">신살·귀인</button><button data-tab="chart">사주 원국</button>
   </div>
+  <div class="resultActionBar" aria-label="사주 결과 도구">
+    <button type="button" onclick="guiinShareResult('saju')">공유하기</button>
+    <button type="button" onclick="guiinPrintResult('saju')">PDF 저장</button>
+    <button type="button" class="primaryAction" onclick="go('ask')" data-guiin-nav="ask">AI로 더 묻기</button>
+  </div>
   <div id="resultView"></div>
 </section>
 
@@ -972,6 +996,11 @@ button{position:relative}
     <button data-match-tab="love" onclick="setMatchTab('love')">연애 궁합</button>
     <button data-match-tab="marriage" onclick="setMatchTab('marriage')">결혼 궁합</button>
     <button data-match-tab="partner" onclick="setMatchTab('partner')">상대방 분석</button>
+  </div>
+  <div class="resultActionBar" aria-label="궁합 결과 도구">
+    <button type="button" onclick="guiinShareResult('compat')">공유하기</button>
+    <button type="button" onclick="guiinPrintResult('compat')">PDF 저장</button>
+    <button type="button" class="primaryAction" onclick="go('ask')" data-guiin-nav="ask">AI로 더 묻기</button>
   </div>
   <div id="matchView"></div>
 </section>
@@ -1180,6 +1209,7 @@ button{position:relative}
 <section id="refund" class="screen"><div class="topbar"><button class="ghost" onclick="go('appinfo')" data-guiin-nav="appinfo">‹</button><div class="brand"><div class="brandline">환불정책</div></div><span></span></div><div class="pagePad"><div class="card utilityCard"><h3>환불 안내</h3><p>실제 KCP 결제 오픈 전 상품별 제공 시점, 사용한 클로버, 이미 열람한 디지털 콘텐츠의 환불 기준을 최종 확정하고 결제 단계에서 동의받아야 합니다.</p></div></div></section>
 
 
+<div id="guiinShareToast" class="guiinShareToast" role="status" aria-live="polite"></div>
 <div id="guiinToastLayer" role="dialog" aria-modal="true" class="guiinToastLayer" role="dialog" aria-modal="true" aria-live="assertive" onclick="if(event.target===this)closeGuiinPopup()">
   <div class="guiinToast">
     <div class="leaf">☘</div>
@@ -3478,6 +3508,54 @@ function renderResult(){
   view.innerHTML=emptyStateHTML('결과를 불러오는 중 문제가 생겼어요.','입력한 정보는 그대로예요. 잠시 후 다시 시도하거나 사주 입력 화면에서 다시 계산해 주세요.','<button class="ctaGold" onclick="renderResult()">다시 불러오기 ›</button>');
  }
 }
+function guiinMiniToast(message){
+  const el=document.getElementById('guiinShareToast');
+  if(!el)return;
+  el.textContent=String(message||'');
+  el.classList.add('on');
+  clearTimeout(guiinMiniToast._t);
+  guiinMiniToast._t=setTimeout(()=>el.classList.remove('on'),1900);
+}
+function guiinPublicShareUrl(){
+  try{
+    const u=new URL(location.href);
+    u.hash='';u.search='';
+    return u.origin+'/';
+  }catch(_e){return 'https://gwiinsaju.com/';}
+}
+async function guiinShareResult(kind){
+  const isCompat=kind==='compat';
+  const title=isCompat?'귀인사주 궁합':'귀인사주 평생사주';
+  const text=isCompat
+    ?'두 사람의 원국과 관계 흐름을 함께 보는 귀인사주 궁합을 확인해보세요.'
+    :'일간·월령·오행·십신·대운을 연결해서 읽는 귀인사주 평생사주를 확인해보세요.';
+  const url=guiinPublicShareUrl();
+  try{
+    if(navigator.share){
+      await navigator.share({title,text,url});
+      return;
+    }
+    if(navigator.clipboard&&navigator.clipboard.writeText){
+      await navigator.clipboard.writeText(text+'\n'+url);
+      guiinMiniToast('공유 문구와 주소를 복사했어요.');
+      return;
+    }
+    window.prompt('아래 주소를 복사해 주세요.',url);
+  }catch(e){
+    if(e&&e.name==='AbortError')return;
+    try{await navigator.clipboard.writeText(url);guiinMiniToast('주소를 복사했어요.');}
+    catch(_e){window.prompt('아래 주소를 복사해 주세요.',url);}
+  }
+}
+function guiinPrintResult(kind){
+  const screenId=kind==='compat'?'matchResult':'result';
+  const screen=document.getElementById(screenId);
+  if(!screen||!screen.classList.contains('active')){guiinMiniToast('먼저 결과 화면을 열어 주세요.');return;}
+  const prev=document.title;
+  document.title=kind==='compat'?'귀인사주-궁합':'귀인사주-평생사주';
+  try{window.print();}finally{setTimeout(()=>{document.title=prev;},300);}
+}
+
 function setTab(t){currentTab=t;renderResult();window.scrollTo({top:0,behavior:'smooth'});}
 function advanced(c){return starDetails(c)+foundationReport(c);}
 let matchAnalysis=null, matchTab='summary', matchBaseHTML='', matchMeta=null;
