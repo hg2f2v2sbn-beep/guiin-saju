@@ -3509,7 +3509,7 @@ function submitMatch(){
   }catch(err){console.warn('GUIIN_COMPAT_PROFILE_SYNC_DEFERRED',err?.message||err);}
   const compatMetrics=guiinCompatMetricsV56(a,b);
   const {score,love,personality,money,future,band}=compatMetrics;
-  matchMeta={a,b,score,love,personality,money,future,good:score>=82?'기본적인 호감과 상호 보완 가능성이 큰 편입니다. 서로 다른 강점을 역할로 나누면 함께 있을 때 혼자보다 선택지가 넓어질 수 있습니다.':'차이가 분명한 만큼 서로에게 없는 방식을 배우게 되는 관계입니다. 맞는 부분만 찾기보다 각자의 강점을 역할로 나누는 것이 중요합니다.',watch:dayGap===6?'일지의 충 신호가 있어 감정의 속도나 생활 리듬이 다를 때 갈등이 크게 느껴질 수 있습니다. 다툼 자체보다 다툰 뒤 어떻게 회복하는지가 핵심입니다.':'감정이 좋을 때는 차이를 매력으로 느끼지만, 피곤할 때는 같은 차이가 답답함으로 느껴질 수 있습니다. 특히 책임과 돈 문제를 말없이 넘기지 않는 것이 중요합니다.',tip:'연락·돈·시간·집안일·가족·혼자 있는 시간에 대한 기준을 구체적으로 맞추세요. 좋은 궁합은 점수보다 반복되는 갈등을 두 사람이 실제로 조율할 수 있을 때 오래 갑니다.'};
+  matchMeta={a,b,score,love,personality,money,future,good:score>=82?'기본적인 호감과 상호 보완 가능성이 큰 편입니다. 서로 다른 강점을 역할로 나누면 함께 있을 때 혼자보다 선택지가 넓어질 수 있습니다.':'차이가 분명한 만큼 서로에게 없는 방식을 배우게 되는 관계입니다. 맞는 부분만 찾기보다 각자의 강점을 역할로 나누는 것이 중요합니다.',watch:compatMetrics.q?.dayRel==='충'?'일지의 충 신호가 있어 감정의 속도나 생활 리듬이 다를 때 갈등이 크게 느껴질 수 있습니다. 다툼 자체보다 다툰 뒤 어떻게 회복하는지가 핵심입니다.':'감정이 좋을 때는 차이를 매력으로 느끼지만, 피곤할 때는 같은 차이가 답답함으로 느껴질 수 있습니다. 특히 책임과 돈 문제를 말없이 넘기지 않는 것이 중요합니다.',tip:'연락·돈·시간·집안일·가족·혼자 있는 시간에 대한 기준을 구체적으로 맞추세요. 좋은 궁합은 점수보다 반복되는 갈등을 두 사람이 실제로 조율할 수 있을 때 오래 갑니다.'};
   const matchHeadline=score>=86?'보완성과 결속이 큰 관계예요.':score>=78?'끌림과 조율이 함께 필요한 관계예요.':score>=68?'차이를 맞춰갈수록 좋아지는 관계예요.':'점수보다 생활 합의가 더 중요한 관계예요.';
   const pairNow=compatPairProfile(a.dayMaster?.el||a.pillars?.day?.stemEl||'토',b.dayMaster?.el||b.pillars?.day?.stemEl||'토');
   const pairStructure=guiinCompatSignalV5(a,b);
