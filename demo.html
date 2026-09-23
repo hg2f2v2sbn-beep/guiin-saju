@@ -2759,7 +2759,7 @@ function guiinThreePatternsV51(c,p){
 /* legacy guiinLifeNarrativeHTML V5.1 removed in v5.3; V5.1 helpers retained */
 
 /* ========================================================================
-   GUIIN LIFE STORY V5.3 — 2026-09-23
+   GUIIN LIFE STORY V5.4 — 2026-09-23
    상담형 서사 강화: 겉/속의 차이, 선택-갈등-회복 루프, 강점의 대가,
    대운별 인생 챕터, 과거 검증 질문, 현재 선택 기준을 하나의 흐름으로 연결.
    사건을 만들어내지 않고 실제 계산값만 근거로 사용합니다.
@@ -3719,37 +3719,103 @@ function guiinChartPayload(){
       .map(element=>[element,Math.round(((Number(src?.[element])||0)/total)*100)])
       .sort((a,b)=>b[1]-a[1]);
     const strongest=ranked[0]||['-',0],lowest=ranked[ranked.length-1]||['-',0];
+    const roots=Array.isArray(chart?.extras?.roots)?safePlain(chart.extras.roots):[];
+    let story=null,relationship=null,decision=null,innerOuter=null,strengthAxis=null,compass=null,yearSignal=null;
+    try{story=(typeof guiinPersonV5==='function')?guiinPersonV5(chart):null;}catch(_e){story=null;}
+    try{relationship=story?.trait||((typeof guiinRelationshipTraitProfile==='function')?guiinRelationshipTraitProfile(chart):null);}catch(_e){relationship=null;}
+    try{decision=(story&&typeof guiinDecisionLoopV53==='function')?guiinDecisionLoopV53(chart,story):null;}catch(_e){decision=null;}
+    try{innerOuter=(story&&typeof guiinInnerOuterV53==='function')?guiinInnerOuterV53(chart,story):null;}catch(_e){innerOuter=null;}
+    try{strengthAxis=(story&&typeof guiinStrengthAxisV53==='function')?guiinStrengthAxisV53(chart,story):null;}catch(_e){strengthAxis=null;}
+    try{compass=(story&&typeof guiinRelationshipCompassV53==='function')?guiinRelationshipCompassV53(story):null;}catch(_e){compass=null;}
+    try{yearSignal=(typeof guiinYearSignalV5==='function')?guiinYearSignalV5(chart,now.getFullYear()):null;}catch(_e){yearSignal=null;}
+    const mg=chart?.pillars?.month?.god||null;
+    const attractionMap={
+      '비견':{pull:'자기 삶과 기준이 분명하고 서로를 동등하게 대하는 사람',steady:'독립성을 존중하면서도 약속을 지키는 사람',drain:'통제하거나 사소한 선택까지 간섭하는 태도'},
+      '겁재':{pull:'반응이 빠르고 에너지가 있으며 내 편이라는 느낌을 주는 사람',steady:'질투나 경쟁보다 신뢰와 경계를 분명히 하는 사람',drain:'비교·밀당·우선순위 싸움을 계속 만드는 태도'},
+      '식신':{pull:'편안하고 다정하며 함께 일상을 즐길 수 있는 사람',steady:'생활 리듬이 안정되고 행동으로 마음을 보여주는 사람',drain:'감정기복이 심하고 매번 관계를 시험하는 태도'},
+      '상관':{pull:'대화가 통하고 개성이 강하며 새로운 생각을 주는 사람',steady:'솔직함을 받아주되 서로 말의 선을 지키는 사람',drain:'표현을 막거나 정답만 강요하는 태도'},
+      '편재':{pull:'활동적이고 센스 있으며 새로운 경험을 함께할 수 있는 사람',steady:'자유를 주면서도 돈·시간·약속의 기준은 분명한 사람',drain:'지나치게 구속하거나 모든 일상을 보고받으려는 태도'},
+      '정재':{pull:'생활이 단정하고 책임감이 있으며 믿을 수 있는 사람',steady:'말과 행동이 일치하고 현실 계획을 함께 세울 수 있는 사람',drain:'약속을 자주 바꾸고 돈·시간 기준이 들쭉날쭉한 태도'},
+      '편관':{pull:'결단력과 존재감이 있고 자기 일에 몰입하는 사람',steady:'강함 속에서도 존중과 안전감을 주는 사람',drain:'압박·통제·감정적인 힘겨루기를 반복하는 태도'},
+      '정관':{pull:'예의와 책임감이 있고 관계를 가볍게 다루지 않는 사람',steady:'약속과 경계가 분명하면서 감정을 말로도 표현하는 사람',drain:'관계를 애매하게 끌거나 책임을 회피하는 태도'},
+      '편인':{pull:'독특한 관점과 전문성이 있고 대화할수록 궁금한 사람',steady:'혼자 생각할 시간을 존중하면서 확인할 것은 직접 묻는 사람',drain:'감정을 재촉하거나 사생활을 과하게 침범하는 태도'},
+      '정인':{pull:'따뜻하고 이해심이 있으며 정서적으로 편안한 사람',steady:'돌봄을 주고받되 한쪽만 보호자 역할이 되지 않는 사람',drain:'받기만 하거나 죄책감으로 관계를 묶는 태도'}
+    };
+    const attraction=attractionMap[mg]||{pull:'자기 삶이 있으면서 말과 행동이 일치하는 사람',steady:'경계를 존중하고 약속을 지키는 사람',drain:'책임을 한쪽에 넘기거나 감정을 시험하는 태도'};
+    const career=story?.career||null;
     return {
-      schema_version:'2.0.0-frontend-bridge',
+      schema_version:'2.6.0-frontend-story-bridge',
       name:realName||null,
       day_master:chart?.dayMaster?.stem||chart?.pillars?.day?.stem||null,
-      month_command:{
-        pillar:val(chart?.pillars?.month),
-        god:chart?.pillars?.month?.god||null
-      },
+      month_command:{pillar:val(chart?.pillars?.month),god:mg},
+      season:safePlain(story?.season||null),
       strongest_element:{element:strongest[0],percent:strongest[1]},
       lowest_element:{element:lowest[0],percent:lowest[1]},
+      roots,root_count:roots.length,
+      structure:{strength:safePlain(strengthAxis)},
       relation_signals:Array.isArray(chart?.relations)
         ? chart.relations.map(x=>x?.type||x?.name||x?.relation).filter(Boolean).slice(0,12)
         : [],
+      inner_outer:safePlain(innerOuter),
+      decision_profile:safePlain(decision),
+      strength_cost:story&&typeof guiinCostOfStrengthV53==='function'?guiinCostOfStrengthV53(story):null,
+      life_value:story?.lifeValue||null,
+      gift:story?.gift||null,
+      shadow:story?.shadow||null,
+      money_style:story?.money||null,
+      relationship_profile:relationship?{
+        force_label:relationship.forceLabel||null,
+        attachment_label:relationship.attachmentLabel||null,
+        attachment_text:relationship.attachmentText||null,
+        boredom_label:relationship.boredomLabel||null,
+        boredom_text:relationship.boredomText||null,
+        intimacy_label:relationship.intimacyLabel||null,
+        intimacy_text:relationship.intimacyText||null,
+        anger_text:relationship.angerText||null,
+        jealousy_text:relationship.jealousyText||null,
+        cutoff_text:relationship.cutoffText||null,
+        social_text:relationship.socialText||null,
+        independence_level:story?.ind?.level||null,
+        independence_text:story?.ind?.text||null,
+        pull:compass?.pull||null,comfort:compass?.comfort||null,repair:compass?.repair||null
+      }:null,
+      attraction_profile:{...attraction,relationship_style:story?.people||null},
+      career_profile:career?{
+        work_mode:career.work_mode||null,
+        job_examples:Array.isArray(career.job_examples)?career.job_examples.slice(0,8):(Array.isArray(story?.jobs)?story.jobs.slice(0,8):[]),
+        first_path:story?.firstPath||null
+      }:{work_mode:null,job_examples:Array.isArray(story?.jobs)?story.jobs.slice(0,8):[],first_path:story?.firstPath||null},
+      current_timing:{
+        luck:currentLuckRow?`${currentLuckRow.ko||'-'} ${currentLuckRow.god||''}`.trim():null,
+        year:now.getFullYear(),
+        year_focus_key:yearSignal?.topKey||null,
+        year_focus:(yearSignal&&typeof guiinYearLabelV5==='function')?guiinYearLabelV5(yearSignal.topKey):null
+      },
       uncertainty:{
         birth_time_unknown:!!chart?.input?.hourUnknown,
         hour_pillar:chart?.input?.hourUnknown?'unavailable':'available'
       }
     };
   };
-  let personModel=null;
+  const bridgePersonModel=safePersonModelFallback();
+  let personModel=bridgePersonModel;
   try{
-    personModel=(globalThis.GuiinExpert&&typeof GuiinExpert.personModel==='function')
+    const expertPersonModel=(globalThis.GuiinExpert&&typeof GuiinExpert.personModel==='function')
       ? GuiinExpert.personModel(chart)
-      : safePersonModelFallback();
-  }catch(_e){personModel=safePersonModelFallback();}
-  try{
-    if(personModel&&typeof personModel==='object'&&personModel.current_timing){
-      personModel=safePlain(personModel);
-      personModel.current_timing.luck=currentLuckRow?`${currentLuckRow.ko||'-'} ${currentLuckRow.god||''}`.trim():null;
+      : null;
+    if(expertPersonModel&&typeof expertPersonModel==='object'){
+      const ep=safePlain(expertPersonModel)||{};
+      personModel={
+        ...bridgePersonModel,...ep,
+        relationship_profile:ep.relationship_profile||bridgePersonModel.relationship_profile,
+        attraction_profile:ep.attraction_profile||bridgePersonModel.attraction_profile,
+        career_profile:ep.career_profile||bridgePersonModel.career_profile,
+        decision_profile:ep.decision_profile||bridgePersonModel.decision_profile,
+        inner_outer:ep.inner_outer||bridgePersonModel.inner_outer,
+        current_timing:{...(bridgePersonModel.current_timing||{}),...(ep.current_timing||{})}
+      };
     }
-  }catch(_e){}
+  }catch(_e){personModel=bridgePersonModel;}
 
   let timingHighlights=null;
   try{
