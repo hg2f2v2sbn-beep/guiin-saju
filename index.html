@@ -2631,7 +2631,7 @@ function guiinYearSignalV5(c,year){
     const sorted=keys.map(k=>({key:k,score:Number(sc[k]||0)})).sort((a,b)=>b.score-a.score);
     const rel=Array.isArray(z.relations)?z.relations:[];
     const tension=rel.filter(x=>['충','형','파','해'].includes(String(x))).length;
-    return {...z,topKey:sorted[0]?.key||'career',topScore:sorted[0]?.score||0,tension};
+    return {...z,topKey:sorted[0]?.key||'career',topScore:sorted[0]?.score||0,secondKey:sorted[1]?.key||'support',secondScore:sorted[1]?.score||0,tension};
   }catch(_e){return null;}
 }
 function guiinYearLabelV5(k){return ({career:'일·성과',money:'돈·현실',relationship:'연애·관계',support:'도움·연결',speech:'말·오해',caution:'정리·조정'})[k]||'생활 변화';}
@@ -3095,6 +3095,108 @@ function guiinYearExtraV55(z,past=false){
   return past?`${x} 실제 기억과 맞지 않는다면 억지로 끼워 맞추지 않는 것이 맞습니다.`:`${x} 준비할 수 있는 부분만 현실 계획으로 옮기고 결과를 확정적으로 기대하지는 마세요.`;
 }
 
+
+/* ========================================================================
+   GUIIN TIME FLOW V5.9 — 3-YEAR PAST CYCLE + CURRENT/FUTURE CONSULTATION
+   과거는 최근 3년을 한 흐름으로 묶고, 현재 연도/내년/후년/더 먼 미래는
+   세운 십성·연주·원국 관계·대운 배경을 겹쳐 상담형으로 설명한다.
+   ======================================================================== */
+function guiinYearGodThemeV59(g){
+  return ({
+    비견:'내 기준·독립성·결정권이 커지는 해라, 남과 비교하기보다 내가 직접 정할 영역을 선명하게 만드는 것이 중요합니다.',
+    겁재:'사람·경쟁·분배가 크게 체감될 수 있어, 관계와 돈에서 어디까지 함께하고 어디서 선을 그을지 기준이 필요합니다.',
+    식신:'기술·생산·생활 리듬이 중요한 해라, 한 번의 큰 승부보다 반복 가능한 결과를 꾸준히 쌓는 쪽이 유리합니다.',
+    상관:'표현·변화·개선 욕구가 커질 수 있어, 답답한 구조를 고치고 내 생각을 결과물로 바꾸는 힘을 잘 쓰는 것이 중요합니다.',
+    편재:'사람·고객·기회·외부 활동이 넓어질 수 있어, 확장과 동시에 시간·현금·약속을 관리하는 힘이 필요합니다.',
+    정재:'수입·생활·축적의 현실성이 중요해져, 돈이 들어오는 크기보다 무엇을 안정적으로 남길지를 정하는 편이 좋습니다.',
+    편관:'책임·도전·압박이 커질 수 있어, 버티는 힘만 쓰기보다 우선순위·거절·위임을 같이 배워야 하는 해입니다.',
+    정관:'자리·책임·신뢰·공식 역할이 강조되어, 경력과 평판을 실제 권한·보상·직함으로 연결하는 것이 중요합니다.',
+    편인:'전문성·몰입·차별화가 중요해져, 남들과 같은 방식보다 내가 깊게 파고들 수 있는 영역을 만드는 편이 좋습니다.',
+    정인:'배움·자격·보호·지원의 흐름이 강조되어, 배운 것을 기반으로 만들고 회복과 정리를 함께 챙기는 것이 중요합니다.'
+  })[g]||'그 해의 역할과 생활 구조를 다시 정리하면서 다음 단계에 필요한 힘을 만드는 시기입니다.';
+}
+function guiinYearRelationV59(z){
+  const r=[...new Set((z?.relations||[]).filter(Boolean))];
+  if(!r.length)return '원국과 강하게 부딪히는 관계 신호가 두드러지지 않아, 세운의 십성과 대운 배경을 중심으로 읽는 편이 자연스럽습니다.';
+  const map={
+    합:'기존의 사람·일·역할이 서로 묶이거나 협력 구조가 만들어질 수 있는 신호',
+    육합:'가까운 관계나 생활 단위가 서로 맞물리기 쉬운 신호',
+    삼합:'여러 관심과 에너지가 한 방향으로 모이기 쉬운 신호',
+    충:'기존 방향을 그대로 유지하기보다 이동·변경·재조정 압력이 커질 수 있는 신호',
+    형:'같은 문제를 반복해서 손보며 기준을 다시 세우게 만드는 긴장 신호',
+    파:'익숙한 방식의 균열을 발견하고 수정하게 만드는 신호',
+    해:'겉으로 크지 않아 보여도 기대·오해·불편을 세밀하게 확인할 필요가 있는 신호'
+  };
+  return r.map(x=>`${x}은 ${map[x]||'원국과 세운 사이의 관계 변화를 참고하는 신호'}`).join(' · ')+'.';
+}
+function guiinAreaConsultV59(key,mode='future'){
+  const future={
+    career:'일에서는 바쁜 것보다 어떤 경력·기술·자리로 남길지가 중요합니다. 새 일을 벌이는 것과 기존 일을 키우는 것 중 무엇이 내 장기 방향과 맞는지 먼저 정하세요.',
+    money:'돈에서는 수입 증가만 보지 말고 가격·고정비·저축·부채·사업비처럼 실제 구조를 숫자로 확인하는 편이 좋습니다.',
+    relationship:'관계에서는 새 인연 여부보다 현재 관계의 거리·책임·약속을 어떻게 다시 정할지가 더 중요한 주제가 될 수 있습니다.',
+    support:'혼자 밀기보다 소개·협업·배움·정보를 이용할수록 효율이 좋아질 수 있습니다. 다만 도움을 받는 것과 결정권을 넘기는 것은 구분하세요.',
+    speech:'계약·문자·약속·설명처럼 말과 기록의 정확성이 결과를 바꿀 수 있습니다. 중요한 내용은 한 번 더 확인하고 남기는 습관이 도움이 됩니다.',
+    caution:'무조건 나쁜 시기라기보다 오래 끌어온 문제 하나를 정리하고 다음 구조로 넘어갈 필요가 커지는 흐름으로 보는 편이 좋습니다.'
+  };
+  const past={
+    career:'지난 기간에는 일의 양보다 역할·책임·성과의 방향이 어떻게 달라졌는지를 돌아보는 것이 핵심입니다.',
+    money:'지난 기간에는 수입과 지출의 크기보다 돈을 쓰고 남기는 구조가 어떻게 달라졌는지를 돌아보는 편이 좋습니다.',
+    relationship:'지난 기간에는 새 인연보다 가까운 사람과의 거리·책임·기대가 어떻게 바뀌었는지를 확인해보는 것이 핵심입니다.',
+    support:'지난 기간에는 사람·정보·소개·배움이 실제 선택에 어떤 도움을 줬는지 되돌아보는 편이 좋습니다.',
+    speech:'지난 기간에는 말·약속·계약·설명 때문에 생긴 오해나 정리가 있었는지를 확인해보는 것이 좋습니다.',
+    caution:'지난 기간에는 유지하던 방식 중 무엇을 정리하거나 바꿔야 했는지를 돌아보는 것이 핵심입니다.'
+  };
+  return (mode==='past'?past:future)[key]||'한 가지 사건을 맞히기보다 반복해서 중요했던 생활 주제를 확인하는 편이 좋습니다.';
+}
+function guiinPast3CycleV59(c,now){
+  const rows=[];for(let y=now-3;y<now;y++){const z=guiinYearSignalV5(c,y);if(z)rows.push(z);}
+  if(!rows.length)return '<p>최근 3년 계산값을 불러오지 못했습니다.</p>';
+  const labels=rows.map(z=>guiinYearLabelV5(z.topKey));
+  const unique=[...new Set(labels)];
+  const flow=unique.length===1?`세 해 모두 ${unique[0]} 주제가 반복해서 상위에 올라왔습니다. 같은 주제가 반복됐다는 것은 같은 사건이 세 번 있었다는 뜻이 아니라, 서로 다른 상황에서 비슷한 과제를 계속 다뤘을 가능성을 본다는 뜻입니다.`:`세 해의 중심이 ${labels.join(' → ')} 순서로 이동했습니다. 사건을 맞히기보다 무엇에 에너지를 많이 쓰게 되었는지 흐름의 변화를 보는 편이 정확합니다.`;
+  const phaseNames=['초반','중간','가장 최근'];
+  const parts=rows.map((z,i)=>`<div class="easyPoint"><b>${phaseNames[i]} · ${z.year}년 ${esc(z.pillar||'')} · ${esc(z.god||'세운')}</b><p><b>${esc(guiinYearLabelV5(z.topKey))}</b>이 가장 크게 잡히고, 그다음은 <b>${esc(guiinYearLabelV5(z.secondKey))}</b>입니다. ${esc(guiinYearGodThemeV59(z.god))}</p><p>${esc(guiinAreaConsultV59(z.topKey,'past'))}</p>${z.relations?.length?`<p>${esc(guiinYearRelationV59(z))}</p>`:''}</div>`).join('');
+  return `<div class="deepCard card"><div class="miniTitle">지난 3년을 한 흐름으로 되돌아보면</div><h3>${now-3}~${now-1}년을 따로 점치지 않고, 한 사이클의 변화로 읽습니다.</h3><p>${esc(flow)}</p><p>과거 풀이의 목적은 “그때 반드시 무슨 일이 있었다”고 맞히는 것이 아닙니다. 실제 기억과 비교했을 때 일·돈·관계·생활의 중심이 어떤 방향으로 이동했는지 확인하고, 지금 반복되고 있는 패턴의 출발점을 찾는 데 씁니다.</p>${parts}<div class="easyPoint tip"><b>3년을 보고 남길 질문</b><p>이 세 해 동안 내가 반복해서 떠안은 역할은 무엇이었는지, 반대로 이제는 끝내도 되는 책임이나 관계 방식은 무엇인지 한 번 정리해보세요. 현재 운을 읽는 데 이 답이 가장 좋은 현실 자료가 됩니다.</p></div></div>`;
+}
+function guiinRemainingMonthsV59(c,year,z){
+  try{
+    if(!globalThis.GuiinFortuneV2||typeof GuiinFortuneV2.compactTiming!=='function')return '';
+    const t=GuiinFortuneV2.compactTiming(c,year), rem=t?.remaining_months||{}, picks=[];
+    const keys=[z?.topKey,z?.secondKey,'relationship','money','career'].filter(Boolean);
+    for(const k of keys){
+      const row=(rem[k]||[])[0]; if(!row||!row.month)continue;
+      const id=`${row.year}-${row.month}`; if(picks.some(x=>x.id===id))continue;
+      picks.push({id,month:row.month,key:k,god:row.god,relations:row.relations||[]}); if(picks.length===3)break;
+    }
+    if(!picks.length)return '';
+    return `<div class="easyPoint tip"><b>${year}년 남은 흐름에서 체크할 달</b><p>${picks.map(x=>`${x.month}월 · ${guiinYearLabelV5(x.key)}${x.god?`(${x.god})`:''}`).join('<br>')}</p><p>이 달들은 결과가 보장되는 날짜가 아니라, 남은 기간 중 해당 주제가 상대적으로 크게 잡히는 구간입니다. 중요한 결정은 실제 일정·계약·현금흐름·관계 상황과 함께 판단하세요.</p></div>`;
+  }catch(_e){return '';}
+}
+function guiinYearDeepV59(c,z,title,subtitle,{current=false}={}){
+  if(!z)return `<div class="deepCard card"><div class="miniTitle">${esc(title)}</div><p>연도 계산값을 불러오지 못했습니다.</p></div>`;
+  const first=guiinYearLabelV5(z.topKey), second=guiinYearLabelV5(z.secondKey), daeun=z.daeun?.ko?`${z.daeun.ko} 대운(${z.daeun.god||''})`:'현재 대운';
+  const sc=z.scores||{}, rank=['career','money','relationship','support','speech','caution'].sort((a,b)=>Number(sc[b]||0)-Number(sc[a]||0));
+  const band=(k)=>rank.indexOf(k)===0?'가장 크게':rank.indexOf(k)===1?'두 번째로':rank.indexOf(k)<=3?'보조적으로':'배경에서';
+  const tension=z.tension>=2?`원국과의 긴장 신호가 여러 겹 잡혀, 좋은 기회가 있어도 일정·관계·생활 구조를 함께 조정해야 체감이 좋아질 수 있습니다.`:z.tension===1?'원국과의 긴장 신호가 일부 있어, 무리해서 밀기보다 변경이 필요한 부분을 일찍 손보는 편이 좋습니다.':'강한 긴장 신호보다 세운 십성과 대운의 장기 주제를 중심으로 읽을 수 있는 해입니다.';
+  const noble=z.noble?'사람·정보·소개·협업처럼 혼자서 얻기 어려운 도움 연결도 보조 신호로 잡힙니다. 다만 특정 귀인이 반드시 나타난다는 뜻은 아닙니다.':'';
+  return `<div class="deepCard card"><div class="miniTitle">${esc(title)}</div><h3>${esc(subtitle||`${z.year}년 ${z.pillar||''} 세운을 현재 대운과 함께 읽습니다.`)}</h3>
+    <p><b>${z.year}년의 큰 분위기</b> · ${esc(z.pillar||'해당 연주')} 세운에서 십성은 <b>${esc(z.god||'-')}</b>으로 계산됩니다. ${esc(guiinYearGodThemeV59(z.god))} 여기에 ${esc(daeun)}이라는 10년 배경이 겹치기 때문에, 같은 ${z.god||'세운'}이라도 지금까지 쌓아온 경력·돈·관계 상태에 따라 체감은 달라질 수 있습니다.</p>
+    <p><b>올해의 우선순위</b> · 전체 흐름에서는 <b>${esc(first)}</b>이 가장 앞에 나오고 <b>${esc(second)}</b>이 그다음으로 따라옵니다. 즉 모든 영역이 동시에 커지는 해라기보다, 먼저 힘을 써야 할 영역과 뒤에서 받쳐주는 영역이 나뉘는 해로 보는 편이 정확합니다.</p>
+    <div class="easyPoint"><b>일·직업 · ${band('career')} 보이는 주제</b><p>${esc(guiinAreaConsultV59('career','future'))} ${z.topKey==='career'||z.secondKey==='career'?`특히 ${z.year}년에는 단순히 바쁜 것보다 “무엇이 경력으로 남는가”를 기준으로 선택하는 편이 좋습니다.`:'일이 이 해의 유일한 중심은 아니므로, 무리하게 성과를 만들기보다 장기 방향과 맞는 일만 남기는 편이 좋습니다.'}</p></div>
+    <div class="easyPoint"><b>돈·현실 · ${band('money')} 보이는 주제</b><p>${esc(guiinAreaConsultV59('money','future'))} ${z.topKey==='money'||z.secondKey==='money'?`가격·수입·고정비·저축처럼 숫자로 확인되는 구조를 손보면 체감이 큰 해가 될 수 있습니다.`:'큰돈을 예측하기보다 현재 수입 구조가 흔들리지 않도록 기본 관리에 무게를 두는 편이 좋습니다.'}</p></div>
+    <div class="easyPoint"><b>연애·인간관계 · ${band('relationship')} 보이는 주제</b><p>${esc(guiinAreaConsultV59('relationship','future'))} ${z.topKey==='relationship'||z.secondKey==='relationship'?`가까운 관계에서 애매하게 넘기던 약속·거리·책임을 말로 정리할수록 관계의 방향이 선명해질 수 있습니다.`:'관계가 주인공이 아닌 해에도 일과 돈의 변화가 가까운 사람에게 영향을 줄 수 있으니 생활 우선순위를 설명해두는 편이 좋습니다.'}</p></div>
+    <div class="easyPoint"><b>사람의 도움·말·계약</b><p>${esc(guiinAreaConsultV59('support','future'))} ${esc(guiinAreaConsultV59('speech','future'))}</p></div>
+    <p><b>원국과 부딪히는 방식</b> · ${esc(guiinYearRelationV59(z))} ${esc(tension)} ${noble?esc(noble):''}</p>
+    <div class="easyPoint good"><b>${z.year}년 상담 포인트</b><p>이 해를 “좋은 해/나쁜 해”로 한 줄 판정하기보다, <b>${esc(first)}</b>에서 무엇을 남기고 <b>${esc(second)}</b>에서 무엇을 조정할지를 정하는 편이 좋습니다. 이미 가지고 있는 기술·현금·고객·관계·생활 기반 중 하나를 실제 자산으로 남기고, 동시에 반복해서 소모시키는 패턴 하나를 줄이는 것이 이 해를 가장 현실적으로 쓰는 방법입니다.</p></div>
+    ${current?guiinRemainingMonthsV59(c,z.year,z):''}</div>`;
+}
+function guiinFarFutureV59(c,now,road){
+  const rows=[];for(let y=now+3;y<=now+5;y++){const z=guiinYearSignalV5(c,y);if(z)rows.push(z);}
+  const cards=rows.map(z=>`<div class="easyPoint"><b>${z.year}년 ${esc(z.pillar||'')} · ${esc(z.god||'세운')}</b><p><b>${esc(guiinYearLabelV5(z.topKey))}</b>이 가장 크게 잡히고 ${esc(guiinYearLabelV5(z.secondKey))}이 뒤를 받칩니다. ${esc(guiinYearGodThemeV59(z.god))}</p><p>${esc(guiinYearRelationV59(z))}</p></div>`).join('');
+  const next=road?.next;
+  return `<div class="deepCard card"><div class="miniTitle">그 이후의 더 먼 흐름</div><h3>${now+3}~${now+5}년은 연도 하나를 맞히기보다 다음 대운으로 이어지는 방향을 봅니다.</h3><p>3년 이상 먼 미래는 한 해의 점수보다 대운 전환과 그때까지 무엇이 누적되어 있는지가 더 중요합니다. 같은 좋은 세운도 기반이 없으면 바쁨으로 지나가고, 부담이 있는 세운도 준비가 되어 있으면 구조를 바꾸는 계기로 쓸 수 있습니다.</p>${cards}${next?`<div class="easyPoint tip"><b>다음 대운과 연결</b><p>${esc(next.ko)} 대운(${esc(next.god||'')}, ${esc(String(next.fromAge))}~${esc(String(next.toAge))}세)에서는 ${esc(road.nextUse)}이 더 중요해집니다. 지금부터 경력·돈·고객·관계·생활기반 중 무엇을 가져갈지 정리해두면 먼 미래 풀이가 단순한 예언이 아니라 실제 준비 계획으로 연결됩니다.</p></div>`:''}</div>`;
+}
+
 function guiinLifeNarrativeHTML(c){
   try{
     const p=guiinPersonV5(c), name=esc(p.name), lk=currentLuck(c), now=new Date().getFullYear(), current=guiinYearSignalV5(c,now);
@@ -3102,15 +3204,12 @@ function guiinLifeNarrativeHTML(c){
     const strengths=guiinV55List3(guiinThreeStrengthsV51(c,p),[p.gift,'상황을 현실적으로 정리하고 결과로 남기는 힘','흔들린 뒤에도 자기 기준을 다시 세우는 회복력']);
     const patterns=guiinV55List3(guiinThreePatternsV51(c,p),[p.shadow,'압박이 커질 때 혼자 책임을 늘리는 패턴','관계에서 참다가 늦게 경계를 세우는 패턴']);
     const axes=guiinRelationAxesV53(c), strength=guiinStrengthAxisV53(c,p), io=guiinInnerOuterV53(c,p), loop=guiinDecisionLoopV53(c,p), rel=guiinRelationshipCompassV53(p), nowMix=guiinNowIntersectionV53(c,p,lk,current), chapters=guiinLifeChaptersV53(c,lk);
-    const prev=[]; for(let y=now-4;y<now;y++){const z=guiinYearSignalV5(c,y); if(z)prev.push(z);}
-    const fut=[]; for(let y=now+1;y<=now+3;y++){const z=guiinYearSignalV5(c,y); if(z)fut.push(z);}
-    const nextYear=fut[0]||null;
+    const nextYear=guiinYearSignalV5(c,now+1), afterYear=guiinYearSignalV5(c,now+2);
     const evidence=(()=>{try{return evidenceText(c)}catch(_e){return `명리 근거 · ${p.season.season} ${c?.pillars?.month?.branch||''}월 · ${p.stem} 일간 · 월주 ${p.mg||'-'} · 오행 ${p.top||'-'} 중심`;}})();
     const starText=guiinStarNamesV5(c).slice(0,7).join(' · ');
     const relationText=axes.labels.slice(0,6).join(' · ');
     const nextD=road.next?`${road.next.ko} 대운(${road.next.god}, ${road.next.fromAge}~${road.next.toAge}세)`:'다음 대운 계산값';
-    const pastHTML=prev.map(z=>`<div class="easyPoint"><b>${z.year}년 · ${guiinYearLabelV5(z.topKey)}</b><p>${esc(guiinYearPhraseV5(z,true))}</p><p>${esc(guiinYearExtraV55(z,true))}</p><p class="reportLead"><b>기억과 대조</b> · ${esc(guiinPastVerifyQuestionV53(z))}</p></div>`).join('');
-    const futureHTML=fut.map(z=>`<div class="easyPoint tip"><b>${z.year}년 · ${guiinYearLabelV5(z.topKey)}</b><p>${esc(guiinYearPhraseV5(z,false))}</p><p>${esc(guiinYearExtraV55(z,false))}</p></div>`).join('');
+
     const chapterHTML=chapters.map(x=>`<div class="easyPoint ${x.phase==='현재 챕터'?'good':x.phase==='앞으로의 챕터'?'tip':''}"><b>${esc(x.phase)} · ${esc(String(x.from))}~${esc(String(x.to))}세 · ${esc(x.ko)} ${esc(x.god)}</b><p><b>${esc(x.theme)}</b>이 핵심 주제입니다. ${esc(guiinLuckDetailV55(x.god,x.phase))}</p></div>`).join('');
     return `<div class="deepCard card"><div class="miniTitle">한 사람으로 읽은 ${name}님의 핵심</div><h3>${esc(p.season.season)}에 태어난 ${esc(p.image)} · 일간 한 글자보다 계절·월령·오행·통근·관계 신호를 함께 봅니다.</h3>
       <p>${esc(p.core)} 월주의 ${esc(p.mg||'십성')}은 사회에서 <b>${esc(p.gift)}</b>을 반복해서 쓰게 하고, ${esc(strength.label)}이라 ${esc(strength.tone)}</p>
@@ -3131,15 +3230,15 @@ function guiinLifeNarrativeHTML(c){
     ${guiinMoneyConsultV55(c,p,money)}
     <div class="deepCard card"><div class="miniTitle">대운으로 보는 인생 챕터</div><h3>10년 운을 좋다/나쁘다로 자르지 않고, 그 시기에 반복해서 배우는 과제로 읽습니다.</h3>
       <p>대운은 사건표가 아니라 장기 배경입니다. 같은 대운이라도 직업·가족·연애·돈 중 어디에서 그 주제가 나타나는지는 실제 삶에 따라 달라집니다. 그래서 지나온 대운은 기억과 대조하고, 현재 대운은 남길 것을 정하고, 다음 대운은 준비할 것을 보는 방식으로 씁니다.</p>${chapterHTML||'<p>대운 계산값을 불러오지 못했습니다.</p>'}</div>
-    <div class="deepCard card"><div class="miniTitle">최근 4년 · 과거 검증</div><h3>“맞다”를 강요하지 않고, 실제 기억과 계산된 주제를 대조하는 구간입니다.</h3>
-      <p>연도별 흐름은 “그 해에 반드시 이 일이 있었다”라고 맞히는 용도가 아닙니다. 실제 기억에서 비슷한 주제가 있었는지 확인하고, 전혀 맞지 않으면 억지로 끼워 맞추지 않는 것이 맞습니다.</p>${pastHTML||'<p>연도별 계산값을 불러오지 못했습니다.</p>'}</div>
+    ${guiinPast3CycleV59(c,now)}
     <div class="deepCard card"><div class="miniTitle">지금의 인생 위치</div><h3>${esc(stage.label)}</h3><p>${esc(stage.text)}</p><div class="easyPoint"><b>10년 배경 × 올해의 강조점</b><p>${esc(nowMix.conflict)}</p></div>
       <p>지금 해야 할 일은 모든 영역을 동시에 바꾸는 것이 아니라, 현재 대운의 장기 과제와 올해의 강조점이 겹치는 한두 영역을 우선 정리하는 것입니다. 좋은 운도 준비된 기반이 없으면 바쁨으로 끝날 수 있고, 부담이 있는 운도 기준을 정해두면 구조를 바꾸는 계기로 쓸 수 있습니다.</p>
       <div class="easyPoint good"><b>지금 남겨야 할 것</b><p>${esc(road.currentUse)}을 기록·경력·수입·관계의 기준처럼 눈에 보이는 형태로 남기세요.</p></div>
       <div class="easyPoint watch"><b>지금 줄여야 할 것</b><p>${esc(patterns[0]||p.shadow)} 같은 패턴이 반복될 때 “더 노력”으로 덮지 말고 역할·시간·돈·관계 경계를 먼저 조정하는 게 좋습니다.</p></div></div>
-    <div class="deepCard card"><div class="miniTitle">앞으로 1년</div><h3>${nextYear?`${nextYear.year}년은 ${guiinYearLabelV5(nextYear.topKey)} 쪽이 상대적으로 눈에 띕니다.`:'다음 해의 흐름을 계산하고 있습니다.'}</h3><p>${nextYear?esc(guiinYearPhraseV5(nextYear,false)):'대운과 다음 세운을 함께 확인합니다.'}</p>${nextYear?`<p>${esc(guiinYearExtraV55(nextYear,false))}</p>`:''}<div class="easyPoint tip"><b>준비 원칙</b><p>다음 해에 들어가서 갑자기 바꾸기보다, 올해부터 필요한 기술·현금·관계 기준을 하나씩 준비하면 운의 체감 차이가 커질 수 있습니다.</p></div></div>
-    <div class="deepCard card"><div class="miniTitle">앞으로 3년</div><h3>세 해를 각각 보되, 한 방향으로 무엇을 누적할지를 더 중요하게 봅니다.</h3>
-      <p>세운은 해마다 강조점이 바뀌지만, 그때마다 삶의 방향을 전부 바꾸는 것은 오히려 피곤할 수 있습니다. 3년 동안 유지할 큰 축 하나를 정하고, 각 해의 흐름을 그 축을 강화하거나 조정하는 데 쓰는 편이 좋습니다.</p>${futureHTML||'<p>향후 연도 계산값을 불러오지 못했습니다.</p>'}</div>
+    ${guiinYearDeepV59(c,current,`${now}년 · 지금 이 해`,`${now}년은 현재 대운 위에 어떤 주제가 실제로 크게 올라오는지 상담하듯 봅니다.`,{current:true})}
+    ${guiinYearDeepV59(c,nextYear,`${now+1}년 · 내년`,`${now+1}년은 올해 준비한 것을 어떤 방향으로 이어갈지 미리 봅니다.`)}
+    ${guiinYearDeepV59(c,afterYear,`${now+2}년 · 그후년`,`${now+2}년은 내년의 선택이 어떤 다음 과제로 이어질지 한 단계 더 멀리 봅니다.`)}
+    ${guiinFarFutureV59(c,now,road)}
     <div class="deepCard card"><div class="miniTitle">현재 대운의 남은 기간 → 다음 대운</div><h3>${lk?`${esc(lk.ko)} 대운을 남은 약 ${road.remain==null?'-':road.remain}년 동안 어떻게 쓰느냐가 다음 흐름의 재료가 됩니다.`:'현재 대운의 남은 구간을 계산합니다.'}</h3>
       <p><b>현재 대운에서 쌓을 것</b> · ${esc(road.currentUse)}</p><p><b>${esc(nextD)}에서 더 중요해질 것</b> · ${esc(road.nextUse)}</p><div class="easyPoint tip"><b>연결해서 보면</b><p>대운이 바뀐다고 사람이 하루아침에 다른 인생으로 넘어가지는 않습니다. 지금 만든 기술·돈·고객·경력·생활기반이 다음 운에서 어떤 크기로 쓰이는지가 중요합니다. 전환 직전에는 새 일을 무리하게 많이 벌이기보다 다음 10년에 가져갈 것과 버릴 것을 정리하는 편이 좋습니다.</p></div></div>
     <div class="deepCard card"><div class="miniTitle">${name}님의 인생 사용설명서</div><h3>더 버티는 법보다, 내 강점을 덜 소모되게 쓰는 법을 정리합니다.</h3>
