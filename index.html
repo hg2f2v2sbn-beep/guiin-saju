@@ -4044,7 +4044,8 @@ function freeUsed(){const n=Number(localStorage.getItem(guiinFreeUsageKey())||0)
 function setFreeUsed(n){localStorage.setItem(guiinFreeUsageKey(),String(Math.max(0,n)));syncWalletViews();}
 function syncWalletViews(){if($('coinView'))$('coinView').textContent=String(wallet.coins);if($('freeRemainView'))$('freeRemainView').textContent=String(Math.max(0,3-freeUsed()));renderLedger();}
 function renderLedger(){if(!$('ledger'))return;$('ledger').innerHTML=(wallet.ledger||[]).slice(0,12).map(r=>`${esc(r.t)} · ${esc(r.text)} (${r.delta>0?'+':''}${r.delta})`).join('<br>')||'아직 내역이 없습니다.';}
-let guiinPaymentState={checked:false,enabled:false,error:false};
+let guiinPaymentState={checked:false,liveEnabled:false,sandboxEnabled:false,error:false};
+let guiinPaySelection={productCode:'CLOVER_1',price:1100};
 
 function setPaymentReadinessUI(){
   const state=guiinPaymentState;
@@ -4056,12 +4057,16 @@ function setPaymentReadinessUI(){
   for(const [rid,bid] of configs){
     const r=$(rid),b=$(bid);
     if(!r||!b)continue;
-    r.className='payReadiness '+(state.error?'error':state.enabled?'ready':'wait');
+    const ready=state.liveEnabled||state.sandboxEnabled;
+    r.className='payReadiness '+(state.error?'error':ready?'ready':'wait');
     if(state.error){
       r.textContent='결제 서버 상태를 확인하지 못했어요. 현재 구매는 진행하지 않습니다.';
       b.disabled=true;
-    }else if(state.enabled){
+    }else if(state.liveEnabled){
       r.textContent='결제 서버 준비가 확인됐어요.';
+      b.disabled=false;
+    }else if(state.sandboxEnabled){
+      r.textContent='NHN KCP 샌드박스 테스트 모드입니다. 실제 청구·콘텐츠 지급은 발생하지 않습니다.';
       b.disabled=false;
     }else{
       r.textContent='현재 결제 오픈 전 점검 중이에요. 실수로 결제되지 않도록 구매 버튼을 잠가두었어요.';
@@ -4074,15 +4079,22 @@ async function refreshPaymentReadiness(){
     const res=await fetch(GUIIN_API_BASE+'/health',{cache:'no-store',headers:{'Accept':'application/json'}});
     const data=await res.json().catch(()=>({}));
     if(!res.ok)throw new Error('health_failed');
-    guiinPaymentState={checked:true,enabled:data?.paymentsEnabled===true,error:false};
+    guiinPaymentState={checked:true,liveEnabled:data?.paymentsEnabled===true,sandboxEnabled:data?.kcpSandboxReady===true,error:false};
   }catch(_e){
-    guiinPaymentState={checked:true,enabled:false,error:true};
+    guiinPaymentState={checked:true,liveEnabled:false,sandboxEnabled:false,error:true};
   }
   setPaymentReadinessUI();
   return guiinPaymentState;
 }
+function guiinCloverProductCode(base,bonus,price){
+  if(Number(price)===1100&&Number(base)+Number(bonus)===4)return 'CLOVER_1';
+  if(Number(price)===1650&&Number(base)+Number(bonus)===7)return 'CLOVER_2';
+  if(Number(price)===2750&&Number(base)+Number(bonus)===14)return 'CLOVER_4';
+  return '';
+}
 function openPaySheet(base,bonus,price){
   const s=$('paySheet');if(!s)return;
+  guiinPaySelection={productCode:guiinCloverProductCode(base,bonus,price),price:Number(price)};
   $('payPackText').textContent=`행운의 클로버 ${base}개 + 보너스 ${bonus}개 · 총 ${base+bonus}개`;
   $('payPrice').textContent=Number(price).toLocaleString('ko-KR')+'원';
   $('payMsg').textContent='';
@@ -4090,13 +4102,122 @@ function openPaySheet(base,bonus,price){
   refreshPaymentReadiness();
 }
 function closePaySheet(){const s=$('paySheet');if(s)s.classList.remove('on');}
-function payNotReady(){if($('payMsg'))$('payMsg').textContent='현재는 실제 결제를 받지 않아요. 승인·클로버 지급·구매 복원·환불까지 모두 검증된 뒤 버튼을 열 예정입니다.';}
 function openPremiumPay(){if($('premiumPayMsg'))$('premiumPayMsg').textContent='';$('premiumSheet')?.classList.add('on');refreshPaymentReadiness();}
 function closePremiumPay(){$('premiumSheet')?.classList.remove('on');}
-function premiumPayNotReady(){if($('premiumPayMsg'))$('premiumPayMsg').textContent='현재는 실제 결제를 받지 않아요. 결제 승인·구매 복원·환불 흐름을 최종 검증한 뒤 오픈할 예정입니다.';}
 function openCompatPay(){if($('compatPayMsg'))$('compatPayMsg').textContent='';$('compatSheet')?.classList.add('on');refreshPaymentReadiness();}
 function closeCompatPay(){$('compatSheet')?.classList.remove('on');}
-function compatPayNotReady(){if($('compatPayMsg'))$('compatPayMsg').textContent='현재는 실제 결제를 받지 않아요. 결제 후 궁합 권한이 계정에 정확히 복원되는 것까지 확인한 뒤 오픈할 예정입니다.';}
+
+function guiinKcpIsMobile(){
+  const ua=navigator.userAgent||'';
+  return /iPhone|iPad|iPod|Android|Mobile/i.test(ua)||(/Macintosh/i.test(ua)&&Number(navigator.maxTouchPoints||0)>1);
+}
+async function guiinKcpEnsureSession(){
+  if(guiinAuthSession()?.token)return true;
+  try{await window.GuiinMemberData?.ensureServerGuest?.();}catch(_e){}
+  let gst='';try{gst=window.GuiinMemberData?.serverGuestToken?.()||'';}catch(_e){}
+  if(!gst)throw new Error('guest_session_not_ready');
+  return true;
+}
+function guiinKcpHidden(form,name,value){
+  const i=document.createElement('input');i.type='hidden';i.name=name;i.value=String(value??'');form.appendChild(i);return i;
+}
+function guiinKcpLoadPcScript(url){
+  if(typeof window.KCP_Pay_Execute_Web==='function')return Promise.resolve();
+  return new Promise((resolve,reject)=>{
+    const old=document.getElementById('guiinKcpPcScript');
+    if(old){old.addEventListener('load',()=>resolve(),{once:true});old.addEventListener('error',()=>reject(new Error('kcp_script_failed')),{once:true});return;}
+    const s=document.createElement('script');s.id='guiinKcpPcScript';s.src=url;s.async=true;s.onload=()=>resolve();s.onerror=()=>reject(new Error('kcp_script_failed'));document.head.appendChild(s);
+  });
+}
+function guiinKcpBuildForm(fields,action,id='guiinKcpOrderForm'){
+  document.getElementById(id)?.remove();
+  const f=document.createElement('form');f.id=id;f.name='order_info';f.method='post';f.action=action;f.style.display='none';
+  Object.entries(fields||{}).forEach(([k,v])=>guiinKcpHidden(f,k,v));
+  for(const k of ['res_cd','res_msg','enc_info','enc_data','tran_cd'])if(!f.elements[k])guiinKcpHidden(f,k,'');
+  document.body.appendChild(f);return f;
+}
+window.m_Completepayment=function(FormOrJson,closeEvent){
+  try{
+    const f=window.guiinKcpActiveForm||document.getElementById('guiinKcpPcForm');
+    if(!f)throw new Error('kcp_form_missing');
+    if(typeof window.GetField==='function'){
+      window.GetField(f,FormOrJson);
+    }else{
+      let obj=FormOrJson;
+      if(typeof obj==='string'){try{obj=JSON.parse(obj)}catch(_e){obj={};}}
+      if(obj&&typeof obj==='object')for(const [k,v] of Object.entries(obj)){if(f.elements[k])f.elements[k].value=String(v??'');}
+    }
+    const code=String(f.elements['res_cd']?.value||'');
+    if(code==='0000'){
+      f.action=f.dataset.returnUrl||f.action;
+      f.submit();
+    }else{
+      const msg=String(f.elements['res_msg']?.value||'KCP 테스트 인증이 취소되었어요.');
+      const target=window.guiinKcpActiveMessageId?$(window.guiinKcpActiveMessageId):null;if(target)target.textContent=msg;
+      if(typeof closeEvent==='function')closeEvent();
+    }
+  }catch(err){
+    const target=window.guiinKcpActiveMessageId?$(window.guiinKcpActiveMessageId):null;if(target)target.textContent='KCP 테스트 결과 처리 중 오류가 발생했어요.';
+    try{if(typeof closeEvent==='function')closeEvent();}catch(_e){}
+  }
+};
+async function guiinStartKcpSandbox(productCode,messageId,buttonId){
+  const msg=$(messageId),btn=$(buttonId);
+  try{
+    const state=await refreshPaymentReadiness();
+    if(!state.sandboxEnabled){if(msg)msg.textContent='KCP 테스트 결제창이 아직 준비되지 않았어요.';return;}
+    if(!productCode){if(msg)msg.textContent='상품 정보를 확인하지 못했어요.';return;}
+    if(btn)btn.disabled=true;if(msg)msg.textContent='NHN KCP 테스트 결제창을 준비하고 있어요…';
+    await guiinKcpEnsureSession();
+    const platform=guiinKcpIsMobile()?'mobile':'pc';
+    const res=await guiinApi('/api/kcp/sandbox/register',{
+      method:'POST',cache:'no-store',
+      headers:{'Content-Type':'application/json','Accept':'application/json','X-Idempotency-Key':guiinRandomId('kcp_')},
+      body:JSON.stringify({product_code:productCode,platform})
+    });
+    const data=await res.json().catch(()=>({}));
+    if(!res.ok||!data?.ok)throw new Error(data?.message||data?.error||'kcp_register_failed');
+    if(data?.kcp?.mode==='mobile'){
+      if(msg)msg.textContent='KCP 테스트 결제창으로 이동합니다. 실제 청구는 되지 않아요.';
+      const f=guiinKcpBuildForm(data.kcp.fields,data.kcp.action,'guiinKcpMobileForm');
+      setTimeout(()=>f.submit(),120);
+      return;
+    }
+    if(data?.kcp?.mode==='pc'){
+      await guiinKcpLoadPcScript(data.kcp.scriptUrl);
+      const f=guiinKcpBuildForm(data.kcp.fields,data.kcp.returnUrl,'guiinKcpPcForm');
+      f.dataset.returnUrl=data.kcp.returnUrl;
+      window.guiinKcpActiveForm=f;window.guiinKcpActiveMessageId=messageId;
+      if(msg)msg.textContent='KCP 테스트 결제창을 열었어요. 실제 청구는 되지 않아요.';
+      if(typeof window.KCP_Pay_Execute_Web!=='function')throw new Error('kcp_pc_function_missing');
+      try{window.KCP_Pay_Execute_Web(f);}catch(_e){}
+      return;
+    }
+    throw new Error('kcp_mode_invalid');
+  }catch(err){
+    console.warn('GUIIN_KCP_SANDBOX_FAILED',err);
+    if(msg)msg.textContent='KCP 테스트 결제창을 열지 못했어요. 잠시 후 다시 시도해 주세요.';
+  }finally{
+    if(btn)btn.disabled=false;
+  }
+}
+function payNotReady(){return guiinStartKcpSandbox(guiinPaySelection.productCode,'payMsg','walletPayBtn');}
+function premiumPayNotReady(){return guiinStartKcpSandbox('LIFETIME_SAJU','premiumPayMsg','premiumPayBtn');}
+function compatPayNotReady(){return guiinStartKcpSandbox('PREMIUM_COMPAT','compatPayMsg','compatPayBtn');}
+
+function guiinHandleKcpSandboxReturn(){
+  let u;try{u=new URL(location.href)}catch(_e){return;}
+  const state=u.searchParams.get('kcpTest');if(!state)return;
+  const code=u.searchParams.get('code')||'';
+  setTimeout(()=>{
+    if(state==='auth-ok')showGuiinPopup('NHN KCP 테스트 결제창 인증까지 정상적으로 돌아왔어요. 현재는 샌드박스라 실제 청구와 유료 콘텐츠 지급은 하지 않습니다.','KCP 테스트 성공');
+    else if(state==='auth-fail')showGuiinPopup(`KCP 테스트 인증이 완료되지 않았어요.${code?' ('+code+')':''}`,'KCP 테스트 결과');
+    else showGuiinPopup('KCP 테스트 결과를 확인하지 못했어요.','KCP 테스트 결과');
+  },350);
+  ['kcpTest','order','code'].forEach(k=>u.searchParams.delete(k));
+  try{history.replaceState({},'',u.pathname+(u.searchParams.toString()?'?'+u.searchParams.toString():'')+u.hash);}catch(_e){}
+}
+if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',guiinHandleKcpSandboxReturn,{once:true});else guiinHandleKcpSandboxReturn();
 
 const GUIIN_API_BASE=(
   globalThis.GuiinRuntimeConfig&&typeof globalThis.GuiinRuntimeConfig.apiBase==='function'
