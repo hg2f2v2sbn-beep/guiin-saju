@@ -793,6 +793,25 @@ button,.guideRow,.serviceLink,.settingRow{min-height:44px}
 /* 2026-09-17 mobile interaction hardening */
 button,[onclick],.guideRow,.fortuneRow.clickable{touch-action:manipulation;-webkit-tap-highlight-color:rgba(201,155,52,.14)}
 button{position:relative}
+
+/* GUIIN v6.6 PAYMENT UX + KCP REVIEW PREP */
+.paymentInfoGrid{display:grid;gap:8px;margin-top:10px}
+.paymentInfoRow{display:grid;grid-template-columns:1fr auto;gap:12px;align-items:center;padding:11px 12px;border:1px solid #eee4d7;border-radius:14px;background:#fffef9}
+.paymentInfoRow span{font-size:10px;color:#777f79;line-height:1.5}.paymentInfoRow b{font-size:12px;color:#244235;text-align:right}
+.paymentInfoStatus{margin-top:10px;padding:11px 12px;border-radius:14px;background:#f5f1e7;color:#6d675d;font-size:10px;line-height:1.65}
+.paymentInfoStatus.ready{background:#eaf8ee;color:#216443}.paymentInfoStatus.sandbox{background:#fff4cf;color:#725712}.paymentInfoStatus.error{background:#fff0f0;color:#8b3f3f}
+.payConsent{display:flex;gap:8px;align-items:flex-start;margin:11px 0 4px;padding:10px 11px;border-radius:13px;background:#faf6ed;font-size:9.5px;line-height:1.55;color:#6e675d;text-align:left}
+.payConsent input{width:17px;height:17px;min-height:17px;flex:none;margin-top:1px}.payConsent a{color:#0b6b4f;font-weight:800}
+.payResultWrap{padding:24px 2px 20px}
+.payResultCard{padding:25px 18px;text-align:center;background:linear-gradient(145deg,#fffef9,#fbf7ed)}
+.payResultIcon{width:68px;height:68px;margin:0 auto 14px;border-radius:22px;display:grid;place-items:center;font-size:34px;background:#edf7e9}
+.payResultIcon.fail{background:#fff0f0}.payResultIcon.cancel{background:#f4f0e8}
+.payResultCard h2{margin:0;color:#25503d;font-size:23px;letter-spacing:-.04em}
+.payResultCard p{font-size:11px;line-height:1.75;color:#6f766f;margin:10px 0}
+.payResultMeta{margin:13px 0;padding:11px;border-radius:13px;background:#f6f2e9;font-size:9.5px;line-height:1.7;color:#756e63;word-break:break-all}
+.payResultButtons{display:grid;gap:8px;margin-top:14px}.payResultButtons button{width:100%;border:0;border-radius:14px;padding:13px;font-weight:900}
+.payResultButtons .primary{background:#0b6b4f;color:#fff}.payResultButtons .secondary{background:#f2eee6;color:#566058}
+.reviewBadge{display:inline-flex;align-items:center;gap:5px;border-radius:999px;background:#eef7e6;color:#2c6c45;padding:5px 8px;font-size:9px;font-weight:900}
 </style>
 
 <script>
@@ -825,7 +844,7 @@ button{position:relative}
       try{window.syncAuthUI();}catch(_e){}
     }
     var bottom=document.querySelector('.bottom');
-    if(bottom) bottom.style.display=id==='loginComplete'?'none':'';
+    if(bottom) bottom.style.display=(id==='loginComplete'||id==='paymentResult')?'none':'';
 
     try{ history.replaceState(null,'','#'+id); }catch(_e){}
     try{ window.scrollTo({top:0,left:0,behavior:'instant'}); }catch(_e){ window.scrollTo(0,0); }
@@ -1196,6 +1215,28 @@ button{position:relative}
   </div>
 </section>
 
+
+<section id="paymentResult" class="screen">
+  <div class="topbar">
+    <button class="ghost" type="button" onclick="go('home')" data-guiin-nav="home">‹</button>
+    <div class="brand"><div class="brandline">결제 결과</div></div>
+    <span></span>
+  </div>
+  <div class="payResultWrap">
+    <div class="payResultCard card">
+      <div id="paymentResultIcon" class="payResultIcon">✓</div>
+      <div id="paymentResultBadge" class="reviewBadge">NHN KCP</div>
+      <h2 id="paymentResultTitle">결제 결과를 확인하고 있어요</h2>
+      <p id="paymentResultCopy">잠시만 기다려 주세요.</p>
+      <div id="paymentResultMeta" class="payResultMeta" style="display:none"></div>
+      <div class="payResultButtons">
+        <button id="paymentResultPrimary" class="primary" type="button" onclick="go('home')">확인</button>
+        <button class="secondary" type="button" onclick="go('payments')" data-guiin-nav="payments">결제 내역 보기</button>
+      </div>
+    </div>
+  </div>
+</section>
+
 <section id="history" class="screen"><div class="topbar"><button class="ghost" onclick="go('mypage')" data-guiin-nav="mypage">‹</button><div class="brand"><div class="brandline">이용 내역</div></div><span></span></div><div class="pagePad"><div class="card utilityCard"><h3>최근 이용 내역</h3><div id="usageHistoryView"></div></div></div></section>
 <section id="payments" class="screen"><div class="topbar"><button class="ghost" onclick="go('mypage')" data-guiin-nav="mypage">‹</button><div class="brand"><div class="brandline">결제 내역</div></div><span></span></div><div class="pagePad"><div class="card utilityCard"><h3>결제 내역</h3><div id="paymentHistoryView"></div><p class="utilityHint">승인된 결제와 구매 내역만 표시됩니다.</p></div></div></section>
 <section id="profiles" class="screen"><div class="topbar"><button class="ghost" onclick="go('mypage')" data-guiin-nav="mypage">‹</button><div class="brand"><div class="brandline">저장한 프로필</div></div><span></span></div><div class="pagePad"><div class="card utilityCard"><h3>내 사주 프로필</h3><div id="savedProfileView"></div><button class="ctaGold" onclick="go('saju')" data-guiin-nav="saju">새 사주 입력하기 ›</button></div></div></section>
@@ -1203,11 +1244,11 @@ button{position:relative}
 <section id="notifications" class="screen"><div class="topbar"><button class="ghost" onclick="go('mypage')" data-guiin-nav="mypage">‹</button><div class="brand"><div class="brandline">알림 설정</div></div><span></span></div><div class="pagePad"><div class="card utilityCard"><h3>받고 싶은 소식</h3><label class="settingRow"><span><b>오늘의 운세</b><small>매일 운세 알림</small></span><input type="checkbox" data-notify="daily"></label><label class="settingRow"><span><b>운의 변화</b><small>월운·세운 변화 안내</small></span><input type="checkbox" data-notify="flow"></label><label class="settingRow"><span><b>혜택 알림</b><small>쿠폰·이벤트</small></span><input type="checkbox" data-notify="promo"></label><p class="utilityHint">선호 설정은 현재 기기에 저장됩니다.</p></div></div></section>
 <section id="coupons" class="screen"><div class="topbar"><button class="ghost" onclick="go('mypage')" data-guiin-nav="mypage">‹</button><div class="brand"><div class="brandline">쿠폰함</div></div><span></span></div><div class="pagePad"><div class="card utilityCard"><h3>쿠폰 · 혜택</h3><p>현재 발급된 쿠폰은 없습니다.</p><div class="trustBox">쿠폰이 발급되면 사용 가능 여부와 최종 결제금액을 결제 단계에서 확인할 수 있습니다.</div></div></div></section>
 <section id="customer" class="screen"><div class="topbar"><button class="ghost" onclick="go('mypage')" data-guiin-nav="mypage">‹</button><div class="brand"><div class="brandline">고객센터</div></div><span></span></div><div class="pagePad"><div class="card utilityCard"><h3>무엇을 도와드릴까요?</h3><p>결제·이용·사주 결과 관련 문의를 카카오 고객센터에서 도와드려요.</p><button class="kakaoSupport" onclick="openCustomerCenter()">카카오로 문의하기 ›</button><div class="faq"><details><summary>결제했는데 내용이 열리지 않아요</summary><p>결제 승인 후에도 구매한 내용이 열리지 않으면 결제 내역을 다시 확인한 뒤 고객센터로 문의해 주세요.</p></details><details><summary>출생시간을 모르면 어떻게 하나요?</summary><p>시주 관련 해석의 강도를 낮추고, 출생시간 없이 확인 가능한 부분과 구분해서 설명합니다.</p></details><details><summary>신살이 많으면 안 좋은 사주인가요?</summary><p>아니요. 신살은 보조 정보입니다. 귀인사주는 신살 하나로 사건을 단정하지 않고 원국·오행·십신·대운과 함께 읽습니다.</p></details><details><summary>AI는 무엇을 기준으로 답하나요?</summary><p>귀인사주 엔진이 계산한 명식을 그대로 Worker에 전달하고, AI가 명식을 임의로 다시 계산하지 않도록 구성되어 있습니다.</p></details></div></div></div></section>
-<section id="appinfo" class="screen"><div class="topbar"><button class="ghost" onclick="go('mypage')" data-guiin-nav="mypage">‹</button><div class="brand"><div class="brandline">서비스 정보</div></div><span></span></div><div class="pagePad"><div class="card utilityCard"><h3>☘ 귀인사주</h3><p>좋은 인연이, 좋은 운을 만듭니다.</p><div class="paidDisclaimer"><b>사업자 정보</b><br>상호 귀인사주 · 대표 강진아<br>사업자등록번호 584-69-00863<br>서울특별시 중랑구 용마산로139나길 23(신내동)</div><div class="infoRows"><div><span>평생사주</span><b>5,900원</b></div><div><span>프리미엄 궁합</span><b>7,900원</b></div><div><span>AI 상담</span><b>처음 3회 무료</b></div><div><span>신살·귀인</span><b>현재 계산 지원 38종</b></div></div><button class="softBtn" onclick="go('terms')" data-guiin-nav="terms">이용약관 ›</button><button class="softBtn" onclick="go('privacy')" data-guiin-nav="privacy">개인정보처리방침 ›</button><button class="softBtn" onclick="go('refund')" data-guiin-nav="refund">환불정책 ›</button></div></div></section>
-<section id="terms" class="screen"><div class="topbar"><button class="ghost" onclick="go('appinfo')" data-guiin-nav="appinfo">‹</button><div class="brand"><div class="brandline">이용약관</div></div><span></span></div><div class="pagePad"><div class="card utilityCard"><h3>이용약관 안내</h3><p>결제 서비스 오픈 전에 유료 디지털 콘텐츠의 제공 시점, 이용 조건, 결제·환불 기준을 최종 확정해 결제 단계에서 확인할 수 있도록 안내합니다.</p><div class="paidDisclaimer">귀인사주의 사주·운세·AI 상담은 참고 정보이며 의료·법률·투자 등 전문 판단을 대신하지 않습니다.</div></div></div></section>
-<section id="privacy" class="screen"><div class="topbar"><button class="ghost" onclick="go('appinfo')" data-guiin-nav="appinfo">‹</button><div class="brand"><div class="brandline">개인정보처리방침</div></div><span></span></div><div class="pagePad"><div class="card utilityCard"><h3>개인정보 안내</h3><p>개인정보처리방침은 카카오 로그인·사주 저장·AI 상담 등 실제 서비스 구성에 맞춰 수집 항목·이용 목적·보유기간·위탁사·파기 절차를 최종 정리 중입니다.</p></div></div></section>
-<section id="refund" class="screen"><div class="topbar"><button class="ghost" onclick="go('appinfo')" data-guiin-nav="appinfo">‹</button><div class="brand"><div class="brandline">환불정책</div></div><span></span></div><div class="pagePad"><div class="card utilityCard"><h3>환불 안내</h3><p>결제 서비스 오픈 전에 상품별 제공 시점, 사용한 클로버, 이미 열람한 디지털 콘텐츠의 환불 기준을 최종 확정해 결제 단계에서 안내합니다.</p></div></div></section>
-
+<section id="appinfo" class="screen"><div class="topbar"><button class="ghost" onclick="go('mypage')" data-guiin-nav="mypage">‹</button><div class="brand"><div class="brandline">서비스 정보</div></div><span></span></div><div class="pagePad"><div class="card utilityCard"><h3>☘ 귀인사주</h3><p>좋은 인연이, 좋은 운을 만듭니다.</p><div class="paidDisclaimer"><b>사업자 정보</b><br>상호 귀인사주 · 대표 강진아<br>사업자등록번호 584-69-00863<br>서울특별시 중랑구 용마산로139나길 23(신내동)</div><div class="infoRows"><div><span>평생사주</span><b>5,900원</b></div><div><span>프리미엄 궁합</span><b>7,900원</b></div><div><span>AI 상담</span><b>처음 3회 무료</b></div><div><span>클로버</span><b>4회 1,100원부터</b></div></div><button class="softBtn" onclick="go('paymentInfo')" data-guiin-nav="paymentInfo">결제·상품 안내 ›</button><button class="softBtn" onclick="go('terms')" data-guiin-nav="terms">이용약관 ›</button><button class="softBtn" onclick="go('privacy')" data-guiin-nav="privacy">개인정보처리방침 ›</button><button class="softBtn" onclick="go('refund')" data-guiin-nav="refund">환불정책 ›</button></div></div></section>
+<section id="paymentInfo" class="screen"><div class="topbar"><button class="ghost" onclick="go('appinfo')" data-guiin-nav="appinfo">‹</button><div class="brand"><div class="brandline">결제·상품 안내</div></div><span></span></div><div class="pagePad"><div class="card utilityCard"><h3>유료 상품</h3><p>결제 전 상품명·가격·제공 내용을 확인할 수 있어요.</p><div class="paymentInfoGrid"><div class="paymentInfoRow"><span>프리미엄 평생사주<br>심층 평생사주 전체 열람</span><b>5,900원</b></div><div class="paymentInfoRow"><span>프리미엄 궁합<br>두 사람의 심층 궁합 전체 열람</span><b>7,900원</b></div><div class="paymentInfoRow"><span>맛보기 클로버<br>AI 질문 총 4회</span><b>1,100원</b></div><div class="paymentInfoRow"><span>단골 클로버<br>AI 질문 총 7회</span><b>1,650원</b></div><div class="paymentInfoRow"><span>행운 클로버<br>AI 질문 총 14회</span><b>2,750원</b></div></div><div id="paymentInfoStatus" class="paymentInfoStatus">결제 서버 상태를 확인하면 현재 이용 가능 여부가 표시됩니다.</div><div class="paidDisclaimer"><b>제공 시점</b><br>실결제가 활성화된 뒤에는 결제 승인과 서버 검증이 완료된 시점에 구매 권한 또는 클로버가 계정에 반영됩니다.<br><br><b>결제대행</b><br>NHN KCP 표준결제 연동을 사용합니다. 현재 샌드박스에서는 실제 청구가 발생하지 않습니다.</div><button class="softBtn" onclick="go('refund')" data-guiin-nav="refund">환불정책 확인 ›</button><button class="softBtn" onclick="go('terms')" data-guiin-nav="terms">이용약관 확인 ›</button></div></div></section>
+<section id="terms" class="screen"><div class="topbar"><button class="ghost" onclick="go('appinfo')" data-guiin-nav="appinfo">‹</button><div class="brand"><div class="brandline">이용약관</div></div><span></span></div><div class="pagePad"><div class="card utilityCard"><h3>이용약관 안내</h3><p>귀인사주는 무료 명식·운세·궁합·AI 상담과 평생사주·프리미엄 궁합·클로버 유료상품을 제공합니다. 유료상품의 가격과 제공 내용은 결제 전에 표시하고, 승인 후 서버에서 결제를 검증한 뒤 구매 권한을 반영합니다.</p><div class="paidDisclaimer">사주·운세·궁합·AI 상담은 참고 정보이며 의료·법률·세무·투자 등 전문 판단을 대신하지 않습니다.</div><p class="utilityHint">전체 약관은 <a href="terms.html" target="_blank" rel="noopener">이용약관 전문</a>에서 확인할 수 있습니다.</p></div></div></section>
+<section id="privacy" class="screen"><div class="topbar"><button class="ghost" onclick="go('appinfo')" data-guiin-nav="appinfo">‹</button><div class="brand"><div class="brandline">개인정보처리방침</div></div><span></span></div><div class="pagePad"><div class="card utilityCard"><h3>개인정보 안내</h3><p>사주 입력정보, 카카오 로그인 식별정보, AI 상담 내용, 주문·결제 상태 등은 서비스 제공에 필요한 범위에서 처리될 수 있습니다. 주민등록번호 등 고유식별정보는 서비스 운영을 위해 수집하지 않습니다.</p><p class="utilityHint">수집 항목·이용 목적·보유기간·외부서비스 이용 내용은 <a href="privacy.html" target="_blank" rel="noopener">개인정보처리방침 전문</a>에서 확인할 수 있습니다.</p></div></div></section>
+<section id="refund" class="screen"><div class="topbar"><button class="ghost" onclick="go('appinfo')" data-guiin-nav="appinfo">‹</button><div class="brand"><div class="brandline">환불정책</div></div><span></span></div><div class="pagePad"><div class="card utilityCard"><h3>환불 안내</h3><p>결제 오류·중복결제·운영자 귀책으로 콘텐츠나 클로버가 정상 제공되지 않은 경우에는 결제·서버 기록을 확인해 재제공, 복구 또는 환불 절차를 진행합니다. 디지털 콘텐츠와 사용한 클로버의 청약철회·환불은 관계 법령과 결제 전 고지 내용에 따라 처리합니다.</p><p class="utilityHint">세부 기준은 <a href="refund.html" target="_blank" rel="noopener">환불정책 전문</a>에서 확인할 수 있습니다.</p></div></div></section>
 
 <div id="guiinShareToast" class="guiinShareToast" role="status" aria-live="polite"></div>
 <div id="guiinToastLayer" role="dialog" aria-modal="true" class="guiinToastLayer" aria-live="assertive" onclick="if(event.target===this)closeGuiinPopup()">
@@ -1219,9 +1260,9 @@ button{position:relative}
   </div>
 </div>
 
-<div id="paySheet" role="dialog" aria-modal="true" class="paySheet" onclick="if(event.target===this)closePaySheet()"><div class="payPanel"><h3>☘ 행운의 클로버 결제</h3><div id="payPackText" class="adminNote"></div><div id="payPrice" class="payPrice"></div><div class="payList">결제가 승인되면 주문을 확인한 뒤 클로버가 자동 지급됩니다.</div><div id="walletPayReadiness" class="payReadiness">결제 상태 확인 중…</div><button id="walletPayBtn" class="primary" onclick="payNotReady()">결제하기</button><button class="secondary" onclick="closePaySheet()">취소</button><p id="payMsg" class="adminNote"></p></div></div>
-<div id="premiumSheet" role="dialog" aria-modal="true" class="premiumSheet" onclick="if(event.target===this)closePremiumPay()"><div class="premiumPanel"><h2>프리미엄 평생사주</h2><div class="price">5,900원</div><p>무료 기본 명식을 확인한 뒤 내 실제 심층 풀이 전체를 열 수 있어요.</p><div class="payList">✓ 성격·기질·기가 센 정도·관계 반응<br>✓ 권태·친밀감·이상형<br>✓ 직업·사업·재물 심층 분석<br>✓ 신살·귀인·삼재 상세 해설<br>✓ 대운·세운·월운과 연·월 타이밍<br>✓ 실제 직업 예시와 생활 장면<br>✓ 장점·주의점·현실 조언</div><div class="paidDisclaimer">사주 결과는 참고 정보이며 미래를 확정하지 않습니다.</div><div id="premiumPayReadiness" class="payReadiness">결제 상태 확인 중…</div><button id="premiumPayBtn" class="primary" onclick="premiumPayNotReady()">5,900원 결제하기</button><button class="secondary" onclick="closePremiumPay()">나중에 보기</button><p id="premiumPayMsg" class="adminNote"></p></div></div>
-<div id="compatSheet" role="dialog" aria-modal="true" class="premiumSheet" onclick="if(event.target===this)closeCompatPay()"><div class="premiumPanel"><h2>프리미엄 궁합</h2><div class="price">7,900원</div><p>점수보다 두 사람이 실제로 함께 있을 때의 장점과 갈등·회복·생활을 길게 풀어드려요.</p><div class="payList">✓ 상대방 단독 성격 분석<br>✓ 초반 끌림·연락·애착 반응<br>✓ 대화·갈등·회복 속도<br>✓ 권태·질투·자극 선호<br>✓ 친밀감·스킨십 속도<br>✓ 돈·생활·역할 분담<br>✓ 결혼·장기관계·가족 경계<br>✓ 자녀 양육 역할<br>✓ 현재 대운과 앞으로의 속도</div><div class="paidDisclaimer">궁합은 관계를 결정하는 판정표가 아니라 두 사람이 조율할 지점을 이해하는 참고 자료입니다.</div><div id="compatPayReadiness" class="payReadiness">결제 상태 확인 중…</div><button id="compatPayBtn" class="primary" onclick="compatPayNotReady()">7,900원 결제하기</button><button class="secondary" onclick="closeCompatPay()">나중에 보기</button><p id="compatPayMsg" class="adminNote"></p></div></div>
+<div id="paySheet" role="dialog" aria-modal="true" class="paySheet" onclick="if(event.target===this)closePaySheet()"><div class="payPanel"><h3>☘ 행운의 클로버 결제</h3><div id="payPackText" class="adminNote"></div><div id="payPrice" class="payPrice"></div><div class="payList">결제가 승인되면 주문을 확인한 뒤 클로버가 자동 지급됩니다.</div><label class="payConsent"><input id="walletPayConsent" type="checkbox" onchange="setPaymentReadinessUI()"> <span><a href="terms.html" target="_blank" rel="noopener">이용약관</a>과 <a href="refund.html" target="_blank" rel="noopener">환불정책</a>을 확인했습니다.</span></label><div id="walletPayReadiness" class="payReadiness">결제 상태 확인 중…</div><button id="walletPayBtn" class="primary" onclick="payNotReady()">결제하기</button><button class="secondary" onclick="closePaySheet()">취소</button><p id="payMsg" class="adminNote"></p></div></div>
+<div id="premiumSheet" role="dialog" aria-modal="true" class="premiumSheet" onclick="if(event.target===this)closePremiumPay()"><div class="premiumPanel"><h2>프리미엄 평생사주</h2><div class="price">5,900원</div><p>무료 기본 명식을 확인한 뒤 내 실제 심층 풀이 전체를 열 수 있어요.</p><div class="payList">✓ 성격·기질·기가 센 정도·관계 반응<br>✓ 권태·친밀감·이상형<br>✓ 직업·사업·재물 심층 분석<br>✓ 신살·귀인·삼재 상세 해설<br>✓ 대운·세운·월운과 연·월 타이밍<br>✓ 실제 직업 예시와 생활 장면<br>✓ 장점·주의점·현실 조언</div><div class="paidDisclaimer">사주 결과는 참고 정보이며 미래를 확정하지 않습니다.</div><label class="payConsent"><input id="premiumPayConsent" type="checkbox" onchange="setPaymentReadinessUI()"> <span>유료 디지털 콘텐츠의 제공 내용과 <a href="refund.html" target="_blank" rel="noopener">환불정책</a>을 확인했습니다.</span></label><div id="premiumPayReadiness" class="payReadiness">결제 상태 확인 중…</div><button id="premiumPayBtn" class="primary" onclick="premiumPayNotReady()">5,900원 결제하기</button><button class="secondary" onclick="closePremiumPay()">나중에 보기</button><p id="premiumPayMsg" class="adminNote"></p></div></div>
+<div id="compatSheet" role="dialog" aria-modal="true" class="premiumSheet" onclick="if(event.target===this)closeCompatPay()"><div class="premiumPanel"><h2>프리미엄 궁합</h2><div class="price">7,900원</div><p>점수보다 두 사람이 실제로 함께 있을 때의 장점과 갈등·회복·생활을 길게 풀어드려요.</p><div class="payList">✓ 상대방 단독 성격 분석<br>✓ 초반 끌림·연락·애착 반응<br>✓ 대화·갈등·회복 속도<br>✓ 권태·질투·자극 선호<br>✓ 친밀감·스킨십 속도<br>✓ 돈·생활·역할 분담<br>✓ 결혼·장기관계·가족 경계<br>✓ 자녀 양육 역할<br>✓ 현재 대운과 앞으로의 속도</div><div class="paidDisclaimer">궁합은 관계를 결정하는 판정표가 아니라 두 사람이 조율할 지점을 이해하는 참고 자료입니다.</div><label class="payConsent"><input id="compatPayConsent" type="checkbox" onchange="setPaymentReadinessUI()"> <span>유료 디지털 콘텐츠의 제공 내용과 <a href="refund.html" target="_blank" rel="noopener">환불정책</a>을 확인했습니다.</span></label><div id="compatPayReadiness" class="payReadiness">결제 상태 확인 중…</div><button id="compatPayBtn" class="primary" onclick="compatPayNotReady()">7,900원 결제하기</button><button class="secondary" onclick="closeCompatPay()">나중에 보기</button><p id="compatPayMsg" class="adminNote"></p></div></div>
 
 
 <div id="netNotice" class="netNotice" role="status" aria-live="polite"></div>
@@ -1280,7 +1321,7 @@ function go(id){
  else if(id==='history'&&$('navHistory'))$('navHistory').classList.add('active');
  else if($('navSaju'))$('navSaju').classList.add('active');
  const bottomNav=document.querySelector('.bottom');
- if(bottomNav)bottomNav.style.display=id==='loginComplete'?'none':'';
+ if(bottomNav)bottomNav.style.display=(id==='loginComplete'||id==='paymentResult')?'none':'';
  if(id==='mypage')syncAuthUI();
  if(id==='today')renderToday();
  if(id==='history')renderUsageHistory();
@@ -1289,6 +1330,7 @@ function go(id){
  if(id==='profiles')renderSavedProfile();
  if(id==='notifications')loadNotificationPrefs();
  if(id==='wallet')renderLedger();
+ if(id==='paymentInfo')refreshPaymentReadiness();
  history.replaceState(null,'','#'+id); window.scrollTo(0,0);
 }
 window.go=go;
@@ -4064,19 +4106,26 @@ function setPaymentReadinessUI(){
     const r=$(rid),b=$(bid);
     if(!r||!b)continue;
     const ready=state.liveEnabled||state.sandboxEnabled;
+    const consentId=bid==='walletPayBtn'?'walletPayConsent':bid==='premiumPayBtn'?'premiumPayConsent':'compatPayConsent';
+    const consentOk=!!$(consentId)?.checked;
     r.className='payReadiness '+(state.error?'error':ready?'ready':'wait');
     if(state.error){
       r.textContent='결제 서버 상태를 확인하지 못했어요. 현재 구매는 진행하지 않습니다.';
       b.disabled=true;
     }else if(state.liveEnabled){
-      r.textContent='결제 서버 준비가 확인됐어요.';
-      b.disabled=false;
+      r.textContent=consentOk?'결제 서버 준비가 확인됐어요.':'약관과 환불정책을 확인한 뒤 결제를 진행해 주세요.';
+      b.disabled=!consentOk;
     }else if(state.sandboxEnabled){
-      r.textContent='NHN KCP 샌드박스 테스트 모드입니다. 실제 청구·콘텐츠 지급은 발생하지 않습니다.';
-      b.disabled=false;
+      r.textContent=consentOk?'NHN KCP 샌드박스 테스트 모드입니다. 실제 청구·콘텐츠 지급은 발생하지 않습니다.':'테스트 결제 전 약관과 환불정책 확인에 체크해 주세요.';
+      b.disabled=!consentOk;
     }else{
       r.textContent='현재 결제 오픈 전 점검 중이에요. 실수로 결제되지 않도록 구매 버튼을 잠가두었어요.';
       b.disabled=true;
+    }
+    const info=$('paymentInfoStatus');
+    if(info){
+      info.className='paymentInfoStatus '+(state.error?'error':state.liveEnabled?'ready':state.sandboxEnabled?'sandbox':'');
+      info.textContent=state.error?'결제 서버 상태를 확인하지 못했습니다.':state.liveEnabled?'NHN KCP 실결제가 활성화되어 있습니다.':state.sandboxEnabled?'NHN KCP 샌드박스 테스트가 활성화되어 있습니다. 실제 청구는 발생하지 않습니다.':'현재 실결제는 오픈 전 점검 중입니다.';
     }
   }
 }
@@ -4174,6 +4223,7 @@ async function guiinStartKcpSandbox(productCode,messageId,buttonId){
     if(!state.sandboxEnabled){if(msg)msg.textContent='KCP 테스트 결제창이 아직 준비되지 않았어요.';return;}
     if(!productCode){if(msg)msg.textContent='상품 정보를 확인하지 못했어요.';return;}
     if(btn)btn.disabled=true;if(msg)msg.textContent='NHN KCP 테스트 결제창을 준비하고 있어요…';
+    try{sessionStorage.setItem('guiin_kcp_last_product',String(productCode||''));}catch(_e){}
     await guiinKcpEnsureSession();
     const platform=guiinKcpIsMobile()?'mobile':'pc';
     const res=await guiinApi('/api/kcp/sandbox/register',{
@@ -4211,17 +4261,53 @@ function payNotReady(){return guiinStartKcpSandbox(guiinPaySelection.productCode
 function premiumPayNotReady(){return guiinStartKcpSandbox('LIFETIME_SAJU','premiumPayMsg','premiumPayBtn');}
 function compatPayNotReady(){return guiinStartKcpSandbox('PREMIUM_COMPAT','compatPayMsg','compatPayBtn');}
 
+function guiinKcpProductLabel(code){
+  const m={LIFETIME_SAJU:'프리미엄 평생사주',PREMIUM_COMPAT:'프리미엄 궁합',CLOVER_1:'맛보기 클로버 4회',CLOVER_2:'단골 클로버 7회',CLOVER_4:'행운 클로버 14회'};
+  return m[String(code||'')]||'유료 상품';
+}
+function guiinRenderPaymentResult(kind,{order='',code='',productCode=''}={}){
+  const icon=$('paymentResultIcon'),title=$('paymentResultTitle'),copy=$('paymentResultCopy'),meta=$('paymentResultMeta'),primary=$('paymentResultPrimary'),badge=$('paymentResultBadge');
+  if(!icon||!title||!copy||!primary)return;
+  icon.className='payResultIcon'+(kind==='success'?'':kind==='cancel'?' cancel':' fail');
+  icon.textContent=kind==='success'?'✓':kind==='cancel'?'–':'!';
+  if(badge)badge.textContent='NHN KCP · 샌드박스';
+  if(kind==='success'){
+    title.textContent='KCP 테스트 인증이 완료됐어요';
+    copy.textContent='결제창 인증과 귀인사주 복귀까지 정상 동작했습니다. 현재는 샌드박스이므로 실제 청구와 유료 콘텐츠·클로버 지급은 발생하지 않습니다.';
+    primary.textContent='상품 화면으로 돌아가기';
+  }else if(kind==='cancel'){
+    title.textContent='결제를 취소했어요';
+    copy.textContent='결제 인증을 중단했습니다. 샌드박스 테스트에서는 실제 청구가 발생하지 않습니다.';
+    primary.textContent='다시 확인하기';
+  }else{
+    title.textContent='결제 인증을 완료하지 못했어요';
+    copy.textContent='인증이 완료되지 않았습니다. 실제 서비스에서는 승인 여부를 서버에서 다시 확인한 뒤 권한을 반영하도록 구성합니다.';
+    primary.textContent='다시 시도하기';
+  }
+  const label=guiinKcpProductLabel(productCode);
+  if(meta){
+    const rows=[label?`상품: ${label}`:'',order?`주문번호: ${order}`:'',code?`응답코드: ${code}`:''].filter(Boolean);
+    meta.textContent=rows.join(' · ');
+    meta.style.display=rows.length?'block':'none';
+  }
+  primary.onclick=()=>{
+    if(String(productCode).startsWith('CLOVER_'))go('wallet');
+    else if(productCode==='PREMIUM_COMPAT')go('matchResult');
+    else if(productCode==='LIFETIME_SAJU')go('result');
+    else go('paymentInfo');
+  };
+  go('paymentResult');
+}
 function guiinHandleKcpSandboxReturn(){
   let u;try{u=new URL(location.href)}catch(_e){return;}
   const state=u.searchParams.get('kcpTest');if(!state)return;
   const code=u.searchParams.get('code')||'';
-  setTimeout(()=>{
-    if(state==='auth-ok')showGuiinPopup('NHN KCP 테스트 결제창 인증까지 정상적으로 돌아왔어요. 현재는 샌드박스라 실제 청구와 유료 콘텐츠 지급은 하지 않습니다.','KCP 테스트 성공');
-    else if(state==='auth-fail')showGuiinPopup(`KCP 테스트 인증이 완료되지 않았어요.${code?' ('+code+')':''}`,'KCP 테스트 결과');
-    else showGuiinPopup('KCP 테스트 결과를 확인하지 못했어요.','KCP 테스트 결과');
-  },350);
+  const order=u.searchParams.get('order')||'';
+  let productCode='';try{productCode=sessionStorage.getItem('guiin_kcp_last_product')||'';}catch(_e){}
+  const kind=state==='auth-ok'?'success':state==='auth-cancel'?'cancel':'fail';
+  setTimeout(()=>guiinRenderPaymentResult(kind,{order,code,productCode}),120);
   ['kcpTest','order','code'].forEach(k=>u.searchParams.delete(k));
-  try{history.replaceState({},'',u.pathname+(u.searchParams.toString()?'?'+u.searchParams.toString():'')+u.hash);}catch(_e){}
+  try{history.replaceState({},'',u.pathname+(u.searchParams.toString()?'?'+u.searchParams.toString():'')+'#paymentResult');}catch(_e){}
 }
 if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',guiinHandleKcpSandboxReturn,{once:true});else guiinHandleKcpSandboxReturn();
 
