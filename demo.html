@@ -21,7 +21,7 @@
 <title>귀인사주 DEMO</title>
 <meta name="description" content="무료 사주 명식, 대운·세운·월운·일운, 신살과 궁합을 쉽게 확인하는 귀인사주">
 <link rel="canonical" href="https://gwiinsaju.com/">
-<meta name="robots" content="index,follow,max-image-preview:large">
+<meta name="robots" content="noindex,follow,noarchive">
 <meta name="geo.region" content="KR">
 <meta property="og:locale" content="ko_KR">
 <meta property="og:type" content="website">
@@ -2630,19 +2630,20 @@ function renderYearLuck(){
 }
 
 
-const GUIIN_VERIFIED_ENTITLEMENTS={lifetimeSaju:false,compat:false,verifiedAt:null};
-function guiinApplyVerifiedEntitlements(payload){
- if(!payload||payload.verified!==true||payload.source!=='server')return false;
- GUIIN_VERIFIED_ENTITLEMENTS.lifetimeSaju=payload.lifetimeSaju===true;
- GUIIN_VERIFIED_ENTITLEMENTS.compat=payload.compat===true;
- GUIIN_VERIFIED_ENTITLEMENTS.verifiedAt=Date.now();
- if(chart)renderResult();
- if(matchAnalysis)renderCompatCards();
- return true;
-}
+const GUIIN_VERIFIED_ENTITLEMENTS={lifetimeSaju:true,compat:true,verifiedAt:Date.now(),resourceKeys:{demo:true}};
+const GUIIN_PAID_RESOURCE_CONTEXT={LIFETIME_SAJU:null,PREMIUM_COMPAT:null};
+const GUIIN_SERVER_ACCOUNTING={authoritative:false,free:{used:0,reserved:0,limit:3,remaining:3},wallet:{balance:0,reserved:0,available:0},updatedAt:null};
+function guiinApplyVerifiedEntitlements(){return true;}
 window.guiinApplyVerifiedEntitlements=guiinApplyVerifiedEntitlements;
 function hasPremiumLifetime(){return true; /* DEMO FREE */}
 function hasPremiumCompat(){return true; /* DEMO FREE */}
+function guiinClearVerifiedAccess(){}
+function guiinApplyServerAccountingSnapshot(){return false;}
+async function guiinRefreshServerUsage(){return false;}
+async function guiinRefreshPurchaseAccess(){return true;}
+async function guiinRefreshServerState(){return true;}
+async function guiinEnsurePaidResourceSnapshot(){return null;}
+
 function pickPreviewSamples(key,pool,count=3){
  try{
   const storageKey='guiin_preview_samples_'+key;
@@ -4604,7 +4605,7 @@ function guiinChartPayload(){
       .sort((a,b)=>b.percent-a.percent);
     const strongest=ranked[0]||{element:'-',percent:0},lowest=ranked[ranked.length-1]||{element:'-',percent:0};
     const roots=Array.isArray(chart?.extras?.roots)?safePlain(chart.extras.roots):[];
-    let story=null,relationship=null,decision=null,innerOuter=null,strengthAxis=null,compass=null,yearSignal=null;
+    let story=null,relationship=null,decision=null,innerOuter=null,strengthAxis=null,compass=null,yearSignal=null,pastCycle=null,timeStory=null;
     try{story=(typeof guiinPersonV5==='function')?guiinPersonV5(chart):null;}catch(_e){story=null;}
     try{relationship=story?.trait||((typeof guiinRelationshipTraitProfile==='function')?guiinRelationshipTraitProfile(chart):null);}catch(_e){relationship=null;}
     try{decision=(story&&typeof guiinDecisionLoopV53==='function')?guiinDecisionLoopV53(chart,story):null;}catch(_e){decision=null;}
@@ -4612,6 +4613,16 @@ function guiinChartPayload(){
     try{strengthAxis=(story&&typeof guiinStrengthAxisV53==='function')?guiinStrengthAxisV53(chart,story):null;}catch(_e){strengthAxis=null;}
     try{compass=(story&&typeof guiinRelationshipCompassV53==='function')?guiinRelationshipCompassV53(story):null;}catch(_e){compass=null;}
     try{yearSignal=(typeof guiinYearSignalV5==='function')?guiinYearSignalV5(chart,now.getFullYear()):null;}catch(_e){yearSignal=null;}
+    try{
+      const y0=now.getFullYear(),rows=[];
+      for(let y=y0-3;y<=y0+3;y++){
+        const z=(typeof guiinYearSignalV5==='function')?guiinYearSignalV5(chart,y):null;
+        if(!z)continue;
+        rows.push({year:Number(z.year||y),pillar:z.pillar||null,god:z.god||null,daeun:z.daeun?{ko:z.daeun.ko||null,god:z.daeun.god||null}:null,noble:!!z.noble,relations:Array.isArray(z.relations)?z.relations.slice(0,6):[],top_key:z.topKey||null,top_score:Number(z.topScore||0),second_key:z.secondKey||null,second_score:Number(z.secondScore||0),tension:Number(z.tension||0),samjae:z.samjae?{applies:!!z.samjae.applies,stage:z.samjae.stage||null}:null});
+      }
+      pastCycle={start_year:y0-3,end_year:y0-1,years:rows.filter(x=>x.year<y0)};
+      timeStory={past:rows.filter(x=>x.year<y0),current:rows.find(x=>x.year===y0)||null,future:rows.filter(x=>x.year>y0)};
+    }catch(_e){pastCycle=null;timeStory=null;}
     const mg=chart?.pillars?.month?.god||null;
     const attractionMap={
       '비견':{pull:'자기 삶과 기준이 분명하고 서로를 동등하게 대하는 사람',steady:'독립성을 존중하면서도 약속을 지키는 사람',drain:'통제하거나 사소한 선택까지 간섭하는 태도'},
@@ -4628,7 +4639,7 @@ function guiinChartPayload(){
     const attraction=attractionMap[mg]||{pull:'자기 삶이 있으면서 말과 행동이 일치하는 사람',steady:'경계를 존중하고 약속을 지키는 사람',drain:'책임을 한쪽에 넘기거나 감정을 시험하는 태도'};
     const career=story?.career||null;
     return {
-      schema_version:'2.6.0-frontend-story-bridge',
+      schema_version:'2.9.0-frontend-story-bridge',
       name:realName||null,
       day_master:chart?.dayMaster?.stem||chart?.pillars?.day?.stem||null,
       month_command:{pillar:val(chart?.pillars?.month),god:mg},
@@ -4669,6 +4680,8 @@ function guiinChartPayload(){
         job_examples:Array.isArray(career.job_examples)?career.job_examples.slice(0,8):(Array.isArray(story?.jobs)?story.jobs.slice(0,8):[]),
         first_path:story?.firstPath||null
       }:{work_mode:null,job_examples:Array.isArray(story?.jobs)?story.jobs.slice(0,8):[],first_path:story?.firstPath||null},
+      past_cycle:safePlain(pastCycle),
+      time_story:safePlain(timeStory),
       current_timing:{
         luck:currentLuckRow?`${currentLuckRow.ko||'-'} ${currentLuckRow.god||''}`.trim():null,
         year:now.getFullYear(),
@@ -4726,6 +4739,8 @@ function guiinChartPayload(){
     currentLuck:safePlain(currentLuckRow),
     yearFlow:safePlain(yearFlow),
     timing_highlights:safePlain(timingHighlights),
+    past_cycle:safePlain(personModel?.past_cycle||bridgePersonModel?.past_cycle||null),
+    time_story:safePlain(personModel?.time_story||bridgePersonModel?.time_story||null),
     person_model:safePlain(personModel)
   };
 

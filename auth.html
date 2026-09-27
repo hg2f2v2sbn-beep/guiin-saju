@@ -4,6 +4,8 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <meta name="theme-color" content="#fffaf1">
+<meta name="robots" content="noindex,nofollow,noarchive">
+<meta name="referrer" content="no-referrer">
 <title>귀인사주 · 로그인 연결</title>
 <style>
 :root{--bg:#fffaf1;--paper:#fffefa;--ink:#203128;--sub:#7c837d;--green:#285d32;--line:#ece5d7}
@@ -34,10 +36,10 @@ button{display:none;width:100%;border:0;border-radius:15px;padding:14px;margin-t
   var runtime=globalThis.GuiinRuntimeConfig;
   var API=String(runtime&&typeof runtime.apiBase==='function'
     ? runtime.apiBase()
-    : 'https://guiin-saju-api-staging.blue-wls.workers.dev').replace(/\/+$/,'');
+    : 'https://guiin-saju-api.blue-wls.workers.dev').replace(/\/+$/,'');
   var ENV=runtime&&typeof runtime.activeEnvironment==='function'
     ? runtime.activeEnvironment()
-    : 'staging';
+    : 'production';
   var q=new URLSearchParams(location.search);
   var code=String(q.get('handoff')||'');
   var returnPath=q.get('returnPath')==='/demo.html'?'/demo.html':'/';

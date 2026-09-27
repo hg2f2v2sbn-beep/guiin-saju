@@ -1465,7 +1465,7 @@ function submitSaju(){
    try{
     chart=GuiinSaju.calculate(inp);
     if(!chart||!chart.pillars?.year||!chart.pillars?.month||!chart.pillars?.day) throw new Error('INCOMPLETE_RESULT');
-    saveProfile(chart); currentTab='summary'; renderResult();
+    saveProfile(chart); GUIIN_VERIFIED_ENTITLEMENTS.lifetimeSaju=false;GUIIN_PAID_RESOURCE_CONTEXT.LIFETIME_SAJU=null; currentTab='summary'; renderResult(); setTimeout(()=>guiinRefreshPurchaseAccess({scope:'lifetime',silent:true}),0);
    }catch(e){
     console.error('GUIIN_SAJU_CALC_ERROR',e);
     if(resultView)resultView.innerHTML=emptyStateHTML('사주를 다시 맞춰볼게요.','입력한 정보를 한 번만 확인해 주세요. 문제가 계속되면 페이지를 새로고침한 뒤 다시 시도해 주세요.','<button class="ctaGold" onclick="go(\'saju\')">입력 정보 확인하기 ›</button>');
@@ -2624,11 +2624,83 @@ function renderYearLuck(){
 }
 
 
-const GUIIN_VERIFIED_ENTITLEMENTS={lifetimeSaju:false,compat:false,verifiedAt:null};
+const GUIIN_VERIFIED_ENTITLEMENTS={lifetimeSaju:false,compat:false,verifiedAt:null,resourceKeys:{}};
+const GUIIN_PAID_RESOURCE_CONTEXT={LIFETIME_SAJU:null,PREMIUM_COMPAT:null};
+const GUIIN_SERVER_ACCOUNTING={authoritative:false,free:{used:0,reserved:0,limit:3,remaining:3},wallet:{balance:0,reserved:0,available:0},updatedAt:null};
+
+function guiinPaidSubjectKey(){
+ try{return window.GuiinMemberData?.subjectKey?.()||((guiinAuthSession()?.userId||guiinAuthSession()?.token)?'user:'+String(guiinAuthSession()?.userId||guiinAuthSession()?.token):'guest:'+String(window.GuiinMemberData?.serverGuestToken?.()||guiinGuestSession()));}
+ catch(_e){return 'guest:'+guiinGuestSession();}
+}
+function guiinStableBirthResource(c){
+ const i=c?.input||{},num=v=>Number.isFinite(Number(v))?Number(v):null;
+ const unknown=!!i.hourUnknown;
+ return {
+   calendar:String(i.calendar||'양력'),year:num(i.year),month:num(i.month),day:num(i.day),
+   hourUnknown:unknown,hour:unknown?null:num(i.hour),minute:unknown?null:num(i.minute),
+   leapMonth:!!i.leapMonth,gender:String(i.gender||i.sex||''),dayBoundary:String(i.dayBoundary||'23'),
+   trueSolarApply:!!i.trueSolarApply,longitude:num(i.longitude??126.98)
+ };
+}
+function guiinPaidResourceDescriptor(productCode){
+ const code=String(productCode||'');
+ if(code==='LIFETIME_SAJU'){
+   if(!chart?.pillars)return null;
+   const normalized_input={kind:'lifetime_saju',person:guiinStableBirthResource(chart)};
+   const chart_facts={kind:'lifetime_saju',pillars:{year:chart.pillars?.year?.ko||null,month:chart.pillars?.month?.ko||null,day:chart.pillars?.day?.ko||null,hour:chart.pillars?.hour?.ko||null},day_master:chart?.dayMaster?.stem||chart?.pillars?.day?.stem||null};
+   return {normalized_input,chart_facts,rule:'paid-lifetime-resource-v1'};
+ }
+ if(code==='PREMIUM_COMPAT'){
+   const a=matchAnalysis?.a||matchAnalysis?.left||matchAnalysis?.chartA||matchMeta?.a;
+   const b=matchAnalysis?.b||matchAnalysis?.right||matchAnalysis?.chartB||matchMeta?.b;
+   if(!a?.pillars||!b?.pillars)return null;
+   const pair=[guiinStableBirthResource(a),guiinStableBirthResource(b)].sort((x,y)=>JSON.stringify(x).localeCompare(JSON.stringify(y)));
+   const normalized_input={kind:'premium_compat',pair};
+   const compact=c=>({year:c?.pillars?.year?.ko||null,month:c?.pillars?.month?.ko||null,day:c?.pillars?.day?.ko||null,hour:c?.pillars?.hour?.ko||null,day_master:c?.dayMaster?.stem||c?.pillars?.day?.stem||null});
+   const chart_facts={kind:'premium_compat',pair:[compact(a),compact(b)]};
+   return {normalized_input,chart_facts,rule:'paid-compat-resource-v1'};
+ }
+ return null;
+}
+async function guiinSha256Hex(value){
+ const buf=await crypto.subtle.digest('SHA-256',new TextEncoder().encode(String(value)));
+ return Array.from(new Uint8Array(buf),x=>x.toString(16).padStart(2,'0')).join('');
+}
+async function guiinPaidResourceKey(productCode){
+ const desc=guiinPaidResourceDescriptor(productCode);if(!desc)return null;
+ return guiinSha256Hex(JSON.stringify(desc.normalized_input)+'|'+desc.rule);
+}
+async function guiinEnsurePaidResourceSnapshot(productCode){
+ const code=String(productCode||'');
+ if(!['LIFETIME_SAJU','PREMIUM_COMPAT'].includes(code))return null;
+ const desc=guiinPaidResourceDescriptor(code);if(!desc)throw new Error('paid_resource_input_required');
+ try{await window.GuiinMemberData?.ensureServerGuest?.();}catch(_e){}
+ const subjectKey=guiinPaidSubjectKey();
+ const signature=subjectKey+'|'+desc.rule+'|'+JSON.stringify(desc.normalized_input);
+ const cached=GUIIN_PAID_RESOURCE_CONTEXT[code];
+ if(cached?.signature===signature&&cached?.chartSnapshotId&&cached?.chartKey)return cached;
+ const expectedKey=await guiinPaidResourceKey(code);
+ const res=await guiinApi('/api/chart-snapshots',{
+   method:'POST',cache:'no-store',headers:{'Content-Type':'application/json','Accept':'application/json'},
+   body:JSON.stringify({
+     normalized_input:desc.normalized_input,chart_facts:desc.chart_facts,
+     uncertainty:{birth_time_unknown:code==='LIFETIME_SAJU'?!!chart?.input?.hourUnknown:false},
+     calculation_engine_version:globalThis.GuiinSaju?.ENGINE_VERSION||null,
+     calculation_rule_version:desc.rule
+   })
+ });
+ const data=await res.json().catch(()=>({}));
+ if(!res.ok||data?.ok!==true||!data?.chartSnapshotId||!data?.chartKey)throw new Error(data?.error||'paid_resource_snapshot_failed');
+ if(expectedKey&&String(data.chartKey)!==String(expectedKey))throw new Error('paid_resource_key_mismatch');
+ const ctx={productCode:code,signature,chartSnapshotId:data.chartSnapshotId,chartKey:data.chartKey,createdAt:Date.now()};
+ GUIIN_PAID_RESOURCE_CONTEXT[code]=ctx;
+ return ctx;
+}
 function guiinApplyVerifiedEntitlements(payload){
  if(!payload||payload.verified!==true||payload.source!=='server')return false;
  GUIIN_VERIFIED_ENTITLEMENTS.lifetimeSaju=payload.lifetimeSaju===true;
  GUIIN_VERIFIED_ENTITLEMENTS.compat=payload.compat===true;
+ GUIIN_VERIFIED_ENTITLEMENTS.resourceKeys=payload.resourceKeys||{};
  GUIIN_VERIFIED_ENTITLEMENTS.verifiedAt=Date.now();
  if(chart)renderResult();
  if(matchAnalysis)renderCompatCards();
@@ -2637,6 +2709,57 @@ function guiinApplyVerifiedEntitlements(payload){
 window.guiinApplyVerifiedEntitlements=guiinApplyVerifiedEntitlements;
 function hasPremiumLifetime(){return GUIIN_VERIFIED_ENTITLEMENTS.lifetimeSaju===true;}
 function hasPremiumCompat(){return GUIIN_VERIFIED_ENTITLEMENTS.compat===true;}
+function guiinClearVerifiedAccess(){
+ GUIIN_VERIFIED_ENTITLEMENTS.lifetimeSaju=false;GUIIN_VERIFIED_ENTITLEMENTS.compat=false;GUIIN_VERIFIED_ENTITLEMENTS.verifiedAt=null;GUIIN_VERIFIED_ENTITLEMENTS.resourceKeys={};
+ GUIIN_PAID_RESOURCE_CONTEXT.LIFETIME_SAJU=null;GUIIN_PAID_RESOURCE_CONTEXT.PREMIUM_COMPAT=null;
+ GUIIN_SERVER_ACCOUNTING.authoritative=false;GUIIN_SERVER_ACCOUNTING.updatedAt=null;
+}
+function guiinApplyServerAccountingSnapshot(raw){
+ if(!raw||typeof raw!=='object')return false;
+ const q=raw.quota||raw.free||{},w=raw.wallet||{};
+ const used=Number(q.used??q.used_count??0),reserved=Number(q.reserved??q.reserved_count??0),limit=Number(q.limit??q.limit_count??3);
+ const remaining=Number(q.available??q.remaining??Math.max(0,limit-used-reserved));
+ const balance=Number(w.balance||0),wr=Number(w.reserved??w.reserved_balance??0),available=Number(w.available??Math.max(0,balance-wr));
+ GUIIN_SERVER_ACCOUNTING.free={used,reserved,limit,remaining:Math.max(0,remaining)};
+ GUIIN_SERVER_ACCOUNTING.wallet={balance,reserved:wr,available:Math.max(0,available)};
+ GUIIN_SERVER_ACCOUNTING.updatedAt=Date.now();
+ syncWalletViews();
+ return true;
+}
+async function guiinRefreshServerUsage({silent=true}={}){
+ try{
+   if(!guiinPaymentState?.serverAccountingReady){GUIIN_SERVER_ACCOUNTING.authoritative=false;syncWalletViews();return false;}
+   try{await window.GuiinMemberData?.ensureServerGuest?.();}catch(_e){}
+   const res=await guiinApi('/api/me/usage',{method:'GET',cache:'no-store',headers:{'Accept':'application/json'}});
+   const data=await res.json().catch(()=>({}));
+   if(!res.ok||data?.ok!==true||!data?.usage)throw new Error(data?.error||'usage_restore_failed');
+   GUIIN_SERVER_ACCOUNTING.authoritative=true;
+   guiinApplyServerAccountingSnapshot(data.usage);
+   return true;
+ }catch(err){if(!silent)console.warn('GUIIN_SERVER_USAGE_REFRESH_FAILED',err);return false;}
+}
+async function guiinRefreshPurchaseAccess({scope='all',silent=true}={}){
+ try{
+   try{await window.GuiinMemberData?.ensureServerGuest?.();}catch(_e){}
+   let lifetimeKey=null,compatKey=null;
+   if((scope==='all'||scope==='lifetime')&&chart?.pillars){try{lifetimeKey=await guiinPaidResourceKey('LIFETIME_SAJU');}catch(_e){}}
+   if((scope==='all'||scope==='compat')&&matchAnalysis){try{compatKey=await guiinPaidResourceKey('PREMIUM_COMPAT');}catch(_e){}}
+   const res=await guiinApi('/api/me/restore-summary',{method:'GET',cache:'no-store',headers:{'Accept':'application/json'}});
+   const data=await res.json().catch(()=>({}));
+   if(!res.ok||data?.ok!==true||!data?.restore)throw new Error(data?.error||'purchase_restore_failed');
+   const active=Array.isArray(data.restore.activeEntitlements)?data.restore.activeEntitlements:[];
+   const has=(type,key)=>!!key&&active.some(x=>x?.state==='ACTIVE'&&x?.entitlement_type===type&&String(x?.resource_key||'')===String(key));
+   guiinApplyVerifiedEntitlements({verified:true,source:'server',lifetimeSaju:has('lifetime_saju',lifetimeKey),compat:has('premium_compat',compatKey),resourceKeys:{lifetime:lifetimeKey,compat:compatKey}});
+   if(GUIIN_SERVER_ACCOUNTING.authoritative&&data.restore.wallet)guiinApplyServerAccountingSnapshot({quota:GUIIN_SERVER_ACCOUNTING.free,wallet:data.restore.wallet});
+   return true;
+ }catch(err){if(!silent)console.warn('GUIIN_PURCHASE_RESTORE_FAILED',err);return false;}
+}
+async function guiinRefreshServerState({silent=true}={}){
+ try{await refreshPaymentReadiness();}catch(_e){}
+ await Promise.allSettled([guiinRefreshServerUsage({silent}),guiinRefreshPurchaseAccess({silent})]);
+ syncWalletViews();
+}
+
 function pickPreviewSamples(key,pool,count=3){
  try{
   const storageKey='guiin_preview_samples_'+key;
@@ -4004,8 +4127,10 @@ function submitMatch(){
    guiinRenderMansePair(a,b);
   if(typeof GuiinCompat==='undefined') throw new Error('compatibility-interpreter.js가 로드되지 않았습니다.');
   matchAnalysis=GuiinCompat.build(a,b,score);
+  GUIIN_VERIFIED_ENTITLEMENTS.compat=false;GUIIN_PAID_RESOURCE_CONTEXT.PREMIUM_COMPAT=null;
   matchTab='summary';
   renderCompatCards();
+  setTimeout(()=>guiinRefreshPurchaseAccess({scope:'compat',silent:true}),0);
   go('matchResult');
  }catch(e){
   console.error('GUIIN_MATCH_SUBMIT_ERROR',e);
@@ -4064,6 +4189,7 @@ function renderToday(){
 }
 restoreProfile();renderToday();
 setTimeout(guiinPreflight,0);
+setTimeout(()=>guiinRefreshServerState({silent:true}),700);
 
 const COIN_KEY='guiin_clover_wallet_v2', FREE_KEY='guiin_ai_free_used_v2', NOTIFY_KEY='guiin_notify_v1';
 function loadWallet(){try{const x=JSON.parse(localStorage.getItem(COIN_KEY)||'{}');return {coins:Number(x.coins||0),ledger:Array.isArray(x.ledger)?x.ledger:[]};}catch(e){return {coins:0,ledger:[]}}}
@@ -4084,9 +4210,9 @@ function guiinFreeUsageKey(){
 }
 function freeUsed(){const n=Number(localStorage.getItem(guiinFreeUsageKey())||0);return Number.isFinite(n)?Math.max(0,n):0;}
 function setFreeUsed(n){localStorage.setItem(guiinFreeUsageKey(),String(Math.max(0,n)));syncWalletViews();}
-function syncWalletViews(){if($('coinView'))$('coinView').textContent=String(wallet.coins);if($('freeRemainView'))$('freeRemainView').textContent=String(Math.max(0,3-freeUsed()));renderLedger();}
+function syncWalletViews(){const server=GUIIN_SERVER_ACCOUNTING.authoritative;if($('coinView'))$('coinView').textContent=String(server?GUIIN_SERVER_ACCOUNTING.wallet.available:wallet.coins);if($('freeRemainView'))$('freeRemainView').textContent=String(server?GUIIN_SERVER_ACCOUNTING.free.remaining:Math.max(0,3-freeUsed()));renderLedger();}
 function renderLedger(){if(!$('ledger'))return;$('ledger').innerHTML=(wallet.ledger||[]).slice(0,12).map(r=>`${esc(r.t)} · ${esc(r.text)} (${r.delta>0?'+':''}${r.delta})`).join('<br>')||'아직 내역이 없습니다.';}
-let guiinPaymentState={checked:false,liveEnabled:false,sandboxEnabled:false,error:false};
+let guiinPaymentState={checked:false,liveEnabled:false,liveCheckoutReady:false,sandboxEnabled:false,serverAccountingReady:false,productCatalogReady:false,error:false};
 let guiinPaySelection={productCode:'CLOVER_1',price:1100};
 
 function setPaymentReadinessUI(){
@@ -4099,16 +4225,19 @@ function setPaymentReadinessUI(){
   for(const [rid,bid] of configs){
     const r=$(rid),b=$(bid);
     if(!r||!b)continue;
-    const ready=state.liveEnabled||state.sandboxEnabled;
+    const ready=state.sandboxEnabled||(state.liveEnabled&&state.liveCheckoutReady);
     const consentId=bid==='walletPayBtn'?'walletPayConsent':bid==='premiumPayBtn'?'premiumPayConsent':'compatPayConsent';
     const consentOk=!!$(consentId)?.checked;
     r.className='payReadiness '+(state.error?'error':ready?'ready':'wait');
     if(state.error){
       r.textContent='결제 서버 상태를 확인하지 못했어요. 현재 구매는 진행하지 않습니다.';
       b.disabled=true;
-    }else if(state.liveEnabled){
-      r.textContent=consentOk?'결제 서버 준비가 확인됐어요.':'약관과 환불정책을 확인한 뒤 결제를 진행해 주세요.';
+    }else if(state.liveEnabled&&state.liveCheckoutReady){
+      r.textContent=consentOk?'실결제 서버 준비가 확인됐어요.':'약관과 환불정책을 확인한 뒤 결제를 진행해 주세요.';
       b.disabled=!consentOk;
+    }else if(state.liveEnabled&&!state.liveCheckoutReady){
+      r.textContent='실결제 승인 모듈 최종 연결 전이라 구매를 잠가두었어요.';
+      b.disabled=true;
     }else if(state.sandboxEnabled){
       r.textContent=consentOk?'NHN KCP 샌드박스 테스트 모드입니다. 실제 청구·콘텐츠 지급은 발생하지 않습니다.':'테스트 결제 전 약관과 환불정책 확인에 체크해 주세요.';
       b.disabled=!consentOk;
@@ -4119,7 +4248,7 @@ function setPaymentReadinessUI(){
     const info=$('paymentInfoStatus');
     if(info){
       info.className='paymentInfoStatus '+(state.error?'error':state.liveEnabled?'ready':state.sandboxEnabled?'sandbox':'');
-      info.textContent=state.error?'결제 서버 상태를 확인하지 못했습니다.':state.liveEnabled?'NHN KCP 실결제가 활성화되어 있습니다.':state.sandboxEnabled?'NHN KCP 샌드박스 테스트가 활성화되어 있습니다. 실제 청구는 발생하지 않습니다.':'현재 실결제는 오픈 전 점검 중입니다.';
+      info.textContent=state.error?'결제 서버 상태를 확인하지 못했습니다.':(state.liveEnabled&&state.liveCheckoutReady)?'NHN KCP 실결제가 활성화되어 있습니다.':state.liveEnabled?'실결제 플래그는 감지됐지만 승인 모듈이 준비되지 않아 구매를 차단했습니다.':state.sandboxEnabled?'NHN KCP 샌드박스 테스트가 활성화되어 있습니다. 실제 청구는 발생하지 않습니다.':'현재 실결제는 오픈 전 점검 중입니다.';
     }
   }
 }
@@ -4128,9 +4257,9 @@ async function refreshPaymentReadiness(){
     const res=await fetch(GUIIN_API_BASE+'/health',{cache:'no-store',headers:{'Accept':'application/json'}});
     const data=await res.json().catch(()=>({}));
     if(!res.ok)throw new Error('health_failed');
-    guiinPaymentState={checked:true,liveEnabled:data?.paymentsEnabled===true,sandboxEnabled:data?.kcpSandboxReady===true,error:false};
+    guiinPaymentState={checked:true,liveEnabled:data?.paymentsEnabled===true,liveCheckoutReady:data?.liveCheckoutReady===true,sandboxEnabled:data?.kcpSandboxReady===true,serverAccountingReady:data?.serverAccountingReady===true,productCatalogReady:data?.productCatalogReady===true,error:false};
   }catch(_e){
-    guiinPaymentState={checked:true,liveEnabled:false,sandboxEnabled:false,error:true};
+    guiinPaymentState={checked:true,liveEnabled:false,liveCheckoutReady:false,sandboxEnabled:false,serverAccountingReady:false,productCatalogReady:false,error:true};
   }
   setPaymentReadinessUI();
   return guiinPaymentState;
@@ -4220,10 +4349,15 @@ async function guiinStartKcpSandbox(productCode,messageId,buttonId){
     try{sessionStorage.setItem('guiin_kcp_last_product',String(productCode||''));}catch(_e){}
     await guiinKcpEnsureSession();
     const platform=guiinKcpIsMobile()?'mobile':'pc';
+    let paidResource=null;
+    if(productCode==='LIFETIME_SAJU'||productCode==='PREMIUM_COMPAT'){
+      paidResource=await guiinEnsurePaidResourceSnapshot(productCode);
+      if(!paidResource?.chartSnapshotId)throw new Error('paid_resource_not_ready');
+    }
     const res=await guiinApi('/api/kcp/sandbox/register',{
       method:'POST',cache:'no-store',
       headers:{'Content-Type':'application/json','Accept':'application/json','X-Idempotency-Key':guiinRandomId('kcp_')},
-      body:JSON.stringify({product_code:productCode,platform})
+      body:JSON.stringify({product_code:productCode,platform,chart_snapshot_id:paidResource?.chartSnapshotId||null})
     });
     const data=await res.json().catch(()=>({}));
     if(!res.ok||!data?.ok)throw new Error(data?.message||data?.error||'kcp_register_failed');
@@ -4598,7 +4732,7 @@ function guiinChartPayload(){
       .sort((a,b)=>b.percent-a.percent);
     const strongest=ranked[0]||{element:'-',percent:0},lowest=ranked[ranked.length-1]||{element:'-',percent:0};
     const roots=Array.isArray(chart?.extras?.roots)?safePlain(chart.extras.roots):[];
-    let story=null,relationship=null,decision=null,innerOuter=null,strengthAxis=null,compass=null,yearSignal=null;
+    let story=null,relationship=null,decision=null,innerOuter=null,strengthAxis=null,compass=null,yearSignal=null,pastCycle=null,timeStory=null;
     try{story=(typeof guiinPersonV5==='function')?guiinPersonV5(chart):null;}catch(_e){story=null;}
     try{relationship=story?.trait||((typeof guiinRelationshipTraitProfile==='function')?guiinRelationshipTraitProfile(chart):null);}catch(_e){relationship=null;}
     try{decision=(story&&typeof guiinDecisionLoopV53==='function')?guiinDecisionLoopV53(chart,story):null;}catch(_e){decision=null;}
@@ -4606,6 +4740,16 @@ function guiinChartPayload(){
     try{strengthAxis=(story&&typeof guiinStrengthAxisV53==='function')?guiinStrengthAxisV53(chart,story):null;}catch(_e){strengthAxis=null;}
     try{compass=(story&&typeof guiinRelationshipCompassV53==='function')?guiinRelationshipCompassV53(story):null;}catch(_e){compass=null;}
     try{yearSignal=(typeof guiinYearSignalV5==='function')?guiinYearSignalV5(chart,now.getFullYear()):null;}catch(_e){yearSignal=null;}
+    try{
+      const y0=now.getFullYear(),rows=[];
+      for(let y=y0-3;y<=y0+3;y++){
+        const z=(typeof guiinYearSignalV5==='function')?guiinYearSignalV5(chart,y):null;
+        if(!z)continue;
+        rows.push({year:Number(z.year||y),pillar:z.pillar||null,god:z.god||null,daeun:z.daeun?{ko:z.daeun.ko||null,god:z.daeun.god||null}:null,noble:!!z.noble,relations:Array.isArray(z.relations)?z.relations.slice(0,6):[],top_key:z.topKey||null,top_score:Number(z.topScore||0),second_key:z.secondKey||null,second_score:Number(z.secondScore||0),tension:Number(z.tension||0),samjae:z.samjae?{applies:!!z.samjae.applies,stage:z.samjae.stage||null}:null});
+      }
+      pastCycle={start_year:y0-3,end_year:y0-1,years:rows.filter(x=>x.year<y0)};
+      timeStory={past:rows.filter(x=>x.year<y0),current:rows.find(x=>x.year===y0)||null,future:rows.filter(x=>x.year>y0)};
+    }catch(_e){pastCycle=null;timeStory=null;}
     const mg=chart?.pillars?.month?.god||null;
     const attractionMap={
       '비견':{pull:'자기 삶과 기준이 분명하고 서로를 동등하게 대하는 사람',steady:'독립성을 존중하면서도 약속을 지키는 사람',drain:'통제하거나 사소한 선택까지 간섭하는 태도'},
@@ -4622,7 +4766,7 @@ function guiinChartPayload(){
     const attraction=attractionMap[mg]||{pull:'자기 삶이 있으면서 말과 행동이 일치하는 사람',steady:'경계를 존중하고 약속을 지키는 사람',drain:'책임을 한쪽에 넘기거나 감정을 시험하는 태도'};
     const career=story?.career||null;
     return {
-      schema_version:'2.6.0-frontend-story-bridge',
+      schema_version:'2.9.0-frontend-story-bridge',
       name:realName||null,
       day_master:chart?.dayMaster?.stem||chart?.pillars?.day?.stem||null,
       month_command:{pillar:val(chart?.pillars?.month),god:mg},
@@ -4663,6 +4807,8 @@ function guiinChartPayload(){
         job_examples:Array.isArray(career.job_examples)?career.job_examples.slice(0,8):(Array.isArray(story?.jobs)?story.jobs.slice(0,8):[]),
         first_path:story?.firstPath||null
       }:{work_mode:null,job_examples:Array.isArray(story?.jobs)?story.jobs.slice(0,8):[],first_path:story?.firstPath||null},
+      past_cycle:safePlain(pastCycle),
+      time_story:safePlain(timeStory),
       current_timing:{
         luck:currentLuckRow?`${currentLuckRow.ko||'-'} ${currentLuckRow.god||''}`.trim():null,
         year:now.getFullYear(),
@@ -4720,6 +4866,8 @@ function guiinChartPayload(){
     currentLuck:safePlain(currentLuckRow),
     yearFlow:safePlain(yearFlow),
     timing_highlights:safePlain(timingHighlights),
+    past_cycle:safePlain(personModel?.past_cycle||bridgePersonModel?.past_cycle||null),
+    time_story:safePlain(personModel?.time_story||bridgePersonModel?.time_story||null),
     person_model:safePlain(personModel)
   };
 
@@ -4747,8 +4895,11 @@ async function sendQ(preset){
     return;
   }
 
-  const used=freeUsed(),isFree=used<3;
-  if(!isFree&&Number(wallet.coins||0)<1){
+  const serverMode=GUIIN_SERVER_ACCOUNTING.authoritative===true;
+  const used=serverMode?GUIIN_SERVER_ACCOUNTING.free.used:freeUsed();
+  const isFree=serverMode?GUIIN_SERVER_ACCOUNTING.free.remaining>0:used<3;
+  const availableCoins=serverMode?GUIIN_SERVER_ACCOUNTING.wallet.available:Number(wallet.coins||0);
+  if(!isFree&&availableCoins<1){
     guiinAppend('sysnote','무료 질문 3회를 모두 사용했습니다. 행운의 클로버를 충전하면 이어서 질문할 수 있어요.');
     setTimeout(()=>go('wallet'),450);
     return;
@@ -4825,15 +4976,22 @@ async function sendQ(preset){
     }
     persistAIHistory();
 
-    if(isFree)setFreeUsed(used+1);
-    else{
-      wallet.coins=Math.max(0,Number(wallet.coins||0)-1);
-      wallet.ledger.unshift({
-        t:new Date().toLocaleString('ko-KR',{hour12:false}),
-        text:'AI 상담 질문 차감 · '+q.slice(0,18),
-        delta:-1
-      });
-      persistWallet();
+    if(data?.serverAccountingReady===true&&data?.accounting){
+      GUIIN_SERVER_ACCOUNTING.authoritative=true;
+      guiinApplyServerAccountingSnapshot(data.accounting);
+    }else if(!serverMode){
+      if(isFree)setFreeUsed(used+1);
+      else{
+        wallet.coins=Math.max(0,Number(wallet.coins||0)-1);
+        wallet.ledger.unshift({
+          t:new Date().toLocaleString('ko-KR',{hour12:false}),
+          text:'AI 상담 질문 차감 · '+q.slice(0,18),
+          delta:-1
+        });
+        persistWallet();
+      }
+    }else{
+      setTimeout(()=>guiinRefreshServerUsage({silent:true}),0);
     }
 
     if(input)input.value='';
@@ -4970,6 +5128,7 @@ async function refreshGuiinUser(){
 
     guiinCurrentUser=data.user||null;
     syncAuthUI();
+    setTimeout(()=>guiinRefreshServerState({silent:true}),0);
     return guiinCurrentUser;
   }catch(err){
     console.warn('GUIIN_AUTH_REFRESH_NETWORK_ERROR',err);
@@ -5062,7 +5221,7 @@ function logoutGuiin(){
       if($('myName'))$('myName').textContent='프로필을 만들어 보세요';
       if($('myBirth'))$('myBirth').textContent='사주를 계산하면 저장할 수 있어요.';
     }catch(_e){}
-    guiinCurrentUser=null;syncAuthUI();go('home');
+    guiinCurrentUser=null;guiinClearVerifiedAccess();syncAuthUI();syncWalletViews();go('home');
     try{window.GuiinMemberData?.afterLogout?.().catch(()=>{});}catch(_e){}
   };
   if(!s?.token){finish();return;}
@@ -5294,7 +5453,7 @@ async function guiinCompleteLoginFlow(explicitToken=''){
       localStorage.setItem('guiin_verified_user_v1',JSON.stringify(result.user));
     }catch(_e){}
     syncAuthUI();
-    try{window.GuiinMemberData?.afterLogin?.().catch(err=>console.warn('GUIIN_MEMBER_LOGIN_SYNC_DEFERRED',err?.message||err));}catch(_e){}
+    try{window.GuiinMemberData?.afterLogin?.().then(()=>guiinRefreshServerState({silent:true})).catch(err=>console.warn('GUIIN_MEMBER_LOGIN_SYNC_DEFERRED',err?.message||err));}catch(_e){}
 
     const label=result.user?.display_name||result.user?.nickname||result.user?.name||'카카오 계정';
     guiinSetLoginCompleteState(
