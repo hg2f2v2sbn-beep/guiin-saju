@@ -1,4 +1,5 @@
 <!doctype html>
+<!-- GUIIN R23 · COMPLETE COMPATIBILITY ENGINE · 2026-09-30 -->
 <!-- GUIIN R17 INTEGRATED RESTORE · feature-complete demo + R17 personalization · 2026-09-28 -->
 <!-- GUIIN R17 · QA-personalized longform saju + compatibility + full calculated-star interpretation · 2026-09-28 -->
 
@@ -6652,9 +6653,15 @@ document.addEventListener('visibilitychange',()=>{
  }
  function compatOutput(a,b){
   const secs=[];
-  try{if(typeof compatDeepSections==='function')secs.push(...(compatDeepSections(a,b)||[]));}catch(e){secs.push({k:'deep_error',b:String(e?.message||e)});}
-  try{if(typeof compatRelationshipExtraSections==='function')secs.push(...(compatRelationshipExtraSections(a,b)||[]));}catch(e){secs.push({k:'extra_error',b:String(e?.message||e)});}
-  return secs.map((x,i)=>[String(x?.key||x?.k||`compat_${i}`),[x?.k,x?.t,x?.b,x?.g,x?.w,x?.tip,x?.ev].filter(Boolean).join(' ')]);
+  try{
+   if(typeof globalThis.guiinCompatR23Sections==='function'){
+    for(const tab of ['summary','love','marriage','partner'])secs.push(...(globalThis.guiinCompatR23Sections(a,b,tab)||[]).map(x=>({...x,key:`r23_${tab}_${x.key||''}`})));
+   }else{
+    if(typeof compatDeepSections==='function')secs.push(...(compatDeepSections(a,b)||[]));
+    if(typeof compatRelationshipExtraSections==='function')secs.push(...(compatRelationshipExtraSections(a,b)||[]));
+   }
+  }catch(e){secs.push({k:'compat_error',b:String(e?.message||e)});}
+  return secs.map((x,i)=>[String(x?.key||x?.k||`compat_${i}`),[x?.kicker,x?.title,x?.body,x?.k,x?.t,x?.b,x?.g,x?.w,x?.tip,x?.ev,...((x?.blocks||[]).flatMap(v=>[v?.label,v?.text]))].filter(Boolean).join(' ')]);
  }
  function scoreContradiction(pack){
   const warns=[];if(!pack)return ['score_missing'];
@@ -6755,5 +6762,207 @@ document.addEventListener('visibilitychange',()=>{
 })();
 </script>
 
+
+
+<!-- GUIIN R23 · compatibility consultation rebuild · 2026-09-30 -->
+<style>
+.r23CompatIntro{padding:18px 17px}.r23CompatIntro h2{margin:6px 0 8px}.r23CompatIntro p{margin:5px 0;line-height:1.68}
+.r23PairGrid{display:grid;grid-template-columns:1fr 1fr;gap:9px;margin-top:13px}.r23PairCell{padding:12px;border-radius:14px;background:rgba(255,255,255,.72);border:1px solid rgba(76,83,78,.10)}.r23PairCell b{display:block;font-size:12px;margin-bottom:5px}.r23PairCell span{font-size:13px;line-height:1.48;display:block}
+.r23CompatCard .r23Body p{line-height:1.78;margin:10px 0}.r23CompatCard .r23Body h4{font-size:14px;margin:15px 0 6px}.r23Callout{margin-top:10px;padding:12px 13px;border-radius:14px;background:rgba(252,250,244,.84);border:1px solid rgba(120,107,76,.10)}.r23Callout b{display:block;font-size:12px;margin-bottom:5px}.r23Callout p{margin:0;line-height:1.65;font-size:13px}.r23Callout.good{background:rgba(242,249,244,.9)}.r23Callout.watch{background:rgba(253,246,240,.9)}.r23Callout.tip{background:rgba(245,246,252,.9)}
+.r23Evidence{margin-top:11px}.r23Evidence summary{cursor:pointer;font-size:12px;opacity:.72}.r23Evidence div{margin-top:7px;font-size:12px;line-height:1.55;opacity:.76}.r23TagRow{display:flex;flex-wrap:wrap;gap:6px;margin-top:9px}.r23Tag{font-size:11px;padding:5px 8px;border-radius:999px;background:rgba(0,0,0,.045)}
+.r23Steps{display:grid;gap:7px;margin:9px 0}.r23Step{padding:10px 11px;border-radius:12px;background:rgba(255,255,255,.64);font-size:13px;line-height:1.55}.r23Step b{margin-right:5px}
+@media(max-width:430px){.r23PairGrid{grid-template-columns:1fr}.r23CompatCard .r23Body p{line-height:1.72}}
+</style>
+<script>
+/* GUIIN R23 — 궁합은 두 사람 단독 사주의 합이 아니라, 둘이 만났을 때 생기는 관계 패턴을 중심으로 읽는다. */
+(function(){
+ const E=compatEsc;
+ function safe(fn,fallback){try{return fn()}catch(_e){return fallback}}
+ function pairData(a,b){
+  const q=safe(()=>guiinCompatSignalV5(a,b),{}),A=q.pa||safe(()=>guiinPersonV5(a),{}),B=q.pb||safe(()=>guiinPersonV5(b),{});
+  const AD=safe(()=>guiinCompatPersonDeepV57(a),{}),BD=safe(()=>guiinCompatPersonDeepV57(b),{});
+  const ta=A.trait||safe(()=>guiinRelationshipTraitProfile(a),{})||{},tb=B.trait||safe(()=>guiinRelationshipTraitProfile(b),{})||{};
+  const av=safe(()=>guiinVibeProfile(a),{})||{},bv=safe(()=>guiinVibeProfile(b),{})||{};
+  const cross=safe(()=>guiinCompatCrossV56(a,b),{aSeesB:'-',bSeesA:'-'}),al=safe(()=>currentLuck(a),null),bl=safe(()=>currentLuck(b),null);
+  const years=safe(()=>guiinPairYearRowsV56(a,b),[])||[],score=safe(()=>guiinCompatScoreV21(a,b),null);
+  const age=q.age||safe(()=>guiinExactAgeGapV5(a,b),{years:0,months:0,text:''});
+  const aName=String(A.name||a?.input?.name||'나'),bName=String(B.name||b?.input?.name||'상대방');
+  const elA=A.top||safe(()=>sajuInsightProfile(a).top,'')||A.el||'',elB=B.top||safe(()=>sajuInsightProfile(b).top,'')||B.el||'';
+  return {a,b,q,A,B,AD,BD,ta,tb,av,bv,cross,al,bl,years,score,age,aName,bName,elA,elB,pair:compatPairProfile(elA,elB)};
+ }
+ function evidence(d,extra=''){
+  const combine=Number(d.q?.sig?.combine||0),tension=Number(d.q?.sig?.tension||0),day=d.q?.dayRel||'직접 관계 없음';
+  const core=`${d.aName} ${d.A.stem||''} 일간·월주 ${d.A.mg||'-'}·${d.elA||'-'} 중심 / ${d.bName} ${d.B.stem||''} 일간·월주 ${d.B.mg||'-'}·${d.elB||'-'} 중심 / 결속 ${combine}·마찰 ${tension}·일지 ${day}`;
+  return extra?`${core} / ${extra}`:core;
+ }
+ function callout(label,text,tone='') {return {label,text,tone};}
+ function sec(key,kicker,title,body,blocks=[],ev=''){return {key,kicker,title,body,blocks,ev};}
+ function relText(x,fallback){return String(x||fallback||'').trim();}
+ function ptag(x){return `<span class="r23Tag">${E(x)}</span>`}
+ function yearFlow(d){
+  if(!d.years.length)return '<p>가까운 연도 흐름은 현재 대운을 중심으로 확인합니다.</p>';
+  return `<div class="r23Steps">${d.years.map(r=>`<div class="r23Step"><b>${r.year}</b>${E(d.aName)} · ${E(r.labelA)} / ${E(d.bName)} · ${E(r.labelB)}${r.same?' — 두 사람의 우선순위가 비슷하게 잡히는 해':' — 서로 다른 과제가 앞에 놓일 수 있는 해'}</div>`).join('')}</div>`;
+ }
+ function conflictLoop(d){
+  const aStress=relText(d.AD?.loop?.stress,d.A.anger),bStress=relText(d.BD?.loop?.stress,d.B.anger);
+  const aRepair=relText(d.AD?.rel?.repair,d.AD?.loop?.recover),bRepair=relText(d.BD?.rel?.repair,d.BD?.loop?.recover);
+  return `<div class="r23Steps"><div class="r23Step"><b>1 · 시작</b>${E(d.aName)}님은 ${E(aStress)}</div><div class="r23Step"><b>2 · 맞반응</b>${E(d.bName)}님은 ${E(bStress)}</div><div class="r23Step"><b>3 · 악화</b>상대 반응을 의도나 사랑의 크기로 해석하면 원래 문제보다 말투·거리감이 더 크게 남을 수 있어.</div><div class="r23Step"><b>4 · 회복</b>${E(d.aName)}님은 ${E(aRepair)} ${E(d.bName)}님은 ${E(bRepair)}</div></div>`;
+ }
+ function intimacyBody(d){
+  const ai=relText(d.A.intimacy,d.ta?.intimacyLabel||'관계형'),bi=relText(d.B.intimacy,d.tb?.intimacyLabel||'관계형');
+  const aj=relText(d.ta?.jealousyText,''),bj=relText(d.tb?.jealousyText,'');
+  return `<p><b>${E(d.aName)}님</b>은 친밀감이 ${E(ai)} 쪽으로, <b>${E(d.bName)}님</b>은 ${E(bi)} 쪽으로 읽힐 수 있어. 이건 실제 성욕의 세기나 충실성을 판정하는 값이 아니라, 좋아하는 관계에서 스킨십·정서적 표현·함께 보내는 시간을 얼마나 중요한 신호로 느끼기 쉬운지를 보는 보조 해석이야.</p>${aj||bj?`<p>${aj?`${E(d.aName)}님은 ${E(aj)} `:''}${bj?`${E(d.bName)}님은 ${E(bj)}`:''}</p>`:''}<p>둘 사이에서 중요한 건 누가 더 강하냐가 아니라 <b>친밀감을 원하는 순간과 거절·휴식이 필요한 순간을 안전하게 말할 수 있는가</b>야. 속도가 다르면 애정 부족이 아니라 리듬 차이일 수 있어.</p>`;
+ }
+ function moneyBody(d){
+  const am=d.AD?.money||{},bm=d.BD?.money||{};
+  const ac=d.A.career||{},bc=d.B.career||{};
+  return `<p><b>${E(d.aName)}님의 현실 운영</b> · ${E(ac.work_mode||d.A.firstPath||'전문성·역할 적합형')} / 돈에서는 ${E(am.earn||d.A.money||'반복 가능한 수입 구조')}를 중시하고, ${E(am.leak||'관계·편의 비용이 새는지 점검하는 편')}이 필요해.</p><p><b>${E(d.bName)}님의 현실 운영</b> · ${E(bc.work_mode||d.B.firstPath||'전문성·역할 적합형')} / 돈에서는 ${E(bm.earn||d.B.money||'반복 가능한 수입 구조')}를 중시하고, ${E(bm.leak||'관계·편의 비용이 새는지 점검하는 편')}이 필요해.</p><p>둘이 오래 만나면 돈 문제는 액수보다 <b>누가 계획하고, 누가 먼저 결제하고, 누가 정산하고, 누가 미래 비용을 기억하는지</b>에서 감정이 생기기 쉬워. 그래서 재물궁합은 “같이 있으면 돈이 들어온다”보다 부담과 결정권을 어떻게 나누는지를 보는 게 훨씬 현실적이야.</p>`;
+ }
+ function familyBody(d){
+  const gap=d.age?.text?`두 사람의 출생일 기준 나이 차이는 약 ${E(d.age.text)}야. `:'';
+  return `<p>${gap}나이 차이 자체는 좋고 나쁨을 정하지 않아. 다만 경력·수입·주거·가족 책임처럼 삶의 단계가 다르면 한쪽이 결정자나 보호자 역할을 더 많이 맡기 쉬워.</p><p>장기 관계에서는 양가 가족, 친구, 반려동물, 돌봄, 명절·행사, 가족 지원금처럼 <b>관계 밖에서 들어오는 요구를 둘이 어떻게 막고 나눌지</b>가 중요해. 한 사람만 계속 중간에서 설명하고 수습하면 가족 문제가 결국 커플 문제로 바뀔 수 있어.</p>`;
+ }
+ function childBody(d){
+  const aGift=relText(d.A.gift,'돌보고 책임지는 힘'),bGift=relText(d.B.gift,'돌보고 책임지는 힘');
+  return `<p>자녀 여부나 자녀의 성격을 사주로 확정하는 항목은 아니야. 여기서는 <b>아이·반려동물·가족 돌봄처럼 장기간 책임이 필요한 상황에서 두 사람이 어떤 역할을 맡기 쉬운지</b>만 봐.</p><p>${E(d.aName)}님은 ${E(aGift)}, ${E(d.bName)}님은 ${E(bGift)}을 관계 안에서 쓰기 쉬워. 둘 다 잘하는 일을 맡는 건 좋지만, 한쪽은 정서적 돌봄만 하고 다른 한쪽은 돈·일정·병원·교육 같은 실무를 전부 맡는 식으로 보이지 않는 노동이 한 사람에게 몰리지 않는지가 핵심이야.</p>`;
+ }
+ function partnerBody(d,who='b'){
+  const X=who==='a'?d.A:d.B,D=who==='a'?d.AD:d.BD,n=who==='a'?d.aName:d.bName;
+  const trait=who==='a'?d.ta:d.tb;
+  return `<p><b>${E(n)}님의 기본 결</b> · ${E(X.core||'일간 하나가 아니라 계절·월주·오행을 함께 봐야 하는 사람')} 강점은 ${E(X.gift||'자기 방식으로 결과를 만드는 힘')}이고, 지치면 ${E(X.shadow||'자기 방식이 강해질 수 있음')}</p><p><b>겉과 속</b> · ${E(D?.io?.outer||'겉에서는 역할을 해내는 모습이 먼저 보일 수 있어.')} 속에서는 ${E(D?.io?.inner||'자기 속도로 회복할 여백이 필요해.')} 그래서 상대가 보기엔 멀쩡한데 본인은 이미 지쳐 있는 시간차가 생길 수 있어.</p><p><b>연애에서</b> · ${E(X.attachment||trait?.attachmentLabel||'혼합형')} 반응, 권태 ${E(X.boredom||trait?.boredomLabel||'상황형')}, 친밀감 ${E(X.intimacy||trait?.intimacyLabel||'관계형')} 쪽을 참고할 수 있어. ${E(D?.rel?.pull||'말과 행동이 맞는 사람에게 마음이 열리기 쉬워.')} ${E(D?.rel?.conflict||'기대와 행동이 어긋나면 서운함이 쌓일 수 있어.')}</p><p><b>회복할 때</b> · ${E(D?.loop?.recover||'혼자 정리하고 생활 리듬을 되찾을 시간이 필요할 수 있어.')}</p>`;
+ }
+ function summarySections(d){
+  const sameStem=d.q?.sameStem,opposite=d.q?.oppositeTemp,combine=Number(d.q?.sig?.combine||0),tension=Number(d.q?.sig?.tension||0);
+  const relationHeadline=d.q?.archetype||'차이를 조율하며 맞춰가는 관계';
+  const temp=opposite?'두 사람은 표현 온도가 달라 처음에는 서로 없는 면이 매력으로 느껴지기 쉬워.':'표현 온도 자체보다 생활 기준과 반응 방식의 차이가 관계 체감을 더 크게 만들 수 있어.';
+  const same=sameStem?`둘 다 ${E(d.A.stem||'같은')} 일간이라 본질적으로 비슷하게 느끼는 지점이 있어도, 월주와 오행 중심이 ${E(d.elA)} / ${E(d.elB)}로 달라 실제 반응은 꽤 다르게 펼쳐질 수 있어.`:`일간과 생활 기능이 달라 서로가 자연스럽게 쓰는 방식 자체가 다를 수 있어.`;
+  return [
+   sec('structure','관계의 뼈대',relationHeadline,`<p>${same}</p><p>${E(temp)}</p><p>원국 교차에서는 결속 신호 ${combine}, 마찰 신호 ${tension}, 일지 관계는 ${E(d.q?.dayRel||'직접 관계 없음')}로 잡혀. 결속은 “무조건 오래감”, 마찰은 “나쁜 인연”이라는 뜻이 아니야. <b>붙는 힘과 조율 비용이 각각 어디서 생기는지</b>를 따로 보는 게 핵심이야.</p>`,[
+    callout('둘 사이에서 먼저 볼 것',combine>tension?'좋아하는 마음을 확인하는 것보다, 이미 잘 맞는 기능을 생활 역할로 연결하는 게 중요해.':'끌림이 있어도 반복 갈등의 비용이 커질 수 있어서 회복 규칙을 먼저 만드는 게 중요해.','good'),
+    callout('관계의 함정','점수가 높다는 이유로 현실 문제를 미루거나, 마찰 신호가 있다는 이유로 관계 전체를 비관하지 않는 게 좋아.','watch')
+   ],evidence(d)),
+   sec('attraction','끌림의 시작','왜 서로에게 눈이 갔을까?',`<p>${E(d.pair.fit)}</p><p>${E(d.aName)}님은 ${E(d.av?.vibe||d.A.lifeValue||'자기 기준이 느껴지는 분위기')}에, ${E(d.bName)}님은 ${E(d.bv?.vibe||d.B.lifeValue||'자기 기준이 느껴지는 분위기')}에 상대적으로 눈이 갈 수 있어. 말투도 ${E(d.av?.talk||'생각을 나눌 수 있는 방식')} / ${E(d.bv?.talk||'생각을 나눌 수 있는 방식')}처럼 선호하는 결이 다를 수 있고.</p><p>처음에는 상대가 나보다 자연스럽게 쓰는 기능이 신선하게 느껴져. 그런데 시간이 지나면 그 같은 기능이 “왜 저렇게까지 하지?”라는 피로가 되기도 해. <b>처음 끌린 이유와 지금 거슬리는 이유가 같은 기질의 앞뒤 면인지</b> 비교해보면 관계가 훨씬 잘 보여.</p>`,[
+    callout('초반 매력의 정체','닮아서 편한 부분과 달라서 궁금한 부분이 동시에 관계를 당길 수 있어.','good'),
+    callout('확인해볼 질문','처음 좋아했던 행동 중 지금은 부담스럽게 느껴지는 게 있는지 떠올려봐.','tip')
+   ],evidence(d,`교차십신 ${d.cross?.aSeesB||'-'} ↔ ${d.cross?.bSeesA||'-'}`)),
+   sec('roles','서로가 보는 상대','좋아하는 사람에게 자동으로 기대하는 역할이 달라',`<p><b>${E(d.aName)}님이 ${E(d.bName)}님에게 느끼기 쉬운 역할감</b> · ${E(d.cross?.aSeesB||'특정 역할보다 실제 행동을 함께 봐야 함')}</p><p><b>${E(d.bName)}님이 ${E(d.aName)}님에게 느끼기 쉬운 역할감</b> · ${E(d.cross?.bSeesA||'특정 역할보다 실제 행동을 함께 봐야 함')}</p><p>이건 상대의 실제 성격이 아니라 <b>내가 그 사람에게 자동으로 얹기 쉬운 기대</b>야. 상대는 그냥 자기 방식대로 행동했는데 나는 “나를 더 챙겨줘야지”, “나를 자유롭게 둬야지”, “책임져줘야지” 같은 기대를 붙일 수 있어. 궁합에서 의외로 큰 갈등은 성격 차이보다 이런 기대 역할에서 생겨.</p>`,[
+    callout('오해를 줄이는 법','“나는 네가 당연히 이렇게 해줄 줄 알았어”라는 문장이 나오면, 그 기대를 처음부터 합의한 적이 있었는지 먼저 확인해봐.','tip')
+   ],evidence(d,'교차 십신 역할감')),
+   sec('conflict','갈등의 회로','둘이 싸울 때 문제보다 ‘반응의 순서’가 더 커질 수 있어',`${conflictLoop(d)}<p>${E(d.pair.friction)}</p>`,[
+    callout('싸움이 커지는 신호','한쪽이 결론을 재촉하고 다른 한쪽이 더 닫히거나, 한쪽이 침묵하고 다른 한쪽이 확인을 더 세게 요구하는 식의 추격-거리두기 패턴이 반복되는지 봐.','watch'),
+    callout('회복 규칙','멈추는 건 괜찮지만 다시 이야기할 시간을 정해. “지금은 정리하고 오늘 밤 9시에 다시 말하자”처럼 끝이 보이는 거리두기가 좋아.','tip')
+   ],evidence(d,`${d.aName} ${d.A.attachment||'-'} ↔ ${d.bName} ${d.B.attachment||'-'}`)),
+   sec('distance','연락·거리·불안','연락 횟수보다 불안할 때 각자 뭘 하는지가 중요해',`<p><b>${E(d.aName)}님</b> · ${E(d.A.attachment||d.ta?.attachmentLabel||'혼합형')} — ${E(d.A.attachmentText||d.ta?.attachmentText||'가까움과 개인시간의 균형을 확인하는 편')}</p><p><b>${E(d.bName)}님</b> · ${E(d.B.attachment||d.tb?.attachmentLabel||'혼합형')} — ${E(d.B.attachmentText||d.tb?.attachmentText||'가까움과 개인시간의 균형을 확인하는 편')}</p><p>한 사람의 확인은 관심일 수 있고 다른 사람에게는 압박일 수 있어. 반대로 한 사람의 혼자 정리는 진정 시간일 수 있지만 상대에게는 회피처럼 느껴질 수 있고. 그래서 “몇 시간 안에 답장” 같은 숫자 하나보다 <b>바쁠 때·싸웠을 때·혼자 있고 싶을 때</b> 기준을 따로 정하는 게 좋아.</p>`,[
+    callout('사랑의 크기로 착각하지 말 것','답장 속도·외출·혼자 있는 시간을 바로 애정의 크기로 번역하면 불필요한 싸움이 늘어나.','watch'),
+    callout('둘이 정할 세 가지','평소 연락 / 바쁜 날 연락 / 싸운 뒤 다시 연결되는 시간을 따로 정해봐.','tip')
+   ],evidence(d,'관계 반응·독립성')),
+   sec('intimacy','애정 표현·친밀감','둘 다 좋아해도 사랑을 체감하는 장면은 다를 수 있어',intimacyBody(d),[
+    callout('관계가 편해지는 순간','내가 사랑받는다고 느끼는 행동과 상대가 사랑을 표현하는 행동을 따로 말해주면 번역 오류가 줄어들어.','good'),
+    callout('선 넘지 않기','도화·홍염·친밀감 신호로 외도 가능성이나 실제 성생활을 단정하지 않아.','watch')
+   ],evidence(d,'친밀감·질투 반응')), 
+   sec('novelty','권태·자극·개인시간','한 사람에게 안정이 애정일 때, 다른 사람에겐 변화가 애정일 수 있어',`<p><b>${E(d.aName)}님</b> · 권태 ${E(d.A.boredom||d.ta?.boredomLabel||'상황형')} — ${E(d.A.boredomText||d.ta?.boredomText||'반복과 변화의 양에 따라 체감이 달라질 수 있어.')}</p><p><b>${E(d.bName)}님</b> · 권태 ${E(d.B.boredom||d.tb?.boredomLabel||'상황형')} — ${E(d.B.boredomText||d.tb?.boredomText||'반복과 변화의 양에 따라 체감이 달라질 수 있어.')}</p><p>권태가 빠르다고 사랑이 약한 건 아니고, 익숙함을 좋아한다고 관계가 정체된 것도 아니야. 둘에게 필요한 변화량이 다른지만 보면 돼.</p>`,[
+    callout('생활 처방','익숙한 루틴 하나와 새로운 경험 하나를 한 달 안에 같이 잡아봐. 개인시간도 데이트의 반대말이 아니라 관계 유지 자원으로 봐.','tip')
+   ],evidence(d,'권태·개인시간')), 
+   sec('reality','돈·일·책임','재물궁합은 “같이 있으면 돈이 들어오나”보다 누가 무엇을 떠안는지가 더 중요해',moneyBody(d),[
+    callout('가장 먼저 숫자로 정할 것','데이트·공동생활비 / 개인 자유비 / 가족·돌봄비 / 저축을 섞지 말고 분리해봐.','tip'),
+    callout('감정으로 번지기 쉬운 지점','한 사람이 계속 먼저 내고, 계획하고, 기억하고, 정산하면 액수보다 “왜 나만?”이라는 감정이 쌓이기 쉬워.','watch')
+   ],evidence(d,'직업·재물 운영')), 
+   sec('longterm','장기연애·동거·가족','오래 만날수록 사랑보다 생활 운영의 균형이 더 선명해져',familyBody(d),[
+    callout('같이 살기 전 확인','돈·집안일·수면·친구·가족·반려동물·휴일·혼자 있는 시간을 실제 문장으로 합의해봐.','tip'),
+    callout('관계가 보호자-피보호자로 굳는 신호','한 사람이 늘 결정하고 설명하고 수습하고, 다른 사람이 따라가는 구조가 반복되는지 봐.','watch')
+   ],evidence(d,`나이차 ${d.age?.text||'참고 없음'}`)),
+   sec('timing','현재 대운·관계 속도','같은 마음이어도 지금 각자 삶에서 앞에 놓인 숙제가 다를 수 있어',`<p><b>${E(d.aName)}님</b> · ${d.al?`${E(d.al.ko)} 대운(${E(d.al.god)})`:'현재 대운'} / <b>${E(d.bName)}님</b> · ${d.bl?`${E(d.bl.ko)} 대운(${E(d.bl.god)})`:'현재 대운'}</p><p>같은 대운 이름이 겹쳐도 원국 구조가 달라 체감은 같지 않아. 한쪽은 일·책임이 더 크게 느껴지고, 다른 한쪽은 관계·회복·돈 문제가 더 앞에 올 수 있어. “마음이 식었나?”보다 지금 삶의 에너지를 어디에 쓰는지를 먼저 보는 게 정확해.</p>${yearFlow(d)}`,[
+    callout('시기 해석의 사용법','특정 연도를 결혼·이별이 정해진 해로 보지 말고, 둘이 현실적인 다음 단계를 논의하기 쉬운지/어려운지 보는 배경으로 써.','tip')
+   ],evidence(d,'대운·세운 교차')),
+   sec('final','이 관계를 오래 굴리는 법','결국 점수가 아니라 “둘 다 자기 삶을 유지하면서 관계도 지킬 수 있는가”가 핵심이야',`<p>${E(d.q?.destiny||'결속과 조율 신호를 함께 봐야 하는 관계야.')} 좋은 궁합의 장점은 두 사람이 서로 다른 기능을 실제 생활에서 역할로 나눌 때 살아나고, 약점은 상대가 내 방식대로 움직여야 한다고 느낄 때 커져.</p><p>한 사람만 계속 설명하고 수습하고 돈을 내고 돌보는 관계라면 높은 점수가 실제 만족도를 대신할 수 없어. 반대로 차이가 꽤 있어도 서로 기준을 말하고 책임을 나누고 싸운 뒤 다시 연결할 수 있다면 관계 체감은 훨씬 좋아질 수 있어.</p>`,[
+    callout('이 관계의 운영 원칙','연락·돈·시간·가족·돌봄 중 불균형한 항목 하나만 골라 3개월 단위로 조정해. 모든 걸 한꺼번에 고치려 하면 다시 싸움의 소재가 돼.','good')
+   ],evidence(d))
+  ];
+ }
+ function loveSections(d){
+  const all=summarySections(d),pick=k=>all.find(x=>x.key===k);
+  return [pick('attraction'),
+   sec('loveLanguage','사랑을 확인하는 방식','좋아하는 마음보다 “무엇을 사랑의 증거로 받아들이는지”가 다를 수 있어',`<p><b>${E(d.aName)}님</b> · ${E(d.AD?.rel?.pull||d.A.attachmentText||'행동과 신뢰가 맞을 때 마음이 열리기 쉬워.')}</p><p><b>${E(d.bName)}님</b> · ${E(d.BD?.rel?.pull||d.B.attachmentText||'행동과 신뢰가 맞을 때 마음이 열리기 쉬워.')}</p><p>한쪽은 자주 연락하는 걸 사랑이라고 느끼고, 다른 쪽은 약속을 지키거나 실제 일을 챙겨주는 걸 더 큰 애정으로 느낄 수 있어. 그래서 표현량보다 <b>상대가 이해할 수 있는 언어로 표현되는지</b>가 더 중요해.</p>`,[
+    callout('서로에게 물어볼 것','“내가 뭘 해줄 때 제일 사랑받는 느낌이 들어?”를 각자 세 가지씩 말해봐.','tip')
+   ],evidence(d,'애정 확인 방식')),
+   pick('distance'),pick('conflict'),pick('novelty'),pick('intimacy'),
+   sec('social','친구·외출·연애 밖의 삶','연애가 두 사람의 모든 욕구를 책임질 필요는 없어',`<p><b>${E(d.aName)}님</b> · ${E(d.A.people||'신뢰와 거리의 균형을 중요하게 볼 수 있어.')}</p><p><b>${E(d.bName)}님</b> · ${E(d.B.people||'신뢰와 거리의 균형을 중요하게 볼 수 있어.')}</p><p>한 사람은 친구·모임·외출에서 활력을 얻고 다른 사람은 집이나 소수 관계에서 회복한다면 “왜 같이 안 가줘?”와 “왜 자꾸 나가야 해?”가 반복될 수 있어. 각자 인간관계를 인정하면 연애가 숨 쉴 공간도 생겨.</p>`,[
+    callout('경계 합의','함께하는 약속 / 각자 약속 / 꼭 같이 가야 하는 행사를 구분해봐.','tip')
+   ],evidence(d,'사회관계·독립성')),
+   pick('timing'),pick('final')].filter(Boolean);
+ }
+ function marriageSections(d){
+  const all=summarySections(d),pick=k=>all.find(x=>x.key===k);
+  return [
+   sec('household','생활 운영','같이 살면 “누가 더 사랑하나”보다 누가 계속 기억하고 관리하나가 중요해',`<p>${E(d.aName)}님은 ${E(d.AD?.loop?.decide||'자기 기준을 납득한 뒤 결정하는 편')}, ${E(d.bName)}님은 ${E(d.BD?.loop?.decide||'자기 기준을 납득한 뒤 결정하는 편')}이야.</p><p>청소·식사·수면·외출·예약·병원·반려동물·생활용품처럼 사소한 일이 매일 반복되면, 실제 노동보다 <b>보이지 않는 기억·계획·지시 노동</b>이 한 사람에게 몰릴 수 있어. 궁합에서 이 부분이 맞아야 생활 만족도가 오래 가.</p>`,[
+    callout('동거 전 테스트','2주 정도 실제로 공동비용·집안일·일정 관리를 나눠보고 누가 무엇을 자동으로 떠안는지 확인해봐.','tip')
+   ],evidence(d,'결정 방식·생활 역할')),
+   pick('reality'),
+   sec('mentalLoad','집안일·돌봄·정서노동','잘하는 사람이 계속 하는 구조가 가장 위험해',`<p>${E(d.aName)}님의 강점은 ${E(d.A.gift||'자기 방식으로 결과를 만드는 힘')}, ${E(d.bName)}님의 강점은 ${E(d.B.gift||'자기 방식으로 결과를 만드는 힘')}이야. 잘하는 사람이 더 맡는 건 효율적일 수 있지만, 시간이 지나면 “당연히 네가 하는 일”로 굳기 쉬워.</p><p>집안일뿐 아니라 일정 기억, 가족 연락, 반려동물 병원, 선물 준비, 갈등 중재처럼 <b>눈에 안 보이는 책임</b>도 같이 나눠야 해. 결정권 없이 책임만 많은 사람이 생기면 사랑보다 관리 업무가 커져.</p>`,[
+    callout('균형 확인법','해야 할 일을 적고 “실행자 / 결정자 / 비용 부담자 / 기억하는 사람”을 나눠봐. 네 역할이 한 칸에 몰리는지 금방 보여.','tip')
+   ],evidence(d,'책임·돌봄 역할')),
+   pick('longterm'),
+   sec('children','자녀·반려동물·장기 돌봄','돌봄 궁합은 사랑보다 지속 가능한 역할 분담을 봐',childBody(d),[
+    callout('미리 합의할 것','밤·병원·교육·훈육·비용·휴가처럼 반복되는 돌봄을 누가 언제 맡을지 기준을 만들어.','tip')
+   ],evidence(d,'장기 돌봄 기질')),
+   sec('space','개인시간·회복','같이 살아도 회복 방식까지 같을 필요는 없어',`<p><b>${E(d.aName)}님</b> · ${E(d.AD?.loop?.recover||'자기 리듬을 되찾을 시간이 필요할 수 있어.')}</p><p><b>${E(d.bName)}님</b> · ${E(d.BD?.loop?.recover||'자기 리듬을 되찾을 시간이 필요할 수 있어.')}</p><p>한 사람은 대화해야 풀리고 다른 사람은 혼자 쉬어야 풀리면 같은 집에서도 쉬는 방식이 부딪힐 수 있어. 개인시간을 관계 거절로 받아들이지 않고 <b>회복 자원</b>으로 인정하는 규칙이 필요해.</p>`,[
+    callout('생활 규칙','“혼자 쉬는 시간은 몇 시간까지 자연스러운가 / 그 뒤 언제 다시 연결할까”를 정해두면 훨씬 편해.','tip')
+   ],evidence(d,'회복 방식·독립성')),
+   pick('timing'),pick('final')].filter(Boolean);
+ }
+ function partnerSections(d){
+  return [
+   sec('partnerCore',`${d.bName}님 자체를 먼저 보기`,'궁합보다 먼저 상대 한 사람의 기질을 깊게 읽어야 해',partnerBody(d,'b'),[
+    callout('상대를 볼 때 주의','좋을 때 모습만 진짜 성격인 것도, 힘들 때 날카로운 모습만 진짜 성격인 것도 아니야. 두 상태의 반복을 같이 봐.','tip')
+   ],evidence(d,`${d.bName} 단독 명식`)),
+   sec('partnerStress','상대가 지칠 때','평소와 달라지는 순간을 알면 “갑자기 변했다”는 오해가 줄어',`<p>${E(d.bName)}님은 압박이 커지면 ${E(d.BD?.loop?.stress||d.B.anger||'자기 방식이 강해질 수 있어.')}</p><p>${E(d.B.shadow||'장점이 과해지면 피로 반응으로 바뀔 수 있어.')} 그리고 관계가 흔들릴 때는 ${E(d.B.attachmentText||'가까움과 개인시간의 균형을 다시 확인하려 할 수 있어.')}</p><p>중요한 건 그 반응을 허용하라는 뜻이 아니라, <b>어떤 상태에서 그 반응이 나오는지</b>를 알아야 경계를 세우든 회복을 돕든 정확하게 할 수 있다는 거야.</p>`,[
+    callout('관찰 포인트','수면 부족·일 압박·돈 문제·가족 갈등 중 어떤 상황에서 말투와 거리감이 달라지는지 실제 경험과 비교해봐.','tip')
+   ],evidence(d,`${d.bName} 스트레스·관계 반응`)),
+   sec('partnerLove','상대의 연애 방식','상대가 사랑을 느끼고 표현하는 언어를 따로 보면 관계가 훨씬 잘 보여',`<p>${E(d.bName)}님은 ${E(d.BD?.rel?.pull||'말과 행동이 맞는 사람에게 마음이 열리기 쉬워.')} ${E(d.BD?.rel?.comfort||'생활과 선택권을 존중받는 관계에서 편안함이 오래 갈 수 있어.')}</p><p>연락은 ${E(d.B.attachment||'혼합형')}, 권태는 ${E(d.B.boredom||'상황형')}, 친밀감은 ${E(d.B.intimacy||'관계형')} 쪽을 참고할 수 있어. 서운함이 생기면 ${E(d.BD?.rel?.conflict||'기대와 실제 행동이 어긋난 부분을 오래 생각할 수 있어.')}</p>`,[
+    callout('상대에게 통하는 방식','상대가 사랑받는다고 느끼는 행동과 부담스럽다고 느끼는 행동을 추측하지 말고 직접 두세 개씩 확인해봐.','tip')
+   ],evidence(d,`${d.bName} 연애 기질`)),
+   sec('partnerReality','상대의 일·돈·생활','연애할 때 보이지 않던 현실 운영 방식이 장기관계에서 크게 보일 수 있어',moneyBody({...d,aName:d.bName,bName:d.aName,A:d.B,B:d.A,AD:d.BD,BD:d.AD}),[
+    callout('관계에서 확인할 것','상대가 바쁠 때 관계 시간을 어떻게 줄이는지, 돈을 먼저 계획하는지 즉흥적으로 쓰는지, 생활 책임을 스스로 찾아서 하는지 실제 습관을 봐.','tip')
+   ],evidence(d,`${d.bName} 현실 운영`)),
+   sec('howSeesMe','상대가 나를 느끼는 방식',`${d.bName}님 눈에 나는 실제 나와 조금 다르게 보일 수 있어`,`<p>${E(d.bName)}님이 ${E(d.aName)}님에게 느끼기 쉬운 역할감은 <b>${E(d.cross?.bSeesA||'실제 행동을 함께 봐야 하는 관계')}</b> 쪽이야.</p><p>그래서 내가 평범하게 한 행동도 상대는 보호·책임·자유·경쟁 같은 자기만의 관계 언어로 받아들일 수 있어. 반대로 내가 기대한 반응이 없다고 해서 상대가 내 의도를 무시했다고 바로 결론낼 필요도 없어.</p>`,[
+    callout('오해를 풀 때','“내가 그렇게 한 의도는 이거였어. 너는 어떻게 받아들였어?”라고 의도와 체감을 따로 물어봐.','tip')
+   ],evidence(d,`교차 십신 ${d.cross?.bSeesA||'-'}`)),
+   sec('talkToPartner','이 사람과 대화할 때','상대의 방어 반응을 키우지 않으면서 내 요구를 분명히 말하는 게 핵심이야',`<p>${E(d.bName)}님이 갈등에서 ${E(d.B.anger||d.BD?.loop?.stress||'압박이 커지면 반응이 달라질 수 있어.')}</p><p>그래서 성격 평가보다 <b>사실 → 내 감정 → 원하는 행동</b> 순서가 좋아. “넌 원래 이래” 대신 “어제 연락이 없었을 때 나는 불안했고, 다음엔 늦어질 것 같으면 한 번 알려줬으면 해”처럼 행동 단위로 말하는 방식이 더 잘 먹혀.</p>`,[
+    callout('피해야 할 말','원래 / 항상 / 절대 / 사주에도 그렇게 나왔다 같은 말로 상대를 고정하지 마.','watch')
+   ],evidence(d,`${d.bName} 갈등·회복`)),
+   sec('partnerTiming','상대의 현재 흐름','요즘 상대가 예전과 달라 보이면 마음만 보지 말고 삶의 배경도 같이 봐',`<p>${E(d.bName)}님은 현재 ${d.bl?`${E(d.bl.ko)} 대운(${E(d.bl.god)})`:'대운 흐름'}을 지나고 있어. 대운은 사건을 맞히는 표가 아니라 이 시기에 반복해서 커지는 역할과 부담을 보는 배경이야.</p><p>일·돈·책임·가족 문제로 에너지가 많이 빠지는 시기엔 연애에서 표현량이 줄 수 있고, 반대로 관계 욕구가 커지는 시기엔 평소보다 확인이나 가까움을 더 원할 수 있어. 변화가 보일 때는 먼저 지금 무엇에 에너지를 쓰는지 확인해봐.</p>${yearFlow(d)}`,[
+    callout('현재를 읽는 법','“예전엔 안 그랬는데”보다 최근 일·돈·가족·수면·체력에서 달라진 걸 같이 봐.','tip')
+   ],evidence(d,`${d.bName} 대운·세운`))
+  ];
+ }
+ function sections(a,b,tab){const d=pairData(a,b);if(tab==='love')return {d,list:loveSections(d)};if(tab==='marriage')return {d,list:marriageSections(d)};if(tab==='partner')return {d,list:partnerSections(d)};return {d,list:summarySections(d)};}
+ function card(s,i){
+  const blocks=(s.blocks||[]).map(x=>`<div class="r23Callout ${E(x.tone||'')}"><b>${E(x.label||'포인트')}</b><p>${E(x.text||'')}</p></div>`).join('');
+  return `<article class="easyLongCard card compatLong r23CompatCard" data-r23-key="${E(s.key||'')}"><div class="easyKicker">${String(i+1).padStart(2,'0')} · ${E(s.kicker||'궁합')}</div><h3>${E(s.title||'두 사람의 관계 패턴')}</h3><div class="r23Body">${s.body||''}</div>${blocks}${s.ev?`<details class="r23Evidence"><summary>명리 근거 보기</summary><div>${E(s.ev)}</div></details>`:''}</article>`;
+ }
+ function intro(d,tab){
+  const label=tab==='love'?'연애 궁합':tab==='marriage'?'결혼·동거 궁합':tab==='partner'?'상대방 분석':'궁합 요약';
+  const title=tab==='love'?'끌림보다 오래 가는 방식까지, 연애의 전체 흐름을 볼게.':tab==='marriage'?'같이 살았을 때 사랑이 생활로 어떻게 바뀌는지 볼게.':tab==='partner'?`${d.bName}님 자체를 한 사람의 사주처럼 읽고, 나와 만났을 때 달라지는 반응까지 볼게.`:`${d.aName}님과 ${d.bName}님 사이에서 실제로 생기는 관계 패턴을 중심으로 볼게.`;
+  return `<div class="easyIntro card r23CompatIntro"><div class="easyKicker">${E(label)} · R23 심층상담</div><h2>${E(title)}</h2><p>각자 성격을 두 번 반복하지 않고, <b>두 사람이 만나서 생기는 패턴</b>과 그 패턴이 생활에서 어떻게 나타나는지를 중심으로 풀었어.</p><div class="r23PairGrid"><div class="r23PairCell"><b>${E(d.aName)}</b><span>${E(d.A.core||'개인 명식의 성향')}</span></div><div class="r23PairCell"><b>${E(d.bName)}</b><span>${E(d.B.core||'개인 명식의 성향')}</span></div></div><div class="r23TagRow">${ptag(d.q?.archetype||'관계 조율형')}${ptag(`결속 ${Number(d.q?.sig?.combine||0)}`)}${ptag(`마찰 ${Number(d.q?.sig?.tension||0)}`)}${ptag(`일지 ${d.q?.dayRel||'직접 관계 없음'}`)}</div></div>`;
+ }
+ function render(){
+  if(!matchAnalysis)return;
+  document.querySelectorAll('#matchTabs button').forEach(b=>b.classList.toggle('on',b.dataset.matchTab===matchTab));
+  const a=matchAnalysis.a||matchAnalysis.left||matchAnalysis.chartA||matchMeta?.a,b=matchAnalysis.b||matchAnalysis.right||matchAnalysis.chartB||matchMeta?.b;if(!a||!b)return;
+  if(!hasPremiumCompat()){
+   const free=matchMeta?`<div class="easyLongCard card"><div class="easyKicker">무료 궁합 요약</div><h3>둘 사이의 핵심만 먼저 볼게.</h3><div class="easyPoint good"><b>잘 맞는 부분</b><p>${E(matchMeta.good||'')}</p></div><div class="easyPoint watch"><b>조율이 필요한 부분</b><p>${E(matchMeta.watch||'')}</p></div><div class="easyPoint tip"><b>프리미엄에서 이어서 보는 것</b><p>끌림·연락·갈등 회로·권태·친밀감·돈·동거·가족·돌봄·현재 대운까지 두 사람 사이의 관계 패턴으로 다시 계산해.</p></div></div>`:'';
+   $('matchView').innerHTML=guiinR19PolishHTML(guiinVisualHero('match',matchMeta?.a?.input?.name)+matchBaseHTML+free+compatPremiumPreviewHTML()+tailQuestionsHTML('궁합'));return;
+  }
+  const pack=sections(a,b,matchTab),d=pack.d,list=pack.list||[];
+  const html=guiinVisualHero('match',matchMeta?.a?.input?.name)+matchBaseHTML+`<span data-r21="compat" style="display:none" aria-hidden="true"></span>`+intro(d,matchTab)+list.map(card).join('')+`<div class="paidDisclaimer">궁합은 천생연분·악연, 외도 여부, 결혼 성패를 판정하는 표가 아니야. 두 사람의 실제 선택과 생활 조건에 따라 같은 명식도 관계 체감은 달라질 수 있어.</div>`+tailQuestionsHTML('궁합');
+  $('matchView').innerHTML=typeof guiinR19PolishHTML==='function'?guiinR19PolishHTML(html):html;
+  setTimeout(()=>{try{guiinTextSimilarityReport('matchView');guiinSemanticSimilarityReport('matchView');}catch(_e){}},0);
+ }
+ globalThis.guiinCompatR23Sections=(a,b,tab='summary')=>sections(a,b,tab).list;
+ globalThis.guiinCompatR23PairData=pairData;
+ globalThis.renderCompatCards=render;
+ try{renderCompatCards=render;}catch(_e){}
+})();
+</script>
 </body>
 </html>
