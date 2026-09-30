@@ -1,5 +1,5 @@
 <!doctype html>
-<!-- GUIIN R23 · COMPLETE COMPATIBILITY ENGINE · 2026-09-30 -->
+<!-- GUIIN R24 · COMPLETE COMPATIBILITY ENGINE · 2026-09-30 -->
 <!-- GUIIN R17 INTEGRATED RESTORE · feature-complete demo + R17 personalization · 2026-09-28 -->
 <!-- GUIIN R17 · QA-personalized longform saju + compatibility + full calculated-star interpretation · 2026-09-28 -->
 
@@ -6964,5 +6964,137 @@ document.addEventListener('visibilitychange',()=>{
  try{renderCompatCards=render;}catch(_e){}
 })();
 </script>
+
+
+<!-- GUIIN R24 · relationship dynamics refinement · 2026-09-30 -->
+<style>
+.r24TypeHero{padding:17px;margin:0 0 12px;border-radius:18px;background:linear-gradient(180deg,rgba(255,250,241,.96),rgba(255,255,255,.92));border:1px solid rgba(118,97,60,.12)}
+.r24TypeHero .mini{font-size:11px;opacity:.68;margin-bottom:5px}.r24TypeHero h3{margin:0 0 7px;font-size:18px;line-height:1.4}.r24TypeHero p{margin:0;line-height:1.68;font-size:13px}.r24TypeTags{display:flex;flex-wrap:wrap;gap:6px;margin-top:10px}.r24TypeTags span{font-size:11px;padding:5px 8px;border-radius:999px;background:rgba(0,0,0,.045)}
+.r24Scenario{display:grid;gap:7px;margin:10px 0}.r24ScenarioStep{padding:11px 12px;border-radius:13px;background:rgba(255,255,255,.68);border:1px solid rgba(0,0,0,.045);font-size:13px;line-height:1.58}.r24ScenarioStep b{display:block;font-size:11px;opacity:.72;margin-bottom:3px}
+.r24Compare{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin:10px 0}.r24Compare>div{padding:12px;border-radius:14px;background:rgba(250,249,246,.82);border:1px solid rgba(0,0,0,.05)}.r24Compare b{display:block;font-size:12px;margin-bottom:5px}.r24Compare p{margin:0;font-size:13px;line-height:1.58}
+.r24Rule{padding:12px 13px;margin-top:9px;border-radius:14px;background:rgba(244,248,245,.92);border:1px solid rgba(70,110,78,.10)}.r24Rule b{display:block;font-size:12px;margin-bottom:5px}.r24Rule p{margin:0;font-size:13px;line-height:1.62}
+@media(max-width:430px){.r24Compare{grid-template-columns:1fr}}
+</style>
+<script>
+/* GUIIN R24 — 반복 설명을 줄이고 두 사람의 실제 관계 장면을 더 구체적으로 만든다. */
+(function(){
+ const E=typeof compatEsc==='function'?compatEsc:(x=>String(x??'').replace(/[&<>\"]/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','\"':'&quot;'}[m])));
+ const safe=(fn,f)=>{try{return fn()}catch(_e){return f}};
+ const val=(x,f='')=>String(x||f||'').trim();
+ function data(a,b){
+  const base=safe(()=>globalThis.guiinCompatR23PairData(a,b),null);
+  if(base)return base;
+  return {};
+ }
+ function typeOf(d){
+  const c=Number(d.q?.sig?.combine||0),t=Number(d.q?.sig?.tension||0),same=!!d.q?.sameStem,opp=!!d.q?.oppositeTemp;
+  const aa=val(d.A?.attachment),bb=val(d.B?.attachment);
+  let name='차이를 조율하며 깊어지는 관계';
+  let line='처음의 끌림보다 생활 속 역할과 회복 규칙을 어떻게 만드는지가 오래 가는 힘을 결정해.';
+  if(c>=t+2 && same){name='닮아서 빨리 통하고, 역할 분담이 중요한 거울형';line='기본 감각이 비슷해서 친밀감은 빨리 커질 수 있지만 같은 약점까지 닮으면 서로가 서로를 더 답답해할 수 있어.';}
+  else if(c>=t+2 && opp){name='서로 없는 기능을 채워주는 보완형';line='표현 온도와 생활 방식이 달라 처음엔 강하게 끌리고, 오래 갈수록 차이를 역할로 나눌수록 장점이 살아나.';}
+  else if(t>=c+2){name='끌림은 있지만 회복 규칙이 핵심인 긴장형';line='감정 자체보다 반응 속도와 거리 조절 차이가 관계 만족도를 크게 좌우해서 싸운 뒤 다시 연결되는 방식이 중요해.';}
+  else if(/확인|불안/.test(aa) && /거리|회피|혼자/.test(bb)){name='확인과 거리두기가 맞물리는 추격-회피형';line='한쪽이 가까워지려 할수록 다른 쪽은 정리할 시간을 원할 수 있어. 사랑의 크기보다 타이밍 충돌을 다뤄야 해.';}
+  else if(/확인|불안/.test(bb) && /거리|회피|혼자/.test(aa)){name='거리두기와 확인 욕구가 번갈아 커지는 조율형';line='한쪽의 침묵이 다른 쪽의 확인 욕구를 키울 수 있어서 연락 규칙과 재접속 약속이 중요해.';}
+  return {name,line,c,t};
+ }
+ function typeHero(d){
+  const x=typeOf(d),day=d.q?.dayRel||'직접 관계 없음';
+  return `<div class="r24TypeHero"><div class="mini">이 관계를 한 줄로</div><h3>${E(x.name)}</h3><p>${E(x.line)}</p><div class="r24TypeTags"><span>결속 ${x.c}</span><span>마찰 ${x.t}</span><span>일지 ${E(day)}</span><span>${E(d.elA||'-')} ↔ ${E(d.elB||'-')}</span></div></div>`;
+ }
+ function pairCompare(d,aText,bText){return `<div class="r24Compare"><div><b>${E(d.aName)}님</b><p>${E(aText)}</p></div><div><b>${E(d.bName)}님</b><p>${E(bText)}</p></div></div>`;}
+ function scenario(d){
+  const as=val(d.AD?.loop?.stress,d.A?.anger||'서운함을 안에서 정리하다 한계가 오면 표현이 분명해질 수 있어.'),
+        bs=val(d.BD?.loop?.stress,d.B?.anger||'압박이 커지면 먼저 거리를 두거나 결론을 빠르게 낼 수 있어.'),
+        ar=val(d.AD?.rel?.repair,d.AD?.loop?.recover||'조금 정리한 뒤 사실과 감정을 나눠 말할 때 회복이 빨라져.'),
+        br=val(d.BD?.rel?.repair,d.BD?.loop?.recover||'혼자 정리할 시간을 가진 뒤 다시 연결하는 방식이 도움이 돼.');
+  return `<div class="r24Scenario"><div class="r24ScenarioStep"><b>1 · 시작</b>${E(d.aName)}님에게는 ${E(as)}</div><div class="r24ScenarioStep"><b>2 · 맞반응</b>${E(d.bName)}님에게는 ${E(bs)}</div><div class="r24ScenarioStep"><b>3 · 오해가 커지는 순간</b>${E(d.aName)}님은 상대의 거리감을 무관심으로, ${E(d.bName)}님은 상대의 확인을 압박으로 받아들이면 원래 문제보다 관계 자체가 더 크게 흔들릴 수 있어.</div><div class="r24ScenarioStep"><b>4 · 멈춰야 하는 지점</b>이별·돈·동거·가족 문제처럼 큰 결론을 한꺼번에 꺼내지 말고, 지금 싸움의 주제 하나만 남겨두는 게 좋아.</div><div class="r24ScenarioStep"><b>5 · 회복</b>${E(d.aName)}님은 ${E(ar)} ${E(d.bName)}님은 ${E(br)}</div></div>`;
+ }
+ function jealousy(d){
+  const aj=val(d.ta?.jealousyText,'좋아하는 관계일수록 우선순위와 반응 변화에 민감해질 수 있어.'),bj=val(d.tb?.jealousyText,'좋아하는 관계일수록 거리와 자유의 균형을 중요하게 느낄 수 있어.');
+  const ap=val(d.A?.people,'신뢰가 쌓인 관계를 오래 유지하는 편'),bp=val(d.B?.people,'자기 인간관계와 회복 공간도 필요한 편');
+  return pairCompare(d,`${aj} 사회생활은 ${ap}.`,`${bj} 사회생활은 ${bp}.`)+`<p>질투는 “누가 더 사랑하나”의 문제가 아니라 <b>연락이 줄었을 때, 친구 약속이 생겼을 때, 새로운 사람이 등장했을 때 무엇을 위협으로 느끼는지</b>에서 차이가 나. 둘이 외출 기준을 따로 합의하지 않으면 한쪽은 통제받는다고 느끼고 다른 쪽은 배제됐다고 느낄 수 있어.</p><div class="r24Rule"><b>둘이 정할 규칙</b><p>친구 약속은 통보가 아니라 공유하기 / 늦어질 때 한 번 알리기 / 꼭 같이 가야 하는 자리와 각자 가도 되는 자리를 구분하기 / 질투가 올라왔을 때 상대의 사람을 공격하지 말고 필요한 행동을 말하기.</p></div>`;
+ }
+ function apology(d){
+  const ar=val(d.AD?.rel?.repair,d.AD?.loop?.recover||'말로 정리하고 재발 방지 기준을 확인해야 풀리는 편'),
+        br=val(d.BD?.rel?.repair,d.BD?.loop?.recover||'시간을 두고 행동이 바뀌는 걸 봐야 풀리는 편');
+  return pairCompare(d,ar,br)+`<p>사과도 방식이 달라. 한 사람은 <b>설명과 인정</b>이 필요하고, 다른 사람은 <b>행동 변화와 반복되지 않는 것</b>을 더 중요하게 볼 수 있어. “미안하다고 했잖아”와 “근데 달라진 게 없잖아”가 반복되면 사과를 했는데도 회복이 안 되는 관계가 돼.</p><div class="r24Rule"><b>회복 문장</b><p>“무슨 일이 있었는지 / 내가 뭘 놓쳤는지 / 다음엔 어떻게 바꿀지” 세 문장을 한 세트로 말해. 그리고 상대가 바로 괜찮아져야 한다고 요구하지 않는 게 좋아.</p></div>`;
+ }
+ function moneyLife(d){
+  const am=d.AD?.money||{},bm=d.BD?.money||{};
+  const a=`버는 방식은 ${val(am.earn,d.A?.money||'반복 가능한 수입 구조를 중요하게 봐')}. 새는 지점은 ${val(am.leak,'관계·편의 비용을 점검할 필요가 있어')}.`;
+  const b=`버는 방식은 ${val(bm.earn,d.B?.money||'반복 가능한 수입 구조를 중요하게 봐')}. 새는 지점은 ${val(bm.leak,'관계·편의 비용을 점검할 필요가 있어')}.`;
+  return pairCompare(d,a,b)+`<p>재물궁합에서 중요한 건 같이 있으면 돈이 들어온다는 식의 예언이 아니야. <b>누가 먼저 결제하는지, 누가 정산하는지, 누가 미래 비용을 기억하는지, 한쪽의 소비를 다른 쪽이 대신 메우는 구조가 생기는지</b>가 훨씬 중요해.</p><div class="r24Rule"><b>생활비 규칙</b><p>공동비용 / 각자비용 / 선결제 후 정산 / 선물·가족·반려동물 비용을 따로 정해. “이번엔 내가 낼게”가 반복돼 기본값이 되는 순간 감정이 돈에 붙기 시작해.</p></div>`;
+ }
+ function lifestyle(d){
+  const ad=val(d.AD?.loop?.decide,'납득할 기준이 있어야 움직이는 편'),bd=val(d.BD?.loop?.decide,'상황을 보고 빠르게 방향을 바꾸는 편');
+  const rrA=val(d.AD?.loop?.recover,'혼자 정리하며 회복할 시간이 필요할 수 있어'),rrB=val(d.BD?.loop?.recover,'사람과 연결되거나 분위기를 바꾸며 회복할 수 있어');
+  return pairCompare(d,`결정은 ${ad}. 회복은 ${rrA}.`,`결정은 ${bd}. 회복은 ${rrB}.`)+`<p>생활 궁합은 사랑보다 <b>수면·청소·식사·외출·일정·반려동물·개인시간</b>처럼 매일 반복되는 작은 습관에서 체감돼. 둘 중 한 명이 늘 관리자 역할이 되면 잘 맞는 궁합도 쉽게 지쳐.</p><div class="r24Rule"><b>동거 전에 확인</b><p>누가 말하지 않아도 먼저 챙기는 일 / 누가 부탁해야 하는 일 / 누가 절대 하기 싫은 일을 각각 세 개씩 적어서 역할을 나눠봐.</p></div>`;
+ }
+ function future(d){
+  const rows=d.years||[];
+  if(!rows.length)return '<p>가까운 연도는 현재 대운과 각자 생활 상황을 함께 확인하는 방식으로 봐.</p>';
+  return `<div class="r24Scenario">${rows.slice(0,4).map((r,i)=>`<div class="r24ScenarioStep"><b>${E(r.year)} · ${i===0?'가까운 흐름':'다음 흐름'}</b>${E(d.aName)}님은 ${E(r.labelA||'자기 과제')}, ${E(d.bName)}님은 ${E(r.labelB||'자기 과제')}가 상대적으로 커질 수 있어. ${r.same?'두 사람의 우선순위가 비슷해 함께 계획을 맞추기 쉬운 편이야.':'서로 다른 과제가 앞에 놓이면 관계에 쓸 수 있는 시간과 에너지 차이가 커질 수 있어.'}</div>`).join('')}</div>`;
+ }
+ function evidence(d,extra=''){const c=Number(d.q?.sig?.combine||0),t=Number(d.q?.sig?.tension||0);return `${d.aName} ${d.A?.stem||''} 일간·월주 ${d.A?.mg||'-'}·${d.elA||'-'} / ${d.bName} ${d.B?.stem||''} 일간·월주 ${d.B?.mg||'-'}·${d.elB||'-'} / 결속 ${c}·마찰 ${t}·일지 ${d.q?.dayRel||'직접 관계 없음'}${extra?` / ${extra}`:''}`;}
+ function sec(key,kicker,title,body,ev=''){return {key,kicker,title,body,ev};}
+ function summary(d){return [
+  sec('type','관계 타입',typeOf(d).name,`<p>${E(typeOf(d).line)}</p><p>${E(d.pair?.fit||'서로 다른 기능이 보완으로 작용할 수 있어.')} 반대로 ${E(d.pair?.friction||'표현과 결정 속도가 다르면 피로가 생길 수 있어.')}</p>`,evidence(d,'관계 전체 구조')),
+  sec('conflict','갈등 시나리오','싸움은 문제 하나보다 반응의 순서 때문에 더 커질 수 있어',scenario(d),evidence(d,'갈등·회복')),
+  sec('jealousy','질투·친구·외출','자유와 안심의 기준을 따로 맞춰야 해',jealousy(d),evidence(d,'질투·사회관계')),
+  sec('money','돈·생활 책임','사랑보다 먼저 지치는 건 보이지 않는 책임일 수 있어',moneyLife(d),evidence(d,'재물·생활 역할')),
+  sec('apology','사과·회복 방식','미안하다는 말보다 “어떻게 회복되는 사람인가”가 중요해',apology(d),evidence(d,'회복 언어')),
+  sec('lifestyle','생활 리듬','같이 있을 때 편한가를 결정하는 건 작은 습관이야',lifestyle(d),evidence(d,'생활·결정·회복')),
+  sec('future','현재와 앞으로','마음의 크기보다 각자 삶의 과제가 관계 속도를 바꿀 수 있어',future(d),evidence(d,'대운·세운'))
+ ];}
+ function love(d){return [
+  sec('type','연애의 핵심 타입',typeOf(d).name,`<p>${E(typeOf(d).line)}</p>`,evidence(d,'연애 전체 구조')),
+  sec('jealousy','질투·독점욕·친구','좋아하는 마음이 커질수록 어디에서 불안해지는지가 달라',jealousy(d),evidence(d,'질투·사회관계')),
+  sec('conflict','연애 갈등의 진행','연락 한 번보다 싸운 뒤 다시 연결되는 방식이 더 중요해',scenario(d),evidence(d,'연애 갈등')),
+  sec('apology','사과와 화해','사과를 받아들이는 언어가 다르면 같은 싸움이 반복돼',apology(d),evidence(d,'화해 방식')),
+  sec('intimacy','친밀감·스킨십','속도와 표현 방식의 차이를 사랑의 크기로 오해하지 않는 게 중요해',typeof globalThis.guiinCompatR23Sections==='function'?(safe(()=>{const x=globalThis.guiinCompatR23Sections(d.a,d.b,'love').find(v=>v.key==='intimacy');return x?.body||''},'')):'',evidence(d,'친밀감')),
+  sec('future','연애의 현재 속도','지금 각자 무엇에 에너지를 쓰는지가 표현량을 바꿀 수 있어',future(d),evidence(d,'현재 대운·세운'))
+ ];}
+ function marriage(d){return [
+  sec('type','장기관계 타입',typeOf(d).name,`<p>${E(typeOf(d).line)}</p>`,evidence(d,'장기관계 구조')),
+  sec('money','공동재정','돈은 액수보다 책임과 결정권이 균형인지가 중요해',moneyLife(d),evidence(d,'공동재정')),
+  sec('lifestyle','동거 생활','사소한 습관이 쌓여 관계 만족도를 만든다',lifestyle(d),evidence(d,'동거·생활')),
+  sec('conflict','갈등과 사과','같이 살수록 싸움 자체보다 복구 속도가 중요해',scenario(d)+apology(d),evidence(d,'장기갈등·회복')),
+  sec('family','가족·돌봄·주변인','둘의 관계 밖에서 들어오는 책임을 어떻게 막고 나눌지 봐야 해',safe(()=>globalThis.guiinCompatR23Sections(d.a,d.b,'marriage').find(v=>v.key==='longterm')?.body,'')||'<p>가족·돌봄·주변인 문제는 미리 경계를 정하는 게 중요해.</p>',evidence(d,'가족·장기책임')),
+  sec('future','앞으로의 생활 속도','같은 방향이라도 타이밍이 다르면 한쪽만 서두르는 느낌이 날 수 있어',future(d),evidence(d,'대운·세운'))
+ ];}
+ function partner(d){
+  const old=safe(()=>globalThis.guiinCompatR23Sections(d.a,d.b,'partner'),[])||[];
+  return old.slice(0,4).concat([
+   sec('partnerConflict','이 사람과 싸울 때','상대의 방어 반응을 알면 요구를 더 정확하게 말할 수 있어',scenario(d),evidence(d,`${d.bName} 갈등 반응`)),
+   sec('partnerApology','이 사람이 화해하는 방식','사과를 강요하기보다 회복 언어를 맞추는 게 중요해',apology(d),evidence(d,`${d.bName} 회복 방식`))
+  ]);
+ }
+ function card(s,i){return `<article class="easyLongCard card compatLong r23CompatCard r24CompatCard" data-r24-key="${E(s.key||'')}"><div class="easyKicker">${String(i+1).padStart(2,'0')} · ${E(s.kicker||'궁합')}</div><h3>${E(s.title||'두 사람의 관계')}</h3><div class="r23Body">${s.body||''}</div>${s.ev?`<details class="r23Evidence"><summary>명리 근거 보기</summary><div>${E(s.ev)}</div></details>`:''}</article>`;}
+ function intro(d,tab){
+  const label=tab==='love'?'연애 궁합':tab==='marriage'?'결혼·동거 궁합':tab==='partner'?'상대방 분석':'궁합 요약';
+  const title=tab==='love'?'좋아하는 마음이 실제 관계에서 어떻게 움직이는지 볼게.':tab==='marriage'?'사랑이 생활이 됐을 때 어디서 편하고 어디서 지치는지 볼게.':tab==='partner'?`${d.bName}님을 한 사람으로 읽고, 나와 만났을 때 달라지는 반응까지 볼게.`:`${d.aName}님과 ${d.bName}님의 관계를 ‘둘 사이에서 생기는 패턴’으로 읽을게.`;
+  return `<div class="easyIntro card r23CompatIntro"><div class="easyKicker">${E(label)} · R24 심층상담</div><h2>${E(title)}</h2><p>같은 설명을 카드마다 반복하지 않고, 연락·질투·외출·돈·생활·사과·갈등 회복처럼 <b>실제 관계 장면</b>으로 나눠서 봐.</p></div>${typeHero(d)}`;
+ }
+ function render(){
+  if(!matchAnalysis)return;
+  document.querySelectorAll('#matchTabs button').forEach(b=>b.classList.toggle('on',b.dataset.matchTab===matchTab));
+  const a=matchAnalysis.a||matchAnalysis.left||matchAnalysis.chartA||matchMeta?.a,b=matchAnalysis.b||matchAnalysis.right||matchAnalysis.chartB||matchMeta?.b;if(!a||!b)return;
+  if(!hasPremiumCompat()){
+   const free=matchMeta?`<div class="easyLongCard card"><div class="easyKicker">무료 궁합 요약</div><h3>둘 사이의 핵심만 먼저 볼게.</h3><div class="easyPoint good"><b>잘 맞는 부분</b><p>${E(matchMeta.good||'')}</p></div><div class="easyPoint watch"><b>조율이 필요한 부분</b><p>${E(matchMeta.watch||'')}</p></div><div class="easyPoint tip"><b>프리미엄에서 이어서 보는 것</b><p>갈등 진행순서·질투·친구·외출·사과·돈·생활·동거·가족·현재와 앞으로까지 두 사람 사이의 실제 관계 장면으로 풀어.</p></div></div>`:'';
+   $('matchView').innerHTML=guiinR19PolishHTML(guiinVisualHero('match',matchMeta?.a?.input?.name)+matchBaseHTML+free+compatPremiumPreviewHTML()+tailQuestionsHTML('궁합'));return;
+  }
+  const d=data(a,b);d.a=a;d.b=b;
+  let list=matchTab==='love'?love(d):matchTab==='marriage'?marriage(d):matchTab==='partner'?partner(d):summary(d);
+  const html=guiinVisualHero('match',matchMeta?.a?.input?.name)+matchBaseHTML+intro(d,matchTab)+list.map(card).join('')+`<div class="paidDisclaimer">궁합은 천생연분·악연, 외도 여부, 결혼 성패를 판정하는 표가 아니야. 두 사람의 실제 선택과 생활 조건에 따라 같은 명식도 관계 체감은 달라질 수 있어.</div>`+tailQuestionsHTML('궁합');
+  $('matchView').innerHTML=typeof guiinR19PolishHTML==='function'?guiinR19PolishHTML(html):html;
+  setTimeout(()=>{try{guiinTextSimilarityReport('matchView');guiinSemanticSimilarityReport('matchView');}catch(_e){}},0);
+ }
+ globalThis.guiinCompatR24Type=typeOf;
+ globalThis.renderCompatCards=render;
+ try{renderCompatCards=render;}catch(_e){}
+})();
+</script>
+
 </body>
 </html>
