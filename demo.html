@@ -4888,7 +4888,7 @@ function renderToday(){
     <div class="r20QuickGrid">
       <div class="r20QuickItem"><b>기질</b><span>${r20Esc(vibe)}${topPct!=null?` · ${r20Esc(x.top)} ${topPct}%`:''}${lowPct!=null?` / ${r20Esc(x.low)} ${lowPct}%`:''}</span></div>
       <div class="r20QuickItem"><b>관계</b><span>${r20Esc(rel.attachmentLabel||'관계 반응 혼합형')} · ${r20Esc(rel.boredomLabel?`권태 ${rel.boredomLabel}`:'관계의 안정과 거리 조절을 함께 봐야 해.')}</span></div>
-      <div class="r20QuickItem"><b>일·돈</b><span>${r20Esc(mg.work||'강점을 결과로 바꾸는 역할')} · 돈은 ${r20Esc(mg.money||'수입과 지출의 기준을 나누는 구조')}가 핵심이야.</span></div>
+      <div class="r20QuickItem"><b>일·돈</b><span>${r20Esc(mg.work||'강점을 결과로 바꾸는 역할')} · 돈은 ${r20Esc(krJoin(mg.money||'수입과 지출의 기준을 나누는 구조','이/가'))} 핵심이야.</span></div>
       <div class="r20QuickItem"><b>현재 흐름</b><span>${r20Esc(current)}</span></div>
     </div>
    </section>`;
@@ -6447,6 +6447,311 @@ document.addEventListener('visibilitychange',()=>{
   }
 
   [1200,4500,9000].forEach(function(ms){setTimeout(rescue,ms);});
+})();
+</script>
+
+
+<style>
+/* GUIIN R21 — ACTION ROADMAP + LIVING COMPATIBILITY */
+.r21ActionBoard,.r21CompatBoard{margin:12px 0 14px;padding:16px;border:1px solid rgba(122,96,46,.13);background:linear-gradient(180deg,#fffdf8 0%,#fff 100%);border-radius:18px}
+.r21Head{display:flex;justify-content:space-between;gap:12px;align-items:flex-start;margin-bottom:12px}
+.r21Head .mini{font-size:11px;font-weight:800;letter-spacing:.02em;color:#8b713d;margin-bottom:5px}
+.r21Head h3{margin:0;font-size:18px;line-height:1.38;color:#26231d}
+.r21Head p{margin:6px 0 0;font-size:12px;line-height:1.65;color:#6c675e}
+.r21Grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:9px}
+.r21Cell{padding:12px;border-radius:14px;background:#fff;border:1px solid #eee9de;min-width:0}
+.r21Cell b{display:block;font-size:12px;color:#4e4434;margin-bottom:5px}
+.r21Cell strong{display:block;font-size:15px;line-height:1.35;color:#211f1a;margin-bottom:5px}
+.r21Cell span{display:block;font-size:12px;line-height:1.55;color:#6f695f}
+.r21Cell em{display:inline-block;margin-top:7px;padding:4px 7px;border-radius:999px;background:#f5f1e7;color:#6e5830;font-size:10px;font-style:normal;font-weight:800}
+.r21Cell.watch{background:#fffaf7;border-color:#f0dfd4}.r21Cell.watch em{background:#f8e8df;color:#87543a}
+.r21Why{margin-top:10px;border-top:1px dashed #e5dfd3;padding-top:8px}
+.r21Why summary{cursor:pointer;font-size:11px;font-weight:800;color:#7b6948;list-style:none}
+.r21Why summary::-webkit-details-marker{display:none}.r21Why summary:after{content:' +';font-weight:900}.r21Why[open] summary:after{content:' −'}
+.r21Why p{margin:7px 0 0;font-size:11px;line-height:1.65;color:#766f65}
+.r21Accuracy{margin-top:10px;padding:9px 11px;border-radius:12px;background:#f7f7f4;font-size:11px;line-height:1.55;color:#6c6a64}
+.r21CompatRules{display:grid;gap:8px;margin-top:11px}
+.r21Rule{display:grid;grid-template-columns:72px 1fr;gap:9px;align-items:start;padding:10px 0;border-top:1px solid #eee9de}
+.r21Rule:first-child{border-top:0}.r21Rule b{font-size:12px;color:#5b4a2c}.r21Rule span{font-size:12px;line-height:1.62;color:#554f47}
+.r21Rule .ruleDo{display:block;margin-top:4px;font-weight:700;color:#26231d}
+@media(max-width:480px){.r21ActionBoard,.r21CompatBoard{padding:14px 12px}.r21Grid{grid-template-columns:1fr 1fr;gap:7px}.r21Cell{padding:10px}.r21Cell strong{font-size:14px}.r21Rule{grid-template-columns:62px 1fr}.r21Head h3{font-size:17px}}
+@media(max-width:350px){.r21Grid{grid-template-columns:1fr}}
+</style>
+<script>
+/* ========================================================================
+   GUIIN R21 — ACTION ROADMAP + LIVING COMPATIBILITY — 2026-09-30
+   - 올해 남은 월운을 돈/일/관계/주의 행동 보드로 압축
+   - 출생시간 유무에 따라 해석 범위를 명시
+   - 궁합을 연락/돈/시간/갈등회복의 생활 규칙으로 번역
+   - 기존 상세 풀이/점수/결제/공유 기능은 건드리지 않음
+   ======================================================================== */
+(function(){
+ if(globalThis.__GUIIN_R21_ACTION__)return;
+ globalThis.__GUIIN_R21_ACTION__=true;
+ const esc21=(s)=>typeof esc==='function'?esc(String(s??'')):String(s??'').replace(/[&<>"']/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]));
+ const txt21=(s)=>String(s??'').replace(/<[^>]*>/g,' ').replace(/\s+/g,' ').trim();
+ const firstRow=(obj,key,alt)=>{const x=obj?.[key];if(Array.isArray(x)&&x.length)return x[0];const y=alt?obj?.[alt]:null;return Array.isArray(y)&&y.length?y[0]:null;};
+ const godAction=(god,area)=>{
+  const g=String(god||'');
+  const map={
+   money:{정재:'고정비·저축 비율을 먼저 정해.',편재:'기회보다 현금흐름과 손실 한도를 먼저 봐.',비견:'내 몫과 공동지출을 분리해.',겁재:'대신 내주는 돈·충동지출을 먼저 막아.',식신:'반복 수입이 되는 기술·상품을 하나 남겨.',상관:'아이디어를 돈이 되는 결과물 하나로 좁혀.',정관:'계약·급여·정산 조건을 문서로 확인해.',편관:'급한 지출보다 우선순위를 다시 세워.',정인:'배움에 쓴 돈이 실제 수입과 연결되는지 봐.',편인:'정보만 모으지 말고 작은 유료 테스트를 해.'},
+   career:{정재:'반복 가능한 업무 구조와 일정표를 만들어.',편재:'새 제안은 한 번에 하나씩 시험해.',비견:'내 판단권이 필요한 일을 분명히 해.',겁재:'경쟁보다 역할·보상 기준을 먼저 확인해.',식신:'완성된 결과물 하나를 남겨.',상관:'불편한 업무 방식을 개선안으로 바꿔 제안해.',정관:'책임 범위와 평가 기준을 문서로 잡아.',편관:'급한 일 세 개 이하로 우선순위를 줄여.',정인:'배운 것을 실제 업무에 한 번 적용해.',편인:'깊게 파는 전문 분야를 하나 정해.'},
+   relationship:{정재:'말보다 꾸준한 행동이 있는지 확인해.',편재:'새로운 만남보다 관계의 실제 지속성을 봐.',비견:'서로의 개인시간 기준을 먼저 맞춰.',겁재:'질투보다 돈·시간·우선순위의 경계를 말해.',식신:'편한 일상과 함께하는 시간을 만들어.',상관:'서운한 걸 쌓지 말고 짧게 바로 말해.',정관:'약속과 책임을 서로 같은 뜻으로 쓰는지 확인해.',편관:'감정이 올라오면 결론보다 시간을 먼저 정해.',정인:'돌봄이 한쪽으로 쏠리지 않는지 봐.',편인:'혼자 생각할 시간과 다시 대화할 시간을 같이 정해.'},
+   caution:{정재:'계약·정산 숫자를 한 번 더 확인해.',편재:'좋아 보이는 제안을 바로 확정하지 마.',비견:'내가 다 맞다고 밀어붙이지 않는 게 좋아.',겁재:'사람 때문에 돈·시간 경계가 흔들리지 않게 해.',식신:'편해서 미루던 일을 한꺼번에 몰지 마.',상관:'말이 세지는 순간 메시지·계약 문구를 다시 읽어.',정관:'책임을 과하게 떠안는 약속은 줄여.',편관:'피곤할 때 큰 결론을 내리지 마.',정인:'준비만 하다가 시기를 놓치지 않게 해.',편인:'혼자 추측해서 결론내리지 말고 확인해.'}
+  };
+  return map[area]?.[g]||({money:'돈의 출입을 기록하고 큰 결정은 숫자로 확인해.',career:'지금 끝낼 일 하나를 먼저 정해.',relationship:'감정보다 반복되는 행동을 기준으로 봐.',caution:'중요한 결정은 한 번 더 확인하고 여유를 둬.'}[area]);
+ };
+ function monthLabel(row){return row?.month?`${row.month}월${row.god?` · ${row.god}`:''}`:'뚜렷한 한 달보다 전체 흐름 분산';}
+ function basis(row){
+  if(!row)return '현재 대운과 남은 월운을 함께 비교했을 때 특정 한 달이 과하게 두드러지지 않아.';
+  const rel=Array.isArray(row.relations)&&row.relations.length?` · 관계 신호 ${row.relations.join('·')}`:'';
+  const phrase=`${row.god?`월운 십성 ${row.god}`:'월운'}${rel}`; return `${krJoin(phrase,'을/를')} 현재 대운·원국과 겹쳐 상대 비교한 구간이야.`;
+ }
+ function r21SajuBoard(c){
+  try{
+   if(!c||!globalThis.GuiinFortuneV2||typeof GuiinFortuneV2.compactTiming!=='function')return '';
+   const y=new Date().getFullYear(),t=GuiinFortuneV2.compactTiming(c,y),m=t?.remaining_months||t?.months||{};
+   const rows=[
+    ['돈',firstRow(m,'money'), 'money',false],
+    ['일·성과',firstRow(m,'career'), 'career',false],
+    ['관계',firstRow(m,'relationship'), 'relationship',false],
+    ['주의',firstRow(m,'caution','speech'), 'caution',true]
+   ];
+   const cells=rows.map(([label,row,area,watch])=>`<div class="r21Cell ${watch?'watch':''}"><b>${label}</b><strong>${esc21(monthLabel(row))}</strong><span>${esc21(godAction(row?.god,area))}</span><em>${watch?'한 번 더 확인':'활용 포인트'}</em><details class="r21Why"><summary>왜 이 시기야?</summary><p>${esc21(basis(row))}</p></details></div>`).join('');
+   const hourUnknown=!!c?.input?.hourUnknown;
+   const accuracy=hourUnknown?'출생시간을 모르는 상태라 시주가 필요한 세부 신살·시기 해석은 제외하거나 보수적으로 읽고 있어. 일주·월주·연주와 대운·세운·월운 중심으로 보는 결과야.':'출생시간이 입력되어 연·월·일·시 네 기둥을 모두 포함해 계산한 결과야. 그래도 월운은 사건을 확정하는 날짜가 아니라 상대적으로 움직임이 커지는 구간으로 봐.';
+   return `<section class="r21ActionBoard" data-r21="saju"><div class="r21Head"><div><div class="mini">올해 남은 흐름 · 행동판</div><h3>${y}년, 어디에 힘을 쓰고 어디서 한 번 더 확인할지 먼저 볼게.</h3><p>좋은 달/나쁜 달로 자르지 않고 분야마다 눈에 띄는 구간과 실제 행동을 나눴어.</p></div></div><div class="r21Grid">${cells}</div><div class="r21Accuracy">${esc21(accuracy)}</div></section>`;
+  }catch(_e){return '';}
+ }
+ function profileSafe(c){try{return guiinRelationshipTraitProfile(c)||{};}catch(_e){return {};}}
+ function monthSafe(c){try{return guiinMonthGodProfile(c)||{};}catch(_e){return {};}}
+ function r21CompatBoard(a,b){
+  try{
+   if(!a||!b)return '';
+   const m=compatNarrativeMeta(a,b),pa=profileSafe(a),pb=profileSafe(b),ma=monthSafe(a),mb=monthSafe(b);
+   const an=m?.aName||a?.input?.name||'나',bn=m?.bName||b?.input?.name||'상대방';
+   const contact=`${an} ${pa.attachmentLabel||'관계 반응 혼합형'} / ${bn} ${pb.attachmentLabel||'관계 반응 혼합형'}.`;
+   const moneyA=ma.money||'돈을 쓰는 기준을 따로 정하는 것',moneyB=mb.money||'돈을 쓰는 기준을 따로 정하는 것';
+   const boredA=pa.boredomLabel||'변화 필요 시점이 일정하지 않은 편',boredB=pb.boredomLabel||'변화 필요 시점이 일정하지 않은 편';
+   const friction=txt21(m?.pair?.friction||'표현 속도와 결정 방식이 다를 때 갈등이 커질 수 있어.');
+   const rules=[
+    ['연락',`${esc21(contact)}<span class="ruleDo">→ 답장이 늦을 때와 혼자 있고 싶을 때 원하는 대응을 미리 한 문장씩 정해.</span>`],
+    ['돈',`${esc21(an)}: ${esc21(moneyA)} / ${esc21(bn)}: ${esc21(moneyB)}<span class="ruleDo">→ 데이트·생활비·선결제·선물은 “누가 얼마까지”를 감정과 분리해서 정해.</span>`],
+    ['시간',`${esc21(an)}: ${esc21(boredA)} / ${esc21(bn)}: ${esc21(boredB)}<span class="ruleDo">→ 함께 보내는 시간과 각자 보내는 시간을 둘 다 약속으로 취급해.</span>`],
+    ['회복',`${esc21(friction)}<span class="ruleDo">→ 싸움이 커지면 사라지지 말고 “몇 시에 다시 말할지”까지 정한 뒤 잠깐 멈춰.</span>`]
+   ];
+   const hourNote=(a?.input?.hourUnknown||b?.input?.hourUnknown)?'둘 중 한 명이라도 출생시간을 모르면 시주 관련 궁합 신호는 단정하지 않고, 확인 가능한 원국·대운 중심으로 읽어.':'두 사람 모두 출생시간이 입력되어 시주까지 포함해 비교하고 있어.';
+   return `<section class="r21CompatBoard" data-r21="compat"><div class="r21Head"><div><div class="mini">생활 궁합 · 바로 써먹는 규칙</div><h3>궁합 점수보다 실제로 오래 영향을 주는 네 가지를 먼저 합의해봐.</h3><p>연락·돈·시간·갈등 회복은 명식의 차이가 생활에서 가장 쉽게 드러나는 영역이야.</p></div></div><div class="r21CompatRules">${rules.map(([k,v])=>`<div class="r21Rule"><b>${k}</b><span>${v}</span></div>`).join('')}</div><div class="r21Accuracy">${esc21(hourNote)}</div></section>`;
+  }catch(_e){return '';}
+ }
+ function enhanceSaju(){
+  const root=document.getElementById('resultView');if(!root||root.querySelector('[data-r21="saju"]'))return;
+  if(typeof hasPremiumLifetime==='function'&&!hasPremiumLifetime())return;
+  let c=null;try{c=chart;}catch(_e){}
+  if(!c)return;
+  const html=r21SajuBoard(c);if(!html)return;
+  const quick=root.querySelector('[data-r20-quick="saju"]');
+  if(quick)quick.insertAdjacentHTML('afterend',html);else root.insertAdjacentHTML('afterbegin',html);
+ }
+ function enhanceCompat(){
+  const root=document.getElementById('matchView');if(!root||root.querySelector('[data-r21="compat"]'))return;
+  if(typeof hasPremiumCompat==='function'&&!hasPremiumCompat())return;
+  let a=null,b=null;
+  try{a=matchAnalysis?.a||matchAnalysis?.left||matchAnalysis?.chartA||matchMeta?.a;b=matchAnalysis?.b||matchAnalysis?.right||matchAnalysis?.chartB||matchMeta?.b;}catch(_e){}
+  if(!a||!b)return;
+  const html=r21CompatBoard(a,b);if(!html)return;
+  const quick=root.querySelector('[data-r20-quick="compat"]');
+  if(quick)quick.insertAdjacentHTML('afterend',html);else{const intro=root.querySelector('.easyIntro');if(intro)intro.insertAdjacentHTML('afterend',html);else root.insertAdjacentHTML('afterbegin',html);}
+ }
+ const prevResult=window.renderResult;
+ if(typeof prevResult==='function')window.renderResult=function(){const v=prevResult.apply(this,arguments);try{enhanceSaju();}catch(_e){}return v;};
+ const prevCompat=window.renderCompatCards;
+ if(typeof prevCompat==='function')window.renderCompatCards=function(){const v=prevCompat.apply(this,arguments);try{enhanceCompat();}catch(_e){}return v;};
+ // 기존 함수가 전역 프로퍼티가 아닌 환경에서도 화면 전환 후 한 번 더 안전하게 적용
+ document.addEventListener('click',function(){setTimeout(function(){try{enhanceSaju();enhanceCompat();}catch(_e){}},0);},{passive:true});
+ setTimeout(function(){try{enhanceSaju();enhanceCompat();}catch(_e){}},50);
+})();
+</script>
+
+
+
+<!-- GUIIN R22 — REGRESSION QA GATE -->
+<script>
+/* ========================================================================
+   GUIIN R22 — 10 DAY-MASTER + COMPATIBILITY REGRESSION QA — 2026-09-30
+   - 갑을병정무기경신임계 10개 일간 대표 명식 자동 계산
+   - 출생시간 있음/없음 엔진 회귀검사
+   - 이름 받침 유/무를 섞어 조사 깨짐 검사
+   - 궁합 조합 점수 범위/근거/본문 깨짐/과도한 중복 검사
+   - 일반 사용자 화면에는 노출하지 않고 sessionStorage에 QA 결과 기록
+   - ?guiin_qa=1 일 때만 하단에 개발용 결과를 표시
+   ======================================================================== */
+(function(){
+ if(globalThis.__GUIIN_R22_REGRESSION__)return;
+ globalThis.__GUIIN_R22_REGRESSION__=true;
+ const VERSION='r22-20260930-1';
+ const STORE='guiin_r22_regression_qa';
+ const fixtures=[
+  {stem:'갑',name:'지나',gender:'여',year:1991,month:1,day:4,hour:0,minute:30},
+  {stem:'을',name:'민석',gender:'남',year:1991,month:2,day:4,hour:2,minute:30},
+  {stem:'병',name:'미라',gender:'여',year:1991,month:3,day:7,hour:4,minute:30},
+  {stem:'정',name:'하늘',gender:'남',year:1991,month:4,day:7,hour:6,minute:30},
+  {stem:'무',name:'서윤',gender:'여',year:1991,month:5,day:8,hour:8,minute:30},
+  {stem:'기',name:'준혁',gender:'남',year:1991,month:6,day:8,hour:10,minute:30},
+  {stem:'경',name:'수아',gender:'여',year:1991,month:7,day:9,hour:12,minute:30},
+  {stem:'신',name:'도윤',gender:'남',year:1991,month:8,day:9,hour:14,minute:30},
+  {stem:'임',name:'예린',gender:'여',year:1991,month:9,day:9,hour:16,minute:30},
+  {stem:'계',name:'현석',gender:'남',year:1991,month:10,day:10,hour:18,minute:30}
+ ];
+ const baseInput=(f,extra={})=>Object.assign({calendar:'양력',leapMonth:false,dayBoundary:'23',trueSolarApply:false,longitude:126.98,hourUnknown:false},f,extra);
+ const textOnly=s=>String(s??'').replace(/<script[\s\S]*?<\/script>/gi,' ').replace(/<style[\s\S]*?<\/style>/gi,' ').replace(/<[^>]*>/g,' ').replace(/&nbsp;/g,' ').replace(/&amp;/g,'&').replace(/\s+/g,' ').trim();
+ const normalize=s=>textOnly(s).replace(/[\s.,!?'"“”‘’·:;()\-–—]/g,'');
+ function polish(html,names=[]){
+  let out=typeof guiinR19PolishHTML==='function'?guiinR19PolishHTML(String(html??'')):String(html??'');
+  const tokens=[...names,'목','화','토','금','수','합','충','형','파','해','비견','겁재','식신','상관','편재','정재','편관','정관','편인','정인'].filter(Boolean);
+  if(typeof guiinR19TokenJosa==='function')for(const t of [...new Set(tokens)])out=guiinR19TokenJosa(out,t);
+  return out;
+ }
+ function wrongJosaForToken(token){
+  if(typeof guiinR19HasBatchim!=='function')return [];
+  const b=guiinR19HasBatchim(token);if(!b)return [];
+  const wrong=b.has?['는','가','를','와'].concat(b.jong===8?['으로']:['로']):['은','이','을','과','으로'];
+  return wrong.map(j=>String(token)+j);
+ }
+ function auditHTML(html,names=[],label='output'){
+  const h=polish(html,names),t=textOnly(h),issues=[],warnings=[];
+  const patterns=[
+   ['undefined',/\bundefined\b/i],['null',/(^|\s)null(\s|$)/i],['nan',/\bNaN\b/],
+   ['double_reaction',/반응\s+반응/],['broken_suffix',/(?:있어|보여|나타나)\.(?:가|이|은|는|을|를)/],
+   ['sentence_particle',/[.!?](?:은|는|이|가|을|를|과|와)(?=\s|$)/],
+   ['wrong_relation_ro',/(?:형|충|합|파|해)로(?=\s|[.,!?]|$)/],
+   ['double_particle',/(?:은은|는는|이가가|을를|과와|와과)/]
+  ];
+  for(const [k,re] of patterns)if(re.test(t))issues.push(k);
+  for(const n of names){
+   for(const bad of wrongJosaForToken(n))if(t.includes(bad))issues.push(`name_josa:${bad}`);
+  }
+  for(const tok of ['목','화','토','금','수']){
+   for(const bad of wrongJosaForToken(tok))if(t.includes(bad))issues.push(`element_josa:${bad}`);
+  }
+  // 긴 문단의 완전 중복은 템플릿 티가 크게 나는 경우만 경고한다.
+  try{
+   const box=document.createElement('div');box.innerHTML=h;
+   const seen=new Set(),dup=[];
+   [...box.querySelectorAll('p')].forEach(p=>{const x=normalize(p.textContent);if(x.length<80)return;if(seen.has(x))dup.push(textOnly(p.textContent).slice(0,100));else seen.add(x);});
+   if(dup.length)warnings.push(`duplicate_paragraph:${dup.length}`);
+  }catch(_e){}
+  if(t.length<120)warnings.push('too_short');
+  return {label,ok:issues.length===0,issues:[...new Set(issues)],warnings:[...new Set(warnings)],chars:t.length};
+ }
+ function sajuOutput(c){
+  const chunks=[];
+  const fns=[['summary',()=>longSummaryHTML(c)],['personality',()=>personalityReport(c)],['fields',()=>fieldsReport(c)],['flow',()=>flowReport(c)]];
+  for(const [k,fn] of fns){try{chunks.push([k,fn()||'']);}catch(e){chunks.push([k,`__ERROR__ ${e?.message||e}`]);}}
+  return chunks;
+ }
+ function compatOutput(a,b){
+  const secs=[];
+  try{if(typeof compatDeepSections==='function')secs.push(...(compatDeepSections(a,b)||[]));}catch(e){secs.push({k:'deep_error',b:String(e?.message||e)});}
+  try{if(typeof compatRelationshipExtraSections==='function')secs.push(...(compatRelationshipExtraSections(a,b)||[]));}catch(e){secs.push({k:'extra_error',b:String(e?.message||e)});}
+  return secs.map((x,i)=>[String(x?.key||x?.k||`compat_${i}`),[x?.k,x?.t,x?.b,x?.g,x?.w,x?.tip,x?.ev].filter(Boolean).join(' ')]);
+ }
+ function scoreContradiction(pack){
+  const warns=[];if(!pack)return ['score_missing'];
+  const sc=Number(pack.score),comb=Number(pack.combine||0),ten=Number(pack.tension||0),rel=String(pack.dayRel||'');
+  if(sc>=90&&ten>=comb+4)warns.push('high_score_with_heavy_tension');
+  if(sc<=64&&comb>=ten+4&&/육합|삼합|방합/.test(rel))warns.push('low_score_with_strong_harmony');
+  if(Math.max(pack.love,pack.personality,pack.money,pack.future)-Math.min(pack.love,pack.personality,pack.money,pack.future)>32)warns.push('subscore_spread_over_32');
+  return warns;
+ }
+ function run(){
+  const started=Date.now(),report={version:VERSION,at:new Date().toISOString(),ok:true,modules:{},saju:[],unknownTime:[],compat:[],summary:{}};
+  report.modules={GuiinSaju:!!globalThis.GuiinSaju,GuiinExpert:!!globalThis.GuiinExpert,GuiinCompat:!!globalThis.GuiinCompat,GuiinFortuneV2:!!globalThis.GuiinFortuneV2};
+  if(!globalThis.GuiinSaju){report.ok=false;report.fatal='GuiinSaju missing';return report;}
+  const charts=[];let oldChart=null;try{oldChart=chart;}catch(_e){}
+  for(const f of fixtures){
+   try{
+    const c=GuiinSaju.calculate(baseInput(f));charts.push(c);
+    const calcStem=String(c?.dayMaster?.stem||c?.pillars?.day?.stem||'');
+    const structural=[];
+    if(calcStem!==f.stem)structural.push(`stem_expected_${f.stem}_got_${calcStem}`);
+    if(!c?.pillars?.year||!c?.pillars?.month||!c?.pillars?.day)structural.push('missing_core_pillar');
+    if(!Array.isArray(c?.luck)||!c.luck.length)structural.push('missing_luck');
+    const outputs=[];
+    try{chart=c;}catch(_e){}
+    for(const [key,html] of sajuOutput(c))outputs.push(auditHTML(html,[f.name],`${f.stem}:${key}`));
+    const hard=[...structural,...outputs.flatMap(x=>x.issues)];
+    report.saju.push({stem:f.stem,name:f.name,date:`${f.year}-${f.month}-${f.day}`,ok:hard.length===0,structural,outputs});
+   }catch(e){report.saju.push({stem:f.stem,name:f.name,ok:false,error:String(e?.message||e)});}
+  }
+  try{chart=oldChart;}catch(_e){}
+  // 출생시간 없음: 시주가 실제 계산 객체에서 빠지는지 별도 회귀검사.
+  for(const f of [fixtures[0],fixtures[3],fixtures[9]]){
+   try{
+    const c=GuiinSaju.calculate(baseInput(f,{hourUnknown:true,hour:12,minute:0}));
+    const ok=c?.input?.hourUnknown===true&&c?.input?.hour===null&&c?.pillars?.hour==null;
+    const notice=typeof unknownTimeNoticeHTML==='function'?textOnly(unknownTimeNoticeHTML(c)):'';
+    report.unknownTime.push({stem:f.stem,name:f.name,ok,hasNotice:/태어난 시간을 모르|출생시간/.test(notice),hour:c?.input?.hour,hourPillar:c?.pillars?.hour||null});
+   }catch(e){report.unknownTime.push({stem:f.stem,name:f.name,ok:false,error:String(e?.message||e)});}
+  }
+  const pairs=[];
+  // 서로 다른 일간 12개 조합.
+  [[0,1],[0,5],[0,9],[1,6],[1,8],[2,7],[2,9],[3,5],[3,8],[4,6],[4,9],[5,7]].forEach(x=>pairs.push(x));
+  // 같은 일간도 5개 추가: 같은 날짜 +10일은 일간 천간이 다시 같아진다.
+  for(const idx of [0,2,4,6,8]){
+   const f=fixtures[idx];
+   try{
+    const b=GuiinSaju.calculate(baseInput({...f,name:f.name+'B',gender:f.gender==='여'?'남':'여',day:f.day+10}));
+    pairs.push([idx,b]);
+   }catch(_e){}
+  }
+  for(const pair of pairs){
+   try{
+    const a=charts[pair[0]],b=typeof pair[1]==='number'?charts[pair[1]]:pair[1];if(!a||!b)continue;
+    const names=[a.input?.name,b.input?.name].filter(Boolean);
+    const pack=typeof guiinCompatScoreV21==='function'?guiinCompatScoreV21(a,b):null;
+    const scoreIssues=[];
+    if(!pack)scoreIssues.push('score_pack_missing');
+    else{
+     if(pack.score<60||pack.score>96)scoreIssues.push('overall_out_of_range');
+     for(const k of ['love','personality','money','future'])if(Number(pack[k])<55||Number(pack[k])>98)scoreIssues.push(`${k}_out_of_range`);
+     if(!String(pack.basis||'').trim())scoreIssues.push('basis_missing');
+    }
+    const outputs=compatOutput(a,b).map(([key,html])=>auditHTML(html,names,`${names.join('↔')}:${key}`));
+    const warnings=scoreContradiction(pack);
+    const hard=[...scoreIssues,...outputs.flatMap(x=>x.issues)];
+    report.compat.push({pair:names.join(' ↔ '),stems:`${a.dayMaster?.stem||''}-${b.dayMaster?.stem||''}`,score:pack?.score??null,dayRel:pack?.dayRel||'',ok:hard.length===0,scoreIssues,warnings,outputs});
+   }catch(e){report.compat.push({pair:'unknown',ok:false,error:String(e?.message||e)});}
+  }
+  const sajuFail=report.saju.filter(x=>!x.ok).length,unknownFail=report.unknownTime.filter(x=>!x.ok||!x.hasNotice).length,compatFail=report.compat.filter(x=>!x.ok).length;
+  const warnings=report.saju.flatMap(x=>(x.outputs||[]).flatMap(o=>o.warnings||[])).length+report.compat.flatMap(x=>[...(x.warnings||[]),...(x.outputs||[]).flatMap(o=>o.warnings||[])]).length;
+  report.summary={dayMasters:report.saju.length,sajuFail,unknownTimeCases:report.unknownTime.length,unknownFail,compatPairs:report.compat.length,compatFail,warnings,durationMs:Date.now()-started};
+  report.ok=sajuFail===0&&unknownFail===0&&compatFail===0;
+  return report;
+ }
+ function show(report){
+  try{
+   if(!new URLSearchParams(location.search).has('guiin_qa'))return;
+   const box=document.createElement('pre');box.id='guiinR22QaReport';box.style.cssText='white-space:pre-wrap;word-break:break-word;margin:16px auto 100px;max-width:430px;padding:14px;background:#111;color:#dfffdc;border-radius:12px;font:11px/1.5 monospace;position:relative;z-index:9999';box.textContent=JSON.stringify(report,null,2);document.body.appendChild(box);
+  }catch(_e){}
+ }
+ function execute(){
+  try{
+   const report=run();
+   globalThis.GuiinRegressionQA={version:VERSION,run,report};
+   try{sessionStorage.setItem(STORE,JSON.stringify(report));}catch(_e){}
+   if(!report.ok)console.warn('GUIIN_R22_REGRESSION_QA_FAILED',report.summary,report);
+   else console.info('GUIIN_R22_REGRESSION_QA_OK',report.summary);
+   show(report);
+  }catch(e){console.warn('GUIIN_R22_REGRESSION_QA_FATAL',e?.message||e);}
+ }
+ // QA 계산은 일반 이용자에게 절대 자동 실행하지 않는다.
+ // /demo.html?guiin_qa=1 또는 localStorage guiin_qa_auto=1에서만 실행한다.
+ let cached=null;try{cached=JSON.parse(sessionStorage.getItem(STORE)||'null');}catch(_e){}
+ const force=(()=>{try{return new URLSearchParams(location.search).has('guiin_qa')||localStorage.getItem('guiin_qa_auto')==='1';}catch(_e){return false;}})();
+ globalThis.GuiinRegressionQA={version:VERSION,run,report:cached};
+ if(!force)return;
+ if('requestIdleCallback'in window)requestIdleCallback(execute,{timeout:1200});else setTimeout(execute,250);
 })();
 </script>
 
