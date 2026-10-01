@@ -1,5 +1,5 @@
 <!doctype html>
-<!-- GUIIN R26 · PREMIUM COMPATIBILITY DEPTH EXPANSION · 2026-10-01 -->
+<!-- GUIIN R27 · TRADITIONAL COMPATIBILITY VERDICT · 2026-10-01 -->
 <!-- GUIIN R17 INTEGRATED RESTORE · feature-complete demo + R17 personalization · 2026-09-28 -->
 <!-- GUIIN R17 · QA-personalized longform saju + compatibility + full calculated-star interpretation · 2026-09-28 -->
 
@@ -7376,6 +7376,92 @@ document.addEventListener('visibilitychange',()=>{
   window.renderCompatCards=wrapped;try{renderCompatCards=wrapped}catch(_e){}
  }
  setTimeout(()=>{try{add()}catch(_e){}},0);
+})();
+</script>
+
+
+
+<!-- GUIIN R27 · TRADITIONAL COMPATIBILITY VERDICT · 2026-10-01 -->
+<style>
+.r27Verdict{margin:14px 0 16px;padding:17px 15px;border-radius:20px;background:linear-gradient(180deg,#fffdf8 0%,#fff 100%);border:1px solid rgba(133,105,56,.16);box-shadow:0 8px 24px rgba(79,65,41,.045)}
+.r27Verdict .mini{font-size:11px;color:#8a7351;font-weight:800;letter-spacing:.01em}.r27Verdict h3{margin:5px 0 7px;font-size:20px;line-height:1.38;color:#242018}.r27Verdict .lead{margin:0;font-size:13px;line-height:1.75;color:#5e574d}.r27Verdict .lead b{color:#29231a}.r27BadgeRow{display:flex;flex-wrap:wrap;gap:7px;margin:12px 0 13px}.r27Badge{display:inline-flex;align-items:center;gap:4px;padding:6px 9px;border-radius:999px;font-size:11px;font-weight:800;background:#f6f1e6;color:#6d5731}.r27Badge.good{background:#eef7ef;color:#35623e}.r27Badge.watch{background:#fff1eb;color:#8a4e36}.r27Badge.neutral{background:#f2f3f5;color:#585d66}
+.r27AxisGrid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px;margin-top:10px}.r27Axis{padding:11px;border-radius:14px;background:#fff;border:1px solid rgba(0,0,0,.055)}.r27Axis .top{display:flex;justify-content:space-between;gap:8px;align-items:center}.r27Axis b{font-size:12px}.r27Axis strong{font-size:15px}.r27Axis span{display:block;margin-top:5px;font-size:11px;line-height:1.45;color:#777066}.r27Axis .state{display:inline-block;margin-top:7px;padding:4px 7px;border-radius:999px;font-size:10px;font-weight:800}.r27Axis .state.good{background:#edf7ef;color:#35623e}.r27Axis .state.ok{background:#f6f2e8;color:#796335}.r27Axis .state.watch{background:#fff0e9;color:#8c4f36}
+.r27Signals{display:grid;gap:8px;margin-top:12px}.r27Signal{padding:11px 12px;border-radius:14px;background:#faf9f6;border:1px solid rgba(0,0,0,.045);font-size:12px;line-height:1.65;color:#575149}.r27Signal b{display:block;margin-bottom:4px;color:#2e2922}.r27Signal.good{background:#f4faf5}.r27Signal.watch{background:#fff7f2}.r27Bottom{margin-top:11px;padding-top:10px;border-top:1px dashed rgba(106,86,51,.18);font-size:12px;line-height:1.7;color:#675f55}.r27Bottom b{color:#2d2821}
+@media(max-width:420px){.r27AxisGrid{grid-template-columns:1fr}.r27Verdict{padding:15px 13px}.r27Verdict h3{font-size:18px}}
+</style>
+<script>
+(function(){
+ if(globalThis.__GUIIN_R27_VERDICT__)return;
+ globalThis.__GUIIN_R27_VERDICT__=true;
+ const E=typeof compatEsc==='function'?compatEsc:(x=>String(x??'').replace(/[&<>\"]/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','\"':'&quot;'}[m])));
+ const val=(x,f='')=>String(x??f??'').replace(/\s+/g,' ').trim();
+ function data(){
+  try{
+   const a=matchAnalysis?.a||matchAnalysis?.left||matchAnalysis?.chartA||matchMeta?.a;
+   const b=matchAnalysis?.b||matchAnalysis?.right||matchAnalysis?.chartB||matchMeta?.b;
+   if(!a||!b)return null;
+   const d=typeof globalThis.guiinCompatR23PairData==='function'?globalThis.guiinCompatR23PairData(a,b):{};
+   const p=typeof guiinCompatScoreV21==='function'?guiinCompatScoreV21(a,b):(matchMeta?.scoreParts||{});
+   return {...d,a,b,p};
+  }catch(_e){return null;}
+ }
+ function axisState(n){n=Number(n||0);if(n>=76)return {label:'좋음',tone:'good',desc:'둘 사이에서 장점으로 쓰기 쉬운 축'};if(n>=68)return {label:'무난',tone:'ok',desc:'기본 흐름은 괜찮지만 생활 조율이 필요한 축'};return {label:'조율 필요',tone:'watch',desc:'좋고 나쁨보다 반복 관리가 중요한 축'};}
+ function overall(d){
+  const s=Number(d.p?.score||matchMeta?.scoreParts?.score||0),c=Number(d.q?.sig?.combine||d.p?.combine||0),t=Number(d.q?.sig?.tension||d.p?.tension||0);
+  let title,short;
+  if(s>=85){title='좋은 궁합 쪽이야';short='전반적으로 잘 맞는 편';}
+  else if(s>=76){title='좋은 편에 가까운 궁합이야';short='맞는 부분이 더 많은 편';}
+  else if(s>=68){title='무난하지만 조율이 필요한 궁합이야';short='좋은 점과 피곤한 점이 함께 있음';}
+  else if(s>=60){title='끌림은 있어도 조율 비중이 큰 궁합이야';short='생활에서는 주의가 필요한 편';}
+  else {title='마찰 관리가 중요한 궁합이야';short='좋은 점보다 조율 과제가 더 크게 보임';}
+  let balance='';
+  if(c>=t+2)balance=`결속 신호 ${c}가 마찰 ${t}보다 강해서 서로 붙는 힘이 비교적 선명해.`;
+  else if(t>=c+2)balance=`결속 신호 ${c}보다 마찰 ${t}이 더 커서, 좋아하는 마음이 있어도 가까워질수록 조율 비용이 생기기 쉬워.`;
+  else balance=`결속 ${c}와 마찰 ${t}이 비슷해서, 잘 맞는 부분과 부딪히는 부분이 함께 있는 혼합형에 가까워.`;
+  return {s,title,short,balance};
+ }
+ function hitList(d,kind){
+  const good=new Set(['천간합','육합','삼합','방합','합']),bad=new Set(['충','형','파','해']);
+  const labels={year:'년주',month:'월주',day:'일주',hour:'시주'};
+  const hits=Array.isArray(d.q?.sig?.hits)?d.q.sig.hits:[];
+  const set=kind==='good'?good:bad;
+  const rows=hits.filter(h=>set.has(val(h?.type))).sort((a,b)=>Number(b?.weight||0)-Number(a?.weight||0)).slice(0,6);
+  if(rows.length)return rows.map(h=>`${labels[h.ak]||h.ak||'?'}↔${labels[h.bk]||h.bk||'?'} ${h.type}${Number(h.weight||0)>1?`(${h.weight})`:''}`).join(' · ');
+  try{return guiinCompatHitSummaryV56(d.q?.sig,kind==='good'?'combine':'tension');}catch(_e){return kind==='good'?'두드러지는 직접 합 신호는 많지 않아.':'강한 충·형·파·해가 두드러지지는 않아.';}
+ }
+ function dayText(d){
+  const r=val(d.q?.dayRel||d.p?.dayRel,'직접 관계 없음');
+  if(/육합|삼합|방합|합/.test(r)&&!/충/.test(r))return `일지에서는 ${r} 신호가 잡혀서 가까운 생활·정서 리듬이 자연스럽게 맞물릴 여지가 있어.`;
+  if(/충|형|파|해/.test(r))return `일지에서는 ${r} 신호가 잡혀서 가까워질수록 생활 습관·감정 반응에서 부딪힘이 커질 수 있어. 이 신호 하나만으로 나쁜 인연을 뜻하진 않아.`;
+  return '일지끼리는 직접적인 강한 합·충이 두드러지지 않아. 그래서 이 관계는 배우자궁 하나보다 다른 교차 신호와 실제 생활 운영에서 체감 차이가 더 크게 갈릴 수 있어.';
+ }
+ function verdictHTML(d){
+  const o=overall(d),p=d.p||{};
+  const axes=[['연애합',p.love],['성격합',p.personality],['재물합',p.money],['장기·미래합',p.future]];
+  const good=hitList(d,'good'),bad=hitList(d,'bad');
+  const elA=val(d.elA,'-'),elB=val(d.elB,'-');
+  const fit=val(d.pair?.fit,'서로 다른 장점을 역할로 나눌수록 관계의 장점이 살아나.'),fr=val(d.pair?.friction,'피곤할 때는 같은 차이가 답답함으로 느껴질 수 있어.');
+  return `<section class="r27Verdict" data-r27-verdict="1"><div class="mini">명리식 궁합 판정 · 귀인사주 기준</div><h3>♥ ${o.s}점 · ${E(o.title)}</h3><p class="lead"><b>한마디로 말하면</b> ${E(o.short)}이야. ${E(o.balance)}</p><div class="r27BadgeRow"><span class="r27Badge good">좋은 합 ${Number(d.q?.sig?.combine||p.combine||0)}</span><span class="r27Badge watch">마찰 ${Number(d.q?.sig?.tension||p.tension||0)}</span><span class="r27Badge neutral">일지 ${E(val(d.q?.dayRel||p.dayRel,'직접 관계 없음'))}</span><span class="r27Badge neutral">중심오행 ${E(elA)} ↔ ${E(elB)}</span></div><div class="r27AxisGrid">${axes.map(([name,n])=>{const st=axisState(n);return `<div class="r27Axis"><div class="top"><b>${name}</b><strong>${Number(n||0)}점</strong></div><span>${st.desc}</span><em class="state ${st.tone}">${st.label}</em></div>`}).join('')}</div><div class="r27Signals"><div class="r27Signal good"><b>좋게 작용하는 합</b>${E(good)}</div><div class="r27Signal watch"><b>조심해서 써야 하는 충·형·파·해</b>${E(bad)}</div><div class="r27Signal"><b>배우자궁·일지 해석</b>${E(dayText(d))}</div><div class="r27Signal"><b>오행으로 보는 보완과 피로</b><b>${E(elA)} ↔ ${E(elB)}</b>${E(fit)} ${E(fr)}</div></div><div class="r27Bottom"><b>그래서 좋은 궁합이냐고 묻는다면:</b> ${o.s>=76?'좋은 편에 더 가까워.':o.s>=68?'나쁘다고 볼 궁합은 아니고, 좋은 점과 조율할 점이 같이 있는 편이야.':'끌림만으로 편하게 굴러가는 궁합보다는 서로 기준을 맞춰야 체감이 좋아지는 편이야.'} 점수 자체보다 위의 좋은 합이 실제 생활에서 살아나는지, 마찰 신호가 반복 갈등으로 굳는지가 최종 체감을 가르게 돼.</div></section>`;
+ }
+ function post(){
+  const root=document.getElementById('matchView'),d=data();if(!root||!d)return;
+  root.querySelectorAll('[data-r27-verdict="1"]').forEach(x=>x.remove());
+  if(typeof hasPremiumCompat==='function'&&!hasPremiumCompat())return;
+  if(typeof matchTab!=='undefined'&&matchTab!=='summary')return;
+  const type=root.querySelector('.r24TypeHero');
+  const accuracy=root.querySelector('.r25Accuracy');
+  const board=root.querySelector('[data-r21="compat"]');
+  const anchor=type||accuracy||board;
+  if(anchor)anchor.insertAdjacentHTML('beforebegin',verdictHTML(d));
+  else{const intro=root.querySelector('.r23CompatIntro');if(intro)intro.insertAdjacentHTML('afterend',verdictHTML(d));}
+  const introK=root.querySelector('.r23CompatIntro .easyKicker');if(introK)introK.textContent=introK.textContent.replace(/R2[3-6]/g,'R27');
+ }
+ const prev=window.renderCompatCards;
+ if(typeof prev==='function'){
+  const wrapped=function(){const r=prev.apply(this,arguments);try{post()}catch(_e){}return r};
+  window.renderCompatCards=wrapped;try{renderCompatCards=wrapped}catch(_e){}
+ }
+ setTimeout(()=>{try{post()}catch(_e){}},0);
 })();
 </script>
 
