@@ -571,7 +571,8 @@ html{background:#efe7d7}.app{background:linear-gradient(180deg,#fffaf0 0%,#fff6e
 .pageIllustration.contain img{object-fit:contain}
 #saju .pageIllustration{aspect-ratio:16/6.6}
 #guide .pageIllustration{aspect-ratio:16/6.2}
-#ask .pageIllustration{aspect-ratio:16/6.5}
+#ask .pageIllustration{aspect-ratio:16/7.8;background:#f7f3e8}
+#ask .pageIllustration img{object-fit:contain;object-position:center}
 #wallet .pageIllustration{aspect-ratio:16/6.2}
 #manage .pageIllustration{aspect-ratio:16/6.2}
 #yearLuck .pageIllustration{aspect-ratio:16/6.2}
@@ -1171,7 +1172,7 @@ button{position:relative}
   <div class="topbar">
     <button class="ghost" onclick="go('home')" aria-label="뒤로" data-guiin-nav="home">‹</button>
     <div class="brand"><div class="brandline">사주에게 묻기</div></div>
-    <button class="ghost" onclick="go('wallet')" style="font-size:11px;font-weight:900;white-space:nowrap" data-guiin-nav="wallet">이용권</button>
+    <button class="ghost" onclick="go('wallet')" style="font-size:11px;font-weight:900;white-space:nowrap" data-guiin-nav="wallet">이용권 구매</button>
   </div>
   <div class="pageIllustration"><img loading="lazy" decoding="async" src="summary-cat.jpg" alt="사주 상담을 도와주는 고양이 일러스트"></div>
   <div id="askContextCard" class="askContext card">
@@ -1182,9 +1183,9 @@ button{position:relative}
     </div>
     <button type="button" onclick="go('saju')" data-guiin-nav="saju">변경</button>
   </div>
-  <div class="creditBar"><div><div style="font-size:12px;opacity:.85">AI 무료 상담</div><b id="freeRemainView">3</b><span style="font-size:13px">회 남음</span><div style="font-size:11px;opacity:.82;margin-top:3px">AI 상담 이용권 <span id="coinView">0</span>회</div></div><button class="ctaGold" style="width:auto;margin:0;padding:10px 14px" onclick="go('wallet')" data-guiin-nav="wallet">이용권</button></div>
+  <div class="creditBar"><div><div style="font-size:12px;opacity:.85">무료 상담</div><b id="freeRemainView">3</b><span style="font-size:13px">회 남음</span><div style="font-size:11px;opacity:.82;margin-top:3px">유료 이용권 <span id="coinView">0</span>회 보유</div></div><button class="ctaGold" style="width:auto;margin:0;padding:10px 14px" onclick="go('wallet')" data-guiin-nav="wallet">이용권 구매</button></div>
   <div class="askTools">
-    <p class="adminNote">처음 3번은 무료예요. 답변 실패 시 무료 횟수나 AI 상담 이용권은 차감되지 않습니다. 최근 대화 기록은 이 기기에 저장되며, 답변 생성 시 필요한 대화가 서버로 전송될 수 있어요.</p>
+    <p class="adminNote">처음 3회는 무료예요. 답변 실패 시 무료 횟수나 이용권은 차감되지 않습니다. AI 상담 이용권은 4회, 7회, 14회 단위로 구매할 수 있어요. 최근 대화 기록은 이 기기에 저장되며, 답변 생성 시 필요한 대화가 서버로 전송될 수 있어요.</p>
     <button type="button" onclick="clearAIChat()">대화 지우기</button>
   </div>
   <div class="msgs" id="msgs" aria-live="polite">
