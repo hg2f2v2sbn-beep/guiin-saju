@@ -591,6 +591,50 @@ html{background:#efe7d7}.app{background:linear-gradient(180deg,#fffaf0 0%,#fff6e
   object-position:center center!important;
   display:block!important;
 }
+/* ASK HERO — match the result-summary card style */
+#ask .askHero{
+  min-height:190px!important;
+  padding:20px 44% 20px 20px!important;
+  display:flex!important;
+  align-items:center!important;
+  background:
+    radial-gradient(circle at 88% 18%,rgba(113,194,74,.16),transparent 28%),
+    linear-gradient(135deg,#f4ffe7 0%,#fffbe9 58%,#fff7e8 100%)!important;
+}
+#ask .askHero .heroCopy{padding-right:0!important}
+#ask .askHero .heroPet{
+  display:block!important;
+  position:absolute!important;
+  right:0!important;
+  top:0!important;
+  bottom:0!important;
+  width:42%!important;
+  overflow:hidden!important;
+  border-radius:0 23px 23px 0!important;
+}
+#ask .askHero .heroPet img{
+  width:100%!important;
+  height:100%!important;
+  object-fit:contain!important;
+  object-position:right bottom!important;
+  display:block!important;
+}
+#ask .askHero h2{
+  font-size:22px!important;
+  line-height:1.35!important;
+  color:#075b48!important;
+  margin-bottom:8px!important;
+}
+#ask .askHero p{
+  max-width:220px!important;
+  font-size:11px!important;
+  line-height:1.65!important;
+}
+@media(max-width:370px){
+  #ask .askHero{min-height:178px!important;padding:18px 42% 18px 16px!important}
+  #ask .askHero .heroPet{width:40%!important}
+  #ask .askHero h2{font-size:20px!important}
+}
 #wallet .pageIllustration{aspect-ratio:16/6.2}
 #manage .pageIllustration{aspect-ratio:16/6.2}
 #yearLuck .pageIllustration{aspect-ratio:16/6.2}
@@ -1192,7 +1236,14 @@ button{position:relative}
     <div class="brand"><div class="brandline">사주에게 묻기</div></div>
     <button class="ghost" onclick="go('wallet')" style="font-size:11px;font-weight:900;white-space:nowrap" data-guiin-nav="wallet">이용권 구매</button>
   </div>
-  <div class="pageIllustration askBanner"><img loading="lazy" decoding="async" src="summary-cat.jpg?v=20261001b" alt="사주 상담을 도와주는 고양이 일러스트"></div>
+  <section class="guiinVisualHero withArt askHero">
+    <div class="heroCopy">
+      <div class="eyebrow">AI 사주상담</div>
+      <h2 id="askHeroTitle">사주를 기준으로 깊게 물어보세요.</h2>
+      <p id="askHeroCopy">계산된 원국과 현재 흐름을 바탕으로 필요한 내용을 이어서 설명해드려요.</p>
+    </div>
+    <div class="heroPet"><img loading="lazy" decoding="async" src="input-cat.jpg?v=20261001c" alt="사주 상담을 도와주는 고양이 일러스트"></div>
+  </section>
   <div id="askContextCard" class="askContext card">
     <div>
       <span>현재 상담 기준</span>
@@ -5634,10 +5685,13 @@ function clearAIChat(){
 }
 function syncAskContext(){
   const title=$('askContextTitle'),meta=$('askContextMeta'),welcome=$('welcomeBot');
+  const heroTitle=$('askHeroTitle'),heroCopy=$('askHeroCopy');
   if(!title||!meta)return;
   if(!chart||!chart?.pillars){
     title.textContent='사주를 먼저 입력해 주세요';
     meta.textContent='명식이 있으면 그 결과를 기준으로 답해요.';
+    if(heroTitle)heroTitle.textContent='사주를 기준으로 깊게 물어보세요.';
+    if(heroCopy)heroCopy.textContent='사주를 먼저 계산하면 원국과 현재 흐름을 바탕으로 상담해드려요.';
     if(welcome)welcome.textContent='사주를 먼저 계산해 두면 원국 기준으로 답합니다. 직업, 재물, 연애, 올해 흐름 중 무엇이 궁금한가요?';
     return;
   }
@@ -5645,6 +5699,8 @@ function syncAskContext(){
   const dm=chart?.dayMaster?.stem||chart?.pillars?.day?.stem||'';
   title.textContent=name+'님의 사주로 상담 중';
   meta.textContent=dm?`일간 ${dm} · 계산된 원국과 현재 흐름을 함께 참고합니다.`:'계산된 원국과 현재 흐름을 함께 참고합니다.';
+  if(heroTitle)heroTitle.textContent=name+'님의 사주로 물어보세요.';
+  if(heroCopy)heroCopy.textContent='계산된 원국과 현재 흐름을 바탕으로 필요한 내용을 이어서 설명해드려요.';
   if(welcome)welcome.textContent=`${name}님의 계산된 사주를 기준으로 답할게요. 직업, 재물, 연애, 올해 흐름 중 무엇이 가장 궁금한가요?`;
 }
 
