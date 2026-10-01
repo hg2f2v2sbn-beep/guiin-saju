@@ -1206,9 +1206,9 @@ button{position:relative}
     <div class="pageIllustration"><img loading="lazy" decoding="async" src="brand-home.jpg" alt="AI 상담 이용권 일러스트"></div>
     <div class="storeIntro card"><h2>AI 상담 이용권</h2><p>원하는 횟수만큼 AI 사주상담을 이용할 수 있는 디지털 이용권이에요.</p></div>
     <div class="storeWish card"><b>좋은 인연, 좋은 하루가 당신 곁에 늘 함께하길 ♡</b><span>AI 상담 이용권 1회로 AI에게 질문 1번을 보낼 수 있어요.</span></div>
-    <div class="luckyPack card"><div class="packClover">☘☘☘</div><div class="packBody"><h3>맛보기 팩</h3><b>3질문 + 보너스 1</b><p>처음 가볍게 시작해요.</p><span class="packBonus">+1 보너스</span></div><div class="packBuy"><strong>1,100원</strong><small>총 4질문</small><button onclick="openPaySheet(3,1,1100)">구매하기 ›</button></div></div>
-    <div class="luckyPack card"><div class="packClover">☘☘<br>☘☘☘</div><div class="packBody"><h3>단골 팩</h3><b>5질문 + 보너스 2</b><p>자주 묻는 분께 알맞아요.</p><span class="packBonus">+2 보너스</span></div><div class="packBuy"><strong>1,650원</strong><small>총 7질문</small><button onclick="openPaySheet(5,2,1650)">구매하기 ›</button></div></div>
-    <div class="luckyPack card best"><div class="packClover">☘☘☘☘<br>☘☘☘☘☘☘</div><div class="packBody"><h3>행운 팩</h3><b>10질문 + 보너스 4</b><p>가장 넉넉한 BEST 팩이에요.</p><span class="packBonus">+4 보너스</span></div><div class="packBuy"><strong>2,750원</strong><small>총 14질문</small><button onclick="openPaySheet(10,4,2750)">구매하기 ›</button></div></div>
+    <div class="luckyPack card"><div class="packClover">4회</div><div class="packBody"><h3>AI 사주상담 4회 이용권</h3><b>질문 4회</b><p>구매한 횟수만큼 AI 사주상담을 이용해요.</p></div><div class="packBuy"><strong>1,100원</strong><small>4회 이용</small><button onclick="openPaySheet(4,1100)">구매하기 ›</button></div></div>
+    <div class="luckyPack card"><div class="packClover">7회</div><div class="packBody"><h3>AI 사주상담 7회 이용권</h3><b>질문 7회</b><p>필요할 때 총 7번 상담할 수 있어요.</p></div><div class="packBuy"><strong>1,650원</strong><small>7회 이용</small><button onclick="openPaySheet(7,1650)">구매하기 ›</button></div></div>
+    <div class="luckyPack card best"><div class="packClover">14회</div><div class="packBody"><h3>AI 사주상담 14회 이용권</h3><b>질문 14회</b><p>총 14번 사용할 수 있는 고정 횟수 이용권이에요.</p></div><div class="packBuy"><strong>2,750원</strong><small>14회 이용</small><button onclick="openPaySheet(14,2750)">구매하기 ›</button></div></div>
     <div class="utilityCard card"><h3>이용 안내</h3><p>✓ 처음 3번의 무료 질문은 별도로 유지됩니다.<br>✓ AI 상담 이용권 1회당 AI 질문 1회입니다.<br>✓ 결제가 승인되면 주문을 확인한 뒤 AI 상담 가능 횟수가 자동 반영됩니다.</p><div class="paidDisclaimer">사주와 운세는 전통 명리학을 바탕으로 한 참고 정보이며 의료·법률·투자 등 중요한 의사결정을 대신하지 않습니다.</div></div>
     <div class="utilityCard card"><h3>이용 내역</h3><div id="ledger" class="adminNote">아직 내역이 없습니다.</div></div>
   </div>
@@ -2826,10 +2826,10 @@ function guiinClearVerifiedAccess(){
 }
 function guiinApplyServerAccountingSnapshot(raw){
  if(!raw||typeof raw!=='object')return false;
- const q=raw.quota||raw.free||{},w=raw.wallet||{};
+ const q=raw.quota||raw.free||{},w=raw.aiPass||raw.ai_pass||raw.wallet||{};
  const used=Number(q.used??q.used_count??0),reserved=Number(q.reserved??q.reserved_count??0),limit=Number(q.limit??q.limit_count??3);
  const remaining=Number(q.available??q.remaining??Math.max(0,limit-used-reserved));
- const balance=Number(w.balance||0),wr=Number(w.reserved??w.reserved_balance??0),available=Number(w.available??Math.max(0,balance-wr));
+ const balance=Number(w.remainingUses??w.balance??0),wr=Number(w.reservedUses??w.reserved??w.reserved_balance??0),available=Number(w.availableUses??w.available??Math.max(0,balance-wr));
  GUIIN_SERVER_ACCOUNTING.free={used,reserved,limit,remaining:Math.max(0,remaining)};
  GUIIN_SERVER_ACCOUNTING.wallet={balance,reserved:wr,available:Math.max(0,available)};
  GUIIN_SERVER_ACCOUNTING.updatedAt=Date.now();
@@ -2860,7 +2860,7 @@ async function guiinRefreshPurchaseAccess({scope='all',silent=true}={}){
    const active=Array.isArray(data.restore.activeEntitlements)?data.restore.activeEntitlements:[];
    const has=(type,key)=>!!key&&active.some(x=>x?.state==='ACTIVE'&&x?.entitlement_type===type&&String(x?.resource_key||'')===String(key));
    guiinApplyVerifiedEntitlements({verified:true,source:'server',lifetimeSaju:has('lifetime_saju',lifetimeKey),compat:has('premium_compat',compatKey),resourceKeys:{lifetime:lifetimeKey,compat:compatKey}});
-   if(GUIIN_SERVER_ACCOUNTING.authoritative&&data.restore.wallet)guiinApplyServerAccountingSnapshot({quota:GUIIN_SERVER_ACCOUNTING.free,wallet:data.restore.wallet});
+   if(GUIIN_SERVER_ACCOUNTING.authoritative&&(data.restore.aiPass||data.restore.wallet))guiinApplyServerAccountingSnapshot({quota:GUIIN_SERVER_ACCOUNTING.free,aiPass:data.restore.aiPass||data.restore.wallet});
    return true;
  }catch(err){if(!silent)console.warn('GUIIN_PURCHASE_RESTORE_FAILED',err);return false;}
 }
@@ -5159,10 +5159,10 @@ function renderToday(){
 restoreProfile();renderToday();
 setTimeout(guiinPreflight,0);
 
-const COIN_KEY='guiin_clover_wallet_v2', FREE_KEY='guiin_ai_free_used_v2', NOTIFY_KEY='guiin_notify_v1';
-function loadWallet(){try{const x=JSON.parse(localStorage.getItem(COIN_KEY)||'{}');return {coins:Number(x.coins||0),ledger:Array.isArray(x.ledger)?x.ledger:[]};}catch(e){return {coins:0,ledger:[]}}}
+const AI_PASS_KEY='guiin_ai_chat_pass_v1', LEGACY_COIN_KEY='guiin_clover_wallet_v2', FREE_KEY='guiin_ai_free_used_v2', NOTIFY_KEY='guiin_notify_v1';
+function loadWallet(){try{let x=JSON.parse(localStorage.getItem(AI_PASS_KEY)||'null');if(!x){const legacy=JSON.parse(localStorage.getItem(LEGACY_COIN_KEY)||'null');if(legacy){x={uses:Number(legacy.coins||0),ledger:Array.isArray(legacy.ledger)?legacy.ledger:[]};localStorage.setItem(AI_PASS_KEY,JSON.stringify(x));}}return {coins:Number(x?.uses??x?.coins??0),ledger:Array.isArray(x?.ledger)?x.ledger:[]};}catch(e){return {coins:0,ledger:[]}}}
 let wallet=loadWallet();
-function persistWallet(){localStorage.setItem(COIN_KEY,JSON.stringify(wallet));syncWalletViews();}
+function persistWallet(){localStorage.setItem(AI_PASS_KEY,JSON.stringify({uses:Number(wallet.coins||0),ledger:Array.isArray(wallet.ledger)?wallet.ledger:[]}));syncWalletViews();}
 function guiinFreeUsageKey(){
  try{
   const u=JSON.parse(localStorage.getItem('guiin_user_session_v1')||'null');
@@ -5178,10 +5178,10 @@ function guiinFreeUsageKey(){
 }
 function freeUsed(){const n=Number(localStorage.getItem(guiinFreeUsageKey())||0);return Number.isFinite(n)?Math.max(0,n):0;}
 function setFreeUsed(n){localStorage.setItem(guiinFreeUsageKey(),String(Math.max(0,n)));syncWalletViews();}
-function syncWalletViews(){if($('freeRemainView'))$('freeRemainView').textContent=Math.max(0,3-freeUsed());}
+function syncWalletViews(){if($('freeRemainView'))$('freeRemainView').textContent=Math.max(0,3-freeUsed());let uses=Number(wallet?.coins||0);try{if(GUIIN_SERVER_ACCOUNTING?.authoritative)uses=Number(GUIIN_SERVER_ACCOUNTING?.wallet?.available||0);}catch(_e){}if($('coinView'))$('coinView').textContent=Math.max(0,uses);}
 function renderLedger(){if(!$('ledger'))return;$('ledger').innerHTML=(wallet.ledger||[]).slice(0,12).map(r=>`${esc(r.t)} · ${esc(r.text)} (${r.delta>0?'+':''}${r.delta})`).join('<br>')||'아직 내역이 없습니다.';}
 let guiinPaymentState={checked:false,liveEnabled:false,liveCheckoutReady:false,sandboxEnabled:false,serverAccountingReady:false,productCatalogReady:false,error:false};
-let guiinPaySelection={productCode:'CLOVER_1',price:1100};
+let guiinPaySelection={productCode:'AI_CHAT_4',price:1100};
 
 function setPaymentReadinessUI(){
   const state=guiinPaymentState;
@@ -5232,21 +5232,23 @@ async function refreshPaymentReadiness(){
   setPaymentReadinessUI();
   return guiinPaymentState;
 }
-function guiinCloverProductCode(base,bonus,price){
-  if(Number(price)===1100&&Number(base)+Number(bonus)===4)return 'CLOVER_1';
-  if(Number(price)===1650&&Number(base)+Number(bonus)===7)return 'CLOVER_2';
-  if(Number(price)===2750&&Number(base)+Number(bonus)===14)return 'CLOVER_4';
+function guiinAiPassProductCode(uses,price){
+  if(Number(price)===1100&&Number(uses)===4)return 'AI_CHAT_4';
+  if(Number(price)===1650&&Number(uses)===7)return 'AI_CHAT_7';
+  if(Number(price)===2750&&Number(uses)===14)return 'AI_CHAT_14';
   return '';
 }
-function openPaySheet(base,bonus,price){
+function openPaySheet(uses,price){
   const s=$('paySheet');if(!s)return;
-  guiinPaySelection={productCode:guiinCloverProductCode(base,bonus,price),price:Number(price)};
-  $('payPackText').textContent=`AI 상담 이용권 총 ${base+bonus}회`;
+  guiinPaySelection={productCode:guiinAiPassProductCode(uses,price),price:Number(price),uses:Number(uses)};
+  $('payPackText').textContent=`AI 사주상담 ${Number(uses)}회 이용권`;
   $('payPrice').textContent=Number(price).toLocaleString('ko-KR')+'원';
   $('payMsg').textContent='';
   s.classList.add('on');
   refreshPaymentReadiness();
 }
+/* 구버전 호출 호환용: 신규 구매에는 AI_CHAT_* 상품코드만 사용합니다. */
+function guiinCloverProductCode(base,bonus,price){return guiinAiPassProductCode(Number(base||0)+Number(bonus||0),price);}
 function closePaySheet(){const s=$('paySheet');if(s)s.classList.remove('on');}
 function openPremiumPay(){if($('premiumPayMsg'))$('premiumPayMsg').textContent='';$('premiumSheet')?.classList.add('on');refreshPaymentReadiness();}
 function closePremiumPay(){$('premiumSheet')?.classList.remove('on');}
@@ -5358,7 +5360,7 @@ function premiumPayNotReady(){return guiinStartKcpSandbox('LIFETIME_SAJU','premi
 function compatPayNotReady(){return guiinStartKcpSandbox('PREMIUM_COMPAT','compatPayMsg','compatPayBtn');}
 
 function guiinKcpProductLabel(code){
-  const m={LIFETIME_SAJU:'프리미엄 평생사주',PREMIUM_COMPAT:'프리미엄 궁합',CLOVER_1:'AI 상담 이용권 4회',CLOVER_2:'AI 상담 이용권 7회',CLOVER_4:'AI 상담 이용권 14회'};
+  const m={LIFETIME_SAJU:'프리미엄 평생사주',PREMIUM_COMPAT:'프리미엄 궁합',AI_CHAT_4:'AI 사주상담 4회 이용권',AI_CHAT_7:'AI 사주상담 7회 이용권',AI_CHAT_14:'AI 사주상담 14회 이용권',CLOVER_1:'AI 사주상담 4회 이용권(기존)',CLOVER_2:'AI 사주상담 7회 이용권(기존)',CLOVER_4:'AI 사주상담 14회 이용권(기존)'};
   return m[String(code||'')]||'유료 상품';
 }
 function guiinRenderPaymentResult(kind,{order='',code='',productCode=''}={}){
@@ -5368,8 +5370,8 @@ function guiinRenderPaymentResult(kind,{order='',code='',productCode=''}={}){
   icon.textContent=kind==='success'?'✓':kind==='cancel'?'–':'!';
   if(badge)badge.textContent='KG이니시스';
   if(kind==='success'){
-    title.textContent='KCP 테스트 인증이 완료됐어요';
-    copy.textContent='결제창 인증과 귀인사주 복귀까지 정상 동작했습니다. 현재는 샌드박스이므로 실제 청구와 유료 콘텐츠·클로버 지급은 발생하지 않습니다.';
+    title.textContent='결제 인증이 완료됐어요';
+    copy.textContent='결제창 인증과 귀인사주 복귀까지 정상 동작했습니다. 현재는 샌드박스이므로 실제 청구와 유료 콘텐츠·AI 상담 이용권 지급은 발생하지 않습니다.';
     primary.textContent='상품 화면으로 돌아가기';
   }else if(kind==='cancel'){
     title.textContent='결제를 취소했어요';
@@ -5387,7 +5389,7 @@ function guiinRenderPaymentResult(kind,{order='',code='',productCode=''}={}){
     meta.style.display=rows.length?'block':'none';
   }
   primary.onclick=()=>{
-    if(String(productCode).startsWith('CLOVER_'))go('wallet');
+    if(String(productCode).startsWith('AI_CHAT_')||String(productCode).startsWith('CLOVER_'))go('wallet');
     else if(productCode==='PREMIUM_COMPAT')go('matchResult');
     else if(productCode==='LIFETIME_SAJU')go('result');
     else go('paymentInfo');
@@ -5912,7 +5914,7 @@ async function sendQ(preset){
     status.textContent=
       err?.name==='AbortError'
         ? '답변이 조금 늦어지고 있어요. 잠시 후 다시 질문해 주세요. 이번 질문은 차감되지 않았어요.'
-        : '상담사가 잠시 자리를 비웠나 봐요. 잠시 후 다시 말을 걸어주세요! 이번 질문은 무료 횟수나 클로버에서 차감되지 않았어요.';
+        : '상담사가 잠시 자리를 비웠나 봐요. 잠시 후 다시 말을 걸어주세요! 이번 질문은 무료 횟수나 AI 상담 이용권에서 차감되지 않았어요.';
 
   }finally{
     clearTimeout(timer);
