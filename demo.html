@@ -923,193 +923,394 @@ button{position:relative}
 </style>
 
 
-<style id="guiin-visual-only-r1">
+<style id="guiin-visual-refactor-r2">
 /*
- GUIIN VISUAL-ONLY R1 · 2026-10-01
- 범위 고정: 사주/궁합 계산, 해석 문구, 점수, 데이터 바인딩, AI/로그인/결제 로직은 수정하지 않음.
- 아래 규칙은 동물 일러스트, 이미지 표시 방식, 카드/버튼/클릭 모양만 덮어쓴다.
+ GUIIN VISUAL REFACTOR R2 · 2026-10-01
+ 디자인 전용 레이어. 기존 계산/해석/점수/API/AI/로그인/결제/이벤트 로직은 수정하지 않는다.
+ 목표: 제공된 10화면 시안의 밝은 크림 + 딥그린 + 골드 + 파스텔 카드 + 클로버 + 비절단 일러스트.
 */
 :root{
-  --visual-cream:#fffaf0;
-  --visual-paper:#fffef9;
-  --visual-line:#eadfce;
-  --visual-green:#0b664d;
-  --visual-gold:#efb62e;
-  --visual-shadow:0 8px 24px rgba(82,64,34,.08);
+  --bg:#fffaf0!important;
+  --paper:#fffef9!important;
+  --ink:#24372f!important;
+  --sub:#7e837e!important;
+  --line:#ebe2d5!important;
+  --green:#0b684f!important;
+  --green2:#07563f!important;
+  --gold:#eeb631!important;
+  --gold2:#ffd764!important;
+  --pink:#f7dfe7!important;
+  --lav:#eee4fb!important;
+  --mint:#e7f6ec!important;
+  --sky:#e9f4fb!important;
+  --yellow:#fff2c7!important;
+  --shadow:0 5px 18px rgba(80,62,32,.055)!important;
 }
 
-/* 일러스트는 절대 잘라내지 않는다. */
-#home .homeHero .heroArt,
-.summaryArt,
-.matchArt,
-.todayArt,
-.footerArt,
-.pageIllustration,
-.guiinVisualHero.withArt .heroPet,
-#saju .screenTitle .sideArt{
-  background:linear-gradient(145deg,#f6ffe9,#fff4d4)!important;
-  overflow:hidden!important;
+html{background:#eee7da!important}
+body{background:#f3ede2!important;color:var(--ink)!important}
+.app{
+  max-width:430px!important;
+  background:linear-gradient(180deg,#fffdf8 0%,#fff8ea 100%)!important;
+  box-shadow:0 0 0 1px rgba(230,220,204,.55)!important;
 }
-#home .homeHero .heroArt img,
-.summaryArt img,
-.matchArt img,
-.todayArt img,
-.footerArt img,
-.pageIllustration img,
-.pageIllustration.contain img,
-.guiinVisualHero.withArt .heroPet img,
-#saju .screenTitle .sideArt img,
-.tile .pet img,
-.yearHero img{
-  width:100%!important;
-  height:100%!important;
-  object-fit:contain!important;
-  object-position:center bottom!important;
-  display:block!important;
+.screen{padding-left:14px!important;padding-right:14px!important;padding-bottom:96px!important}
+.card{
+  background:rgba(255,254,250,.98)!important;
+  border:1px solid var(--line)!important;
+  border-radius:18px!important;
+  box-shadow:var(--shadow)!important;
 }
 
-/* 홈 일러스트: 원본 전체가 보이면서 제목/버튼을 침범하지 않게. */
+/* ---------- 공통 헤더 ---------- */
+.topbar{
+  height:68px!important;
+  margin-left:-14px!important;
+  margin-right:-14px!important;
+  padding-left:14px!important;
+  padding-right:14px!important;
+  background:rgba(255,253,248,.965)!important;
+  border-bottom:1px solid #eee6db!important;
+  backdrop-filter:blur(16px)!important;
+  -webkit-backdrop-filter:blur(16px)!important;
+}
+.topbar .ghost{
+  width:38px!important;height:38px!important;min-height:38px!important;
+  display:grid!important;place-items:center!important;
+  padding:0!important;border-radius:12px!important;
+  color:#29443a!important;
+}
+.topbar .ghost:active{background:#f3eee5!important}
+.brand .brandline{
+  gap:6px!important;
+  font-size:20px!important;
+  line-height:1.15!important;
+  color:#075f48!important;
+  font-weight:900!important;
+  letter-spacing:-.045em!important;
+}
+.brand small{font-size:8px!important;color:#9b978f!important;letter-spacing:.03em!important;margin-top:3px!important}
+.logo-dot{width:19px!important;height:19px!important;border-radius:50%!important;background:#edf7df!important}
+.logo-dot img,.avatar img,.bigAvatar img,.mark img,.signedMark img,.authMark img,.loginCompleteMark img{
+  object-fit:contain!important;object-position:center!important;background:#f5f8e7!important;
+}
+
+/* ---------- 홈 ---------- */
+#home .profilebar{
+  min-height:66px!important;
+  padding:9px 11px!important;
+  margin:9px 0 10px!important;
+  border-radius:18px!important;
+}
+#home .avatar{width:46px!important;height:46px!important;border:1px solid #e9e1cf!important;background:#f6f4df!important}
+#home .profilebar .txt b{font-size:12px!important;color:#263c33!important}
+#home .profilebar .txt small{font-size:9px!important;color:#8b8f8a!important;margin-top:3px!important}
+#home .profilebar .picker{
+  min-height:36px!important;
+  padding:8px 11px!important;
+  border:1px solid #e9dfd0!important;
+  background:#f7f2ea!important;
+  color:#556058!important;
+  font-size:9px!important;
+}
+
 #home .homeHero{
-  background:linear-gradient(160deg,#f4ffe6 0%,#fff5d4 100%)!important;
-  border:1px solid #e6ebd2!important;
-  border-radius:24px!important;
-}
-#home .homeHero .heroArt{
-  height:278px!important;
-  padding:58px 8px 48px!important;
-}
-#home .homeHero .heroArt img{
-  max-width:100%!important;
-  margin:0 auto!important;
+  position:relative!important;
+  overflow:hidden!important;
+  min-height:266px!important;
+  padding:0!important;
+  border-radius:22px!important;
+  border-color:#e6ead4!important;
+  background:
+    radial-gradient(circle at 12% 18%,rgba(121,190,78,.11) 0 28px,transparent 29px),
+    radial-gradient(circle at 87% 13%,rgba(239,192,66,.14) 0 34px,transparent 35px),
+    linear-gradient(155deg,#f4ffe7 0%,#fff7da 100%)!important;
 }
 #home .homeHero .heroText{
-  left:18px!important;
-  right:18px!important;
-  top:18px!important;
-  text-align:center!important;
-  text-shadow:0 2px 9px rgba(255,255,255,.98)!important;
+  z-index:3!important;left:18px!important;right:18px!important;top:15px!important;
+  text-align:center!important;text-shadow:0 2px 10px rgba(255,255,255,.96)!important;
 }
-#home .homeHero .heroText h1{font-size:34px!important}
+#home .homeHero .kicker{font-size:10px!important;color:#587860!important;font-weight:800!important}
+#home .homeHero h1{font-size:33px!important;line-height:1!important;margin:5px 0 7px!important;color:#075d46!important}
+#home .homeHero .copy{font-size:10px!important;line-height:1.55!important;color:#69776e!important}
+#home .homeHero .heroArt{
+  position:absolute!important;
+  inset:70px 8px 48px!important;
+  height:auto!important;
+  padding:0!important;
+  margin:0!important;
+  border-radius:0!important;
+  background:transparent!important;
+  overflow:visible!important;
+}
+#home .homeHero .heroArt img{
+  width:100%!important;height:100%!important;max-height:none!important;
+  object-fit:contain!important;object-position:center bottom!important;
+  filter:saturate(.96) contrast(.99)!important;
+}
 #home .homeHero .ctaGreen{
-  bottom:14px!important;
-  width:78%!important;
-  max-width:300px!important;
-  border-radius:18px!important;
-  min-height:46px!important;
+  position:absolute!important;z-index:4!important;
+  left:50%!important;bottom:12px!important;transform:translateX(-50%)!important;
+  width:76%!important;max-width:292px!important;min-width:0!important;min-height:44px!important;
+  margin:0!important;padding:11px 16px!important;border-radius:16px!important;
+  background:linear-gradient(135deg,#0d7255,#075740)!important;
+  box-shadow:0 8px 18px rgba(8,95,72,.18)!important;
+  font-size:12px!important;
 }
 
-/* 카드 자체를 누르는 느낌 + 작은 원형 이동 버튼 */
-#home .tiles{gap:9px!important}
+#home .tiles{grid-template-columns:repeat(3,minmax(0,1fr))!important;gap:8px!important;margin-top:9px!important}
 #home .tile{
-  min-height:139px!important;
-  border-radius:19px!important;
-  border:1px solid rgba(229,219,202,.92)!important;
-  box-shadow:0 5px 14px rgba(83,67,42,.055)!important;
-  padding:13px 9px 35px!important;
+  min-height:124px!important;
+  border-radius:17px!important;
+  padding:11px 8px 10px!important;
+  border:1px solid rgba(229,220,205,.92)!important;
+  box-shadow:0 3px 10px rgba(80,62,32,.035)!important;
+  overflow:hidden!important;
   text-align:left!important;
 }
+#home .tile:nth-child(1){background:linear-gradient(145deg,#fff7d5,#fff0bd)!important}
+#home .tile:nth-child(2){background:linear-gradient(145deg,#fff0f3,#f9e1e9)!important}
+#home .tile:nth-child(3){background:linear-gradient(145deg,#f4ecff,#e9def8)!important}
+#home .tile:nth-child(4){background:linear-gradient(145deg,#eaf8ef,#dff3e6)!important}
+#home .tile:nth-child(5){background:linear-gradient(145deg,#edf8fd,#dfeff7)!important}
+#home .tile:nth-child(6){background:linear-gradient(145deg,#fff7d9,#f7ebc6)!important}
 #home .tile .ico{
-  width:40px!important;
-  height:40px!important;
-  margin:0 0 7px!important;
-  border-radius:13px!important;
-  background:rgba(255,255,255,.58)!important;
+  width:34px!important;height:34px!important;margin:0 0 8px!important;
+  display:grid!important;place-items:center!important;border-radius:11px!important;
+  background:rgba(255,255,255,.64)!important;
 }
+#home .tile .ico svg{width:22px!important;height:22px!important}
+#home .tile .pet{display:none!important}
+#home .tile b{font-size:12px!important;line-height:1.25!important;color:#243831!important;letter-spacing:-.02em!important}
+#home .tile p{
+  margin:5px 0 0!important;font-size:8.2px!important;line-height:1.45!important;color:#747a75!important;
+  display:-webkit-box!important;-webkit-line-clamp:2!important;-webkit-box-orient:vertical!important;overflow:hidden!important;
+}
+/* 기존 버튼의 이벤트는 그대로 두되 카드 전체가 클릭영역이 되도록 시각적으로 투명 처리 */
 #home .tile button{
-  left:auto!important;
-  right:8px!important;
-  bottom:8px!important;
-  width:27px!important;
-  height:27px!important;
-  padding:0!important;
-  border-radius:50%!important;
-  background:rgba(255,255,255,.82)!important;
-  color:#747a75!important;
-  font-size:0!important;
-  display:grid!important;
-  place-items:center!important;
-  box-shadow:0 2px 7px rgba(60,50,30,.05)!important;
+  position:absolute!important;inset:0!important;width:100%!important;height:100%!important;
+  min-height:0!important;padding:0!important;border:0!important;border-radius:17px!important;
+  background:transparent!important;color:transparent!important;font-size:0!important;opacity:1!important;
 }
-#home .tile button::after{content:'›';font-size:19px!important;font-weight:900;line-height:1}
+#home .tile button::after{
+  content:'›'!important;position:absolute!important;right:8px!important;bottom:8px!important;
+  width:22px!important;height:22px!important;border-radius:50%!important;
+  display:grid!important;place-items:center!important;
+  background:rgba(255,255,255,.78)!important;color:#7a7f7a!important;
+  font-size:16px!important;font-weight:900!important;line-height:1!important;
+}
+#home .tile:active{transform:scale(.985)}
+#home .slogan{margin-top:9px!important;padding:11px 13px!important;border-radius:16px!important;background:linear-gradient(135deg,#f6fae8,#fff7dc)!important}
+#home .rankRow{border-radius:16px!important;background:#fffef9!important}
 
-/* 입력 화면의 고양이도 전체 노출 */
+/* ---------- 입력 화면 ---------- */
 #saju .screenTitle{
-  background:linear-gradient(145deg,#f7ffe9,#fff8df)!important;
-  border-radius:22px!important;
+  position:relative!important;min-height:128px!important;margin-top:10px!important;padding:18px 120px 16px 15px!important;
+  border:1px solid #e5ead1!important;border-radius:20px!important;overflow:hidden!important;
+  background:linear-gradient(145deg,#f5ffe8,#fff6d9)!important;
 }
-#saju .screenTitle .sideArt{padding:5px 5px 0!important}
+#saju .screenTitle .mark{display:none!important}
+#saju .screenTitle h2{font-size:23px!important;color:#174b3a!important;margin-top:1px!important}
+#saju .screenTitle p{font-size:10.5px!important;line-height:1.55!important;color:#6f786f!important}
+#saju .screenTitle .sideArt{
+  position:absolute!important;right:5px!important;bottom:0!important;width:112px!important;height:122px!important;
+  margin:0!important;padding:0!important;border-radius:0!important;background:transparent!important;overflow:visible!important;
+}
+#saju .screenTitle .sideArt img{width:100%!important;height:100%!important;object-fit:contain!important;object-position:right bottom!important}
+#saju .formCard{margin-top:10px!important;padding:16px!important;border-radius:19px!important}
+.formCard label{font-size:10px!important;color:#657069!important;margin:11px 0 5px!important}
+input,select,textarea{
+  border-radius:11px!important;border-color:#e6ddd0!important;background:#fffefa!important;color:#2d3a34!important;
+  box-shadow:none!important;
+}
+.seg{gap:7px!important}.seg button{min-height:42px!important;border-radius:11px!important;background:#fffefa!important;border-color:#e6ddd0!important}
+.seg button.on{background:#fff1bd!important;border-color:#e7b42f!important;color:#5a4714!important;box-shadow:inset 0 0 0 1px rgba(231,180,47,.08)!important}
+.locationRow{border-radius:11px!important;background:#fffefa!important}
+#saju .ctaGold{min-height:48px!important;border-radius:15px!important;font-size:13px!important}
 
-/* 결과 요약/궁합/오늘/마이페이지 삽화는 프레임 안에서 전체 노출 */
-.summaryArt{
-  height:auto!important;
-  aspect-ratio:16/8!important;
-  padding:6px!important;
-  border-radius:18px!important;
+/* ---------- 결과 공통 ---------- */
+#result .tabs,#today .tabs,#manage .tabs{margin-left:0!important;margin-right:0!important;padding:10px 0 7px!important;gap:6px!important}
+.tabs button{
+  min-height:34px!important;padding:8px 11px!important;border-radius:999px!important;
+  border:1px solid transparent!important;background:#f4f0e9!important;color:#747b75!important;
+  box-shadow:none!important;
 }
-#matchView .matchArt,
-.matchArt{
-  height:auto!important;
-  aspect-ratio:16/8.4!important;
-  margin:10px 12px 0!important;
-  border-radius:18px!important;
-  padding:7px!important;
-  border:1px solid #eadfce!important;
+.tabs button.on{background:#ef6789!important;color:#fff!important;border-color:#ef6789!important}
+.tabs.green button.on{background:#0b684f!important;border-color:#0b684f!important}
+.tabs.purple button.on{background:#9a68d1!important;border-color:#9a68d1!important}
+
+.resultActionBar{gap:6px!important;margin:2px 0 8px!important}
+.resultActionBar button{min-height:38px!important;border-radius:12px!important;border-color:#e9e0d3!important;background:#fffdf8!important;color:#54625b!important}
+.resultActionBar .primaryAction{background:#0b684f!important;color:#fff!important;border-color:#0b684f!important}
+
+.guiinVisualHero{
+  position:relative!important;display:grid!important;grid-template-columns:minmax(0,1fr) 112px!important;align-items:center!important;
+  min-height:148px!important;margin:4px 0 10px!important;padding:16px 12px 16px 16px!important;
+  overflow:hidden!important;border:1px solid #e7ead8!important;border-radius:20px!important;
+  background:
+    radial-gradient(circle at 88% 18%,rgba(105,183,79,.11) 0 28px,transparent 29px),
+    linear-gradient(145deg,#f0fae9,#fff7dc)!important;
 }
-#todayView .todayArt,
-.todayArt{
-  height:auto!important;
-  aspect-ratio:16/9!important;
-  border-radius:18px!important;
-  margin:10px 12px 0!important;
-  padding:7px!important;
-  border:1px solid #eadfce!important;
-}
-.footerArt{
-  height:auto!important;
-  aspect-ratio:16/8!important;
-  padding:7px!important;
-  border-radius:18px!important;
-}
-.pageIllustration{
-  padding:7px!important;
-  border-radius:20px!important;
-  background:linear-gradient(135deg,#fffbed,#f3fae8)!important;
-}
+.guiinVisualHero.pink{background:linear-gradient(145deg,#fff0f3,#f7ecff)!important;border-color:#eddfeb!important}
+.guiinVisualHero.gold{background:linear-gradient(145deg,#fff6d9,#f7fae9)!important;border-color:#ece2c7!important}
+.guiinVisualHero.blue{background:linear-gradient(145deg,#eef7ff,#f5f9e9)!important;border-color:#dde8e5!important}
+.guiinVisualHero .heroCopy{position:relative!important;z-index:2!important;min-width:0!important}
+.guiinVisualHero .eyebrow{font-size:9px!important;color:#b98926!important;font-weight:900!important;margin-bottom:5px!important}
+.guiinVisualHero h2{font-size:21px!important;line-height:1.32!important;color:#174434!important;margin:0 0 7px!important;letter-spacing:-.035em!important}
+.guiinVisualHero p{font-size:10px!important;line-height:1.55!important;color:#6f786f!important;margin:0!important}
 .guiinVisualHero.withArt .heroPet{
-  padding:7px 7px 7px 0!important;
-  background:transparent!important;
+  width:108px!important;height:116px!important;padding:0!important;margin:0!important;background:transparent!important;overflow:visible!important;
 }
-.guiinVisualHero.withArt .heroPet img{border-radius:16px!important}
+.guiinVisualHero.withArt .heroPet img{width:100%!important;height:100%!important;object-fit:contain!important;object-position:center bottom!important;border-radius:0!important}
 
-/* 주요 버튼은 시안처럼 부드러운 큰 라운드 */
-.ctaGreen,.ctaGold,.authBtn,
-.resultActionBar button{
-  border-radius:16px!important;
+/* 모든 긴 풀이는 내용 그대로, 카드만 같은 디자인 시스템으로 정리 */
+.infoCard,.listCard,.deepCard,.readingCard,.expertSection,.starDetail,.starComboCard,.termGuide,.starGlossary,.compatIntro,.compatDetailCard,.manseProfile,.manseChartCard,.pairManse,.flowCard,.fortuneCard,.yearCard,.proBox,.lifeHero,.rankRow,.guideList,.manageCard,.askContext,.paymentInfoRow{
+  border-color:#ebe2d5!important;
+  border-radius:18px!important;
+  box-shadow:0 4px 14px rgba(83,64,34,.04)!important;
 }
-.ctaGreen{box-shadow:0 7px 18px rgba(7,91,72,.18)!important}
-.ctaGold{box-shadow:0 6px 16px rgba(212,155,22,.14)!important}
+.infoCard,.listCard,.deepCard,.readingCard,.expertSection,.starDetail,.compatDetailCard,.pairManse{background:#fffefb!important}
+.quote{border-radius:18px!important;background:linear-gradient(145deg,#f5fae8,#fff9e7)!important;border:1px solid #e7ead9!important}
+.deepCard p,.expertSection p,.compatDetailCard p{color:#59645e!important}
 
-/* 탭과 클릭형 칩 */
-.tabs button,.qchip{
-  border-radius:999px!important;
+/* 원국 */
+.manseProfile{background:linear-gradient(145deg,#fff9e8,#f2f9ed)!important}
+.manseTable{border-radius:15px!important;border-color:#e9e0d5!important;box-shadow:none!important}
+.manseHead{background:#f7f2e9!important}
+.manseCell.dayCol{background:#fff5d5!important}
+.manseEl{border-radius:11px!important}
+
+/* ---------- 궁합 ---------- */
+#match .screenTitle{
+  margin-top:10px!important;padding:14px 15px!important;border:1px solid #eadff0!important;border-radius:19px!important;
+  background:linear-gradient(145deg,#f8f0ff,#fff8e9)!important;
+}
+#match .screenTitle .mark{background:#f2e8fb!important}
+#match .formCard{margin-top:10px!important;padding:16px!important;border-radius:19px!important}
+#matchView .matchHero,.matchHero{
+  border-radius:20px!important;border:1px solid #ecdfe8!important;
+  background:linear-gradient(145deg,#fff1f4,#f6efff)!important;overflow:hidden!important;
+}
+#matchView .matchArt,.matchArt{
+  height:auto!important;aspect-ratio:16/8.4!important;margin:10px 12px 0!important;padding:4px!important;
+  border-radius:18px!important;border:0!important;background:transparent!important;overflow:hidden!important;
+}
+#matchView .matchArt img,.matchArt img{
+  width:100%!important;height:100%!important;object-fit:contain!important;object-position:center bottom!important;border-radius:14px!important;
+}
+.score{color:#e74d73!important}.scoreRow{gap:8px!important}.scoreBar{height:7px!important;background:#eee9e2!important}
+.pair .person{border-radius:14px!important}
+
+/* ---------- 오늘의 운세 ---------- */
+#todayView .todayHero,.todayHero{padding:12px!important;border-radius:20px!important;background:#fffefb!important;border:1px solid #ebe2d5!important}
+#todayView .todayArt,.todayArt{
+  height:auto!important;aspect-ratio:16/9!important;margin:0!important;padding:5px!important;
+  border-radius:17px!important;border:0!important;background:linear-gradient(145deg,#f4ffe9,#fff6da)!important;overflow:hidden!important;
+}
+#todayView .todayArt img,.todayArt img{width:100%!important;height:100%!important;object-fit:contain!important;object-position:center bottom!important;border-radius:13px!important}
+.todayDate{margin:10px 0!important;padding:10px!important;border:1px solid #ebe2d5!important;border-radius:16px!important;background:#fffefb!important}
+.fortuneList{padding:7px 13px!important}.fortuneRow{padding:10px 0!important}.fortuneRow .fIcon{border-radius:10px!important}
+
+/* ---------- AI 상담 ---------- */
+#ask .pageIllustration{
+  height:166px!important;margin:10px 0!important;padding:0!important;border:1px solid #e6ead2!important;
+  border-radius:20px!important;background:linear-gradient(145deg,#f4ffe8,#fff7dc)!important;overflow:hidden!important;
+}
+#ask .pageIllustration img{
+  width:100%!important;height:100%!important;object-fit:contain!important;object-position:right bottom!important;
+}
+#ask .askContext{padding:14px!important;border-radius:18px!important}
+#ask .askContext button{border-radius:13px!important;background:#eef3ea!important;color:#52635a!important}
+#ask .creditBar{border-radius:18px!important;background:linear-gradient(135deg,#236a41,#397e48)!important;box-shadow:0 6px 18px rgba(31,103,62,.12)!important}
+#ask .creditBar .ctaGold{background:linear-gradient(135deg,#f4d26d,#e6b54d)!important;color:#4b4d33!important}
+#ask .msgs{padding:8px 0 10px!important}.bubble{border-radius:16px!important}.bubble.bot{background:#fffefb!important;border-color:#e9dfd1!important}.bubble.me{background:#0b684f!important}
+#ask .qchip{background:#f5f1e9!important;border:1px solid #e8e0d5!important;color:#56645c!important}
+#ask .composer{padding-bottom:4px!important}.composer input{background:#fffefb!important}.composer .ctaGreen{min-height:44px!important;border-radius:13px!important}
+
+/* ---------- 마이페이지 / 가이드 / 관리 ---------- */
+#mypage .profileCard{margin-top:10px!important;padding:14px!important;border-radius:18px!important}
+#mypage .bigAvatar{width:60px!important;height:60px!important;background:#eef6dd!important}
+#mypage .menuCard{margin-top:9px!important;padding:3px 13px!important;border-radius:18px!important}
+#mypage .menuCard button{min-height:43px!important;padding:10px 0!important;font-size:10px!important}
+#mypage .footerArt{
+  height:auto!important;aspect-ratio:16/8.5!important;margin-top:9px!important;padding:5px!important;
+  border:1px solid #e8e3cf!important;border-radius:18px!important;background:linear-gradient(145deg,#f4ffe8,#fff4d8)!important;overflow:hidden!important;
+}
+#mypage .footerArt img{width:100%!important;height:100%!important;object-fit:contain!important;object-position:center bottom!important}
+.pageIllustration{
+  height:150px!important;margin:10px 0!important;padding:5px!important;border:1px solid #e7e4d5!important;
+  border-radius:19px!important;background:linear-gradient(145deg,#f4ffe9,#fff5da)!important;overflow:hidden!important;
+}
+.pageIllustration img{width:100%!important;height:100%!important;object-fit:contain!important;object-position:center bottom!important}
+#manage .manageCard img{width:60px!important;height:60px!important;object-fit:contain!important;border-radius:14px!important;background:#f5f8e8!important}
+.guideRow{min-height:58px!important;border-color:#eee6db!important}.guideRow .gico{border-radius:11px!important}
+
+/* ---------- 공통 동물 일러스트 절대 크롭 금지 ---------- */
+img[src$="hero-animals.jpg"],
+img[src$="input-cat.jpg"],
+img[src$="compat-animals.jpg"],
+img[src$="result-animals.jpg"],
+img[src$="summary-cat.jpg"],
+img[src$="today-dog.jpg"],
+img[src$="mypage-animals.jpg"],
+img[src$="guide-cat.jpg"],
+img[src$="brand-home.jpg"]{
+  object-fit:contain!important;
+  object-position:center bottom!important;
 }
 
+/* ---------- 버튼 ---------- */
+.ctaGreen,.ctaGold,.authBtn,.primary,.secondary,.btnGhost,.premiumPanel button,.payPanel button{
+  border-radius:14px!important;
+}
+.ctaGreen{background:linear-gradient(135deg,#0d7356,#07563f)!important;color:#fff!important}
+.ctaGold{background:linear-gradient(135deg,#ffd867,#efb633)!important;color:#37443b!important}
+.btnGhost{background:#fffdf8!important;border-color:#e8dfd2!important;color:#526059!important}
 
-/* 하단 중앙 클로버 버튼 */
+/* ---------- 하단 내비게이션 ---------- */
+.bottom{
+  height:70px!important;width:min(430px,100%)!important;
+  background:rgba(255,255,255,.975)!important;
+  border-top:1px solid #ece5db!important;
+  box-shadow:0 -6px 18px rgba(77,61,36,.04)!important;
+  backdrop-filter:blur(16px)!important;-webkit-backdrop-filter:blur(16px)!important;
+}
+.bottom button{font-size:8px!important;color:#87908a!important;min-height:52px!important}
+.bottom button svg{width:19px!important;height:19px!important;margin-bottom:3px!important}
+.bottom button.active{color:#daa012!important}
 .bottom .flower{
-  width:50px!important;
-  height:50px!important;
-  border-radius:50%!important;
-  background:linear-gradient(135deg,#f4c23f,#dfa00f)!important;
-  box-shadow:0 8px 18px rgba(190,135,20,.25)!important;
+  width:48px!important;height:48px!important;min-height:48px!important;margin:-20px auto 0!important;
+  border-radius:50%!important;background:linear-gradient(135deg,#f4c43e,#d99b10)!important;
+  color:#fff!important;box-shadow:0 8px 18px rgba(190,135,20,.24)!important;
 }
+.bottom .flower svg{width:25px!important;height:25px!important;margin:0!important}
 
-/* 작은 화면에서도 삽화 자체를 자르지 않는다. */
-@media(max-width:370px){
-  #home .homeHero .heroArt{height:255px!important;padding:54px 7px 48px!important}
-  #matchView .matchArt,.matchArt,#todayView .todayArt,.todayArt{height:auto!important}
+/* ---------- iPhone 안전영역 ---------- */
+@supports(padding:max(0px)){
+  .bottom{padding-bottom:max(0px,env(safe-area-inset-bottom))!important;height:calc(70px + max(0px,env(safe-area-inset-bottom)))!important}
+  .screen{padding-bottom:calc(96px + max(0px,env(safe-area-inset-bottom)))!important}
+}
+@media(max-width:390px){
+  .screen{padding-left:12px!important;padding-right:12px!important}
+  .topbar{margin-left:-12px!important;margin-right:-12px!important;padding-left:12px!important;padding-right:12px!important}
+  #home .homeHero{min-height:252px!important}
+  #home .homeHero .heroArt{inset:67px 6px 46px!important}
+  #home .homeHero h1{font-size:31px!important}
+  #home .tile{min-height:120px!important;padding-left:7px!important;padding-right:7px!important}
+  #home .tile b{font-size:11.3px!important}
+  #home .tile p{font-size:7.8px!important}
+  #saju .screenTitle{padding-right:104px!important}
+  #saju .screenTitle .sideArt{width:100px!important;height:116px!important}
+  .guiinVisualHero{grid-template-columns:minmax(0,1fr) 96px!important;padding-left:14px!important}
+  .guiinVisualHero h2{font-size:19px!important}
+  .guiinVisualHero.withArt .heroPet{width:94px!important;height:106px!important}
+}
+@media(max-width:350px){
+  #home .tiles{grid-template-columns:repeat(2,minmax(0,1fr))!important}
+  #home .tile{min-height:116px!important}
 }
 </style>
+
 
 </head>
 <body><div class="guiinDemoBadge">DEMO · 전체풀이 무료</div>
