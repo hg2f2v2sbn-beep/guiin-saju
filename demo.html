@@ -1,5 +1,5 @@
 <!doctype html>
-<!-- GUIIN R25 · COMPLETE COMPATIBILITY QA REFINEMENT · 2026-10-01 -->
+<!-- GUIIN R26 · PREMIUM COMPATIBILITY DEPTH EXPANSION · 2026-10-01 -->
 <!-- GUIIN R17 INTEGRATED RESTORE · feature-complete demo + R17 personalization · 2026-09-28 -->
 <!-- GUIIN R17 · QA-personalized longform saju + compatibility + full calculated-star interpretation · 2026-09-28 -->
 
@@ -7228,6 +7228,154 @@ document.addEventListener('visibilitychange',()=>{
  }
  // 직접 화면이 이미 열린 상태에서 파일만 교체한 경우에도 한 번 보정한다.
  setTimeout(()=>{try{post();}catch(_e){}},0);
+})();
+</script>
+
+
+
+<!-- GUIIN R26 · PREMIUM COMPATIBILITY DEPTH EXPANSION · 2026-10-01 -->
+<style>
+.r26Divider{margin:20px 0 12px;padding:16px;border-radius:18px;background:linear-gradient(180deg,rgba(248,244,235,.98),rgba(255,255,255,.96));border:1px solid rgba(118,97,60,.12)}
+.r26Divider .mini{font-size:11px;opacity:.68;margin-bottom:5px}.r26Divider h3{margin:0 0 6px;font-size:18px;line-height:1.4}.r26Divider p{margin:0;font-size:13px;line-height:1.7}.r26DeepCard{position:relative}.r26DeepCard .r26Scene{margin-top:10px;padding:11px 12px;border-radius:14px;background:rgba(247,248,246,.92);font-size:13px;line-height:1.65}.r26DeepCard .r26Scene b{display:block;font-size:11px;opacity:.7;margin-bottom:4px}.r26PairBars{display:grid;gap:7px;margin-top:10px}.r26PairBars>div{padding:10px 11px;border-radius:12px;background:rgba(255,255,255,.72);border:1px solid rgba(0,0,0,.045);font-size:12px;line-height:1.55}.r26PairBars b{display:block;margin-bottom:3px}
+</style>
+<script>
+(function(){
+ if(globalThis.__GUIIN_R26_COMPAT_DEPTH__)return;
+ globalThis.__GUIIN_R26_COMPAT_DEPTH__=true;
+ const E=typeof compatEsc==='function'?compatEsc:(x=>String(x??'').replace(/[&<>"]/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[m])));
+ const val=(x,f='')=>String(x||f||'').replace(/\s+/g,' ').trim();
+ const safe=(fn,f)=>{try{return fn()}catch(_e){return f}};
+ function pair(){
+  try{
+   const a=matchAnalysis?.a||matchAnalysis?.left||matchAnalysis?.chartA||matchMeta?.a;
+   const b=matchAnalysis?.b||matchAnalysis?.right||matchAnalysis?.chartB||matchMeta?.b;
+   if(!a||!b)return null;
+   const d=typeof globalThis.guiinCompatR23PairData==='function'?globalThis.guiinCompatR23PairData(a,b):{};
+   return Object.assign(d||{},{a,b});
+  }catch(_e){return null}
+ }
+ function who(d,side){return side==='a'?d.aName:d.bName}
+ function rel(d,side){const x=side==='a'?d.A:d.B;return {attach:val(x?.attachment,'관계 상황에 따라 반응이 달라지는 편'),bored:val(x?.boredom,'상황형'),intimacy:val(x?.intimacy,'관계형'),people:val(x?.people,'신뢰와 개인시간의 균형을 중요하게 보는 편'),anger:val(x?.anger,'압박이 커지면 평소와 다른 방어 반응이 나올 수 있어')}}
+ function deep(d,side){return side==='a'?d.AD:d.BD}
+ function evidence(d,extra){return `${d.aName} ${d.A?.stem||''} 일간·월주 ${d.A?.mg||'-'}·${d.elA||'-'} / ${d.bName} ${d.B?.stem||''} 일간·월주 ${d.B?.mg||'-'}·${d.elB||'-'} / 결속 ${Number(d.q?.sig?.combine||0)}·마찰 ${Number(d.q?.sig?.tension||0)}·일지 ${d.q?.dayRel||'직접 관계 없음'}${extra?` / ${extra}`:''}`}
+ function card(key,kicker,title,body,ev){return `<article class="easyLongCard card compatLong r26DeepCard" data-r26-key="${E(key)}"><div class="easyKicker">${E(kicker)}</div><h3>${E(title)}</h3><div class="r23Body">${body}</div>${ev?`<details class="r23Evidence"><summary>명리 근거 보기</summary><div>${E(ev)}</div></details>`:''}</article>`}
+ function compare(d,a,b){return `<div class="r26PairBars"><div><b>${E(d.aName)}님</b>${E(a)}</div><div><b>${E(d.bName)}님</b>${E(b)}</div></div>`}
+ function attraction(d){
+  const ar=rel(d,'a'),br=rel(d,'b');
+  const ap=val(d.AD?.rel?.pull,`${d.aName}님은 상대의 분위기와 반응에서 편안함과 매력을 함께 확인하는 편이야.`);
+  const bp=val(d.BD?.rel?.pull,`${d.bName}님은 자기 세계를 존중하면서도 반응이 분명한 사람에게 끌리기 쉬워.`);
+  return compare(d,ap,bp)+`<p>처음의 끌림은 “완전히 같아서”보다 <b>내가 익숙하게 쓰는 방식과 상대가 가진 다른 기능이 동시에 보일 때</b> 커질 수 있어. 그래서 초반엔 차이가 신선함으로 느껴지고, 시간이 지나면 같은 차이가 생활 규칙의 문제로 바뀌기 쉬워.</p><div class="r26Scene"><b>관계 초반에 확인할 것</b>설레는 이유와 편안한 이유가 같은지 따로 봐. 설렘만 크고 생활 안정감이 없으면 속도는 빠른데 피로도 같이 올라갈 수 있어.</div>`;
+ }
+ function expectations(d){
+  const aa=rel(d,'a').attach,bb=rel(d,'b').attach;
+  return compare(d,`${aa}. 가까워질수록 “이 정도는 말하지 않아도 알아주겠지”라는 기대가 생길 수 있어.`,`${bb}. 가까워질수록 자기 방식의 애정 표현을 상대도 같은 의미로 받아들일 거라 기대하기 쉬워.`)+`<p>문제는 기대가 틀려서가 아니라 <b>기대를 말하지 않은 채 상대의 행동으로만 채점할 때</b> 생겨. 연락, 외출, 돈, 스킨십, 혼자 있는 시간처럼 반복되는 주제는 기대치를 말로 꺼내놓는 게 좋아.</p>`;
+ }
+ function communication(d){
+  const ad=val(d.AD?.loop?.decide,'충분히 납득해야 방향을 정하는 편'),bd=val(d.BD?.loop?.decide,'상황을 보며 자기 방식으로 판단하는 편');
+  return compare(d,`결정할 때 ${ad}.`, `결정할 때 ${bd}.`)+`<p>둘이 같은 사건을 두고도 한 사람은 <b>사실·약속·해결</b>을 먼저 말하고, 다른 사람은 <b>기분·맥락·거리감</b>을 먼저 확인할 수 있어. 그래서 “해결책을 말했는데 왜 더 화내지?” 또는 “내 마음은 안 듣고 답만 내놓네”가 생길 수 있어.</p><div class="r26Scene"><b>대화 번역기</b>갈등 때는 사실 1문장 → 감정 1문장 → 원하는 행동 1문장 순서로 말해. 상대가 한 말을 바로 반박하기 전에 “네 말은 이 뜻이야?”를 한 번 넣으면 싸움의 크기가 크게 줄어들 수 있어.</div>`;
+ }
+ function boredom(d){
+  const ar=rel(d,'a'),br=rel(d,'b');
+  return compare(d,`권태 반응은 ${ar.bored}. 반복이 길어질 때 필요한 변화가 무엇인지 확인하는 게 중요해.`,`권태 반응은 ${br.bored}. 혼자 회복할 시간과 관계 안의 새 자극 중 무엇이 필요한지 구분하는 게 중요해.`)+`<p>권태는 사랑이 사라졌다는 판정이 아니야. <b>데이트 패턴, 생활 피로, 개인시간 부족, 대화 주제 고갈</b>이 겹치면 관계 자체가 문제인 것처럼 느껴질 수 있어.</p><div class="r26Scene"><b>권태 체크</b>상대를 바꾸기 전에 최근 한 달 동안 둘이 “같이 즐긴 것 / 각자 즐긴 것 / 억지로 맞춘 것”을 세 칸으로 나눠봐.</div>`;
+ }
+ function intimacy(d){
+  const ar=rel(d,'a'),br=rel(d,'b');
+  return compare(d,`친밀감은 ${ar.intimacy}. 정서적 안정과 신뢰가 표현량에 영향을 줄 수 있어.`,`친밀감은 ${br.intimacy}. 마음이 편할 때와 압박받을 때 표현 속도가 달라질 수 있어.`)+`<p>스킨십과 성적 친밀감은 실제 성욕을 사주로 측정하는 항목이 아니라, <b>가까움·매력·표현을 관계에서 얼마나 중요하게 느낄 수 있는지</b>를 참고하는 영역이야. 한쪽이 피곤하거나 혼자 있고 싶은 날을 거절로 단정하지 않는 규칙도 필요해.</p><div class="r26Scene"><b>맞춰볼 질문</b>“내가 사랑받는다고 느끼는 스킨십 / 부담스러운 스킨십 / 싸운 직후 필요한 거리”를 각각 말해봐.</div>`;
+ }
+ function social(d){
+  const ar=rel(d,'a'),br=rel(d,'b');
+  return compare(d,ar.people,br.people)+`<p>친구·술자리·모임·외출은 단순한 자유 문제가 아니라 <b>연애에서 어디까지를 공동 일정으로 보느냐</b>의 문제야. 통보식 약속에 예민한 사람과 사후 공유도 괜찮은 사람이 만나면, 사실보다 태도 때문에 더 크게 싸울 수 있어.</p><div class="r26Scene"><b>미리 정할 것</b>꼭 같이 가고 싶은 자리 / 각자 자유롭게 가도 되는 자리 / 늦어질 때 알려야 하는 기준 / 전 연인·새로운 이성과의 경계를 구체적으로 말해.</div>`;
+ }
+ function money(d){
+  const am=d.AD?.money||{},bm=d.BD?.money||{};
+  return compare(d,`수입은 ${val(am.earn,d.A?.money||'자기 기술과 역할을 수입으로 연결하는 방식')} 쪽. 지출은 ${val(am.leak,'관계·편의 비용이 누적되는지 확인할 필요가 있어')}.`,`수입은 ${val(bm.earn,d.B?.money||'자기 전문성과 기회를 수입으로 연결하는 방식')} 쪽. 지출은 ${val(bm.leak,'관심사·경험·생활비에서 우선순위가 달라질 수 있어')}.`)+`<p>돈 궁합은 누가 더 잘 버느냐보다 <b>누가 먼저 결제하고, 누가 정산하고, 누가 미래 비용을 기억하고, 누구의 소비가 기본값이 되는지</b>에서 체감돼.</p><div class="r26Scene"><b>유료 궁합에서 꼭 보는 질문</b>데이트비 / 선물 / 가족비용 / 반려동물비 / 여행 / 큰 구매를 각각 공동비용인지 개인비용인지 미리 정해. 선결제가 반복되면 액수보다 서운함이 먼저 쌓일 수 있어.</div>`;
+ }
+ function domestic(d){
+  const ag=val(d.A?.gift,'자기 방식으로 결과를 만드는 힘'),bg=val(d.B?.gift,'자기 방식으로 결과를 만드는 힘');
+  return compare(d,`${ag}. 잘하는 일을 계속 맡다 보면 보이지 않는 관리자 역할까지 떠안을 수 있어.`,`${bg}. 부탁받은 일과 스스로 찾아서 하는 일의 비중이 관계 만족도에 영향을 줄 수 있어.`)+`<p>동거에서는 청소·식사만이 아니라 <b>예약, 일정 기억, 가족 연락, 병원, 반려동물, 장보기, 선물, 갈등 중재</b> 같은 정서노동이 더 크게 문제 될 수 있어.</p><div class="r26Scene"><b>역할 분담표</b>실행자 / 결정자 / 비용 부담자 / 기억하는 사람을 따로 적어. 한 사람이 네 칸을 다 먹고 있다면 이미 불균형이 생긴 거야.</div>`;
+ }
+ function family(d){return `<p>장기연애에서는 두 사람만 잘 맞는다고 끝나지 않아. <b>부모·형제·친구·반려동물·자녀 계획</b>이 관계 안으로 들어왔을 때 누구 편을 먼저 드는지, 어디까지 도와줄지, 돈과 시간을 어디까지 쓸지가 중요해.</p>${compare(d,'가족·가까운 사람을 돕는 것과 대신 책임지는 것의 경계를 분명히 할수록 관계 피로가 줄어.','자기 가족과 연인의 경계가 충돌할 때 “누가 옳은가”보다 부부·연인 단위의 규칙을 먼저 정하는 게 중요해.')}<div class="r26Scene"><b>가족 경계 질문</b>가족이 돈·시간·주거·돌봄을 요구했을 때 둘이 먼저 상의해야 하는 기준을 만들어.</div>`}
+ function breakup(d){
+  const ar=val(d.AD?.loop?.stress,d.A?.anger||'서운함을 안에서 오래 쌓을 수 있어'),br=val(d.BD?.loop?.stress,d.B?.anger||'압박이 커지면 거리를 두거나 결론을 빨리 내릴 수 있어');
+  return compare(d,`위기 때 ${ar}.`,`위기 때 ${br}.`)+`<p>관계가 크게 흔들릴 때는 실제 이별 의사와 <b>지금 이 갈등에서 벗어나고 싶은 마음</b>을 구분해야 해. 감정이 최고조일 때 이별·동거·돈·가족을 한꺼번에 꺼내면 원래 문제보다 관계 전체가 위협받는 느낌이 커져.</p><div class="r26Scene"><b>위기 규칙</b>헤어짐을 말하기 전에 “지금 끝내고 싶은 건 관계인지, 반복되는 이 문제인지”를 먼저 확인해.</div>`;
+ }
+ function rebuild(d){
+  const ar=val(d.AD?.rel?.repair,d.AD?.loop?.recover||'사실과 감정을 정리한 뒤 다시 대화할 때 회복이 빠를 수 있어'),br=val(d.BD?.rel?.repair,d.BD?.loop?.recover||'자기 속도로 정리한 뒤 행동 변화가 보여야 신뢰가 돌아올 수 있어');
+  return compare(d,ar,br)+`<p>다시 좋아지는 조건은 “미안해” 한마디보다 <b>반복 원인이 바뀌는지</b>에 있어. 같은 문제로 여러 번 싸웠다면 사과의 진정성보다 생활 규칙이 실제로 바뀌었는지를 봐야 해.</p><div class="r26Scene"><b>회복 기준</b>① 문제를 둘 다 같은 말로 정의했는가 ② 다음 행동이 구체적인가 ③ 일주일·한 달 뒤에도 지켜지는가를 확인해.</div>`;
+ }
+ function timing(d){
+  const al=d.al,bl=d.bl;
+  return `<p>${E(d.aName)}님은 현재 ${al?`${E(al.ko)} 대운(${E(al.god||'')})`:'현재 대운'}, ${E(d.bName)}님은 ${bl?`${E(bl.ko)} 대운(${E(bl.god||'')})`:'현재 대운'} 흐름을 지나고 있어. 같은 관계 안에서도 <b>일·돈·책임·자유·회복</b> 중 무엇이 더 크게 느껴지는지가 다를 수 있어.</p><p>그래서 표현량이 줄었다고 바로 마음이 식었다고 보거나, 관계 욕구가 커졌다고 무조건 의존이라고 볼 필요는 없어. 가까운 연도는 둘의 세운이 같은 주제를 가리키는지, 서로 다른 주제를 가리키는지를 비교해서 생활 속도를 맞추는 자료로 쓰는 편이 좋아.</p><div class="r26Scene"><b>앞으로 볼 포인트</b>둘이 동시에 바빠지는 시기 / 한쪽만 관계 욕구가 커지는 시기 / 돈·주거·직업 결정이 겹치는 시기를 따로 보고 큰 결정을 한 번에 몰지 않는 게 좋아.</div>`;
+ }
+ function partnerBlind(d){
+  const b=rel(d,'b');
+  return `<p>${E(d.bName)}님은 장점이 강해질수록 그 장점의 그림자도 같이 커질 수 있어. ${E(b.anger)} 관계에서 ${E(b.attach)}이라는 반응이 겹치면, 본인은 “정리할 시간이 필요하다”고 느끼는데 상대는 “마음이 멀어졌다”고 받아들일 수 있어.</p><p>이 사람을 이해한다는 건 모든 행동을 받아준다는 뜻이 아니야. <b>반복되는 행동 중 설명 가능한 부분과 경계를 세워야 하는 부분을 나누는 것</b>이 더 중요해.</p>`;
+ }
+ function partnerNeeds(d){
+  const bd=deep(d,'b');
+  return `<p>${E(d.bName)}님이 관계에서 편안함을 느끼기 쉬운 조건은 ${E(val(bd?.rel?.comfort,'자기 삶과 선택권을 존중받으면서도 약속과 반응이 분명한 관계'))} 쪽이야.</p><p>반대로 사랑을 확인하기 위해 상대가 계속 추측해야 하거나, 규칙이 그때그때 바뀌거나, 혼자 정리할 시간과 관계 책임이 동시에 무너지면 피로가 커질 수 있어.</p><div class="r26Scene"><b>상대에게 물어볼 것</b>“연애에서 꼭 지켜졌으면 하는 것 세 가지 / 없어도 괜찮은 것 세 가지”를 직접 물어보면 사주보다 훨씬 정확한 현실 자료가 돼.</div>`;
+ }
+ function byTab(d,tab){
+  if(tab==='partner')return [
+   card('r26_partner_blind','07 · 상대가 스스로 놓치기 쉬운 점','장점이 과해질 때 관계에서는 이렇게 보일 수 있어',partnerBlind(d),evidence(d,`${d.bName} 장점의 그림자`)),
+   card('r26_partner_needs','08 · 이 사람이 관계에서 진짜 필요한 것','좋아하는 사람보다 오래 편한 관계의 조건을 봐',partnerNeeds(d),evidence(d,`${d.bName} 관계 욕구`)),
+   card('r26_partner_bored','09 · 권태·거리감','마음이 식은 것과 회복이 필요한 상태를 구분해야 해',boredom(d),evidence(d,'권태·거리감')),
+   card('r26_partner_social','10 · 친구·외출·개인시간','사랑과 자유의 경계가 어디인지 확인해',social(d),evidence(d,'사회관계·경계')),
+   card('r26_partner_intimacy','11 · 친밀감·스킨십','가까움의 속도와 표현 언어를 따로 봐',intimacy(d),evidence(d,'친밀감')),
+   card('r26_partner_future','12 · 이 사람과 오래 만나면','지금의 성격보다 앞으로 반복될 생활 패턴이 더 중요해',timing(d),evidence(d,'대운·세운·장기관계'))
+  ];
+  if(tab==='love')return [
+   card('r26_attraction','07 · 왜 서로 끌렸는지','초반의 설렘에는 각자 다른 이유가 들어 있어',attraction(d),evidence(d,'초반 끌림')),
+   card('r26_expect','08 · 좋아할수록 커지는 기대','사랑의 크기보다 말하지 않은 기대가 갈등을 만든다',expectations(d),evidence(d,'애정 기대')),
+   card('r26_talk','09 · 대화 번역기','같은 말을 서로 다른 의미로 듣는 순간을 줄여',communication(d),evidence(d,'의사소통')),
+   card('r26_bored','10 · 권태·새로운 자극','지루함과 관계의 끝은 같은 뜻이 아니야',boredom(d),evidence(d,'권태')),
+   card('r26_intimacy','11 · 친밀감·스킨십','사랑받는다고 느끼는 방식이 다를 수 있어',intimacy(d),evidence(d,'친밀감')),
+   card('r26_break','12 · 이별 위기가 올 때','끝내고 싶은 건 관계인지 반복되는 문제인지 구분해',breakup(d),evidence(d,'위기 반응')),
+   card('r26_rebuild','13 · 다시 좋아지려면','사과보다 반복 원인이 바뀌어야 해',rebuild(d),evidence(d,'회복 조건'))
+  ];
+  if(tab==='marriage')return [
+   card('r26_money','07 · 선결제·소비·공동비용','돈은 애정보다 운영 규칙이 먼저야',money(d),evidence(d,'공동재정')),
+   card('r26_domestic','08 · 집안일·정서노동·돌봄','잘하는 사람이 계속 맡는 구조가 가장 위험해',domestic(d),evidence(d,'생활 책임')),
+   card('r26_family','09 · 가족 개입과 경계','둘의 관계 밖에서 들어오는 책임을 어디까지 받을지 정해',family(d),evidence(d,'가족 경계')),
+   card('r26_social','10 · 친구·외출·개인시간','같이 살아도 각자의 사회생활은 남아 있어',social(d),evidence(d,'외부 관계')),
+   card('r26_intimacy','11 · 장기연애의 친밀감','생활 피로와 사랑의 표현을 분리해서 봐',intimacy(d),evidence(d,'장기 친밀감')),
+   card('r26_break','12 · 큰 갈등이 왔을 때','이별·돈·주거 결정을 한꺼번에 묶지 마',breakup(d),evidence(d,'장기 갈등')),
+   card('r26_timing','13 · 앞으로의 관계 속도','같은 방향이라도 타이밍이 다르면 한쪽만 서두르는 느낌이 날 수 있어',timing(d),evidence(d,'대운·세운'))
+  ];
+  return [
+   card('r26_attraction','08 · 왜 서로 끌렸는지','“잘 맞는다”보다 어떤 기능에 서로 끌렸는지부터 봐',attraction(d),evidence(d,'초반 끌림')),
+   card('r26_expect','09 · 서로에게 자동으로 기대하는 역할','말하지 않은 기대가 쌓이면 사랑이 업무처럼 느껴질 수 있어',expectations(d),evidence(d,'역할 기대')),
+   card('r26_talk','10 · 대화 번역기','해결하려는 말과 공감받고 싶은 말이 엇갈릴 수 있어',communication(d),evidence(d,'대화 방식')),
+   card('r26_bored','11 · 권태·거리감','지루함과 사랑이 식은 건 구분해서 봐야 해',boredom(d),evidence(d,'권태')),
+   card('r26_intimacy','12 · 친밀감·스킨십','가까움의 속도와 표현 방식을 맞춰야 해',intimacy(d),evidence(d,'친밀감')),
+   card('r26_family','13 · 가족·반려동물·돌봄','둘 사이가 좋아도 바깥 책임이 몰리면 관계가 지칠 수 있어',family(d),evidence(d,'가족·돌봄')),
+   card('r26_break','14 · 관계가 크게 흔들릴 때','이별 충동과 문제에서 벗어나고 싶은 마음을 구분해',breakup(d),evidence(d,'위기 반응')),
+   card('r26_rebuild','15 · 관계를 다시 세우는 조건','사과보다 생활 규칙이 바뀌는지가 더 중요해',rebuild(d),evidence(d,'재정비')),
+   card('r26_timing','16 · 현재와 앞으로의 관계 속도','각자 삶의 과제가 관계 표현량을 바꿀 수 있어',timing(d),evidence(d,'대운·세운'))
+  ];
+ }
+ function add(){
+  if(typeof hasPremiumCompat==='function'&&!hasPremiumCompat())return;
+  const root=document.getElementById('matchView'),d=pair();if(!root||!d||root.querySelector('[data-r26-depth="1"]'))return;
+  const cards=byTab(d,typeof matchTab!=='undefined'?matchTab:'summary');if(!cards.length)return;
+  const disclaimer=root.querySelector('.paidDisclaimer');
+  const divider=`<div class="r26Divider" data-r26-depth="1"><div class="mini">프리미엄 2부 · 관계 심층 리포트</div><h3>여기부터는 “잘 맞나?”보다 실제로 오래 만나며 생기는 문제를 더 깊게 볼게.</h3><p>앞의 풀이와 같은 문장을 반복하지 않고, 기대·대화·권태·친밀감·돈·가족·위기·회복·앞으로의 속도처럼 장기관계에서 새로 드러나는 영역을 이어서 봐.</p></div>`;
+  const html=divider+cards.join('');
+  if(disclaimer)disclaimer.insertAdjacentHTML('beforebegin',html);else root.insertAdjacentHTML('beforeend',html);
+  const introK=root.querySelector('.r23CompatIntro .easyKicker');
+  if(introK)introK.textContent=introK.textContent.replace(/R2[345]/g,'R26');
+  [...root.querySelectorAll('article.r24CompatCard,article.r26DeepCard')].forEach((x,i)=>{
+   const k=x.querySelector('.easyKicker');if(!k)return;
+   const title=k.textContent.replace(/^\s*\d+\s*·\s*/,'').trim();
+   k.textContent=String(i+1).padStart(2,'0')+' · '+title;
+  });
+ }
+ const prev=window.renderCompatCards;
+ if(typeof prev==='function'){
+  const wrapped=function(){const r=prev.apply(this,arguments);try{add()}catch(_e){}return r};
+  window.renderCompatCards=wrapped;try{renderCompatCards=wrapped}catch(_e){}
+ }
+ setTimeout(()=>{try{add()}catch(_e){}},0);
 })();
 </script>
 
