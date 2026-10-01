@@ -1090,6 +1090,78 @@ button[onclick*="guiinPaymentCenterStart"]{display:none!important}
   #home .tiles .tile:nth-child(3) p{font-size:10px!important;line-height:1.5!important}
 }
 </style>
+
+<style>
+/* GUIIN HOME TOP 3 TEXT OVERLAP FIX · 2026-10-01 */
+#home .tiles .tile:nth-child(-n+3){
+  display:flex!important;
+  flex-direction:column!important;
+  min-height:190px!important;
+  height:auto!important;
+  padding:13px 8px 10px!important;
+}
+#home .tiles .tile:nth-child(-n+3) p{
+  font-size:10px!important;
+  line-height:1.5!important;
+  margin:5px 0 12px!important;
+  min-height:45px!important;
+  max-height:none!important;
+  overflow:visible!important;
+  display:block!important;
+  white-space:normal!important;
+  word-break:keep-all!important;
+}
+#home .tiles .tile:nth-child(-n+3) button{
+  position:static!important;
+  left:auto!important;
+  right:auto!important;
+  bottom:auto!important;
+  width:100%!important;
+  margin-top:auto!important;
+  padding:8px 4px!important;
+}
+@media(max-width:390px){
+  #home .tiles .tile:nth-child(-n+3){min-height:194px!important}
+  #home .tiles .tile:nth-child(-n+3) p{font-size:9.8px!important;line-height:1.5!important}
+}
+</style>
+<style>
+
+/* MANSE FIRST — show the calculated chart before decorative artwork */
+#resultView > .manseSnapshot:first-child{margin-top:10px!important}
+#resultView > .manseSnapshot:first-child .manseProfile{
+  background:linear-gradient(145deg,#fff4bf,#ffe36b)!important;
+  border:1px solid #efbd2e!important;
+  box-shadow:0 8px 22px rgba(177,126,16,.12)!important;
+}
+#resultView > .manseSnapshot:first-child .manseEyebrow{color:#7b5a00!important;font-size:10px!important}
+#resultView > .manseSnapshot:first-child .manseProfile h2{font-size:24px!important;color:#18372c!important}
+#resultView > .manseSnapshot:first-child .manseChartCard{
+  border:2px solid #149052!important;
+  box-shadow:0 10px 26px rgba(15,109,74,.12)!important;
+  overflow:hidden!important;
+}
+#resultView > .manseSnapshot:first-child .manseSectionHead{
+  margin:-18px -18px 14px!important;
+  padding:14px 16px!important;
+  background:#0b8f4f!important;
+  align-items:center!important;
+}
+#resultView > .manseSnapshot:first-child .manseSectionHead span,
+#resultView > .manseSnapshot:first-child .manseSectionHead h3,
+#resultView > .manseSnapshot:first-child .manseSectionHead small{color:#fff!important}
+#resultView > .manseSnapshot:first-child .manseSectionHead h3{font-size:19px!important}
+#resultView > .manseSnapshot:first-child .manseTableWrap{overflow-x:hidden!important}
+#resultView > .manseSnapshot:first-child .manseTable{min-width:0!important;width:100%!important}
+#resultView > .manseSnapshot:first-child .manseRow{grid-template-columns:42px repeat(4,minmax(0,1fr))!important}
+#resultView > .manseSnapshot:first-child .manseCell{padding:10px 3px!important}
+#resultView > .manseSnapshot:first-child .manseCell .bigChar{font-size:31px!important;line-height:1.05!important}
+#resultView > .manseSnapshot:first-child .manseHead .manseCell{font-size:9px!important}
+#resultView > .manseSnapshot:first-child .manseLabel{font-size:8px!important}
+#resultView > .manseSnapshot:first-child .manseElements{margin-top:14px!important}
+#resultView > .manseSnapshot:first-child .manseReadGuide{margin-top:14px!important}
+
+</style>
 </head>
 <body><div class="guiinDemoBadge">DEMO · 전체풀이 무료</div>
 <div class="app">
@@ -3964,14 +4036,14 @@ function renderResult(){
   const manseTop=guiinRenderManse(c,{title:c.input.name+'님의 만세력',eyebrow:'내 사주'})+guiinStarGuideButtonHTML(c);
   let body='';
   if(!hasPremiumLifetime()){
-    if(currentTab==='summary') body=visualHero+manseTop+guiinFreeSummaryHTML(c)+premiumSampleHTML(c);
-    else body=visualHero+manseTop+`<div class="easyIntro card"><div class="easyKicker">프리미엄 심층 풀이</div><h2>${esc(c.input.name)}님의 실제 ${currentTab==='personality'?'성격·기질':currentTab==='fields'?'직업·재물·연애':currentTab==='stars'?'신살·귀인':currentTab==='flow'?'대운·세운':'사주 원국'} 해석은 결제 후 열립니다.</h2><p>결제 전에는 실제 명식에서 계산된 일부 결과와 풀이 예시 1개만 보여드리고, 핵심 심층 해석과 연·월 타이밍은 잠금 상태로 유지합니다.</p></div>`+premiumSampleHTML(c);
-  }else if(currentTab==='summary') body=visualHero+manseTop+longSummaryHTML(c)+personalityReport(c)+fieldsReport(c);
+    if(currentTab==='summary') body=manseTop+visualHero+guiinFreeSummaryHTML(c)+premiumSampleHTML(c);
+    else body=manseTop+visualHero+`<div class="easyIntro card"><div class="easyKicker">프리미엄 심층 풀이</div><h2>${esc(c.input.name)}님의 실제 ${currentTab==='personality'?'성격·기질':currentTab==='fields'?'직업·재물·연애':currentTab==='stars'?'신살·귀인':currentTab==='flow'?'대운·세운':'사주 원국'} 해석은 결제 후 열립니다.</h2><p>결제 전에는 실제 명식에서 계산된 일부 결과와 풀이 예시 1개만 보여드리고, 핵심 심층 해석과 연·월 타이밍은 잠금 상태로 유지합니다.</p></div>`+premiumSampleHTML(c);
+  }else if(currentTab==='summary') body=manseTop+visualHero+longSummaryHTML(c)+personalityReport(c)+fieldsReport(c);
   else if(currentTab==='personality') body=visualHero+personalityReport(c);
   else if(currentTab==='fields') body=visualHero+fieldsReport(c);
   else if(currentTab==='stars') body=visualHero+starDetails(c)+foundationReport(c);
-  else if(currentTab==='flow') body=visualHero+flowReport(c);
-  else if(currentTab==='chart') body=visualHero+wongukHTML(c)+manseTop+foundationReport(c);
+  else if(currentTab==='flow') body=manseTop+flowReport(c);
+  else if(currentTab==='chart') body=manseTop+wongukHTML(c)+foundationReport(c);
   view.innerHTML=guiinR19PolishHTML(body?body+tailQuestionsHTML('사주'):emptyStateHTML('결과를 준비하지 못했어요.','화면을 새로고침하지 말고 다른 탭을 눌렀다가 다시 돌아와 주세요.'));
  setTimeout(()=>{guiinTextSimilarityReport('resultView');guiinSemanticSimilarityReport('resultView');},0);
  }catch(e){
