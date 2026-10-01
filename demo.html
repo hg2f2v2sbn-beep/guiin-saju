@@ -1,5 +1,5 @@
 <!doctype html>
-<!-- GUIIN R24 · COMPLETE COMPATIBILITY ENGINE · 2026-09-30 -->
+<!-- GUIIN R25 · COMPLETE COMPATIBILITY QA REFINEMENT · 2026-10-01 -->
 <!-- GUIIN R17 INTEGRATED RESTORE · feature-complete demo + R17 personalization · 2026-09-28 -->
 <!-- GUIIN R17 · QA-personalized longform saju + compatibility + full calculated-star interpretation · 2026-09-28 -->
 
@@ -7093,6 +7093,141 @@ document.addEventListener('visibilitychange',()=>{
  globalThis.guiinCompatR24Type=typeOf;
  globalThis.renderCompatCards=render;
  try{renderCompatCards=render;}catch(_e){}
+})();
+</script>
+
+
+<!-- GUIIN R25 · compatibility QA refinement · 2026-10-01 -->
+<style>
+.r25Accuracy{margin:0 0 12px;padding:10px 12px;border-radius:13px;background:#f7f7f4;border:1px solid rgba(0,0,0,.05);font-size:11px;line-height:1.6;color:#68645c}
+</style>
+<script>
+/* GUIIN R25 — actual rendered-output QA fixes
+   - top compatibility summary uses the same dominant-element basis as deep reading
+   - conflict escalation follows each person's attachment/reaction pattern
+   - duplicated recovery/jealousy copy is replaced with person-specific wording
+   - unknown birth-time scope is shown in the result
+   - duplicate relationship-type card is removed because the hero already shows it
+*/
+(function(){
+ if(globalThis.__GUIIN_R25_COMPAT_QA__)return;
+ globalThis.__GUIIN_R25_COMPAT_QA__=true;
+ const E=typeof compatEsc==='function'?compatEsc:(x=>String(x??'').replace(/[&<>\"]/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','\"':'&quot;'}[m])));
+ const val=(x,f='')=>String(x||f||'').replace(/\s+/g,' ').trim();
+ const stripLead=(s)=>val(s).replace(/^회복은\s*/,'').replace(/^속에서는\s+속에서는\s*/,'속에서는 ');
+ function currentPair(){
+  try{
+   const a=matchAnalysis?.a||matchAnalysis?.left||matchAnalysis?.chartA||matchMeta?.a;
+   const b=matchAnalysis?.b||matchAnalysis?.right||matchAnalysis?.chartB||matchMeta?.b;
+   if(!a||!b)return null;
+   const d=typeof globalThis.guiinCompatR23PairData==='function'?globalThis.guiinCompatR23PairData(a,b):null;
+   return d?Object.assign(d,{a,b}):null;
+  }catch(_e){return null;}
+ }
+ function misread(label){
+  const x=val(label);
+  if(/확인|긴장|불안/.test(x))return '답이 늦거나 거리가 생기면 관심이 식었다고 받아들이기 쉬워';
+  if(/거리|자율|혼자/.test(x))return '반복 확인이나 즉답 요구를 압박이나 통제로 받아들이기 쉬워';
+  if(/자유|표현|자극/.test(x))return '규칙이 갑자기 늘면 신뢰받지 못하거나 자유가 줄었다고 느끼기 쉬워';
+  if(/안정|책임|약속/.test(x))return '약속이 자주 바뀌거나 행동이 들쭉날쭉하면 관계 우선순위가 낮아졌다고 느끼기 쉬워';
+  if(/정서|보호/.test(x))return '말투가 차가워지거나 정서적 반응이 줄면 혼자 밀려났다고 느끼기 쉬워';
+  return '상대 행동의 이유를 확인하기 전에 자기 기준으로 의미를 붙이기 쉬워';
+ }
+ function jealousyTrigger(label){
+  const x=val(label);
+  if(/확인|긴장|불안/.test(x))return '연락 빈도나 우선순위가 갑자기 달라질 때 확인 욕구가 커질 수 있어';
+  if(/거리|자율|혼자/.test(x))return '친구·외출·개인시간을 계속 설명하거나 허락받아야 한다고 느낄 때 답답함이 커질 수 있어';
+  if(/자유|표현|자극/.test(x))return '새로운 활동이나 사람 관계를 제한받는다고 느낄 때 관계 자체가 답답해질 수 있어';
+  if(/안정|책임|약속/.test(x))return '약속이 반복해서 바뀌거나 말과 행동이 다를 때 신뢰가 흔들릴 수 있어';
+  if(/정서|보호/.test(x))return '정서적 반응이 줄거나 차갑게 느껴질 때 관계의 안전감을 다시 확인하고 싶어질 수 있어';
+  return '애매한 약속과 설명되지 않은 거리 변화가 반복될 때 불편함이 커질 수 있어';
+ }
+ function recoveryPair(d){
+  let ar=val(d.AD?.rel?.repair),br=val(d.BD?.rel?.repair);
+  const ar2=val(d.AD?.loop?.recover,'사실과 감정을 정리한 뒤 다시 대화할 때 회복이 빨라질 수 있어.');
+  const br2=val(d.BD?.loop?.recover,'자기 속도로 정리한 뒤 다시 연결할 때 회복이 빨라질 수 있어.');
+  if(!ar)ar=ar2;if(!br)br=br2;
+  if(ar===br){ar=ar2;br=br2;}
+  return [stripLead(ar),stripLead(br)];
+ }
+ function compare(d,aText,bText){return `<div class="r24Compare"><div><b>${E(d.aName)}님</b><p>${E(aText)}</p></div><div><b>${E(d.bName)}님</b><p>${E(bText)}</p></div></div>`;}
+ function conflictHTML(d){
+  const as=val(d.AD?.loop?.stress,d.A?.anger||'서운함이 쌓이면 표현이 뒤늦게 강해질 수 있어.');
+  const bs=val(d.BD?.loop?.stress,d.B?.anger||'압박이 커지면 거리를 두거나 결론을 빨리 내릴 수 있어.');
+  const [ar,br]=recoveryPair(d);
+  const aa=d.A?.attachment||d.ta?.attachmentLabel||'',bb=d.B?.attachment||d.tb?.attachmentLabel||'';
+  const ma=misread(aa),mb=misread(bb);
+  const clash=ma===mb?`${E(d.aName)}님과 ${E(d.bName)}님 모두 ${E(ma)}. 같은 지점에서 불편함을 느껴도 1·2단계처럼 반응 방향은 달라질 수 있어서, 서로가 자기 마음을 모른다고 느끼기 쉬워.`:`${E(d.aName)}님은 ${E(ma)}. ${E(d.bName)}님은 ${E(mb)}. 이 두 해석이 동시에 생기면 원래 사건보다 “나를 어떻게 생각하느냐”가 더 큰 싸움이 될 수 있어.`;
+  return `<div class="r24Scenario"><div class="r24ScenarioStep"><b>1 · ${E(d.aName)}님의 시작 반응</b>${E(as)}</div><div class="r24ScenarioStep"><b>2 · ${E(d.bName)}님의 맞반응</b>${E(bs)}</div><div class="r24ScenarioStep"><b>3 · 서로 다르게 해석하는 순간</b>${clash}</div><div class="r24ScenarioStep"><b>4 · 멈춰야 하는 지점</b>이별·돈·동거·가족처럼 큰 결론을 한꺼번에 꺼내지 말고 지금 싸움의 주제 하나만 남겨두는 게 좋아.</div><div class="r24ScenarioStep"><b>5 · ${E(d.aName)}님의 회복 포인트</b>${E(ar)}</div><div class="r24ScenarioStep"><b>6 · ${E(d.bName)}님의 회복 포인트</b>${E(br)}</div></div>`;
+ }
+ function jealousyHTML(d){
+  const aa=d.A?.attachment||d.ta?.attachmentLabel||'',bb=d.B?.attachment||d.tb?.attachmentLabel||'';
+  const ap=val(d.A?.people,'신뢰와 개인관계의 균형을 중요하게 보는 편이야.');
+  const bp=val(d.B?.people,'신뢰와 개인관계의 균형을 중요하게 보는 편이야.');
+  const at=jealousyTrigger(aa),bt=jealousyTrigger(bb);
+  let aLine=`${at} 사회관계에서는 ${ap}`;
+  let bLine=`${bt} 사회관계에서는 ${bp}`;
+  if(aLine===bLine){
+    const bbored=val(d.B?.boredomText||d.tb?.boredomText,'관계 밖에서 자기 리듬을 회복할 시간도 필요한 편이야.');
+    bLine=`비슷한 지점에서 불편함이 생길 수 있지만, ${bbored} 사회관계에서는 ${bp}`;
+  }
+  return compare(d,aLine,bLine)+`<p>질투는 누가 더 사랑하느냐보다 <b>무엇을 관계의 위협으로 느끼는지</b>가 다를 때 커져. 한쪽에게 친구 약속은 평범한 개인생활인데 다른 쪽에는 우선순위가 밀린 신호처럼 느껴질 수 있어.</p><div class="r24Rule"><b>둘이 정할 규칙</b><p>친구 약속은 통보가 아니라 공유하기 / 늦어질 때 한 번 알리기 / 꼭 함께할 자리와 각자 가도 되는 자리를 구분하기 / 질투가 올라왔을 때 상대의 친구를 공격하지 말고 내가 필요한 행동을 말하기.</p></div>`;
+ }
+ function apologyHTML(d){
+  const [ar,br]=recoveryPair(d);
+  return compare(d,`사과를 들은 뒤에는 ${ar}`,`사과를 들은 뒤에는 ${br}`)+`<p>사과의 효과도 같지 않아. 한 사람은 설명과 인정이 있어야 풀리고, 다른 사람은 시간이 지난 뒤 실제 행동이 달라지는 걸 봐야 신뢰가 돌아올 수 있어. 그래서 “미안하다고 했잖아”보다 <b>무엇을 인정했고 다음에 무엇을 바꿀지</b>가 중요해.</p><div class="r24Rule"><b>회복 문장</b><p>“무슨 일이 있었는지 / 내가 뭘 놓쳤는지 / 다음에는 어떻게 바꿀지”를 한 세트로 말해. 상대가 바로 괜찮아져야 한다고 요구하지 않는 것도 회복의 일부야.</p></div>`;
+ }
+ function accuracy(d){
+  const aUnknown=!!d.a?.input?.hourUnknown,bUnknown=!!d.b?.input?.hourUnknown;
+  if(!aUnknown&&!bUnknown)return '';
+  const who=[aUnknown?d.aName:null,bUnknown?d.bName:null].filter(Boolean).join('·');
+  return `<div class="r25Accuracy"><b>해석 범위 안내</b> · ${E(who)}님은 출생시간이 입력되지 않아 시주가 필요한 세부 신살·관계 신호는 제외하거나 보수적으로 읽고 있어. 연·월·일주와 확인 가능한 대운·세운 중심의 궁합이야.</div>`;
+ }
+ function post(){
+  const root=document.getElementById('matchView'),d=currentPair();if(!root||!d)return;
+  // 상세과 같은 중심오행 기준을 상단 요약에도 사용한다.
+  try{
+   const pair=typeof compatPairProfile==='function'?compatPairProfile(d.elA,d.elB):null;
+   const p=root.querySelector('.matchHero>p');
+   if(p&&pair?.fit)p.textContent=pair.fit+' 점수보다 실제 생활에서 반복되는 패턴을 같이 보는 게 더 중요해.';
+  }catch(_e){}
+  // 관계 타입은 상단 히어로에서 이미 보여주므로 동일 카드의 반복 노출을 제거한다.
+  root.querySelectorAll('article[data-r24-key="type"]').forEach(x=>x.remove());
+  // 출생시간 미입력 범위를 명확히 안내한다.
+  const hero=root.querySelector('.r24TypeHero');if(hero&&!root.querySelector('.r25Accuracy'))hero.insertAdjacentHTML('afterend',accuracy(d));
+  // 장면별 문장을 실제 두 사람 반응으로 다시 작성한다.
+  root.querySelectorAll('article[data-r24-key="conflict"],article[data-r24-key="partnerConflict"]').forEach(x=>{const b=x.querySelector('.r23Body');if(b)b.innerHTML=conflictHTML(d);});
+  root.querySelectorAll('article[data-r24-key="jealousy"]').forEach(x=>{const b=x.querySelector('.r23Body');if(b)b.innerHTML=jealousyHTML(d);});
+  root.querySelectorAll('article[data-r24-key="apology"],article[data-r24-key="partnerApology"]').forEach(x=>{const b=x.querySelector('.r23Body');if(b)b.innerHTML=apologyHTML(d);});
+  // 이전 개인화 문구에서 발생할 수 있는 겹말을 최종 화면에서 정리한다.
+  root.querySelectorAll('.r23Body').forEach(x=>{x.innerHTML=x.innerHTML.replace(/속에서는\s*속에서는/g,'속에서는').replace(/회복은\s*회복은/g,'회복은');});
+  // 표시 버전과 카드 번호도 실제 보이는 구조에 맞춘다.
+  const introK=root.querySelector('.r23CompatIntro .easyKicker');if(introK)introK.textContent=introK.textContent.replace(/R24/g,'R25');
+  [...root.querySelectorAll('article.r24CompatCard')].forEach((x,i)=>{const k=x.querySelector('.easyKicker');if(k){const title=k.textContent.replace(/^\s*\d+\s*·\s*/,'');k.textContent=String(i+1).padStart(2,'0')+' · '+title;}});
+  // 상대방 분석에서 이전 템플릿의 긴 문장이 완전히 반복되면 두 번째 문장만 제거한다.
+  if(typeof matchTab!=='undefined'&&matchTab==='partner'){
+    const seen=new Set();
+    root.querySelectorAll('.r23Body p').forEach(p=>{
+      let h=p.innerHTML;
+      const plain=p.textContent||'';
+      const sentences=plain.split(/(?<=[.!?])\s+/).map(x=>x.trim()).filter(Boolean);
+      for(const sentence of sentences){
+        const key=sentence.replace(/\s+/g,' ').trim();
+        if(key.length<55)continue;
+        if(seen.has(key)&&h.includes(sentence))h=h.replace(sentence,'');else seen.add(key);
+      }
+      p.innerHTML=h;
+    });
+  }
+  try{if(typeof guiinTextSimilarityReport==='function')guiinTextSimilarityReport('matchView');if(typeof guiinSemanticSimilarityReport==='function')guiinSemanticSimilarityReport('matchView');}catch(_e){}
+ }
+ const prev=window.renderCompatCards;
+ if(typeof prev==='function'){
+  const wrapped=function(){const v=prev.apply(this,arguments);try{post();}catch(_e){}return v;};
+  window.renderCompatCards=wrapped;try{renderCompatCards=wrapped;}catch(_e){}
+ }
+ // 직접 화면이 이미 열린 상태에서 파일만 교체한 경우에도 한 번 보정한다.
+ setTimeout(()=>{try{post();}catch(_e){}},0);
 })();
 </script>
 
