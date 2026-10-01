@@ -1,5 +1,5 @@
 <!doctype html>
-<!-- GUIIN R28 · INTEGRATED SHINSAL PERSON PORTRAIT · 2026-10-01 -->
+<!-- GUIIN PRODUCTION · DEMO R28 MERGED · 2026-10-01 -->
 <!-- GUIIN R17 INTEGRATED RESTORE · feature-complete demo + R17 personalization · 2026-09-28 -->
 <!-- GUIIN R17 · QA-personalized longform saju + compatibility + full calculated-star interpretation · 2026-09-28 -->
 
@@ -22,10 +22,11 @@
 </script>
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <meta name="theme-color" content="#fffaf1">
-<title>귀인사주 DEMO</title>
+<title>귀인사주 | 무료 명식 · 평생사주 · 궁합</title>
+<!-- GUIIN PROD MERGE: R17–R28 interpretation + production resource lock + KG Inicis transition -->
 <meta name="description" content="무료 사주 명식, 대운·세운·월운·일운, 신살과 궁합을 쉽게 확인하는 귀인사주">
-<link rel="canonical" href="https://gwiinsaju.com/">
-<meta name="robots" content="noindex,follow,noarchive">
+<link rel="canonical" href="https://gwiinsaju.com/demo.html">
+<meta name="robots" content="noindex,nofollow">
 <meta name="geo.region" content="KR">
 <meta property="og:locale" content="ko_KR">
 <meta property="og:type" content="website">
@@ -570,7 +571,70 @@ html{background:#efe7d7}.app{background:linear-gradient(180deg,#fffaf0 0%,#fff6e
 .pageIllustration.contain img{object-fit:contain}
 #saju .pageIllustration{aspect-ratio:16/6.6}
 #guide .pageIllustration{aspect-ratio:16/6.2}
-#ask .pageIllustration{aspect-ratio:16/6.5}
+#ask .pageIllustration{aspect-ratio:16/7.8;background:#f7f3e8}
+#ask .pageIllustration img{object-fit:contain;object-position:center}
+/* ASK BANNER FINAL FIX — show the complete artwork without cropping */
+#ask .pageIllustration.askBanner{
+  width:100%!important;
+  height:auto!important;
+  min-height:0!important;
+  aspect-ratio:auto!important;
+  padding:0!important;
+  overflow:hidden!important;
+  background:#f7f3e8!important;
+}
+#ask .pageIllustration.askBanner img{
+  width:100%!important;
+  height:auto!important;
+  max-height:none!important;
+  object-fit:contain!important;
+  object-position:center center!important;
+  display:block!important;
+}
+/* ASK HERO — match the result-summary card style */
+#ask .askHero{
+  min-height:190px!important;
+  padding:20px 44% 20px 20px!important;
+  display:flex!important;
+  align-items:center!important;
+  background:
+    radial-gradient(circle at 88% 18%,rgba(113,194,74,.16),transparent 28%),
+    linear-gradient(135deg,#f4ffe7 0%,#fffbe9 58%,#fff7e8 100%)!important;
+}
+#ask .askHero .heroCopy{padding-right:0!important}
+#ask .askHero .heroPet{
+  display:block!important;
+  position:absolute!important;
+  right:0!important;
+  top:0!important;
+  bottom:0!important;
+  width:42%!important;
+  overflow:hidden!important;
+  border-radius:0 23px 23px 0!important;
+}
+#ask .askHero .heroPet img{
+  width:100%!important;
+  height:100%!important;
+  object-fit:contain!important;
+  object-position:right bottom!important;
+  display:block!important;
+}
+#ask .askHero h2{
+  font-size:22px!important;
+  line-height:1.35!important;
+  color:#075b48!important;
+  margin-bottom:8px!important;
+}
+#ask .askHero p{
+  max-width:220px!important;
+  font-size:11px!important;
+  line-height:1.65!important;
+}
+@media(max-width:370px){
+  #ask .askHero{min-height:178px!important;padding:18px 42% 18px 16px!important}
+  #ask .askHero .heroPet{width:40%!important}
+  #ask .askHero h2{font-size:20px!important}
+}
 #wallet .pageIllustration{aspect-ratio:16/6.2}
 #manage .pageIllustration{aspect-ratio:16/6.2}
 #yearLuck .pageIllustration{aspect-ratio:16/6.2}
@@ -875,12 +939,7 @@ button{position:relative}
 <style id="GUIIN_INTERPRET_STYLE_V10">
 .deepNarrativeNote{margin:10px 14px;padding:11px 13px;border-radius:14px;background:#f8f4ea;color:#6f675b;font-size:10px;line-height:1.65}
 </style>
-<style id="GUIIN_DEMO_BADGE">
-.guiinDemoBadge{position:fixed;top:calc(14px + env(safe-area-inset-top));right:16px;z-index:9999;background:#275f4c;color:#fff;border-radius:999px;padding:8px 13px;font-size:12px;font-weight:900;box-shadow:0 5px 16px rgba(23,63,45,.16);pointer-events:none}
-</style><style id="GUIIN_DEMO_FREE_MODE">
-#wallet,#payments,#paySheet,#premiumSheet,#compatSheet,[data-guiin-nav="wallet"],[data-guiin-nav="payments"],button[onclick^="openPaySheet"],button[onclick="openPremiumPay()"],button[onclick="openCompatPay()"]{display:none!important}
-.guiinDemoFreeNotice{margin:10px 14px 8px;padding:11px 13px;border-radius:14px;background:#eef7ed;color:#2f6444;font-size:11px;font-weight:850;line-height:1.6}
-</style>
+
 <style id="guiin-r20-style">
 /* GUIIN R20 — readability, evidence folding, quick summaries */
 .r20QuickMap{padding:18px;margin:14px 0 18px;border:1px solid rgba(91,72,38,.14);background:linear-gradient(180deg,rgba(255,252,245,.98),rgba(255,255,255,.98))}
@@ -922,6 +981,115 @@ button{position:relative}
 .scoreBasisNote{margin:8px auto 0;max-width:560px;font-size:10px;line-height:1.55;opacity:.6;word-break:keep-all}
 </style>
 
+
+<style id="GUIIN_IMAGE_LAYOUT_FINAL_20261001">
+/* Final image placement layer. Kept at the end of <head> so earlier iterative styles cannot override it. */
+.homeHero{overflow:hidden!important;position:relative!important}
+.homeHero .heroArt{height:255px!important;margin:0!important;overflow:hidden!important;border-radius:0!important;background:#eef7df!important}
+.homeHero .heroArt img{width:100%!important;height:100%!important;display:block!important;object-fit:cover!important;object-position:50% 54%!important;transform:none!important}
+
+/* title cards: portrait cat stays on the right without being stretched */
+.screenTitle{min-height:184px!important;position:relative!important;overflow:hidden!important;padding:18px 43% 15px 14px!important}
+.screenTitle .sideArt{position:absolute!important;right:0!important;bottom:0!important;width:43%!important;height:100%!important;border-radius:0!important;overflow:hidden!important;background:transparent!important}
+.screenTitle .sideArt img{width:100%!important;height:100%!important;display:block!important;object-fit:cover!important;object-position:50% 30%!important;transform:none!important}
+.screenTitle .mark{z-index:2!important}
+.screenTitle>div:nth-child(2){position:relative!important;z-index:2!important}
+
+/* all wide illustration banners get a stable mobile height; no contain/cover flip-flopping */
+.pageIllustration{width:100%!important;height:168px!important;min-height:168px!important;aspect-ratio:auto!important;padding:0!important;overflow:hidden!important;border-radius:20px!important;background:#f7f3e8!important}
+.pageIllustration img{width:100%!important;height:100%!important;display:block!important;object-fit:cover!important;object-position:50% 50%!important;transform:none!important}
+.pageIllustration img[src*="input-cat"]{object-position:50% 28%!important}
+.pageIllustration img[src*="result-animals"]{object-position:50% 45%!important}
+.pageIllustration img[src*="brand-home"]{object-position:50% 46%!important}
+.pageIllustration img[src*="mypage-animals"],
+.pageIllustration img[src*="compat-animals"]{object-position:50% 52%!important}
+
+/* result-section hero art: each source has a different focal point */
+.guiinVisualHero.withArt{min-height:176px!important;padding:18px 43% 18px 17px!important;display:flex!important;align-items:center!important;overflow:hidden!important}
+.guiinVisualHero.withArt .heroCopy{padding-right:0!important;position:relative!important;z-index:3!important}
+.guiinVisualHero.withArt .heroPet{display:block!important;position:absolute!important;right:0!important;top:0!important;bottom:0!important;width:42%!important;height:100%!important;overflow:hidden!important;border-radius:0 23px 23px 0!important}
+.guiinVisualHero.withArt .heroPet img{width:100%!important;height:100%!important;display:block!important;object-fit:cover!important;object-position:50% 45%!important;transform:none!important}
+.guiinVisualHero.withArt .heroPet img[src*="input-cat"]{object-position:50% 29%!important}
+.guiinVisualHero.withArt .heroPet img[src*="result-animals"]{object-position:50% 44%!important}
+.guiinVisualHero.withArt .heroPet img[src*="hero-animals"]{object-position:53% 52%!important}
+
+/* AI ask screen: match the reference layout — copy left, cat right */
+.askHero{min-height:178px!important;padding:18px 42% 18px 18px!important;display:flex!important;align-items:center!important;position:relative!important;overflow:hidden!important}
+.askHero .heroPet{display:block!important;position:absolute!important;right:0!important;top:0!important;bottom:0!important;width:41%!important;height:100%!important;overflow:hidden!important;border-radius:0 23px 23px 0!important}
+.askHero .heroPet img{width:100%!important;height:100%!important;object-fit:cover!important;object-position:50% 29%!important;display:block!important;transform:none!important}
+.askHero .heroCopy{position:relative!important;z-index:3!important;padding:0!important}
+
+.matchArt{height:190px!important;overflow:hidden!important;border-radius:16px!important;margin-top:10px!important}
+.matchArt img{width:100%!important;height:100%!important;object-fit:cover!important;object-position:50% 53%!important;display:block!important;transform:none!important}
+.todayArt{height:190px!important;overflow:hidden!important;border-radius:16px!important}
+.todayArt img{width:100%!important;height:100%!important;object-fit:cover!important;object-position:50% 50%!important;display:block!important;transform:none!important}
+.summaryArt{height:135px!important;overflow:hidden!important;border-radius:16px!important}
+.summaryArt img{width:100%!important;height:100%!important;object-fit:cover!important;object-position:50% 48%!important;display:block!important;transform:none!important}
+.footerArt{height:150px!important;overflow:hidden!important;border-radius:16px!important}
+.footerArt img{width:100%!important;height:100%!important;object-fit:cover!important;object-position:50% 53%!important;display:block!important;transform:none!important}
+.manageCard img{object-fit:cover!important;object-position:50% 50%!important;transform:none!important}
+.avatar img,.bigAvatar img,.logo-dot img,.mark img{object-fit:cover!important;object-position:50% 50%!important;transform:none!important}
+
+@media (max-width:390px){
+  .homeHero .heroArt{height:240px!important}
+  .screenTitle{min-height:172px!important;padding-right:42%!important}
+  .screenTitle .sideArt{width:42%!important}
+  .pageIllustration{height:154px!important;min-height:154px!important}
+  .guiinVisualHero.withArt{min-height:166px!important;padding-right:42%!important}
+  .guiinVisualHero.withArt .heroPet{width:41%!important}
+  .askHero{min-height:168px!important;padding-right:41%!important}
+  .askHero .heroPet{width:40%!important}
+}
+</style>
+
+
+<style id="GUIIN_DEMO_FREE_MODE_20261001">
+.guiinDemoBadge{position:fixed;top:calc(10px + env(safe-area-inset-top));right:12px;z-index:9999;background:#275f4c;color:#fff;border-radius:999px;padding:7px 11px;font-size:10px;font-weight:900;box-shadow:0 5px 16px rgba(23,63,45,.16);pointer-events:none}
+#wallet,#payments,#paymentInfo,#paySheet,#premiumSheet,#compatSheet,
+[data-guiin-nav="wallet"],[data-guiin-nav="payments"],[data-guiin-nav="paymentInfo"],
+button[onclick^="openPaySheet"],button[onclick="openPremiumPay()"],button[onclick="openCompatPay()"],
+button[onclick*="guiinPaymentCenterStart"]{display:none!important}
+.guiinDemoFreeNotice{margin:10px 14px 8px;padding:11px 13px;border-radius:14px;background:#eef7ed;color:#2f6444;font-size:11px;font-weight:850;line-height:1.6}
+</style>
+
+
+<style>
+/* GUIIN HOME ONLY FIX · 2026-10-01 20:44 */
+#home .tiles .tile{min-height:154px!important;padding-bottom:42px!important}
+#home .tiles .tile p{font-size:9px!important;line-height:1.5!important;margin-top:5px!important;max-height:none!important;overflow:visible!important;display:block!important;word-break:keep-all!important}
+#home .homeHero .heroArt{height:236px!important;padding:8px 10px 38px!important;background:#f6f8e8!important;display:flex!important;align-items:center!important;justify-content:center!important}
+#home .homeHero .heroArt img{width:94%!important;height:94%!important;object-fit:contain!important;object-position:center center!important;transform:none!important}
+#home .homeHero .heroText{left:16px!important;right:16px!important;top:12px!important}
+#home .homeHero .kicker{font-size:9px!important;line-height:1.35!important}
+#home .homeHero h1{font-size:29px!important;line-height:1.05!important;margin:4px 0 7px!important}
+#home .homeHero .copy{font-size:9px!important;line-height:1.45!important}
+#home .homeHero .ctaGreen{bottom:10px!important;width:72%!important;max-width:286px!important;padding:11px 14px!important;font-size:11px!important}
+@media(max-width:390px){#home .homeHero .heroArt{height:226px!important;padding:8px 8px 38px!important}#home .homeHero h1{font-size:27px!important}#home .tiles .tile{min-height:158px!important}#home .tiles .tile p{font-size:8.8px!important;line-height:1.5!important}}
+</style>
+
+<style>
+/* GUIIN HOME CARD TEXT SIZE FIX · 2026-10-01 20:46 */
+#home .tiles .tile{min-height:166px!important;padding-bottom:46px!important}
+#home .tiles .tile p{
+  font-size:10px!important;
+  line-height:1.5!important;
+  margin-top:5px!important;
+  max-height:none!important;
+  overflow:visible!important;
+  display:block!important;
+  word-break:keep-all!important;
+  -webkit-text-size-adjust:100%!important;
+  text-size-adjust:100%!important;
+}
+#home .tiles .tile:nth-child(2) p,
+#home .tiles .tile:nth-child(3) p{font-size:10px!important;line-height:1.5!important}
+@media(max-width:390px){
+  #home .tiles .tile{min-height:166px!important}
+  #home .tiles .tile p,
+  #home .tiles .tile:nth-child(2) p,
+  #home .tiles .tile:nth-child(3) p{font-size:10px!important;line-height:1.5!important}
+}
+</style>
 </head>
 <body><div class="guiinDemoBadge">DEMO · 전체풀이 무료</div>
 <div class="app">
@@ -946,7 +1114,7 @@ button{position:relative}
       <div class="copy">지금의 고민이<br>더 좋은 내일로 이어지길.</div>
     </div>
     <div class="heroArt">
-      <img decoding="async" fetchpriority="high" src="hero-animals.jpg" alt="클로버 정원의 귀인사주 친구들">
+      <img decoding="async" fetchpriority="high" src="hero-animals.jpg?v=20261001imgfix" alt="귀인사주 친구들">
     </div>
     <button class="ctaGreen" onclick="go('ask')" data-guiin-nav="ask">AI 사주상담 시작하기 ›</button>
   </div>
@@ -971,8 +1139,13 @@ button{position:relative}
   <div style="margin:14px 0 2px;padding:14px 12px;border-top:1px solid #ece5d7;text-align:center;font-size:8.7px;line-height:1.75;color:#8b8f8c;">
     <div><b style="color:#667069;">귀인사주</b> · 대표 강진아</div>
     <div>사업자등록번호 584-69-00863</div>
-    <div>서울특별시 중랑구 용마산로139나길 23(신내동)</div>
+    <div>서울특별시 중랑구 용마산로139나길 23(신내동) 101호</div>
+    <div>고객센터 0507-1464-3343 · 이메일 blue_wls@naver.com<br>전화 상담은 제공하지 않습니다. 문의게시판을 이용해 주세요.</div>
+    <div>호스팅 서비스 제공자 Cloudflare, Inc.</div>
+    <div><a href="inquiry.html" style="color:#747b77;text-decoration:underline;">문의게시판</a> · <a href="http://pf.kakao.com/_TLTrX" target="_blank" rel="noopener" style="color:#747b77;text-decoration:underline;">카카오톡 채널 문의</a></div>
     <div style="margin-top:6px;">
+      <a href="company.html" target="_blank" rel="noopener" style="color:#747b77;padding:2px 5px;font-size:8.7px;text-decoration:underline;">회사소개</a>
+      <span>·</span>
       <button type="button" onclick="go('terms')" style="border:0;background:none;color:#747b77;padding:2px 5px;font-size:8.7px;text-decoration:underline;" data-guiin-nav="terms">이용약관</button>
       <span>·</span>
       <button type="button" onclick="go('privacy')" style="border:0;background:none;color:#747b77;padding:2px 5px;font-size:8.7px;text-decoration:underline;" data-guiin-nav="privacy">개인정보처리방침</button>
@@ -1004,7 +1177,7 @@ button{position:relative}
     <div class="help">출생시간을 정확히 모르더라도 기본 분석은 가능합니다.</div><div class="mobileHint">시간을 모르면 ‘출생시간을 모릅니다’를 체크하세요. 임의의 시간을 넣는 것보다 정확합니다.</div>
     <label>출생지 (선택)</label><div class="locationRow"><span>서울특별시</span><span>›</span></div>
     <div class="hidden"><select id="dayBoundaryMode"><option value="23" selected>23</option></select><input id="applyTrueSolar" type="checkbox"><input id="birthLongitudeApply" value="126.98"></div>
-    <button class="ctaGold" onclick="submitSaju()">사주 보기 ›</button>
+    <button class="ctaGold" onclick="submitSaju()">사주 조회하기 ›</button>
   </div>
   <div class="slogan card"><b>좋은 선택이, 더 나은 내일을 만듭니다.</b><br>귀인사주가 함께할게요.</div>
 </section>
@@ -1115,7 +1288,7 @@ button{position:relative}
     <button class="ghost"></button>
   </div>
   <div class="tabs green"><button class="on" onclick="renderYearLuck()">대운 보기</button><button onclick="openResultTab('flow')">세운 보기</button><button onclick="renderYearLuck()">연운 보기</button><button onclick="renderYearLuck()">월운 보기</button></div>
-  <div class="pageIllustration"><img loading="lazy" decoding="async" src="result-animals.jpg" alt="인생의 흐름을 표현한 동물 일러스트"></div>
+  <div class="pageIllustration"><img loading="lazy" decoding="async" src="result-animals.jpg?v=20261001imgfix" alt="인생의 흐름을 표현한 동물 일러스트"></div>
   <div id="yearView"></div>
 </section>
 
@@ -1126,7 +1299,7 @@ button{position:relative}
     <button class="ghost"></button>
   </div>
   <div class="tabs green"><button class="on">내 프로필</button><button>가족 프로필</button><button onclick="go('saju')" data-guiin-nav="saju">프로필 추가 ›</button></div>
-  <div class="pageIllustration"><img loading="lazy" decoding="async" src="mypage-animals.jpg" alt="프로필을 함께 관리하는 귀인사주 친구들"></div>
+  <div class="pageIllustration"><img loading="lazy" decoding="async" src="mypage-animals.jpg?v=20261001imgfix" alt="프로필을 함께 관리하는 귀인사주 친구들"></div>
   <div class="manageCard card" style="margin-top:10px">
     <img src="compat-animals.jpg" alt="">
     <div>
@@ -1157,7 +1330,7 @@ button{position:relative}
     <div><h2>처음 오셨나요?</h2><p>귀인사주가 처음이라도,<br>쉽게 이용할 수 있어요.</p></div>
     <div class="sideArt"><img src="input-cat.jpg" alt=""></div>
   </div>
-  <div class="pageIllustration"><img loading="lazy" decoding="async" src="guide-cat.jpg" alt="사주책을 읽는 고양이 일러스트"></div>
+  <div class="pageIllustration"><img loading="lazy" decoding="async" src="input-cat.jpg?v=20261001imgfix" alt="사주 이용가이드를 안내하는 고양이 일러스트"></div>
   <div class="card guideList">
     <div class="guideRow"><div class="gico">?</div><div><b>귀인사주란?</b><span>좋은 인연과 운을 쉽게 읽는 사주</span></div></div>
     <div class="guideRow" onclick="go('saju')" data-guiin-nav="saju"><div class="gico">☰</div><div><b>서비스 이용방법</b><span>생년월일만 넣으면 명식이 나옵니다</span></div></div>
@@ -1174,9 +1347,16 @@ button{position:relative}
   <div class="topbar">
     <button class="ghost" onclick="go('home')" aria-label="뒤로" data-guiin-nav="home">‹</button>
     <div class="brand"><div class="brandline">사주에게 묻기</div></div>
-    <button class="ghost" onclick="go('wallet')" style="font-size:11px;font-weight:900;white-space:nowrap" data-guiin-nav="wallet">☘ 충전</button>
+    <button class="ghost" onclick="go('wallet')" style="font-size:11px;font-weight:900;white-space:nowrap" data-guiin-nav="wallet">이용권 구매</button>
   </div>
-  <div class="pageIllustration"><img loading="lazy" decoding="async" src="summary-cat.jpg" alt="사주 상담을 도와주는 고양이 일러스트"></div>
+  <section class="guiinVisualHero withArt askHero">
+    <div class="heroCopy">
+      <div class="eyebrow">AI 사주상담</div>
+      <h2 id="askHeroTitle">사주를 기준으로 깊게 물어보세요.</h2>
+      <p id="askHeroCopy">계산된 원국과 현재 흐름을 바탕으로 필요한 내용을 이어서 설명해드려요.</p>
+    </div>
+    <div class="heroPet"><img loading="lazy" decoding="async" src="input-cat.jpg?v=20261001c" alt="사주 상담을 도와주는 고양이 일러스트"></div>
+  </section>
   <div id="askContextCard" class="askContext card">
     <div>
       <span>현재 상담 기준</span>
@@ -1185,10 +1365,9 @@ button{position:relative}
     </div>
     <button type="button" onclick="go('saju')" data-guiin-nav="saju">변경</button>
   </div>
-  <div class="guiinDemoFreeNotice">데모에서는 사주·궁합·대운 풀이를 결제 없이 전체 확인할 수 있어요. AI 상담은 3회만 제공됩니다.</div>
-<div class="creditBar"><div><div style="font-size:12px;opacity:.85">AI 무료 상담</div><b id="freeRemainView">3</b><span style="font-size:13px">회 남음</span><div style="font-size:11px;opacity:.82;margin-top:3px">보유 ☘ <span id="coinView">0</span>개</div></div><button class="ctaGold" style="width:auto;margin:0;padding:10px 14px" onclick="go('wallet')" data-guiin-nav="wallet">☘ 충전</button></div>
+  <div class="guiinDemoFreeNotice">데모에서는 평생사주·궁합·대운 심층 풀이를 결제 없이 전체 확인할 수 있어요. AI 사주상담은 무료 3회까지 제공됩니다.</div><div class="creditBar"><div><div style="font-size:12px;opacity:.85">무료 상담</div><b id="freeRemainView">3</b><span style="font-size:13px">회 남음</span><div style="font-size:11px;opacity:.82;margin-top:3px">사용 가능한 질문 <span id="coinView">0</span>회</div></div><button class="ctaGold" style="width:auto;margin:0;padding:10px 14px" onclick="go('wallet')" data-guiin-nav="wallet">이용권 구매</button></div>
   <div class="askTools">
-    <p class="adminNote">처음 3번은 무료예요. 답변 실패 시 무료 횟수나 클로버는 차감되지 않습니다. 최근 대화 기록은 이 기기에 저장되며, 답변 생성 시 필요한 대화가 서버로 전송될 수 있어요.</p>
+    <p class="adminNote">처음 3회는 무료예요. 답변 실패 시 무료 횟수나 이용권은 차감되지 않습니다. AI 사주상담 질문 패키지는 3회, 6회, 9회, 18회 단위로 구매할 수 있고 구매일로부터 30일간 사용할 수 있어요. 최근 대화 기록은 이 기기에 저장되며, 답변 생성 시 필요한 대화가 서버로 전송될 수 있어요.</p>
     <button type="button" onclick="clearAIChat()">대화 지우기</button>
   </div>
   <div class="msgs" id="msgs" aria-live="polite">
@@ -1207,15 +1386,16 @@ button{position:relative}
 </section>
 
 <section id="wallet" class="screen">
-  <div class="topbar"><button class="ghost" onclick="go('ask')" data-guiin-nav="ask">‹</button><div class="brand"><div class="brandline">☘ 행운의 클로버 충전</div><small>더 많은 질문, 더 깊은 사주 해석</small></div><span></span></div>
+  <div class="topbar"><button class="ghost" onclick="go('ask')" data-guiin-nav="ask">‹</button><div class="brand"><div class="brandline">AI 사주상담 질문 패키지</div><small>정해진 질문 횟수 · 구매 후 30일 사용</small></div><span></span></div>
   <div class="cloverStore">
-    <div class="pageIllustration"><img loading="lazy" decoding="async" src="brand-home.jpg" alt="행운의 클로버 일러스트"></div>
-    <div class="storeIntro card"><h2>☘ 행운의 클로버 충전</h2><p>AI에게 더 깊이, 더 많이 물어보세요.</p></div>
-    <div class="storeWish card"><b>좋은 인연, 좋은 하루가 당신 곁에 늘 함께하길 ♡</b><span>행운의 클로버 1개로 AI에게 1번 질문할 수 있어요.</span></div>
-    <div class="luckyPack card"><div class="packClover">☘☘☘</div><div class="packBody"><h3>맛보기 팩</h3><b>3질문 + 보너스 1</b><p>처음 가볍게 시작해요.</p><span class="packBonus">+1 보너스</span></div><div class="packBuy"><strong>1,100원</strong><small>총 4질문</small><button onclick="openPaySheet(3,1,1100)">구매하기 ›</button></div></div>
-    <div class="luckyPack card"><div class="packClover">☘☘<br>☘☘☘</div><div class="packBody"><h3>단골 팩</h3><b>5질문 + 보너스 2</b><p>자주 묻는 분께 알맞아요.</p><span class="packBonus">+2 보너스</span></div><div class="packBuy"><strong>1,650원</strong><small>총 7질문</small><button onclick="openPaySheet(5,2,1650)">구매하기 ›</button></div></div>
-    <div class="luckyPack card best"><div class="packClover">☘☘☘☘<br>☘☘☘☘☘☘</div><div class="packBody"><h3>행운 팩</h3><b>10질문 + 보너스 4</b><p>가장 넉넉한 BEST 팩이에요.</p><span class="packBonus">+4 보너스</span></div><div class="packBuy"><strong>2,750원</strong><small>총 14질문</small><button onclick="openPaySheet(10,4,2750)">구매하기 ›</button></div></div>
-    <div class="utilityCard card"><h3>이용 안내</h3><p>✓ 처음 3번의 무료 질문은 별도로 유지됩니다.<br>✓ 행운의 클로버 1개당 AI 질문 1회입니다.<br>✓ 실제 결제 승인 후에만 서버에서 클로버를 지급해야 합니다.</p><div class="paidDisclaimer">사주와 운세는 전통 명리학을 바탕으로 한 참고 정보이며 의료·법률·투자 등 중요한 의사결정을 대신하지 않습니다.</div></div>
+    <div class="pageIllustration"><img loading="lazy" decoding="async" src="brand-home.jpg" alt="AI 사주 분석 질문 이용권 일러스트"></div>
+    <div class="storeIntro card"><h2>AI 사주상담 질문 패키지</h2><p>구매한 상품에 표시된 총 질문 횟수만큼 이용하는 디지털 서비스예요. 구매일로부터 30일간 사용할 수 있습니다.</p></div>
+    <div class="storeWish card"><b>좋은 인연, 좋은 하루가 당신 곁에 늘 함께하길 ♡</b><span>질문 1회는 AI 사주상담 질문 1회 이용을 뜻해요.</span></div>
+    <div class="luckyPack card"><div class="packClover">3회</div><div class="packBody"><h3>AI 사주상담 질문 3회 패키지</h3><b>총 3회 이용</b><p>처음 이용해보기 좋은 구매 후 30일간 사용하는 고정 질문 패키지예요.</p></div><div class="packBuy"><strong>1,100원</strong><small>총 3회</small><button onclick="openPaySheet(3,1100)">구매하기 ›</button></div></div>
+    <div class="luckyPack card"><div class="packClover">총 6회</div><div class="packBody"><h3>AI 사주상담 질문 6회 패키지</h3><b>기본 5회 + 추가 1회 제공</b><p>결제 승인 후 총 6회의 질문이 한 번에 제공되며 구매 후 30일간 사용할 수 있어요.</p></div><div class="packBuy"><strong>1,990원</strong><small>총 6회</small><button onclick="openPaySheet(6,1990)">구매하기 ›</button></div></div>
+    <div class="luckyPack card"><div class="packClover">총 9회</div><div class="packBody"><h3>AI 사주상담 질문 9회 패키지</h3><b>기본 8회 + 추가 1회 제공</b><p>결제 승인 후 총 9회의 질문이 한 번에 제공되며 구매 후 30일간 사용할 수 있어요.</p></div><div class="packBuy"><strong>2,790원</strong><small>총 9회</small><button onclick="openPaySheet(9,2790)">구매하기 ›</button></div></div>
+    <div class="luckyPack card best"><div class="packClover">총 18회</div><div class="packBody"><h3>AI 사주상담 질문 18회 패키지</h3><b>기본 13회 + 추가 5회 제공</b><p>결제 승인 후 총 18회의 질문이 한 번에 제공되며 구매 후 30일간 사용할 수 있어요.</p></div><div class="packBuy"><strong>4,990원</strong><small>총 18회</small><button onclick="openPaySheet(18,4990)">구매하기 ›</button></div></div>
+    <div class="utilityCard card"><h3>이용 안내</h3><p>✓ 처음 3번의 무료 질문은 별도로 유지됩니다.<br>✓ 패키지 질문 1회당 AI 사주상담 질문 1회입니다.<br>✓ 모든 패키지는 구매일로부터 30일간 사용할 수 있습니다.<br>✓ 추가 제공 질문은 결제 시 총 질문 횟수에 포함되어 한 번에 지급됩니다.<br>✓ 충전금·예치금·전자화폐가 아니며 현금 전환·양도·선물·다른 상품 구매에 사용할 수 없습니다.<br>✓ 결제가 승인되면 주문을 확인한 뒤 사용 가능한 질문 횟수가 자동 반영됩니다.<br>✓ 미사용·일부 사용 환불 기준은 결제 전 환불정책에서 확인할 수 있습니다.</p><div class="paidDisclaimer">사주와 운세는 전통 명리학을 바탕으로 한 참고 정보이며 의료·법률·투자 등 중요한 의사결정을 대신하지 않습니다.</div></div>
     <div class="utilityCard card"><h3>이용 내역</h3><div id="ledger" class="adminNote">아직 내역이 없습니다.</div></div>
   </div>
 </section>
@@ -1232,10 +1412,10 @@ button{position:relative}
   </div>
   <div id="loginGuestUI">
     <div class="authHero"><div class="authMark"><img src="clover-mark.jpg" alt=""></div><h2>귀인사주에 오신 걸 환영해요</h2><p>로그인하면 저장한 사주·구매내역·상담기록을 이어볼 수 있어요.</p></div>
-    <div class="authCard card"><button class="authBtn kakao" onclick="startKakaoLogin()">카카오로 시작하기</button><button class="authBtn google" onclick="socialLoginReady('구글')">Google로 계속하기</button><button class="authBtn apple" onclick="socialLoginReady('애플')">Apple로 계속하기</button><div class="authDivider">또는 이메일</div><label>이메일</label><input id="loginEmail" type="email" autocomplete="email" placeholder="이메일"><label>비밀번호</label><input id="loginPassword" type="password" autocomplete="current-password" placeholder="비밀번호"><button class="authBtn green" onclick="emailLoginReady()">로그인</button><div class="authLinks">아직 회원이 아니신가요? <button onclick="go('signup')" data-guiin-nav="signup">회원가입</button></div><div id="loginMsg" class="authNotice">소셜 로그인은 실제 OAuth 서버 연결 후 계정이 생성됩니다. 로그인된 척 처리하지 않습니다.</div></div>
+    <div class="authCard card"><button class="authBtn kakao" onclick="startKakaoLogin()">카카오로 시작하기</button><div id="loginMsg" class="authNotice">현재 카카오 로그인을 지원합니다. 처음 이용하는 경우에도 카카오로 시작하면 귀인사주 계정이 연결됩니다.</div></div>
   </div>
 </section>
-<section id="signup" class="screen"><div class="topbar"><button class="ghost" onclick="go('login')" data-guiin-nav="login">‹</button><div class="brand"><div class="brandline">회원가입</div></div><span></span></div><div class="authHero"><div class="authMark"><img src="clover-mark.jpg" alt=""></div><h2>귀인사주 회원가입</h2><p>내 사주와 상담·구매내역을 한 계정에 보관할 수 있도록 준비된 화면입니다.</p></div><div class="authCard card"><button class="authBtn kakao" onclick="startKakaoLogin()">카카오로 가입하기</button><button class="authBtn google" onclick="socialLoginReady('구글')">Google로 가입하기</button><button class="authBtn apple" onclick="socialLoginReady('애플')">Apple로 가입하기</button><div class="authDivider">또는 이메일</div><label>이름</label><input id="signupName" autocomplete="name" placeholder="이름"><label>이메일</label><input id="signupEmail" type="email" autocomplete="email" placeholder="이메일"><label>비밀번호</label><input id="signupPassword" type="password" autocomplete="new-password" placeholder="8자 이상"><label class="check"><input id="signupTerms" type="checkbox"> 이용약관 및 개인정보처리방침에 동의합니다.</label><button class="authBtn green" onclick="emailSignupReady()">회원가입</button><div id="signupMsg" class="authNotice">실제 계정 생성은 인증 서버 연결 후 활성화됩니다.</div></div></section>
+<section id="signup" class="screen"><div class="topbar"><button class="ghost" onclick="go('login')" data-guiin-nav="login">‹</button><div class="brand"><div class="brandline">회원가입</div></div><span></span></div><div class="authHero"><div class="authMark"><img src="clover-mark.jpg" alt=""></div><h2>귀인사주 회원가입</h2><p>카카오 계정으로 간편하게 시작하고 내 사주·상담·구매내역을 이어서 이용할 수 있어요.</p></div><div class="authCard card"><button class="authBtn kakao" onclick="startKakaoLogin()">카카오로 가입하기</button><div id="signupMsg" class="authNotice">현재 카카오 가입을 지원합니다. Google·Apple·이메일 가입은 준비되는 순서대로 추가할 예정입니다.</div></div></section>
 <section id="loginComplete" class="screen">
   <div class="topbar">
     <span></span>
@@ -1264,7 +1444,7 @@ button{position:relative}
   <div class="payResultWrap">
     <div class="payResultCard card">
       <div id="paymentResultIcon" class="payResultIcon">✓</div>
-      <div id="paymentResultBadge" class="reviewBadge">NHN KCP</div>
+      <div id="paymentResultBadge" class="reviewBadge">KG이니시스</div>
       <h2 id="paymentResultTitle">결제 결과를 확인하고 있어요</h2>
       <p id="paymentResultCopy">잠시만 기다려 주세요.</p>
       <div id="paymentResultMeta" class="payResultMeta" style="display:none"></div>
@@ -1277,19 +1457,29 @@ button{position:relative}
 </section>
 
 <section id="history" class="screen"><div class="topbar"><button class="ghost" onclick="go('mypage')" data-guiin-nav="mypage">‹</button><div class="brand"><div class="brandline">이용 내역</div></div><span></span></div><div class="pagePad"><div class="card utilityCard"><h3>최근 이용 내역</h3><div id="usageHistoryView"></div></div></div></section>
-<section id="payments" class="screen"><div class="topbar"><button class="ghost" onclick="go('mypage')" data-guiin-nav="mypage">‹</button><div class="brand"><div class="brandline">결제 내역</div></div><span></span></div><div class="pagePad"><div class="card utilityCard"><h3>결제 내역</h3><div id="paymentHistoryView"></div><p class="utilityHint">실제 KCP 승인 내역만 표시하도록 서버 연결할 화면입니다. 가상 결제는 구매로 표시하지 않습니다.</p></div></div></section>
+<section id="payments" class="screen"><div class="topbar"><button class="ghost" onclick="go('mypage')" data-guiin-nav="mypage">‹</button><div class="brand"><div class="brandline">결제 내역</div></div><span></span></div><div class="pagePad"><div class="card utilityCard"><h3>결제 내역</h3><div id="paymentHistoryView"></div><p class="utilityHint">승인된 결제와 구매 내역만 표시됩니다.</p></div></div></section>
 <section id="profiles" class="screen"><div class="topbar"><button class="ghost" onclick="go('mypage')" data-guiin-nav="mypage">‹</button><div class="brand"><div class="brandline">저장한 프로필</div></div><span></span></div><div class="pagePad"><div class="card utilityCard"><h3>내 사주 프로필</h3><div id="savedProfileView"></div><button class="ctaGold" onclick="go('saju')" data-guiin-nav="saju">새 사주 입력하기 ›</button></div></div></section>
 <section id="favorites" class="screen"><div class="topbar"><button class="ghost" onclick="go('mypage')" data-guiin-nav="mypage">‹</button><div class="brand"><div class="brandline">찜한 콘텐츠</div></div><span></span></div><div class="pagePad"><div class="card utilityCard"><h3>자주 보는 서비스</h3><div class="serviceGrid"><button class="serviceLink" onclick="openResultTab('summary')"><b>평생사주</b><span>장문 심층 리포트</span></button><button class="serviceLink" onclick="goToday()" data-guiin-nav="today"><b>오늘의 운세</b><span>오늘·주간·월간</span></button><button class="serviceLink" onclick="go('match')" data-guiin-nav="match"><b>우리 궁합</b><span>장점·갈등·장기관계</span></button><button class="serviceLink" onclick="go('ask')" data-guiin-nav="ask"><b>AI 사주상담</b><span>내 명식으로 질문</span></button></div></div></div></section>
 <section id="notifications" class="screen"><div class="topbar"><button class="ghost" onclick="go('mypage')" data-guiin-nav="mypage">‹</button><div class="brand"><div class="brandline">알림 설정</div></div><span></span></div><div class="pagePad"><div class="card utilityCard"><h3>받고 싶은 소식</h3><label class="settingRow"><span><b>오늘의 운세</b><small>매일 운세 알림</small></span><input type="checkbox" data-notify="daily"></label><label class="settingRow"><span><b>운의 변화</b><small>월운·세운 변화 안내</small></span><input type="checkbox" data-notify="flow"></label><label class="settingRow"><span><b>혜택 알림</b><small>쿠폰·이벤트</small></span><input type="checkbox" data-notify="promo"></label><p class="utilityHint">선호 설정은 현재 기기에 저장됩니다.</p></div></div></section>
-<section id="coupons" class="screen"><div class="topbar"><button class="ghost" onclick="go('mypage')" data-guiin-nav="mypage">‹</button><div class="brand"><div class="brandline">쿠폰함</div></div><span></span></div><div class="pagePad"><div class="card utilityCard"><h3>쿠폰 · 혜택</h3><p>현재 발급된 쿠폰은 없습니다.</p><div class="trustBox">실제 결제에서는 서버에서 쿠폰 유효성과 최종 결제금액을 다시 검증하는 방식으로 연결해야 합니다.</div></div></div></section>
-<section id="customer" class="screen"><div class="topbar"><button class="ghost" onclick="go('mypage')" data-guiin-nav="mypage">‹</button><div class="brand"><div class="brandline">고객센터 · FAQ</div></div><span></span></div><div class="pagePad"><div class="card utilityCard"><h3>무엇을 도와드릴까요?</h3><p><b>전화 상담은 제공하지 않습니다.</b><br>결제·이용·환불·사주 결과 관련 문의는 문의게시판을 이용해 주세요.</p><button class="kakaoSupport" onclick="openCustomerCenter()">문의게시판 이용하기 ›</button><div class="faq"><details><summary>결제했는데 내용이 열리지 않아요</summary><p>실제 서비스에서는 서버에서 결제 승인 여부를 확인한 뒤 구매한 콘텐츠를 열도록 연결합니다.</p></details><details><summary>출생시간을 모르면 어떻게 하나요?</summary><p>시주 관련 해석의 강도를 낮추고, 출생시간 없이 확인 가능한 부분과 구분해서 설명합니다.</p></details><details><summary>신살이 많으면 안 좋은 사주인가요?</summary><p>아니요. 신살은 보조 정보입니다. 귀인사주는 신살 하나로 사건을 단정하지 않고 원국·오행·십신·대운과 함께 읽습니다.</p></details><details><summary>AI는 무엇을 기준으로 답하나요?</summary><p>귀인사주 엔진이 계산한 명식을 그대로 Worker에 전달하고, AI가 명식을 임의로 다시 계산하지 않도록 구성되어 있습니다.</p></details></div></div></div></section>
-<section id="appinfo" class="screen"><div class="topbar"><button class="ghost" onclick="go('mypage')" data-guiin-nav="mypage">‹</button><div class="brand"><div class="brandline">서비스 정보</div></div><span></span></div><div class="pagePad"><div class="card utilityCard"><h3>☘ 귀인사주</h3><p>좋은 인연이, 좋은 운을 만듭니다.</p><div class="paidDisclaimer"><b>사업자 정보</b><br>상호 귀인사주 · 대표 강진아<br>사업자등록번호 584-69-00863<br>서울특별시 중랑구 용마산로139나길 23(신내동)</div><div class="infoRows"><div><span>평생사주</span><b>5,900원</b></div><div><span>프리미엄 궁합</span><b>7,900원</b></div><div><span>AI 상담</span><b>처음 3회 무료</b></div><div><span>신살·귀인</span><b>현재 계산 지원 38종</b></div></div><button class="softBtn" onclick="go('terms')" data-guiin-nav="terms">이용약관 ›</button><button class="softBtn" onclick="go('privacy')" data-guiin-nav="privacy">개인정보처리방침 ›</button><button class="softBtn" onclick="go('refund')" data-guiin-nav="refund">환불정책 ›</button></div></div></section>
-<section id="terms" class="screen"><div class="topbar"><button class="ghost" onclick="go('appinfo')" data-guiin-nav="appinfo">‹</button><div class="brand"><div class="brandline">이용약관</div></div><span></span></div><div class="pagePad"><div class="card utilityCard"><h3>이용약관 안내</h3><p>유료 디지털 콘텐츠의 제공 시점, 이용 조건, 결제·환불 기준은 실제 PG 오픈 전 최종 약관으로 확정해야 합니다.</p><div class="paidDisclaimer">귀인사주의 사주·운세·AI 상담은 참고 정보이며 의료·법률·투자 등 전문 판단을 대신하지 않습니다.</div></div></div></section>
-<section id="privacy" class="screen"><div class="topbar"><button class="ghost" onclick="go('appinfo')" data-guiin-nav="appinfo">‹</button><div class="brand"><div class="brandline">개인정보처리방침</div></div><span></span></div><div class="pagePad"><div class="card utilityCard"><h3>개인정보 안내</h3><p>회원가입을 실제 연결할 때 수집 항목·이용 목적·보유기간·위탁사·파기 절차를 실제 서버 구성에 맞춰 고지해야 합니다.</p></div></div></section>
-<section id="refund" class="screen"><div class="topbar"><button class="ghost" onclick="go('appinfo')" data-guiin-nav="appinfo">‹</button><div class="brand"><div class="brandline">환불정책</div></div><span></span></div><div class="pagePad"><div class="card utilityCard"><h3>환불 안내</h3><p>실제 KCP 결제 오픈 전 상품별 제공 시점, 사용한 클로버, 이미 열람한 디지털 콘텐츠의 환불 기준을 최종 확정하고 결제 단계에서 동의받아야 합니다.</p></div></div></section>
+<section id="coupons" class="screen"><div class="topbar"><button class="ghost" onclick="go('mypage')" data-guiin-nav="mypage">‹</button><div class="brand"><div class="brandline">쿠폰함</div></div><span></span></div><div class="pagePad"><div class="card utilityCard"><h3>쿠폰 · 혜택</h3><p>현재 발급된 쿠폰은 없습니다.</p><div class="trustBox">쿠폰이 발급되면 사용 가능 여부와 최종 결제금액을 결제 단계에서 확인할 수 있습니다.</div></div></div></section>
+<section id="customer" class="screen"><div class="topbar"><button class="ghost" onclick="go('mypage')" data-guiin-nav="mypage">‹</button><div class="brand"><div class="brandline">고객센터 · FAQ</div></div><span></span></div><div class="pagePad"><div class="card utilityCard"><h3>무엇을 도와드릴까요?</h3><p><b>전화 상담은 제공하지 않습니다.</b><br>결제·이용·환불·사주 결과 관련 문의는 문의게시판을 이용해 주세요.<br>고객센터 대표번호 0507-1464-3343은 사업자 연락처로 안내됩니다.</p><button class="kakaoSupport" onclick="openCustomerCenter()">문의게시판 이용하기 ›</button><button class="softBtn" onclick="window.open('http://pf.kakao.com/_TLTrX','_blank','noopener')">카카오톡 채널 문의 ›</button><div class="faq"><details><summary>결제했는데 내용이 열리지 않아요</summary><p>결제 승인 후에도 구매한 내용이 열리지 않으면 결제 내역을 다시 확인한 뒤 고객센터로 문의해 주세요.</p></details><details><summary>출생시간을 모르면 어떻게 하나요?</summary><p>시주 관련 해석의 강도를 낮추고, 출생시간 없이 확인 가능한 부분과 구분해서 설명합니다.</p></details><details><summary>신살이 많으면 안 좋은 사주인가요?</summary><p>아니요. 신살은 보조 정보입니다. 귀인사주는 신살 하나로 사건을 단정하지 않고 원국·오행·십신·대운과 함께 읽습니다.</p></details><details><summary>AI는 무엇을 기준으로 답하나요?</summary><p>귀인사주 엔진이 계산한 명식을 그대로 Worker에 전달하고, AI가 명식을 임의로 다시 계산하지 않도록 구성되어 있습니다.</p></details></div></div></div></section>
+<section id="appinfo" class="screen"><div class="topbar"><button class="ghost" onclick="go('mypage')" data-guiin-nav="mypage">‹</button><div class="brand"><div class="brandline">서비스 정보</div></div><span></span></div><div class="pagePad"><div class="card utilityCard"><h3>☘ 귀인사주</h3><p>좋은 인연이, 좋은 운을 만듭니다.</p><div class="paidDisclaimer"><b>사업자 정보</b><br>상호 귀인사주 · 대표 강진아<br>사업자등록번호 584-69-00863<br>서울특별시 중랑구 용마산로139나길 23(신내동) 101호<br>고객센터 0507-1464-3343<br>이메일 blue_wls@naver.com<br>호스팅 서비스 제공자 Cloudflare, Inc.<br><a href="company.html" target="_blank" rel="noopener">회사소개·사업자정보</a><br><a href="inquiry.html" target="_blank" rel="noopener">문의게시판</a><br><a href="http://pf.kakao.com/_TLTrX" target="_blank" rel="noopener">카카오톡 채널 문의</a></div><div class="infoRows"><div><span>평생사주</span><b>5,900원</b></div><div><span>프리미엄 궁합</span><b>7,900원</b></div><div><span>AI 상담</span><b>처음 3회 무료</b></div><div><span>AI 사주 분석 질문 이용권</span><b>3회 1,100원부터</b></div></div><button class="softBtn" onclick="go('paymentInfo')" data-guiin-nav="paymentInfo">결제·상품 안내 ›</button><button class="softBtn" onclick="go('terms')" data-guiin-nav="terms">이용약관 ›</button><button class="softBtn" onclick="go('privacy')" data-guiin-nav="privacy">개인정보처리방침 ›</button><button class="softBtn" onclick="go('refund')" data-guiin-nav="refund">환불정책 ›</button></div></div></section>
+<section id="paymentInfo" class="screen"><div class="topbar"><button class="ghost" onclick="go('appinfo')" data-guiin-nav="appinfo">‹</button><div class="brand"><div class="brandline">결제·상품 안내</div></div><span></span></div><div class="pagePad"><div class="card utilityCard"><h3>유료 상품</h3><p>상품을 먼저 조회한 뒤 결제할 수 있어요. 결제 전 가격·제공 내용을 다시 확인합니다.</p><div class="paymentInfoGrid"><div class="paymentInfoRow"><span>프리미엄 평생사주<br>심층 평생사주 전체 열람</span><b>5,900원</b></div><div class="paymentInfoRow"><span>프리미엄 궁합<br>두 사람의 심층 궁합 전체 열람</span><b>7,900원</b></div><div class="paymentInfoRow"><span>AI 사주상담 질문 3회 패키지<br>총 3회 이용</span><b>1,100원</b></div><div class="paymentInfoRow"><span>AI 사주상담 질문 6회 패키지<br>기본 5회 + 추가 1회, 총 6회</span><b>1,990원</b></div><div class="paymentInfoRow"><span>AI 사주상담 질문 9회 패키지<br>기본 8회 + 추가 1회, 총 9회</span><b>2,790원</b></div><div class="paymentInfoRow"><span>AI 사주상담 질문 18회 패키지<br>기본 13회 + 추가 5회, 총 18회</span><b>4,990원</b></div></div>
+<div class="trustBox" style="margin-top:12px"><b>프리미엄 평생사주 · 5,900원</b><br>결제 승인 후 즉시 개인 명식을 기준으로 심층 리포트를 생성·열람합니다. 결제 전 실제 명식 미리보기를 확인할 수 있으며, 콘텐츠 제공이 시작되면 청약철회가 제한될 수 있습니다.</div>
+<button class="softBtn" onclick="openResultTab('summary')">사주 조회하기 ›</button>
+<button class="ctaGold" onclick="guiinPaymentCenterStart('LIFETIME_SAJU')">프리미엄 평생사주 5,900원 결제하기 ›</button>
+<div class="trustBox" style="margin-top:12px"><b>프리미엄 궁합 · 7,900원</b><br>결제 승인 후 즉시 두 사람의 입력값을 기준으로 심층 궁합 리포트를 생성·열람합니다. 결제 전 실제 두 사람의 일부 미리보기를 확인할 수 있으며, 콘텐츠 제공이 시작되면 청약철회가 제한될 수 있습니다.</div>
+<button class="softBtn" onclick="go('match')" data-guiin-nav="match">궁합 조회하기 ›</button>
+<button class="ctaGold" onclick="guiinPaymentCenterStart('PREMIUM_COMPAT')">프리미엄 궁합 7,900원 결제하기 ›</button>
+<div class="trustBox" style="margin-top:12px"><b>AI 사주상담 질문 패키지</b><br>각 상품에 표시된 총 질문 횟수를 구매 후 30일간 사용하는 디지털 서비스입니다. 충전금·사이버머니가 아니며 현금 전환·양도·선물·다른 상품 결제에 사용할 수 없습니다. 미사용·일부 사용 환불 기준은 환불정책에서 확인할 수 있습니다.</div>
+<button class="softBtn" onclick="go('wallet')" data-guiin-nav="wallet">AI 사주상담 질문 패키지 보기 ›</button>
+<div id="paymentInfoStatus" class="paymentInfoStatus">KG이니시스 일반결제로 전환 준비 중입니다. 상품 조회와 결제 버튼은 정상 노출됩니다.</div><div class="paidDisclaimer"><b>제공 시점</b><br>결제 승인과 서버 검증이 완료된 시점에 구매한 콘텐츠 권한 또는 AI 사주 분석 질문 이용횟수가 계정에 반영됩니다.<br><br><b>결제대행</b><br>KG이니시스 일반결제로 전환 중이며, 계약 MID·서명키 및 서버 승인 API 연결 후 실제 결제를 활성화합니다.</div><button class="softBtn" onclick="go('refund')" data-guiin-nav="refund">환불정책 확인 ›</button><button class="softBtn" onclick="go('terms')" data-guiin-nav="terms">이용약관 확인 ›</button></div></div></section>
+<section id="terms" class="screen"><div class="topbar"><button class="ghost" onclick="go('appinfo')" data-guiin-nav="appinfo">‹</button><div class="brand"><div class="brandline">이용약관</div></div><span></span></div><div class="pagePad"><div class="card utilityCard"><h3>이용약관 안내</h3><p>귀인사주는 무료 명식·운세·궁합·AI 상담과 프리미엄 평생사주·프리미엄 궁합·AI 사주상담 질문 패키지를 제공합니다. 상품별 가격, 제공 시점, 이용기간, 환불 기준을 결제 전에 표시하며 전체 약관 전문은 별도 페이지에서 바로 확인할 수 있습니다.</p><div class="paidDisclaimer">사주·운세·궁합·AI 상담은 참고 정보이며 의료·법률·세무·투자 등 전문 판단을 대신하지 않습니다.</div><p class="utilityHint">전체 약관은 <a href="terms.html" target="_blank" rel="noopener">이용약관 전문</a>에서 확인할 수 있습니다.</p></div></div></section>
+<section id="privacy" class="screen"><div class="topbar"><button class="ghost" onclick="go('appinfo')" data-guiin-nav="appinfo">‹</button><div class="brand"><div class="brandline">개인정보처리방침</div></div><span></span></div><div class="pagePad"><div class="card utilityCard"><h3>개인정보 안내</h3><p>사주 입력정보, 카카오 로그인 식별정보, AI 상담 내용, 주문·결제 상태 등은 서비스 제공에 필요한 범위에서 처리될 수 있습니다. 주민등록번호 등 고유식별정보는 서비스 운영을 위해 수집하지 않습니다.</p><p class="utilityHint">수집 항목·이용 목적·보유기간·외부서비스 이용 내용은 <a href="privacy.html" target="_blank" rel="noopener">개인정보처리방침 전문</a>에서 확인할 수 있습니다.</p></div></div></section>
+<section id="refund" class="screen"><div class="topbar"><button class="ghost" onclick="go('appinfo')" data-guiin-nav="appinfo">‹</button><div class="brand"><div class="brandline">환불정책</div></div><span></span></div><div class="pagePad"><div class="card utilityCard"><h3>환불 안내</h3><p>프리미엄 리포트는 콘텐츠 제공 시작 전 7일 이내 청약철회가 가능하며, 제공이 시작된 뒤에는 사전 고지·동의를 전제로 청약철회가 제한될 수 있습니다. AI 질문 패키지는 미사용 시 구매 후 7일 이내 전액 환불, 일부 사용 시 미사용 질문 비율을 기준으로 환불합니다. 표시·광고 또는 계약과 다르게 제공된 경우에는 관계 법령상 별도 청약철회 기준을 적용합니다.</p><p class="utilityHint">세부 기준은 <a href="refund.html" target="_blank" rel="noopener">환불정책 전문</a>에서 확인할 수 있습니다.</p></div></div></section>
 
-
-<div id="guiinToastLayer" role="dialog" aria-modal="true" class="guiinToastLayer" role="dialog" aria-modal="true" aria-live="assertive" onclick="if(event.target===this)closeGuiinPopup()">
+<div id="guiinShareToast" class="guiinShareToast" role="status" aria-live="polite"></div>
+<div id="guiinToastLayer" role="dialog" aria-modal="true" class="guiinToastLayer" aria-live="assertive" onclick="if(event.target===this)closeGuiinPopup()">
   <div class="guiinToast">
     <div class="leaf">☘</div>
     <b id="guiinToastTitle">잠시만요</b>
@@ -1298,9 +1488,9 @@ button{position:relative}
   </div>
 </div>
 
-<div id="paySheet" role="dialog" aria-modal="true" class="paySheet" onclick="if(event.target===this)closePaySheet()"><div class="payPanel"><h3>☘ 행운의 클로버 결제</h3><div id="payPackText" class="adminNote"></div><div id="payPrice" class="payPrice"></div><div class="payList">결제가 승인되면 주문을 확인한 뒤 클로버가 자동 지급됩니다.</div><label class="payConsent"><input id="walletPayConsent" type="checkbox" onchange="setPaymentReadinessUI()"> <span><a href="terms.html" target="_blank" rel="noopener">이용약관</a>과 <a href="refund.html" target="_blank" rel="noopener">환불정책</a>을 확인했습니다.</span></label><div id="walletPayReadiness" class="payReadiness">결제 상태 확인 중…</div><button id="walletPayBtn" class="primary" onclick="payNotReady()">결제하기</button><button class="secondary" onclick="closePaySheet()">취소</button><p id="payMsg" class="adminNote"></p></div></div>
-<div id="premiumSheet" role="dialog" aria-modal="true" class="premiumSheet" onclick="if(event.target===this)closePremiumPay()"><div class="premiumPanel"><h2>프리미엄 평생사주</h2><div class="price">5,900원</div><p>무료 기본 명식을 확인한 뒤 내 실제 심층 풀이 전체를 열 수 있어요.</p><div class="payList">✓ 성격·기질·기가 센 정도·관계 반응<br>✓ 권태·친밀감·이상형<br>✓ 직업·사업·재물 심층 분석<br>✓ 신살·귀인·삼재 상세 해설<br>✓ 대운·세운·월운과 연·월 타이밍<br>✓ 실제 직업 예시와 생활 장면<br>✓ 장점·주의점·현실 조언</div><div class="paidDisclaimer">사주 결과는 참고 정보이며 미래를 확정하지 않습니다.</div><label class="payConsent"><input id="premiumPayConsent" type="checkbox" onchange="setPaymentReadinessUI()"> <span>유료 디지털 콘텐츠의 제공 내용과 <a href="refund.html" target="_blank" rel="noopener">환불정책</a>을 확인했습니다.</span></label><div id="premiumPayReadiness" class="payReadiness">결제 상태 확인 중…</div><button id="premiumPayBtn" class="primary" onclick="premiumPayNotReady()">5,900원 결제하기</button><button class="secondary" onclick="closePremiumPay()">나중에 보기</button><p id="premiumPayMsg" class="adminNote"></p></div></div>
-<div id="compatSheet" role="dialog" aria-modal="true" class="premiumSheet" onclick="if(event.target===this)closeCompatPay()"><div class="premiumPanel"><h2>프리미엄 궁합</h2><div class="price">7,900원</div><p>점수보다 두 사람이 실제로 함께 있을 때의 장점과 갈등·회복·생활을 길게 풀어드려요.</p><div class="payList">✓ 상대방 단독 성격 분석<br>✓ 초반 끌림·연락·애착 반응<br>✓ 대화·갈등·회복 속도<br>✓ 권태·질투·자극 선호<br>✓ 친밀감·스킨십 속도<br>✓ 돈·생활·역할 분담<br>✓ 결혼·장기관계·가족 경계<br>✓ 자녀 양육 역할<br>✓ 현재 대운과 앞으로의 속도</div><div class="paidDisclaimer">궁합은 관계를 결정하는 판정표가 아니라 두 사람이 조율할 지점을 이해하는 참고 자료입니다.</div><label class="payConsent"><input id="compatPayConsent" type="checkbox" onchange="setPaymentReadinessUI()"> <span>유료 디지털 콘텐츠의 제공 내용과 <a href="refund.html" target="_blank" rel="noopener">환불정책</a>을 확인했습니다.</span></label><div id="compatPayReadiness" class="payReadiness">결제 상태 확인 중…</div><button id="compatPayBtn" class="primary" onclick="compatPayNotReady()">7,900원 결제하기</button><button class="secondary" onclick="closeCompatPay()">나중에 보기</button><p id="compatPayMsg" class="adminNote"></p></div></div>
+<div id="paySheet" role="dialog" aria-modal="true" class="paySheet" onclick="if(event.target===this)closePaySheet()"><div class="payPanel"><h3>AI 사주 분석 질문 이용권 결제</h3><div id="payPackText" class="adminNote"></div><div id="payPrice" class="payPrice"></div><div class="payList">결제 승인 후 사용 가능한 질문 횟수가 즉시 반영됩니다.<br>이용기간: 구매일로부터 30일<br>현금화·양도·선물·다른 상품 결제 불가<br>미사용/일부 사용 환불 기준은 환불정책에서 확인</div><label class="payConsent"><input id="walletPayConsent" type="checkbox" onchange="setPaymentReadinessUI()"> <span>상품의 30일 이용기간과 <a href="terms.html" target="_blank" rel="noopener">이용약관</a>·<a href="refund.html" target="_blank" rel="noopener">환불정책</a>을 확인하고 동의합니다.</span></label><div id="walletPayReadiness" class="payReadiness">결제 상태 확인 중…</div><button id="walletPayBtn" class="primary" onclick="payNotReady()">KG이니시스로 결제하기</button><button class="secondary" onclick="closePaySheet()">취소</button><p id="payMsg" class="adminNote"></p></div></div>
+<div id="premiumSheet" role="dialog" aria-modal="true" class="premiumSheet" onclick="if(event.target===this)closePremiumPay()"><div class="premiumPanel"><h2>프리미엄 평생사주</h2><div class="price">5,900원</div><p>무료 기본 명식을 확인한 뒤 내 실제 심층 풀이 전체를 열 수 있어요.</p><div class="payList">✓ 성격·기질·기가 센 정도·관계 반응<br>✓ 권태·친밀감·이상형<br>✓ 직업·사업·재물 심층 분석<br>✓ 신살·귀인·삼재 상세 해설<br>✓ 대운·세운·월운과 연·월 타이밍<br>✓ 실제 직업 예시와 생활 장면<br>✓ 장점·주의점·현실 조언</div><div class="paidDisclaimer">사주 결과는 참고 정보이며 미래를 확정하지 않습니다.</div><label class="payConsent"><input id="premiumPayConsent" type="checkbox" onchange="setPaymentReadinessUI()"> <span>결제 후 디지털 콘텐츠 제공을 즉시 시작하는 데 동의하며, 제공이 시작되면 청약철회가 제한될 수 있음을 확인했습니다. <a href="refund.html" target="_blank" rel="noopener">환불정책</a>에 동의합니다.</span></label><div id="premiumPayReadiness" class="payReadiness">결제 상태 확인 중…</div><button id="premiumPayBtn" class="primary" onclick="premiumPayNotReady()">KG이니시스 5,900원 결제하기</button><button class="secondary" onclick="closePremiumPay()">나중에 보기</button><p id="premiumPayMsg" class="adminNote"></p></div></div>
+<div id="compatSheet" role="dialog" aria-modal="true" class="premiumSheet" onclick="if(event.target===this)closeCompatPay()"><div class="premiumPanel"><h2>프리미엄 궁합</h2><div class="price">7,900원</div><p>점수보다 두 사람이 실제로 함께 있을 때의 장점과 갈등·회복·생활을 길게 풀어드려요.</p><div class="payList">✓ 상대방 단독 성격 분석<br>✓ 초반 끌림·연락·애착 반응<br>✓ 대화·갈등·회복 속도<br>✓ 권태·질투·자극 선호<br>✓ 친밀감·스킨십 속도<br>✓ 돈·생활·역할 분담<br>✓ 결혼·장기관계·가족 경계<br>✓ 자녀 양육 역할<br>✓ 현재 대운과 앞으로의 속도</div><div class="paidDisclaimer">궁합은 관계를 결정하는 판정표가 아니라 두 사람이 조율할 지점을 이해하는 참고 자료입니다.</div><label class="payConsent"><input id="compatPayConsent" type="checkbox" onchange="setPaymentReadinessUI()"> <span>결제 후 디지털 콘텐츠 제공을 즉시 시작하는 데 동의하며, 제공이 시작되면 청약철회가 제한될 수 있음을 확인했습니다. <a href="refund.html" target="_blank" rel="noopener">환불정책</a>에 동의합니다.</span></label><div id="compatPayReadiness" class="payReadiness">결제 상태 확인 중…</div><button id="compatPayBtn" class="primary" onclick="compatPayNotReady()">KG이니시스 7,900원 결제하기</button><button class="secondary" onclick="closeCompatPay()">나중에 보기</button><p id="compatPayMsg" class="adminNote"></p></div></div>
 
 
 <div id="netNotice" class="netNotice" role="status" aria-live="polite"></div>
@@ -1330,9 +1520,9 @@ const ICONS={
 function guiinVisualHero(kind,name){
  const n=esc(name||chart?.input?.name||'사용자');
  const map={
-  summary:{cls:'',eyebrow:'사주 요약',title:`${n}님의 사주 요약`,copy:'실제 명식을 계산한 뒤 핵심 성향과 현재 흐름을 먼저 보여드립니다.',img:'summary-cat.jpg'},
+  summary:{cls:'',eyebrow:'사주 요약',title:`${n}님의 사주 요약`,copy:'실제 명식을 계산한 뒤 핵심 성향과 현재 흐름을 먼저 보여드립니다.',img:'input-cat.jpg'},
   chart:{cls:'blue',eyebrow:'사주 원국',title:`${n}님의 사주 원국`,copy:'년주·월주·일주·시주와 오행 분포는 기존 계산 결과를 그대로 사용합니다.',img:'result-animals.jpg'},
-  personality:{cls:'',eyebrow:'성격·기질',title:`${n}님의 성격과 기질`,copy:'일간·월령·오행 분포·십성·관계 신호를 겹쳐 성격과 관계 반응을 자세히 풉니다.',img:'guide-cat.jpg'},
+  personality:{cls:'',eyebrow:'성격·기질',title:`${n}님의 성격과 기질`,copy:'일간·월령·오행 분포·십성·관계 신호를 겹쳐 성격과 관계 반응을 자세히 풉니다.',img:'input-cat.jpg'},
   flow:{cls:'gold',eyebrow:'대운·세운',title:`${n}님의 인생 흐름`,copy:'현재 대운과 세운·월운을 겹쳐 큰 흐름과 가까운 타이밍을 함께 봅니다.',img:'result-animals.jpg'},
   fields:{cls:'pink',eyebrow:'분야별 운세',title:`${n}님의 직업·재물·연애`,copy:'직업·사업·재물·연애를 실제 명식 구조와 현재 운의 흐름으로 연결해 풉니다.',img:'hero-animals.jpg'},
   match:{cls:'pink',eyebrow:'우리 궁합',title:'두 사람의 궁합',copy:'궁합 점수와 설명은 입력한 두 사람의 실제 계산 결과에 따라 달라집니다.',img:''},
@@ -1509,7 +1699,7 @@ function submitSaju(){
    try{
     chart=GuiinSaju.calculate(inp);
     if(!chart||!chart.pillars?.year||!chart.pillars?.month||!chart.pillars?.day) throw new Error('INCOMPLETE_RESULT');
-    saveProfile(chart); currentTab='summary'; renderResult();
+    saveProfile(chart); GUIIN_VERIFIED_ENTITLEMENTS.lifetimeSaju=false;GUIIN_PAID_RESOURCE_CONTEXT.LIFETIME_SAJU=null; currentTab='summary'; renderResult(); setTimeout(()=>guiinRefreshPurchaseAccess({scope:'lifetime',silent:true}),0); try{if(sessionStorage.getItem('guiin_pending_purchase')==='LIFETIME_SAJU'){sessionStorage.removeItem('guiin_pending_purchase');setTimeout(()=>openPremiumPay(),280);}}catch(_e){}
    }catch(e){
     console.error('GUIIN_SAJU_CALC_ERROR',e);
     if(resultView)resultView.innerHTML=emptyStateHTML('사주를 다시 맞춰볼게요.','입력한 정보를 한 번만 확인해 주세요. 문제가 계속되면 페이지를 새로고침한 뒤 다시 시도해 주세요.','<button class="ctaGold" onclick="go(\'saju\')">입력 정보 확인하기 ›</button>');
@@ -2730,11 +2920,83 @@ function renderYearLuck(){
 }
 
 
-const GUIIN_VERIFIED_ENTITLEMENTS={lifetimeSaju:false,compat:false,verifiedAt:null};
+const GUIIN_VERIFIED_ENTITLEMENTS={lifetimeSaju:false,compat:false,verifiedAt:null,resourceKeys:{}};
+const GUIIN_PAID_RESOURCE_CONTEXT={LIFETIME_SAJU:null,PREMIUM_COMPAT:null};
+const GUIIN_SERVER_ACCOUNTING={authoritative:false,free:{used:0,reserved:0,limit:3,remaining:3},wallet:{balance:0,reserved:0,available:0},updatedAt:null};
+
+function guiinPaidSubjectKey(){
+ try{return window.GuiinMemberData?.subjectKey?.()||((guiinAuthSession()?.userId||guiinAuthSession()?.token)?'user:'+String(guiinAuthSession()?.userId||guiinAuthSession()?.token):'guest:'+String(window.GuiinMemberData?.serverGuestToken?.()||guiinGuestSession()));}
+ catch(_e){return 'guest:'+guiinGuestSession();}
+}
+function guiinStableBirthResource(c){
+ const i=c?.input||{},num=v=>Number.isFinite(Number(v))?Number(v):null;
+ const unknown=!!i.hourUnknown;
+ return {
+   calendar:String(i.calendar||'양력'),year:num(i.year),month:num(i.month),day:num(i.day),
+   hourUnknown:unknown,hour:unknown?null:num(i.hour),minute:unknown?null:num(i.minute),
+   leapMonth:!!i.leapMonth,gender:String(i.gender||i.sex||''),dayBoundary:String(i.dayBoundary||'23'),
+   trueSolarApply:!!i.trueSolarApply,longitude:num(i.longitude??126.98)
+ };
+}
+function guiinPaidResourceDescriptor(productCode){
+ const code=String(productCode||'');
+ if(code==='LIFETIME_SAJU'){
+   if(!chart?.pillars)return null;
+   const normalized_input={kind:'lifetime_saju',person:guiinStableBirthResource(chart)};
+   const chart_facts={kind:'lifetime_saju',pillars:{year:chart.pillars?.year?.ko||null,month:chart.pillars?.month?.ko||null,day:chart.pillars?.day?.ko||null,hour:chart.pillars?.hour?.ko||null},day_master:chart?.dayMaster?.stem||chart?.pillars?.day?.stem||null};
+   return {normalized_input,chart_facts,rule:'paid-lifetime-resource-v1'};
+ }
+ if(code==='PREMIUM_COMPAT'){
+   const a=matchAnalysis?.a||matchAnalysis?.left||matchAnalysis?.chartA||matchMeta?.a;
+   const b=matchAnalysis?.b||matchAnalysis?.right||matchAnalysis?.chartB||matchMeta?.b;
+   if(!a?.pillars||!b?.pillars)return null;
+   const pair=[guiinStableBirthResource(a),guiinStableBirthResource(b)].sort((x,y)=>JSON.stringify(x).localeCompare(JSON.stringify(y)));
+   const normalized_input={kind:'premium_compat',pair};
+   const compact=c=>({year:c?.pillars?.year?.ko||null,month:c?.pillars?.month?.ko||null,day:c?.pillars?.day?.ko||null,hour:c?.pillars?.hour?.ko||null,day_master:c?.dayMaster?.stem||c?.pillars?.day?.stem||null});
+   const chart_facts={kind:'premium_compat',pair:[compact(a),compact(b)]};
+   return {normalized_input,chart_facts,rule:'paid-compat-resource-v1'};
+ }
+ return null;
+}
+async function guiinSha256Hex(value){
+ const buf=await crypto.subtle.digest('SHA-256',new TextEncoder().encode(String(value)));
+ return Array.from(new Uint8Array(buf),x=>x.toString(16).padStart(2,'0')).join('');
+}
+async function guiinPaidResourceKey(productCode){
+ const desc=guiinPaidResourceDescriptor(productCode);if(!desc)return null;
+ return guiinSha256Hex(JSON.stringify(desc.normalized_input)+'|'+desc.rule);
+}
+async function guiinEnsurePaidResourceSnapshot(productCode){
+ const code=String(productCode||'');
+ if(!['LIFETIME_SAJU','PREMIUM_COMPAT'].includes(code))return null;
+ const desc=guiinPaidResourceDescriptor(code);if(!desc)throw new Error('paid_resource_input_required');
+ try{await window.GuiinMemberData?.ensureServerGuest?.();}catch(_e){}
+ const subjectKey=guiinPaidSubjectKey();
+ const signature=subjectKey+'|'+desc.rule+'|'+JSON.stringify(desc.normalized_input);
+ const cached=GUIIN_PAID_RESOURCE_CONTEXT[code];
+ if(cached?.signature===signature&&cached?.chartSnapshotId&&cached?.chartKey)return cached;
+ const expectedKey=await guiinPaidResourceKey(code);
+ const res=await guiinApi('/api/chart-snapshots',{
+   method:'POST',cache:'no-store',headers:{'Content-Type':'application/json','Accept':'application/json'},
+   body:JSON.stringify({
+     normalized_input:desc.normalized_input,chart_facts:desc.chart_facts,
+     uncertainty:{birth_time_unknown:code==='LIFETIME_SAJU'?!!chart?.input?.hourUnknown:false},
+     calculation_engine_version:globalThis.GuiinSaju?.ENGINE_VERSION||null,
+     calculation_rule_version:desc.rule
+   })
+ });
+ const data=await res.json().catch(()=>({}));
+ if(!res.ok||data?.ok!==true||!data?.chartSnapshotId||!data?.chartKey)throw new Error(data?.error||'paid_resource_snapshot_failed');
+ if(expectedKey&&String(data.chartKey)!==String(expectedKey))throw new Error('paid_resource_key_mismatch');
+ const ctx={productCode:code,signature,chartSnapshotId:data.chartSnapshotId,chartKey:data.chartKey,createdAt:Date.now()};
+ GUIIN_PAID_RESOURCE_CONTEXT[code]=ctx;
+ return ctx;
+}
 function guiinApplyVerifiedEntitlements(payload){
  if(!payload||payload.verified!==true||payload.source!=='server')return false;
  GUIIN_VERIFIED_ENTITLEMENTS.lifetimeSaju=payload.lifetimeSaju===true;
  GUIIN_VERIFIED_ENTITLEMENTS.compat=payload.compat===true;
+ GUIIN_VERIFIED_ENTITLEMENTS.resourceKeys=payload.resourceKeys||{};
  GUIIN_VERIFIED_ENTITLEMENTS.verifiedAt=Date.now();
  if(chart)renderResult();
  if(matchAnalysis)renderCompatCards();
@@ -2743,6 +3005,57 @@ function guiinApplyVerifiedEntitlements(payload){
 window.guiinApplyVerifiedEntitlements=guiinApplyVerifiedEntitlements;
 function hasPremiumLifetime(){return true; /* DEMO FREE */}
 function hasPremiumCompat(){return true; /* DEMO FREE */}
+function guiinClearVerifiedAccess(){
+ GUIIN_VERIFIED_ENTITLEMENTS.lifetimeSaju=false;GUIIN_VERIFIED_ENTITLEMENTS.compat=false;GUIIN_VERIFIED_ENTITLEMENTS.verifiedAt=null;GUIIN_VERIFIED_ENTITLEMENTS.resourceKeys={};
+ GUIIN_PAID_RESOURCE_CONTEXT.LIFETIME_SAJU=null;GUIIN_PAID_RESOURCE_CONTEXT.PREMIUM_COMPAT=null;
+ GUIIN_SERVER_ACCOUNTING.authoritative=false;GUIIN_SERVER_ACCOUNTING.updatedAt=null;
+}
+function guiinApplyServerAccountingSnapshot(raw){
+ if(!raw||typeof raw!=='object')return false;
+ const q=raw.quota||raw.free||{},w=raw.aiPass||raw.ai_pass||raw.wallet||{};
+ const used=Number(q.used??q.used_count??0),reserved=Number(q.reserved??q.reserved_count??0),limit=Number(q.limit??q.limit_count??3);
+ const remaining=Number(q.available??q.remaining??Math.max(0,limit-used-reserved));
+ const balance=Number(w.remainingUses??w.balance??0),wr=Number(w.reservedUses??w.reserved??w.reserved_balance??0),available=Number(w.availableUses??w.available??Math.max(0,balance-wr));
+ GUIIN_SERVER_ACCOUNTING.free={used,reserved,limit,remaining:Math.max(0,remaining)};
+ GUIIN_SERVER_ACCOUNTING.wallet={balance,reserved:wr,available:Math.max(0,available)};
+ GUIIN_SERVER_ACCOUNTING.updatedAt=Date.now();
+ syncWalletViews();
+ return true;
+}
+async function guiinRefreshServerUsage({silent=true}={}){
+ try{
+   if(!guiinPaymentState?.serverAccountingReady){GUIIN_SERVER_ACCOUNTING.authoritative=false;syncWalletViews();return false;}
+   try{await window.GuiinMemberData?.ensureServerGuest?.();}catch(_e){}
+   const res=await guiinApi('/api/me/usage',{method:'GET',cache:'no-store',headers:{'Accept':'application/json'}});
+   const data=await res.json().catch(()=>({}));
+   if(!res.ok||data?.ok!==true||!data?.usage)throw new Error(data?.error||'usage_restore_failed');
+   GUIIN_SERVER_ACCOUNTING.authoritative=true;
+   guiinApplyServerAccountingSnapshot(data.usage);
+   return true;
+ }catch(err){if(!silent)console.warn('GUIIN_SERVER_USAGE_REFRESH_FAILED',err);return false;}
+}
+async function guiinRefreshPurchaseAccess({scope='all',silent=true}={}){
+ try{
+   try{await window.GuiinMemberData?.ensureServerGuest?.();}catch(_e){}
+   let lifetimeKey=null,compatKey=null;
+   if((scope==='all'||scope==='lifetime')&&chart?.pillars){try{lifetimeKey=await guiinPaidResourceKey('LIFETIME_SAJU');}catch(_e){}}
+   if((scope==='all'||scope==='compat')&&matchAnalysis){try{compatKey=await guiinPaidResourceKey('PREMIUM_COMPAT');}catch(_e){}}
+   const res=await guiinApi('/api/me/restore-summary',{method:'GET',cache:'no-store',headers:{'Accept':'application/json'}});
+   const data=await res.json().catch(()=>({}));
+   if(!res.ok||data?.ok!==true||!data?.restore)throw new Error(data?.error||'purchase_restore_failed');
+   const active=Array.isArray(data.restore.activeEntitlements)?data.restore.activeEntitlements:[];
+   const has=(type,key)=>!!key&&active.some(x=>x?.state==='ACTIVE'&&x?.entitlement_type===type&&String(x?.resource_key||'')===String(key));
+   guiinApplyVerifiedEntitlements({verified:true,source:'server',lifetimeSaju:has('lifetime_saju',lifetimeKey),compat:has('premium_compat',compatKey),resourceKeys:{lifetime:lifetimeKey,compat:compatKey}});
+   if(GUIIN_SERVER_ACCOUNTING.authoritative&&(data.restore.aiPass||data.restore.wallet))guiinApplyServerAccountingSnapshot({quota:GUIIN_SERVER_ACCOUNTING.free,aiPass:data.restore.aiPass||data.restore.wallet});
+   return true;
+ }catch(err){if(!silent)console.warn('GUIIN_PURCHASE_RESTORE_FAILED',err);return false;}
+}
+async function guiinRefreshServerState({silent=true}={}){
+ try{await refreshPaymentReadiness();}catch(_e){}
+ await Promise.allSettled([guiinRefreshServerUsage({silent}),guiinRefreshPurchaseAccess({silent})]);
+ syncWalletViews();
+}
+
 function pickPreviewSamples(key,pool,count=3){
  try{
   const storageKey='guiin_preview_samples_'+key;
@@ -4187,24 +4500,25 @@ function submitMatch(){
       if(failed.length)console.warn('GUIIN_COMPAT_PROFILE_SYNC_DEFERRED',failed.map(x=>x.reason?.message||String(x.reason)));
     });
   }catch(err){console.warn('GUIIN_COMPAT_PROFILE_SYNC_DEFERRED',err?.message||err);}
-  const scorePack=guiinCompatScoreV21(a,b);
-  const pa=scorePack.pa,pb=scorePack.pb,distance=scorePack.distance;
-  const dayGap=Math.min((a.pillars.day.branchIndex-b.pillars.day.branchIndex+12)%12,(b.pillars.day.branchIndex-a.pillars.day.branchIndex+12)%12);
-  const score=scorePack.score,love=scorePack.love,personality=scorePack.personality,money=scorePack.money,future=scorePack.future;
-  const band=score>=86?'서로의 장점을 살릴 여지가 큰 관계입니다.':score>=76?'맞는 부분과 조율할 부분이 함께 있는 관계입니다.':score>=66?'끌림과 차이가 함께 있어 생활 조율이 중요한 관계입니다.':'점수보다 대화와 경계 설정이 특히 중요한 관계입니다.';
-  matchMeta={a,b,scoreBasis:scorePack.basis,scoreParts:scorePack,good:score>=82?'기본적인 호감과 상호 보완 가능성이 큰 편입니다. 서로 다른 강점을 역할로 나누면 함께 있을 때 혼자보다 선택지가 넓어질 수 있습니다.':'차이가 분명한 만큼 서로에게 없는 방식을 배우게 되는 관계입니다. 맞는 부분만 찾기보다 각자의 강점을 역할로 나누는 것이 중요합니다.',watch:dayGap===6?'일지의 충 신호가 있어 감정의 속도나 생활 리듬이 다를 때 갈등이 크게 느껴질 수 있습니다. 다툼 자체보다 다툰 뒤 어떻게 회복하는지가 핵심입니다.':'감정이 좋을 때는 차이를 매력으로 느끼지만, 피곤할 때는 같은 차이가 답답함으로 느껴질 수 있습니다. 특히 책임과 돈 문제를 말없이 넘기지 않는 것이 중요합니다.',tip:'연락·돈·시간·집안일·가족·혼자 있는 시간에 대한 기준을 구체적으로 맞추세요. 좋은 궁합은 점수보다 반복되는 갈등을 두 사람이 실제로 조율할 수 있을 때 오래 갑니다.'};
-  const matchHeadline=score>=86?'서로의 장점을 살리기 좋은 관계예요.':score>=76?'잘 맞는 부분과 조율할 부분이 함께 보여요.':score>=66?'끌림과 차이가 함께 있는 관계예요.':'점수보다 대화 방식이 더 중요한 관계예요.';
+  const compatMetrics=guiinCompatMetricsV56(a,b);
+  const {score,love,personality,money,future,band}=compatMetrics;
+  matchMeta={a,b,score,love,personality,money,future,good:score>=82?'기본적인 호감과 상호 보완 가능성이 큰 편입니다. 서로 다른 강점을 역할로 나누면 함께 있을 때 혼자보다 선택지가 넓어질 수 있습니다.':'차이가 분명한 만큼 서로에게 없는 방식을 배우게 되는 관계입니다. 맞는 부분만 찾기보다 각자의 강점을 역할로 나누는 것이 중요합니다.',watch:compatMetrics.q?.dayRel==='충'?'일지의 충 신호가 있어 감정의 속도나 생활 리듬이 다를 때 갈등이 크게 느껴질 수 있습니다. 다툼 자체보다 다툰 뒤 어떻게 회복하는지가 핵심입니다.':'감정이 좋을 때는 차이를 매력으로 느끼지만, 피곤할 때는 같은 차이가 답답함으로 느껴질 수 있습니다. 특히 책임과 돈 문제를 말없이 넘기지 않는 것이 중요합니다.',tip:'연락·돈·시간·집안일·가족·혼자 있는 시간에 대한 기준을 구체적으로 맞추세요. 좋은 궁합은 점수보다 반복되는 갈등을 두 사람이 실제로 조율할 수 있을 때 오래 갑니다.'};
+  const matchHeadline=score>=86?'보완성과 결속이 큰 관계예요.':score>=78?'끌림과 조율이 함께 필요한 관계예요.':score>=68?'차이를 맞춰갈수록 좋아지는 관계예요.':'점수보다 생활 합의가 더 중요한 관계예요.';
   const pairNow=compatPairProfile(a.dayMaster?.el||a.pillars?.day?.stemEl||'토',b.dayMaster?.el||b.pillars?.day?.stemEl||'토');
-  const pairLead=pairNow?.fit||'두 사람의 생활 패턴을 함께 확인해 보세요.';
-  matchBaseHTML=`<div class="matchHero card"><h3>${matchHeadline}</h3><p>${esc(pairLead)} 점수보다 실제 생활에서 반복되는 패턴을 함께 보세요.</p><div class="matchArt"><img loading="lazy" decoding="async" src="compat-animals.jpg" alt=""></div><div style="font-size:9px;margin-top:7px">귀인사주 참고 궁합 지수</div><div class="score">♥ ${score}<small>점</small></div><p>${band}</p><div class="scoreBasisNote">점수 근거 · ${esc(scorePack.basis)}</div></div>
+  const pairStructure=guiinCompatSignalV5(a,b);
+  const pairLead=pairStructure?.archetype?`${pairStructure.archetype}. ${pairStructure.oppositeTemp?'서로 다른 계절의 온도는 끌림이 될 수 있지만 실제 생활 조율을 함께 봐야 합니다.':'성격과 생활 리듬의 합을 함께 봐야 합니다.'}`:(pairNow?.fit||'두 사람의 생활 패턴을 함께 확인해 보세요.');
+  matchBaseHTML=`<div class="matchHero card"><h3>${matchHeadline}</h3><p>${esc(pairLead)} 점수보다 실제 생활에서 반복되는 패턴을 함께 보세요.</p><div class="matchArt"><img loading="lazy" decoding="async" src="compat-animals.jpg" alt=""></div><div style="font-size:9px;margin-top:7px">귀인사주 참고 궁합 지수</div><div class="score">♥ ${score}<small>점</small></div><p>${band}</p></div>
    <div class="infoCard card"><div class="pair"><div class="person"><b>나<br>${esc(a.input.name)}</b><br>${a.input.year}.${a.input.month}.${a.input.day}<br>${a.input.gender==='여'?'여성':'남성'}</div><div class="heartSvg">${ICONS.heart}</div><div class="person b"><b>상대방<br>${esc(b.input.name)}</b><br>${b.input.year}.${b.input.month}.${b.input.day}<br>${b.input.gender==='여'?'여성':'남성'}</div></div></div>
-   <div class="infoCard card"><h3>세부 궁합 지수</h3>${[['연애궁합',love,'pink'],['성격궁합',personality,'mint'],['재물궁합',money,'gold'],['미래궁합',future,'purple']].map(x=>`<div class="scoreRow"><span>${x[0]}</span><div class="scoreBar"><i class="${x[2]}" style="width:${x[1]}%"></i></div><b>${x[1]}</b></div>`).join('')}</div>`+
+   <div class="infoCard card"><h3>세부 궁합 지수</h3>${[['연애·끌림',love,'pink'],['성격·대화',personality,'mint'],['돈·생활',money,'gold'],['장기조율',future,'purple']].map(x=>`<div class="scoreRow"><span>${x[0]}</span><div class="scoreBar"><i class="${x[2]}" style="width:${x[1]}%"></i></div><b>${x[1]}</b></div>`).join('')}</div>`+
    guiinRenderMansePair(a,b);
   if(typeof GuiinCompat==='undefined') throw new Error('compatibility-interpreter.js가 로드되지 않았습니다.');
   matchAnalysis=GuiinCompat.build(a,b,score);
+  GUIIN_VERIFIED_ENTITLEMENTS.compat=false;GUIIN_PAID_RESOURCE_CONTEXT.PREMIUM_COMPAT=null;
   matchTab='summary';
   renderCompatCards();
+  setTimeout(()=>guiinRefreshPurchaseAccess({scope:'compat',silent:true}),0);
   go('matchResult');
+  try{if(sessionStorage.getItem('guiin_pending_purchase')==='PREMIUM_COMPAT'){sessionStorage.removeItem('guiin_pending_purchase');setTimeout(()=>openCompatPay(),280);}}catch(_e){}
  }catch(e){
   console.error('GUIIN_MATCH_SUBMIT_ERROR',e);
   setFormMessage('matchFormMsg',friendlyErrorMessage(e,'궁합'));showGuiinPopup('앗, 사주 조각을 맞추는 중에 잠시 길을 잃었어요. 생년월일과 성별을 다시 한번 확인해 주시겠어요?','궁합을 완성하지 못했어요');
@@ -4258,7 +4572,7 @@ function renderFortunePeriod(period='today',btn){
 function renderToday(){
  const d=new Date(),days=['일','월','화','수','목','금','토'],rows=fortuneRows('today');
  const personal=chart?.dayMaster?`<div class="todayDetailCard card"><div class="miniTitle">내 사주 기준</div><h3>${esc(chart.input?.name||'사용자')}님의 중심 기운은 ${esc(chart.dayMaster.stem||'')}입니다.</h3><p>현재 대운과 오늘 날짜의 세운·월운·일운, 원국과의 관계 신호를 함께 계산해 생활형 운세를 보여드려요. 미래를 확정하는 예언이 아니라 오늘의 선택을 점검하는 참고 정보로 활용해 주세요.</p></div>`:`<div class="todayDetailCard card"><div class="miniTitle">기본 오늘 운세</div><h3>내 사주를 입력하면 오늘 운세가 더 개인화돼요.</h3><p>지금은 날짜 기준의 기본 운세예요. 생년월일을 한 번 입력해두면 일간·일지를 함께 반영해 매일 다른 흐름으로 보여드릴게요.</p><button class="softBtn" onclick="go('saju')" data-guiin-nav="saju">내 사주 입력하기 ›</button></div>`;
- $('todayView').innerHTML=guiinVisualHero('today',chart?.input?.name)+`<div class="todayHero card"><div class="todayArt"><img loading="lazy" decoding="async" src="today-dog.jpg" alt=""></div><h3>오늘도 좋은 일이 찾아와요!</h3><p>“작은 행복이 모여, 큰 행운이 됩니다.”</p></div><div class="todayDate">${d.getFullYear()}년 ${d.getMonth()+1}월 ${d.getDate()}일 (${days[d.getDay()]})</div>${personal}<div class="fortuneList card" style="margin-top:9px">${rows.map((x,i)=>`<div class="fortuneRow clickable" data-title="${esc(x[0])}" data-summary="${esc(x[1])}" onclick="openTodayDetail(this.dataset.title,this.dataset.summary)"><div class="fIcon">${[ICONS.money,ICONS.heart,ICONS.money,ICONS.brief,ICONS.plus][i]}</div><div><b>${esc(x[0])}</b><span>${esc(x[1])}</span></div></div>`).join('')}</div><div class="slogan card"><b>오늘의 조언</b><br>좋은 흐름은 활용하고, 부담이 큰 결정은 한 번 더 확인해 보세요.</div><button class="ctaGold" onclick="openTodayDetail()">상세 운세 보기 ›</button>${tailQuestionsHTML('오늘')}`;
+ $('todayView').innerHTML=guiinVisualHero('today',chart?.input?.name)+`<div class="todayHero card"><div class="todayArt"><img loading="lazy" decoding="async" src="today-dog.jpg?v=20261001imgfix" alt="오늘의 운세를 안내하는 강아지 일러스트"></div><h3>오늘도 좋은 일이 찾아와요!</h3><p>“작은 행복이 모여, 큰 행운이 됩니다.”</p></div><div class="todayDate">${d.getFullYear()}년 ${d.getMonth()+1}월 ${d.getDate()}일 (${days[d.getDay()]})</div>${personal}<div class="fortuneList card" style="margin-top:9px">${rows.map((x,i)=>`<div class="fortuneRow clickable" data-title="${esc(x[0])}" data-summary="${esc(x[1])}" onclick="openTodayDetail(this.dataset.title,this.dataset.summary)"><div class="fIcon">${[ICONS.money,ICONS.heart,ICONS.money,ICONS.brief,ICONS.plus][i]}</div><div><b>${esc(x[0])}</b><span>${esc(x[1])}</span></div></div>`).join('')}</div><div class="slogan card"><b>오늘의 조언</b><br>좋은 흐름은 활용하고, 부담이 큰 결정은 한 번 더 확인해 보세요.</div><button class="ctaGold" onclick="openTodayDetail()">상세 운세 보기 ›</button>${tailQuestionsHTML('오늘')}`;
 }
 
 
@@ -5031,10 +5345,10 @@ function renderToday(){
 restoreProfile();renderToday();
 setTimeout(guiinPreflight,0);
 
-const COIN_KEY='guiin_clover_wallet_v2', FREE_KEY='guiin_ai_free_used_v2', NOTIFY_KEY='guiin_notify_v1';
-function loadWallet(){try{const x=JSON.parse(localStorage.getItem(COIN_KEY)||'{}');return {coins:Number(x.coins||0),ledger:Array.isArray(x.ledger)?x.ledger:[]};}catch(e){return {coins:0,ledger:[]}}}
+const AI_PASS_KEY='guiin_ai_chat_pass_v1', LEGACY_COIN_KEY='guiin_clover_wallet_v2', FREE_KEY='guiin_ai_free_used_v2', NOTIFY_KEY='guiin_notify_v1';
+function loadWallet(){try{let x=JSON.parse(localStorage.getItem(AI_PASS_KEY)||'null');if(!x){const legacy=JSON.parse(localStorage.getItem(LEGACY_COIN_KEY)||'null');if(legacy){x={uses:Number(legacy.coins||0),ledger:Array.isArray(legacy.ledger)?legacy.ledger:[]};localStorage.setItem(AI_PASS_KEY,JSON.stringify(x));}}return {coins:Number(x?.uses??x?.coins??0),ledger:Array.isArray(x?.ledger)?x.ledger:[]};}catch(e){return {coins:0,ledger:[]}}}
 let wallet=loadWallet();
-function persistWallet(){localStorage.setItem(COIN_KEY,JSON.stringify(wallet));syncWalletViews();}
+function persistWallet(){localStorage.setItem(AI_PASS_KEY,JSON.stringify({uses:Number(wallet.coins||0),ledger:Array.isArray(wallet.ledger)?wallet.ledger:[]}));syncWalletViews();}
 function guiinFreeUsageKey(){
  try{
   const u=JSON.parse(localStorage.getItem('guiin_user_session_v1')||'null');
@@ -5050,10 +5364,10 @@ function guiinFreeUsageKey(){
 }
 function freeUsed(){const n=Number(localStorage.getItem(guiinFreeUsageKey())||0);return Number.isFinite(n)?Math.max(0,n):0;}
 function setFreeUsed(n){localStorage.setItem(guiinFreeUsageKey(),String(Math.max(0,n)));syncWalletViews();}
-function syncWalletViews(){if($('freeRemainView'))$('freeRemainView').textContent=Math.max(0,3-freeUsed());}
+function syncWalletViews(){if($('freeRemainView'))$('freeRemainView').textContent=Math.max(0,3-freeUsed());let uses=Number(wallet?.coins||0);try{if(GUIIN_SERVER_ACCOUNTING?.authoritative)uses=Number(GUIIN_SERVER_ACCOUNTING?.wallet?.available||0);}catch(_e){}if($('coinView'))$('coinView').textContent=Math.max(0,uses);}
 function renderLedger(){if(!$('ledger'))return;$('ledger').innerHTML=(wallet.ledger||[]).slice(0,12).map(r=>`${esc(r.t)} · ${esc(r.text)} (${r.delta>0?'+':''}${r.delta})`).join('<br>')||'아직 내역이 없습니다.';}
-let guiinPaymentState={checked:false,liveEnabled:false,sandboxEnabled:false,error:false};
-let guiinPaySelection={productCode:'CLOVER_1',price:1100};
+let guiinPaymentState={checked:false,liveEnabled:false,liveCheckoutReady:false,sandboxEnabled:false,serverAccountingReady:false,productCatalogReady:false,error:false};
+let guiinPaySelection={productCode:'AI_CHAT_3',price:1100};
 
 function setPaymentReadinessUI(){
   const state=guiinPaymentState;
@@ -5065,16 +5379,19 @@ function setPaymentReadinessUI(){
   for(const [rid,bid] of configs){
     const r=$(rid),b=$(bid);
     if(!r||!b)continue;
-    const ready=state.liveEnabled||state.sandboxEnabled;
+    const ready=state.sandboxEnabled||(state.liveEnabled&&state.liveCheckoutReady);
     const consentId=bid==='walletPayBtn'?'walletPayConsent':bid==='premiumPayBtn'?'premiumPayConsent':'compatPayConsent';
     const consentOk=!!$(consentId)?.checked;
     r.className='payReadiness '+(state.error?'error':ready?'ready':'wait');
     if(state.error){
       r.textContent='결제 서버 상태를 확인하지 못했어요. 현재 구매는 진행하지 않습니다.';
       b.disabled=true;
-    }else if(state.liveEnabled){
-      r.textContent=consentOk?'결제 서버 준비가 확인됐어요.':'약관과 환불정책을 확인한 뒤 결제를 진행해 주세요.';
+    }else if(state.liveEnabled&&state.liveCheckoutReady){
+      r.textContent=consentOk?'실결제 서버 준비가 확인됐어요.':'약관과 환불정책을 확인한 뒤 결제를 진행해 주세요.';
       b.disabled=!consentOk;
+    }else if(state.liveEnabled&&!state.liveCheckoutReady){
+      r.textContent='실결제 승인 모듈 최종 연결 전이라 구매를 잠가두었어요.';
+      b.disabled=true;
     }else if(state.sandboxEnabled){
       r.textContent=consentOk?'NHN KCP 샌드박스 테스트 모드입니다. 실제 청구·콘텐츠 지급은 발생하지 않습니다.':'테스트 결제 전 약관과 환불정책 확인에 체크해 주세요.';
       b.disabled=!consentOk;
@@ -5085,7 +5402,7 @@ function setPaymentReadinessUI(){
     const info=$('paymentInfoStatus');
     if(info){
       info.className='paymentInfoStatus '+(state.error?'error':state.liveEnabled?'ready':state.sandboxEnabled?'sandbox':'');
-      info.textContent=state.error?'결제 서버 상태를 확인하지 못했습니다.':state.liveEnabled?'NHN KCP 실결제가 활성화되어 있습니다.':state.sandboxEnabled?'NHN KCP 샌드박스 테스트가 활성화되어 있습니다. 실제 청구는 발생하지 않습니다.':'현재 실결제는 오픈 전 점검 중입니다.';
+      info.textContent=state.error?'결제 서버 상태를 확인하지 못했습니다.':(state.liveEnabled&&state.liveCheckoutReady)?'NHN KCP 실결제가 활성화되어 있습니다.':state.liveEnabled?'실결제 플래그는 감지됐지만 승인 모듈이 준비되지 않아 구매를 차단했습니다.':state.sandboxEnabled?'NHN KCP 샌드박스 테스트가 활성화되어 있습니다. 실제 청구는 발생하지 않습니다.':'현재 실결제는 오픈 전 점검 중입니다.';
     }
   }
 }
@@ -5094,28 +5411,31 @@ async function refreshPaymentReadiness(){
     const res=await fetch(GUIIN_API_BASE+'/health',{cache:'no-store',headers:{'Accept':'application/json'}});
     const data=await res.json().catch(()=>({}));
     if(!res.ok)throw new Error('health_failed');
-    guiinPaymentState={checked:true,liveEnabled:data?.paymentsEnabled===true,sandboxEnabled:data?.kcpSandboxReady===true,error:false};
+    guiinPaymentState={checked:true,liveEnabled:data?.paymentsEnabled===true,liveCheckoutReady:data?.liveCheckoutReady===true,sandboxEnabled:data?.kcpSandboxReady===true,serverAccountingReady:data?.serverAccountingReady===true,productCatalogReady:data?.productCatalogReady===true,error:false};
   }catch(_e){
-    guiinPaymentState={checked:true,liveEnabled:false,sandboxEnabled:false,error:true};
+    guiinPaymentState={checked:true,liveEnabled:false,liveCheckoutReady:false,sandboxEnabled:false,serverAccountingReady:false,productCatalogReady:false,error:true};
   }
   setPaymentReadinessUI();
   return guiinPaymentState;
 }
-function guiinCloverProductCode(base,bonus,price){
-  if(Number(price)===1100&&Number(base)+Number(bonus)===4)return 'CLOVER_1';
-  if(Number(price)===1650&&Number(base)+Number(bonus)===7)return 'CLOVER_2';
-  if(Number(price)===2750&&Number(base)+Number(bonus)===14)return 'CLOVER_4';
+function guiinAiPassProductCode(uses,price){
+  if(Number(price)===1100&&Number(uses)===3)return 'AI_CHAT_3';
+  if(Number(price)===1990&&Number(uses)===6)return 'AI_CHAT_6';
+  if(Number(price)===2790&&Number(uses)===9)return 'AI_CHAT_9';
+  if(Number(price)===4990&&Number(uses)===18)return 'AI_CHAT_18';
   return '';
 }
-function openPaySheet(base,bonus,price){
+function openPaySheet(uses,price){
   const s=$('paySheet');if(!s)return;
-  guiinPaySelection={productCode:guiinCloverProductCode(base,bonus,price),price:Number(price)};
-  $('payPackText').textContent=`행운의 클로버 ${base}개 + 보너스 ${bonus}개 · 총 ${base+bonus}개`;
+  guiinPaySelection={productCode:guiinAiPassProductCode(uses,price),price:Number(price),uses:Number(uses)};
+  $('payPackText').textContent=`AI 사주 분석 질문 ${Number(uses)}회 이용권`;
   $('payPrice').textContent=Number(price).toLocaleString('ko-KR')+'원';
   $('payMsg').textContent='';
   s.classList.add('on');
   refreshPaymentReadiness();
 }
+/* 구버전 호출 호환용: 신규 구매에는 AI_CHAT_* 상품코드만 사용합니다. */
+function guiinCloverProductCode(base,bonus,price){return guiinAiPassProductCode(Number(base||0)+Number(bonus||0),price);}
 function closePaySheet(){const s=$('paySheet');if(s)s.classList.remove('on');}
 function openPremiumPay(){if($('premiumPayMsg'))$('premiumPayMsg').textContent='';$('premiumSheet')?.classList.add('on');refreshPaymentReadiness();}
 function closePremiumPay(){$('premiumSheet')?.classList.remove('on');}
@@ -5186,10 +5506,15 @@ async function guiinStartKcpSandbox(productCode,messageId,buttonId){
     try{sessionStorage.setItem('guiin_kcp_last_product',String(productCode||''));}catch(_e){}
     await guiinKcpEnsureSession();
     const platform=guiinKcpIsMobile()?'mobile':'pc';
+    let paidResource=null;
+    if(productCode==='LIFETIME_SAJU'||productCode==='PREMIUM_COMPAT'){
+      paidResource=await guiinEnsurePaidResourceSnapshot(productCode);
+      if(!paidResource?.chartSnapshotId)throw new Error('paid_resource_not_ready');
+    }
     const res=await guiinApi('/api/kcp/sandbox/register',{
       method:'POST',cache:'no-store',
       headers:{'Content-Type':'application/json','Accept':'application/json','X-Idempotency-Key':guiinRandomId('kcp_')},
-      body:JSON.stringify({product_code:productCode,platform})
+      body:JSON.stringify({product_code:productCode,platform,chart_snapshot_id:paidResource?.chartSnapshotId||null})
     });
     const data=await res.json().catch(()=>({}));
     if(!res.ok||!data?.ok)throw new Error(data?.message||data?.error||'kcp_register_failed');
@@ -5222,7 +5547,7 @@ function premiumPayNotReady(){return guiinStartKcpSandbox('LIFETIME_SAJU','premi
 function compatPayNotReady(){return guiinStartKcpSandbox('PREMIUM_COMPAT','compatPayMsg','compatPayBtn');}
 
 function guiinKcpProductLabel(code){
-  const m={LIFETIME_SAJU:'프리미엄 평생사주',PREMIUM_COMPAT:'프리미엄 궁합',CLOVER_1:'맛보기 클로버 4회',CLOVER_2:'단골 클로버 7회',CLOVER_4:'행운 클로버 14회'};
+  const m={LIFETIME_SAJU:'프리미엄 평생사주',PREMIUM_COMPAT:'프리미엄 궁합',AI_CHAT_3:'AI 사주상담 질문 3회 패키지',AI_CHAT_6:'AI 사주상담 질문 6회 패키지',AI_CHAT_9:'AI 사주상담 질문 9회 패키지',AI_CHAT_18:'AI 사주상담 질문 18회 패키지',AI_CHAT_4:'AI 사주상담 4회 이용권(기존)',AI_CHAT_7:'AI 사주상담 7회 이용권(기존)',AI_CHAT_14:'AI 사주상담 14회 이용권(기존)',CLOVER_1:'AI 사주상담 4회 이용권(기존)',CLOVER_2:'AI 사주상담 7회 이용권(기존)',CLOVER_4:'AI 사주상담 14회 이용권(기존)'};
   return m[String(code||'')]||'유료 상품';
 }
 function guiinRenderPaymentResult(kind,{order='',code='',productCode=''}={}){
@@ -5230,10 +5555,10 @@ function guiinRenderPaymentResult(kind,{order='',code='',productCode=''}={}){
   if(!icon||!title||!copy||!primary)return;
   icon.className='payResultIcon'+(kind==='success'?'':kind==='cancel'?' cancel':' fail');
   icon.textContent=kind==='success'?'✓':kind==='cancel'?'–':'!';
-  if(badge)badge.textContent='NHN KCP · 샌드박스';
+  if(badge)badge.textContent='KG이니시스';
   if(kind==='success'){
-    title.textContent='KCP 테스트 인증이 완료됐어요';
-    copy.textContent='결제창 인증과 귀인사주 복귀까지 정상 동작했습니다. 현재는 샌드박스이므로 실제 청구와 유료 콘텐츠·클로버 지급은 발생하지 않습니다.';
+    title.textContent='결제 인증이 완료됐어요';
+    copy.textContent='결제창 인증과 귀인사주 복귀까지 정상 동작했습니다. 현재는 샌드박스이므로 실제 청구와 유료 콘텐츠·AI 상담 이용권 지급은 발생하지 않습니다.';
     primary.textContent='상품 화면으로 돌아가기';
   }else if(kind==='cancel'){
     title.textContent='결제를 취소했어요';
@@ -5251,7 +5576,7 @@ function guiinRenderPaymentResult(kind,{order='',code='',productCode=''}={}){
     meta.style.display=rows.length?'block':'none';
   }
   primary.onclick=()=>{
-    if(String(productCode).startsWith('CLOVER_'))go('wallet');
+    if(String(productCode).startsWith('AI_CHAT_')||String(productCode).startsWith('CLOVER_'))go('wallet');
     else if(productCode==='PREMIUM_COMPAT')go('matchResult');
     else if(productCode==='LIFETIME_SAJU')go('result');
     else go('paymentInfo');
@@ -5475,10 +5800,13 @@ function clearAIChat(){
 }
 function syncAskContext(){
   const title=$('askContextTitle'),meta=$('askContextMeta'),welcome=$('welcomeBot');
+  const heroTitle=$('askHeroTitle'),heroCopy=$('askHeroCopy');
   if(!title||!meta)return;
   if(!chart||!chart?.pillars){
     title.textContent='사주를 먼저 입력해 주세요';
     meta.textContent='명식이 있으면 그 결과를 기준으로 답해요.';
+    if(heroTitle)heroTitle.textContent='사주를 기준으로 깊게 물어보세요.';
+    if(heroCopy)heroCopy.textContent='사주를 먼저 계산하면 원국과 현재 흐름을 바탕으로 상담해드려요.';
     if(welcome)welcome.textContent='사주를 먼저 계산해 두면 원국 기준으로 답합니다. 직업, 재물, 연애, 올해 흐름 중 무엇이 궁금한가요?';
     return;
   }
@@ -5486,6 +5814,8 @@ function syncAskContext(){
   const dm=chart?.dayMaster?.stem||chart?.pillars?.day?.stem||'';
   title.textContent=name+'님의 사주로 상담 중';
   meta.textContent=dm?`일간 ${dm} · 계산된 원국과 현재 흐름을 함께 참고합니다.`:'계산된 원국과 현재 흐름을 함께 참고합니다.';
+  if(heroTitle)heroTitle.textContent=name+'님의 사주로 물어보세요.';
+  if(heroCopy)heroCopy.textContent='계산된 원국과 현재 흐름을 바탕으로 필요한 내용을 이어서 설명해드려요.';
   if(welcome)welcome.textContent=`${name}님의 계산된 사주를 기준으로 답할게요. 직업, 재물, 연애, 올해 흐름 중 무엇이 가장 궁금한가요?`;
 }
 
@@ -5776,7 +6106,7 @@ async function sendQ(preset){
     status.textContent=
       err?.name==='AbortError'
         ? '답변이 조금 늦어지고 있어요. 잠시 후 다시 질문해 주세요. 이번 질문은 차감되지 않았어요.'
-        : '상담사가 잠시 자리를 비웠나 봐요. 잠시 후 다시 말을 걸어주세요! 이번 질문은 무료 횟수나 클로버에서 차감되지 않았어요.';
+        : '상담사가 잠시 자리를 비웠나 봐요. 잠시 후 다시 말을 걸어주세요! 이번 질문은 무료 횟수나 AI 상담 이용권에서 차감되지 않았어요.';
 
   }finally{
     clearTimeout(timer);
@@ -7592,5 +7922,89 @@ document.addEventListener('visibilitychange',()=>{
 })();
 </script>
 
+
+<script>
+/* GUIIN PAYMENT PROVIDER TRANSITION R2 — KG Inicis preparation · 2026-10-01
+   KCP sandbox implementation remains only as rollback/reference.
+   Real charging stays disabled until KG Inicis MID/signKey and server-side approval routes are connected. */
+const GUIIN_ACTIVE_PG='inicis';
+const GUIIN_INICIS_FRONTEND_READY=true;
+const GUIIN_INICIS_LIVE_ENABLED=false;
+
+function guiinPaymentCenterStart(productCode){
+  const code=String(productCode||'');
+  if(code==='LIFETIME_SAJU'){
+    if(chart?.pillars){
+      currentTab='summary';renderResult();go('result');
+      setTimeout(()=>openPremiumPay(),180);
+    }else{
+      try{sessionStorage.setItem('guiin_pending_purchase','LIFETIME_SAJU');}catch(_e){}
+      go('saju');
+      try{setFormMessage('sajuFormMsg','사주를 조회하면 프리미엄 평생사주 결제 단계로 이어집니다.');}catch(_e){}
+    }
+    return;
+  }
+  if(code==='PREMIUM_COMPAT'){
+    if(matchAnalysis){
+      go('matchResult');setTimeout(()=>openCompatPay(),180);
+    }else{
+      try{sessionStorage.setItem('guiin_pending_purchase','PREMIUM_COMPAT');}catch(_e){}
+      go('match');
+      try{setFormMessage('matchFormMsg','궁합을 조회하면 프리미엄 궁합 결제 단계로 이어집니다.');}catch(_e){}
+    }
+  }
+}
+
+function guiinInicisTransitionMessage(messageId){
+  const msg=document.getElementById(messageId);
+  if(msg)msg.textContent='KG이니시스 전환 준비가 완료된 화면입니다. 계약 MID·서명키와 서버 승인 API를 연결하면 실제 결제창이 열립니다.';
+  const info=document.getElementById('paymentInfoStatus');
+  if(info){
+    info.className='paymentInfoStatus sandbox';
+    info.textContent='KG이니시스 일반결제 전환 준비 중 · 상품 조회/결제 동선 확인 가능 · 실제 승인은 아직 비활성화';
+  }
+  return false;
+}
+function payNotReady(){return guiinInicisTransitionMessage('payMsg');}
+function premiumPayNotReady(){return guiinInicisTransitionMessage('premiumPayMsg');}
+function compatPayNotReady(){return guiinInicisTransitionMessage('compatPayMsg');}
+
+setPaymentReadinessUI=function(){
+  const configs=[
+    ['walletPayReadiness','walletPayBtn','walletPayConsent'],
+    ['premiumPayReadiness','premiumPayBtn','premiumPayConsent'],
+    ['compatPayReadiness','compatPayBtn','compatPayConsent']
+  ];
+  for(const [rid,bid,cid] of configs){
+    const r=document.getElementById(rid),b=document.getElementById(bid),consent=document.getElementById(cid);
+    if(!r||!b)continue;
+    const ok=!!consent?.checked;
+    r.className='payReadiness '+(ok?'ready':'wait');
+    r.textContent=ok?'KG이니시스 결제 전환 준비 상태입니다. 실제 승인 연결 전에는 결제가 청구되지 않습니다.':'약관과 환불정책을 확인한 뒤 결제 버튼을 눌러 진행 상태를 확인할 수 있어요.';
+    b.disabled=!ok;
+  }
+  const info=document.getElementById('paymentInfoStatus');
+  if(info){
+    info.className='paymentInfoStatus sandbox';
+    info.textContent='KG이니시스 일반결제 전환 준비 중 · 실제 승인은 MID/서명키/서버 승인 API 연결 후 활성화';
+  }
+};
+
+const guiinLegacyRefreshPaymentReadinessForInicis=refreshPaymentReadiness;
+refreshPaymentReadiness=async function(){
+  let serverAccountingReady=false,productCatalogReady=false;
+  try{
+    const res=await fetch(GUIIN_API_BASE+'/health',{cache:'no-store',headers:{'Accept':'application/json'}});
+    const data=await res.json().catch(()=>({}));
+    serverAccountingReady=data?.serverAccountingReady===true;
+    productCatalogReady=data?.productCatalogReady===true;
+  }catch(_e){}
+  guiinPaymentState={checked:true,liveEnabled:false,liveCheckoutReady:false,sandboxEnabled:false,serverAccountingReady,productCatalogReady,inicisTransition:true,error:false};
+  setPaymentReadinessUI();
+  return guiinPaymentState;
+};
+
+try{Object.assign(window,{guiinPaymentCenterStart});}catch(_e){}
+</script>
 </body>
 </html>
