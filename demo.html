@@ -2659,7 +2659,7 @@ const GUIIN_BRANCH_NARRATIVE={
  '오':{image:'한낮의 강한 빛',outer:'(일지 오화) 좋고 싫음, 에너지가 얼굴에 딱 드러남',gift:'사람·상황 움직이게 하는 추진력',shadow:'감정 온도 올라가면 작은 문제도 크게 느껴짐',relation:'애정·관심은 눈에 보이게 표현돼야 직성 풀림'},
  '미':{image:'여름 끝의 부드러운 흙',outer:'(일지 미토) 겉은 부드러운데 속엔 책임·자기 기준 확실히 품음',gift:'돌보고 조율하면서 결과 남기는 힘',shadow:'배려 반복되면 내 몫·남 몫 경계 흐려짐',relation:'챙기긴 챙기는데 존중받고 있다는 확신도 필요함'},
  '신':{image:'빠르게 움직이는 금속과 바람',outer:'(일지 신금) 상황 빨리 읽고 효율적인 답 바로 찾는 타입',gift:'문제 해결·전환 속도 빠름',shadow:'답 보이면 상대 감정 속도는 그냥 지나침',relation:'답답한 관계 진짜 싫어함, 서로 배우는 관계가 맞음'},
- '유':{image:'정교하게 다듬은 보석',outer:'(일지 유금) 깔끔하고 세련된 기준부터 먼저 보임',gift:'작은 차이 알아채고 완성도 끝까지 올리는 힘',shadow:'기준 높아지면 자신·상대 둘 다한테 예민해짐',relation:'말투·매너·신뢰·약속 디테일 하나하나 다 봄'},
+ '유':{image:'정교하게 다듬은 보석',outer:'(일지 유금) 깔끔하고 세련된 기준부터 먼저 보임',gift:'작은 차이 알아채고 완성도 끝까지 올리는 힘',shadow:'기준이 높아지면 자신과 상대 모두에게 예민해짐',relation:'말투·매너·신뢰·약속 디테일 하나하나 다 봄'},
  '술':{image:'가을 끝의 단단한 성벽',outer:'(일지 술토) 한번 기준 세우면 절대 안 바꿈',gift:'책임·원칙 오래 지키는 힘',shadow:'상처받아도 버티다가 한 번에 선 그어버림. 손절 빠름',relation:'의리, 내 편 들어주는 태도를 진짜 중요하게 봄'},
  '해':{image:'겨울을 여는 큰 물',outer:'(일지 해수) 겉보다 속이 깊고 상대 사정 넓게 보려는 타입',gift:'맥락·감정 같이 받아들이는 힘',shadow:'상대 사정 이해하다가 내 욕구는 뒤로 계속 미룸',relation:'정서적 신뢰, 편안한 대화 없으면 못 버팀'}
 };
@@ -2918,7 +2918,7 @@ function guiinCareerDeepHTML(c){
    `<p>직업명 하나가 운명처럼 정해지는 것은 아니지만, 월주 ${esc(mg||'십성')}의 일하는 방식과 오행에서 가장 자주 쓰는 ${esc(x?.top||'-')} 기능을 실제 직군으로 번역하면 <b>${jobs.map(esc).join(' · ')}</b> 같은 분야가 예시가 될 수 있습니다.</p><p>같은 직업도 “내가 판단할 수 있는가 / 기술이 쌓이는가 / 결과가 눈에 보이는가 / 회복 가능한가”에 따라 만족도가 크게 달라질 수 있습니다.</p>`,
    '직업 이름보다 내가 잘 쓰는 기능이 반복되는 환경을 고르면 강점이 오래갑니다.','사주 한 줄만 보고 현실 조건·수입·경력·체력을 무시하는 선택','관심 직업 3개를 놓고 결정권·기술축적·수입구조·감정소모를 비교해보세요.',evidenceCompact(c,['month','elements']))+
    easyCard('직장생활 vs 사업·독립',business,
-   `<p>${esc(business)}</p><p>${strength?.label?`현재 명식의 일간 지지력 참고값은 ${esc(strength.label)}${Number.isFinite(score)?` ${score}점`:''}으로 계산됩니다. `:''}그래서 “회사 체질이 아니다” 또는 “무조건 사업해야 성공한다”고 자르기보다, <b>결정권·기술축적·고객 반응·고정비·회복 여지</b>를 함께 비교하는 것이 더 정확합니다.</p>`,
+   `<p>이 방향은 월간 십성의 일하는 방식과 일간 지지력, 오행에서 반복되는 현실 기능을 함께 본 해석입니다.</p><p>${strength?.label?`현재 명식의 일간 지지력 참고값은 ${esc(strength.label)}${Number.isFinite(score)?` ${score}점`:''}으로 계산됩니다. `:''}그래서 “회사 체질이 아니다” 또는 “무조건 사업해야 성공한다”고 자르기보다, <b>결정권·기술축적·고객 반응·고정비·회복 여지</b>를 함께 비교하는 것이 더 정확합니다.</p>`,
    '맞는 구조를 고르면 같은 능력도 더 좋은 결과로 연결될 수 있습니다.','사업운이 있다는 말만 믿고 자금·고객·현금흐름 준비 없이 확장하는 것','사업을 고민한다면 작은 유료 테스트 → 반복 고객 → 고정비 확대 순서로 확인하세요.',evidenceCompact(c,['month','luck','elements']));
  }catch(_e){return '';}
 }
@@ -3086,7 +3086,7 @@ function personalityReport(c){
  const name=esc(c.input.name), rel=relationSummary(c);
  let html=`<div class="easyIntro card"><div class="easyKicker">나라는 사람</div><h2>${name}님은 ${day.headline}</h2><p>${esc(day.image)}에 비유되는 ${stem} 일간의 기질에 월령·오행·십성을 겹쳐서, 겉모습과 가까운 관계에서의 반응이 어떻게 달라지는지까지 볼게.</p></div>`;
  html+=easyCard('겉으로 보이는 나',`처음에는 ${esc(krJoin(sig.monthScene,'이/가'))} 먼저 보이고, 가까워질수록 ${esc(krJoin(day.soft,'이/가'))} 더 드러날 수 있어.`,
- `<p>처음 보는 사람에게는 ${name}님이 ${esc(sig.dv.tone)} 쪽으로 느껴질 수 있어. 그런데 일을 함께 해보면 ${esc(krJoin(day.core,'이/가'))} 보이고, 가까워질수록 ${esc(krJoin(day.soft,'이/가'))} 나타날 수 있거든.</p><p>그래서 어떤 사람에게는 단단하고 빈틈없는 사람으로, 또 어떤 사람에게는 의외로 정이 많고 섬세한 사람으로 기억될 수 있어.</p>`,
+ `<p>처음 보는 사람에게는 ${esc(sig.dv.tone)}. 그런데 일을 함께 해보면 ${esc(krJoin(day.core,'이/가'))} 보이고, 가까워질수록 ${esc(krJoin(day.soft,'이/가'))} 나타날 수 있거든.</p><p>그래서 어떤 사람에게는 단단하고 빈틈없는 사람으로, 또 어떤 사람에게는 의외로 정이 많고 섬세한 사람으로 기억될 수 있어.</p>`,
  `${esc(krJoin(sig.dv.strength,'을/를'))} 실제 결과로 바꾸는 힘이 있어.`,
  `기대받는 역할을 오래 맡으면 본인이 얼마나 지쳤는지 늦게 알아차릴 수 있어.`,
  `부탁을 받았을 때 바로 대답하기보다 시간·비용·체력을 먼저 계산해봐.`,
@@ -3209,7 +3209,7 @@ function fieldsReport(c){
  `입금되면 고정비·생활비·저축을 먼저 나누고, 남은 돈을 쓰는 구조로 만드는 게 좋아.`,
  evidenceCompact(c,['elements','luck']));
  out+=easyCard('연애운',`${esc(krJoin(mg.love,'이/가'))} 오래 편한 관계를 만드는 핵심 조건으로 보여.`,
- `<p>${name}님은 ${esc(sig.dv.relation)} 일지에서는 ${esc(krJoin(dp.br.relation,'이/가'))} 같이 보여서, 좋아하는 마음의 크기만큼 <b>${esc(krJoin(mg.love,'이/가'))}</b> 실제 만족도에 중요하게 작용할 수 있어.</p><p>관계 신호는 <b>${esc(relationSummary(c))}</b>로 보이지만, 이걸로 배우자 복이나 이별 시기를 확정하지는 않아. 실제로는 연락·돈·가족·생활 리듬에서 누가 무엇을 맡고 어떻게 풀어가는지가 훨씬 직접적으로 영향을 줘.</p>`,
+ `<p>${name}님은 ${esc(sig.dv.relation)}. 일지에서는 ${esc(dp.br.relation)} 같은 반응도 보여서, 좋아하는 마음의 크기만큼 <b>${esc(krJoin(mg.love,'이/가'))}</b> 실제 만족도에 중요하게 작용할 수 있어.</p><p>관계 신호는 <b>${esc(relationSummary(c))}</b>로 보이지만, 이걸로 배우자 복이나 이별 시기를 확정하지는 않아. 실제로는 연락·돈·가족·생활 리듬에서 누가 무엇을 맡고 어떻게 풀어가는지가 훨씬 직접적으로 영향을 줘.</p>`,
  `한번 믿은 사람에게는 꾸준하고 쉽게 놓지 않는 힘이 있어.`,
  `참는 걸 사랑이라고 생각하면 지칠 만큼 지친 뒤에야 한꺼번에 말할 수 있어.`,
  `한 달에 한 번 정도는 “내가 계속 떠안고 있는 게 있나?”를 스스로 확인해봐.`,
@@ -9118,5 +9118,275 @@ try{Object.assign(window,{guiinPaymentCenterStart});}catch(_e){}
 })();
 </script>
 
+
+
+<!-- GUIIN SAJU ENGINE 2.2 · CONSISTENCY + DIVERSITY QA · 2026-10-02 -->
+<script id="GUIIN_SAJU_ENGINE22_QA">
+/* ========================================================================
+   GUIIN SAJU ENGINE 2.2 · CONSISTENCY + DIVERSITY QA
+   - 2.1 계산값을 다시 계산하지 않고 구조 일관성/해석 신뢰도 메타를 추가
+   - 단순 오행 비율과 월령·지장간 보정 구조가 다를 때 그 차이를 명시
+   - 서로 다른 명식이 같은 문구로 수렴하는지 5개 대표 명식으로 자동 점검
+   - 일반 사용자 화면에서는 QA를 실행하지 않음 (?guiin_qa=1 전용)
+   ======================================================================== */
+(function(){
+ if(globalThis.__GUIIN_SAJU_ENGINE22__)return;
+ globalThis.__GUIIN_SAJU_ENGINE22__=true;
+ const ELS=['목','화','토','금','수'];
+ const clean=v=>String(v??'').replace(/\s+/g,' ').trim();
+ const top2=p=>ELS.map(e=>[e,Number(p?.[e]||0)]).sort((a,b)=>b[1]-a[1]).slice(0,2);
+ function rawPct(c){
+   try{return globalThis.GuiinExpert&&typeof GuiinExpert.pct==='function'?GuiinExpert.pct(c):{목:0,화:0,토:0,금:0,수:0}}catch(_e){return {목:0,화:0,토:0,금:0,수:0}}
+ }
+ function meta(c){
+   if(!c)return null;
+   let a=null;try{a=globalThis.GuiinSajuEngine21?.analyze?GuiinSajuEngine21.analyze(c):(c.engine2||null)}catch(_e){a=c.engine2||null}
+   if(!a?.structure)return null;
+   const raw=rawPct(c),weighted=a.structure.vector?.pct||{},rt=top2(raw),wt=top2(weighted);
+   const rawTop=rt[0]||['',0],weightedTop=wt[0]||['',0],weightedSecond=wt[1]||['',0];
+   const gap=Math.round((Number(weightedTop[1]||0)-Number(weightedSecond[1]||0))*10)/10;
+   const concentration=gap>=12?'집중형':gap<=4?'분산형':'혼합형';
+   const sameTop=rawTop[0]===weightedTop[0];
+   const structureNote=sameTop
+     ?`단순 오행 비율과 월령·지장간 보정 뒤의 중심축이 모두 ${weightedTop[0]||'-'}로 이어져.`
+     :`단순 오행 비율은 ${rawTop[0]||'-'}가 높지만, 월령·지장간을 함께 반영하면 ${weightedTop[0]||'-'} 쪽 구조 영향도 같이 커져. 한 오행만으로 성격을 단정하지 않는 게 중요해.`;
+   const hourUnknown=!!c?.input?.hourUnknown;
+   const patternConfidence=clean(a.structure.pattern?.confidence||'참고');
+   const coreConfidence=hourUnknown?'중간':'높음';
+   const relationConfidence=hourUnknown?'참고':'중간 이상';
+   const timingConfidence=hourUnknown?'참고':'중간';
+   const key=[c?.dayMaster?.stem||c?.pillars?.day?.stem||'?',a.structure.season?.monthBranch||'?',a.structure.pattern?.candidate||'?',a.structure.strength?.grade||'?',weightedTop[0]||'?',a.climate?.tempLabel||'?'].join('|');
+   return {version:'2.2.0',raw,weighted,rawTop,weightedTop,weightedSecond,gap,concentration,sameTop,structureNote,confidence:{core:coreConfidence,relationship:relationConfidence,timing:timingConfidence,pattern:patternConfidence},key};
+ }
+ function analyze(c){
+   let base=null;try{base=globalThis.GuiinSajuEngine21?.analyze?GuiinSajuEngine21.analyze(c):(c?.engine2||null)}catch(_e){base=c?.engine2||null}
+   const m=meta(c);return base?{...base,version:'2.2.0',quality:m}:m?{version:'2.2.0',quality:m}:null;
+ }
+ globalThis.GuiinSajuEngine22={version:'2.2.0',analyze,meta};
+
+ // 계산 결과는 2.2 메타까지 한 번만 보강한다. 원국 자체 계산값은 바꾸지 않는다.
+ try{
+   const S=globalThis.GuiinSaju;
+   if(S&&typeof S.calculate==='function'&&!S.__GUIIN_ENGINE22_PATCHED__){
+     const old=S.calculate.bind(S);
+     S.calculate=function(input){const c=old(input);try{if(c)c.engine2=analyze(c)}catch(_e){}return c};
+     S.ENGINE2_VERSION='2.2.0';S.__GUIIN_ENGINE22_PATCHED__=true;
+   }
+ }catch(_e){}
+
+ // 해석층이 필요하면 같은 구조 메타를 재사용할 수 있게 한다.
+ try{
+   if(typeof sajuInsightProfile==='function'&&!globalThis.__GUIIN_INSIGHT_E22_PATCHED__){
+     const old=sajuInsightProfile;
+     const wrapped=function(c){const o=old(c)||{};try{o.engine2=c?.engine2?.version==='2.2.0'?c.engine2:analyze(c);o.engine22=o.engine2?.quality||null}catch(_e){}return o};
+     globalThis.sajuInsightProfile=wrapped;try{sajuInsightProfile=wrapped}catch(_e){}
+     globalThis.__GUIIN_INSIGHT_E22_PATCHED__=true;
+   }
+ }catch(_e){}
+
+ function esc22(v){return String(v??'').replace(/[&<>"']/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]))}
+ function enhance(root,c){
+   if(!root||!c)return;const box=root.querySelector('.r30Engine2Box');if(!box||box.querySelector('[data-e22="1"]'))return;
+   let a=null;try{a=c.engine2?.version==='2.2.0'?c.engine2:analyze(c);c.engine2=a}catch(_e){};const q=a?.quality;if(!q)return;
+   box.insertAdjacentHTML('beforeend',`<div class="e21grid" data-e22="1"><div class="e21item"><b>구조 중심축</b>${esc22(q.weightedTop?.[0]||'-')} · ${esc22(q.concentration)}</div><div class="e21item"><b>해석 신뢰도</b>원국 ${esc22(q.confidence.core)} · 관계 ${esc22(q.confidence.relationship)}</div></div><p class="e2meta" data-e22-note="1">${esc22(q.structureNote)}</p>`);
+ }
+ function refresh(){try{let c=null;try{c=chart}catch(_e){};if(c){c.engine2=analyze(c);enhance(document.getElementById('resultView'),c)}}catch(_e){}}
+ const prev=window.renderResult;if(typeof prev==='function'){
+   const wrapped=function(){const out=prev.apply(this,arguments);try{refresh()}catch(_e){}return out};window.renderResult=wrapped;try{renderResult=wrapped}catch(_e){}
+ }
+ document.addEventListener('click',()=>setTimeout(refresh,0),{passive:true});setTimeout(refresh,0);
+
+ // 같은 결과 화면에서 완전히 같은 긴 문단이 재등장하면 두 번째 문단만 제거한다.
+ function removeExactLongDuplicates(root){
+   if(!root)return;const seen=new Set();
+   root.querySelectorAll('.easyLongCard p,.r29SajuPortrait p,.r30Engine2Box p').forEach(p=>{
+     if(p.closest('.easyEvidence,.r28Evidence,.paidDisclaimer'))return;
+     const k=clean(p.textContent).replace(/[\s.,!?"'“”‘’·:;()\-–—]/g,'');
+     if(k.length<110)return;
+     if(seen.has(k))p.remove();else seen.add(k);
+   });
+ }
+ function cleanup(){removeExactLongDuplicates(document.getElementById('resultView'));removeExactLongDuplicates(document.getElementById('matchView'))}
+ const mo=new MutationObserver(()=>{clearTimeout(mo._t);mo._t=setTimeout(cleanup,0)});try{mo.observe(document.body,{childList:true,subtree:true})}catch(_e){};setTimeout(cleanup,0);
+
+ // 대표 명식 5개로 '다른 사람인데 결과가 한 템플릿처럼 보이는지'를 점검한다.
+ const FIXTURES=[
+   {name:'테스트봄',gender:'여',year:1991,month:2,day:4,hour:2,minute:30},
+   {name:'테스트여름',gender:'남',year:1991,month:5,day:8,hour:8,minute:30},
+   {name:'테스트가을',gender:'여',year:1991,month:8,day:9,hour:14,minute:30},
+   {name:'테스트겨울',gender:'남',year:1991,month:10,day:10,hour:18,minute:30},
+   {name:'테스트시간미상',gender:'여',year:1991,month:7,day:9,hour:null,minute:0,hourUnknown:true}
+ ];
+ const input=f=>({calendar:'양력',leapMonth:false,dayBoundary:'23',trueSolarApply:false,longitude:126.98,hourUnknown:!!f.hourUnknown,...f});
+ const words=s=>new Set(clean(s).replace(/[^\p{L}\p{N}\s]/gu,' ').split(/\s+/).filter(x=>x.length>=2));
+ function jaccard(a,b){const A=words(a),B=words(b);if(!A.size||!B.size)return 0;let n=0;A.forEach(x=>{if(B.has(x))n++});return n/(A.size+B.size-n)}
+ function renderText(c){
+   const chunks=[];for(const fn of ['longSummaryHTML','personalityReport','fieldsReport']){try{if(typeof globalThis[fn]==='function')chunks.push(String(globalThis[fn](c)||''))}catch(_e){}}
+   const div=document.createElement('div');div.innerHTML=chunks.join('');return clean(div.textContent||'');
+ }
+ function runQA(){
+   const report={version:'engine22-qa-1',at:new Date().toISOString(),ok:true,cases:[],pairs:[],summary:{}};
+   if(!globalThis.GuiinSaju||typeof GuiinSaju.calculate!=='function'){report.ok=false;report.fatal='GuiinSaju missing';return report}
+   const rows=[];
+   for(const f of FIXTURES){
+     try{
+       const c=GuiinSaju.calculate(input(f)),a=c.engine2?.version==='2.2.0'?c.engine2:analyze(c),txt=renderText(c);
+       const hard=[];if(!a?.structure)hard.push('missing_structure');if(!a?.quality)hard.push('missing_quality');if(!c?.pillars?.day)hard.push('missing_day_pillar');
+       if(f.hourUnknown&&a?.structure?.uncertainty?.birthTimeUnknown!==true)hard.push('unknown_time_confidence_not_lowered');
+       const row={name:f.name,stem:c?.dayMaster?.stem||c?.pillars?.day?.stem||'',monthBranch:a?.structure?.season?.monthBranch||'',pattern:a?.structure?.pattern?.candidate||'',strength:a?.structure?.strength?.grade||'',weightedTop:a?.quality?.weightedTop?.[0]||'',confidence:a?.quality?.confidence||{},key:a?.quality?.key||'',chars:txt.length,ok:hard.length===0,issues:hard,text:txt};
+       rows.push(row);report.cases.push({...row,text:undefined});
+     }catch(e){report.cases.push({name:f.name,ok:false,error:String(e?.message||e)});}
+   }
+   for(let i=0;i<rows.length;i++)for(let j=i+1;j<rows.length;j++){
+     const sim=Math.round(jaccard(rows[i].text,rows[j].text)*100)/100;report.pairs.push({a:rows[i].name,b:rows[j].name,similarity:sim,warning:sim>=.78});
+   }
+   const uniqueKeys=new Set(rows.map(x=>x.key).filter(Boolean)).size,uniqueStrength=new Set(rows.map(x=>x.strength).filter(Boolean)).size,uniqueTop=new Set(rows.map(x=>x.weightedTop).filter(Boolean)).size;
+   const tooSimilar=report.pairs.filter(x=>x.warning).length,caseFail=report.cases.filter(x=>!x.ok).length;
+   report.summary={cases:report.cases.length,caseFail,uniqueStructureKeys:uniqueKeys,uniqueStrengthGrades:uniqueStrength,uniqueWeightedTop:uniqueTop,tooSimilarPairs:tooSimilar};
+   if(uniqueKeys<4)report.summary.structureDiversityWarning=true;
+   if(tooSimilar>0)report.summary.narrativeDiversityWarning=true;
+   report.ok=caseFail===0&&uniqueKeys>=4&&tooSimilar===0;
+   return report;
+ }
+ function executeQA(){try{const r=runQA();globalThis.GuiinEngine22QA={run:runQA,report:r};sessionStorage.setItem('guiin_engine22_qa',JSON.stringify(r));if(!r.ok)console.warn('GUIIN_ENGINE22_QA_WARNING',r);else console.info('GUIIN_ENGINE22_QA_OK',r.summary)}catch(e){console.warn('GUIIN_ENGINE22_QA_FATAL',e)}}
+ globalThis.GuiinEngine22QA={run:runQA,report:null};
+ let force=false;try{force=new URLSearchParams(location.search).has('guiin_qa')||localStorage.getItem('guiin_qa_auto')==='1'}catch(_e){}
+ if(force){if('requestIdleCallback'in window)requestIdleCallback(executeQA,{timeout:1600});else setTimeout(executeQA,350)}
+})();
+</script>
+
+
+<!-- GUIIN COUNSELOR TONE 3.0 · PRAISE + FACT + EMPATHY · 2026-10-02 -->
+<style id="guiin-counselor-tone30-style">
+.guiinCounselor30{margin:12px 0 16px;padding:17px;border:1px solid rgba(100,82,48,.13);border-radius:20px;background:linear-gradient(180deg,#fffdf8 0%,#fff 100%)}
+.guiinCounselor30 .mini{font-size:11px;font-weight:800;color:#8b713d;margin-bottom:5px}.guiinCounselor30 h3{margin:0 0 6px;font-size:19px;line-height:1.45}.guiinCounselor30>.lead{margin:0 0 12px;font-size:13px;line-height:1.68;color:#6a655d}
+.guiinToneGrid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}.guiinToneCell{padding:12px 13px;border:1px solid rgba(0,0,0,.055);border-radius:15px;background:#fff;min-width:0}.guiinToneCell b{display:block;font-size:12px;margin-bottom:5px;color:#3d4e43}.guiinToneCell p{margin:0;font-size:13px;line-height:1.65;color:#575b57;word-break:keep-all}.guiinToneCell.praise{background:#f5faf4}.guiinToneCell.fact{background:#fff7f1}.guiinToneCell.empathy{background:#f8f6fc}.guiinToneCell.charm{background:#fffaf0}
+.guiinToneRest{margin-top:9px;padding:12px 13px;border-radius:15px;background:#f3f7f2;font-size:13px;line-height:1.65;color:#4f5f54}.guiinToneRest b{display:block;font-size:12px;margin-bottom:4px}.guiinToneNote{margin-top:10px;padding:11px 12px;border-radius:13px;border:1px solid rgba(0,0,0,.05);font-size:12.5px;line-height:1.65;color:#565a56;background:#fafaf7}.guiinToneNote b{display:block;margin-bottom:4px;font-size:11px;color:#6c604b}.guiinToneNote.praise{background:#f5faf4}.guiinToneNote.fact{background:#fff7f1}.guiinToneNote.empathy{background:#f8f6fc}.guiinToneNote.rest{background:#f3f7f2}
+@media(max-width:520px){.guiinToneGrid{grid-template-columns:1fr}.guiinCounselor30{padding:15px}}
+</style>
+<script id="GUIIN_COUNSELOR_TONE30">
+/* ========================================================================
+   GUIIN COUNSELOR TONE 3.0
+   - 좋은 점은 근거가 있을 때 크게 칭찬
+   - 약점은 돌려 말하지 않되 사람을 깎아내리지 않음
+   - 압박/긴장 신호가 겹칠 때는 공감과 위로를 추가
+   - 외모는 사실 단정 대신 명리 상징상 인상/분위기로만 표현
+   - 연령대에 따라 조언의 무게중심을 조정
+   ======================================================================== */
+(function(){
+ if(globalThis.__GUIIN_COUNSELOR_TONE30__)return;
+ globalThis.__GUIIN_COUNSELOR_TONE30__=true;
+ const E=v=>String(v??'').replace(/[&<>"']/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]));
+ const norm=v=>String(v??'').replace(/\s+/g,' ').trim();
+ function ageOf(c){
+  const y=Number(c?.input?.year||0);return y?Math.max(0,new Date().getFullYear()-y):0;
+ }
+ function starNames(c){
+  try{return [...new Set((c?.stars?.hits||[]).map(h=>typeof h==='string'?h:(h?.name||h?.star||'')).filter(Boolean))]}catch(_e){return []}
+ }
+ function info(c){
+  let n={};try{n=typeof guiinNarrative==='function'?guiinNarrative(c)||{}:{}}catch(_e){}
+  let rp={};try{rp=typeof guiinRelationshipTraitProfile==='function'?guiinRelationshipTraitProfile(c)||{}:{}}catch(_e){}
+  let e2=null;try{e2=globalThis.GuiinSajuEngine21?.analyze?GuiinSajuEngine21.analyze(c):(c?.engine2||null)}catch(_e){e2=c?.engine2||null}
+  const x=n.x||{},day=n.day||{},sig=n.sig||{},stars=starNames(c),age=ageOf(c),name=String(c?.input?.name||'사용자');
+  const top=x.top||e2?.quality?.weightedTop?.[0]||'', low=x.low||'';
+  const tension=Number(e2?.relations?.tension??e2?.structure?.relations?.tension??0);
+  const lk=(()=>{try{return typeof currentLuck==='function'?currentLuck(c):null}catch(_e){return null}})();
+  return {n,rp,e2,x,day,sig,stars,age,name,top,low,tension,lk};
+ }
+ function praiseText(c){
+  const d=info(c),core=norm(d.day.core||d.x?.p?.praise||'자기 방식으로 끝까지 해내는 힘'),soft=norm(d.day.soft||d.sig?.dv?.strength||'사람과 상황을 세심하게 읽는 힘');
+  const extra=d.e2?.structure?.strength?.grade;
+  const force=extra&&/강/.test(extra)?' 특히 자기 힘이 필요한 순간에는 생각보다 훨씬 단단하게 버틸 수 있는 구조야.':'';
+  return `${d.name}님은 ${core}이 분명하고, ${soft}도 같이 갖고 있어. 이건 꽤 큰 장점이야. 한 가지를 잘하는 사람은 많지만, 자기 기준과 사람을 보는 감각을 같이 쓰는 사람은 흔하지 않아.${force}`;
+ }
+ function factText(c){
+  const d=info(c),shadow=norm(d.day.shadow||d.x?.p?.blind||'잘하는 방식을 너무 오래 혼자 쓰면 피로가 커질 수 있어');
+  if(/거리|회피|혼자/.test(String(d.rp?.attachmentLabel||'')+' '+String(d.rp?.attachmentText||'')))return `팩트 하나만 말하면, 혼자 정리하는 능력이 좋은 것과 혼자 다 감당하는 건 다른 일이야. ${shadow} 싫은 걸 늦게 말하고 마지막에 한꺼번에 선을 긋는 패턴은 본인도 상대도 지치게 할 수 있어.`;
+  return `팩트 하나만 말하면, ${shadow} 능력이 부족해서가 아니라 잘하는 방식이 과해질 때 생기는 문제에 가까워. “내가 할 수 있다”와 “내가 해야 한다”를 같은 뜻으로 쓰지 않는 게 중요해.`;
+ }
+ function hardshipScore(d){
+  let s=0;
+  if(d.tension>=2)s+=2;else if(d.tension>0)s+=1;
+  if(['편관','겁재','상관'].includes(String(d.lk?.god||'')))s+=1;
+  const hard=['양인살','백호살','괴강살','공망','과숙살','원진살','귀문관살'];
+  s+=Math.min(2,hard.filter(x=>d.stars.includes(x)).length);
+  const grade=String(d.e2?.structure?.strength?.grade||'');if(/약$|강$/.test(grade))s+=1;
+  return s;
+ }
+ function empathyText(c){
+  const d=info(c),score=hardshipScore(d);
+  if(score>=4)return `명식에서 압박을 혼자 버티거나 마음을 안으로 정리하는 신호가 여러 겹 보여. 실제 삶에서도 책임이나 관계 문제를 오래 혼자 들고 온 시기가 있었다면 정말 고생 많았을 것 같아. 겉으로 잘 버텼다고 해서 안 힘들었던 건 아니니까.`;
+  if(score>=2)return `겉으로는 괜찮아 보여도 속으로 오래 생각하고 버텨야 했던 시기가 있었다면 꽤 힘들었을 거야. 그때 잘 넘긴 것도 능력이지만, 앞으로까지 계속 같은 방식으로 버틸 필요는 없어.`;
+  return `큰일이 없어 보여도 자기 기준을 지키고 주변까지 챙기다 보면 사람은 지칠 수 있어. 힘든 순간이 있었다면 “이 정도는 견뎌야지” 하고 넘기지 않아도 돼. 힘들었다고 인정하는 것도 회복의 한 부분이야.`;
+ }
+ function charmText(c){
+  const d=info(c),stem=String(c?.dayMaster?.stem||c?.pillars?.day?.stem||''),top=d.top;
+  if(['경','신'].includes(stem)||top==='금')return `명리 상징으로는 선이 흐릿하기보다 또렷하고 정돈된 인상, 깔끔하게 관리된 분위기로 보일 가능성을 봐. 실제 외모를 사주로 단정할 수는 없지만, 자기관리와 단정함을 살릴수록 존재감이 더 또렷해지는 타입으로 읽을 수 있어.`;
+  if(['병','정'].includes(stem)||top==='화')return `명리 상징으로는 눈빛·표정·반응이 살아 있고 사람들 사이에서 존재감이 남기 쉬운 쪽이야. 실제 외모를 확정하는 건 아니지만, 표정과 스타일을 잘 살리면 매력이 더 선명해질 가능성을 봐.`;
+  if(['갑','을'].includes(stem)||top==='목')return `명리 상징으로는 자연스럽고 생기 있는 인상, 꾸민 티보다 단정하게 정돈했을 때 매력이 살아나는 쪽으로 읽어. 실제 이목구비를 맞히는 건 아니지만, 자기 방식이 있는 스타일이 잘 어울릴 가능성이 커.`;
+  if(['무','기'].includes(stem)||top==='토')return `명리 상징으로는 단정하고 안정감 있는 인상, 가까이 볼수록 믿음이 생기는 분위기로 읽을 수 있어. 실제 외모를 단정하는 건 아니지만, 과하게 꾸미기보다 정돈된 자기관리에서 매력이 살아날 가능성이 커.`;
+  return `명리 상징으로는 차분하고 분위기가 남는 인상, 말투나 눈빛처럼 가까이 볼수록 매력이 보이는 쪽으로 읽어. 실제 외모를 사주로 확정할 수는 없지만, 자기한테 맞는 스타일을 찾으면 분위기 자체가 강점이 되기 쉬워.`;
+ }
+ function restText(c){
+  const d=info(c);let stage='';
+  if(d.age>=60)stage=' 지금은 뭔가를 계속 새로 증명하기보다, 오래 해온 것 중 남길 것과 내려놓을 것을 고르는 것도 아주 중요한 선택이야.';
+  else if(d.age>=45)stage=' 지금부터는 무조건 더 많이 하는 것보다, 내 시간과 체력을 어디에 쓸지 고르는 능력이 더 중요해.';
+  else if(d.age>=30)stage=' 잘하는 걸 계속 증명하려고만 하지 않아도 돼. 오래 갈 수 있는 방식으로 바꾸는 것도 실력이야.';
+  else stage=' 아직 모든 답을 정해놓을 필요는 없어. 경험하면서 기준을 만들어가도 충분해.';
+  return `그리고 이건 꼭 말해주고 싶어. 힘들 땐 좀 쉬어도 돼. 쉬는 건 뒤처지는 게 아니라 다시 제대로 움직이기 위한 과정이야.${stage}`;
+ }
+ function summaryHTML(c){
+  const d=info(c);
+  return `<section class="guiinCounselor30" data-guiin-counselor30="1"><div class="mini">귀인 상담가의 한마디</div><h3>좋은 건 크게 칭찬하고, 필요한 말은 돌리지 않을게.</h3><p class="lead">사주는 사람을 평가하는 표가 아니라, 내가 가진 좋은 힘과 반복되는 소모를 같이 이해하는 도구라고 보고 풀어볼게.</p><div class="guiinToneGrid"><div class="guiinToneCell praise"><b>이건 진짜 강점</b><p>${E(praiseText(c))}</p></div><div class="guiinToneCell fact"><b>팩트 하나만 말하면</b><p>${E(factText(c))}</p></div><div class="guiinToneCell empathy"><b>마음까지 같이 보면</b><p>${E(empathyText(c))}</p></div><div class="guiinToneCell charm"><b>인상·매력 포인트</b><p>${E(charmText(c))}</p></div></div><div class="guiinToneRest"><b>마지막으로</b>${E(restText(c))}</div></section>`;
+ }
+ function addNote(card,kind,text,label){
+  if(!card||card.querySelector(`.guiinToneNote.${kind}`))return;
+  const el=document.createElement('div');el.className=`guiinToneNote ${kind}`;el.innerHTML=`<b>${E(label)}</b>${E(text)}`;
+  const ev=card.querySelector('.guiinEvidenceFold,.easyEvidence');if(ev)card.insertBefore(el,ev);else card.appendChild(el);
+ }
+ function findCard(root,needle){
+  return [...root.querySelectorAll('.easyLongCard,.deepCard,.expertSection')].find(el=>norm(el.querySelector('.easyKicker')?.textContent)+' '+norm(el.querySelector('h3')?.textContent).includes('') && norm(el.textContent).includes(needle));
+ }
+ function tidy(root){
+  if(!root)return;
+  const w=document.createTreeWalker(root,NodeFilter.SHOW_TEXT);let n;
+  while(n=w.nextNode()){
+   let t=n.nodeValue||'';
+   t=t.replace(/편이야\s*쪽으로/g,'편으로')
+      .replace(/편이야인 사람/g,'편인 사람')
+      .replace(/보는 편이 좋아\.로 보이지만/g,'보는 편이지만')
+      .replace(/육합로/g,'육합으로')
+      .replace(/천간합로/g,'천간합으로')
+      .replace(/\s+\.\s*/g,'. ');
+   if(t!==n.nodeValue)n.nodeValue=t;
+  }
+  root.querySelectorAll('.easyLongCard,.deepCard,.expertSection').forEach(card=>{
+    const seen=new Set();card.querySelectorAll('p').forEach(p=>{const k=norm(p.textContent).replace(/[\s.,!?"'“”‘’]/g,'');if(k.length<45)return;if(seen.has(k))p.remove();else seen.add(k)});
+    card.querySelectorAll('.easyPoint').forEach(x=>{const p=x.querySelector('p');if(p&&!norm(p.textContent))x.remove()});
+  });
+ }
+ function apply(){
+  const root=document.getElementById('resultView');if(!root)return;let c=null;try{c=chart}catch(_e){};if(!c)return;
+  tidy(root);
+  if(typeof currentTab!=='undefined'&&currentTab!=='summary')return;
+  root.querySelectorAll('[data-guiin-counselor30="1"]').forEach(x=>x.remove());
+  const portrait=root.querySelector('[data-r29-saju-portrait="1"]')||root.querySelector('.r30Engine2Box')||root.querySelector('.manseSnapshot');
+  if(portrait)portrait.insertAdjacentHTML('afterend',summaryHTML(c));
+  const cards=[...root.querySelectorAll('.easyLongCard')];
+  const by=t=>cards.find(x=>norm(x.querySelector('.easyKicker')?.textContent)+' '+norm(x.querySelector('h3')?.textContent) && norm(x.textContent).includes(t));
+  addNote(by('오행으로 보는 사주'),'praise',praiseText(c),'좋은 건 크게 봐도 돼');
+  addNote(by('여기서는 조금 조심해야 해'),'fact',factText(c),'여기서는 돌려 말하지 않을게');
+  addNote(by('속마음과 감정'),'empathy',empathyText(c),'이 부분은 마음도 같이 봐야 해');
+  addNote(by('마지막 한마디'),'rest',restText(c),'이건 꼭 기억했으면 해');
+ }
+ const prev=window.renderResult;
+ if(typeof prev==='function'){
+  const wrapped=function(){const out=prev.apply(this,arguments);try{setTimeout(apply,0)}catch(_e){}return out};window.renderResult=wrapped;try{renderResult=wrapped}catch(_e){}
+ }
+ document.addEventListener('click',()=>setTimeout(()=>{try{apply()}catch(_e){}},0),{passive:true});
+ setTimeout(()=>{try{apply()}catch(_e){}},0);
+})();
+</script>
 </body>
 </html>
