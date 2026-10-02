@@ -9543,5 +9543,154 @@ try{Object.assign(window,{guiinPaymentCenterStart});}catch(_e){}
  setTimeout(()=>{try{apply23()}catch(_e){}},0);
 })();
 </script>
+
+
+<!-- GUIIN ENGINE 2.4 · STRUCTURE CONFIDENCE + EVENT AXIS · 2026-10-02 -->
+<style id="guiin-engine24-style">
+.guiinEngine24,.guiinEvent24{margin:12px 0 14px;padding:15px 16px;border-radius:18px;border:1px solid rgba(115,91,47,.13);background:linear-gradient(180deg,#fffdf7,#fff)}
+.guiinEngine24 .mini,.guiinEvent24 .mini{font-size:11px;font-weight:800;color:#8b713d;margin-bottom:5px}.guiinEngine24 h3,.guiinEvent24 h3{font-size:17px;line-height:1.45;margin:0 0 7px}.guiinEngine24 p,.guiinEvent24 p{font-size:13px;line-height:1.7;margin:6px 0;color:#5c5953;word-break:keep-all}
+.e24Grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px;margin-top:10px}.e24Cell{padding:11px 12px;border-radius:14px;background:#fff;border:1px solid rgba(0,0,0,.055);font-size:12.5px;line-height:1.6;color:#575b57}.e24Cell b{display:block;font-size:11px;color:#4e5f53;margin-bottom:4px}.e24Badge{display:inline-block;margin-left:5px;padding:2px 7px;border-radius:999px;background:#f1f5ef;font-size:10px;font-weight:800;color:#526454;vertical-align:1px}
+.e24AxisList{display:grid;gap:7px;margin-top:10px}.e24Axis{padding:11px 12px;border-radius:14px;background:#faf9f5;border:1px solid rgba(0,0,0,.05)}.e24AxisTop{display:flex;justify-content:space-between;gap:10px;align-items:flex-start}.e24AxisTop b{font-size:12.5px;color:#3f5147}.e24AxisTop span{font-size:10.5px;color:#817868}.e24Axis p{margin:5px 0 0;font-size:12.5px;line-height:1.62}.e24Bar{height:5px;border-radius:999px;background:#eeeae0;overflow:hidden;margin-top:7px}.e24Bar i{display:block;height:100%;background:currentColor;opacity:.42;border-radius:999px}.e24Foot{margin-top:10px;padding:10px 11px;border-radius:13px;background:#f7f8f4;font-size:11.5px;line-height:1.62;color:#66645e}
+@media(max-width:520px){.e24Grid{grid-template-columns:1fr}.guiinEngine24,.guiinEvent24{padding:14px}}
+</style>
+<script id="GUIIN_ENGINE24_STRUCTURE_EVENT">
+/* ========================================================================
+   GUIIN ENGINE 2.4
+   - 월간 십성과 월령 본기(격국 후보)를 분리해 사용자에게 근거를 설명
+   - 격국 후보는 투간·월간 일치·출생시간 유무로 신뢰도를 따로 표시
+   - 조후·억부·계절보정이 같은 오행을 가리키는지 '근거 겹침'을 계산
+   - 대운 → 세운 → 월운이 원국의 어느 기둥과 관계하는지 실제 생활축으로 번역
+   - 사건을 예언하지 않고, 지금 어떤 영역을 더 확인해야 하는지 우선순위만 제시
+   ======================================================================== */
+(function(){
+ if(globalThis.__GUIIN_ENGINE24__)return;
+ globalThis.__GUIIN_ENGINE24__=true;
+ const E=v=>String(v??'').replace(/[&<>"']/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]));
+ const norm=v=>String(v??'').replace(/\s+/g,' ').trim();
+ const clamp=(n,a,b)=>Math.max(a,Math.min(b,Number(n)||0));
+ const PILLAR_AXIS={
+   year:{'관계·가족':1.4,'생활·회복':.35},
+   month:{'일·역할':1.5,'돈·현실':.55},
+   day:{'관계·가족':1.55,'생활·회복':.65},
+   hour:{'미래·계획':1.35,'표현·성과':.45}
+ };
+ const GOD_AXIS={
+   비견:{'일·역할':.7,'관계·가족':.8,'미래·계획':.7},
+   겁재:{'관계·가족':1.1,'돈·현실':1.15,'일·역할':.6},
+   식신:{'표현·성과':1.45,'일·역할':.9,'생활·회복':.75},
+   상관:{'표현·성과':1.65,'일·역할':1.05,'관계·가족':.55},
+   편재:{'돈·현실':1.65,'일·역할':.85,'관계·가족':.5},
+   정재:{'돈·현실':1.75,'생활·회복':.55,'일·역할':.65},
+   편관:{'일·역할':1.55,'생활·회복':.75,'관계·가족':.55},
+   정관:{'일·역할':1.65,'미래·계획':.8,'관계·가족':.55},
+   편인:{'배움·지원':1.55,'생활·회복':1.05,'미래·계획':.55},
+   정인:{'배움·지원':1.55,'생활·회복':1.15,'관계·가족':.45}
+ };
+ const AXIS_HELP={
+  '일·역할':'책임 범위, 일의 방식, 평가·계약·역할 변화부터 확인해.',
+  '돈·현실':'수입·지출·고정비·공동 부담처럼 실제 숫자가 움직이는 부분을 먼저 봐.',
+  '관계·가족':'가까운 사람과의 거리, 약속, 가족 역할, 함께 사는 규칙을 점검해.',
+  '표현·성과':'말·결정·창작·결과 공개처럼 밖으로 드러나는 행동의 속도를 조절해.',
+  '생활·회복':'수면·체력·일정·혼자 정리할 시간처럼 버틸 수 있는 생활 구조를 먼저 챙겨.',
+  '배움·지원':'공부·정보·전문가 도움·문서 확인처럼 혼자 해결하지 않아도 되는 통로를 써.',
+  '미래·계획':'앞으로의 역할, 장기 계획, 새 프로젝트를 지금 감당 가능한 크기로 나눠봐.'
+ };
+ function engine24(c){
+   let a=null;try{a=globalThis.GuiinSajuEngine21?.analyze?GuiinSajuEngine21.analyze(c):(c?.engine2||null)}catch(_e){a=c?.engine2||null}
+   let base=null;try{base=globalThis.GuiinSajuEngine2?.analyze?GuiinSajuEngine2.analyze(c):a}catch(_e){base=a}
+   if(!a?.structure)return null;
+   return {a,base,pattern:pattern24(c,a),balance:balance24(c,base)};
+ }
+ function pattern24(c,a){
+   const st=a.structure||{},s=st.season||{},mainStem=String(s.mainStem||''),mainGod=String(s.mainGod||''),monthGod=String(c?.pillars?.month?.god||'');
+   const exposure=Array.isArray(st.exposure)?st.exposure:[],exposed=!!mainStem&&exposure.some(x=>String(x?.stem||'')===mainStem);
+   const sameMonthGod=!!mainGod&&monthGod===mainGod;
+   let score=48+(exposed?22:0)+(sameMonthGod?14:0);
+   if(c?.input?.hourUnknown)score-=8;
+   if(['비견','겁재'].includes(mainGod))score-=5;
+   score=Math.round(clamp(score,25,90));
+   const confidence=score>=75?'근거가 비교적 선명':score>=58?'중간 이상':score>=43?'중간':'참고 수준';
+   const candidate=!mainGod?'월령 구조 후보':['비견','겁재'].includes(mainGod)?`월령 ${mainGod} 중심 구조`:`${mainGod}격 후보`;
+   const contrast=monthGod&&mainGod&&monthGod!==mainGod?`월간은 ${monthGod}, 월령 본기는 ${mainGod}이라 사회에서 보이는 방식과 계절의 중심 구조가 서로 다르게 잡혀.`:monthGod&&mainGod?`월간과 월령 본기가 모두 ${mainGod} 쪽으로 겹쳐 같은 주제가 반복돼.`:'월간과 월령 본기를 함께 확인하는 구조야.';
+   const exposureText=exposed?`${mainStem} 본기가 천간에 드러나는 투간이 확인돼.`:`${mainStem||'월령 본기'}가 천간에 직접 드러나는 투간은 강하게 확인되지 않아.`;
+   return {candidate,mainStem,mainGod,monthGod,exposed,sameMonthGod,score,confidence,contrast,exposureText};
+ }
+ function balance24(c,base){
+   const rows=Array.isArray(base?.balance?.top)?base.balance.top:[];const top=rows[0]||null;if(!top)return null;
+   const reasons=Array.isArray(top.reasons)?top.reasons:[];
+   const lenses=[];
+   if(reasons.some(x=>/차가운|열기|건조|습한|온도|조후/.test(x)))lenses.push('조후');
+   if(reasons.some(x=>/일간|강한 기운|생조|지지력/.test(x)))lenses.push('억부');
+   if(reasons.some(x=>/계절보정|분포/.test(x)))lenses.push('분포');
+   const next=rows[1]||null,gap=next?Number(top.weight||0)-Number(next.weight||0):2;
+   let score=38+lenses.length*15+Math.max(0,gap)*7;if(c?.input?.hourUnknown)score-=4;score=Math.round(clamp(score,30,92));
+   const confidence=score>=76?'근거 겹침이 큰 편':score>=60?'중간 이상':score>=45?'중간':'참고';
+   return {element:top.element,weight:Number(top.weight||0),reasons,lenses,score,confidence,rows};
+ }
+ function parsePillar24(ko){
+   const s=String(ko||'').trim(),st=['갑','을','병','정','무','기','경','신','임','계'],br=['자','축','인','묘','진','사','오','미','신','유','술','해'];
+   const si=st.indexOf(s[0]),bi=br.indexOf(s[1]);return si>=0&&bi>=0?{ko:s.slice(0,2),stem:s[0],branch:s[1],stemIndex:si,branchIndex:bi}:null;
+ }
+ function rels24(c,pillar){try{return pillar&&globalThis.GuiinSaju&&typeof GuiinSaju.relationsWithTransit==='function'?(GuiinSaju.relationsWithTransit(c?.pillars,pillar)||[]):[]}catch(_e){return []}}
+ function addAxis(obj,key,n){if(!key)return;obj[key]=(obj[key]||0)+Number(n||0)}
+ function relationWeight24(type){const t=String(type||'');if(/충/.test(t))return 1.7;if(/형/.test(t))return 1.45;if(/해|파|원진/.test(t))return 1.2;if(/합/.test(t))return 1.0;return .65}
+ function layer24(c,label,pillar,god,layerWeight){
+   if(!pillar)return null;const scores={},rs=rels24(c,pillar),ga=GOD_AXIS[String(god||'')]||{};
+   for(const [k,v] of Object.entries(ga))addAxis(scores,k,v*layerWeight);
+   for(const r of rs){const pw=PILLAR_AXIS[String(r?.aKey||'')]||{},rw=relationWeight24(r?.type)*layerWeight;for(const [k,v] of Object.entries(pw))addAxis(scores,k,v*rw)}
+   const axes=Object.entries(scores).sort((a,b)=>b[1]-a[1]).slice(0,3).map(([name,score])=>({name,score:Number(score.toFixed(2))}));
+   const relText=rs.length?rs.slice(0,5).map(r=>`${r?.aLabel||r?.aKey||'원국'} ${r?.type||'관계'}`).join(' · '):'강한 합·충·형·파·해 교차가 두드러지지 않음';
+   return {label,pillar,god:String(god||''),relations:rs,relText,axes};
+ }
+ function event24(c){
+   let lk=null,yf=null;try{lk=typeof currentLuck==='function'?currentLuck(c):null}catch(_e){}try{yf=typeof currentYearFlow==='function'?currentYearFlow(c):null}catch(_e){}
+   const lp=lk?parsePillar24(lk.ko):null,yp=yf?.pillars?.year||null,mp=yf?.pillars?.month||null;
+   const layers=[layer24(c,'대운',lp,lk?.god,1.0),layer24(c,`${new Date().getFullYear()}년`,yp,yf?.gods?.year,1.35),layer24(c,'이번 달',mp,yf?.gods?.month,1.15)].filter(Boolean);
+   const total={};for(const l of layers)for(const a of l.axes)addAxis(total,a.name,a.score);
+   const top=Object.entries(total).sort((a,b)=>b[1]-a[1]).slice(0,3).map(([name,score])=>({name,score:Number(score.toFixed(2))}));
+   return {layers,top};
+ }
+ function structureHTML24(c){
+   const m=engine24(c);if(!m)return '';
+   const p=m.pattern,b=m.balance;
+   const bText=b?`${b.element} · ${b.confidence}`:'원국 전체 확인';
+   const lens=b?.lenses?.length?b.lenses.join('·'):'한 관점 중심';
+   const reason=b?.reasons?.length?b.reasons.slice(0,3).join(' / '):'조후·억부·분포를 함께 비교';
+   return `<section class="guiinEngine24" data-guiin-engine24="1"><div class="mini">원국 구조 · 신뢰도까지 같이 보기</div><h3>월간 십성과 월령 구조를 따로 보고, 보완 후보도 근거가 몇 겹인지 확인해.</h3><div class="e24Grid"><div class="e24Cell"><b>월령 구조 후보 <span class="e24Badge">${E(p.confidence)}</span></b>${E(p.candidate)} · 근거 ${E(p.score)}/100<p>${E(p.contrast)} ${E(p.exposureText)}</p></div><div class="e24Cell"><b>조후·억부 보완 후보 <span class="e24Badge">${E(b?.confidence||'참고')}</span></b>${E(bText)} · ${E(lens)}<p>${E(reason)}</p></div></div><div class="e24Foot">격국과 용신은 학파에 따라 판정 기준이 달라질 수 있어. 그래서 귀인사주는 하나를 절대 정답처럼 확정하기보다 <b>월령·투간·강약·조후에서 근거가 얼마나 겹치는지</b>까지 같이 보여줘.</div></section>`;
+ }
+ function eventHTML24(c){
+   const m=event24(c);if(!m?.top?.length)return '';
+   const max=Math.max(...m.top.map(x=>x.score),1);
+   const topText=m.top.map(x=>x.name).join(' · ');
+   const layers=m.layers.map(l=>{const names=l.axes.slice(0,2).map(x=>x.name).join(' · ')||'전체 흐름';return `<div class="e24Axis"><div class="e24AxisTop"><b>${E(l.label)} ${E(l.pillar?.ko||'')} ${l.god?`· ${E(l.god)}`:''}</b><span>${E(names)}</span></div><p>${E(l.relText)}</p></div>`}).join('');
+   const bars=m.top.map(x=>`<div class="e24Axis"><div class="e24AxisTop"><b>${E(x.name)}</b><span>현재 우선 확인축</span></div><p>${E(AXIS_HELP[x.name]||'실제 생활에서 반복되는 장면을 확인해.')}</p><div class="e24Bar"><i style="width:${Math.max(18,Math.round(x.score/max*100))}%"></i></div></div>`).join('');
+   return `<section class="guiinEvent24" data-guiin-event24="1"><div class="mini">대운 → 세운 → 월운 · 실제 생활축</div><h3>지금은 ${E(topText)} 쪽을 먼저 확인하는 흐름으로 읽혀.</h3><p>십성 이름만 나열하지 않고, 운에서 들어온 글자가 원국의 어느 기둥과 합·충·형·파·해를 만드는지까지 겹쳐서 생활 영역으로 번역했어.</p><div class="e24AxisList">${bars}</div><details style="margin-top:10px"><summary style="font-size:11.5px;cursor:pointer;color:#736b60">어떤 운이 어디를 건드리는지 보기</summary><div class="e24AxisList">${layers}</div></details><div class="e24Foot">이건 사건 발생 확률을 계산한 표가 아니야. 같은 신호라도 실제 선택·환경·건강·경제 상황에 따라 체감은 달라질 수 있어서, <b>어디를 한 번 더 확인할지 정하는 우선순위</b>로만 사용해.</div></section>`;
+ }
+ function apply24(){
+   const root=document.getElementById('resultView');if(!root)return;let c=null;try{c=chart}catch(_e){}if(!c)return;
+   root.querySelectorAll('[data-guiin-engine24="1"],[data-guiin-event24="1"]').forEach(x=>x.remove());
+   const tab=typeof currentTab!=='undefined'?currentTab:'summary';
+   if(tab==='summary'){
+     const s=structureHTML24(c),anchor=root.querySelector('.r30Engine2Box')||root.querySelector('[data-r29-saju-portrait="1"]');if(anchor&&s)anchor.insertAdjacentHTML('afterend',s);
+     const e=eventHTML24(c),ea=root.querySelector('[data-guiin-timing23="1"]')||root.querySelector('.guiinCounselor30')||root.querySelector('[data-r21="saju"]');if(ea&&e)ea.insertAdjacentHTML('afterend',e);
+   }else if(tab==='flow'){
+     const e=eventHTML24(c),ea=root.querySelector('.easyIntro')||root.firstElementChild;if(ea&&e)ea.insertAdjacentHTML('afterend',e);
+   }
+   try{c.engine24={structure:engine24(c),event:event24(c),version:'2.4.0'}}catch(_e){}
+ }
+ function qa24(){
+   try{let c=null;try{c=chart}catch(_e){};if(!c)return;const s=engine24(c),e=event24(c),issues=[];
+     if(!s?.pattern?.candidate)issues.push('missing_pattern_candidate');if(s?.pattern?.score<25||s?.pattern?.score>90)issues.push('pattern_confidence_range');if(!e?.top?.length)issues.push('missing_event_axes');
+     const report={ok:!issues.length,issues,pattern:s?.pattern,eventTop:e?.top,hourUnknown:!!c?.input?.hourUnknown,at:new Date().toISOString()};sessionStorage.setItem('guiin_engine24_qa',JSON.stringify(report));if(issues.length)console.warn('GUIIN_ENGINE24_QA_WARNING',report);
+   }catch(_e){}
+ }
+ globalThis.GuiinSajuEngine24={version:'2.4.0',analyze:engine24,event:event24,pattern:pattern24,balance:balance24};
+ const prev=window.renderResult;if(typeof prev==='function'){
+   const wrapped=function(){const out=prev.apply(this,arguments);try{setTimeout(()=>{apply24();qa24()},0)}catch(_e){}return out};window.renderResult=wrapped;try{renderResult=wrapped}catch(_e){}
+ }
+ document.addEventListener('click',()=>setTimeout(()=>{try{apply24();qa24()}catch(_e){}},0),{passive:true});
+ setTimeout(()=>{try{apply24();qa24()}catch(_e){}},0);
+})();
+</script>
 </body>
 </html>
