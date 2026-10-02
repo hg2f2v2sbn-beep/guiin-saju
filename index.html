@@ -23,7 +23,7 @@
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <meta name="theme-color" content="#fffaf1">
 <title>귀인사주 | 무료 명식 · 평생사주 · 궁합</title>
-<!-- GUIIN PROD MERGE: R17–R28 interpretation + production resource lock + KG Inicis transition -->
+<!-- GUIIN PROD MERGE: R17–R28 interpretation + production resource lock + Toss Payments transition -->
 <meta name="description" content="무료 사주 명식, 대운·세운·월운·일운, 신살과 궁합을 쉽게 확인하는 귀인사주">
 <link rel="canonical" href="https://gwiinsaju.com/">
 <meta name="robots" content="index,follow,max-image-preview:large">
@@ -50,6 +50,8 @@
 <script src="deep-interpretation-v3.js?v=20260918e"></script>
 <script src="guiin-runtime-config.js?v=20260920prod1"></script>
 <script src="member-data-v1.js?v=20260919a"></script>
+<script src="https://js.tosspayments.com/v2/standard"></script>
+<script defer src="toss-payment.js?v=20261002a"></script>
 <style>
 :root{
  --bg:#fffaf1;--paper:#fffefa;--ink:#203128;--sub:#7c837d;--line:#ece5d7;
@@ -1396,7 +1398,7 @@ button{position:relative}
   <div class="payResultWrap">
     <div class="payResultCard card">
       <div id="paymentResultIcon" class="payResultIcon">✓</div>
-      <div id="paymentResultBadge" class="reviewBadge">KG이니시스</div>
+      <div id="paymentResultBadge" class="reviewBadge">토스페이먼츠</div>
       <h2 id="paymentResultTitle">결제 결과를 확인하고 있어요</h2>
       <p id="paymentResultCopy">잠시만 기다려 주세요.</p>
       <div id="paymentResultMeta" class="payResultMeta" style="display:none"></div>
@@ -1425,7 +1427,7 @@ button{position:relative}
 <button class="ctaGold" onclick="guiinPaymentCenterStart('PREMIUM_COMPAT')">프리미엄 궁합 7,900원 결제하기 ›</button>
 <div class="trustBox" style="margin-top:12px"><b>AI 사주상담 질문 패키지</b><br>각 상품에 표시된 총 질문 횟수를 구매 후 30일간 사용하는 디지털 서비스입니다. 충전금·사이버머니가 아니며 현금 전환·양도·선물·다른 상품 결제에 사용할 수 없습니다. 미사용·일부 사용 환불 기준은 환불정책에서 확인할 수 있습니다.</div>
 <button class="softBtn" onclick="go('wallet')" data-guiin-nav="wallet">AI 사주상담 질문 패키지 보기 ›</button>
-<div id="paymentInfoStatus" class="paymentInfoStatus">KG이니시스 일반결제로 전환 준비 중입니다. 상품 조회와 결제 버튼은 정상 노출됩니다.</div><div class="paidDisclaimer"><b>제공 시점</b><br>결제 승인과 서버 검증이 완료된 시점에 구매한 콘텐츠 권한 또는 AI 사주 분석 질문 이용횟수가 계정에 반영됩니다.<br><br><b>결제대행</b><br>KG이니시스 일반결제로 전환 중이며, 계약 MID·서명키 및 서버 승인 API 연결 후 실제 결제를 활성화합니다.</div><button class="softBtn" onclick="go('refund')" data-guiin-nav="refund">환불정책 확인 ›</button><button class="softBtn" onclick="go('terms')" data-guiin-nav="terms">이용약관 확인 ›</button></div></div></section>
+<div id="paymentInfoStatus" class="paymentInfoStatus">토스페이먼츠 일반결제로 전환 준비 중입니다. 상품 조회와 결제 버튼은 정상 노출됩니다.</div><div class="paidDisclaimer"><b>제공 시점</b><br>결제 승인과 서버 검증이 완료된 시점에 구매한 콘텐츠 권한 또는 AI 사주 분석 질문 이용횟수가 계정에 반영됩니다.<br><br><b>결제대행</b><br>토스페이먼츠 일반결제로 전환 중이며, 토스페이먼츠 API 키 및 서버 승인 API 연결 후 실제 결제를 활성화합니다.</div><button class="softBtn" onclick="go('refund')" data-guiin-nav="refund">환불정책 확인 ›</button><button class="softBtn" onclick="go('terms')" data-guiin-nav="terms">이용약관 확인 ›</button></div></div></section>
 <section id="terms" class="screen"><div class="topbar"><button class="ghost" onclick="go('appinfo')" data-guiin-nav="appinfo">‹</button><div class="brand"><div class="brandline">이용약관</div></div><span></span></div><div class="pagePad"><div class="card utilityCard"><h3>이용약관 안내</h3><p>귀인사주는 무료 명식·운세·궁합·AI 상담과 프리미엄 평생사주·프리미엄 궁합·AI 사주상담 질문 패키지를 제공합니다. 상품별 가격, 제공 시점, 이용기간, 환불 기준을 결제 전에 표시하며 전체 약관 전문은 별도 페이지에서 바로 확인할 수 있습니다.</p><div class="paidDisclaimer">사주·운세·궁합·AI 상담은 참고 정보이며 의료·법률·세무·투자 등 전문 판단을 대신하지 않습니다.</div><p class="utilityHint">전체 약관은 <a href="terms.html" target="_blank" rel="noopener">이용약관 전문</a>에서 확인할 수 있습니다.</p></div></div></section>
 <section id="privacy" class="screen"><div class="topbar"><button class="ghost" onclick="go('appinfo')" data-guiin-nav="appinfo">‹</button><div class="brand"><div class="brandline">개인정보처리방침</div></div><span></span></div><div class="pagePad"><div class="card utilityCard"><h3>개인정보 안내</h3><p>사주 입력정보, 카카오 로그인 식별정보, AI 상담 내용, 주문·결제 상태 등은 서비스 제공에 필요한 범위에서 처리될 수 있습니다. 주민등록번호 등 고유식별정보는 서비스 운영을 위해 수집하지 않습니다.</p><p class="utilityHint">수집 항목·이용 목적·보유기간·외부서비스 이용 내용은 <a href="privacy.html" target="_blank" rel="noopener">개인정보처리방침 전문</a>에서 확인할 수 있습니다.</p></div></div></section>
 <section id="refund" class="screen"><div class="topbar"><button class="ghost" onclick="go('appinfo')" data-guiin-nav="appinfo">‹</button><div class="brand"><div class="brandline">환불정책</div></div><span></span></div><div class="pagePad"><div class="card utilityCard"><h3>환불 안내</h3><p>프리미엄 리포트는 콘텐츠 제공 시작 전 7일 이내 청약철회가 가능하며, 제공이 시작된 뒤에는 사전 고지·동의를 전제로 청약철회가 제한될 수 있습니다. AI 질문 패키지는 미사용 시 구매 후 7일 이내 전액 환불, 일부 사용 시 미사용 질문 비율을 기준으로 환불합니다. 표시·광고 또는 계약과 다르게 제공된 경우에는 관계 법령상 별도 청약철회 기준을 적용합니다.</p><p class="utilityHint">세부 기준은 <a href="refund.html" target="_blank" rel="noopener">환불정책 전문</a>에서 확인할 수 있습니다.</p></div></div></section>
@@ -1440,9 +1442,9 @@ button{position:relative}
   </div>
 </div>
 
-<div id="paySheet" role="dialog" aria-modal="true" class="paySheet" onclick="if(event.target===this)closePaySheet()"><div class="payPanel"><h3>AI 사주 분석 질문 이용권 결제</h3><div id="payPackText" class="adminNote"></div><div id="payPrice" class="payPrice"></div><div class="payList">결제 승인 후 사용 가능한 질문 횟수가 즉시 반영됩니다.<br>이용기간: 구매일로부터 30일<br>현금화·양도·선물·다른 상품 결제 불가<br>미사용/일부 사용 환불 기준은 환불정책에서 확인</div><label class="payConsent"><input id="walletPayConsent" type="checkbox" onchange="setPaymentReadinessUI()"> <span>상품의 30일 이용기간과 <a href="terms.html" target="_blank" rel="noopener">이용약관</a>·<a href="refund.html" target="_blank" rel="noopener">환불정책</a>을 확인하고 동의합니다.</span></label><div id="walletPayReadiness" class="payReadiness">결제 상태 확인 중…</div><button id="walletPayBtn" class="primary" onclick="payNotReady()">KG이니시스로 결제하기</button><button class="secondary" onclick="closePaySheet()">취소</button><p id="payMsg" class="adminNote"></p></div></div>
-<div id="premiumSheet" role="dialog" aria-modal="true" class="premiumSheet" onclick="if(event.target===this)closePremiumPay()"><div class="premiumPanel"><h2>프리미엄 평생사주</h2><div class="price">5,900원</div><p>무료 기본 명식을 확인한 뒤 내 실제 심층 풀이 전체를 열 수 있어요.</p><div class="payList">✓ 성격·기질·기가 센 정도·관계 반응<br>✓ 권태·친밀감·이상형<br>✓ 직업·사업·재물 심층 분석<br>✓ 신살·귀인·삼재 상세 해설<br>✓ 대운·세운·월운과 연·월 타이밍<br>✓ 실제 직업 예시와 생활 장면<br>✓ 장점·주의점·현실 조언</div><div class="paidDisclaimer">사주 결과는 참고 정보이며 미래를 확정하지 않습니다.</div><label class="payConsent"><input id="premiumPayConsent" type="checkbox" onchange="setPaymentReadinessUI()"> <span>결제 후 디지털 콘텐츠 제공을 즉시 시작하는 데 동의하며, 제공이 시작되면 청약철회가 제한될 수 있음을 확인했습니다. <a href="refund.html" target="_blank" rel="noopener">환불정책</a>에 동의합니다.</span></label><div id="premiumPayReadiness" class="payReadiness">결제 상태 확인 중…</div><button id="premiumPayBtn" class="primary" onclick="premiumPayNotReady()">KG이니시스 5,900원 결제하기</button><button class="secondary" onclick="closePremiumPay()">나중에 보기</button><p id="premiumPayMsg" class="adminNote"></p></div></div>
-<div id="compatSheet" role="dialog" aria-modal="true" class="premiumSheet" onclick="if(event.target===this)closeCompatPay()"><div class="premiumPanel"><h2>프리미엄 궁합</h2><div class="price">7,900원</div><p>점수보다 두 사람이 실제로 함께 있을 때의 장점과 갈등·회복·생활을 길게 풀어드려요.</p><div class="payList">✓ 상대방 단독 성격 분석<br>✓ 초반 끌림·연락·애착 반응<br>✓ 대화·갈등·회복 속도<br>✓ 권태·질투·자극 선호<br>✓ 친밀감·스킨십 속도<br>✓ 돈·생활·역할 분담<br>✓ 결혼·장기관계·가족 경계<br>✓ 자녀 양육 역할<br>✓ 현재 대운과 앞으로의 속도</div><div class="paidDisclaimer">궁합은 관계를 결정하는 판정표가 아니라 두 사람이 조율할 지점을 이해하는 참고 자료입니다.</div><label class="payConsent"><input id="compatPayConsent" type="checkbox" onchange="setPaymentReadinessUI()"> <span>결제 후 디지털 콘텐츠 제공을 즉시 시작하는 데 동의하며, 제공이 시작되면 청약철회가 제한될 수 있음을 확인했습니다. <a href="refund.html" target="_blank" rel="noopener">환불정책</a>에 동의합니다.</span></label><div id="compatPayReadiness" class="payReadiness">결제 상태 확인 중…</div><button id="compatPayBtn" class="primary" onclick="compatPayNotReady()">KG이니시스 7,900원 결제하기</button><button class="secondary" onclick="closeCompatPay()">나중에 보기</button><p id="compatPayMsg" class="adminNote"></p></div></div>
+<div id="paySheet" role="dialog" aria-modal="true" class="paySheet" onclick="if(event.target===this)closePaySheet()"><div class="payPanel"><h3>AI 사주 분석 질문 이용권 결제</h3><div id="payPackText" class="adminNote"></div><div id="payPrice" class="payPrice"></div><div class="payList">결제 승인 후 사용 가능한 질문 횟수가 즉시 반영됩니다.<br>이용기간: 구매일로부터 30일<br>현금화·양도·선물·다른 상품 결제 불가<br>미사용/일부 사용 환불 기준은 환불정책에서 확인</div><label class="payConsent"><input id="walletPayConsent" type="checkbox" onchange="setPaymentReadinessUI()"> <span>상품의 30일 이용기간과 <a href="terms.html" target="_blank" rel="noopener">이용약관</a>·<a href="refund.html" target="_blank" rel="noopener">환불정책</a>을 확인하고 동의합니다.</span></label><div id="walletPayReadiness" class="payReadiness">결제 상태 확인 중…</div><button id="walletPayBtn" class="primary" onclick="payNotReady()">토스페이먼츠로 결제하기</button><button class="secondary" onclick="closePaySheet()">취소</button><p id="payMsg" class="adminNote"></p></div></div>
+<div id="premiumSheet" role="dialog" aria-modal="true" class="premiumSheet" onclick="if(event.target===this)closePremiumPay()"><div class="premiumPanel"><h2>프리미엄 평생사주</h2><div class="price">5,900원</div><p>무료 기본 명식을 확인한 뒤 내 실제 심층 풀이 전체를 열 수 있어요.</p><div class="payList">✓ 성격·기질·기가 센 정도·관계 반응<br>✓ 권태·친밀감·이상형<br>✓ 직업·사업·재물 심층 분석<br>✓ 신살·귀인·삼재 상세 해설<br>✓ 대운·세운·월운과 연·월 타이밍<br>✓ 실제 직업 예시와 생활 장면<br>✓ 장점·주의점·현실 조언</div><div class="paidDisclaimer">사주 결과는 참고 정보이며 미래를 확정하지 않습니다.</div><label class="payConsent"><input id="premiumPayConsent" type="checkbox" onchange="setPaymentReadinessUI()"> <span>결제 후 디지털 콘텐츠 제공을 즉시 시작하는 데 동의하며, 제공이 시작되면 청약철회가 제한될 수 있음을 확인했습니다. <a href="refund.html" target="_blank" rel="noopener">환불정책</a>에 동의합니다.</span></label><div id="premiumPayReadiness" class="payReadiness">결제 상태 확인 중…</div><button id="premiumPayBtn" class="primary" onclick="premiumPayNotReady()">토스페이먼츠 5,900원 결제하기</button><button class="secondary" onclick="closePremiumPay()">나중에 보기</button><p id="premiumPayMsg" class="adminNote"></p></div></div>
+<div id="compatSheet" role="dialog" aria-modal="true" class="premiumSheet" onclick="if(event.target===this)closeCompatPay()"><div class="premiumPanel"><h2>프리미엄 궁합</h2><div class="price">7,900원</div><p>점수보다 두 사람이 실제로 함께 있을 때의 장점과 갈등·회복·생활을 길게 풀어드려요.</p><div class="payList">✓ 상대방 단독 성격 분석<br>✓ 초반 끌림·연락·애착 반응<br>✓ 대화·갈등·회복 속도<br>✓ 권태·질투·자극 선호<br>✓ 친밀감·스킨십 속도<br>✓ 돈·생활·역할 분담<br>✓ 결혼·장기관계·가족 경계<br>✓ 자녀 양육 역할<br>✓ 현재 대운과 앞으로의 속도</div><div class="paidDisclaimer">궁합은 관계를 결정하는 판정표가 아니라 두 사람이 조율할 지점을 이해하는 참고 자료입니다.</div><label class="payConsent"><input id="compatPayConsent" type="checkbox" onchange="setPaymentReadinessUI()"> <span>결제 후 디지털 콘텐츠 제공을 즉시 시작하는 데 동의하며, 제공이 시작되면 청약철회가 제한될 수 있음을 확인했습니다. <a href="refund.html" target="_blank" rel="noopener">환불정책</a>에 동의합니다.</span></label><div id="compatPayReadiness" class="payReadiness">결제 상태 확인 중…</div><button id="compatPayBtn" class="primary" onclick="compatPayNotReady()">토스페이먼츠 7,900원 결제하기</button><button class="secondary" onclick="closeCompatPay()">나중에 보기</button><p id="compatPayMsg" class="adminNote"></p></div></div>
 
 
 <div id="netNotice" class="netNotice" role="status" aria-live="polite"></div>
@@ -5507,7 +5509,7 @@ function guiinRenderPaymentResult(kind,{order='',code='',productCode=''}={}){
   if(!icon||!title||!copy||!primary)return;
   icon.className='payResultIcon'+(kind==='success'?'':kind==='cancel'?' cancel':' fail');
   icon.textContent=kind==='success'?'✓':kind==='cancel'?'–':'!';
-  if(badge)badge.textContent='KG이니시스';
+  if(badge)badge.textContent='토스페이먼츠';
   if(kind==='success'){
     title.textContent='결제 인증이 완료됐어요';
     copy.textContent='결제창 인증과 귀인사주 복귀까지 정상 동작했습니다. 현재는 샌드박스이므로 실제 청구와 유료 콘텐츠·AI 상담 이용권 지급은 발생하지 않습니다.';
@@ -7876,9 +7878,9 @@ document.addEventListener('visibilitychange',()=>{
 
 
 <script>
-/* GUIIN PAYMENT PROVIDER TRANSITION R2 — KG Inicis preparation · 2026-10-01
+/* GUIIN PAYMENT PROVIDER TRANSITION R2 — Toss Payments preparation · 2026-10-01
    KCP sandbox implementation remains only as rollback/reference.
-   Real charging stays disabled until KG Inicis MID/signKey and server-side approval routes are connected. */
+   Real charging stays disabled until Toss Payments MID/signKey and server-side approval routes are connected. */
 const GUIIN_ACTIVE_PG='inicis';
 const GUIIN_INICIS_FRONTEND_READY=true;
 const GUIIN_INICIS_LIVE_ENABLED=false;
@@ -7909,11 +7911,11 @@ function guiinPaymentCenterStart(productCode){
 
 function guiinInicisTransitionMessage(messageId){
   const msg=document.getElementById(messageId);
-  if(msg)msg.textContent='KG이니시스 전환 준비가 완료된 화면입니다. 계약 MID·서명키와 서버 승인 API를 연결하면 실제 결제창이 열립니다.';
+  if(msg)msg.textContent='토스페이먼츠 전환 준비가 완료된 화면입니다. 토스페이먼츠 API 키와 서버 승인 API를 연결하면 실제 결제창이 열립니다.';
   const info=document.getElementById('paymentInfoStatus');
   if(info){
     info.className='paymentInfoStatus sandbox';
-    info.textContent='KG이니시스 일반결제 전환 준비 중 · 상품 조회/결제 동선 확인 가능 · 실제 승인은 아직 비활성화';
+    info.textContent='토스페이먼츠 일반결제 전환 준비 중 · 상품 조회/결제 동선 확인 가능 · 실제 승인은 아직 비활성화';
   }
   return false;
 }
@@ -7932,13 +7934,13 @@ setPaymentReadinessUI=function(){
     if(!r||!b)continue;
     const ok=!!consent?.checked;
     r.className='payReadiness '+(ok?'ready':'wait');
-    r.textContent=ok?'KG이니시스 결제 전환 준비 상태입니다. 실제 승인 연결 전에는 결제가 청구되지 않습니다.':'약관과 환불정책을 확인한 뒤 결제 버튼을 눌러 진행 상태를 확인할 수 있어요.';
+    r.textContent=ok?'토스페이먼츠 결제 전환 준비 상태입니다. 실제 승인 연결 전에는 결제가 청구되지 않습니다.':'약관과 환불정책을 확인한 뒤 결제 버튼을 눌러 진행 상태를 확인할 수 있어요.';
     b.disabled=!ok;
   }
   const info=document.getElementById('paymentInfoStatus');
   if(info){
     info.className='paymentInfoStatus sandbox';
-    info.textContent='KG이니시스 일반결제 전환 준비 중 · 실제 승인은 MID/서명키/서버 승인 API 연결 후 활성화';
+    info.textContent='토스페이먼츠 일반결제 전환 준비 중 · 실제 승인은 API 키/서버 승인 API 연결 후 활성화';
   }
 };
 
