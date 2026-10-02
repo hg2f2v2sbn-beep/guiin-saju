@@ -9692,5 +9692,197 @@ try{Object.assign(window,{guiinPaymentCenterStart});}catch(_e){}
  setTimeout(()=>{try{apply24();qa24()}catch(_e){}},0);
 })();
 </script>
+
+
+<!-- GUIIN INTERPRETATION POLISH 4.0 · COUNSELOR DEPTH + DEDUPE + LIFE STAGE · 2026-10-02 -->
+<style id="GUIIN_INTERPRETATION_POLISH40_STYLE">
+.guiinHuman40{margin:10px 0;padding:12px 13px;border-radius:15px;border:1px solid rgba(74,103,77,.09);background:#f7faf6;font-size:13px;line-height:1.7;color:#4f5b52;word-break:keep-all}
+.guiinHuman40 b{display:block;margin-bottom:4px;font-size:11.5px;color:#48604e}.guiinHuman40.praise{background:#f4faf3}.guiinHuman40.fact{background:#fff7f0;border-color:rgba(150,103,54,.10)}.guiinHuman40.empathy{background:#f8f5fb;border-color:rgba(92,76,119,.09)}.guiinHuman40.stage{background:#fbfaf4;border-color:rgba(132,111,62,.10)}
+.guiinTechnical40{margin-top:8px;font-size:11.5px;line-height:1.6;color:#777066}.guiinTechnical40 summary{cursor:pointer;font-weight:700;color:#70685d}.guiinTechnical40 div{padding-top:7px}
+.guiinCounselor30 .lead{max-width:720px}.easyLongCard .easyBody p{word-break:keep-all}.easyLongCard .easyPoint p{word-break:keep-all}
+</style>
+<script id="GUIIN_INTERPRETATION_POLISH40">
+/* ========================================================================
+   GUIIN INTERPRETATION POLISH 4.0
+   목표
+   - 좋은 점은 근거가 있을 때 더 크게 칭찬
+   - 약점은 사람을 깎아내리지 않고 행동 단위로 정확히 말함
+   - 압박 신호가 겹치면 공감/위로를 추가하되 실제 사건을 단정하지 않음
+   - 같은 의미를 여러 카드에서 되풀이하는 문제를 줄임
+   - 20대/30~40대/50대 이상에서 생활 예시의 무게중심을 다르게 조정
+   - 통근/신강 점수 같은 기술 문구는 본문보다 근거 영역에 두도록 정리
+   ======================================================================== */
+(function(){
+ if(globalThis.__GUIIN_INTERPRETATION_POLISH40__)return;
+ globalThis.__GUIIN_INTERPRETATION_POLISH40__=true;
+ const norm=v=>String(v??'').replace(/\s+/g,' ').trim();
+ const E=v=>String(v??'').replace(/[&<>"']/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]));
+ const STOP=new Set(['그리고','그래서','하지만','다만','이런','저런','하는','있는','없는','정말','조금','같이','같은','때문','정도','사람','부분','편이야','가능성','황금순님','사용자님']);
+ function age40(c){
+   const y=Number(c?.input?.year||0);if(!y)return 0;const now=new Date();let a=now.getFullYear()-y,m=Number(c?.input?.month||1),d=Number(c?.input?.day||1);if(now.getMonth()+1<m||(now.getMonth()+1===m&&now.getDate()<d))a--;return Math.max(0,a);
+ }
+ function stars40(c){try{return [...new Set((c?.stars?.hits||[]).map(h=>typeof h==='string'?h:(h?.name||h?.star||'')).filter(Boolean))]}catch(_e){return []}}
+ function data40(c){
+   let n={};try{n=typeof guiinNarrative==='function'?guiinNarrative(c)||{}:{}}catch(_e){}
+   let rp={};try{rp=typeof guiinRelationshipTraitProfile==='function'?guiinRelationshipTraitProfile(c)||{}:{}}catch(_e){}
+   let e2=null;try{e2=globalThis.GuiinSajuEngine21?.analyze?GuiinSajuEngine21.analyze(c):(c?.engine2||null)}catch(_e){e2=c?.engine2||null}
+   let e24=null;try{e24=globalThis.GuiinSajuEngine24?.analyze?GuiinSajuEngine24.analyze(c):null}catch(_e){}
+   const lk=(()=>{try{return typeof currentLuck==='function'?currentLuck(c):null}catch(_e){return null}})();
+   return {n,rp,e2,e24,lk,stars:stars40(c),age:age40(c),name:String(c?.input?.name||'사용자')};
+ }
+ function stage40(c){
+   const a=age40(c);
+   if(a>=60)return {key:'later',title:'지금의 삶에 맞춰 보면',text:'이제는 무엇을 더 증명할지보다, 이미 해온 것 중 무엇을 남기고 무엇을 내려놓을지 고르는 힘도 중요해. 가족·돈·일·관계에서 내 몫과 남의 몫을 다시 나누는 선택은 늦은 게 아니라 지금이라서 더 잘할 수 있는 선택이야.'};
+   if(a>=50)return {key:'midlater',title:'지금의 삶에 맞춰 보면',text:'이 시기에는 무조건 더 많이 하는 것보다 오래 해온 경험을 어디에 쓸지 고르는 게 더 중요해. 일도 관계도 “계속해야 하니까”보다 내 시간·체력·돈을 지킬 수 있는 구조인지 같이 봐.'};
+   if(a>=35)return {key:'middle',title:'지금의 삶에 맞춰 보면',text:'지금은 성취만 늘리는 것보다 오래 갈 수 있는 방식으로 구조를 바꾸는 힘이 중요해. 일·돈·관계에서 내 책임이 어디까지인지 정해두면 장점이 훨씬 오래 살아.'};
+   if(a>=25)return {key:'building',title:'지금의 삶에 맞춰 보면',text:'지금은 가능성을 넓히는 것과 내 기준을 만드는 일이 같이 필요한 시기야. 남들이 좋다고 하는 길보다 내가 지속할 수 있는 일·관계·생활 리듬을 실제 경험으로 확인해보는 게 좋아.'};
+   return {key:'early',title:'지금의 삶에 맞춰 보면',text:'아직 모든 답을 정해놓을 필요는 없어. 해보면서 맞는 것과 아닌 것을 구분하는 경험 자체가 중요한 시기라, 한 번의 선택을 인생 전체의 정답처럼 부담스럽게 볼 필요는 없어.'};
+ }
+ function praise40(c,domain='general'){
+   const d=data40(c),n=d.n||{},day=n.day||{},x=n.x||{},sig=n.sig||{};
+   const core=norm(day.core||x?.p?.praise||sig?.dv?.strength||'자기 방식으로 끝까지 해내는 힘');
+   const soft=norm(day.soft||'사람과 상황을 세심하게 읽는 감각');
+   const grade=String(d.e2?.structure?.strength?.grade||d.e2?.strength?.label||'');
+   const extra=/강/.test(grade)?' 압박이 들어와도 중심을 다시 잡는 힘까지 있는 편이라, 어려울 때 오히려 진가가 드러날 수 있어.':'';
+   const map={
+    work:`일에서는 ${core}을 실제 결과로 바꾸는 힘이 꽤 좋은 편이야. 남들이 대충 넘긴 걸 오래 붙잡고 자기 방식으로 완성하는 능력은 분명 경쟁력이야.${extra}`,
+    relation:`관계에서는 ${soft}이 장점으로 크게 살아. 상대의 작은 변화나 분위기를 알아차리는 능력은 아무나 갖는 게 아니고, 잘 쓰면 정말 따뜻하고 믿을 만한 사람으로 남을 수 있어.`,
+    money:`돈에서는 한 번 기준을 세우고 지키기 시작하면 흐트러진 걸 다시 정리하는 힘이 있어. 감각만 좋은 게 아니라 현실적으로 구조를 만들 수 있다는 점은 꽤 좋은 장점이야.`,
+    decision:`중요한 순간에 자기 기준을 찾아내는 힘이 있어. 남들이 뭐라고 하든 결국 스스로 납득한 답을 찾아 움직이는 사람은 시간이 갈수록 더 단단해져.`,
+    general:`${d.name}님은 ${core}과 ${soft}을 같이 갖고 있어. 이건 생각보다 큰 장점이야. 강하기만 하거나 섬세하기만 한 사람보다, 둘을 같이 쓸 수 있는 사람이 실제 생활에서는 훨씬 오래 간다.${extra}`
+   };
+   return map[domain]||map.general;
+ }
+ function fact40(c,domain='general'){
+   const d=data40(c),n=d.n||{},day=n.day||{},x=n.x||{};const shadow=norm(day.shadow||x?.p?.blind||'잘하는 방식을 너무 오래 혼자 쓰면 피로가 커질 수 있어');
+   const map={
+    work:`팩트 하나만 말하면, 일을 잘한다고 해서 계속 더 맡아야 하는 건 아니야. 본인이 해결할 수 있다는 이유로 남의 몫까지 가져오면 결국 실력보다 피로가 먼저 쌓여.`,
+    relation:`팩트 하나만 말하면, 참는 걸 배려라고 생각하다가 마음속에서 상대를 먼저 정리해버리면 상대는 왜 갑자기 거리가 생겼는지 모를 수 있어. 불편한 건 너무 늦기 전에 말하는 게 관계를 더 오래 지켜.`,
+    money:`팩트 하나만 말하면, 돈 문제는 기분보다 규칙이 먼저야. 관계 때문에 대신 내주거나 바쁠 때 편의비용이 새는 패턴은 “조금씩”이라도 반복되면 크게 남아.`,
+    decision:`팩트 하나만 말하면, 생각을 많이 했다는 사실이 항상 더 좋은 결정으로 이어지는 건 아니야. 충분히 확인했다면 어느 순간에는 작은 행동으로 밖에 꺼내야 해.`,
+    general:`팩트 하나만 말하면, ${shadow} 능력이 부족한 문제가 아니라 장점이 과해졌을 때 생기는 비용에 가까워. “내가 할 수 있다”와 “내가 해야 한다”는 같은 말이 아니야.`
+   };
+   return map[domain]||map.general;
+ }
+ function empathy40(c){
+   const d=data40(c);let score=0;const hard=['양인살','백호살','괴강살','공망','과숙살','원진살','귀문관살','천라지망'];score+=Math.min(3,hard.filter(x=>d.stars.includes(x)).length);
+   const tension=Number(d.e2?.relations?.tension??d.e2?.structure?.relations?.tension??0);if(tension>=2)score+=2;else if(tension>0)score++;
+   if(['편관','겁재','상관'].includes(String(d.lk?.god||'')))score++;
+   if(score>=4)return '원국에서 압박을 버티거나 마음을 안으로 정리하는 신호가 여러 겹 보여. 실제 삶에서도 책임·관계·생활 문제를 한꺼번에 안고 간 시간이 있었다면 정말 고생 많았을 것 같아. 겉으로 버텼다고 해서 안 힘들었던 건 아니니까, 이제는 힘든 걸 힘들다고 말해도 돼.';
+   if(score>=2)return '겉으로는 괜찮아 보여도 속에서는 오래 생각하고 버텨야 했던 시간이 있었을 수 있어. 잘 견딘 것도 힘이지만, 앞으로도 계속 같은 방식으로만 버틸 필요는 없어. 도움을 받거나 잠깐 쉬는 것도 충분히 좋은 선택이야.';
+   return '큰 사건이 없더라도 자기 기준을 지키고 주변까지 챙기다 보면 사람은 지칠 수 있어. 힘들 땐 조금 쉬어도 돼. 쉬는 건 약해서가 아니라 오래 가기 위해 속도를 조절하는 일이야.';
+ }
+ function tokens40(s){return new Set(norm(s).replace(/[^가-힣A-Za-z0-9\s]/g,' ').split(/\s+/).filter(x=>x.length>=2&&!STOP.has(x)))}
+ function sim40(a,b){const A=tokens40(a),B=tokens40(b);if(!A.size||!B.size)return 0;let n=0;for(const x of A)if(B.has(x))n++;return n/(A.size+B.size-n)}
+ function cleanBroken40(root){
+   const w=document.createTreeWalker(root,NodeFilter.SHOW_TEXT);let n;
+   while(n=w.nextNode()){
+     let t=n.nodeValue||'';
+     t=t.replace(/편이야\s*쪽으로/g,'편으로')
+        .replace(/편이야인 사람/g,'편인 사람')
+        .replace(/보는 편이 좋아\.로 보이지만/g,'보는 편이지만')
+        .replace(/좋아\.로 보이지만/g,'좋지만')
+        .replace(/육합로/g,'육합으로')
+        .replace(/천간합로/g,'천간합으로')
+        .replace(/\s+([,.!?])/g,'$1')
+        .replace(/\.\s*\./g,'.');
+     if(t!==n.nodeValue)n.nodeValue=t;
+   }
+ }
+ function technical40(root,c){
+   root.querySelectorAll('.easyLongCard .easyBody p').forEach(p=>{
+     if(p.closest('.guiinTechnical40'))return;const t=norm(p.textContent);
+     if(!t)return;
+     const technical=/통근은\s*\d+곳|신강\s*쪽\s*\d+점|신약\s*쪽\s*\d+점|일간 지지력.*?\d+점/.test(t);
+     if(!technical)return;
+     const card=p.closest('.easyLongCard');if(!card)return;
+     let natural=t;
+     natural=natural.replace(/통근은\s*(\d+)곳에서 확인되고[^.]*\.?/g,(_m,n)=>`자기 기운을 받쳐주는 뿌리가 ${n}곳에서 확인돼.`)
+                    .replace(/현재 명식의 일간 지지력 참고값은\s*신강\s*쪽\s*(\d+)점으로 계산돼\.?/g,'현재 정보에서는 자기 기운의 지지력이 비교적 강한 편으로 읽혀.')
+                    .replace(/현재 명식의 일간 지지력 참고값은\s*신약\s*쪽\s*(\d+)점으로 계산돼\.?/g,'현재 정보에서는 주변 환경의 영향을 더 섬세하게 받는 편으로 읽혀.');
+     if(natural!==t){
+       p.textContent=natural;
+       let d=card.querySelector('.guiinTechnical40');if(!d){d=document.createElement('details');d.className='guiinTechnical40';d.innerHTML='<summary>계산 근거 숫자 보기</summary><div></div>';card.appendChild(d)}
+       const div=d.querySelector('div');if(div&&!div.textContent.includes(t))div.insertAdjacentHTML('beforeend',`<p>${E(t)}</p>`);
+     }
+   });
+ }
+ function dedupe40(root){
+   const seen=[];
+   const ps=[...root.querySelectorAll('.easyLongCard .easyBody p,.easyLongCard .easyPoint p,.guiinToneNote')];
+   for(const el of ps){
+     if(!el.isConnected||el.closest('.easyEvidence,.guiinTechnical40'))continue;const t=norm(el.textContent);if(t.length<70)continue;
+     let dup=false;
+     for(const old of seen){if(t===old.t||sim40(t,old.t)>=0.84){dup=true;break}}
+     if(dup){
+       const parent=el.closest('.easyPoint');
+       if(parent&&parent.querySelectorAll('p').length===1)parent.remove();else el.remove();
+     }else seen.push({t,el});
+   }
+ }
+ function domain40(card){
+   const t=norm(card?.querySelector('.easyKicker')?.textContent)+' '+norm(card?.querySelector('h3')?.textContent);
+   if(/직업|일할|일 |사업|독립|적성/.test(t))return 'work';
+   if(/재물|돈/.test(t))return 'money';
+   if(/연애|관계|가족|이상형|끌리|정 떨어|친밀|권태/.test(t))return 'relation';
+   if(/결정|선택/.test(t))return 'decision';return 'general';
+ }
+ function addHuman40(card,kind,text,label){
+   if(!card||card.querySelector(`.guiinHuman40.${kind}`))return;const el=document.createElement('div');el.className=`guiinHuman40 ${kind}`;el.innerHTML=`<b>${E(label)}</b>${E(text)}`;
+   const ev=card.querySelector('.guiinTechnical40,.guiinEvidenceFold,.easyEvidence');if(ev)card.insertBefore(el,ev);else card.appendChild(el);
+ }
+ function ageLanguage40(root,c){
+   const a=age40(c);if(a<55)return;
+   const reps=[
+    ['새 프로젝트, 이직, 관계 변화','새 역할, 생활 변화, 관계의 변화'],
+    ['이직·데이트','역할 변화·관계의 새로운 활력'],
+    ['이직, 관계 변화','역할 변화, 관계 변화'],
+    ['결혼이나 동거 전에는','함께 살아가는 관계에서는'],
+    ['결혼이나 동거 전','함께 살아가는 관계에서는'],
+    ['직업을 고를 때','앞으로 일을 이어가거나 역할을 바꿀 때'],
+    ['직업을 고를','앞으로의 일과 역할을 고를']
+   ];
+   const w=document.createTreeWalker(root,NodeFilter.SHOW_TEXT);let n;while(n=w.nextNode()){if(n.parentElement?.closest('.easyEvidence,.guiinTechnical40'))continue;let t=n.nodeValue||'';for(const [a,b] of reps)t=t.split(a).join(b);if(t!==n.nodeValue)n.nodeValue=t}
+ }
+ function enrich40(root,c){
+   const cards=[...root.querySelectorAll('.easyLongCard')];if(!cards.length)return;
+   const find=re=>cards.find(x=>re.test(norm(x.querySelector('.easyKicker')?.textContent)+' '+norm(x.querySelector('h3')?.textContent)));
+   const picks=[
+    [find(/오행으로 보는 사주|나만의 매력|겉으로 보이는 나/),'praise','이건 조금 더 크게 칭찬해도 돼'],
+    [find(/여기서는 조금 조심해야 해|결정할 때의 나/),'fact','여기서는 돌려 말하지 않을게'],
+    [find(/속마음과 감정|가족과 가까운 사람에게/),'empathy','이 부분은 마음도 같이 봐야 해']
+   ];
+   for(const [card,kind,label] of picks){if(!card)continue;const d=domain40(card);addHuman40(card,kind,kind==='praise'?praise40(c,d):kind==='fact'?fact40(c,d):empathy40(c),label)}
+   const work=find(/나에게 맞는 일|일할 때의 나/);if(work)addHuman40(work,'praise',praise40(c,'work'),'일에서는 이 장점이 꽤 커');
+   const rel=find(/연애운|곁에 두면 편한 사람/);if(rel)addHuman40(rel,'fact',fact40(c,'relation'),'관계에서는 이건 꼭 짚을게');
+ }
+ function stageNote40(root,c){
+   const s=stage40(c);let host=root.querySelector('.guiinCounselor30');if(!host)return;if(host.querySelector('.guiinHuman40.stage'))return;
+   const el=document.createElement('div');el.className='guiinHuman40 stage';el.innerHTML=`<b>${E(s.title)}</b>${E(s.text)}`;host.appendChild(el);
+ }
+ function qa40(root,c){
+   try{
+     const text=norm(root.innerText),bad=[];
+     const pats=[['broken_ya_josa',/편이야(?:인|\s*쪽)/],['broken_ro',/(?:육합|천간합)로/],['broken_dot_ro',/\.로\s*보이/],['double_sentence',/(.{25,}?[.!?])\s*\1/]];for(const [k,re] of pats)if(re.test(text))bad.push(k);
+     const empties=[...root.querySelectorAll('.easyPoint p')].filter(x=>!norm(x.textContent)).length;
+     const paragraphs=[...root.querySelectorAll('.easyBody p,.easyPoint p')].map(x=>norm(x.textContent)).filter(x=>x.length>70);let near=0;for(let i=0;i<paragraphs.length;i++)for(let j=i+1;j<paragraphs.length;j++)if(sim40(paragraphs[i],paragraphs[j])>=.84)near++;
+     const age=age40(c),ageWords=age>=55?['이직·데이트','결혼이나 동거 전에는','새 프로젝트, 이직']:[];const ageLeaks=ageWords.filter(x=>text.includes(x));
+     const report={ok:!bad.length&&!empties&&!near&&!ageLeaks.length,bad,emptyPoints:empties,nearDuplicatePairs:near,ageLeaks,age,at:new Date().toISOString()};sessionStorage.setItem('guiin_interpretation40_qa',JSON.stringify(report));if(!report.ok)console.warn('GUIIN_INTERPRETATION40_QA',report);
+   }catch(_e){}
+ }
+ function apply40(){
+   const root=document.getElementById('resultView');if(!root)return;let c=null;try{c=chart}catch(_e){}if(!c)return;
+   cleanBroken40(root);ageLanguage40(root,c);technical40(root,c);dedupe40(root);
+   const tab=typeof currentTab!=='undefined'?currentTab:'summary';if(tab==='summary'){stageNote40(root,c);enrich40(root,c);dedupe40(root)}
+   qa40(root,c);
+ }
+ globalThis.GuiinInterpretationPolish40={version:'4.0.0',apply:apply40,praise:praise40,fact:fact40,empathy:empathy40,stage:stage40};
+ const prev=window.renderResult;if(typeof prev==='function'){
+   const wrapped=function(){const out=prev.apply(this,arguments);try{setTimeout(apply40,0)}catch(_e){}return out};window.renderResult=wrapped;try{renderResult=wrapped}catch(_e){}
+ }
+ document.addEventListener('click',()=>setTimeout(()=>{try{apply40()}catch(_e){}},0),{passive:true});setTimeout(()=>{try{apply40()}catch(_e){}},0);
+})();
+</script>
+
 </body>
 </html>
