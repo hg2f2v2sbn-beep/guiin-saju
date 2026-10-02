@@ -9388,5 +9388,160 @@ try{Object.assign(window,{guiinPaymentCenterStart});}catch(_e){}
  setTimeout(()=>{try{apply()}catch(_e){}},0);
 })();
 </script>
+
+
+<!-- GUIIN ENGINE 2.3 · TIMING + LIFE STAGE + TRUST · 2026-10-02 -->
+<style id="guiin-engine23-style">
+.guiinTiming23{margin:12px 0 14px;padding:15px 16px;border-radius:18px;border:1px solid rgba(126,98,47,.13);background:linear-gradient(180deg,#fffaf0,#fff)}
+.guiinTiming23 .mini{font-size:11px;font-weight:800;color:#8b713d;margin-bottom:5px}.guiinTiming23 h3{font-size:17px;line-height:1.45;margin:0 0 7px}.guiinTiming23 p{font-size:13px;line-height:1.7;margin:6px 0;color:#5d5a54;word-break:keep-all}.guiinTiming23 .strong{font-weight:800;color:#2d4d3a}
+.guiinTrust23{margin-top:9px;padding:10px 11px;border-radius:13px;background:#f7f8f4;border:1px solid rgba(0,0,0,.05);font-size:11.5px;line-height:1.6;color:#66645e}.guiinTrust23 b{color:#4c5e52}
+.guiinLife23{margin-top:9px;padding:11px 12px;border-radius:14px;background:#f6f8f3;border:1px solid rgba(71,102,74,.09);font-size:12.5px;line-height:1.65;color:#536157}.guiinLife23 b{display:block;font-size:11px;margin-bottom:4px;color:#46604e}
+</style>
+<script id="GUIIN_ENGINE23_TIMING_LIFE_TRUST">
+/* ========================================================================
+   GUIIN ENGINE 2.3
+   - 현재 대운과 세운의 같은 간지/같은 천간/같은 지지 중첩을 따로 감지
+   - 출생시간 미상 시 숫자형 강약값을 확정값처럼 보이지 않게 보정
+   - 연령대에 맞지 않는 생활 예시를 실제 생애 단계에 맞게 다듬음
+   - 장점 칭찬은 강약의 높고 낮음과 무관하게 '잘 쓰이는 힘'을 근거로 강화
+   - 개발용 QA로 조사 깨짐·빈 항목·연령 부적합 표현을 점검
+   ======================================================================== */
+(function(){
+ if(globalThis.__GUIIN_ENGINE23__)return;
+ globalThis.__GUIIN_ENGINE23__=true;
+ const norm=v=>String(v??'').replace(/\s+/g,' ').trim();
+ const esc23=v=>String(v??'').replace(/[&<>"']/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]));
+ function ageOf23(c){
+   const y=Number(c?.input?.year||0);if(!y)return 0;
+   const now=new Date();let age=now.getFullYear()-y;
+   const m=Number(c?.input?.month||1),d=Number(c?.input?.day||1);
+   if((now.getMonth()+1)<m||((now.getMonth()+1)===m&&now.getDate()<d))age--;
+   return Math.max(0,age);
+ }
+ function luck23(c){try{return typeof currentLuck==='function'?currentLuck(c):null}catch(_e){return null}}
+ function year23(c){try{return typeof currentYearFlow==='function'?currentYearFlow(c):null}catch(_e){return null}}
+ function godTheme23(g){
+   return ({
+    비견:'내 기준·독립성·경쟁과 역할 분담',겁재:'사람·돈·시간의 경계와 공동 부담',
+    식신:'결과물·생활 리듬·꾸준한 생산',상관:'표현·변화·기존 방식 수정과 결과 공개',
+    편재:'기회·사람의 확장·현금흐름',정재:'생활 안정·고정비·저축과 현실 관리',
+    편관:'책임 압박·결단·경계 설정',정관:'책임·규칙·평판과 장기 계획',
+    편인:'깊은 생각·전문성·혼자 정리하는 시간',정인:'배움·도움·회복·안정적인 지원'
+   })[String(g||'')]||'현재 삶에서 반복해서 중요해지는 주제';
+ }
+ function timingMeta23(c){
+   const lk=luck23(c),yf=year23(c),year=new Date().getFullYear();
+   const yko=String(yf?.pillars?.year?.ko||''),lko=String(lk?.ko||'');
+   if(!lk||!yko||!lko)return null;
+   return {lk,yf,year,yko,lko,samePillar:lko===yko,sameStem:lko[0]&&lko[0]===yko[0],sameBranch:lko[1]&&lko[1]===yko[1],god:String(yf?.gods?.year||lk?.god||'')};
+ }
+ function timingHTML23(c){
+   const m=timingMeta23(c);if(!m)return '';
+   let title='',body='';
+   if(m.samePillar){
+     title=`${m.lko} 대운 위에 ${m.year}년 ${m.yko} 세운이 같은 간지로 겹쳐 있어.`;
+     body=`같은 글자가 반복된다고 특정 사건이 반드시 생긴다는 뜻은 아니야. 다만 <span class="strong">${esc23(godTheme23(m.god))}</span> 같은 주제가 평소보다 더 자주 체감되거나, 미뤄둔 문제를 다시 정리해야 하는 압력이 커질 수 있어. 잘 쓰면 한 방향으로 힘이 모이지만, 무리하면 같은 피로도 반복되기 쉬우니 속도 조절이 중요해.`;
+   }else if(m.sameStem||m.sameBranch){
+     const part=m.sameStem?'천간':'지지';
+     title=`현재 대운과 ${m.year}년 세운에서 ${part}의 같은 신호가 한 번 더 겹쳐.`;
+     body=`완전히 같은 간지는 아니지만 ${esc23(godTheme23(m.god))} 쪽 주제가 반복해서 눈에 들어올 수 있어. 한 번에 결론내기보다 원국과 월운까지 같이 보면서 실제 생활에서 어디에 힘이 몰리는지 확인하는 게 좋아.`;
+   }else return '';
+   return `<section class="guiinTiming23" data-guiin-timing23="1"><div class="mini">지금 운의 겹침</div><h3>${esc23(title)}</h3><p>${body}</p><p>좋은 일·나쁜 일을 미리 확정하는 표시는 아니고, <b>같은 주제가 얼마나 반복해서 강조되는지</b> 보는 참고값이야.</p></section>`;
+ }
+ function praiseBoost23(c){
+   let a=null;try{a=globalThis.GuiinSajuEngine21?.analyze?GuiinSajuEngine21.analyze(c):(c?.engine2||null)}catch(_e){a=c?.engine2||null}
+   const st=a?.structure||{},grade=String(st?.strength?.grade||''),rootHits=Number(st?.root?.hits?.length??st?.root?.hits??0),season=Number(st?.season?.score||0);
+   if(/약/.test(grade))return '강하게 밀어붙이는 힘만 장점은 아니야. 상황을 읽고 필요한 도움이나 환경을 활용해서 방향을 바꾸는 유연함도 분명한 실력이야. 약하게 계산됐다는 이유로 사람 자체가 약하다는 뜻은 전혀 아니야.';
+   if(rootHits>=2&&season>=70)return '뿌리와 계절의 도움을 같이 받는 신호가 보여서, 중요한 순간에 자기 기준을 지키는 힘은 꽤 믿어도 돼. 쉽게 흔들리지 않는 힘을 실제 결과로 연결하면 큰 장점이 돼.';
+   if(rootHits>=2)return '원국에서 뿌리가 여러 곳 확인되는 편이라, 겉으로 유연해 보여도 속 기준까지 쉽게 무너지는 사람은 아닐 가능성이 커. 이건 스스로 조금 더 믿어도 되는 장점이야.';
+   if(season>=70)return '태어난 계절에서도 일간을 받쳐주는 힘이 확인돼. 자기 리듬을 찾았을 때 오래 밀고 가는 힘이 살아날 가능성이 커서, 잘하는 분야에서는 자신감을 조금 더 가져도 돼.';
+   return '강점은 숫자가 높아서 생기는 게 아니야. 지금 명식에서 반복해서 잘 쓰이는 기능을 실제 생활에서 결과로 바꾸는 힘 자체가 장점이야. 잘하는 걸 괜히 작게 말하지 않아도 돼.';
+ }
+ function lifeStage23(c){
+   const age=ageOf23(c);
+   if(age>=65)return '지금은 새로 증명해야 할 것보다 이미 쌓아온 경험을 어디에 쓰고, 무엇을 덜어낼지를 고르는 힘이 더 중요해. 가족·일·돈에서 계속 책임지는 역할만 맡아왔다면 이제는 내 편안함도 같은 비중으로 챙겨도 돼.';
+   if(age>=55)return '앞으로의 선택은 “더 많이 할 수 있나”보다 “내 시간과 체력을 어디에 쓰면 후회가 적을까”가 더 중요해질 수 있어. 익숙한 역할을 계속하는 것도, 일의 방식을 다시 짜는 것도 둘 다 선택지야.';
+   if(age>=40)return '지금부터는 가능성만 보는 것보다 오래 갈 수 있는 구조를 고르는 게 중요해. 일·돈·관계에서 계속 내가 수습하는 자리에 있다면 역할을 다시 나누는 것도 실력이야.';
+   if(age>=30)return '이 시기에는 잘하는 걸 계속 증명하는 것보다 내 방식이 오래 갈 수 있는지 확인하는 게 중요해. 성취와 회복을 같이 챙기는 쪽이 결국 더 멀리 가.';
+   return '아직 모든 답을 미리 정해둘 필요는 없어. 경험하면서 내 기준을 만들어도 충분해. 한 번의 선택이 인생 전체를 확정하는 건 아니야.';
+ }
+ function rewriteLifeStage23(root,c){
+   if(!root||!c)return;const age=ageOf23(c);if(age<55)return;
+   const reps=[
+    ['새 프로젝트, 이직, 관계 변화','새로운 역할, 일의 재구성, 관계 변화'],
+    ['직업을 고를 때 연봉만 보지 말고','앞으로 일을 이어갈 방식을 볼 때 수입만 보지 말고'],
+    ['결혼이나 동거 전에는','장기 관계나 함께 생활한다면'],
+    ['사업을 고민한다면','독립·사업을 이어가거나 새로 고민한다면'],
+    ['생활·데이트·개인시간','생활·함께 보내는 시간·개인시간'],
+    ['데이트·개인시간','함께 보내는 시간·개인시간']
+   ];
+   const w=document.createTreeWalker(root,NodeFilter.SHOW_TEXT);let n;
+   while(n=w.nextNode()){
+     let t=n.nodeValue||'';for(const [a,b] of reps)t=t.split(a).join(b);if(t!==n.nodeValue)n.nodeValue=t;
+   }
+ }
+ function trust23(root,c){
+   if(!root||!c)return;root.querySelectorAll('[data-guiin-trust23="1"]').forEach(x=>x.remove());
+   const unknown=!!c?.input?.hourUnknown;const target=root.querySelector('.r30Engine2Box')||root.querySelector('[data-r29-saju-portrait="1"]');if(!target)return;
+   const text=unknown?'연·월·일 세 기둥의 핵심 구조는 그대로 계산했어. 다만 시주가 필요한 세부 신살·말년 흐름·아주 좁은 시기 판정은 보수적으로 읽고, 강약의 숫자값도 범위 참고값으로 봐야 해.':'출생시간까지 입력되어 네 기둥을 모두 사용했어. 그래도 강약·격국·용신 후보는 학파와 해석법에 따라 차이가 있을 수 있어 하나의 절대 점수로 단정하지 않아.';
+   target.insertAdjacentHTML('beforeend',`<div class="guiinTrust23" data-guiin-trust23="1"><b>해석 신뢰도 안내</b> · ${esc23(text)}</div>`);
+   if(unknown){
+     const w=document.createTreeWalker(root,NodeFilter.SHOW_TEXT);let n;
+     while(n=w.nextNode()){
+       const t=n.nodeValue||'';
+       const m=t.match(/일간 지지력\(신강·신약 참고\)은\s*([^\s]+)\s*쪽\s*([0-9]+)점으로 계산돼\./);
+       if(m)n.nodeValue=t.replace(m[0],`일간 지지력은 현재 정보에서 ${m[1]} 쪽으로 읽히고, 내부 참고값은 ${m[2]}점이야. 출생시간이 확인되면 일부 조정될 수 있어.`);
+     }
+   }
+ }
+ function tidy23(root){
+   if(!root)return;const w=document.createTreeWalker(root,NodeFilter.SHOW_TEXT);let n;
+   while(n=w.nextNode()){
+     let t=n.nodeValue||'';
+     t=t.replace(/편이야인 사람/g,'편인 사람').replace(/편이야\s*쪽으로/g,'편으로').replace(/좋아\.로 보이지만/g,'좋아 보이지만').replace(/보여\.\s*보여\./g,'보여.').replace(/육합로/g,'육합으로').replace(/천간합로/g,'천간합으로');
+     if(t!==n.nodeValue)n.nodeValue=t;
+   }
+   root.querySelectorAll('.easyLongCard,.deepCard,.expertSection').forEach(card=>{
+     const seen=new Set();card.querySelectorAll('p').forEach(p=>{const k=norm(p.textContent).replace(/[\s.,!?"'“”‘’]/g,'');if(k.length<50)return;if(seen.has(k))p.remove();else seen.add(k)});
+     card.querySelectorAll('.easyPoint').forEach(x=>{const p=x.querySelector('p');if(p&&!norm(p.textContent))x.remove()});
+   });
+ }
+ function praisePatch23(root,c){
+   const p=root?.querySelector('.guiinCounselor30 .guiinToneCell.praise p');if(!p||p.dataset.e23==='1')return;
+   p.dataset.e23='1';const more=praiseBoost23(c);if(more&&!norm(p.textContent).includes(norm(more)))p.append(document.createTextNode(' '+more));
+ }
+ function lifeNote23(root,c){
+   const host=root?.querySelector('.guiinCounselor30 .guiinToneRest');if(!host||host.querySelector('[data-guiin-life23="1"]'))return;
+   const div=document.createElement('div');div.className='guiinLife23';div.dataset.guiinLife23='1';div.innerHTML=`<b>지금 삶의 단계에서</b>${esc23(lifeStage23(c))}`;host.insertAdjacentElement('afterend',div);
+ }
+ function timingInsert23(root,c){
+   if(!root||!c)return;root.querySelectorAll('[data-guiin-timing23="1"]').forEach(x=>x.remove());const html=timingHTML23(c);if(!html)return;
+   const anchor=root.querySelector('[data-r21="saju"]')||root.querySelector('.guiinCounselor30')||root.querySelector('.r30Engine2Box')||root.querySelector('[data-r29-saju-portrait="1"]');
+   if(anchor)anchor.insertAdjacentHTML('afterend',html);
+ }
+ function qa23(root,c){
+   try{
+     const text=norm(root?.innerText||''),age=ageOf23(c),issues=[];
+     const bad=[['broken_pyeoniya',/편이야인|편이야\s*쪽으로/],['broken_ro',/(?:육합|천간합)로/],['dot_ro',/좋아\.로 보이지만/],['empty_point',/소모가 커지는 환경\s*(?:선택할 때|$)/]];
+     for(const [k,re] of bad)if(re.test(text))issues.push(k);
+     if(age>=60&&/새 프로젝트, 이직, 관계 변화|결혼이나 동거 전에는/.test(text))issues.push('life_stage_old_copy');
+     const tm=timingMeta23(c);const report={ok:issues.length===0,issues,age,hourUnknown:!!c?.input?.hourUnknown,timing:tm?{samePillar:tm.samePillar,sameStem:tm.sameStem,sameBranch:tm.sameBranch,luck:tm.lko,year:tm.yko}:null,at:new Date().toISOString()};
+     sessionStorage.setItem('guiin_engine23_qa',JSON.stringify(report));if(!report.ok)console.warn('GUIIN_ENGINE23_QA_WARNING',report);
+   }catch(_e){}
+ }
+ function apply23(){
+   const root=document.getElementById('resultView');if(!root)return;let c=null;try{c=chart}catch(_e){};if(!c)return;
+   tidy23(root);rewriteLifeStage23(root,c);trust23(root,c);
+   if(typeof currentTab!=='undefined'&&currentTab!=='summary'){qa23(root,c);return}
+   praisePatch23(root,c);lifeNote23(root,c);timingInsert23(root,c);qa23(root,c);
+ }
+ const prev=window.renderResult;
+ if(typeof prev==='function'){
+   const wrapped=function(){const out=prev.apply(this,arguments);try{setTimeout(apply23,0)}catch(_e){}return out};window.renderResult=wrapped;try{renderResult=wrapped}catch(_e){}
+ }
+ document.addEventListener('click',()=>setTimeout(()=>{try{apply23()}catch(_e){}},0),{passive:true});
+ setTimeout(()=>{try{apply23()}catch(_e){}},0);
+})();
+</script>
 </body>
 </html>
