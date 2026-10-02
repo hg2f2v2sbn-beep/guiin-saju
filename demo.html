@@ -8919,5 +8919,204 @@ try{Object.assign(window,{guiinPaymentCenterStart});}catch(_e){}
 })();
 </script>
 
+
+
+<!-- GUIIN SAJU ENGINE 2.1 CONSOLIDATION · 2026-10-02 -->
+<style id="guiin-engine21-style">
+.r30Engine2Box .e21grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:6px;margin-top:8px}
+.r30Engine2Box .e21item{padding:8px 9px;border-radius:11px;background:#fff;border:1px solid rgba(100,85,55,.10);font-size:11px;line-height:1.45;color:#6e675c}
+.r30Engine2Box .e21item b{display:block;font-size:10px;margin-bottom:2px;color:#53655b}
+@media(max-width:380px){.r30Engine2Box .e21grid{grid-template-columns:1fr}}
+@media print{.r30Engine2Box .e21grid{grid-template-columns:repeat(2,1fr)}}
+</style>
+<script>
+/* ========================================================================
+   GUIIN SAJU ENGINE 2.1 CONSOLIDATION · 2026-10-02
+   목적
+   1) 득령·득지·득세·투간을 별도 구조값으로 계산
+   2) 지장간 가중치를 오행 세력/강약 참고값에 반영
+   3) 월령 중심 격국 '후보'를 저장하되 확정 판정으로 사용하지 않음
+   4) 출생시간 미상 시 신뢰도를 낮추고 시주 의존 해석을 제한
+   5) 궁합 점수는 단일 계산 함수(V56) 결과만 사용
+   6) 결과 화면의 명백한 중복/깨진 조사를 후처리
+   ======================================================================== */
+(function(){
+ if(globalThis.__GUIIN_SAJU_ENGINE21__)return;
+ globalThis.__GUIIN_SAJU_ENGINE21__=true;
+ const ELS=['목','화','토','금','수'];
+ const STEM_EL={갑:'목',을:'목',병:'화',정:'화',무:'토',기:'토',경:'금',신:'금',임:'수',계:'수'};
+ const STEM_POL={갑:1,병:1,무:1,경:1,임:1,을:0,정:0,기:0,신:0,계:0};
+ const GEN={목:'화',화:'토',토:'금',금:'수',수:'목'};
+ const GEN_BY={화:'목',토:'화',금:'토',수:'금',목:'수'};
+ const CTRL={목:'토',토:'수',수:'화',화:'금',금:'목'};
+ const CTRL_BY={토:'목',수:'토',화:'수',금:'화',목:'금'};
+ const HIDDEN={
+   자:[['계',1]],축:[['기',.6],['계',.3],['신',.1]],인:[['갑',.6],['병',.3],['무',.1]],묘:[['을',1]],
+   진:[['무',.6],['을',.3],['계',.1]],사:[['병',.6],['무',.3],['경',.1]],오:[['정',.7],['기',.3]],미:[['기',.6],['정',.3],['을',.1]],
+   신:[['경',.6],['임',.3],['무',.1]],유:[['신',1]],술:[['무',.6],['신',.3],['정',.1]],해:[['임',.7],['갑',.3]]
+ };
+ const BRMAP={子:'자',丑:'축',寅:'인',卯:'묘',辰:'진',巳:'사',午:'오',未:'미',申:'신',酉:'유',戌:'술',亥:'해'};
+ const normBranch=v=>String(v||'').replace(/[子丑寅卯辰巳午未申酉戌亥]/g,m=>BRMAP[m]||m).trim();
+ const round=(n,d=0)=>{const m=10**d;return Math.round((Number(n)||0)*m)/m};
+ const clamp=(n,a,b)=>Math.max(a,Math.min(b,Number(n)||0));
+ const order=['year','month','day','hour'];
+ function dmStem(c){return String(c?.dayMaster?.stem||c?.pillars?.day?.stem||'').trim()}
+ function tenGod(dm,target){
+   const de=STEM_EL[dm],te=STEM_EL[target];if(!de||!te)return '';
+   const same=STEM_POL[dm]===STEM_POL[target];
+   if(de===te)return same?'비견':'겁재';
+   if(GEN[de]===te)return same?'식신':'상관';
+   if(CTRL[de]===te)return same?'편재':'정재';
+   if(CTRL_BY[de]===te)return same?'편관':'정관';
+   if(GEN_BY[de]===te)return same?'편인':'정인';
+   return '';
+ }
+ function usablePillars(c){return order.filter(k=>!(k==='hour'&&c?.input?.hourUnknown)&&c?.pillars?.[k])}
+ function energyVector(c){
+   const out={목:0,화:0,토:0,금:0,수:0};
+   const pillars=usablePillars(c);
+   const bw={year:1,month:1.65,day:1.3,hour:1};
+   for(const k of pillars){
+     const p=c.pillars[k]||{},st=String(p.stem||'').trim(),br=normBranch(p.branch);
+     if(STEM_EL[st])out[STEM_EL[st]]+=1;
+     for(const [hs,w] of (HIDDEN[br]||[]))if(STEM_EL[hs])out[STEM_EL[hs]]+=w*(bw[k]||1);
+   }
+   const total=ELS.reduce((s,e)=>s+out[e],0)||1;const pct={};for(const e of ELS)pct[e]=round(out[e]/total*100,1);
+   return {raw:out,pct,total};
+ }
+ function rooting(c){
+   const dm=dmStem(c),de=STEM_EL[dm],res=GEN_BY[de];let own=0,support=0;const hits=[];
+   const bw={year:1,month:1.55,day:1.3,hour:1};
+   for(const k of usablePillars(c)){
+     const br=normBranch(c?.pillars?.[k]?.branch);let localOwn=0,localSupport=0;
+     for(const [hs,w] of (HIDDEN[br]||[])){
+       const el=STEM_EL[hs];if(el===de)localOwn+=w;if(el===res)localSupport+=w*.72;
+     }
+     if(localOwn||localSupport){own+=(localOwn*(bw[k]||1));support+=(localSupport*(bw[k]||1));hits.push({pillar:k,branch:br,own:round(localOwn,2),support:round(localSupport,2)});}
+   }
+   const score=round(clamp((own*34)+(support*22),0,100),0);
+   return {score,own:round(own,2),support:round(support,2),hits};
+ }
+ function seasonPower(c){
+   const dm=dmStem(c),de=STEM_EL[dm],res=GEN_BY[de],out=GEN[de],wealth=CTRL[de],officer=CTRL_BY[de];
+   const br=normBranch(c?.pillars?.month?.branch),main=(HIDDEN[br]||[])[0]?.[0]||'',me=STEM_EL[main]||'';
+   let score=50,label='월령의 힘을 전체 구조와 함께 확인';
+   if(me===de){score=88;label='득령이 강하게 확인되는 편'}
+   else if(me===res){score=76;label='월령이 일간을 생조하는 편'}
+   else if(me===out){score=46;label='월령에서 기운이 밖으로 빠지는 편'}
+   else if(me===wealth){score=38;label='월령이 재성 쪽으로 쓰이는 편'}
+   else if(me===officer){score=30;label='월령의 제어를 강하게 받는 편'}
+   return {score,label,monthBranch:br,mainStem:main,mainGod:tenGod(dm,main),monthElement:me};
+ }
+ function visibleForce(c){
+   const dm=dmStem(c),de=STEM_EL[dm],res=GEN_BY[de],out=GEN[de],wealth=CTRL[de],officer=CTRL_BY[de];
+   let plus=0,minus=0;const rows=[];
+   for(const k of usablePillars(c)){
+     if(k==='day')continue;const st=String(c?.pillars?.[k]?.stem||'').trim(),el=STEM_EL[st];if(!el)continue;
+     let v=0;if(el===de)v=1;else if(el===res)v=.82;else if(el===out)v=-.42;else if(el===wealth)v=-.55;else if(el===officer)v=-.82;
+     if(v>=0)plus+=v;else minus+=-v;rows.push({pillar:k,stem:st,god:tenGod(dm,st),value:v});
+   }
+   const net=plus-minus,score=round(clamp(50+net*15,0,100),0);
+   return {score,plus:round(plus,2),minus:round(minus,2),rows};
+ }
+ function exposure(c){
+   const visible=new Set(usablePillars(c).map(k=>String(c?.pillars?.[k]?.stem||'').trim()).filter(Boolean));const rows=[];
+   for(const k of usablePillars(c)){
+     const br=normBranch(c?.pillars?.[k]?.branch);
+     for(const [hs,w] of (HIDDEN[br]||[]))if(visible.has(hs))rows.push({pillar:k,branch:br,stem:hs,weight:w,god:tenGod(dmStem(c),hs)});
+   }
+   const key=x=>`${x.pillar}|${x.stem}`;const seen=new Set();return rows.filter(x=>!seen.has(key(x))&&seen.add(key(x)));
+ }
+ function structure(c){
+   const season=seasonPower(c),root=rooting(c),force=visibleForce(c),vec=energyVector(c),exp=exposure(c);
+   const baseOld=(()=>{try{return globalThis.GuiinSajuEngine2?.analyze?globalThis.GuiinSajuEngine2.analyze(c):null}catch(_e){return null}})();
+   const oldStrength=Number(baseOld?.strength?.score||50);
+   const integrated=round(clamp(oldStrength*.42+season.score*.25+root.score*.20+force.score*.13,22,82),0);
+   const grade=integrated>=66?'강':integrated>=57?'중강':integrated<=38?'약':integrated<=46?'중약':'중간';
+   const label=integrated>=66?'자기 기운의 지지력이 강한 편':integrated>=57?'자기 기운이 비교적 받쳐주는 편':integrated<=38?'환경·계절의 영향을 크게 받는 편':integrated<=46?'자기 기운이 다소 약해지기 쉬운 편':'강약이 한쪽으로 크게 치우치지 않은 편';
+   const hourKnown=!c?.input?.hourUnknown;const exposedMain=!!season.mainStem&&exp.some(x=>x.stem===season.mainStem);
+   const confidence=!hourKnown?'참고':exposedMain?'중간 이상':'중간';
+   return {season,root,force,vector:vec,exposure:exp,strength:{score:integrated,grade,label},pattern:{candidate:season.mainGod?`${season.mainGod}격 후보`:'월령 구조 후보',basis:`${season.monthBranch}월 본기 ${season.mainStem||'-'} · ${season.mainGod||'-'}`,confidence},uncertainty:{birthTimeUnknown:!hourKnown,confidence:!hourKnown?'시간 미상으로 일부 구조는 참고':'시주 포함 계산'}};
+ }
+ function analyze21(c){
+   let base=null;try{base=globalThis.GuiinSajuEngine2?.analyze?globalThis.GuiinSajuEngine2.analyze(c):null}catch(_e){}
+   const st=structure(c);const out={...(base||{}),version:'2.1.0',structure:st};
+   if(out.strength)out.strength={...out.strength,...st.strength,roots:st.root.hits.length};else out.strength={...st.strength,roots:st.root.hits.length};
+   return out;
+ }
+ globalThis.GuiinSajuEngine21={version:'2.1.0',analyze:analyze21,structure,energyVector,rooting,seasonPower,visibleForce,exposure,tenGod};
+ // 계산 결과에 2.1 구조값을 다시 씌워 모든 해석층이 같은 값을 보게 함.
+ try{
+   const S=globalThis.GuiinSaju;
+   if(S&&typeof S.calculate==='function'&&!S.__GUIIN_ENGINE21_PATCHED__){
+     const old=S.calculate.bind(S);
+     S.calculate=function(input){const c=old(input);try{if(c)c.engine2=analyze21(c)}catch(_e){}return c};
+     S.ENGINE2_VERSION='2.1.0';S.__GUIIN_ENGINE21_PATCHED__=true;
+   }
+ }catch(_e){}
+ function E(v){return String(v??'').replace(/[&<>"']/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]))}
+ function enhanceBox(root,c){
+   if(!root||!c)return;let a=null;try{a=c.engine2?.version==='2.1.0'?c.engine2:analyze21(c);c.engine2=a}catch(_e){}if(!a?.structure)return;
+   const box=root.querySelector('.r30Engine2Box');if(!box||box.querySelector('.e21grid'))return;const st=a.structure;
+   const exp=st.exposure.length?st.exposure.slice(0,4).map(x=>`${x.branch} ${x.stem}${x.god?`(${x.god})`:''}`).join(' · '):'두드러지는 투간 적음';
+   box.insertAdjacentHTML('beforeend',`<div class="e21grid"><div class="e21item"><b>득령</b>${E(st.season.label)} · ${E(st.season.score)}</div><div class="e21item"><b>득지</b>뿌리 지지력 ${E(st.root.score)} · ${E(st.root.hits.length)}곳</div><div class="e21item"><b>득세</b>천간 보조 ${E(st.force.score)}</div><div class="e21item"><b>투간</b>${E(exp)}</div><div class="e21item"><b>월령 구조</b>${E(st.pattern.candidate)} · ${E(st.pattern.confidence)}</div><div class="e21item"><b>통합 강약</b>${E(st.strength.label)} · ${E(st.strength.score)}</div></div>`);
+ }
+ function refresh21(){try{let c=null;try{c=chart}catch(_e){};if(c){c.engine2=analyze21(c);enhanceBox(document.getElementById('resultView'),c)}}catch(_e){}}
+ const prevRender=window.renderResult;if(typeof prevRender==='function'){
+   const wrapped=function(){const v=prevRender.apply(this,arguments);try{refresh21()}catch(_e){}return v};window.renderResult=wrapped;try{renderResult=wrapped}catch(_e){}
+ }
+ document.addEventListener('click',()=>setTimeout(refresh21,0),{passive:true});setTimeout(refresh21,0);
+
+ // 궁합 점수는 V56 한 군데만 계산하고, 상세 판정도 같은 결과를 사용한다.
+ try{
+   if(typeof globalThis.guiinCompatMetricsV56==='function'){
+     const unified=function(a,b){
+       const m=globalThis.guiinCompatMetricsV56(a,b)||{},q=m.q||{},sig=q.sig||{};
+       return {score:m.score,love:m.love,personality:m.personality,money:m.money,future:m.future,basis:`오행 거리 ${m.distance??'-'} · 결속 ${sig.combine||0} · 긴장 ${sig.tension||0} · 일지 ${q.dayRel||'직접 관계 없음'}`,distance:m.distance,elementFit:m.elementFit,combine:Number(sig.combine||0),tension:Number(sig.tension||0),dayRel:q.dayRel||'직접 관계 없음',pa:m.pa,pb:m.pb,q};
+     };
+     globalThis.guiinCompatScoreV21=unified;try{guiinCompatScoreV21=unified}catch(_e){}
+   }
+ }catch(_e){}
+
+ // 명백한 출력 오류만 정리한다. 해석 의미나 계산값은 바꾸지 않는다.
+ function cleanText(root){
+   if(!root)return;
+   try{
+     const w=document.createTreeWalker(root,NodeFilter.SHOW_TEXT);let n;
+     while(n=w.nextNode()){
+       let t=n.nodeValue||'';
+       t=t.replace(/편이야인 사람/g,'편인 사람')
+          .replace(/육합로/g,'육합으로')
+          .replace(/천간합로/g,'천간합으로')
+          .replace(/([가-힣]+)살와/g,'$1살과')
+          .replace(/([가-힣]+)살가 만나면/g,'$1살이 만나면')
+          .replace(/마음을 바로 말하기보다 알아주길 기다리면 서운함을 혼자 오래 쌓을 수 있어\.\s*마음을 알아주길 기다리다가 서운함을 혼자 오래 쌓을 수 있어/g,'마음을 바로 말하기보다 알아주길 기다리면 서운함을 혼자 오래 쌓을 수 있어')
+          .replace(/전문성을 충분히 쌓은 뒤 교육·서비스·개인 브랜드처럼 지식을 결과물로 바꾸는 방식이 독립과 잘 연결될 수 있어\.\s*전문성을 충분히 쌓은 뒤 교육·서비스·개인 브랜드처럼 지식을 결과물로 바꾸는 방식이 독립과 잘 연결될 수 있어\./g,'전문성을 충분히 쌓은 뒤 교육·서비스·개인 브랜드처럼 지식을 결과물로 바꾸는 방식이 독립과 잘 연결될 수 있어.');
+       if(t!==n.nodeValue)n.nodeValue=t;
+     }
+     root.querySelectorAll('p').forEach(p=>{const prev=p.previousElementSibling;if(prev&&prev.tagName==='P'&&p.textContent.trim().length>40&&p.textContent.replace(/\s+/g,' ').trim()===prev.textContent.replace(/\s+/g,' ').trim())p.remove()});
+   }catch(_e){}
+ }
+ function cleanAll(){cleanText(document.getElementById('resultView'));cleanText(document.getElementById('matchView'))}
+ const obs=new MutationObserver(()=>{clearTimeout(obs._t);obs._t=setTimeout(cleanAll,0)});try{obs.observe(document.body,{childList:true,subtree:true})}catch(_e){};setTimeout(cleanAll,0);
+})();
+
+/* PDF 저장 안정화: 현재 SPA 전체가 아니라 결과 본문만 새 인쇄창으로 복제한다. */
+(function(){
+ function printClone(kind){
+   const isCompat=kind==='compat';const view=document.getElementById(isCompat?'matchView':'resultView');
+   const screen=document.getElementById(isCompat?'matchResult':'result');
+   if(!view||!screen||!screen.classList.contains('active')){if(typeof guiinMiniToast==='function')guiinMiniToast('먼저 결과 화면을 열어 주세요.');return;}
+   const win=window.open('','guiin_pdf_preview');
+   if(!win){try{window.print()}catch(_e){};return;}
+   const clone=view.cloneNode(true);clone.querySelectorAll('details').forEach(d=>d.open=true);clone.querySelectorAll('button,.resultActionBar,.tailQuestions,.bottom').forEach(x=>x.remove());
+   const assets=[...document.querySelectorAll('link[rel="stylesheet"],style')].map(x=>x.outerHTML).join('\n');
+   const title=isCompat?'귀인사주 궁합':'귀인사주 평생사주';
+   win.document.open();win.document.write(`<!doctype html><html lang="ko"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><base href="${location.origin}/"><title>${title}</title>${assets}<style>html,body{background:#fff!important}body{margin:0!important}.app{max-width:820px!important;width:100%!important;margin:0 auto!important;background:#fff!important;box-shadow:none!important}.screen{display:block!important;padding:12px!important}body *{visibility:visible!important}.topbar,.bottom,.demoBadge,.resultActionBar,.tailQuestions,.tabs,button{display:none!important}.card,.deepCard,.expertSection,.starDetail{box-shadow:none!important;break-inside:avoid}.guiinEvidenceFold>.easyEvidence{display:block!important}.guiinEvidenceFold>summary{display:none!important}@page{size:A4;margin:10mm}</style></head><body><main class="app"><section id="${isCompat?'matchResult':'result'}" class="screen active"><div id="${isCompat?'matchView':'resultView'}">${clone.innerHTML}</div></section></main><script>(async()=>{try{const imgs=[...document.images];await Promise.all(imgs.map(i=>i.complete?Promise.resolve():new Promise(r=>{i.onload=i.onerror=r})));}catch(e){}setTimeout(()=>{window.focus();window.print();},250);})();<\/script></body></html>`);win.document.close();
+ }
+ globalThis.guiinPrintResult=printClone;try{guiinPrintResult=printClone}catch(_e){}
+})();
+</script>
+
 </body>
 </html>
