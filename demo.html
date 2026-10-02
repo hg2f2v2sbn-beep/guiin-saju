@@ -5820,17 +5820,10 @@ function renderToday(){
  function r20EnhanceSaju(){
   const root=document.getElementById('resultView');if(!root)return;
   r20FoldEvidence(root);
-  if(typeof hasPremiumLifetime==='function'&&hasPremiumLifetime()&&currentTab==='summary'){
-   if(!root.querySelector('[data-r20-quick="saju"]')&&chart){
-    const html=r20SajuQuickHTML(chart);
-    if(html)root.insertAdjacentHTML('afterbegin',html);
-   }
-   const found=r20MarkSections(root);
-   if(found.length&&!root.querySelector('.r20JumpNav')){
-    const q=root.querySelector('[data-r20-quick="saju"]');
-    if(q)q.insertAdjacentHTML('afterend',r20JumpNavHTML(found));
-   }
-  }
+  /* SAJU FIRST-SCREEN CLEANUP 2026-10-02
+     The old 4-item quick map is intentionally not injected anymore.
+     The calculated Manse chart must remain the first result block. */
+  root.querySelectorAll('[data-r20-quick="saju"],.r20JumpNav').forEach(x=>x.remove());
   r20Audit(root,'saju');
  }
 
@@ -7397,7 +7390,10 @@ document.addEventListener('visibilitychange',()=>{
   if(!c)return;
   const html=r21SajuBoard(c);if(!html)return;
   const quick=root.querySelector('[data-r20-quick="saju"]');
-  if(quick)quick.insertAdjacentHTML('afterend',html);else root.insertAdjacentHTML('afterbegin',html);
+  const manse=root.querySelector('.manseSnapshot');
+  if(quick)quick.insertAdjacentHTML('afterend',html);
+  else if(manse)manse.insertAdjacentHTML('afterend',html);
+  else root.insertAdjacentHTML('afterbegin',html);
  }
  function enhanceCompat(){
   const root=document.getElementById('matchView');if(!root||root.querySelector('[data-r21="compat"]'))return;
@@ -8562,5 +8558,105 @@ try{Object.assign(window,{guiinPaymentCenterStart});}catch(_e){}
   #home.screen > .homeHero.card > .ctaGreen{bottom:14px!important;width:70%!important;padding:12px 14px!important}
 }
 </style>
+
+<style id="guiin-saju-first-order-r29">
+/* GUIIN R29 — SAJU FIRST ORDER 2026-10-02
+   Manse first -> original chart + shinsal integrated portrait -> remaining report. */
+#resultView > .r29SajuPortrait{margin-top:12px!important;margin-bottom:14px!important}
+#resultView > .r29SajuPortrait .r28PersonGrid{grid-template-columns:1fr!important}
+#resultView > .r29SajuPortrait .r28Person{padding:15px!important}
+#resultView > .r29SajuPortrait > h3{font-size:20px!important;letter-spacing:-.035em!important}
+#resultView > .r29SajuPortrait > .lead{font-size:12.5px!important;line-height:1.75!important}
+</style>
+<script>
+/* GUIIN R29 — SAJU MANSE-FIRST + INTEGRATED PERSON PORTRAIT
+   UI/readability only. Calculation engines, scores, IDs and navigation are untouched. */
+(function(){
+ if(globalThis.__GUIIN_R29_SAJU_FIRST_ORDER__)return;
+ globalThis.__GUIIN_R29_SAJU_FIRST_ORDER__=true;
+ const E=x=>typeof esc==='function'?esc(String(x??'')):String(x??'').replace(/[&<>\"]/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','\"':'&quot;'}[m]));
+ const uniq=a=>[...new Set((a||[]).filter(Boolean))];
+ const val=(x,f='')=>String(x??f??'').replace(/\s+/g,' ').trim();
+ const GROUPS={
+  charm:['도화살','홍염살','년살'],
+  depth:['화개살','귀문관살','고신살','과숙살','공망'],
+  move:['역마살','지살','반안살'],
+  force:['괴강살','백호살','장성살','양인살'],
+  mind:['문창귀인','문곡귀인','학당귀인','관귀학관','태극귀인'],
+  help:['천을귀인','천덕귀인','월덕귀인','금여살'],
+  tension:['원진살','육해살','해살','망신살','겁살','재살','천살','월살','천라지망']
+ };
+ const PRI=['천을귀인','도화살','홍염살','화개살','역마살','귀문관살','원진살','괴강살','백호살','문창귀인','문곡귀인','학당귀인','고신살','천덕귀인','월덕귀인','장성살','반안살','지살','공망','망신살','겁살','재살','천살','월살','금여살','태극귀인','관귀학관','년살','육해살','해살','천라지망'];
+ function starNames(c){
+  try{return uniq((c?.stars?.hits||[]).map(x=>typeof x==='string'?x:(x?.name||x?.star||'')).filter(Boolean));}catch(_e){return []}
+ }
+ function groups(c){
+  const set=new Set(starNames(c)),o={};
+  for(const [k,names] of Object.entries(GROUPS))o[k]=names.filter(x=>set.has(x));
+  return o;
+ }
+ function core(c){
+  const name=val(c?.input?.name,'사용자');
+  let x={},day={},rp={};
+  try{x=sajuInsightProfile(c)||{}}catch(_e){}
+  try{day=guiinDayPillarProfile(c)||{}}catch(_e){}
+  try{rp=guiinRelationshipTraitProfile(c)||{}}catch(_e){}
+  const stem=val(c?.dayMaster?.stem||c?.pillars?.day?.stem,'');
+  const season=(()=>{try{return sajuSeasonName(c)||''}catch(_e){return ''}})();
+  const mg=val(x?.mg||c?.pillars?.month?.god,'');
+  return {name,x,day,rp,stem,season,mg,g:groups(c),stars:starNames(c)};
+ }
+ function lines(p){
+  const g=p.g,rows=[];
+  if(g.charm.length)rows.push(`${g.charm.join('·')}이 있어서 사람에게 남는 인상과 호감 표현이 비교적 선명해질 수 있어. 다만 이건 바람기 판정이 아니라 사람의 시선과 관계 반응이 잘 드러나는 보조신호야.`);
+  if(g.depth.length)rows.push(`${g.depth.join('·')}이 겹쳐 겉에서 보이는 모습보다 혼자 생각을 정리하고 자기 세계로 들어가는 시간이 더 중요한 사람으로 읽혀.`);
+  if(g.move.length)rows.push(`${g.move.join('·')}이 있어서 한 자리에 묶여 있기보다 환경·역할·활동에 변화가 있을 때 에너지가 다시 살아나는 면이 있어.`);
+  if(g.force.length)rows.push(`${g.force.join('·')}이 보여서 압박 상황에서 결론을 내리고 버티는 힘이 강해질 수 있어. 대신 기운이 과해질 때는 말과 경계가 단단해질 수 있어.`);
+  if(g.mind.length)rows.push(`${g.mind.join('·')}은 생각을 깊게 파고 언어·학습·전문성으로 정리하는 힘을 보태는 신호라, 단순히 감으로만 움직이는 사람으로 보기는 어려워.`);
+  if(g.help.length)rows.push(`${g.help.join('·')}은 혼자 다 해결하기보다 중요한 순간 사람·정보·소개 같은 도움 연결을 활용할 여지가 있다는 보조신호야.`);
+  if(g.tension.length)rows.push(`${g.tension.join('·')} 같은 긴장 신호는 관계나 일정이 꼬일 때 생각이 복잡해지거나 예민도가 올라가는 지점을 보여줘. 사건을 예언하는 별이 아니라 피곤할 때의 반응을 설명하는 쪽으로 봐.`);
+  return rows.slice(0,4);
+ }
+ function synthesis(p){
+  const g=p.g,top=val(p.x?.top,''),mg=val(p.mg,''),attach=val(p.rp?.attachmentLabel,'관계형');
+  if(g.charm.length&&g.depth.length)return `그래서 ${p.name}님은 <b>사람 눈에는 존재감이나 매력이 보이는데, 실제 가까운 관계에서는 혼자 생각하고 정리할 공간도 꼭 필요한 사람</b>에 가까워. 겉으로 관계성이 커 보여도 속까지 늘 열려 있는 타입은 아니야.`;
+  if(g.move.length&&['토','금'].includes(top))return `그래서 ${p.name}님은 <b>겉으로는 안정과 현실을 붙잡는데, 안에서는 변화가 완전히 사라지면 답답해지는 사람</b>으로 읽혀. 정착 자체가 싫은 게 아니라 안정 안에도 새 역할이나 움직임이 있어야 활력이 오래 가.`;
+  if(g.force.length&&['정','계','신','을'].includes(p.stem))return `그래서 ${p.name}님은 <b>섬세하게 상황을 읽는 면과 기준을 넘었을 때 단호해지는 면이 같이 있는 사람</b>이야. 평소의 부드러움만 보고 한계선도 약할 거라고 보면 오해하기 쉬워.`;
+  if(g.mind.length&&g.depth.length)return `그래서 ${p.name}님은 <b>혼자 생각을 깊게 파고 자기 답을 만든 뒤 움직이는 사람</b>에 가까워. 설명 없이 잠잠해질 때가 있어도 속에서는 생각이 멈춘 게 아니라 오히려 더 많이 정리되고 있을 수 있어.`;
+  if(g.charm.length&&g.move.length)return `그래서 ${p.name}님은 <b>사람·경험·새로운 환경에서 반응이 살아나는 사람</b>으로 읽혀. 관계가 안정돼도 완전히 고정된 패턴만 반복되면 생기가 떨어질 수 있어서 자유와 약속을 함께 잡는 게 중요해.`;
+  if(g.tension.length)return `그래서 ${p.name}님은 기본적으로 ${top?`${top} 기운을 많이 쓰면서 `:''}${mg?`${mg} 방식으로 사회에 반응하고, `:''}<b>관계가 편할 때와 압박받을 때의 모습 차이가 꽤 날 수 있는 ${attach}</b>으로 보는 게 자연스러워.`;
+  return `그래서 ${p.name}님은 ${top?`<b>${top} 기운</b>을 중심으로 `:''}${mg?`<b>${mg}</b>의 사회 반응을 쓰면서, `:''}신살은 그 성향을 보조하는 쪽으로 읽는 게 좋아. 별 이름 하나보다 일간·월령·오행·십성과 함께 봤을 때 이 사람의 실제 결이 더 정확해져.`;
+ }
+ function section(c){
+  const p=core(c),rows=lines(p),chips=PRI.filter(x=>p.stars.includes(x)).slice(0,8);
+  const top=val(p.x?.top,'-');
+  const base=[p.stem?`${p.stem} 일간`:'',p.season?`${p.season} 기운`:'',top?`중심오행 ${top}`:'',p.mg?`월주 ${p.mg}`:''].filter(Boolean).join(' · ');
+  const intro=val(p.day?.day?.headline||p.day?.br?.outer,`${p.name}님은 자기 기준과 관계 리듬이 분명한 편이야.`);
+  const relation=val(p.rp?.attachmentText,'가까운 관계에서는 신뢰와 거리의 균형이 중요하게 작용할 수 있어.');
+  return `<section class="r28People r29SajuPortrait" data-r29-saju-portrait="1"><div class="mini">원국 + 신살 통합 인물 해석</div><h3>${E(p.name)}님이 “이래서 이런 사람”으로 읽히는 이유</h3><p class="lead">신살을 따로 나열하지 않고 일간·월령·오행·십성과 겹쳐 성격·관계 반응·지칠 때 모습까지 한 사람의 이야기로 연결했어. 신살은 보조 근거이며 행동을 확정하는 판정표는 아니야.</p><div class="r28PersonGrid"><div class="r28Person"><div class="who">${E(base)}</div><h4>${E(p.name)}님은 왜 이런 사람으로 읽히나</h4><p><b>원국부터 보면</b> ${E(intro)} ${E(relation)}</p>${chips.length?`<div class="r28StarChips">${chips.map(x=>`<span>${E(x)}</span>`).join('')}</div>`:''}${rows.map(x=>`<p>${E(x)}</p>`).join('')}<div class="r28Because">${synthesis(p)}</div><details class="r28Evidence"><summary>이 해석에 사용한 신살 근거 보기</summary><div>${E(p.stars.length?p.stars.join(' · '):'현재 계산된 신살은 적지만, 원국·오행·십성 중심으로 해석합니다.')}</div></details></div></div></section>`;
+ }
+ function apply(){
+  const root=document.getElementById('resultView');if(!root)return;
+  root.querySelectorAll('[data-r20-quick="saju"],.r20JumpNav').forEach(x=>x.remove());
+  root.querySelectorAll('[data-r29-saju-portrait="1"]').forEach(x=>x.remove());
+  let c=null;try{c=chart}catch(_e){}
+  if(!c||typeof currentTab!=='undefined'&&currentTab!=='summary')return;
+  const manse=root.querySelector('.manseSnapshot');if(!manse)return;
+  manse.insertAdjacentHTML('afterend',section(c));
+  const portrait=root.querySelector('[data-r29-saju-portrait="1"]');
+  const action=root.querySelector('[data-r21="saju"]');
+  if(portrait&&action)portrait.insertAdjacentElement('afterend',action);
+ }
+ const prev=window.renderResult;
+ if(typeof prev==='function'){
+  const wrapped=function(){const out=prev.apply(this,arguments);try{apply()}catch(_e){}return out;};
+  window.renderResult=wrapped;
+  try{renderResult=wrapped}catch(_e){}
+ }
+ document.addEventListener('click',function(){setTimeout(function(){try{apply()}catch(_e){}},0);},{passive:true});
+ setTimeout(function(){try{apply()}catch(_e){}},0);
+})();
+</script>
+
 </body>
 </html>
