@@ -8848,5 +8848,76 @@ try{Object.assign(window,{guiinPaymentCenterStart});}catch(_e){}
 })();
 </script>
 
+
+<!-- GUIIN MANSE YIN-YANG DISTRIBUTION · 2026-10-02 -->
+<style id="GUIIN_MANSE_YINYANG_STYLE">
+.manseYinYang{margin-top:10px;padding:12px;border:1px solid #eee5d8;border-radius:15px;background:#fffdf8}
+.manseYinYangHead{display:flex;align-items:flex-end;justify-content:space-between;gap:10px;margin-bottom:9px}
+.manseYinYangHead b{font-size:13px;color:#2f382f}
+.manseYinYangHead span{font-size:10px;color:#8a8479}
+.manseYinYangGrid{display:grid;grid-template-columns:1fr 1fr;gap:7px}
+.manseYinYangCell{padding:10px 11px;border-radius:12px;border:1px solid rgba(80,73,61,.08);background:#fff}
+.manseYinYangCell.yang{background:#fff5e5}
+.manseYinYangCell.yin{background:#f2f4fb}
+.manseYinYangCell .top{display:flex;align-items:center;justify-content:space-between;gap:8px}
+.manseYinYangCell b{font-size:13px}
+.manseYinYangCell strong{font-size:18px;color:#23352c}
+.manseYinYangBar{height:7px;border-radius:999px;background:rgba(0,0,0,.06);overflow:hidden;margin-top:7px}
+.manseYinYangBar i{display:block;height:100%;border-radius:inherit;background:currentColor;opacity:.52}
+.manseYinYangCell.yang{color:#a96618}.manseYinYangCell.yin{color:#58627d}
+.manseYinYangNote{margin:9px 1px 0;font-size:10px;line-height:1.55;color:#817b71;word-break:keep-all}
+@media print{.manseYinYang{break-inside:avoid}}
+</style>
+<script id="GUIIN_MANSE_YINYANG_SCRIPT">
+(function(){
+ if(globalThis.__GUIIN_MANSE_YINYANG__)return;
+ globalThis.__GUIIN_MANSE_YINYANG__=true;
+ const STEM_YANG=new Set(['갑','병','무','경','임','甲','丙','戊','庚','壬']);
+ const STEM_YIN=new Set(['을','정','기','신','계','乙','丁','己','辛','癸']);
+ const BRANCH_YANG=new Set(['자','인','진','오','신','술','子','寅','辰','午','申','戌']);
+ const BRANCH_YIN=new Set(['축','묘','사','미','유','해','丑','卯','巳','未','酉','亥']);
+ function polarity(v,idx,kind){
+  if(Number.isFinite(Number(idx)))return Number(idx)%2===0?'yang':'yin';
+  v=String(v||'').trim();
+  if(kind==='stem')return STEM_YANG.has(v)?'yang':STEM_YIN.has(v)?'yin':null;
+  return BRANCH_YANG.has(v)?'yang':BRANCH_YIN.has(v)?'yin':null;
+ }
+ function stats(c){
+  const ps=c?.pillars||{}, keys=['year','month','day'];
+  if(!c?.input?.hourUnknown&&ps.hour)keys.push('hour');
+  let yang=0,yin=0;
+  for(const k of keys){
+   const p=ps[k];if(!p)continue;
+   const a=polarity(p.stem,p.stemIndex,'stem');
+   const b=polarity(p.branch,p.branchIndex,'branch');
+   if(a==='yang')yang++;else if(a==='yin')yin++;
+   if(b==='yang')yang++;else if(b==='yin')yin++;
+  }
+  const total=yang+yin;if(!total)return null;
+  const yp=Math.round((yang/total)*1000)/10;
+  const ip=Math.round((100-yp)*10)/10;
+  return {yang,yin,total,yp,ip,label:total===8?'팔자 8글자 기준':'출생시간 제외 6글자 기준'};
+ }
+ function fmt(n){return Number.isInteger(n)?String(n):Number(n).toFixed(1)}
+ function html(x){return `<section class="manseYinYang" data-guiin-yinyang="1"><div class="manseYinYangHead"><b>음양 분포</b><span>${x.label}</span></div><div class="manseYinYangGrid"><div class="manseYinYangCell yang"><div class="top"><b>양기</b><strong>${fmt(x.yp)}%</strong></div><div class="manseYinYangBar"><i style="width:${x.yp}%"></i></div></div><div class="manseYinYangCell yin"><div class="top"><b>음기</b><strong>${fmt(x.ip)}%</strong></div><div class="manseYinYangBar"><i style="width:${x.ip}%"></i></div></div></div><p class="manseYinYangNote">양·음의 비율은 좋고 나쁨의 점수가 아니라, 밖으로 움직이는 힘과 안으로 모으는 힘의 배치를 보는 참고값이야. 실제 해석은 월령·오행·십성·통근과 함께 봐.</p></section>`}
+ function apply(){
+  const root=document.getElementById('resultView');if(!root)return;
+  let c=null;try{c=chart}catch(_e){};if(!c)return;
+  const manse=root.querySelector('.manseSnapshot');if(!manse)return;
+  manse.querySelectorAll('[data-guiin-yinyang="1"]').forEach(x=>x.remove());
+  const el=manse.querySelector('.manseElements');if(!el)return;
+  const x=stats(c);if(!x)return;
+  el.insertAdjacentHTML('afterend',html(x));
+ }
+ const prev=window.renderResult;
+ if(typeof prev==='function'){
+  const wrapped=function(){const out=prev.apply(this,arguments);try{apply()}catch(_e){}return out};
+  window.renderResult=wrapped;try{renderResult=wrapped}catch(_e){}
+ }
+ document.addEventListener('click',()=>setTimeout(()=>{try{apply()}catch(_e){}},0),{passive:true});
+ setTimeout(()=>{try{apply()}catch(_e){}},0);
+})();
+</script>
+
 </body>
 </html>
