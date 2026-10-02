@@ -8658,5 +8658,195 @@ try{Object.assign(window,{guiinPaymentCenterStart});}catch(_e){}
 })();
 </script>
 
+
+
+<style id="guiin-engine2-style">
+.r30Engine2Box{margin:12px 0 10px;padding:13px 14px;border-radius:15px;background:linear-gradient(180deg,#f8f5ec 0%,#fff 100%);border:1px solid rgba(111,92,54,.12)}
+.r30Engine2Box .eyebrow{font-size:10px;font-weight:850;letter-spacing:.03em;color:#8b713d;margin-bottom:5px}
+.r30Engine2Box b{color:#31463b}.r30Engine2Box p{margin:5px 0 0!important;line-height:1.72!important;font-size:13px!important}
+.r30Engine2Box details{margin-top:8px}.r30Engine2Box summary{cursor:pointer;font-size:11px;font-weight:800;color:#81796c}
+.r30Engine2Box .e2meta{margin-top:6px;font-size:11px;line-height:1.55;color:#81796c}
+</style>
+<script>
+/* ========================================================================
+   GUIIN SAJU ENGINE 2.0 · STRUCTURAL ANALYSIS LAYER · 2026-10-02
+   - 기존 사주팔자/대운 계산값은 그대로 사용
+   - 월령 계절보정, 일간 지지력, 한난·조습, 생조극 균형, 운의 교차를
+     하나의 구조 데이터로 합쳐 해석층이 같은 근거를 공유하게 함
+   - 용신을 단정하지 않고 '조후·억부 보완 후보'와 신뢰도를 분리해 저장
+   ======================================================================== */
+(function(){
+ if(globalThis.__GUIIN_SAJU_ENGINE2__)return;
+ globalThis.__GUIIN_SAJU_ENGINE2__=true;
+ const ELEMENTS=['목','화','토','금','수'];
+ const GEN={목:'화',화:'토',토:'금',금:'수',수:'목'};
+ const GEN_BY={화:'목',토:'화',금:'토',수:'금',목:'수'};
+ const CTRL={목:'토',토:'수',수:'화',화:'금',금:'목'};
+ const CTRL_BY={토:'목',수:'토',화:'수',금:'화',목:'금'};
+ const STEM_EL={갑:'목',을:'목',병:'화',정:'화',무:'토',기:'토',경:'금',신:'금',임:'수',계:'수'};
+ const BR_EL={자:'수',축:'토',인:'목',묘:'목',진:'토',사:'화',오:'화',미:'토',신:'금',유:'금',술:'토',해:'수'};
+ const SEASON_FACTOR={
+  spring:{목:1.34,화:1.10,토:.94,금:.76,수:.98},
+  summer:{목:1.02,화:1.36,토:1.10,금:.82,수:.72},
+  autumn:{목:.78,화:.84,토:1.02,금:1.36,수:1.08},
+  winter:{목:1.04,화:.70,토:.88,금:1.05,수:1.38},
+  transition:{목:.96,화:.98,토:1.28,금:.98,수:.96}
+ };
+ const BR_TEMP={자:-2.4,축:-2.0,인:-1.0,묘:-.35,진:.15,사:1.35,오:2.35,미:1.75,신:.85,유:.10,술:-.35,해:-1.65};
+ const BR_MOIST={자:1.9,축:1.25,인:.55,묘:.45,진:1.15,사:-.85,오:-1.55,미:-.55,신:-.35,유:-.60,술:-1.15,해:1.65};
+ const clamp=(n,a,b)=>Math.max(a,Math.min(b,Number(n)||0));
+ const round=(n,d=0)=>{const m=10**d;return Math.round((Number(n)||0)*m)/m};
+ const uniq=a=>[...new Set((a||[]).filter(Boolean))];
+ function branch(v){return String(v||'').replace(/[子丑寅卯辰巳午未申酉戌亥]/g,m=>({子:'자',丑:'축',寅:'인',卯:'묘',辰:'진',巳:'사',午:'오',未:'미',申:'신',酉:'유',戌:'술',亥:'해'}[m]||m)).trim()}
+ function rawPct(c){
+  try{if(globalThis.GuiinExpert&&typeof GuiinExpert.pct==='function')return {...GuiinExpert.pct(c)}}catch(_e){}
+  try{if(typeof pctElements==='function')return {...pctElements(c)}}catch(_e){}
+  return {목:20,화:20,토:20,금:20,수:20};
+ }
+ function seasonKey(br){
+  if(['인','묘'].includes(br))return 'spring';
+  if(['사','오'].includes(br))return 'summer';
+  if(['신','유'].includes(br))return 'autumn';
+  if(['해','자'].includes(br))return 'winter';
+  return 'transition';
+ }
+ function seasonalElements(c){
+  const br=branch(c?.pillars?.month?.branch),key=seasonKey(br),raw=rawPct(c),f=SEASON_FACTOR[key]||SEASON_FACTOR.transition;
+  const w={};let total=0;
+  for(const e of ELEMENTS){w[e]=Math.max(0,Number(raw[e]||0))*Number(f[e]||1);total+=w[e]}
+  const pct={};for(const e of ELEMENTS)pct[e]=total?round(w[e]/total*100,1):20;
+  const sorted=ELEMENTS.map(e=>[e,pct[e]]).sort((a,b)=>b[1]-a[1]);
+  return {raw,pct,monthBranch:br,season:key,top:sorted[0],low:sorted[sorted.length-1]};
+ }
+ function climate(c,seasonal){
+  const s=seasonal||seasonalElements(c),br=s.monthBranch,p=s.raw;
+  const temp=round((BR_TEMP[br]||0)+(Number(p.화||0)-Number(p.수||0))/28,2);
+  const moist=round((BR_MOIST[br]||0)+(Number(p.수||0)+Number(p.목||0)-Number(p.화||0)-Number(p.금||0))/52,2);
+  const tempLabel=temp<=-1.35?'한기가 강한 편':temp>=1.35?'열기가 강한 편':temp<=-.55?'다소 차가운 편':temp>=.55?'다소 따뜻한 편':'한난이 크게 치우치지 않은 편';
+  const moistLabel=moist>=1.0?'습윤한 편':moist<=-1.0?'건조한 편':moist>=.4?'조금 습한 편':moist<=-.4?'조금 건조한 편':'조습이 크게 치우치지 않은 편';
+  return {temp,moist,tempLabel,moistLabel,label:`${tempLabel} · ${moistLabel}`};
+ }
+ function rootCount(c){
+  try{return Array.isArray(c?.extras?.roots)?c.extras.roots.length:0}catch(_e){return 0}
+ }
+ function strength(c,seasonal){
+  const s=seasonal||seasonalElements(c),raw=s.raw;
+  const dm=c?.pillars?.day?.stemEl||c?.dayMaster?.el||STEM_EL[c?.dayMaster?.stem||c?.pillars?.day?.stem]||'';
+  if(!dm||!ELEMENTS.includes(dm))return {score:50,label:'강약을 전체 구조와 함께 보는 편',grade:'중간',dm:'',roots:rootCount(c),support:0,pressure:0};
+  const resource=GEN_BY[dm],output=GEN[dm],wealth=CTRL[dm],officer=CTRL_BY[dm];
+  const support=Number(raw[dm]||0)*.72+Number(raw[resource]||0)*.56;
+  const pressure=Number(raw[output]||0)*.24+Number(raw[wealth]||0)*.28+Number(raw[officer]||0)*.46;
+  const monthEl=BR_EL[s.monthBranch]||'';
+  let monthAdj=0;
+  if(monthEl===dm)monthAdj=8; else if(monthEl===resource)monthAdj=6; else if(monthEl===officer)monthAdj=-7; else if(monthEl===wealth)monthAdj=-4; else if(monthEl===output)monthAdj=-2;
+  const roots=rootCount(c),rootAdj=Math.min(10,roots*3.2);
+  const score=round(clamp(50+(support-pressure)*.42+monthAdj+rootAdj,22,82),0);
+  const grade=score>=66?'강':score>=57?'중강':score<=38?'약':score<=46?'중약':'중간';
+  const label=score>=66?'자기 기운의 지지력이 강한 편':score>=57?'자기 기운이 비교적 받쳐주는 편':score<=38?'환경·계절의 영향을 크게 받는 편':score<=46?'자기 기운이 다소 약해지기 쉬운 편':'강약이 한쪽으로 크게 치우치지 않은 편';
+  return {score,grade,label,dm,resource,output,wealth,officer,roots,support:round(support,1),pressure:round(pressure,1),monthEl,monthAdj,rootAdj:round(rootAdj,1)};
+ }
+ function relationAxis(c){
+  const rows=Array.isArray(c?.relations)?c.relations:[];let harmony=0,tension=0;const labels=[];
+  for(const r of rows){const t=String(r?.type||'');if(!t)continue;labels.push(`${r?.aLabel||''}${r?.aLabel&&r?.bLabel?'–':''}${r?.bLabel||''} ${t}`.trim());
+   if(/합/.test(t))harmony+=/삼합|방합/.test(t)?1.7:1.0;
+   if(/충/.test(t))tension+=1.6;else if(/형/.test(t))tension+=1.35;else if(/해|파|원진/.test(t))tension+=1.05;
+  }
+  return {harmony:round(harmony,1),tension:round(tension,1),labels:uniq(labels)};
+ }
+ function balanceCandidates(c,st,cl,s){
+  const out=[];
+  const push=(el,reason,weight)=>{if(!el)return;const prev=out.find(x=>x.element===el);if(prev){prev.weight+=weight;prev.reasons.push(reason)}else out.push({element:el,weight,reasons:[reason]})};
+  if(cl.temp<=-1.0)push('화','차가운 구조의 온도를 보완',3.0);
+  if(cl.temp>=1.0)push('수','열기를 식히고 속도를 조절',3.0);
+  if(cl.moist<=-.9)push('수','건조함에 여백과 유연성을 보완',2.0);
+  if(cl.moist>=.9)push('화','습한 흐름을 덥히고 움직임을 보완',1.7);
+  if(st.score<=45){push(st.resource,'일간을 생조하는 인성 계열 보완',2.6);push(st.dm,'일간 자체 지지력 보완',1.7)}
+  if(st.score>=64){push(st.output,'강한 기운을 결과로 배출',2.1);push(st.wealth,'강한 기운을 현실 성과로 사용',1.6);push(st.officer,'강한 기운에 기준과 구조를 부여',1.4)}
+  if(s?.low?.[0])push(s.low[0],'계절보정 분포에서 상대적으로 적은 기능 보완',.8);
+  out.sort((a,b)=>b.weight-a.weight);
+  const top=out.slice(0,3).map(x=>({...x,weight:round(x.weight,1)}));
+  const confidence=top.length>1&&top[0].weight-top[1].weight>=1.5?'중간 이상':'참고';
+  return {top,confidence,note:'용신을 단정하는 값이 아니라 조후·억부 관점에서 우선 확인할 보완 후보입니다.'};
+ }
+ function transitRelations(c,pillar){
+  try{
+   if(!pillar||!globalThis.GuiinSaju||typeof GuiinSaju.relationsWithTransit!=='function')return [];
+   return (GuiinSaju.relationsWithTransit(c?.pillars,pillar)||[]).map(x=>x?.type).filter(Boolean);
+  }catch(_e){return []}
+ }
+ function transit(c,date){
+  const d=date instanceof Date?date:new Date(date||Date.now());let flow=null;
+  try{flow=GuiinSaju.flowForDate(d.getFullYear(),d.getMonth()+1,d.getDate(),c?.pillars?.day?.stemIndex,12,0,{dayBoundary:c?.input?.dayBoundary||'23'})}catch(_e){}
+  let luck=null;try{luck=typeof currentLuck==='function'?currentLuck(c):null}catch(_e){}
+  const yearP=flow?.pillars?.year||null,monthP=flow?.pillars?.month||null;
+  return {luck,year:{god:flow?.gods?.year||'',pillar:yearP,relations:uniq(transitRelations(c,yearP))},month:{god:flow?.gods?.month||'',pillar:monthP,relations:uniq(transitRelations(c,monthP))}};
+ }
+ function analyze(c){
+  if(!c||!c.pillars?.day)return null;
+  const seasonal=seasonalElements(c),cl=climate(c,seasonal),st=strength(c,seasonal),rel=relationAxis(c),bal=balanceCandidates(c,st,cl,seasonal),tr=transit(c);
+  return {version:'2.0.0-r1',seasonal,climate:cl,strength:st,relations:rel,balance:bal,transit:tr,generatedAt:new Date().toISOString()};
+ }
+ globalThis.GuiinSajuEngine2={version:'2.0.0-r1',analyze,seasonalElements,climate,strength,relationAxis,balanceCandidates,transit};
+
+ // 계산 직후 구조분석 스냅샷을 같은 chart에 저장해 모든 해석층이 공유하도록 함.
+ try{
+  const S=globalThis.GuiinSaju;
+  if(S&&typeof S.calculate==='function'&&!S.__GUIIN_ENGINE2_PATCHED__){
+   const orig=S.calculate.bind(S);
+   S.calculate=function(input){const c=orig(input);try{if(c)c.engine2=analyze(c)}catch(_e){}return c};
+   S.ENGINE2_VERSION='2.0.0-r1';S.__GUIIN_ENGINE2_PATCHED__=true;
+  }
+ }catch(_e){}
+
+ // 기존 해석 프로필에도 engine2를 붙여 문장 엔진이 같은 구조값을 참조할 수 있게 함.
+ try{
+  if(typeof sajuInsightProfile==='function'&&!globalThis.__GUIIN_INSIGHT_E2_PATCHED__){
+   const old=sajuInsightProfile;
+   const patched=function(c){const o=old(c)||{};try{o.engine2=c?.engine2||analyze(c)}catch(_e){}return o};
+   globalThis.sajuInsightProfile=patched;try{sajuInsightProfile=patched}catch(_e){}
+   globalThis.__GUIIN_INSIGHT_E2_PATCHED__=true;
+  }
+ }catch(_e){}
+
+ // 기존 '신강·신약 참고값'을 월령·통근·생조극을 함께 본 통합값으로 교체.
+ try{
+  if(typeof guiinStrengthAxisV53==='function'&&!globalThis.__GUIIN_STRENGTH_E2_PATCHED__){
+   const base=guiinStrengthAxisV53;
+   const patched=function(c,p){
+    try{const a=c?.engine2||analyze(c),s=a?.strength;if(s){
+      const tone=s.score>=66?'밀고 갈 힘이 충분하지만 과부하 때 혼자 버티는 시간이 길어질 수 있어.':s.score<=38?'환경과 계절의 영향을 세밀하게 받는 대신, 맞는 환경에서는 흡수력과 적응력이 빠르게 살아날 수 있어.':s.score<=46?'무리해서 밀기보다 자원·회복·도움을 확보할수록 장점이 안정적으로 살아나.':'밀고 갈 때와 맞출 때를 바꿀 수 있는 범위라 역할과 환경의 적합도가 중요해.';
+      return {label:s.label,tone,score:s.score,roots:s.roots,engine:'2.0'};
+    }}catch(_e){}
+    return base(c,p);
+   };
+   globalThis.guiinStrengthAxisV53=patched;try{guiinStrengthAxisV53=patched}catch(_e){}
+   globalThis.__GUIIN_STRENGTH_E2_PATCHED__=true;
+  }
+ }catch(_e){}
+
+ function esc2(v){return String(v??'').replace(/[&<>"']/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]))}
+ function pillarKo(p){return p?.ko||`${p?.stem||''}${p?.branch||''}`||'-'}
+ function decorate(root,c){
+  if(!root||!c)return;let a=null;try{a=c.engine2||analyze(c);c.engine2=a}catch(_e){}if(!a)return;
+  const person=root.querySelector('[data-r29-saju-portrait="1"] .r28Person');if(!person||person.querySelector('.r30Engine2Box'))return;
+  const cand=(a.balance?.top||[]).map(x=>x.element).slice(0,3).join(' · ')||'원국 전체 확인';
+  const yRel=(a.transit?.year?.relations||[]).join('·')||'강한 교차 신호 없음';
+  const mRel=(a.transit?.month?.relations||[]).join('·')||'강한 교차 신호 없음';
+  const html=`<div class="r30Engine2Box"><div class="eyebrow">원국 구조를 한 단계 더 깊게 보면</div><p><b>${esc2(a.strength.label)}</b>으로 계산되고, 계절의 한난·조습은 <b>${esc2(a.climate.label)}</b>으로 읽혀. 단순 오행 퍼센트 하나가 아니라 월령·통근·생조극·원국 관계를 함께 본 구조값이야.</p><p>조후·억부 관점에서 먼저 확인할 보완 후보는 <b>${esc2(cand)}</b> 순서야. 이 값은 용신을 확정하는 판정이 아니라, 상세 해석에서 어떤 기능을 먼저 확인할지 정하는 우선순위로 사용해.</p><details><summary>계산 근거 자세히 보기</summary><div class="e2meta">강약 참고 ${esc2(a.strength.score)} · 통근 ${esc2(a.strength.roots)} · 계절보정 중심 ${esc2(a.seasonal.top?.[0]||'-')} ${esc2(a.seasonal.top?.[1]||'-')}% · 원국 결속 ${esc2(a.relations.harmony)} / 긴장 ${esc2(a.relations.tension)} · 올해 교차 ${esc2(yRel)} · 이번 달 교차 ${esc2(mRel)}</div></details></div>`;
+  const first=person.querySelector('p');if(first)first.insertAdjacentHTML('afterend',html);else person.insertAdjacentHTML('afterbegin',html);
+ }
+ function refresh(){
+  try{const root=document.getElementById('resultView');let c=null;try{c=chart}catch(_e){}if(c&&!c.engine2)c.engine2=analyze(c);decorate(root,c)}catch(_e){}
+ }
+ const prev=window.renderResult;
+ if(typeof prev==='function'){
+  const wrapped=function(){const out=prev.apply(this,arguments);try{refresh()}catch(_e){}return out};
+  window.renderResult=wrapped;try{renderResult=wrapped}catch(_e){}
+ }
+ document.addEventListener('click',()=>setTimeout(refresh,0),{passive:true});
+ setTimeout(refresh,0);
+})();
+</script>
+
 </body>
 </html>
