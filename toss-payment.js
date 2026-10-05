@@ -1,4 +1,4 @@
-/* GUIIN SAJU · Toss Payments V2 · test/live split
+/* GUIIN SAJU · Toss Payments V2.7 · test/live split + recovery/idempotency
  * Test mode uses /api/toss/test/order + /api/toss/test/confirm and NEVER grants entitlements.
  * Live mode uses /api/orders + /api/toss/confirm and is gated by the Worker launch gate.
  * The Toss secret key is never used in this browser file.
@@ -27,6 +27,29 @@
     productCatalogReady:false,
     error:false
   };
+
+  let paymentBusy=false;
+  let activePaymentWindow=null;
+  function sleep(ms){return new Promise(resolve=>setTimeout(resolve,ms));}
+  function setBusy(v){
+    paymentBusy=!!v;
+    try{setPaymentReadinessUI();}catch(_e){}
+  }
+  function timed(promise,ms=10000,label="request_timeout"){
+    let timer;
+    return Promise.race([
+      Promise.resolve(promise),
+      new Promise((_,reject)=>{timer=setTimeout(()=>reject(new Error(label)),ms);})
+    ]).finally(()=>clearTimeout(timer));
+  }
+  function confirmIdempotency(orderId,mode){
+    const key="guiin_toss_confirm_idem_"+String(mode)+"_"+String(orderId);
+    try{
+      let v=sessionStorage.getItem(key)||"";
+      if(!v){v=randomId(mode==="test"?"toss_test_confirm_":"toss_confirm_");sessionStorage.setItem(key,v);}
+      return v;
+    }catch(_e){return randomId(mode==="test"?"toss_test_confirm_":"toss_confirm_");}
+  }
 
   function el(id){return document.getElementById(id);}
   function apiBase(){
@@ -93,7 +116,10 @@
       if(!b||!r)continue;
       const consentOk=!!el(consentId(buttonId))?.checked;
       r.className="payReadiness "+(state.error?"error":ready?(testReady?"sandbox":"ready"):"wait");
-      if(state.error){
+      if(paymentBusy){
+        r.textContent="결제 절차가 진행 중이에요. 결제창을 닫거나 완료할 때까지 잠시 기다려 주세요.";
+        b.disabled=true;
+      }else if(state.error){
         r.textContent="결제 서버 상태를 확인하지 못했어요. 현재 구매는 진행하지 않습니다.";
         b.disabled=true;
       }else if(testReady){
@@ -123,7 +149,11 @@
   }
   async function refreshPaymentReadiness(){
     try{
-      const res=await fetch(apiBase()+"/health",{cache:"no-store",headers:{"Accept":"application/json"}});
+      const controller=new AbortController();
+      const timer=setTimeout(()=>controller.abort(),6500);
+      let res;
+      try{res=await fetch(apiBase()+"/health",{cache:"no-store",headers:{"Accept":"application/json"},signal:controller.signal});}
+      finally{clearTimeout(timer);}
       const data=await res.json().catch(()=>({}));
       if(!res.ok)throw new Error("health_failed");
       state={
@@ -225,47 +255,45 @@
   }
   async function start(productCode,messageId,buttonId){
     const btn=el(buttonId);
+    if(paymentBusy){message(messageId,"이미 결제 절차가 진행 중이에요. 열린 결제창을 먼저 확인해 주세요.");return;}
+    let keepBusy=false;
     try{
       const current=await refreshPaymentReadiness();
-      if(!isCheckoutReady(current)){
-        message(messageId,"토스페이먼츠 결제 연결이 아직 열리지 않았어요.");
-        return;
-      }
+      if(!isCheckoutReady(current)){message(messageId,"토스페이먼츠 결제 연결이 아직 열리지 않았어요.");return;}
       if(!productCode){message(messageId,"상품 정보를 확인하지 못했어요.");return;}
       if(typeof root.TossPayments!=="function")throw new Error("toss_sdk_missing");
+      setBusy(true);
       if(btn)btn.disabled=true;
-      const cfg=await config();
+      const cfg=await timed(config(),8000,"toss_config_timeout");
       const mode=cfg.mode;
       const testMode=mode==="test";
       if(testMode&&!cfg.testCheckoutReady)throw new Error("toss_test_not_ready");
       if(!testMode&&!cfg.liveCheckoutReady)throw new Error("toss_live_not_ready");
       message(messageId,testMode?"토스 테스트 결제창을 준비하고 있어요…":"토스페이먼츠 결제창을 준비하고 있어요…");
-      const order=await createOrder(productCode,mode);
+      const order=await timed(createOrder(productCode,mode),10000,"order_create_timeout");
       saveLast(productCode,order.id,mode);
       const tossPayments=root.TossPayments(cfg.clientKey);
       const widgets=tossPayments.widgets({customerKey:root.TossPayments.ANONYMOUS});
-      await widgets.setAmount({value:Number(order.amount),currency:String(order.currency||"KRW")});
-      const paymentWindow=await widgets.renderPaymentWindow({
-        orderName:productLabel(productCode),
-        variantKey:{paymentMethod:"DEFAULT",agreement:"AGREEMENT"}
-      });
+      await timed(widgets.setAmount({value:Number(order.amount),currency:String(order.currency||"KRW")}),8000,"toss_amount_timeout");
+      const paymentWindow=await timed(widgets.renderPaymentWindow({orderName:productLabel(productCode),variantKey:{paymentMethod:"DEFAULT",agreement:"AGREEMENT"}}),12000,"toss_window_timeout");
+      activePaymentWindow=paymentWindow;keepBusy=true;
       paymentWindow.on("cancel",function(){
         try{paymentWindow.destroy();}catch(_e){}
-        message(messageId,"결제를 취소했어요.");
+        if(activePaymentWindow===paymentWindow)activePaymentWindow=null;
+        keepBusy=false;setBusy(false);message(messageId,"결제를 취소했어요.");
       });
       paymentWindow.on("paymentRequest",async function(){
         try{
           const base=location.origin+location.pathname;
           const suffix="&tossMode="+encodeURIComponent(mode);
-          await widgets.requestPayment({
-            orderId:String(order.id),
-            orderName:productLabel(productCode),
-            successUrl:base+"?tossPayment=success"+suffix,
-            failUrl:base+"?tossPayment=fail"+suffix
-          });
+          await widgets.requestPayment({orderId:String(order.id),orderName:productLabel(productCode),successUrl:base+"?tossPayment=success"+suffix,failUrl:base+"?tossPayment=fail"+suffix});
+          // Some embedded browsers may return without navigating. Do not leave the purchase UI locked forever.
+          setTimeout(()=>{if(document.visibilityState==="visible"&&activePaymentWindow===paymentWindow){try{paymentWindow.destroy();}catch(_e){}activePaymentWindow=null;setBusy(false);}},1500);
         }catch(err){
           message(messageId,"결제 요청을 시작하지 못했어요. 잠시 후 다시 시도해 주세요.");
           try{paymentWindow.destroy();}catch(_e){}
+          if(activePaymentWindow===paymentWindow)activePaymentWindow=null;
+          keepBusy=false;setBusy(false);
           console.warn("GUIIN_TOSS_REQUEST_FAILED",err);
         }
       });
@@ -273,7 +301,7 @@
       console.warn("GUIIN_TOSS_START_FAILED",err);
       message(messageId,"토스페이먼츠 결제창을 열지 못했어요. 잠시 후 다시 시도해 주세요.");
     }finally{
-      if(btn)btn.disabled=false;
+      if(!keepBusy){activePaymentWindow=null;setBusy(false);if(btn)btn.disabled=false;}
     }
   }
   async function confirmReturn(u,mode){
@@ -283,15 +311,28 @@
     if(!paymentKey||!orderId||!Number.isFinite(amount)||amount<=0)throw new Error("invalid_payment_return");
     await ensureSession();
     const path=mode==="test"?"/api/toss/test/confirm":"/api/toss/confirm";
-    const res=await api(path,{
-      method:"POST",cache:"no-store",
-      headers:{"Content-Type":"application/json","Accept":"application/json","X-Idempotency-Key":randomId(mode==="test"?"toss_test_confirm_":"toss_confirm_")},
-      body:JSON.stringify({paymentKey:paymentKey,orderId:orderId,amount:amount})
-    });
+    const idem=confirmIdempotency(orderId,mode);
+    let lastErr=null;
+    for(let attempt=0;attempt<2;attempt++){
+      try{
+        const res=await timed(api(path,{method:"POST",cache:"no-store",headers:{"Content-Type":"application/json","Accept":"application/json","X-Idempotency-Key":idem},body:JSON.stringify({paymentKey,orderId,amount})}),11000,"payment_confirm_timeout");
+        const data=await res.json().catch(()=>({}));
+        if(!res.ok||data?.ok!==true)throw new Error(data?.error||"payment_confirm_failed");
+        if(mode!=="test")try{await root.guiinRefreshServerState?.({silent:true});}catch(_e){}
+        return {orderId,data};
+      }catch(err){lastErr=err;if(attempt===0)await sleep(650);}
+    }
+    throw lastErr||new Error("payment_confirm_failed");
+  }
+  async function recoverReturn(orderId){
+    if(!orderId)throw new Error("order_id_required");
+    await ensureSession();
+    const res=await timed(api("/api/toss/recover",{method:"POST",cache:"no-store",headers:{"Content-Type":"application/json","Accept":"application/json"},body:JSON.stringify({orderId})}),10000,"payment_recovery_timeout");
     const data=await res.json().catch(()=>({}));
-    if(!res.ok||data?.ok!==true)throw new Error(data?.message||data?.error||"payment_confirm_failed");
-    if(mode!=="test")try{await root.guiinRefreshServerState?.({silent:true});}catch(_e){}
-    return {orderId:orderId,data:data};
+    if(!res.ok||data?.ok!==true)throw new Error(data?.error||"payment_recovery_failed");
+    if(data?.state!=="FULFILLED"&&data?.providerStatus!=="DONE")throw new Error("payment_not_recovered");
+    try{await root.guiinRefreshServerState?.({silent:true});}catch(_e){}
+    return data;
   }
   async function handleReturn(){
     let u;try{u=new URL(location.href);}catch(_e){return;}
@@ -316,13 +357,21 @@
         setTimeout(()=>renderResult("success",{mode:safeMode,productCode:productCode,orderId:result.orderId}),80);
       }catch(err){
         const orderId=String(u.searchParams.get("orderId")||"");
+        if(safeMode==="live"){
+          try{
+            await recoverReturn(orderId);
+            cleanupReturnUrl(u);
+            setTimeout(()=>renderResult("success",{mode:safeMode,productCode,orderId}),80);
+            return;
+          }catch(_recoveryErr){}
+        }
         cleanupReturnUrl(u);
-        setTimeout(()=>renderResult("fail",{mode:safeMode,productCode:productCode,orderId:orderId,message:err?.message||"승인 확인 실패"}),80);
+        setTimeout(()=>renderResult("fail",{mode:safeMode,productCode:productCode,orderId:orderId,message:"승인 확인이 지연되고 있어요. 중복 결제하지 말고 이용내역을 확인한 뒤 문의해 주세요."}),80);
       }
     }
   }
 
-  root.GuiinTossPayment={provider:PROVIDER,start,refreshPaymentReadiness,handleReturn,state:()=>({...state})};
+  root.GuiinTossPayment={provider:PROVIDER,start,refreshPaymentReadiness,handleReturn,state:()=>({...state,paymentBusy})};
   root.setPaymentReadinessUI=setPaymentReadinessUI;
   root.refreshPaymentReadiness=refreshPaymentReadiness;
   root.payNotReady=function(){return start(typeof guiinPaySelection!=="undefined"?guiinPaySelection.productCode:"","payMsg","walletPayBtn");};

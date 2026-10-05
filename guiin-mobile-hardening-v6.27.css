@@ -1,0 +1,23 @@
+/* GUIIN mobile/readability hardening v6.27 */
+@media (max-width:600px){
+  html{-webkit-text-size-adjust:100%}
+  body{font-size:14px}
+  button,a,[role="button"]{touch-action:manipulation}
+  button,.ctaGold,.ctaGreen,.softBtn,.authBtn,.packBuy button,.resultActionBar button,.readingTools button{min-height:44px}
+  .bottom{height:calc(76px + env(safe-area-inset-bottom))!important;padding-bottom:env(safe-area-inset-bottom)!important}
+  .bottom button{font-size:10.5px!important;line-height:1.25!important;min-height:44px!important}
+  body{padding-bottom:calc(88px + env(safe-area-inset-bottom))!important}
+  .screen{padding-bottom:calc(104px + env(safe-area-inset-bottom))!important}
+  #resultView,#matchView{padding-bottom:8px}
+  .easyLongCard .easyBody p,.easyLongCard .easyPoint p,.deepCard p,.expertSection p,.starDetail p,.r28People p,.r29SajuPortrait p,.guiinCounselor30 p,.guiinHuman40,.guiinToneRest{font-size:13.5px!important;line-height:1.72!important}
+  .easyLongCard h3,.deepCard h3,.expertSection h3{line-height:1.45!important}
+  .easyKicker,.miniTitle,.guiinCounselor30 .mini,.guiinToneCell b,.guiinHuman40 b{font-size:11px!important}
+  .help,.utilityHint,.paidDisclaimer,.sampleNotice,.packBody p,.packBonus,.packBuy small,.askContext small,.consultStyleHint,.evidenceLine{font-size:10.5px!important;line-height:1.55!important}
+  .packBuy button,.askContext button,.askTools button{font-size:11px!important}
+  .tabs button{min-height:44px!important}
+  .payPanel,.premiumPanel{max-height:90dvh!important;padding-bottom:calc(28px + env(safe-area-inset-bottom))!important}
+  .premiumLock{bottom:calc(82px + env(safe-area-inset-bottom))!important}
+}
+@media (prefers-reduced-motion:reduce){
+  *,*::before,*::after{scroll-behavior:auto!important;animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important}
+}

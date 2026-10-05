@@ -49,9 +49,10 @@
 <script src="compatibility-interpreter.js"></script>
 <script src="deep-interpretation-v3.js?v=20260918e"></script>
 <script src="guiin-runtime-config.js?v=20260920prod1"></script>
+<script src="guiin-production-guard-v6.27.js?v=20261004v627"></script>
 <script src="member-data-v1.js?v=20260919a"></script>
 <script src="https://js.tosspayments.com/v2/standard"></script>
-<script defer src="toss-payment.js?v=20261004v626"></script>
+<script defer src="toss-payment.js?v=20261004v627"></script>
 <style>
 :root{
  --bg:#fffaf1;--paper:#fffefa;--ink:#203128;--sub:#7c837d;--line:#ece5d7;
@@ -1657,6 +1658,7 @@ html{-webkit-text-size-adjust:100%;text-size-adjust:100%}
 </style>
 <!-- GUIIN v6.26 final package: AI counsel + site polish + Toss + traffic hardening -->
 <!-- GUIIN PROD UI SYNC: latest demo visuals + reading order; production payment/access preserved · 2026-10-04 -->
+<link rel="stylesheet" href="guiin-mobile-hardening-v6.27.css?v=20261004v627">
 </head>
 <body>
 <div class="app">
@@ -1971,7 +1973,7 @@ html{-webkit-text-size-adjust:100%;text-size-adjust:100%}
   <div class="topbar"><button class="ghost" onclick="go('ask')" data-guiin-nav="ask">‹</button><div class="brand"><div class="brandline">AI 사주상담 질문 패키지</div><small>정해진 질문 횟수 · 구매 후 30일 사용</small></div><span></span></div>
   <div class="cloverStore">
     <div class="pageIllustration"><img loading="lazy" decoding="async" src="guiin-home-friends.webp" alt="AI 사주 분석 질문 이용권 일러스트"></div>
-    <div class="storeIntro card"><h2>AI 사주상담 질문 패키지</h2><p>구매한 상품에 표시된 총 질문 횟수만큼 이용하는 디지털 서비스예요. 구매일로부터 30일간 사용할 수 있습니다.</p></div>
+    <div class="storeIntro card"><h2>AI 사주상담 질문 패키지</h2><p>구매한 상품에 표시된 총 질문 횟수만큼 이용하는 디지털 서비스예요. 구매일로부터 30일간 사용할 수 있습니다.</p><p id="aiPassExpiryView" style="display:none;margin-top:7px;font-weight:800"></p></div>
     <div class="storeWish card"><b>좋은 인연, 좋은 하루가 당신 곁에 늘 함께하길 ♡</b><span>질문 1회는 AI 사주상담 질문 1회 이용을 뜻해요.</span></div>
     <div class="luckyPack card"><div class="packClover">3회</div><div class="packBody"><h3>AI 사주상담 질문 3회 패키지</h3><b>총 3회 이용</b><p>처음 이용해보기 좋은 구매 후 30일간 사용하는 고정 질문 패키지예요.</p></div><div class="packBuy"><strong>1,100원</strong><small>총 3회</small><button onclick="openPaySheet(3,1100)">구매하기 ›</button></div></div>
     <div class="luckyPack card"><div class="packClover">총 6회</div><div class="packBody"><h3>AI 사주상담 질문 6회 패키지</h3><b>기본 5회 + 추가 1회 제공</b><p>결제 승인 후 총 6회의 질문이 한 번에 제공되며 구매 후 30일간 사용할 수 있어요.</p></div><div class="packBuy"><strong>1,990원</strong><small>총 6회</small><button onclick="openPaySheet(6,1990)">구매하기 ›</button></div></div>
@@ -3599,7 +3601,7 @@ function guiinApplyServerAccountingSnapshot(raw){
  const remaining=Number(q.available??q.remaining??Math.max(0,limit-used-reserved));
  const balance=Number(w.remainingUses??w.balance??0),wr=Number(w.reservedUses??w.reserved??w.reserved_balance??0),available=Number(w.availableUses??w.available??Math.max(0,balance-wr));
  GUIIN_SERVER_ACCOUNTING.free={used,reserved,limit,remaining:Math.max(0,remaining)};
- GUIIN_SERVER_ACCOUNTING.wallet={balance,reserved:wr,available:Math.max(0,available)};
+ GUIIN_SERVER_ACCOUNTING.wallet={balance,reserved:wr,available:Math.max(0,available),nextExpiry:w.nextExpiry??raw.nextAiPassExpiry??null};
  GUIIN_SERVER_ACCOUNTING.updatedAt=Date.now();
  syncWalletViews();
  return true;
@@ -5938,7 +5940,7 @@ function guiinFreeUsageKey(){
 }
 function freeUsed(){const n=Number(localStorage.getItem(guiinFreeUsageKey())||0);return Number.isFinite(n)?Math.max(0,n):0;}
 function setFreeUsed(n){localStorage.setItem(guiinFreeUsageKey(),String(Math.max(0,n)));syncWalletViews();}
-function syncWalletViews(){if($('freeRemainView'))$('freeRemainView').textContent=Math.max(0,3-freeUsed());let uses=Number(wallet?.coins||0);try{if(GUIIN_SERVER_ACCOUNTING?.authoritative)uses=Number(GUIIN_SERVER_ACCOUNTING?.wallet?.available||0);}catch(_e){}if($('coinView'))$('coinView').textContent=Math.max(0,uses);}
+function syncWalletViews(){if($('freeRemainView'))$('freeRemainView').textContent=Math.max(0,3-freeUsed());let uses=Number(wallet?.coins||0),expiry=null;try{if(GUIIN_SERVER_ACCOUNTING?.authoritative){uses=Number(GUIIN_SERVER_ACCOUNTING?.wallet?.available||0);expiry=GUIIN_SERVER_ACCOUNTING?.wallet?.nextExpiry||null;}}catch(_e){}if($('coinView'))$('coinView').textContent=Math.max(0,uses);const ev=$('aiPassExpiryView');if(ev){if(expiry&&uses>0){const d=new Date(expiry);ev.textContent=Number.isNaN(d.getTime())?'':'가장 가까운 이용권 만료 · '+d.toLocaleDateString('ko-KR');ev.style.display=ev.textContent?'block':'none';}else ev.style.display='none';}}
 function renderLedger(){if(!$('ledger'))return;$('ledger').innerHTML=(wallet.ledger||[]).slice(0,12).map(r=>`${esc(r.t)} · ${esc(r.text)} (${r.delta>0?'+':''}${r.delta})`).join('<br>')||'아직 내역이 없습니다.';}
 let guiinPaymentState={checked:false,liveEnabled:false,liveCheckoutReady:false,sandboxEnabled:false,serverAccountingReady:false,productCatalogReady:false,error:false};
 let guiinPaySelection={productCode:'AI_CHAT_3',price:1100};
@@ -5967,7 +5969,7 @@ function setPaymentReadinessUI(){
       r.textContent='실결제 승인 모듈 최종 연결 전이라 구매를 잠가두었어요.';
       b.disabled=true;
     }else if(state.sandboxEnabled){
-      r.textContent=consentOk?'NHN KCP 샌드박스 테스트 모드입니다. 실제 청구·콘텐츠 지급은 발생하지 않습니다.':'테스트 결제 전 약관과 환불정책 확인에 체크해 주세요.';
+      r.textContent=consentOk?'토스 테스트 결제 모드입니다. 실제 청구·콘텐츠 지급은 발생하지 않습니다.':'테스트 결제 전 약관과 환불정책 확인에 체크해 주세요.';
       b.disabled=!consentOk;
     }else{
       r.textContent='현재 결제 오픈 전 점검 중이에요. 실수로 결제되지 않도록 구매 버튼을 잠가두었어요.';
@@ -5976,7 +5978,7 @@ function setPaymentReadinessUI(){
     const info=$('paymentInfoStatus');
     if(info){
       info.className='paymentInfoStatus '+(state.error?'error':state.liveEnabled?'ready':state.sandboxEnabled?'sandbox':'');
-      info.textContent=state.error?'결제 서버 상태를 확인하지 못했습니다.':(state.liveEnabled&&state.liveCheckoutReady)?'NHN KCP 실결제가 활성화되어 있습니다.':state.liveEnabled?'실결제 플래그는 감지됐지만 승인 모듈이 준비되지 않아 구매를 차단했습니다.':state.sandboxEnabled?'NHN KCP 샌드박스 테스트가 활성화되어 있습니다. 실제 청구는 발생하지 않습니다.':'현재 실결제는 오픈 전 점검 중입니다.';
+      info.textContent=state.error?'결제 서버 상태를 확인하지 못했습니다.':(state.liveEnabled&&state.liveCheckoutReady)?'토스페이먼츠 실결제가 활성화되어 있습니다.':state.liveEnabled?'실결제 플래그는 감지됐지만 승인 모듈이 준비되지 않아 구매를 차단했습니다.':state.sandboxEnabled?'토스 테스트 결제가 활성화되어 있습니다. 실제 청구는 발생하지 않습니다.':'현재 실결제는 오픈 전 점검 중입니다.';
     }
   }
 }
@@ -9605,6 +9607,7 @@ try{Object.assign(window,{guiinPaymentCenterStart});}catch(_e){}
  globalThis.__GUIIN_COUNSELOR_TONE30__=true;
  const E=v=>String(v??'').replace(/[&<>"']/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]));
  const norm=v=>String(v??'').replace(/\s+/g,' ').trim();
+ function phrase30(v){return norm(v).replace(/[.!?]+$/g,'').replace(/(?:이|가)?\s*있어$/,'').trim()}
  function ageOf(c){
   const y=Number(c?.input?.year||0);return y?Math.max(0,new Date().getFullYear()-y):0;
  }
@@ -9622,15 +9625,15 @@ try{Object.assign(window,{guiinPaymentCenterStart});}catch(_e){}
   return {n,rp,e2,x,day,sig,stars,age,name,top,low,tension,lk};
  }
  function praiseText(c){
-  const d=info(c),core=norm(d.day.core||d.x?.p?.praise||'자기 방식으로 끝까지 해내는 힘'),soft=norm(d.day.soft||d.sig?.dv?.strength||'사람과 상황을 세심하게 읽는 힘');
+  const d=info(c),core=phrase30(d.day.core||d.x?.p?.praise||'자기 방식으로 끝까지 해내는 힘'),soft=phrase30(d.day.soft||d.sig?.dv?.strength||'사람과 상황을 세심하게 읽는 힘');
   const extra=d.e2?.structure?.strength?.grade;
   const force=extra&&/강/.test(extra)?' 특히 자기 힘이 필요한 순간에는 생각보다 훨씬 단단하게 버틸 수 있는 구조야.':'';
   return `${d.name}님은 ${core}이 분명하고, ${soft}도 같이 갖고 있어. 이건 꽤 큰 장점이야. 한 가지를 잘하는 사람은 많지만, 자기 기준과 사람을 보는 감각을 같이 쓰는 사람은 흔하지 않아.${force}`;
  }
  function factText(c){
   const d=info(c),shadow=norm(d.day.shadow||d.x?.p?.blind||'잘하는 방식을 너무 오래 혼자 쓰면 피로가 커질 수 있어');
-  if(/거리|회피|혼자/.test(String(d.rp?.attachmentLabel||'')+' '+String(d.rp?.attachmentText||'')))return `팩트 하나만 말하면, 혼자 정리하는 능력이 좋은 것과 혼자 다 감당하는 건 다른 일이야. ${shadow} 싫은 걸 늦게 말하고 마지막에 한꺼번에 선을 긋는 패턴은 본인도 상대도 지치게 할 수 있어.`;
-  return `팩트 하나만 말하면, ${shadow} 능력이 부족해서가 아니라 잘하는 방식이 과해질 때 생기는 문제에 가까워. “내가 할 수 있다”와 “내가 해야 한다”를 같은 뜻으로 쓰지 않는 게 중요해.`;
+  if(/거리|회피|혼자/.test(String(d.rp?.attachmentLabel||'')+' '+String(d.rp?.attachmentText||'')))return `혼자 정리하는 능력이 좋은 것과 혼자 다 감당하는 건 다른 일이야. ${shadow} 싫은 걸 늦게 말하고 마지막에 한꺼번에 선을 긋는 패턴은 본인도 상대도 지치게 할 수 있어.`;
+  return `${shadow} 능력이 부족해서가 아니라 잘하는 방식이 과해질 때 생기는 문제에 가까워. “내가 할 수 있다”와 “내가 해야 한다”를 같은 뜻으로 쓰지 않는 게 중요해.`;
  }
  function hardshipScore(d){
   let s=0;
@@ -9656,12 +9659,7 @@ try{Object.assign(window,{guiinPaymentCenterStart});}catch(_e){}
   return `명리 상징으로는 차분하고 분위기가 남는 인상, 말투나 눈빛처럼 가까이 볼수록 매력이 보이는 쪽으로 읽어. 실제 외모를 사주로 확정할 수는 없지만, 자기한테 맞는 스타일을 찾으면 분위기 자체가 강점이 되기 쉬워.`;
  }
  function restText(c){
-  const d=info(c);let stage='';
-  if(d.age>=60)stage=' 지금은 뭔가를 계속 새로 증명하기보다, 오래 해온 것 중 남길 것과 내려놓을 것을 고르는 것도 아주 중요한 선택이야.';
-  else if(d.age>=45)stage=' 지금부터는 무조건 더 많이 하는 것보다, 내 시간과 체력을 어디에 쓸지 고르는 능력이 더 중요해.';
-  else if(d.age>=30)stage=' 잘하는 걸 계속 증명하려고만 하지 않아도 돼. 오래 갈 수 있는 방식으로 바꾸는 것도 실력이야.';
-  else stage=' 아직 모든 답을 정해놓을 필요는 없어. 경험하면서 기준을 만들어가도 충분해.';
-  return `그리고 이건 꼭 말해주고 싶어. 힘들 땐 좀 쉬어도 돼. 쉬는 건 뒤처지는 게 아니라 다시 제대로 움직이기 위한 과정이야.${stage}`;
+  return `그리고 이건 꼭 말해주고 싶어. 힘들 땐 좀 쉬어도 돼. 쉬는 건 뒤처지는 게 아니라 다시 제대로 움직이기 위한 과정이야.`;
  }
  function summaryHTML(c){
   const d=info(c);
@@ -9702,10 +9700,6 @@ try{Object.assign(window,{guiinPaymentCenterStart});}catch(_e){}
   if(portrait)portrait.insertAdjacentHTML('afterend',summaryHTML(c));
   const cards=[...root.querySelectorAll('.easyLongCard')];
   const by=t=>cards.find(x=>norm(x.querySelector('.easyKicker')?.textContent)+' '+norm(x.querySelector('h3')?.textContent) && norm(x.textContent).includes(t));
-  addNote(by('오행으로 보는 사주'),'praise',praiseText(c),'좋은 건 크게 봐도 돼');
-  addNote(by('여기서는 조금 조심해야 해'),'fact',factText(c),'여기서는 돌려 말하지 않을게');
-  addNote(by('속마음과 감정'),'empathy',empathyText(c),'이 부분은 마음도 같이 봐야 해');
-  addNote(by('마지막 한마디'),'rest',restText(c),'이건 꼭 기억했으면 해');
  }
  const prev=window.renderResult;
  if(typeof prev==='function'){
@@ -10065,10 +10059,12 @@ try{Object.assign(window,{guiinPaymentCenterStart});}catch(_e){}
    if(a>=25)return {key:'building',title:'지금의 삶에 맞춰 보면',text:'지금은 가능성을 넓히는 것과 내 기준을 만드는 일이 같이 필요한 시기야. 남들이 좋다고 하는 길보다 내가 지속할 수 있는 일·관계·생활 리듬을 실제 경험으로 확인해보는 게 좋아.'};
    return {key:'early',title:'지금의 삶에 맞춰 보면',text:'아직 모든 답을 정해놓을 필요는 없어. 해보면서 맞는 것과 아닌 것을 구분하는 경험 자체가 중요한 시기라, 한 번의 선택을 인생 전체의 정답처럼 부담스럽게 볼 필요는 없어.'};
  }
+ function batchim40(v){const m=String(v||'').match(/[가-힣](?!.*[가-힣])/);if(!m)return false;return ((m[0].charCodeAt(0)-0xAC00)%28)!==0}
+ function phrase40(v){return norm(v).replace(/[.!?]+$/g,'').replace(/(?:이|가)?\s*있어$/,'').trim()}
  function praise40(c,domain='general'){
    const d=data40(c),n=d.n||{},day=n.day||{},x=n.x||{},sig=n.sig||{};
-   const core=norm(day.core||x?.p?.praise||sig?.dv?.strength||'자기 방식으로 끝까지 해내는 힘');
-   const soft=norm(day.soft||'사람과 상황을 세심하게 읽는 감각');
+   const core=phrase40(day.core||x?.p?.praise||sig?.dv?.strength||'자기 방식으로 끝까지 해내는 힘');
+   const soft=phrase40(day.soft||'사람과 상황을 세심하게 읽는 감각');
    const grade=String(d.e2?.structure?.strength?.grade||d.e2?.strength?.label||'');
    const extra=/강/.test(grade)?' 압박이 들어와도 중심을 다시 잡는 힘까지 있는 편이라, 어려울 때 오히려 진가가 드러날 수 있어.':'';
    const map={
@@ -10076,7 +10072,7 @@ try{Object.assign(window,{guiinPaymentCenterStart});}catch(_e){}
     relation:`관계에서는 ${soft}이 장점으로 크게 살아. 상대의 작은 변화나 분위기를 알아차리는 능력은 아무나 갖는 게 아니고, 잘 쓰면 정말 따뜻하고 믿을 만한 사람으로 남을 수 있어.`,
     money:`돈에서는 한 번 기준을 세우고 지키기 시작하면 흐트러진 걸 다시 정리하는 힘이 있어. 감각만 좋은 게 아니라 현실적으로 구조를 만들 수 있다는 점은 꽤 좋은 장점이야.`,
     decision:`중요한 순간에 자기 기준을 찾아내는 힘이 있어. 남들이 뭐라고 하든 결국 스스로 납득한 답을 찾아 움직이는 사람은 시간이 갈수록 더 단단해져.`,
-    general:`${d.name}님은 ${core}과 ${soft}을 같이 갖고 있어. 이건 생각보다 큰 장점이야. 강하기만 하거나 섬세하기만 한 사람보다, 둘을 같이 쓸 수 있는 사람이 실제 생활에서는 훨씬 오래 간다.${extra}`
+    general:`${d.name}님은 ${core}${batchim40(core)?'이':'가'} 분명하고, ${soft}도 같이 보여. 이건 생각보다 큰 장점이야. 강하기만 하거나 섬세하기만 한 사람보다, 두 힘을 같이 쓸 수 있는 사람이 실제 생활에서는 훨씬 오래 간다.${extra}`
    };
    return map[domain]||map.general;
  }
@@ -10112,7 +10108,10 @@ try{Object.assign(window,{guiinPaymentCenterStart});}catch(_e){}
         .replace(/육합로/g,'육합으로')
         .replace(/천간합로/g,'천간합으로')
         .replace(/\s+([,.!?])/g,'$1')
-        .replace(/\.\s*\./g,'.');
+        .replace(/\.\s*\./g,'.')
+        .replace(/면이 있어\.도 같이 갖고 있어/g,'면도 같이 갖고 있어')
+        .replace(/면이 있어\.을 같이 갖고 있어/g,'면을 같이 갖고 있어')
+        .replace(/힘이 있어\.도 같이 갖고 있어/g,'힘도 같이 갖고 있어');
      if(t!==n.nodeValue)n.nodeValue=t;
    }
  }
@@ -10175,9 +10174,7 @@ try{Object.assign(window,{guiinPaymentCenterStart});}catch(_e){}
    const cards=[...root.querySelectorAll('.easyLongCard')];if(!cards.length)return;
    const find=re=>cards.find(x=>re.test(norm(x.querySelector('.easyKicker')?.textContent)+' '+norm(x.querySelector('h3')?.textContent)));
    const picks=[
-    [find(/오행으로 보는 사주|나만의 매력|겉으로 보이는 나/),'praise','이건 조금 더 크게 칭찬해도 돼'],
-    [find(/여기서는 조금 조심해야 해|결정할 때의 나/),'fact','여기서는 돌려 말하지 않을게'],
-    [find(/속마음과 감정|가족과 가까운 사람에게/),'empathy','이 부분은 마음도 같이 봐야 해']
+    [find(/여기서는 조금 조심해야 해|결정할 때의 나/),'fact','여기서는 돌려 말하지 않을게']
    ];
    for(const [card,kind,label] of picks){if(!card)continue;const d=domain40(card);addHuman40(card,kind,kind==='praise'?praise40(c,d):kind==='fact'?fact40(c,d):empathy40(c),label)}
    const work=find(/나에게 맞는 일|일할 때의 나/);if(work)addHuman40(work,'praise',praise40(c,'work'),'일에서는 이 장점이 꽤 커');
