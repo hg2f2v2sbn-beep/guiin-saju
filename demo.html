@@ -1665,6 +1665,7 @@ html{-webkit-text-size-adjust:100%;text-size-adjust:100%}
 </style>
 <!-- GUIIN v6.26 final package: AI counsel + site polish + Toss + traffic hardening -->
 <link rel="stylesheet" href="guiin-mobile-hardening-v6.27.css?v=20261004v627">
+\n<style id="GUIIN_AI_UX_V628_CSS">\n/* GUIIN AI 상담 UX v6.28 · mobile header / counters / topic / examples */\n#ask .topbar{grid-template-columns:40px minmax(0,1fr) 94px!important;padding-left:6px!important;padding-right:6px!important;column-gap:4px!important;overflow:visible!important}\n#ask .topbar>.brand{min-width:0!important;text-align:center!important;overflow:hidden!important}\n#ask .topbar>.brand .brandline{font-size:19px!important;white-space:nowrap!important;overflow:hidden!important;text-overflow:ellipsis!important}\n#ask .topbar>.askWalletTopBtn{justify-self:end!important;max-width:92px!important;width:92px!important;padding:7px 4px!important;font-size:10px!important;font-weight:900!important;white-space:nowrap!important;overflow:hidden!important;text-overflow:ellipsis!important}\n#ask .aiTopicBar>div{display:flex!important;align-items:baseline!important;gap:5px!important;min-width:0!important}\n#ask .aiTopicBar>div span{white-space:nowrap!important}\n#ask .aiTopicBar>div b{min-width:0!important;white-space:nowrap!important;overflow:hidden!important;text-overflow:ellipsis!important}\n#ask .askChargeHint{margin:7px 2px 4px;padding:8px 10px;border-radius:12px;background:#f3f7ef;color:#67766b;font-size:10px;line-height:1.55}\n#ask .askChargeHint b{color:#315a43}\n#ask .creditBar .walletRemainLabel{font-size:11px;opacity:.86;margin-top:3px}\n@media(max-width:420px){\n  #ask .topbar{grid-template-columns:34px minmax(0,1fr) 82px!important;padding-left:3px!important;padding-right:3px!important}\n  #ask .topbar>.brand .brandline{font-size:18px!important}\n  #ask .topbar>.askWalletTopBtn{width:80px!important;max-width:80px!important;font-size:9.5px!important;padding-left:2px!important;padding-right:2px!important}\n  #ask .askExampleChips .qchip{font-size:11px!important;padding:9px 11px!important}\n}\n</style>\n
 </head>
 <body><div class="guiinDemoBadge">DEMO · 전체풀이 무료</div>
 <div class="app">
@@ -1921,7 +1922,7 @@ html{-webkit-text-size-adjust:100%;text-size-adjust:100%}
   <div class="topbar">
     <button class="ghost" onclick="go('home')" aria-label="뒤로" data-guiin-nav="home">‹</button>
     <div class="brand"><div class="brandline">사주에게 묻기</div></div>
-    <button class="ghost" onclick="go('wallet')" style="font-size:11px;font-weight:900;white-space:nowrap" data-guiin-nav="wallet">이용권 구매</button>
+    <button class="ghost askWalletTopBtn" onclick="go('wallet')" data-guiin-nav="wallet">이용권 구매</button>
   </div>
   <section class="guiinVisualHero withArt askHero">
     <div class="heroCopy">
@@ -1949,7 +1950,7 @@ html{-webkit-text-size-adjust:100%;text-size-adjust:100%}
     <div id="accountConsultList" class="accountConsultList"><div class="accountConsultEmpty">상담 기록을 불러오는 중이에요…</div></div>
   </div>
   <div id="consultStyleBox" class="consultStyleBox card"><b>상담 말투</b><div id="consultStyleChips" class="consultStyleChips"><button type="button" data-style="balanced" onclick="guiinSetConsultStyle('balanced')">균형 있게</button><button type="button" data-style="fact" onclick="guiinSetConsultStyle('fact')">팩트 중심</button><button type="button" data-style="warm" onclick="guiinSetConsultStyle('warm')">부드럽게</button><button type="button" data-style="brief" onclick="guiinSetConsultStyle('brief')">핵심만</button><button type="button" data-style="deep" onclick="guiinSetConsultStyle('deep')">깊게</button></div><div class="consultStyleHint">어떤 모드를 골라도 사주 풀이는 자연스러운 반말로 해. 선택한 상담 안에서는 말투를 이어서 기억해.</div></div>
-  <div class="guiinDemoFreeNotice">데모에서는 평생사주·궁합·대운 심층 풀이를 결제 없이 전체 확인할 수 있어요. AI 사주상담은 무료 3회까지 제공됩니다.</div><div class="creditBar"><div><div style="font-size:12px;opacity:.85">무료 상담</div><b id="freeRemainView">3</b><span style="font-size:13px">회 남음</span><div style="font-size:11px;opacity:.82;margin-top:3px">사용 가능한 질문 <span id="coinView">0</span>회</div></div><button class="ctaGold" style="width:auto;margin:0;padding:10px 14px" onclick="go('wallet')" data-guiin-nav="wallet">이용권 구매</button></div>
+  <div class="guiinDemoFreeNotice">데모에서는 평생사주·궁합·대운 심층 풀이를 결제 없이 전체 확인할 수 있어요. AI 사주상담은 무료 3회까지 제공됩니다.</div><div class="creditBar"><div><div style="font-size:12px;opacity:.85">무료 상담</div><b id="freeRemainView">3</b><span style="font-size:13px">회 남음</span><div style="font-size:11px;opacity:.82;margin-top:3px"><span class="walletRemainLabel">유료 이용권 <span id="coinView">0</span>회</span></div></div><button class="ctaGold" style="width:auto;margin:0;padding:10px 14px" onclick="go('wallet')" data-guiin-nav="wallet">이용권 구매</button></div>
   <div class="askTools">
     <p class="adminNote">처음 3회는 무료예요. 답변 실패 시 무료 횟수나 이용권은 차감되지 않습니다. AI 사주상담 질문 패키지는 3회, 6회, 9회, 18회 단위로 구매할 수 있고 구매일로부터 30일간 사용할 수 있어요. 로그인하면 상담 기록이 계정에 저장되어 다른 기기에서도 이어볼 수 있어요. 로그아웃 상태에서는 기기 내 기록과 게스트 세션을 사용하며, 답변 생성에 필요한 대화 맥락이 서버로 전송될 수 있어요.</p>
     <button type="button" onclick="clearAIChat()">대화 지우기</button>
@@ -1969,6 +1970,7 @@ html{-webkit-text-size-adjust:100%;text-size-adjust:100%}
     </div>
     <div id="askExampleList" class="askExampleChips"></div>
   </div>
+  <div class="askChargeHint">추천 버튼을 누르는 것만으로는 차감되지 않아. <b>보내기 후 정상 답변이 저장될 때만 1회 사용돼.</b></div>
   <div class="composer" style="margin-top:8px">
     <input id="askQ" maxlength="420" autocomplete="off" placeholder="궁금한 점을 물어보세요">
     <button id="askSendBtn" type="button" onclick="return window.guiinSendAI(event)" class="ctaGreen" style="min-width:88px;position:relative;z-index:20">보내기</button>
@@ -2144,7 +2146,7 @@ function go(id){
  if(id==='today')renderToday();
  if(id==='history')renderUsageHistory();
  if(id==='payments')renderPaymentHistory();
- if(id==='ask'){syncAskContext();syncWalletViews();guiinRenderExamples();guiinRenderConsultStyle();setTimeout(()=>{guiinPrewarmAIContext();guiinLoadAccountConsultations();},0);}
+ if(id==='ask'){syncAskContext();syncWalletViews();guiinRenderExamples();guiinRenderConsultStyle();setTimeout(()=>{guiinPrewarmAIContext();guiinLoadAccountConsultations();guiinRefreshServerState({silent:true});},0);}
  if(id==='profiles')renderSavedProfile();
  if(id==='notifications')loadNotificationPrefs();
  if(id==='wallet')renderLedger();
@@ -5946,7 +5948,7 @@ function guiinFreeUsageKey(){
 }
 function freeUsed(){const n=Number(localStorage.getItem(guiinFreeUsageKey())||0);return Number.isFinite(n)?Math.max(0,n):0;}
 function setFreeUsed(n){localStorage.setItem(guiinFreeUsageKey(),String(Math.max(0,n)));syncWalletViews();}
-function syncWalletViews(){if($('freeRemainView'))$('freeRemainView').textContent=Math.max(0,3-freeUsed());let uses=Number(wallet?.coins||0),expiry=null;try{if(GUIIN_SERVER_ACCOUNTING?.authoritative){uses=Number(GUIIN_SERVER_ACCOUNTING?.wallet?.available||0);expiry=GUIIN_SERVER_ACCOUNTING?.wallet?.nextExpiry||null;}}catch(_e){}if($('coinView'))$('coinView').textContent=Math.max(0,uses);const ev=$('aiPassExpiryView');if(ev){if(expiry&&uses>0){const d=new Date(expiry);ev.textContent=Number.isNaN(d.getTime())?'':'가장 가까운 이용권 만료 · '+d.toLocaleDateString('ko-KR');ev.style.display=ev.textContent?'block':'none';}else ev.style.display='none';}}
+function syncWalletViews(){let freeRemaining=Math.max(0,3-freeUsed()),uses=Number(wallet?.coins||0),expiry=null;try{if(GUIIN_SERVER_ACCOUNTING?.authoritative){freeRemaining=Number(GUIIN_SERVER_ACCOUNTING?.free?.remaining??freeRemaining);uses=Number(GUIIN_SERVER_ACCOUNTING?.wallet?.available||0);expiry=GUIIN_SERVER_ACCOUNTING?.wallet?.nextExpiry||null;}}catch(_e){}if($('freeRemainView'))$('freeRemainView').textContent=Math.max(0,freeRemaining);if($('coinView'))$('coinView').textContent=Math.max(0,uses);const ev=$('aiPassExpiryView');if(ev){if(expiry&&uses>0){const d=new Date(expiry);ev.textContent=Number.isNaN(d.getTime())?'':'가장 가까운 이용권 만료 · '+d.toLocaleDateString('ko-KR');ev.style.display=ev.textContent?'block':'none';}else ev.style.display='none';}}
 function renderLedger(){if(!$('ledger'))return;$('ledger').innerHTML=(wallet.ledger||[]).slice(0,12).map(r=>`${esc(r.t)} · ${esc(r.text)} (${r.delta>0?'+':''}${r.delta})`).join('<br>')||'아직 내역이 없습니다.';}
 let guiinPaymentState={checked:false,liveEnabled:false,liveCheckoutReady:false,sandboxEnabled:false,serverAccountingReady:false,productCatalogReady:false,error:false};
 let guiinPaySelection={productCode:'AI_CHAT_3',price:1100};
@@ -6664,7 +6666,8 @@ function guiinRenderExamples(){
   if(tabs)tabs.style.display='flex';if(more)more.textContent='전체 20개 보기';
   if(tabs)tabs.querySelectorAll('button').forEach(b=>b.classList.toggle('on',b.dataset.exampleCat===guiinExampleCategory));
   const items=guiinExampleCategory==='popular'?GUIIN_AI_POPULAR:(GUIIN_AI_EXAMPLES[guiinExampleCategory]||GUIIN_AI_POPULAR);
-  box.className='askExampleChips';box.innerHTML=items.map(guiinExampleButton).join('');
+  const compactItems=items.slice(0,4);
+  box.className='askExampleChips';box.innerHTML=compactItems.map(guiinExampleButton).join('');
 }
 function guiinSetExampleCategory(cat){guiinExampleExpanded=false;guiinExampleCategory=GUIIN_AI_EXAMPLES[cat]?cat:'popular';guiinRenderExamples();}
 function guiinToggleAllExamples(){guiinExampleExpanded=!guiinExampleExpanded;guiinRenderExamples();}
@@ -6843,11 +6846,15 @@ async function sendQ(preset){
     return;
   }
 
-  const used=freeUsed(),isFree=used<3;
-  if(!isFree){
-    guiinAppend('sysnote','데모 AI 상담 3회를 모두 사용했어요. 사주·궁합·대운 풀이는 계속 제한 없이 확인할 수 있습니다.');
+  try{if(!GUIIN_SERVER_ACCOUNTING?.authoritative)await guiinRefreshServerState({silent:true});}catch(_e){}
+  let freeRemaining=Math.max(0,3-freeUsed()),paidRemaining=Number(wallet?.coins||0),serverAuthoritative=false;
+  try{if(GUIIN_SERVER_ACCOUNTING?.authoritative){serverAuthoritative=true;freeRemaining=Math.max(0,Number(GUIIN_SERVER_ACCOUNTING?.free?.remaining||0));paidRemaining=Math.max(0,Number(GUIIN_SERVER_ACCOUNTING?.wallet?.available||0));}}catch(_e){}
+  if(freeRemaining<=0&&paidRemaining<=0){
+    guiinAppend('sysnote','사용할 수 있는 무료 질문이나 AI 이용권이 없어. 이용권을 확인해줘.');
+    syncWalletViews();
     return;
   }
+  const localFreeFallback=!serverAuthoritative&&freeRemaining>0;
 
   guiinAISending=true;
 
@@ -6928,7 +6935,10 @@ async function sendQ(preset){
     }
     persistAIHistory();
 
-    if(isFree&&data?.noCharge!==true)setFreeUsed(used+1);
+    if(data?.accounting){GUIIN_SERVER_ACCOUNTING.authoritative=true;guiinApplyServerAccountingSnapshot(data.accounting);}
+    else if(localFreeFallback&&data?.noCharge!==true&&data?.serverCharged!==true)setFreeUsed(freeUsed()+1);
+    else if(GUIIN_SERVER_ACCOUNTING?.authoritative){try{await guiinRefreshServerUsage({silent:true});}catch(_e){}}
+    syncWalletViews();
 
     if(input)input.value='';
     guiinClearPendingAI(requestMeta.key);
@@ -9447,7 +9457,8 @@ try{Object.assign(window,{guiinPaymentCenterStart});}catch(_e){}
    const clone=view.cloneNode(true);clone.querySelectorAll('details').forEach(d=>d.open=true);clone.querySelectorAll('button,.resultActionBar,.tailQuestions,.bottom').forEach(x=>x.remove());
    const assets=[...document.querySelectorAll('link[rel="stylesheet"],style')].map(x=>x.outerHTML).join('\n');
    const title=isCompat?'귀인사주 궁합':'귀인사주 평생사주';
-   win.document.open();win.document.write(`<!doctype html><html lang="ko"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><base href="${location.origin}/"><title>${title}</title>${assets}<style>html,body{background:#fff!important}body{margin:0!important}.app{max-width:820px!important;width:100%!important;margin:0 auto!important;background:#fff!important;box-shadow:none!important}.screen{display:block!important;padding:12px!important}body *{visibility:visible!important}.topbar,.bottom,.demoBadge,.resultActionBar,.tailQuestions,.tabs,button{display:none!important}.card,.deepCard,.expertSection,.starDetail{box-shadow:none!important;break-inside:avoid}.guiinEvidenceFold>.easyEvidence{display:block!important}.guiinEvidenceFold>summary{display:none!important}@page{size:A4;margin:10mm}</style></head><body><main class="app"><section id="${isCompat?'matchResult':'result'}" class="screen active"><div id="${isCompat?'matchView':'resultView'}">${clone.innerHTML}</div></section></main><script>(async()=>{try{const imgs=[...document.images];await Promise.all(imgs.map(i=>i.complete?Promise.resolve():new Promise(r=>{i.onload=i.onerror=r})));}catch(e){}setTimeout(()=>{window.focus();window.print();},250);})();<\/script></body></html>`);win.document.close();
+   win.document.open();win.document.write(`<!doctype html><html lang="ko"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><base href="${location.origin}/"><title>${title}</title>${assets}<style>html,body{background:#fff!important}body{margin:0!important}.app{max-width:820px!important;width:100%!important;margin:0 auto!important;background:#fff!important;box-shadow:none!important}.screen{display:block!important;padding:12px!important}body *{visibility:visible!important}.topbar,.bottom,.demoBadge,.resultActionBar,.tailQuestions,.tabs,button{display:none!important}.card,.deepCard,.expertSection,.starDetail{box-shadow:none!important;break-inside:avoid}.guiinEvidenceFold>.easyEvidence{display:block!important}.guiinEvidenceFold>summary{display:none!important}@page{size:A4;margin:10mm}</style></head><body><main class="app"><section id="${isCompat?'matchResult':'result'}" class="screen active"><div id="${isCompat?'matchView':'resultView'}">${clone.innerHTML}</div></section></main><script>(async()=>{try{const imgs=[...document.images];await Promise.all(imgs.map(i=>i.complete?Promise.resolve():new Promise(r=>{i.onload=i.onerror=r})));}catch(e){}setTimeout(()=>{window.focus();window.print();},250);})();<\/script><!-- GUIIN AI UX v6.28: authoritative counters + compact examples + mobile header + charge hint -->
+</body></html>`);win.document.close();
  }
  globalThis.guiinPrintResult=printClone;try{guiinPrintResult=printClone}catch(_e){}
 })();
@@ -10308,7 +10319,7 @@ try{Object.assign(window,{guiinPaymentCenterStart});}catch(_e){}
  // 9. AI 현재 상담 주제
  const topicLabels={personality:'나·성격',career:'직업·일',money:'재물·돈',relationship:'연애·관계',timing:'운의 흐름',family:'가족·독립',past:'지나온 흐름',life:'평생사주',compare:'선택 비교',decision:'결정 상담',general:'자유 상담'};
  function setTopic(topic){const bar=$g('aiTopicBar');if(!bar)return;const t=topicLabels[topic]||topicLabels.general;bar.querySelector('b').textContent=t;try{sessionStorage.setItem('guiin_ai_topic_v625',topic||'general')}catch(_){}}
- function installTopic(){const ctx=$g('askContextCard');if(!ctx||$g('aiTopicBar'))return;const bar=document.createElement('div');bar.id='aiTopicBar';bar.className='aiTopicBar';bar.innerHTML='<div><span>지금 이야기 중</span><b>자유 상담</b></div><button type="button" onclick="guiinStartNewConsultation()">새 주제</button>';insertAfter(ctx,bar);try{setTopic(sessionStorage.getItem('guiin_ai_topic_v625')||'general')}catch(_){setTopic('general')}}
+ function installTopic(){const ctx=$g('askContextCard');if(!ctx||$g('aiTopicBar'))return;const bar=document.createElement('div');bar.id='aiTopicBar';bar.className='aiTopicBar';bar.innerHTML='<div><span>지금 이야기 중 ·</span><b>자유 상담</b></div><button type="button" onclick="guiinStartNewConsultation()">새 주제</button>';insertAfter(ctx,bar);try{setTopic(sessionStorage.getItem('guiin_ai_topic_v625')||'general')}catch(_){setTopic('general')}}
  window.guiinSetActiveTopic=setTopic;
 
  // 10. 상담 검색/요약은 기존 계정기억 UI를 보강
