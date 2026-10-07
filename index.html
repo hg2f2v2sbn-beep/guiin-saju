@@ -9458,7 +9458,10 @@ try{Object.assign(window,{guiinPaymentCenterStart});}catch(_e){}
    }catch(_e){}
  }
  function cleanAll(){cleanText(document.getElementById('resultView'));cleanText(document.getElementById('matchView'))}
- const obs=new MutationObserver(()=>{clearTimeout(obs._t);obs._t=setTimeout(cleanAll,0)});try{obs.observe(document.body,{childList:true,subtree:true})}catch(_e){};setTimeout(cleanAll,0);
+ // Only changed result panels need text cleanup; menus/chat must not rescan reports.
+ const dirtyRoots=new Set();let cleanupTimer=0;
+ const obs=new MutationObserver(records=>{for(const record of records){const el=record.target.nodeType===1?record.target:record.target.parentElement;const root=el?.closest('#resultView,#matchView');if(root)dirtyRoots.add(root)}if(dirtyRoots.size&&!cleanupTimer)cleanupTimer=setTimeout(()=>{cleanupTimer=0;const roots=[...dirtyRoots];dirtyRoots.clear();roots.forEach(cleanText)},32)});
+ for(const id of ['resultView','matchView']){const root=document.getElementById(id);if(root)obs.observe(root,{childList:true,subtree:true})}setTimeout(cleanAll,0);
 })();
 
 </script>
@@ -9538,7 +9541,7 @@ try{Object.assign(window,{guiinPaymentCenterStart});}catch(_e){}
    let a=null;try{a=c.engine2?.version==='2.2.0'?c.engine2:analyze(c);c.engine2=a}catch(_e){};const q=a?.quality;if(!q)return;
    box.insertAdjacentHTML('beforeend',`<div class="e21grid" data-e22="1"><div class="e21item"><b>구조 중심축</b>${esc22(q.weightedTop?.[0]||'-')} · ${esc22(q.concentration)}</div><div class="e21item"><b>해석 신뢰도</b>원국 ${esc22(q.confidence.core)} · 관계 ${esc22(q.confidence.relationship)}</div></div><p class="e2meta" data-e22-note="1">${esc22(q.structureNote)}</p>`);
  }
- function refresh(){try{let c=null;try{c=chart}catch(_e){};if(c){c.engine2=analyze(c);enhance(document.getElementById('resultView'),c)}}catch(_e){}}
+ function refresh(){try{const root=document.getElementById('resultView');if(!root||!root.querySelector('.r30Engine2Box')||root.querySelector('[data-e22="1"]'))return;let c=null;try{c=chart}catch(_e){};if(c){if(c.engine2?.version!=='2.2.0')c.engine2=analyze(c);enhance(root,c)}}catch(_e){}}
  const prev=window.renderResult;if(typeof prev==='function'){
    const wrapped=function(){const out=prev.apply(this,arguments);try{refresh()}catch(_e){}return out};window.renderResult=wrapped;try{renderResult=wrapped}catch(_e){}
  }
@@ -9555,7 +9558,10 @@ try{Object.assign(window,{guiinPaymentCenterStart});}catch(_e){}
    });
  }
  function cleanup(){removeExactLongDuplicates(document.getElementById('resultView'));removeExactLongDuplicates(document.getElementById('matchView'))}
- const mo=new MutationObserver(()=>{clearTimeout(mo._t);mo._t=setTimeout(cleanup,0)});try{mo.observe(document.body,{childList:true,subtree:true})}catch(_e){};setTimeout(cleanup,0);
+ // Only changed result panels need text cleanup; menus/chat must not rescan reports.
+ const dirtyRoots=new Set();let cleanupTimer=0;
+ const mo=new MutationObserver(records=>{for(const record of records){const el=record.target.nodeType===1?record.target:record.target.parentElement;const root=el?.closest('#resultView,#matchView');if(root)dirtyRoots.add(root)}if(dirtyRoots.size&&!cleanupTimer)cleanupTimer=setTimeout(()=>{cleanupTimer=0;const roots=[...dirtyRoots];dirtyRoots.clear();roots.forEach(removeExactLongDuplicates)},32)});
+ for(const id of ['resultView','matchView']){const root=document.getElementById(id);if(root)mo.observe(root,{childList:true,subtree:true})}setTimeout(cleanup,0);
 
  // 대표 명식 5개로 '다른 사람인데 결과가 한 템플릿처럼 보이는지'를 점검한다.
  const FIXTURES=[
@@ -11693,6 +11699,25 @@ try{Object.assign(window,{guiinPaymentCenterStart});}catch(_e){}
  if(typeof prior==='function'){const wrapped=function(){const r=prior.apply(this,arguments);apply();return r};window.renderCompatCards=wrapped;try{renderCompatCards=wrapped}catch(_){} }
 })();
 
+</script>
+<script id="GUIIN_PERFORMANCE6341">
+// Reuse pair interpretation only within one synchronous render. A new render always
+// starts fresh, including changed dates, time inputs, permissions and current year.
+(function(){
+ const original=globalThis.guiinCompatR23PairData;
+ let cache=null;
+ if(typeof original==='function')globalThis.guiinCompatR23PairData=function(a,b){
+   if(!cache)return original.apply(this,arguments);
+   let row=cache.find(x=>x.a===a&&x.b===b);
+   if(!row){row={a,b,value:original.apply(this,arguments)};cache.push(row)}
+   return {...row.value};
+ };
+ const previous=window.renderCompatCards;
+ if(typeof previous==='function'){
+   const wrapped=function(){const parent=cache;cache=[];try{return previous.apply(this,arguments)}finally{cache=parent}};
+   window.renderCompatCards=wrapped;try{renderCompatCards=wrapped}catch(_){}
+ }
+})();
 </script>
 </body>
 </html>
