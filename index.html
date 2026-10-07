@@ -370,6 +370,7 @@ html{background:#efe7d7}.app{background:linear-gradient(180deg,#fffaf0 0%,#fff6e
 .pagePad{padding:10px 0 18px}.utilityCard{padding:18px;margin-top:10px}.utilityCard h3{margin:0 0 9px;color:#173a2f;font-size:19px}.utilityCard>p,.utilityHint{font-size:12px;line-height:1.7;color:#777269}.softBtn{width:100%;border:1px solid #eadfcd;background:#fffdf8;border-radius:14px;padding:12px 13px;margin-top:8px;text-align:left;font-weight:850;color:#29463a}.serviceGrid{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:12px}.serviceLink{border:1px solid #eadfcd;background:#fffdf8;border-radius:15px;padding:13px;text-align:left}.serviceLink b{display:block;color:#183f2d;font-size:13px}.serviceLink span{display:block;color:#858078;font-size:10px;line-height:1.5;margin-top:4px}.trustBox{background:#faf6ed;border-radius:14px;padding:12px 13px;margin-top:12px;color:#777269;font-size:11px;line-height:1.7}.kakaoSupport{width:100%;border:0;border-radius:14px;padding:14px;background:#FEE500;color:#191919;font-weight:900}.faq{margin-top:14px}.faq details{border-top:1px solid #eee6d8;padding:11px 0}.faq summary{font-size:12px;font-weight:850;color:#34473d}.faq p{font-size:11px;line-height:1.65;color:#78766f}.infoRows{display:grid;gap:0;margin-top:10px}.infoRows>div{display:flex;gap:10px;justify-content:space-between;border-top:1px solid #eee7dc;padding:10px 0;font-size:11px}.infoRows>div:first-child{border-top:0}.infoRows span{color:#8e8a82}.infoRows b{text-align:right;color:#37483f}.settingRow{display:flex!important;justify-content:space-between;align-items:center!important;border-top:1px solid #eee7dc;padding:12px 0;margin:0!important}.settingRow:first-of-type{border-top:0}.settingRow span b{display:block;font-size:12px;color:#35453d}.settingRow small{display:block;font-size:9px;color:#88847c;margin-top:3px}.settingRow input{width:20px;height:20px;min-height:20px}
 
 .authHero{padding:24px 16px 14px;text-align:center}.authMark{width:68px;height:68px;margin:0 auto 12px;border-radius:22px;overflow:hidden;box-shadow:var(--shadow)}.authMark img{width:100%;height:100%;object-fit:cover}.authHero h2{margin:0;color:#285d32;font-size:24px}.authHero p{font-size:12px;line-height:1.7;color:#7e7669}.authCard{padding:18px;margin-top:10px}.authCard label{display:block;font-size:11px;font-weight:800;margin:11px 0 5px;color:#5f655f}.authBtn{width:100%;border:0;border-radius:15px;padding:14px;font-weight:900;margin-top:9px}.authBtn.kakao{background:#FEE500;color:#191919}.authBtn.google{background:#fff;border:1px solid #ddd;color:#333}.authBtn.apple{background:#111;color:#fff}.authBtn.green{background:#285d32;color:white}.authDivider{display:flex;align-items:center;gap:10px;color:#aaa39a;font-size:10px;margin:15px 0}.authDivider:before,.authDivider:after{content:'';height:1px;background:#e9e0d2;flex:1}.authLinks{text-align:center;font-size:11px;color:#7e7669;margin-top:14px}.authLinks button{border:0;background:none;color:#285d32;font-weight:900;padding:4px}.authNotice{font-size:10px;line-height:1.65;color:#8a8378;background:#faf6ed;border-radius:13px;padding:11px;margin-top:12px}
+.authForm{display:block}.authInput{display:block;width:100%;box-sizing:border-box;border:1px solid #e7dfd2;border-radius:13px;background:#fffdf8;color:#243a2e;padding:12px 13px;font:inherit;font-size:13px;outline:none}.authInput:focus{border-color:#78a873;box-shadow:0 0 0 3px rgba(87,139,83,.12)}.authInput::placeholder{color:#b4ada2}.authForm .authBtn{margin-top:15px}
 .authSignedIn{display:none;text-align:center;padding:22px 16px}
 .authSignedIn.on{display:block}
 .authSignedIn .signedMark{width:72px;height:72px;border-radius:24px;margin:0 auto 12px;overflow:hidden;box-shadow:var(--shadow)}
@@ -2038,18 +2039,46 @@ html{-webkit-text-size-adjust:100%;text-size-adjust:100%}
   <div class="topbar"><button class="ghost" onclick="go('mypage')" data-guiin-nav="mypage">‹</button><div class="brand"><div class="brandline">로그인</div></div><span></span></div>
   <div id="loginSignedIn" class="authSignedIn card">
     <div class="signedMark"><img src="clover-mark.jpg" alt=""></div>
-    <h3>카카오 계정으로 로그인되어 있어요</h3>
+    <h3>계정으로 로그인되어 있어요</h3>
     <p>이제 저장한 사주·이용내역·상담기록을 이 계정으로 이어서 사용할 수 있어요.</p>
     <div id="loginSignedUser" class="signedUser">로그인 계정 확인 중…</div>
     <button class="authBtn green" type="button" onclick="go('mypage')" data-guiin-nav="mypage">마이페이지로 가기</button>
     <button class="authLogout" type="button" onclick="logoutGuiin()">로그아웃</button>
   </div>
   <div id="loginGuestUI">
-    <div class="authHero"><div class="authMark"><img src="clover-mark.jpg" alt=""></div><h2>귀인사주에 오신 걸 환영해요</h2><p>로그인하면 저장한 사주·구매내역·상담기록을 이어볼 수 있어요.</p></div>
-    <div class="authCard card"><button class="authBtn kakao" onclick="startKakaoLogin()">카카오로 시작하기</button><div id="loginMsg" class="authNotice">현재 카카오 로그인을 지원합니다. 처음 이용하는 경우에도 카카오로 시작하면 귀인사주 계정이 연결됩니다.</div></div>
+    <div class="authHero"><div class="authMark"><img src="clover-mark.jpg" alt=""></div><h2>귀인사주에 오신 걸 환영해요</h2><p>아이디 로그인이나 카카오 로그인으로 저장한 사주·구매내역·상담기록을 이어볼 수 있어요.</p></div>
+    <div class="authCard card">
+      <form class="authForm" onsubmit="return guiinPasswordLogin(event)">
+        <label for="loginLoginId">아이디</label>
+        <input id="loginLoginId" class="authInput" type="text" autocomplete="username" maxlength="32" placeholder="영문·숫자 4~32자">
+        <label for="loginPassword">비밀번호</label>
+        <input id="loginPassword" class="authInput" type="password" autocomplete="current-password" maxlength="128" placeholder="8자 이상">
+        <button class="authBtn green" type="submit">아이디로 로그인</button>
+      </form>
+      <div class="authDivider">또는</div>
+      <button class="authBtn kakao" type="button" onclick="startKakaoLogin()">카카오로 시작하기</button>
+      <div class="authLinks">계정이 없나요? <button type="button" onclick="go('signup')">회원가입</button></div>
+      <div id="loginMsg" class="authNotice">아이디로 로그인하거나 카카오로 시작할 수 있어요.</div>
+    </div>
   </div>
 </section>
-<section id="signup" class="screen"><div class="topbar"><button class="ghost" onclick="go('login')" data-guiin-nav="login">‹</button><div class="brand"><div class="brandline">회원가입</div></div><span></span></div><div class="authHero"><div class="authMark"><img src="clover-mark.jpg" alt=""></div><h2>귀인사주 회원가입</h2><p>카카오 계정으로 간편하게 시작하고 내 사주·상담·구매내역을 이어서 이용할 수 있어요.</p></div><div class="authCard card"><button class="authBtn kakao" onclick="startKakaoLogin()">카카오로 가입하기</button><div id="signupMsg" class="authNotice">현재 카카오 가입을 지원합니다. Google·Apple·이메일 가입은 준비되는 순서대로 추가할 예정입니다.</div></div></section>
+<section id="signup" class="screen"><div class="topbar"><button class="ghost" onclick="go('login')" data-guiin-nav="login">‹</button><div class="brand"><div class="brandline">회원가입</div></div><span></span></div><div class="authHero"><div class="authMark"><img src="clover-mark.jpg" alt=""></div><h2>귀인사주 회원가입</h2><p>아이디와 비밀번호를 만들면 카카오 없이도 저장한 사주·상담·구매내역을 이어서 이용할 수 있어요.</p></div><div class="authCard card">
+  <form class="authForm" onsubmit="return guiinPasswordSignup(event)">
+    <label for="signupLoginId">아이디</label>
+    <input id="signupLoginId" class="authInput" type="text" autocomplete="username" maxlength="32" placeholder="영문·숫자 4~32자">
+    <label for="signupPassword">비밀번호</label>
+    <input id="signupPassword" class="authInput" type="password" autocomplete="new-password" maxlength="128" placeholder="8자 이상">
+    <label for="signupPasswordConfirm">비밀번호 확인</label>
+    <input id="signupPasswordConfirm" class="authInput" type="password" autocomplete="new-password" maxlength="128" placeholder="비밀번호를 한 번 더 입력해 주세요">
+    <label for="signupDisplayName">표시 이름 <span style="font-weight:500;color:#9a9286">(선택)</span></label>
+    <input id="signupDisplayName" class="authInput" type="text" autocomplete="nickname" maxlength="40" placeholder="마이페이지에 표시할 이름">
+    <button class="authBtn green" type="submit">아이디로 회원가입</button>
+  </form>
+  <div class="authDivider">또는</div>
+  <button class="authBtn kakao" type="button" onclick="startKakaoLogin()">카카오로 가입하기</button>
+  <div class="authLinks">이미 계정이 있나요? <button type="button" onclick="go('login')">로그인</button></div>
+  <div id="signupMsg" class="authNotice">아이디 회원가입 또는 카카오 가입을 선택할 수 있어요.</div>
+</div></section>
 <section id="loginComplete" class="screen">
   <div class="topbar">
     <span></span>
@@ -7102,6 +7131,72 @@ async function startKakaoLogin(){
     showGuiinPopup(msg,'로그인 연결 오류');
   }
 }
+
+function guiinPasswordErrorMessage(code){
+  const map={
+    invalid_login_id:'아이디는 영문 소문자·숫자와 . _ - 만 사용해 4~32자로 입력해 주세요.',
+    password_too_short:'비밀번호는 8자 이상으로 입력해 주세요.',
+    password_mismatch:'비밀번호 확인이 일치하지 않아요.',
+    login_id_taken:'이미 사용 중인 아이디예요. 다른 아이디를 선택해 주세요.',
+    invalid_credentials:'아이디 또는 비밀번호를 다시 확인해 주세요.',
+    user_not_active:'현재 사용할 수 없는 계정이에요.',
+    database_unavailable:'회원 서버를 잠시 확인할 수 없어요. 조금 뒤 다시 시도해 주세요.',
+    rate_limited:'요청이 많아요. 잠시 후 다시 시도해 주세요.'
+  };
+  return map[String(code||'')]||'회원 인증 처리 중 오류가 발생했어요. 잠시 후 다시 시도해 주세요.';
+}
+async function guiinPasswordAuthRequest(path,payload){
+  try{await window.GuiinMemberData?.ensureServerGuest?.();}catch(_e){}
+  const res=await fetch(guiinStableApiBase()+path,{method:'POST',mode:'cors',cache:'no-store',headers:guiinAuthHeaders({'Content-Type':'application/json','Accept':'application/json'}),body:JSON.stringify(payload)});
+  const data=await res.json().catch(()=>({}));
+  if(!res.ok){const e=new Error(data?.error||('HTTP '+res.status));e.status=res.status;e.data=data;throw e;}
+  return data;
+}
+async function guiinFinishPasswordLogin(data,msgEl){
+  const token=String(data?.token||'').trim();
+  if(!token.startsWith('usr_'))throw new Error('invalid_session_response');
+  guiinStoreAuthSession({token,userId:data.userId||data.user?.id||'',provider:'password',savedAt:Date.now(),verifiedAt:Date.now()});
+  guiinCurrentUser=data.user||{id:data.userId||'',provider:'password'};
+  try{localStorage.setItem('guiin_verified_user_v1',JSON.stringify(guiinCurrentUser));localStorage.setItem('guiin_last_login_at',String(Date.now()));}catch(_e){}
+  syncAuthUI();
+  try{await refreshGuiinUser();}catch(_e){}
+  try{await window.GuiinMemberData?.afterLogin?.();}catch(err){console.warn('GUIIN_MEMBER_LOGIN_SYNC_DEFERRED',err?.message||err);}
+  if(msgEl)msgEl.textContent='로그인이 완료됐어요. 마이페이지로 이동할게요.';
+  go('mypage');
+  return false;
+}
+async function guiinPasswordLogin(event){
+  event?.preventDefault?.();
+  const msg=$('loginMsg'),loginId=String($('loginLoginId')?.value||'').trim(),password=String($('loginPassword')?.value||'');
+  if(msg)msg.textContent='아이디 로그인을 확인하고 있어요…';
+  try{
+    if(!/^[A-Za-z0-9][A-Za-z0-9._-]{3,31}$/.test(loginId.toLowerCase()))throw new Error('invalid_login_id');
+    if(!password)throw new Error('invalid_credentials');
+    const data=await guiinPasswordAuthRequest('/api/auth/password/login',{loginId,password});
+    await guiinFinishPasswordLogin(data,msg);
+  }catch(err){
+    const code=String(err?.data?.error||err?.message||'password_login_failed');
+    if(msg)msg.textContent=guiinPasswordErrorMessage(code);
+  }
+  return false;
+}
+async function guiinPasswordSignup(event){
+  event?.preventDefault?.();
+  const msg=$('signupMsg'),loginId=String($('signupLoginId')?.value||'').trim(),password=String($('signupPassword')?.value||''),confirm=String($('signupPasswordConfirm')?.value||''),displayName=String($('signupDisplayName')?.value||'').trim();
+  if(msg)msg.textContent='회원가입을 처리하고 있어요…';
+  try{
+    if(!/^[A-Za-z0-9][A-Za-z0-9._-]{3,31}$/.test(loginId.toLowerCase()))throw new Error('invalid_login_id');
+    if(password.length<8)throw new Error('password_too_short');
+    if(password!==confirm)throw new Error('password_mismatch');
+    const data=await guiinPasswordAuthRequest('/api/auth/password/signup',{loginId,password,displayName:displayName.slice(0,40)});
+    await guiinFinishPasswordLogin(data,msg);
+  }catch(err){
+    const code=String(err?.data?.error||err?.message||'password_signup_failed');
+    if(msg)msg.textContent=guiinPasswordErrorMessage(code);
+  }
+  return false;
+}
+
 function socialLoginReady(provider){const m=$('loginMsg')||$('signupMsg');if(m)m.textContent=`${provider} 로그인은 아직 연결 전입니다. 카카오 로그인은 지금 사용할 수 있어요.`;}
 async function refreshGuiinUser(){
   const s=guiinAuthSession();
@@ -7184,12 +7279,12 @@ function syncAuthUI(){
   if(signedUI)signedUI.classList.toggle('on',!!s);
 
   if(signedUser&&s){
-    const label=u?.display_name||u?.nickname||u?.name||'카카오 회원';
+    const label=u?.display_name||u?.nickname||u?.name||(u?.provider==='password'?'아이디 회원':'카카오 회원');
     signedUser.textContent=label+'님 · 로그인 상태가 이 기기에 저장되어 있습니다.';
   }
 
   const msg=$('loginMsg');
-  if(msg)msg.textContent=s?(u?.display_name?`${u.display_name}님으로 로그인되어 있습니다.`:'카카오 계정으로 로그인되어 있습니다.'):'카카오 로그인을 사용할 수 있어요.';
+  if(msg)msg.textContent=s?(u?.display_name?`${u.display_name}님으로 로그인되어 있습니다.`:(u?.provider==='password'?'아이디 계정으로 로그인되어 있습니다.':'카카오 계정으로 로그인되어 있습니다.')):'아이디 또는 카카오 로그인을 사용할 수 있어요.';
 
   if(entry){
     entry.onclick=s
