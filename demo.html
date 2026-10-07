@@ -1685,6 +1685,23 @@ html{-webkit-text-size-adjust:100%;text-size-adjust:100%}
   #ask .askExampleChips .qchip{font-size:11px!important;padding:9px 11px!important}
 }
 </style>
+
+<style id="GUIIN_TOSS_REVIEW_FIX_20261007">
+/* Toss 심사용 공개 상품 정보: 홈에서 상품·가격·제공시점·환불 기준을 바로 확인할 수 있게 한다. */
+.homeProductReview{margin:14px 0 2px;padding:15px 14px;border:1px solid #e9dfca;border-radius:18px;background:linear-gradient(145deg,#fffdf7,#f8f3e8);box-shadow:0 5px 18px rgba(83,72,43,.06)}
+.homeProductReview .mini{font-size:9px;font-weight:900;letter-spacing:.02em;color:#9a7430;margin-bottom:8px}
+.homeProductReview .productReviewTop{display:flex;align-items:center;gap:11px}
+.homeProductReview .productReviewArt{width:58px;height:58px;flex:0 0 58px;border-radius:16px;background:#edf5e7;overflow:hidden}
+.homeProductReview .productReviewArt img{display:block;width:100%;height:100%;object-fit:contain}
+.homeProductReview h3{margin:0;color:#234c37;font-size:16px;line-height:1.28}
+.homeProductReview .productPrice{margin-left:auto;white-space:nowrap;color:#a16f16;font-size:16px;font-weight:950}
+.homeProductReview .productReviewDesc{margin:10px 0 8px;color:#59635c;font-size:10px;line-height:1.6}
+.homeProductReview .productReviewMeta{padding:9px 10px;border-radius:12px;background:#fffaf0;color:#6e746e;font-size:9px;line-height:1.65}
+.homeProductReview .productReviewMeta b{color:#3b5e45}
+.homeProductReview .productReviewAction{display:flex;justify-content:flex-end;margin-top:10px}
+.homeProductReview .productReviewAction button{border:0;border-radius:999px;padding:9px 13px;background:#f4d47b;color:#3c3420;font-size:10px;font-weight:900}
+@media(max-width:360px){.homeProductReview .productReviewTop{align-items:flex-start}.homeProductReview .productPrice{font-size:14px}.homeProductReview h3{font-size:14px}}
+</style>
 </head>
 <body><div class="guiinDemoBadge">DEMO · 전체풀이 무료</div>
 <div class="app">
@@ -1731,10 +1748,23 @@ html{-webkit-text-size-adjust:100%;text-size-adjust:100%}
     </div>
   </div>
 
+
+  <section class="homeProductReview" aria-labelledby="homeProductReviewTitle">
+    <div class="mini">홈페이지 판매 상품</div>
+    <div class="productReviewTop">
+      <div class="productReviewArt"><img loading="lazy" decoding="async" src="guiin-saju-cat.webp" alt="프리미엄 평생사주 상품 이미지"></div>
+      <div><h3 id="homeProductReviewTitle">프리미엄 평생사주</h3><p style="margin:4px 0 0;color:#7b817b;font-size:9px">내 명식 기준 심층 사주 리포트</p></div>
+      <strong class="productPrice">5,900원</strong>
+    </div>
+    <p class="productReviewDesc">성격·직업·재물·연애·신살·귀인·대운과 세운을 내 실제 입력값으로 계산해 결제 승인 후 바로 열람하는 디지털 서비스예요.</p>
+    <div class="productReviewMeta"><b>제공 시점</b> 결제 승인 및 서버 검증 후 즉시 제공 · <b>이용기간</b> 결제 후 열람 · <b>환불</b> 제공 시작 전 7일 이내 가능, 제공 시작 후에는 환불정책 기준 적용</div>
+    <div class="productReviewAction"><button type="button" onclick="go('paymentInfo')" data-guiin-nav="paymentInfo">상품·결제 안내 보기 ›</button></div>
+  </section>
+
   <div style="margin:14px 0 2px;padding:14px 12px;border-top:1px solid #ece5d7;text-align:center;font-size:8.7px;line-height:1.75;color:#8b8f8c;">
-    <div><b style="color:#667069;">귀인사주</b> · 대표 강진아</div>
-    <div>사업자등록번호 584-69-00863</div>
-    <div>서울특별시 중랑구 용마산로139나길 23(신내동) 101호</div>
+    <div><b style="color:#667069;">상호: 귀인사주</b> · 대표자: 강진아</div>
+    <div>사업자등록번호: 584-69-00863</div>
+    <div>사업장 주소: 서울특별시 중랑구 용마산로139나길 23</div>
     <div>고객센터 0507-1464-3343 · 이메일 blue_wls@naver.com<br>전화 상담은 제공하지 않습니다. 문의게시판을 이용해 주세요.</div>
     <div>호스팅 서비스 제공자 Cloudflare, Inc.</div>
     <div><a href="inquiry.html" style="color:#747b77;text-decoration:underline;">문의게시판</a> · <a href="http://pf.kakao.com/_TLTrX" target="_blank" rel="noopener" style="color:#747b77;text-decoration:underline;">카카오톡 채널 문의</a></div>
@@ -2072,7 +2102,7 @@ html{-webkit-text-size-adjust:100%;text-size-adjust:100%}
 <section id="notifications" class="screen"><div class="topbar"><button class="ghost" onclick="go('mypage')" data-guiin-nav="mypage">‹</button><div class="brand"><div class="brandline">알림 설정</div></div><span></span></div><div class="pagePad"><div class="card utilityCard"><h3>받고 싶은 소식</h3><label class="settingRow"><span><b>오늘의 운세</b><small>매일 운세 알림</small></span><input type="checkbox" data-notify="daily"></label><label class="settingRow"><span><b>운의 변화</b><small>월운·세운 변화 안내</small></span><input type="checkbox" data-notify="flow"></label><label class="settingRow"><span><b>혜택 알림</b><small>쿠폰·이벤트</small></span><input type="checkbox" data-notify="promo"></label><p class="utilityHint">선호 설정은 현재 기기에 저장됩니다.</p></div></div></section>
 <section id="coupons" class="screen"><div class="topbar"><button class="ghost" onclick="go('mypage')" data-guiin-nav="mypage">‹</button><div class="brand"><div class="brandline">쿠폰함</div></div><span></span></div><div class="pagePad"><div class="card utilityCard"><h3>쿠폰 · 혜택</h3><p>현재 발급된 쿠폰은 없습니다.</p><div class="trustBox">쿠폰이 발급되면 사용 가능 여부와 최종 결제금액을 결제 단계에서 확인할 수 있습니다.</div></div></div></section>
 <section id="customer" class="screen"><div class="topbar"><button class="ghost" onclick="go('mypage')" data-guiin-nav="mypage">‹</button><div class="brand"><div class="brandline">고객센터 · FAQ</div></div><span></span></div><div class="pagePad"><div class="card utilityCard"><h3>무엇을 도와드릴까요?</h3><p><b>전화 상담은 제공하지 않습니다.</b><br>결제·이용·환불·사주 결과 관련 문의는 문의게시판을 이용해 주세요.<br>고객센터 대표번호 0507-1464-3343은 사업자 연락처로 안내됩니다.</p><button class="kakaoSupport" onclick="openCustomerCenter()">문의게시판 이용하기 ›</button><button class="softBtn" onclick="window.open('http://pf.kakao.com/_TLTrX','_blank','noopener')">카카오톡 채널 문의 ›</button><div class="faq"><details><summary>결제했는데 내용이 열리지 않아요</summary><p>결제 승인 후에도 구매한 내용이 열리지 않으면 결제 내역을 다시 확인한 뒤 고객센터로 문의해 주세요.</p></details><details><summary>출생시간을 모르면 어떻게 하나요?</summary><p>시주 관련 해석의 강도를 낮추고, 출생시간 없이 확인 가능한 부분과 구분해서 설명합니다.</p></details><details><summary>신살이 많으면 안 좋은 사주인가요?</summary><p>아니요. 신살은 보조 정보입니다. 귀인사주는 신살 하나로 사건을 단정하지 않고 원국·오행·십신·대운과 함께 읽습니다.</p></details><details><summary>AI는 무엇을 기준으로 답하나요?</summary><p>귀인사주 엔진이 계산한 명식을 그대로 Worker에 전달하고, AI가 명식을 임의로 다시 계산하지 않도록 구성되어 있습니다.</p></details></div></div></div></section>
-<section id="appinfo" class="screen"><div class="topbar"><button class="ghost" onclick="go('mypage')" data-guiin-nav="mypage">‹</button><div class="brand"><div class="brandline">서비스 정보</div></div><span></span></div><div class="pagePad"><div class="card utilityCard"><h3>☘ 귀인사주</h3><p>좋은 인연이, 좋은 운을 만듭니다.</p><div class="paidDisclaimer"><b>사업자 정보</b><br>상호 귀인사주 · 대표 강진아<br>사업자등록번호 584-69-00863<br>서울특별시 중랑구 용마산로139나길 23(신내동) 101호<br>고객센터 0507-1464-3343<br>이메일 blue_wls@naver.com<br>호스팅 서비스 제공자 Cloudflare, Inc.<br><a href="company.html" target="_blank" rel="noopener">회사소개·사업자정보</a><br><a href="inquiry.html" target="_blank" rel="noopener">문의게시판</a><br><a href="http://pf.kakao.com/_TLTrX" target="_blank" rel="noopener">카카오톡 채널 문의</a></div><div class="infoRows"><div><span>평생사주</span><b>5,900원</b></div><div><span>프리미엄 궁합</span><b>7,900원</b></div><div><span>AI 상담</span><b>처음 3회 무료</b></div><div><span>AI 사주 분석 질문 이용권</span><b>3회 1,100원부터</b></div></div><button class="softBtn" onclick="go('paymentInfo')" data-guiin-nav="paymentInfo">결제·상품 안내 ›</button><button class="softBtn" onclick="go('terms')" data-guiin-nav="terms">이용약관 ›</button><button class="softBtn" onclick="go('privacy')" data-guiin-nav="privacy">개인정보처리방침 ›</button><button class="softBtn" onclick="go('refund')" data-guiin-nav="refund">환불정책 ›</button></div></div></section>
+<section id="appinfo" class="screen"><div class="topbar"><button class="ghost" onclick="go('mypage')" data-guiin-nav="mypage">‹</button><div class="brand"><div class="brandline">서비스 정보</div></div><span></span></div><div class="pagePad"><div class="card utilityCard"><h3>☘ 귀인사주</h3><p>좋은 인연이, 좋은 운을 만듭니다.</p><div class="paidDisclaimer"><b>사업자 정보</b><br>상호: 귀인사주 · 대표자: 강진아<br>사업자등록번호: 584-69-00863<br>사업장 주소: 서울특별시 중랑구 용마산로139나길 23<br>고객센터 0507-1464-3343<br>이메일 blue_wls@naver.com<br>호스팅 서비스 제공자 Cloudflare, Inc.<br><a href="company.html" target="_blank" rel="noopener">회사소개·사업자정보</a><br><a href="inquiry.html" target="_blank" rel="noopener">문의게시판</a><br><a href="http://pf.kakao.com/_TLTrX" target="_blank" rel="noopener">카카오톡 채널 문의</a></div><div class="infoRows"><div><span>평생사주</span><b>5,900원</b></div><div><span>프리미엄 궁합</span><b>7,900원</b></div><div><span>AI 상담</span><b>처음 3회 무료</b></div><div><span>AI 사주 분석 질문 이용권</span><b>3회 1,100원부터</b></div></div><button class="softBtn" onclick="go('paymentInfo')" data-guiin-nav="paymentInfo">결제·상품 안내 ›</button><button class="softBtn" onclick="go('terms')" data-guiin-nav="terms">이용약관 ›</button><button class="softBtn" onclick="go('privacy')" data-guiin-nav="privacy">개인정보처리방침 ›</button><button class="softBtn" onclick="go('refund')" data-guiin-nav="refund">환불정책 ›</button></div></div></section>
 <section id="paymentInfo" class="screen"><div class="topbar"><button class="ghost" onclick="go('appinfo')" data-guiin-nav="appinfo">‹</button><div class="brand"><div class="brandline">결제·상품 안내</div></div><span></span></div><div class="pagePad"><div class="card utilityCard"><h3>유료 상품</h3><p>상품을 먼저 조회한 뒤 결제할 수 있어요. 결제 전 가격·제공 내용을 다시 확인합니다.</p><div class="paymentInfoGrid"><div class="paymentInfoRow"><span>프리미엄 평생사주<br>심층 평생사주 전체 열람</span><b>5,900원</b></div><div class="paymentInfoRow"><span>프리미엄 궁합<br>두 사람의 심층 궁합 전체 열람</span><b>7,900원</b></div><div class="paymentInfoRow"><span>AI 사주상담 질문 3회 패키지<br>총 3회 이용</span><b>1,100원</b></div><div class="paymentInfoRow"><span>AI 사주상담 질문 6회 패키지<br>기본 5회 + 추가 1회, 총 6회</span><b>1,990원</b></div><div class="paymentInfoRow"><span>AI 사주상담 질문 9회 패키지<br>기본 8회 + 추가 1회, 총 9회</span><b>2,790원</b></div><div class="paymentInfoRow"><span>AI 사주상담 질문 18회 패키지<br>기본 13회 + 추가 5회, 총 18회</span><b>4,990원</b></div></div>
 <div class="trustBox" style="margin-top:12px"><b>프리미엄 평생사주 · 5,900원</b><br>결제 승인 후 즉시 개인 명식을 기준으로 심층 리포트를 생성·열람합니다. 결제 전 실제 명식 미리보기를 확인할 수 있으며, 콘텐츠 제공이 시작되면 청약철회가 제한될 수 있습니다.</div>
 <button class="softBtn" onclick="openResultTab('summary')">사주 조회하기 ›</button>
