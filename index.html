@@ -1,4 +1,5 @@
 <!doctype html>
+<!-- GUIIN PRODUCTION · v6.34 HUMAN-FIRST INTERPRETATION · 2026-10-07 -->
 <!-- GUIIN PRODUCTION · DEMO R28 MERGED · 2026-10-01 -->
 <!-- GUIIN R17 INTEGRATED RESTORE · feature-complete demo + R17 personalization · 2026-09-28 -->
 <!-- GUIIN R17 · QA-personalized longform saju + compatibility + full calculated-star interpretation · 2026-09-28 -->
@@ -11700,11 +11701,9 @@ try{Object.assign(window,{guiinPaymentCenterStart});}catch(_e){}
    if(!root.querySelector('.easyLongCard,.guiinCounselor30'))return;
    running=true;
    try{
-     for(const tool of ['GuiinQA630','GuiinInterpretation631','GuiinInterpretation632','GuiinInterpretation6321','GuiinInterpretation6322']){
-       try{globalThis[tool]?.apply?.()}catch(e){console.warn('GUIIN_633_LAYER_FAILED',tool,e)}
-     }
+     // v6.34: older interpretation layers remain available for diagnostics only.
+     // Do not let them overwrite GuiinExpert human-first output after render.
      alignDisplayedLuck(root,c);
-     personalize(root,c);
      latestQA=visibleQA(root,c);
      try{sessionStorage.setItem('guiin_v633_qa',JSON.stringify(latestQA))}catch(_){/* storage optional */}
      // Expose warnings to the site owner via browser console, never suppress chart discrepancies.
@@ -11845,5 +11844,8 @@ try{Object.assign(window,{guiinPaymentCenterStart});}catch(_e){}
  }
 })();
 </script>
+
+<!-- GUIIN v6.34 · human-first interpretation output layer; calculation/payment/auth untouched -->
+<script src="guiin-interpretation-v4.js?v=20261007v634"></script>
 </body>
 </html>
