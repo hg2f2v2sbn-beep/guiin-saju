@@ -127,7 +127,7 @@ function dedupe(rows,c,scope='saju'){
    return {...r,body:vary(c,scope+'|'+r.id,keep.join('\n\n'))};
  });
 }
-function pmodel(c){const a=order(c),g=mg(c);return {version:'human-v5',day_master:c?.dayMaster?.stem||'',month_god:g,strongest:{element:a[0]?.[0],percent:a[0]?.[1]},weakest:{element:a[4]?.[0],percent:a[4]?.[1]},day_branch:branch(c),relation_signal_types:[...new Set(rels(c).map(x=>x?.type).filter(Boolean))],yin_yang:yinYang(c),relation_profile:relationProfile(c),hidden_gods:hiddenGods(c).slice(0,6)};}
+function pmodel(c){const a=order(c),g=mg(c);return {version:'human-v5.1',day_master:c?.dayMaster?.stem||'',month_god:g,strongest:{element:a[0]?.[0],percent:a[0]?.[1]},weakest:{element:a[4]?.[0],percent:a[4]?.[1]},day_branch:branch(c),relation_signal_types:[...new Set(rels(c).map(x=>x?.type).filter(Boolean))],yin_yang:yinYang(c),relation_profile:relationProfile(c),hidden_gods:hiddenGods(c).slice(0,6)};}
 // Compatibility
 function prof(c){const a=order(c);return {c,n:name(c),hi:a[0],lo:a[4],g:mg(c),b:branch(c),dm:c?.dayMaster?.el||c?.pillars?.day?.stemEl||'',stem:c?.dayMaster?.stem||c?.pillars?.day?.stem||''};}
 function pairSeed(A,B,s){return hash([A.c?.pillars?.day?.ko,B.c?.pillars?.day?.ko,A.c?.pillars?.month?.ko,B.c?.pillars?.month?.ko,s].join('|'));} function pp(a,A,B,s){return a[pairSeed(A,B,s)%a.length];}
@@ -141,7 +141,7 @@ const COMPAT_BANDS={
  effort:{core:'끌림은 있어도 편하게만 흘러가는 관계는 아니야. 서로 다른 방식 때문에 좋아하면서도 피곤하다는 느낌이 같이 생기기 쉬워.',friction:'한쪽이 밀어붙이면 다른 쪽이 닫히거나, 한쪽이 확인받으려 할수록 다른 쪽이 부담을 느끼는 식의 엇갈림을 조심해야 해.',long:'오래 만나려면 사랑의 크기를 증명하기보다 반복되는 갈등 하나씩 해결할 수 있는지가 더 중요해.'},
  fragile:{core:'처음의 끌림과 별개로 가까워질수록 서로에게 요구하는 방식이 크게 다를 수 있는 관계야.',friction:'같은 문제를 여러 번 설명해도 서로 받아들이는 방식이 달라 감정 소모가 커질 수 있어.',long:'참는 사람 한 명이 관계를 유지하는 구조가 되면 오래 가기 어려워. 경계와 약속이 실제로 지켜지는지를 먼저 봐야 해.'}
 };
-function compatBand(score){score=Number(score);if(!Number.isFinite(score))return 'mixed';if(score>=90)return'excellent';if(score>=80)return'strong';if(score>=70)return'mixed';if(score>=60)return'effort';return'fragile';}
+function compatBand(score){if(score===null||score===undefined||score==='')return 'mixed';score=Number(score);if(!Number.isFinite(score))return 'mixed';if(score>=90)return'excellent';if(score>=80)return'strong';if(score>=70)return'mixed';if(score>=60)return'effort';return'fragile';}
 function compatBuild(a,b,score){const A=prof(a),B=prof(b), same=A.hi[0]===B.hi[0], daySame=A.b===B.b; const old=BaseCompat.build&&BaseCompat.build!==compatBuild?BaseCompat.build(a,b,score):null; const meta=old?.meta||{}; const pos=meta.positiveSignals||[], ng=meta.negativeSignals||[]; const s=Number.isFinite(+score)?+score:null; const high=s!==null&&s>=85, low=s!==null&&s<65; const scoreBand=compatBand(s), bandProfile=COMPAT_BANDS[scoreBand]; const secs=[];
  secs.push({id:'core',category:'summary',title:'둘은 어떤 관계야?',body: high?`${A.n}와 ${B.n}는 서로에게 끌리는 힘뿐 아니라 관계를 다시 맞춰가는 힘도 강한 편이야. 처음부터 모든 게 똑같아서 편한 관계라기보다, 다른 부분이 있어도 결국 상대를 이해하려고 돌아오는 힘이 있어.`:low?`${A.n}와 ${B.n}는 좋아하는 마음만으로는 편하게 굴러가기 어려운 관계야. 서로가 사랑을 확인하는 방식과 문제를 처리하는 방식이 달라서, 마음은 있는데도 “왜 나만 노력하지?”라는 생각이 생기기 쉬워.`:`${A.n}와 ${B.n}는 끌림과 마찰이 같이 있는 관계야. 잘 맞을 때는 서로 부족한 부분을 채워주지만, 싸울 때는 같은 차이가 그대로 답답함으로 돌아와. 이 관계는 사랑의 크기보다 서로 다른 방식을 얼마나 이해하느냐가 오래 가는 힘을 결정해.`,evidence:`점수 ${s??'-'} · 중심 ${A.hi[0]}/${B.hi[0]}`});
  secs.push({id:'difference',category:'summary',title:'둘이 다르게 반응하는 이유',body:`${A.n}는 ${A.hi[0]==='화'?'생각이 서면 바로 말하고 움직이는 쪽':A.hi[0]==='수'?'충분히 생각한 뒤 움직이는 쪽':A.hi[0]==='금'?'무엇이 맞고 틀린지 기준부터 잡는 쪽':A.hi[0]==='토'?'현실적으로 누가 무엇을 책임질지 보는 쪽':'앞으로 어떻게 바꿀지 새 방향을 먼저 보는 쪽'}이고, ${B.n}는 ${B.hi[0]==='화'?'생각이 서면 바로 말하고 움직이는 쪽':B.hi[0]==='수'?'충분히 생각한 뒤 움직이는 쪽':B.hi[0]==='금'?'무엇이 맞고 틀린지 기준부터 잡는 쪽':B.hi[0]==='토'?'현실적으로 누가 무엇을 책임질지 보는 쪽':'앞으로 어떻게 바꿀지 새 방향을 먼저 보는 쪽'}이야. ${same?'둘이 비슷한 방식으로 반응해서 이해는 빠르지만, 싸울 때는 둘 다 자기 방식이 당연하다고 느끼기 쉬워.':'그래서 같은 사건을 겪어도 한쪽은 이미 결론을 냈는데 다른 한쪽은 아직 생각 중인 장면이 생겨.'}`,evidence:`중심 오행 ${A.hi[0]}/${B.hi[0]}`});
@@ -155,7 +155,7 @@ function compatBuild(a,b,score){const A=prof(a),B=prof(b), same=A.hi[0]===B.hi[0
    if(x.id==='long')x.body=bandProfile.long+' '+x.body;
  }
  const finalSections=dedupe(secs,a,'compat-band-'+scoreBand);
- return {meta:{...meta,version:'human-v5',score:s,scoreBand,aName:A.n,bName:B.n,semanticQA:semanticQA(finalSections)},sections:finalSections};}
+ return {meta:{...meta,version:'human-v5.1',score:s,scoreBand,aName:A.n,bName:B.n,semanticQA:semanticQA(finalSections)},sections:finalSections};}
 function compatPick(x,tab){const s=x?.sections||[];if(!tab||tab==='summary')return s;if(tab==='love')return s.filter(v=>['core','difference','love','fight','long'].includes(v.id));if(tab==='marriage')return s.filter(v=>['core','difference','money','long'].includes(v.id));return s;}
 
 function humanizeFlow(c,year){
@@ -174,5 +174,5 @@ function humanizeFlow(c,year){
 }
 root.GuiinExpert={...BaseExpert,fullSections:sections,personalitySections:sections,fieldSections:sections,personModel:pmodel,flowSections:humanizeFlow};
 root.GuiinCompat={...BaseCompat,build:compatBuild,pick:compatPick};
-root.GUIIN_INTERPRETATION_V4={version:'human-v5',semanticQA,contradictionQA,structureScene,rules:{humanFirst:true,jargonInBody:false,confidentTone:true,repeatCards:false,semanticDuplicateQA:true,koreanVariantLayer:true}};
+root.GUIIN_INTERPRETATION_V4={version:'human-v5.1',semanticQA,contradictionQA,structureScene,rules:{humanFirst:true,jargonInBody:false,confidentTone:true,repeatCards:false,semanticDuplicateQA:true,koreanVariantLayer:true}};
 })(typeof globalThis!=='undefined'?globalThis:this);
