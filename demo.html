@@ -8620,13 +8620,13 @@ document.addEventListener('visibilitychange',()=>{
   let title,short;
   if(s>=85){title='좋은 궁합 쪽이야';short='전반적으로 잘 맞는 편';}
   else if(s>=76){title='좋은 편에 가까운 궁합이야';short='맞는 부분이 더 많은 편';}
-  else if(s>=68){title='무난하지만 조율이 필요한 궁합이야';short='좋은 점과 피곤한 점이 함께 있음';}
+  else if(s>=68){title='무난하지만 조율이 필요한 궁합이야';short='좋은 점과 피곤한 점이 함께 있는 편';}
   else if(s>=60){title='끌림은 있어도 조율 비중이 큰 궁합이야';short='생활에서는 주의가 필요한 편';}
-  else {title='마찰 관리가 중요한 궁합이야';short='좋은 점보다 조율 과제가 더 크게 보임';}
+  else {title='마찰 관리가 중요한 궁합이야';short='좋은 점보다 조율 과제가 더 크게 보이는 편';}
   let balance='';
-  if(c>=t+2)balance=`결속 신호 ${c}가 마찰 ${t}보다 강해서 서로 붙는 힘이 비교적 선명해.`;
-  else if(t>=c+2)balance=`결속 신호 ${c}보다 마찰 ${t}이 더 커서, 좋아하는 마음이 있어도 가까워질수록 조율 비용이 생기기 쉬워.`;
-  else balance=`결속 ${c}와 마찰 ${t}이 비슷해서, 잘 맞는 부분과 부딪히는 부분이 함께 있는 혼합형에 가까워.`;
+  if(c>=t+2)balance=`결속 신호 ${c}는 마찰 ${t}보다 강해서 서로 붙는 힘이 비교적 선명해.`;
+  else if(t>=c+2)balance=`결속 신호 ${c}보다 마찰 ${t} 쪽 가중치가 더 커서, 좋아하는 마음이 있어도 가까워질수록 조율 비용이 생기기 쉬워.`;
+  else balance=`결속 ${c} · 마찰 ${t}의 가중치가 비슷해서, 잘 맞는 부분과 부딪히는 부분이 함께 있는 혼합형에 가까워.`;
   return {s,title,short,balance};
  }
  function hitList(d,kind){
@@ -8635,7 +8635,7 @@ document.addEventListener('visibilitychange',()=>{
   const hits=Array.isArray(d.q?.sig?.hits)?d.q.sig.hits:[];
   const set=kind==='good'?good:bad;
   const rows=hits.filter(h=>set.has(val(h?.type))).sort((a,b)=>Number(b?.weight||0)-Number(a?.weight||0)).slice(0,6);
-  if(rows.length)return rows.map(h=>`${labels[h.ak]||h.ak||'?'}↔${labels[h.bk]||h.bk||'?'} ${h.type}${Number(h.weight||0)>1?`(${h.weight})`:''}`).join(' · ');
+  if(rows.length)return rows.map(h=>`${d.aName} ${labels[h.ak]||h.ak||'?'} ↔ ${d.bName} ${labels[h.bk]||h.bk||'?'}: ${h.type} · 가중치 ${Number(h.weight||1)}`).join(' · ');
   try{return guiinCompatHitSummaryV56(d.q?.sig,kind==='good'?'combine':'tension');}catch(_e){return kind==='good'?'두드러지는 직접 합 신호는 많지 않아.':'강한 충·형·파·해가 두드러지지는 않아.';}
  }
  function dayText(d){
@@ -8650,7 +8650,7 @@ document.addEventListener('visibilitychange',()=>{
   const good=hitList(d,'good'),bad=hitList(d,'bad');
   const elA=val(d.elA,'-'),elB=val(d.elB,'-');
   const fit=val(d.pair?.fit,'서로 다른 장점을 역할로 나눌수록 관계의 장점이 살아나.'),fr=val(d.pair?.friction,'피곤할 때는 같은 차이가 답답함으로 느껴질 수 있어.');
-  return `<section class="r27Verdict" data-r27-verdict="1"><div class="mini">명리식 궁합 판정 · 귀인사주 기준</div><h3>♥ ${o.s}점 · ${E(o.title)}</h3><p class="lead"><b>한마디로 말하면</b> ${E(o.short)}이야. ${E(o.balance)}</p><div class="r27BadgeRow"><span class="r27Badge good">좋은 합 ${Number(d.q?.sig?.combine||p.combine||0)}</span><span class="r27Badge watch">마찰 ${Number(d.q?.sig?.tension||p.tension||0)}</span><span class="r27Badge neutral">일지 ${E(val(d.q?.dayRel||p.dayRel,'직접 관계 없음'))}</span><span class="r27Badge neutral">중심오행 ${E(elA)} ↔ ${E(elB)}</span></div><div class="r27AxisGrid">${axes.map(([name,n])=>{const st=axisState(n);return `<div class="r27Axis"><div class="top"><b>${name}</b><strong>${Number(n||0)}점</strong></div><span>${st.desc}</span><em class="state ${st.tone}">${st.label}</em></div>`}).join('')}</div><div class="r27Signals"><div class="r27Signal good"><b>좋게 작용하는 합</b>${E(good)}</div><div class="r27Signal watch"><b>조심해서 써야 하는 충·형·파·해</b>${E(bad)}</div><div class="r27Signal"><b>배우자궁·일지 해석</b>${E(dayText(d))}</div><div class="r27Signal"><b>오행으로 보는 보완과 피로</b><b>${E(elA)} ↔ ${E(elB)}</b>${E(fit)} ${E(fr)}</div></div><div class="r27Bottom"><b>그래서 좋은 궁합이냐고 묻는다면:</b> ${o.s>=76?'좋은 편에 더 가까워.':o.s>=68?'나쁘다고 볼 궁합은 아니고, 좋은 점과 조율할 점이 같이 있는 편이야.':'끌림만으로 편하게 굴러가는 궁합보다는 서로 기준을 맞춰야 체감이 좋아지는 편이야.'} 점수 자체보다 위의 좋은 합이 실제 생활에서 살아나는지, 마찰 신호가 반복 갈등으로 굳는지가 최종 체감을 가르게 돼.</div></section>`;
+  return `<section class="r27Verdict" data-r27-verdict="1"><div class="mini">명리식 궁합 판정 · 귀인사주 기준</div><h3>♥ ${o.s}점 · ${E(o.title)}</h3><p class="lead"><b>한마디로 말하면</b> ${E(o.short)}이야. ${E(o.balance)}</p><div class="r27BadgeRow"><span class="r27Badge good">결속 가중치 ${Number(d.q?.sig?.combine??p.combine??0)}</span><span class="r27Badge watch">마찰 가중치 ${Number(d.q?.sig?.tension??p.tension??0)}</span><span class="r27Badge neutral">일지 ${E(val(d.q?.dayRel||p.dayRel,'직접 관계 없음'))}</span><span class="r27Badge neutral">중심오행 ${E(elA)} ↔ ${E(elB)}</span></div><div class="r27AxisGrid">${axes.map(([name,n])=>{const st=axisState(n);return `<div class="r27Axis"><div class="top"><b>${name}</b><strong>${Number(n||0)}점</strong></div><span>${st.desc}</span><em class="state ${st.tone}">${st.label}</em></div>`}).join('')}</div><div class="r27Signals"><div class="r27Signal good"><b>좋게 작용하는 합</b>${E(good)}</div><div class="r27Signal watch"><b>조심해서 써야 하는 충·형·파·해</b>${E(bad)}</div><div class="r27Signal"><b>배우자궁·일지 해석</b>${E(dayText(d))}</div><div class="r27Signal"><b>오행으로 보는 보완과 피로</b><b>${E(elA)} ↔ ${E(elB)}</b>${E(fit)} ${E(fr)}</div></div><div class="r27Bottom"><b>그래서 좋은 궁합이냐고 묻는다면:</b> ${o.s>=76?'좋은 편에 더 가까워.':o.s>=68?'나쁘다고 볼 궁합은 아니고, 좋은 점과 조율할 점이 같이 있는 편이야.':'끌림만으로 편하게 굴러가는 궁합보다는 서로 기준을 맞춰야 체감이 좋아지는 편이야.'} ${Number(d.q?.sig?.combine??p.combine??0)>0?'확인된 결속 신호는 함께 맞추기 쉬운 부분의 참고점이야.':'직접 합 신호가 적다는 것은 실제 호감이나 협력이 없다는 뜻은 아니야.'} 마찰 신호는 실제로 반복되는 생활 문제인지 확인해봐.</div></section>`;
  }
  function post(){
   const root=document.getElementById('matchView'),d=data();if(!root||!d)return;
@@ -8721,12 +8721,12 @@ document.addEventListener('visibilitychange',()=>{
   try{rp=guiinRelationshipTraitProfile(c)||{}}catch(_e){}
   const stem=val(c?.dayMaster?.stem||c?.pillars?.day?.stem,'');
   const season=(()=>{try{return sajuSeasonName(c)||''}catch(_e){return ''}})();
-  return {name,x,dv,day,mg,rp,stem,season,g:groups(c),stars:starNames(c)};
+  return {name,x,dv,day,mg,rp,stem,season,dayBranch:c?.pillars?.day?.branch||'',g:groups(c),stars:starNames(c)};
  }
  function groupLine(p){
   const g=p.g,rows=[];
   if(g.charm.length)rows.push(`${g.charm.join('·')}이 있어서 사람에게 남는 인상과 호감 표현이 비교적 선명해질 수 있어. 다만 이건 바람기 판정이 아니라 사람의 시선과 관계 반응이 잘 드러나는 보조신호야.`);
-  if(g.depth.length)rows.push(`${g.depth.join('·')}이 겹쳐 겉에서 보이는 모습보다 혼자 생각을 정리하고 자기 세계로 들어가는 시간이 더 중요한 사람으로 읽혀.`);
+  if(g.depth.length)rows.push(`${g.depth.join('·')}${g.depth.length>1?'이 함께 보여':'이 보여'} 겉에서 보이는 모습보다 혼자 생각을 정리하고 자기 세계로 들어가는 시간이 더 중요한 사람으로 읽혀.`);
   if(g.move.length)rows.push(`${g.move.join('·')}이 있어서 한 자리에 묶여 있기보다 환경·역할·활동에 변화가 있을 때 에너지가 다시 살아나는 면이 있어.`);
   if(g.force.length)rows.push(`${g.force.join('·')}이 보여서 압박 상황에서 결론을 내리고 버티는 힘이 강해질 수 있어. 대신 기운이 과해질 때는 말과 경계가 단단해질 수 있어.`);
   if(g.mind.length)rows.push(`${g.mind.join('·')}은 생각을 깊게 파고 언어·학습·전문성으로 정리하는 힘을 보태는 신호라, 단순히 감으로만 움직이는 사람으로 보기는 어려워.`);
@@ -8735,17 +8735,14 @@ document.addEventListener('visibilitychange',()=>{
   return rows.slice(0,4);
  }
  function synthesis(p){
-  const g=p.g,top=val(p.x?.top,''),mg=val(p.x?.mg,''),attach=val(p.rp?.attachmentLabel,'관계형');
-  if(g.charm.length&&g.depth.length)return `그래서 ${p.name}님은 <b>사람 눈에는 존재감이나 매력이 보이는데, 실제 가까운 관계에서는 혼자 생각하고 정리할 공간도 꼭 필요한 사람</b>에 가까워. 겉으로 관계성이 커 보여도 속까지 늘 열려 있는 타입은 아니야.`;
-  if(g.move.length&&['토','금'].includes(top))return `그래서 ${p.name}님은 <b>겉으로는 안정과 현실을 붙잡는데, 안에서는 변화가 완전히 사라지면 답답해지는 사람</b>으로 읽혀. 정착 자체가 싫은 게 아니라 안정 안에도 새 역할이나 움직임이 있어야 활력이 오래 가.`;
-  if(g.force.length&&['정','계','신','을'].includes(p.stem))return `그래서 ${p.name}님은 <b>섬세하게 상황을 읽는 면과 기준을 넘었을 때 단호해지는 면이 같이 있는 사람</b>이야. 평소의 부드러움만 보고 한계선도 약할 거라고 보면 오해하기 쉬워.`;
-  if(g.mind.length&&g.depth.length)return `그래서 ${p.name}님은 <b>혼자 생각을 깊게 파고 자기 답을 만든 뒤 움직이는 사람</b>에 가까워. 설명 없이 잠잠해질 때가 있어도 속에서는 생각이 멈춘 게 아니라 오히려 더 많이 정리되고 있을 수 있어.`;
-  if(g.charm.length&&g.move.length)return `그래서 ${p.name}님은 <b>사람·경험·새로운 환경에서 반응이 살아나는 사람</b>으로 읽혀. 관계가 안정돼도 완전히 고정된 패턴만 반복되면 생기가 떨어질 수 있어서 자유와 약속을 함께 잡는 게 중요해.`;
-  if(g.tension.length)return `그래서 ${p.name}님은 기본적으로 ${top?`${top} 기운을 많이 쓰면서 `:''}${mg?`${mg} 방식으로 사회에 반응하고, `:''}<b>관계가 편할 때와 압박받을 때의 모습 차이가 꽤 날 수 있는 ${attach}</b>으로 보는 게 자연스러워.`;
-  return `그래서 ${p.name}님은 ${top?`<b>${top} 기운</b>을 중심으로 `:''}${mg?`<b>${mg}</b>의 사회 반응을 쓰면서, `:''}신살은 그 성향을 보조하는 쪽으로 읽는 게 좋아. 별 이름 하나보다 일간·월령·오행·십성과 함께 봤을 때 이 사람의 실제 결이 더 정확해져.`;
+  const top=val(p.x?.top,'-'),mg=val(p.x?.mg,'-'),branch=val(p.day?.day?.branch||'');
+  const depth=p.g.depth.length?'혼자 정리할 공간':'',move=p.g.move.length?'활동과 변화':'';
+  const needs=[depth,move].filter(Boolean);
+  return `<b>${E(p.stem)} 일간 · ${E(p.season)} 계절 · 월간 ${E(mg)} · 오행 상위 ${E(top)}</b>를 함께 참고해. 일지 ${E(p.dayBranch)}의 관계 해석은 원국의 다른 신호와 함께 확인해.${needs.length?` 보조 신살에서 읽는 ${needs.join('과 ')}을 실제로 어떻게 확보하는지도 살펴봐.`:''} 이름이 같은 신살이 있어도 일간·계절·십신이 다르면 같은 사람처럼 해석하지 않아.`;
  }
+
  function portrait(c,label){
-  const p=core(c),lines=groupLine(p);const chips=PRI.filter(x=>p.stars.includes(x)).slice(0,8);
+  const p=core(c),lines=groupLine(p);const chips=uniq([...PRI.filter(x=>p.stars.includes(x)),...p.stars]);
   const top=val(p.x?.top,'-'),mg=val(p.x?.mg,'-');
   const base=`${p.stem?`${p.stem} 일간`:''}${p.season?` · ${p.season} 기운`:''}${top?` · 중심오행 ${top}`:''}${mg?` · 월주 ${mg}`:''}`;
   const intro=val(p.day?.day?.headline||p.dv?.tone,`${p.name}님은 자기 기준과 관계 리듬이 분명한 편이야.`);
@@ -8754,9 +8751,10 @@ document.addEventListener('visibilitychange',()=>{
  }
  function pairMix(a,b){
   const A=core(a),B=core(b),ga=A.g,gb=B.g,rows=[];
-  if(ga.charm.length||gb.charm.length)rows.push(`<b>끌림과 인상</b> · ${A.name} ${ga.charm.length?ga.charm.join('·'):'직접 매력 신호 적음'} / ${B.name} ${gb.charm.length?gb.charm.join('·'):'직접 매력 신호 적음'}. 한쪽 또는 둘 다 매력·표현 신호가 있으면 초반 호감이나 존재감은 빨리 잡힐 수 있지만, 그것만으로 관계 지속성을 판단하진 않아.`);
-  if(ga.depth.length||gb.depth.length||ga.move.length||gb.move.length)rows.push(`<b>가까움과 거리</b> · ${A.name}은 ${ga.depth.length?'혼자 정리하는 힘':''}${ga.depth.length&&ga.move.length?'과 ':''}${ga.move.length?'변화 욕구':''||'관계 리듬'}, ${B.name}은 ${gb.depth.length?'혼자 정리하는 힘':''}${gb.depth.length&&gb.move.length?'과 ':''}${gb.move.length?'변화 욕구':''||'관계 리듬'}가 보조신호로 잡혀. 연락 빈도보다 각자 회복하는 방식이 다를 수 있다는 뜻으로 보는 게 좋아.`);
-  if(ga.force.length||gb.force.length||ga.tension.length||gb.tension.length)rows.push(`<b>부딪힐 때</b> · ${A.name}의 ${[...ga.force,...ga.tension].slice(0,3).join('·')||'원국 긴장'}와 ${B.name}의 ${[...gb.force,...gb.tension].slice(0,3).join('·')||'원국 긴장'}가 만나면, 평소보다 압박받는 날에 말투·거리두기·확인 욕구가 커질 수 있어. 그래서 좋은 날보다 싸울 때 어떤 순서로 반응하는지를 더 중요하게 봐야 해.`);
+  if(ga.charm.length||gb.charm.length)rows.push(`<b>끌림과 인상</b> · ${E(A.name)} ${ga.charm.length?ga.charm.join('·'):'직접 매력 신호 적음'} / ${E(B.name)} ${gb.charm.length?gb.charm.join('·'):'직접 매력 신호 적음'}. 한쪽 또는 둘 다 매력·표현 신호가 있으면 초반 호감이나 존재감은 빨리 잡힐 수 있지만, 그것만으로 관계 지속성을 판단하진 않아.`);
+  const rhythm=g=>[g.depth.length?'혼자 정리할 공간':'',g.move.length?'활동과 변화':''].filter(Boolean).join('과 ')||'일상의 관계 리듬';
+  if(ga.depth.length||gb.depth.length||ga.move.length||gb.move.length)rows.push(`<b>가까움과 거리</b> · ${E(A.name)}: ${rhythm(ga)} / ${E(B.name)}: ${rhythm(gb)}. 표시된 신살을 회복 공간과 활동 방식의 보조 근거로 읽어. 실제로 필요한 시간과 연락 방식은 각자 확인해봐.`);
+  if(ga.force.length||gb.force.length||ga.tension.length||gb.tension.length)rows.push(`<b>부딪힐 때</b> · ${E(A.name)}: ${[...ga.force,...ga.tension].slice(0,3).join('·')||'원국 긴장'} / ${E(B.name)}: ${[...gb.force,...gb.tension].slice(0,3).join('·')||'원국 긴장'}. 이 보조 신호를 함께 볼 때, 평소보다 압박받는 날에 말투·거리두기·확인 욕구가 커질 수 있어. 그래서 좋은 날보다 싸울 때 어떤 순서로 반응하는지를 더 중요하게 봐야 해.`);
   if(ga.help.length||gb.help.length||ga.mind.length||gb.mind.length)rows.push(`<b>서로 살려줄 수 있는 부분</b> · 귀인·학습 계열 신호가 있는 쪽은 사람·정보·전문성으로 관계 문제를 풀 여지가 있어. 둘이 감정만 반복하기보다 필요한 도움이나 현실적인 방법을 찾을 때 관계 회복력이 좋아질 수 있어.`);
   if(!rows.length)rows.push('두 사람의 신살은 강한 한두 별보다 원국·일지·오행·십성 쪽이 더 중요한 조합이야. 신살은 보조 신호로만 사용하고, 실제 궁합 판정은 앞의 합·충과 생활 패턴을 우선해서 봐.');
   return `<div class="r28PairMix"><h4>두 사람의 신살 조합이 만나면</h4>${rows.slice(0,4).map(x=>`<p>${x}</p>`).join('')}</div>`;
@@ -8977,7 +8975,7 @@ try{Object.assign(window,{guiinPaymentCenterStart});}catch(_e){}
  function lines(p){
   const g=p.g,rows=[];
   if(g.charm.length)rows.push(`${g.charm.join('·')}이 있어서 사람에게 남는 인상과 호감 표현이 비교적 선명해질 수 있어. 다만 이건 바람기 판정이 아니라 사람의 시선과 관계 반응이 잘 드러나는 보조신호야.`);
-  if(g.depth.length)rows.push(`${g.depth.join('·')}이 겹쳐 겉에서 보이는 모습보다 혼자 생각을 정리하고 자기 세계로 들어가는 시간이 더 중요한 사람으로 읽혀.`);
+  if(g.depth.length)rows.push(`${g.depth.join('·')}${g.depth.length>1?'이 함께 보여':'이 보여'} 겉에서 보이는 모습보다 혼자 생각을 정리하고 자기 세계로 들어가는 시간이 더 중요한 사람으로 읽혀.`);
   if(g.move.length)rows.push(`${g.move.join('·')}이 있어서 한 자리에 묶여 있기보다 환경·역할·활동에 변화가 있을 때 에너지가 다시 살아나는 면이 있어.`);
   if(g.force.length)rows.push(`${g.force.join('·')}이 보여서 압박 상황에서 결론을 내리고 버티는 힘이 강해질 수 있어. 대신 기운이 과해질 때는 말과 경계가 단단해질 수 있어.`);
   if(g.mind.length)rows.push(`${g.mind.join('·')}은 생각을 깊게 파고 언어·학습·전문성으로 정리하는 힘을 보태는 신호라, 단순히 감으로만 움직이는 사람으로 보기는 어려워.`);
@@ -11604,6 +11602,101 @@ try{Object.assign(window,{guiinPaymentCenterStart});}catch(_e){}
    mo.observe(root,{childList:true,subtree:false});
  }
  globalThis.GuiinInterpretation633={version:VERSION,possibleGod,distribution,integrity,bridge,interp,apply:run,qa:()=>latestQA,schedule};
+})();
+
+</script>
+<script id="GUIIN_COMPAT_QUALITY634">
+/* Compatibility presentation only. Existing chart and score calculators remain authoritative. */
+(function(){
+ 'use strict';
+ const E=v=>String(v??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+ const text=v=>String(v??'').replace(/\s+/g,' ').trim();
+ const tone=v=>String(v??'').replace(/있습니다/g,'있어').replace(/없습니다/g,'없어').replace(/편입니다/g,'편이야').replace(/쉽습니다/g,'쉬워').replace(/빠릅니다/g,'빨라').replace(/돌아옵니다/g,'돌아와').replace(/회복됩니다/g,'회복돼').replace(/움직입니다/g,'움직여').replace(/오래 갑니다/g,'오래가').replace(/편해집니다/g,'편해져').replace(/빨라집니다/g,'빨라져').replace(/가깝습니다/g,'가까워').replace(/중요합니다/g,'중요해').replace(/느낍니다/g,'느껴').replace(/필요합니다/g,'필요해').replace(/해석합니다/g,'해석해').replace(/달라집니다/g,'달라져').replace(/물어볼 수 있어요/g,'물어볼 수 있어').replace(/관계예요/g,'관계야');
+ const sentence=v=>text(tone(v)).replace(/[.。]+$/,'');
+ const join=(v,kind)=>typeof krJoin==='function'?krJoin(String(v),kind):String(v);
+ const STEM={갑:['방향과 성장','어디로 함께 갈지','계획의 목적'],을:['조율과 적응','서로 조정할 여지','상대 의견을 반영할 범위'],병:['표현과 추진','호감에 대한 분명한 반응','실행 시점'],정:['섬세한 집중','작은 말과 행동의 일관성','놓친 감정 신호'],무:['안정과 지속','맡은 책임을 함께 지키는 것','책임의 한계'],기:['관리와 실무','매일 실제로 챙기는 행동','반복되는 생활 업무'],경:['결단과 개선','문제를 분명히 정리하는 것','결정 기준'],신:['세부 검토와 완성도','약속의 내용과 태도를 확인하는 것','합의의 구체적인 내용'],임:['흐름과 가능성','여러 선택지를 검토할 여지','대안과 전체 맥락'],계:['관찰과 맥락','충분한 설명과 생각할 시간','말하지 않은 전제']};
+ const GOD={비견:['선택권','각자 결정할 영역을 먼저 정해','도움을 주기 전에 상대의 선택을 물어봐','혼자 결정할 일과 함께 결정할 일을 나눠'],겁재:['공평한 분담','돈과 역할의 분담 기준을 정해','공동 부담이 한쪽에 몰리는지 확인해','각자의 부담을 같은 표에 적어'],식신:['편안한 반복','무리 없는 만남과 생활 리듬을 확보해','매일 반복되는 돌봄의 양을 확인해','지킬 수 있는 작은 약속부터 다시 시작해'],상관:['의견을 말할 여지','불만을 말할 때 인신공격 대신 바꿀 행동을 정해','개선 제안과 상대의 결정권을 구분해','하고 싶은 말과 실제 요청을 나눠'],편재:['활동과 기회','새 약속이 생겨도 기존 약속의 시간을 남겨둬','도움의 범위를 넓히기 전에 시간과 비용을 정해','약속 수를 줄이고 우선순위를 확인해'],정재:['예측 가능한 계획','시간과 비용을 미리 합의해','정기적인 지원금과 돌봄 시간을 확인해','바뀐 일정과 정산 날짜를 분명히 해'],편관:['책임과 압박의 균형','한 사람이 모든 문제를 해결하도록 두지 마','급한 요청도 감당할 수 있는 범위를 먼저 정해','당장 맡을 일과 도움받을 일을 구분해'],정관:['약속과 책임','누가 언제 무엇을 할지 분명히 해','가족에 대한 의무와 두 사람의 합의를 구분해','깨진 약속에서 바꿀 행동과 기한을 정해'],편인:['몰입과 정리 공간','혼자 생각할 시간과 다시 대화할 시간을 함께 정해','도움이 필요할 때 말할 방법을 미리 정해','정리한 생각을 말이나 글로 공유해'],정인:['이해와 지원','상대 사정과 내 필요를 함께 말해','돌봄을 제공하는 사람도 쉴 시간을 확보해','원하는 지원을 상대가 추측하지 않게 말해']};
+ const EL={목:'새 방향과 성장',화:'표현과 실행',토:'유지와 관리',금:'기준과 정리',수:'정보와 조율'};
+ function person(c,p,deep){
+  const stem=c?.dayMaster?.stem||c?.pillars?.day?.stem||'',month=c?.pillars?.month?.branch||'',day=c?.pillars?.day?.branch||'',god=c?.pillars?.month?.god||p?.mg||'';
+  const pct=typeof GuiinExpert!=='undefined'?GuiinExpert.pct(c):{};
+  const sorted=Object.entries(pct||{}).sort((a,b)=>Number(b[1])-Number(a[1]));
+  const top=sorted[0]?.[0]||p?.top||'',tied=sorted.filter(r=>Number(r[1])===Number(sorted[0]?.[1]));
+  let voice={};try{voice=sajuDayVoice(c)||{}}catch(_){}
+  return {name:String(c?.input?.name||p?.name||'사용자'),stem,month,day,god,top,share:Number(pct?.[top]||0),tied,focus:STEM[stem]||['자기 기준','합의의 일관성','결정 방식'],need:GOD[god]||['신뢰','필요한 기준을 직접 말해','감당할 범위를 함께 정해','바꿀 행동을 정해'],p:p||{},deep:deep||{},voice};
+ }
+ function model(a,b){
+  const d=globalThis.guiinCompatR23PairData(a,b),m=guiinCompatMetricsV56(a,b);
+  return {d,m,A:person(a,d.A,d.AD),B:person(b,d.B,d.BD)};
+ }
+ function facts(p){return `${p.stem} 일간 · 일지 ${p.day} · ${p.month}월 · 월간 ${p.god} · ${p.tied.length>1?'공동 상위 '+p.tied.map(r=>r[0]+' '+r[1]+'%').join('·'):p.top+' '+p.share+'%'}`}
+ function compare(x,a,b){
+  if(sentence(a)===sentence(b))return `<p><b>두 사람의 공통점</b> · ${E(sentence(a))}.</p>`;
+  return `<div class="r24Compare"><div><b>${E(x.A.name)}</b><p>${E(sentence(a))}.</p></div><div><b>${E(x.B.name)}</b><p>${E(sentence(b))}.</p></div></div>`;
+ }
+ function point(title,body){return `<div class="r24Rule"><b>${E(title)}</b><p>${E(body)}</p></div>`}
+ function needs(p){return `${p.stem} 일간의 ${join(p.focus[0],'과/와')} 월간 ${p.god}의 ${join(p.need[0],'을/를')} 함께 보면, ${join(p.focus[1],'을/를')} 확인하면서 ${p.need[1]}`}
+ function interplay(x){
+  const {A,B}=x;
+  if(A.god===B.god)return `월간 ${join(A.god,'이라는/라는')} 공통 기준은 ${join(A.need[0],'을/를')} 합의하기 쉽게 하는 참고점이야. 다만 ${A.name}의 ${A.stem} 일간·${A.month}월과 ${B.name}의 ${B.stem} 일간·${B.month}월은 다르므로 같은 기준을 표현하는 방법까지 같다고 보지는 않아.`;
+  return `${A.name}에게는 ${A.need[0]}, ${B.name}에게는 ${join(B.need[0],'이/가')} 관계를 읽는 서로 다른 참고점이야. 하나의 규칙으로 둘을 맞추기보다 두 기준을 동시에 지킬 방법을 정해봐.`;
+ }
+ function stress(p){return `${sentence(p.deep?.loop?.stress||p.p?.anger)}. 일간 ${p.stem}의 ${p.focus[0]}도 함께 참고해, 실제 갈등에서 ${join(p.focus[2],'을/를')} 어떻게 말하는지 확인해봐`}
+ function sections(x){
+  const {A,B,d,m}=x, shared=interplay(x),body={};
+  body.conflict=compare(x,stress(A),stress(B))+`<p>${E(shared)}</p>`+point('갈등을 멈추는 합의',A.god===B.god?`둘 다 중요하게 보는 ${join(A.need[0],'이/가')} 실제로 깨진 건지, 서로의 추측이 커진 건지부터 확인해. 같은 불편함을 느낀다면 해결도 공동 과제로 정해.`:`${A.name}에게 필요한 ${join(A.need[0],'과/와')} ${B.name}에게 필요한 ${join(B.need[0],'을/를')} 한 문장씩 말하고, 이번에 바꿀 행동 하나를 정해.`);
+  body.jealousy=compare(x,needs(A),needs(B))+point('연락·외출에서 맞출 것',/선택권|활동|몰입/.test(A.need[0]+B.need[0])?`각자 결정할 약속과 함께 상의할 약속을 나눠. 답을 미루거나 혼자 있고 싶다면 다시 연락할 시간을 알려줘.`:`둘 다 연락으로 안심을 확인하려 한다면 답장 속도를 애정의 점수로 삼지 마. 바쁜 시간과 최소한의 연락 기준을 함께 정해.`);
+  const income=p=>`${sentence(p.deep?.money?.earn||p.p.money)}. ${p.stem} 일간의 ${join(p.focus[0],'과/와')} ${p.top}의 ${EL[p.top]||'생활 기능'}도 함께 살펴볼 수 있어`;
+  const leak=p=>sentence(p.deep?.money?.leak||'계획 밖의 비용').replace('불안을 줄이려는 과도한 비축이나 안전을 위해 반복되는 고정비','안전을 이유로 반복되는 고정비와 계획 밖의 구매');
+  body.money=compare(x,income(A),income(B))+`<p><b>각자 점검할 비용</b> · ${E(A.name)}: ${E(leak(A))} / ${E(B.name)}: ${E(leak(B))}.</p><p>재물 지수 ${m.money}점은 두 사람의 토·금 비중 차이와 교차 마찰을 반영한 서비스 내부 지수야. 실제 소득이나 함께 벌 돈의 액수를 뜻하지 않아.</p>`+point('두 사람의 비용 합의',A.god===B.god?`수입을 보는 기준이 비슷해도 실제 소득과 여유는 다를 수 있어. 공동비용은 소득·여유를 확인해서 나누고 선결제와 정산 날짜를 정해.`:`${A.name}의 ${join(A.need[0],'과/와')} ${B.name}의 ${join(B.need[0],'이/가')} 지출 결정에 함께 반영되도록, 공동 예산과 각자 재량 예산을 따로 정해.`);
+  body.apology=compare(x,`사과에서 확인할 내용은 ${join(A.focus[2],'이야/야')}. ${A.need[3]}`,`사과에서 확인할 내용은 ${join(B.focus[2],'이야/야')}. ${B.need[3]}`)+point('사과와 휴식을 구분해',`잘못을 인정하고 다음 행동을 합의하는 것이 사과야. 쉬거나 혼자 정리하는 것은 별도의 회복 과정이므로, 쉬었다는 이유로 문제가 해결됐다고 넘기지 마.`);
+  body.lifestyle=compare(x,`${sentence(A.deep?.loop?.decide)}. ${A.month}월과 ${A.top} 비중도 함께 참고해, 생활에서 ${join(A.focus[2],'을/를')} 어떻게 정하는지 봐`,`${sentence(B.deep?.loop?.decide)}. ${B.month}월과 ${B.top} 비중도 함께 참고해, 생활에서 ${join(B.focus[2],'을/를')} 어떻게 정하는지 봐`)+point('생활 실험',A.top===B.top?`두 사람 모두 ${A.top} 비중이 높다는 공통점이 있어. 같은 일을 중복 관리하거나 서로 미루는지 확인하고, 이번 주 반복 업무 하나의 담당자와 완료 기준을 정해.`:`${A.name}의 ${join(A.top,'과/와')} ${B.name}의 ${join(B.top,'을/를')} ${EL[A.top]}·${join(EL[B.top],'이라는/라는')} 역할 참고점으로 볼 수 있어. 실제 잘하는 일을 확인해 실행·결정·기억·비용 부담을 나눠봐.`);
+  body.attraction=compare(x,`${A.stem} 일간의 ${join(A.focus[0],'과/와')} 월간 ${A.god}의 ${join(A.need[0],'이/가')} 호감의 참고점이야. ${sentence(A.deep?.rel?.pull)}`,`${B.stem} 일간의 ${join(B.focus[0],'과/와')} 월간 ${B.god}의 ${join(B.need[0],'이/가')} 호감의 참고점이야. ${sentence(B.deep?.rel?.pull)}`)+`<p><b>둘 사이에서 확인되는 연결</b> · ${E(d.q?.dayRel==='직접 관계 없음'?'일지의 직접 합·충은 두드러지지 않아. 다른 위치의 교차 관계와 실제 호감 표현을 따로 살펴봐.':`일지 ${join(d.q?.dayRel,'을/를')} 관계의 가까운 생활 리듬에 대한 참고 신호로 읽어.`)} 연애 지수 ${m.love}점은 전체 점수에 계절 차이·결속·마찰을 더 반영한 값이야.</p>`;
+  body.expect=compare(x,`${join(A.need[0],'을/를')} 말하지 않은 기대가 아니라 구체적인 요청으로 바꿔봐. ${A.need[1]}`,`${join(B.need[0],'을/를')} 말하지 않은 기대가 아니라 구체적인 요청으로 바꿔봐. ${B.need[1]}`)+`<p>${E(shared)}</p>`;
+  body.talk=compare(x,`대화에서 먼저 확인할 것은 ${join(A.focus[2],'이야/야')}. 상대에게 설명할 때 ${join(A.need[0],'을/를')} 지킬 구체적인 조건을 말해봐`,`대화에서 먼저 확인할 것은 ${join(B.focus[2],'이야/야')}. 상대에게 설명할 때 ${join(B.need[0],'을/를')} 지킬 구체적인 조건을 말해봐`)+point('이번 대화에 쓸 문장',A.focus[2]===B.focus[2]?`같은 기준이라도 서로 이해한 내용이 같은지 확인해. “내가 이해한 약속은 이것인데, 너도 같아?”라고 물어봐.`:`${join(A.name,'은/는')} ${A.focus[2]}, ${join(B.name,'은/는')} ${join(B.focus[2],'을/를')} 먼저 묻는 방식으로 대화를 시작해봐. 실제로 다른 반응을 보이면 그 반응을 우선해서 조정해.`);
+  body.bored=compare(x,sentence(A.p.boredomText||'반복과 변화가 얼마나 필요한지 직접 확인해'),sentence(B.p.boredomText||'반복과 변화가 얼마나 필요한지 직접 확인해'))+point('필요한 변화를 구분해',`새로운 데이트가 필요한지, 일정이 과한지, 혼자 쉴 시간이 부족한지 각각 물어봐. 사주 분류를 권태가 오는 속도나 사랑의 크기로 확정하지 마.`);
+  body.family=compare(x,`${A.stem} 일간의 ${join(A.focus[0],'과/와')} 월간 ${join(A.god,'을/를')} 돌봄 역할의 참고점으로 보면, ${A.need[2]}`,`${B.stem} 일간의 ${join(B.focus[0],'과/와')} 월간 ${join(B.god,'을/를')} 돌봄 역할의 참고점으로 보면, ${B.need[2]}`)+point('가족·돌봄 요청을 받으면',`누가 요청받았는지와 별개로 공동 돈·시간을 쓰는 일은 둘이 합의해. 각자의 가족 책임과 실제 가능한 지원 범위를 확인해.`);
+  body.break=point('반복된 갈등을 다시 볼 때',`앞의 갈등 시나리오에서 ${A.name}의 ${join(A.focus[2],'과/와')} ${B.name}의 ${join(B.focus[2],'이/가')} 실제로 충돌했는지 기록해봐. 같은 사건이 반복되면 합의가 없었는지, 합의를 못 지켰는지, 합의 자체가 무리였는지 나눠서 봐.`)+`<p>교차 마찰 가중치 ${join(Number(d.q?.sig?.tension||0),'은/는')} 관계를 끝내야 한다는 판정이 아니야. 실제로 지켜야 할 경계와 바꿀 수 있는 생활 문제를 구분하고, 감정이 큰 순간에 모든 결론을 함께 내리지 않는 게 좋아.</p>`;
+  body.rebuild=point('두 사람의 재합의',A.need[3]===B.need[3]?`공통으로 ${A.need[3]}. ${A.name}에게는 ${A.focus[2]}, ${B.name}에게는 ${join(B.focus[2],'이/가')} 실제로 달라졌는지 각각 확인해.`:`${A.name}: ${A.need[3]}. ${B.name}: ${B.need[3]}.`)+point('변화가 유지되는지 확인해',`누가 무엇을 언제까지 할지 적고, 일주일 뒤 실행 여부를 확인해. 지켜지지 않았다면 사과 문장을 반복하기보다 약속의 범위와 부담을 다시 조정해.`);
+  body.future='<div class="r24Scenario">'+(d.years||[]).map(r=>{
+   const a=r.labelA||'자기 과제',b=r.labelB||'자기 과제';
+   const guidance=a===b?(/말|오해/.test(a)?'둘 다 말과 해석에 신경 쓸 주제로 읽혀. 대화가 저절로 잘 맞는다는 뜻은 아니므로, 사실 확인과 큰 결정의 재검토 시간을 확보해.':/일|성과/.test(a)?'둘 다 일에 힘을 쓸 주제로 읽혀. 공동 목표를 정할 여지도 있지만 서로 바빠 만남 시간이 줄 수 있으니 일정부터 맞춰봐.':/돈|현실/.test(a)?'공동 예산과 지출 기준을 함께 점검해. 같은 돈 주제가 보여도 수입이 늘거나 소비 습관이 같다는 뜻은 아니야.':'비슷한 주제를 함께 점검할 수 있지만 실제 필요와 여유는 다를 수 있어. 각자가 원하는 도움을 구체적으로 말해봐.'):'서로 다른 주제를 참고하게 되는 해라 각자 쓸 시간과 지원할 수 있는 범위를 먼저 맞춰봐.';
+   return `<div class="r24ScenarioStep"><b>${E(r.year)}년 · ${E(a)} / ${E(b)}</b>${E(A.name)}: ${E(a)} · ${E(B.name)}: ${E(b)}. ${E(guidance)}</div>`;
+  }).join('')+'</div>';
+  body.timing=`<p>${E(A.name)}: ${E(d.al?.ko||'확인 가능한 대운 없음')} ${E(d.al?.god||'')} / ${E(B.name)}: ${E(d.bl?.ko||'확인 가능한 대운 없음')} ${E(d.bl?.god||'')}.</p><p>${d.al?.god===d.bl?.god?'같은 대운 십신이 표시돼도 원국과 생활 조건이 다르므로 같은 사건이나 같은 관계 욕구를 뜻하지 않아.':'현재 대운의 십신이 서로 달라 각자 관심을 두는 주제를 함께 확인할 필요가 있어.'} 연도별 비교는 앞의 흐름 카드에서 보고, 여기서는 큰 결정을 할 때 각자의 일정·예산·책임 범위를 확인해.</p>`;
+  return body;
+ }
+ function scoreEvidence(x){
+  const m=x.m,terms=[['기본값',68],['오행 분포 유사도',m.elementFit],['교차 결속',m.combineBoost],['교차 마찰',-m.tensionCost],['일지 관계',m.dayAdjust],['계절 차이',m.climateAdjust],['같은 일간',m.sameStemAdjust]];
+  const raw=terms.reduce((s,r)=>s+Number(r[1]||0),0);
+  return `<details class="r23Evidence" data-compat-score-basis><summary>${m.score}점이 나온 계산 근거</summary><div>${terms.map(([k,n])=>E(k)+': '+(n>=0?'+':'')+Number(n||0)).join(' · ')}<br>합계 ${raw}${raw===m.score?'':` → 표시 범위(55~94점) 적용 ${m.score}`}점. 합·마찰 숫자는 관계 신호의 가중치 합계이며 횟수나 성공 확률이 아니야. 총점과 세부 점수는 서로 다른 계산식이어서 총점이 세부 점수의 평균은 아니야.<br>재물 지수: 86 − 토·금 비중 차이의 42%(반올림) − 마찰 보정(최대 6), 표시 범위 55~94점. 장기 지수: 총점·성격·재물 평균 − 마찰 보정 + 같은 현재 대운 보정, 표시 범위 55~94점.</div></details>`;
+ }
+ function normalize(root,x){
+  const walk=document.createTreeWalker(root,NodeFilter.SHOW_TEXT,{acceptNode:n=>/^(SCRIPT|STYLE|TEXTAREA|BUTTON)$/.test(n.parentElement?.tagName||'')?NodeFilter.FILTER_REJECT:NodeFilter.FILTER_ACCEPT});
+  let n;while(n=walk.nextNode()){
+   let t=tone(n.nodeValue).replace(/내 사주를 이어서 1:1로 물어볼 수 있어/g,'두 사람의 궁합을 이어서 물어볼 수 있어').replace(/월주 (?=비견|겁재|식신|상관|편재|정재|편관|정관|편인|정인)/g,'월간 십신 ').replace(/돈·현실가/g,'돈·현실이').replace(/도움·연결가/g,'도움·연결이').replace(/힘관계 리듬가?/g,'힘').replace(/함께 있음이야/g,'함께 있는 편이야').replace(/더 크게 보임이야/g,'더 크게 보이는 편이야').replace(/수 있어 사회/g,'수 있어. 사회');
+   for(const p of [x.A,x.B])t=t.split(p.name+'은 ').join(join(p.name,'은/는')+' ');
+   t=t.replace(/(결속 신호 \d+|마찰 \d+)가/g,(_,v)=>join(v,'이/가')).replace(/(마찰 \d+)이/g,(_,v)=>join(v,'이/가')).replace(/(결속 \d+)와/g,(_,v)=>join(v,'과/와'));
+   if(t!==n.nodeValue)n.nodeValue=t;
+  }
+ }
+ function apply(){
+  const root=document.getElementById('matchView');let a,b;try{a=matchMeta?.a||matchAnalysis?.a;b=matchMeta?.b||matchAnalysis?.b}catch(_){}if(!root||!a||!b)return;
+  const x=model(a,b),s=sections(x),m=x.m;
+  // Correct stale summaries against the same existing metrics function used by submitMatch.
+  const score=root.querySelector('.matchHero .score');if(score)score.innerHTML=`♥ ${m.score}<small>점</small>`;
+  root.querySelectorAll('.scoreRow').forEach((r,i)=>{const v=[m.love,m.personality,m.money,m.future][i];if(v===undefined)return;const b=r.querySelector('b'),bar=r.querySelector('.scoreBar i');if(b)b.textContent=v;if(bar)bar.style.width=v+'%'});
+  const map24={conflict:'conflict',partnerConflict:'conflict',jealousy:'jealousy',money:'money',apology:'apology',partnerApology:'apology',lifestyle:'lifestyle',future:'future'};
+  const map26={r26_attraction:'attraction',r26_expect:'expect',r26_talk:'talk',r26_bored:'bored',r26_partner_bored:'bored',r26_family:'family',r26_break:'break',r26_rebuild:'rebuild',r26_timing:'timing',r26_partner_future:'timing'};
+  for(const [attr,map] of [['data-r24-key',map24],['data-r26-key',map26]])root.querySelectorAll('article['+attr+']').forEach(card=>{const key=map[card.getAttribute(attr)],body=card.querySelector('.r23Body');if(!key||!body)return;body.innerHTML=s[key];const ev=card.querySelector('details.r23Evidence div');if(ev)ev.textContent=facts(x.A)+' / '+facts(x.B)+' / 월간 십신은 천간 기준이며 월령 본기와 구분해서 읽어. 일반 행동 조언은 실제 생활에서 확인할 항목이야.';});
+  const v=root.querySelector('[data-r27-verdict]')||root.querySelector('.matchHero');if(v){root.querySelectorAll('[data-compat-score-basis]').forEach(old=>old.remove());v.insertAdjacentHTML('beforeend',scoreEvidence(x));}
+  root.querySelectorAll('.r23CompatIntro .easyKicker,.easyIntro .easyKicker').forEach(k=>{k.textContent=k.textContent.replace(/\s*·?\s*R\d+\s*심층상담/g,' · 관계 심층 풀이')});
+  const time=[...root.querySelectorAll('.r21Rule')].find(r=>r.querySelector('b')?.textContent==='시간');if(time){const span=time.querySelector('span');if(span)span.textContent=`${x.A.name}: ${x.A.need[1]}. ${x.B.name}: ${x.B.need[1]}. 함께 만날 시간과 각자 쉴 시간을 실제 일정으로 맞춰봐.`;}
+  normalize(root,x);
+ }
+ globalThis.GuiinCompatQuality634={version:'6.34',model,sections,scoreEvidence,person,tone,apply};
+ const prior=window.renderCompatCards;
+ if(typeof prior==='function'){const wrapped=function(){const r=prior.apply(this,arguments);apply();return r};window.renderCompatCards=wrapped;try{renderCompatCards=wrapped}catch(_){} }
 })();
 
 </script>
