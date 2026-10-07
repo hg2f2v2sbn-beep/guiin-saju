@@ -11020,5 +11020,251 @@ try{Object.assign(window,{guiinPaymentCenterStart});}catch(_e){}
   document.addEventListener('click',()=>{for(const ms of [60,260,700])setTimeout(apply,ms)},{passive:true});for(const ms of [300,900])setTimeout(apply,ms);
 })();
 </script>
+
+<script>
+/* GUIIN v6.32.1 · ten-day-master-wide output corrections · preserves existing chart engine, payment and auth */
+(function(){
+  'use strict';
+  if (globalThis.__GUIIN_V6321__) return;
+  globalThis.__GUIIN_V6321__=true;
+  const VERSION='6.32.1';
+  const N=v=>String(v??'').replace(/\s+/g,' ').trim();
+  const E=v=>String(v??'').replace(/[&<>"']/g,ch=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[ch]));
+  const Q=(s,r=document)=>Array.from(r.querySelectorAll(s));
+  const pillars=['year','month','day','hour'];
+  const stemKey=c=>String(c?.dayMaster?.stem||c?.pillars?.day?.stem||'');
+  const monthGod=c=>String(c?.pillars?.month?.god||'');
+  const stems=['갑','을','병','정','무','기','경','신','임','계'];
+  const elements=['목','화','토','금','수'];
+  function currentChart(){try{return typeof chart==='undefined'?null:chart}catch(_e){return null}}
+  function currentL(c){try{return typeof currentLuck==='function'?currentLuck(c):null}catch(_e){return null}}
+  function currentA(c){
+    const i=c?.input||{};const y=Number(i.year),m=Number(i.month),d=Number(i.day);
+    if(!Number.isInteger(y)||y<1800||!Number.isInteger(m)||!Number.isInteger(d))return null;
+    const today=new Date();let age=today.getFullYear()-y;
+    if(today.getMonth()+1<m || (today.getMonth()+1===m && today.getDate()<d))age--;
+    return Math.max(0,age);
+  }
+  function starNames(c){return new Set((c?.stars?.hits||[]).map(h=>typeof h==='string'?h:(h?.name||h?.star||'')).filter(Boolean))}
+  function normalizeShare(c){
+    const raw=elements.map((el,i)=>({el,i,value:Number(c?.elCount?.[el]||0)})),total=raw.reduce((a,x)=>a+x.value,0);
+    if(!total)return null;
+    const s=raw.map(x=>({...x,exact:x.value*100/total,n:Math.floor(x.value*100/total)}));
+    let left=100-s.reduce((a,x)=>a+x.n,0);
+    [...s].sort((a,b)=>(b.exact-b.n)-(a.exact-a.n)||a.i-b.i).slice(0,Math.max(0,left)).forEach(x=>x.n++);
+    const map={};s.forEach(x=>map[x.el]=x.n);
+    return {map,rank:[...s].sort((a,b)=>b.exact-a.exact||a.i-b.i)};
+  }
+  const byStem={
+    갑:['새로운 방향을 먼저 찾는','시작의 힘이 앞설수록 마무리할 시간을 같이 남겨두는'],
+    을:['사람과 환경을 읽고 유연하게 조정하는','배려와 조정을 하더라도 내 요구를 뒤로 미루지 않는'],
+    병:['생각을 밖으로 표현하고 움직이는','상대도 같은 속도라고 가정하지 않고 호흡을 맞추는'],
+    정:['주변 변화를 살펴 중요한 곳에 집중하는','혼자 감당하기 전에 정리 중인 마음도 조금씩 나누는'],
+    무:['기준을 세워 큰 흐름을 지키는','무조건 버티기보다 책임의 경계를 정하는'],
+    기:['생활을 돌보고 작은 실무를 꾸준히 굴리는','잘 챙기는 것과 남의 몫까지 맡는 일을 나누는'],
+    경:['핵심을 분명히 가리고 결정하는','판단의 정확성에 설명과 경청을 더하는'],
+    신:['세부를 다듬어 완성도를 높이는','완벽한 결과뿐 아니라 충분히 잘 끝낸 성과를 인정하는'],
+    임:['큰 흐름을 읽고 정보를 연결하는','가능성을 비교하되 실행할 한 가지를 고르는'],
+    계:['변화와 맥락을 세심하게 살피는','느낌과 확인된 사실을 구분해 마음의 부담을 줄이는']
+  };
+  const godToKind={편관:'responsibility',정관:'responsibility',편재:'expansion',정재:'practical',상관:'expression',식신:'practical',편인:'inward',정인:'inward',비견:'autonomy',겁재:'autonomy'};
+  const kinds={
+    responsibility:{pattern:'약속과 책임의 끝을 잘 지키려는 면이 있어.',cost:'기대에 맞추는 동안 내 여유가 줄어드는 시점을 놓칠 수 있어.',comfort:'책임감은 장점이지만 모든 기대에 응하는 게 책임감의 증거는 아니야.',advice:'책임의 범위·권한·끝나는 시점을 함께 정해봐.'},
+    inward:{pattern:'혼자 이해하고 정리하면서 생각의 깊이를 쌓는 면이 있어.',cost:'생각을 다 정리할 때까지 대화를 미루면 혼자 버티는 시간이 길어질 수 있어.',comfort:'정리가 끝나지 않은 마음도 말해도 돼. 모든 답을 먼저 만들어둘 필요는 없어.',advice:'완벽하게 정리되지 않은 생각 하나라도 믿을 사람에게 꺼내봐.'},
+    expansion:{pattern:'사람과 기회를 넓게 읽어 다음 선택지를 찾는 면이 있어.',cost:'가능성이 많아질수록 지금 해야 할 일과 나중에 할 일이 섞일 수 있어.',comfort:'가능성을 줄인다고 능력이 줄어드는 건 아니야. 잘 고른 한 가지도 성과야.',advice:'이번 달에 실제로 남길 선택지 두 개만 골라봐.'},
+    autonomy:{pattern:'스스로 기준을 세우고 직접 결정할 때 힘이 나는 면이 있어.',cost:'혼자 하려는 습관 때문에 도움을 받을 순간까지 늦출 수 있어.',comfort:'도움을 받는다고 네 기준이 사라지는 건 아니야.',advice:'혼자 결정할 일과 함께 정할 일을 미리 구분해봐.'},
+    perfection:{pattern:'작은 차이를 발견하고 결과의 완성도를 높이는 면이 있어.',cost:'완성된 결과보다 부족한 부분이 먼저 보여 만족하는 시간이 짧아질 수 있어.',comfort:'더 다듬지 않아도 이미 잘한 일은 잘한 일이야.',advice:'작업을 시작할 때부터 완료 기준을 적어봐.'},
+    sensitivity:{pattern:'사람의 말과 변화에 담긴 맥락을 세밀하게 살피는 면이 있어.',cost:'확인되지 않은 반응까지 의미를 붙이면 생각의 부담이 커질 수 있어.',comfort:'상대의 반응이 네 가치를 결정하지는 않아.',advice:'내 해석과 확인된 사실을 한 번 나눠 적어봐.'},
+    practical:{pattern:'돈·시간·생활을 현실적으로 정리하고 유지하는 면이 있어.',cost:'관리를 잘한다는 이유로 자잘한 일까지 모두 떠안을 수 있어.',comfort:'네가 일을 잘 굴린다는 이유로 네 시간까지 무한히 써야 하는 건 아니야.',advice:'내 책임과 함께해야 할 책임을 실제 일정에서 구분해봐.'},
+    expression:{pattern:'답답한 부분을 빠르게 알아차리고 말이나 행동으로 바꾸려는 면이 있어.',cost:'문제 해결의 속도가 주변보다 앞서면 맞는 말도 갑작스러운 결론처럼 들릴 수 있어.',comfort:'빠르게 보는 눈은 장점이야. 사람을 움직일 땐 속도 조절도 같은 실력이야.',advice:'결론을 내리기 전에 상대가 따라올 시간을 조금 남겨봐.'}
+  };
+  // Work/relationship patterns are anchored in month-god first, day stem second.
+  // Auxiliary stars may support wording but cannot reverse the principal personality axis.
+  function profile(c){
+    const st=stemKey(c),mg=monthGod(c),scores=Object.fromEntries(Object.keys(kinds).map(k=>[k,0]));
+    scores[godToKind[mg]||'practical']+=4.5;
+    const boost={갑:{expansion:2.5},을:{expansion:1.8,sensitivity:.5},병:{expression:2.9},정:{inward:2.2,expression:.9},무:{responsibility:1.8,practical:1.3},기:{practical:2.8},경:{autonomy:1.4,perfection:1.7},신:{perfection:4.6},임:{expansion:1.8,sensitivity:.9},계:{inward:1.8,sensitivity:2.0}}[st]||{};
+    Object.entries(boost).forEach(([k,v])=>scores[k]+=v);
+    const roots=Array.isArray(c?.extras?.roots)?c.extras.roots.length:0;
+    if(roots>=2)scores.autonomy+=.5;
+    const ranks=Object.entries(scores).sort((a,b)=>b[1]-a[1]);
+    const primary=ranks[0][0],secondary=ranks[1][0];
+    return {primary,secondary,score:ranks[0][1],margin:ranks[0][1]-ranks[1][1],primaryText:kinds[primary],secondaryText:kinds[secondary],confidence:ranks[0][1]>=4.5&&ranks[0][1]-ranks[1][1]>=.8?'strong':'medium',dayStem:st,monthGod:mg};
+  }
+  // Existing v6.31/v6.32 generators read this bridge. Do not change the calculation engine.
+  if(globalThis.GuiinInterpretation631)globalThis.GuiinInterpretation631.emotion=profile;
+  const themes={정관:'약속과 역할을 정하는',편관:'압박과 책임의 범위를 점검하는',정인:'배움과 지원·회복을 활용하는',편인:'혼자 연구하고 새 관점을 얻는',편재:'기회와 지출을 관리하는',정재:'안정적인 수입과 생활을 다지는',식신:'숙련·생산·생활 리듬을 쌓는',상관:'표현·개선·변화를 실행하는',비견:'주도권과 자립을 다지는',겁재:'경쟁과 역할 분담을 조정하는'};
+  function luckTheme(row){return themes[String(row?.god||'')]||'생활의 방향을 점검하는'}
+  function toLuckList(c){
+    const rows=Array.isArray(c?.luck)?c.luck:[],age=currentA(c),cur=currentL(c);
+    if(!rows.length||age===null)return {list:[],current:cur};
+    let idx=rows.findIndex(r=>r===cur);
+    if(idx<0&&cur)idx=rows.findIndex(r=>r.ko===cur.ko&&r.god===cur.god);
+    if(idx<0){
+      let best=-1;for(let j=0;j<rows.length;j++){const from=Number(rows[j]?.fromAgeExact??rows[j]?.fromAge);if(Number.isFinite(from)&&from<=age+.99)best=j}idx=Math.max(0,best);
+    }
+    return {list:rows.slice(0,idx+1).map((r,i)=>({row:r,index:i,current:i===idx})),current:cur||rows[idx]};
+  }
+  function rowPeriod(c,item,next){
+    const start=Number(item.row?.fromAgeExact??item.row?.fromAge);
+    const end=Number(next?.row?.fromAgeExact??next?.row?.fromAge);
+    const lo=Number.isFinite(start)?Math.floor(start):null;
+    if(item.current)return `현재 진행 중 · 만 ${currentA(c)}세`;
+    if(lo===null)return '지난 대운';
+    return Number.isFinite(end)?`약 ${lo}세부터 다음 대운 전까지`:`약 ${lo}세부터`;
+  }
+  function replaceLife(root,c){
+    const base=root.querySelector('.guiinLifeFlow632');if(!base)return;
+    const {list,current}=toLuckList(c),p=profile(c);
+    if(!list.length){base.querySelector('.guiinLifeRows632')?.replaceChildren();return}
+    const box=base.querySelector('.guiinLifeRows632');if(!box)return;
+    const entries=list.map((x,i)=>{
+      const theme=luckTheme(x.row),short=x.current?`지금은 ${theme} 흐름을 참고하면서 ${p.primaryText.advice}`:`${theme} 주제가 상대적으로 두드러질 수 있었어. 당시 실제 경험과 맞는 부분이 있는지 돌아보는 참고로만 봐.`;
+      return `<div class="guiinLifeRow632${x.current?' current':''}"><b>${E(x.row.ko||'대운')} (${E(x.row.god||'')}) · ${E(rowPeriod(c,x,list[i+1]))}</b><p>${E(short)}</p></div>`;
+    });
+    const currentEntry=entries.pop();
+    const previous=entries.slice(-3),earlier=entries.slice(0,-3);
+    box.innerHTML= (earlier.length?`<details class="guiinLifeEarlier6321"><summary>어린 시절부터 이전 대운 ${earlier.length}개 더 보기</summary>${earlier.join('')}</details>`:'')+previous.join('')+currentEntry;
+    const title=base.querySelector('h3');if(title)title.textContent='실제 대운 순서를 따라 지난 흐름과 현재를 연결해서 볼게.';
+    const info=base.querySelector(':scope > p');if(info)info.textContent='대운 시작 나이는 엔진의 시작 시점을 기준으로 참고하고, 현재 대운은 만세력과 같은 계산 결과만 사용해. 특정 사건을 확정하는 예언은 아니야.';
+  }
+  function nodeText(root,fn){
+    if(!root)return;
+    const w=document.createTreeWalker(root,NodeFilter.SHOW_TEXT,{acceptNode:n=>n.parentElement&&!/^(SCRIPT|STYLE|TEXTAREA|INPUT|OPTION)$/.test(n.parentElement.tagName)?NodeFilter.FILTER_ACCEPT:NodeFilter.FILTER_REJECT});let n;
+    while(n=w.nextNode()){const old=n.nodeValue||'',fresh=fn(old,n);if(typeof fresh==='string'&&fresh!==old)n.nodeValue=fresh}
+  }
+  function grammar(root){
+    const fixed=[['관계 반응 경향입니다.','관계 반응 경향이야.'],['강점이 오래갑니다.','강점이 오래가.'],['이해하기 쉬워집니다.','이해하기 쉬워져.'],['생기기 쉽습니다.','생기기 쉬워.'],['높아질 가능성이 큽니다.','높아질 가능성이 커.'],['혼합형에 가깝습니다.','혼합형에 가까워.'],['좋습니다.','좋아.'],['됩니다.','돼.'],['입니다.','이야.']];
+    nodeText(root,text=>{
+      let s=text;
+      for(const [a,b] of fixed.slice(0,-1))s=s.split(a).join(b);
+      s=s.replace(/\.\s*이 나타날 수 있어\./g,'.');
+      s=s.replace(/(할|될|날|갈|질) 수 있어는 아닌지/g,'$1 수 있는 건 아닌지');
+      s=s.replace(/([가-힣·]+)가 겹쳐/g,(_m,x)=>{const last=x.charCodeAt(x.length-1),jong=last>=0xac00&&last<=0xd7a3?(last-0xac00)%28:0;return `${x}${jong?'이':'가'} 겹쳐`});
+      s=s.replace(/(충|형|합|육합|삼합|방합|원진|귀문관살|천간합)로(?=\s|\.)/g,'$1으로');
+      
+      s=s.replace(/([가-힣]+\.)\s*이 나타날 수 있어\./g,'$1');
+      s=s.replace(/([가-힣]+) 순서야(?=[.\s]|$)/g,(_m,word)=>word.includes('·')?`${word} 순서야`:`${word}가 우선이야`);
+      s=s.replace(/(\.\s*)(특히)(?=\s)/g,'$1$2');
+      s=s.replace(/(편이야)\s+(특히)/g,'$1. $2');
+      s=s.replace(/(있어\.)\s*같은 장면이 겹치면/g,'$1 이런 장면이 반복되면');
+      s=s.replace(/현재(?=<\/span>)/g,'현재');
+      s=s.replace(/\s*경향입니다\./g,' 경향이야.');
+      s=s.replace(/\s+가능성이 큽니다\./g,' 가능성이 커.');
+      return s;
+    });
+  }
+  function findCard(root,label){return Q('.easyLongCard',root).find(el=>N(el.querySelector('.easyKicker')?.textContent)===label)}
+  function setFirstParagraph(card,txt){const p=card?.querySelector('.easyBody p');if(p&&txt)p.textContent=txt}
+  function workDrain(c){const map={정관:'책임과 평가만 늘고 권한과 기준은 분명하지 않은 환경에서는 쉽게 지칠 수 있어.',편관:'항상 긴급한 문제만 해결하고 회복할 시간을 확보하지 못하는 환경에서는 소모가 커질 수 있어.',정재:'계획과 약속이 매번 바뀌어 정리한 일을 다시 반복해야 하는 환경이 피곤할 수 있어.',편재:'일은 넓게 벌리는데 손익·권한·마무리를 분명히 나누지 않는 환경에서는 부담이 커질 수 있어.',상관:'개선 의견을 낼 기회 없이 반복만 강요하거나 말하는 방식만 통제하는 환경에서는 답답함이 커질 수 있어.',식신:'꾸준히 숙련할 시간을 주지 않고 성과만 재촉하는 환경에서는 지칠 수 있어.',정인:'배우고 쌓은 지식을 쓸 기회 없이 보조 업무만 반복하면 성장감이 줄어들 수 있어.',편인:'깊게 파고들 틈 없이 계속 즉답과 단순 반복만 요구받으면 집중력이 분산될 수 있어.',비견:'내 몫의 결정권 없이 결과 책임만 지는 환경에서는 주도성이 눌릴 수 있어.',겁재:'경쟁과 책임 분담의 기준이 불명확한 환경에서는 에너지가 쉽게 소모될 수 있어.'};return map[monthGod(c)]||'역할·권한·성과 기준이 어긋날 때는 소모가 커질 수 있어.'}
+  function fillPoints(root,c){for(const p of Q('.easyPoint',root)){
+    const h=N(p.querySelector('b')?.textContent),txt=p.querySelector('p');
+    if(h==='소모가 커지는 환경'&&(!txt||!N(txt.textContent))){const el=txt||document.createElement('p');el.textContent=workDrain(c);if(!txt)p.appendChild(el)}
+  }}
+  function rewriteCounsel(root,c){
+    const host=root.querySelector('.guiinCounselor30');if(!host)return;
+    const p=profile(c),stem=byStem[p.dayStem]||['자기 기준을 세우는','그 기준을 생활에 맞게 조정하는'];
+    const soft=p.primaryText,aux=p.secondaryText;
+    const empathy=host.querySelector('.guiinToneCell.empathy');
+    if(empathy){const b=empathy.querySelector('b'),line=empathy.querySelector('p');if(b)b.textContent='나답게 버텨온 방식을 보면';if(line)line.textContent=`${stem[0]} 힘에 ${monthGod(c)}의 작용이 겹쳐, ${soft.pattern} ${soft.cost} ${soft.comfort}`}
+    const diff=host.querySelector('.guiinContrast632');if(diff){
+      diff.innerHTML=`<b>서로 다른 두 면이 공존하는 이유</b>${E(`${soft.pattern} 한편 ${aux.pattern} 평소의 나와 일·관계에서 압박받을 때의 반응이 달라질 수 있다는 의미지, 둘 중 하나가 틀렸다는 뜻은 아니야.`)}`;
+    }
+    const rest=host.querySelector('.guiinToneRest');if(rest){
+      const txt=`${currentL(c)?`현재 ${currentL(c).ko} 대운(${currentL(c).god})을 참고하면 ${luckTheme(currentL(c))} 문제를 살펴볼 만해. `:''}${soft.advice}`;
+      for(const n of [...rest.childNodes])if(n.nodeType===Node.TEXT_NODE&&N(n.nodeValue))n.remove();
+      rest.appendChild(document.createTextNode(txt));
+    }
+    const stage=host.querySelector('.guiinLife23,.guiinToneStage');
+    if(stage){const t=stage.querySelector('p')||stage;const a=currentA(c);t.textContent=`현재 만 ${a??'?'}세. 지금 시기에는 ${stem[1]} 기준을 스스로 확인해봐.`}
+  }
+  function rewritePersonal(root,c){
+    const p=profile(c),soft=p.primaryText,stem=byStem[p.dayStem]||['내 힘을 잘 쓰는','지치지 않게 조절하는'];
+    const emotion=findCard(root,'속마음과 감정');
+    if(emotion){const h=emotion.querySelector('h3');if(h)h.textContent=`${stem[0]} 사람의 감정 방식도 상황에 따라 달라질 수 있어.`;
+      const body=emotion.querySelector('.easyBody p');if(body)body.textContent=`${soft.pattern} ${soft.cost} 가까운 관계에서 마음을 표현할 때도 ${soft.advice}`;
+      const points=Q('.easyPoint',emotion);if(points[0]?.querySelector('p'))points[0].querySelector('p').textContent=`${stem[0]} 감각을 상대를 이해하는 데 쓰면 강점이 돼.`;
+      if(points[1]?.querySelector('p'))points[1].querySelector('p').textContent=soft.cost;
+      if(points[2]?.querySelector('p'))points[2].querySelector('p').textContent=soft.advice;
+    }
+    const labor=findCard(root,'일할 때의 나');if(labor){const text=labor.querySelector('.easyBody p');if(text)text.textContent=`${monthGod(c)}의 직업 작용에 ${stem[0]} 힘이 겹쳐 실무에 나타날 수 있어. 반대로 ${workDrain(c)}`;}
+    const family=findCard(root,'가족과 가까운 사람에게');if(family){setFirstParagraph(family,`${soft.pattern} 가까운 사람에게는 ${soft.advice} 그게 관계를 덜 소모하게 만드는 방법일 수 있어.`)}
+    const trust=findCard(root,'곁에 두면 편한 사람');if(trust){setFirstParagraph(trust,`상대의 오행 하나를 보고 궁합을 결정할 수는 없어. ${monthGod(c)}의 성향을 존중하면서 대화와 역할을 함께 정할 수 있는 사람인지가 더 직접적인 관계 기준이야.`)}
+    const relationship=findCard(root,'연애운');if(relationship){
+      const text=relationship.querySelector('.easyBody p');if(text)text.textContent=`${monthGod(c)}의 관계 태도와 ${stem[0]} 힘을 같이 보면, ${soft.pattern} 특히 약속·연락·거리 조절을 서로 어떤 방식으로 설명하는지 실제 행동을 보고 판단하는 게 좋아.`;
+      const pts=Q('.easyPoint',relationship);if(pts[0]?.querySelector('p'))pts[0].querySelector('p').textContent=`${stem[0]} 장점이 서로의 생활을 존중할 때 관계의 힘이 돼.`;if(pts[1]?.querySelector('p'))pts[1].querySelector('p').textContent=soft.cost;if(pts[2]?.querySelector('p'))pts[2].querySelector('p').textContent=soft.advice;
+    }
+    const boredom=findCard(root,'권태와 새로운 자극');if(boredom){const h=boredom.querySelector('h3');if(h)h.textContent='실제 권태 속도를 사주로 단정할 수는 없어. 필요한 변화의 종류를 볼게.';
+      const ss=starNames(c),actual=['역마살','도화살','홍염살'].filter(x=>ss.has(x));
+      for(const n of Q('.easyBody p',boredom)){if(/월간 십성에 역마·도화·홍염/.test(N(n.textContent)))n.textContent=actual.length?`월간 ${monthGod(c)}과 원국의 변화 신호, 실제 성립한 ${actual.join('·')}을 보조 근거로 함께 참고해. 별 이름만으로 권태 속도나 외도 가능성을 단정하지 않아.`:`월간 ${monthGod(c)}과 원국의 실제 관계 신호를 참고해. 성립하지 않은 신살을 근거로 권태나 외도 가능성을 판단하지 않아.`;}
+    }
+    const charm=findCard(root,'친밀감·성적 에너지');if(charm){const h=charm.querySelector('h3');if(h)h.textContent='친밀감은 관계의 신뢰와 개인의 선택에 따라 다르게 나타날 수 있어.'}
+    const last=findCard(root,'마지막 한마디');if(last){const h=last.querySelector('h3');if(h)h.textContent=`${stem[0]} 힘은 장점이야. 그 힘을 어디에 쓸지 고르는 것도 중요해.`;setFirstParagraph(last,`${soft.comfort} ${stem[1]} 선택을 일상에서 하나씩 해봐.`)}
+    const flag=root.querySelector('.guiinLife23');if(flag){const a=currentA(c);flag.innerHTML=`<b>지금 삶의 단계에서</b>현재 만 ${a??'?'}세. ${E(soft.advice)}`}
+  }
+  const career={
+    정관:['행정·운영','품질·규정관리','교육·조직관리'],편관:['위기대응·문제해결','현장관리','보안·안전관리'],정재:['회계·정산','매장·운영관리','일정·품질관리'],편재:['사업개발·영업','고객·거래관리','유통·서비스운영'],상관:['콘텐츠·기획','브랜딩·마케팅','디자인·개선업무'],식신:['기술·전문서비스','제품·콘텐츠제작','교육·숙련업무'],편인:['연구·분석','전문상담·해석','특수기술·기획'],정인:['교육·훈련','문서·행정','연구지원·학습설계'],비견:['독립전문직','프로젝트관리','개인서비스'],겁재:['협업영업','프로젝트기획','사업운영']
+  };
+  function rewriteWorkMoney(root,c){
+    const jobs=findCard(root,'직업을 실제 직군으로 풀면'),items=career[monthGod(c)]||career.정재;
+    if(jobs){const h=jobs.querySelector('h3');if(h)h.textContent=`${items.join(' · ')}을 우선 검토해볼 수 있어.`;setFirstParagraph(jobs,`월간 ${monthGod(c)}의 일하는 방식과 ${stemKey(c)} 일간의 강점을 함께 고려해 세 분야로 좁혔어. 실제 적합성은 관심·경력·수입·일하는 환경을 비교해서 판단해야 해.`)}
+    const money=findCard(root,'재물운');if(money){const points=Q('.easyPoint',money);const p=profile(c),m=monthGod(c);
+      const preserve={편재:'거래별 수익·손실 한도를 미리 정하면 좋은 기회를 오래 살릴 수 있어.',정재:'자동이체·예산·정산 기준을 세우면 꾸준함이 돈을 남기는 데 도움이 돼.',상관:'아이디어를 작게 유료화하고 반복 고객이 생기는지 확인하는 편이 좋아.',식신:'기술·결과물에 가격을 매기고 반복 판매 구조를 만드는 게 중요해.',정관:'계약·급여·고정비 조건이 명확할수록 관리가 편해질 수 있어.',편관:'큰 위험을 떠안기 전 손실 상한과 비상 자금을 먼저 정해봐.',편인:'전문성에 투자하되 그 배움이 실제 수입으로 이어지는 경로도 함께 봐.',정인:'공부·자격·문서 비용이 수입이나 생활 안정에 얼마나 연결되는지 점검해봐.',비견:'내 소비 기준을 정하고 충동적인 비교 지출은 거리를 둬봐.',겁재:'함께 쓰는 돈과 내 돈의 기준을 계약·기록으로 분리해봐.'};
+      if(points[0]?.querySelector('p'))points[0].querySelector('p').textContent=preserve[m]||'돈을 버는 구조와 남기는 구조를 따로 점검해봐.';
+      if(points[1]?.querySelector('p'))points[1].querySelector('p').textContent=`${p.primaryText.cost} 이 성향이 지출 판단에도 영향을 줄 수 있으니 실제 소비 기록으로 확인해봐.`;
+      if(points[2]?.querySelector('p'))points[2].querySelector('p').textContent='고정비와 선택 지출을 구분하고, 한 달간 기록한 뒤 조정해봐.';
+    }
+  }
+  function correctSpecial(root,c){
+    const ss=starNames(c);
+    nodeText(root,s=>s.replace(/역마살·반안살이 있어서 한 자리에 묶여 있기보다 환경·역할·활동에 변화가 있을 때 에너지가 다시 살아나는 면이 있어\./g,'역마살은 활동과 이동의 변화를, 반안살은 성과를 안정시키고 자리를 잡아가는 면을 보조적으로 나타내.')
+      .replace(/반안살이 있어서 한 자리에 묶여 있기보다 환경·역할·활동에 변화가 있을 때 에너지가 다시 살아나는 면이 있어\./g,'반안살은 새로운 이동보다 자리 잡음·성과·안정 쪽으로 보조적으로 읽어.')
+    );
+    const pct=normalizeShare(c);
+    if(pct){
+      const tops=pct.rank.filter(x=>Math.abs(x.exact-pct.rank[0].exact)<.001).map(x=>x.el);
+      const close=pct.rank.filter(x=>pct.rank[0].exact-x.exact<=5.01).slice(0,3).map(x=>x.el);
+      let info=root.querySelector('.guiinDistributionNote6321');
+      if(!info){info=document.createElement('div');info.className='guiinMetric630 guiinDistributionNote6321';const host=root.querySelector('.r30Engine2Box,.easyIntro,.manseSnapshot');if(host)host.appendChild(info)}
+      if(info)info.innerHTML=`<b>오행 분포 참고</b><span>${E(tops.length>1?`공동 최다 비중: ${tops.join('·')}.`:close.length>1?`상위 비중이 비슷한 ${close.join('·')}을 함께 살펴봐.`:`상위 비중 ${pct.rank[0].el}을 다른 구조값과 함께 살펴봐.`)} 오행의 단순 비율과 월령·십성·일간 강약은 서로 다른 관점이야. 비율 합계는 표시 반올림 때문에 100%에서 차이가 날 수 있어.</span>`;
+      if(tops.length>1)nodeText(root,s=>s.replace(new RegExp(`${tops[0]}\\s*${pct.map[tops[0]]}%가 가장 크게 드러나`,'g'),`${tops.join('·')}가 공동으로 가장 크게 드러나`));
+    }
+    // Never mention absent charm stars in personalized claims; generic shinsal guide teasers remain generic.
+    if(!ss.has('도화살')||!ss.has('홍염살'))nodeText(root,s=>s.replace(/실제 성립한 도화살·홍염살/g,`실제 성립한 ${['도화살','홍염살'].filter(x=>ss.has(x)).join('·')||'관계 보조신호'}`));
+  }
+  function report(root,c){
+    const text=N(root.innerText||root.textContent||''),problems=[],check=[['bad_sentence',/(?:좋아\.?이 나타날 수 있어|수 있어는 아닌지|형로 보이지만|방합로 보이지만|[충형파해·]+가 겹쳐)/],['honorific_leak',/(?:입니다|습니다|됩니다|합니다|보세요|하세요)\./],['missing_work_drain',/소모가 커지는 환경\s+선택할 때/],['fortune_label',(new RegExp(`(?:현재\\s+[가-힣]{2}\\s+대운[\\s\\S]{0,1800}현재\\s+[가-힣]{2}\\s+대운)`))]];
+    check.forEach(([key,re])=>{if(re.test(text))problems.push(key)});
+    const sections=Q('.guiinLifeFlow632 .guiinLifeRow632',root);
+    const topL=currentL(c);if(topL&&sections.length&&!(sections[sections.length-1]?.textContent||'').includes(topL.ko))problems.push('current_luck_mismatch');
+    for(const p of Q('.easyPoint',root))if(N(p.querySelector('b')?.textContent)==='소모가 커지는 환경'&&!N(p.querySelector('p')?.textContent))problems.push('empty_point');
+    const st=stemKey(c);if(!stems.includes(st))problems.push('day_stem_unrecognized');
+    const output={version:VERSION,age:currentA(c),stem:st,monthGod:monthGod(c),emotion:profile(c).primary,currentLuck:topL?.ko||null,checks:[...new Set(problems)],checkedAt:new Date().toISOString()};
+    try{sessionStorage.setItem('guiin_v6321_qa',JSON.stringify(output))}catch(_e){}
+    try{globalThis.__GUIIN_V6321_LAST_QA__=output}catch(_e){}
+    return output;
+  }
+  function apply(){
+    const root=document.getElementById('resultView'),c=currentChart();if(!root||!c?.pillars)return;
+    try{
+      grammar(root);correctSpecial(root,c);fillPoints(root,c);
+      const isSummary=(typeof currentTab==='undefined'||currentTab==='summary');
+      if(isSummary && !!root.querySelector('.guiinCounselor30')){
+        replaceLife(root,c);rewriteCounsel(root,c);rewritePersonal(root,c);rewriteWorkMoney(root,c);
+      }
+      grammar(root);fillPoints(root,c);report(root,c);
+    }catch(e){console.warn('GUIIN_V6321_QA_RUNTIME',e)}
+  }
+  globalThis.GuiinInterpretation6321={version:VERSION,apply,profile,normalizeShare,history:toLuckList,report:()=>{try{return JSON.parse(sessionStorage.getItem('guiin_v6321_qa')||'null')||globalThis.__GUIIN_V6321_LAST_QA__||null}catch(_e){return globalThis.__GUIIN_V6321_LAST_QA__||null}}};
+  const old=window.renderResult;
+  if(typeof old==='function'){
+    const wrapped=function(){const result=old.apply(this,arguments);for(const delay of [110,1120])setTimeout(apply,delay);return result};
+    try{window.renderResult=wrapped;renderResult=wrapped}catch(_e){window.renderResult=wrapped}
+  }
+  document.addEventListener('click',()=>setTimeout(apply,890),{passive:true});
+  setTimeout(apply,1500);
+})();
+
+</script>
 </body>
 </html>
