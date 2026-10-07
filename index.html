@@ -2304,9 +2304,14 @@ function openResultTab(t){if(chart){currentTab=t;renderResult();go('result')}els
 
 function uniq(arr){return [...new Set((arr||[]).filter(Boolean))]}
 function pctElements(c){
- const total=Object.values(c.elCount||{}).reduce((a,b)=>a+b,0)||1,out={};
- ['목','화','토','금','수'].forEach(e=>out[e]=Math.round(((c.elCount||{})[e]||0)/total*100));
- return out;
+ // 표시 반올림 전용: 원국 가중치와 사주 계산 로직은 그대로 둔다.
+ const es=['목','화','토','금','수'];const data=es.map((el,i)=>({el,i,v:Math.max(0,Number(c?.elCount?.[el]||0))}));
+ const total=data.reduce((sum,x)=>sum+x.v,0);
+ if(!(total>0))return Object.fromEntries(es.map(x=>[x,0]));
+ const rows=data.map(x=>({...x,exact:x.v*100/total,pct:Math.floor(x.v*100/total)}));
+ const rest=100-rows.reduce((sum,x)=>sum+x.pct,0);
+ rows.slice().sort((a,b)=>(b.exact-b.pct)-(a.exact-a.pct)||a.i-b.i).slice(0,rest).forEach(x=>x.pct++);
+ return Object.fromEntries(rows.map(x=>[x.el,x.pct]));
 }
 const EL_DESC={
  '목':'성장·기획·확장','화':'표현·속도·열정','토':'현실감·책임·안정','금':'판단·정리·기준','수':'관찰·유연성·정보'
@@ -6583,6 +6588,15 @@ function guiinChartPayload(){
     person_model:safePlain(personModel)
   };
 
+  // v6.33: share the exact same interpretation evidence with the AI request.
+  // Additive fields only; backend chooses whether it can read these. No policy/paywall changes.
+  try{
+    const b=globalThis.GuiinInterpretation633?.bridge?.(chart);
+    if(b){
+      out.interpretation_bridge=b;
+      if(out.person_model&&typeof out.person_model==='object')out.person_model.interpretation_bridge=b;
+    }
+  }catch(_e){console.warn('GUIIN_V633_CONTEXT_BRIDGE_DEFERRED')}
   return out.year&&out.month&&out.day?out:null;
 }
 
@@ -9452,6 +9466,225 @@ try{Object.assign(window,{guiinPaymentCenterStart});}catch(_e){}
    const assets=[...document.querySelectorAll('link[rel="stylesheet"],style')].map(x=>x.outerHTML).join('\n');
    const title=isCompat?'귀인사주 궁합':'귀인사주 평생사주';
    win.document.open();win.document.write(`<!doctype html><html lang="ko"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><base href="${location.origin}/"><title>${title}</title>${assets}<style>html,body{background:#fff!important}body{margin:0!important}.app{max-width:820px!important;width:100%!important;margin:0 auto!important;background:#fff!important;box-shadow:none!important}.screen{display:block!important;padding:12px!important}body *{visibility:visible!important}.topbar,.bottom,.demoBadge,.resultActionBar,.tailQuestions,.tabs,button{display:none!important}.card,.deepCard,.expertSection,.starDetail{box-shadow:none!important;break-inside:avoid}.guiinEvidenceFold>.easyEvidence{display:block!important}.guiinEvidenceFold>summary{display:none!important}@page{size:A4;margin:10mm}</style></head><body><main class="app"><section id="${isCompat?'matchResult':'result'}" class="screen active"><div id="${isCompat?'matchView':'resultView'}">${clone.innerHTML}</div></section></main><script>(async()=>{try{const imgs=[...document.images];await Promise.all(imgs.map(i=>i.complete?Promise.resolve():new Promise(r=>{i.onload=i.onerror=r})));}catch(e){}setTimeout(()=>{window.focus();window.print();},250);})();<\/script><!-- GUIIN AI UX v6.28: authoritative counters + compact examples + mobile header + charge hint -->
+<script id="GUIIN_V633">
+/* GUIIN v6.33 · interpretation integrity, grounded personalization, AI context bridge,
+   and one-pass render QA. This changes no birth/pillar/luck calculators, payment,
+   authentication, backend endpoints, membership, or API credentials. */
+(function(){
+ 'use strict';
+ if(globalThis.__GUIIN_V633__)return;
+ globalThis.__GUIIN_V633__=true;
+ const VERSION='6.33', EL=['목','화','토','금','수'], STEM=['갑','을','병','정','무','기','경','신','임','계'], BRANCH=['자','축','인','묘','진','사','오','미','신','유','술','해'];
+ const clean=s=>String(s??'').replace(/\s+/g,' ').trim();
+ const qs=(s,r=document)=>Array.from(r.querySelectorAll(s));
+ const todayAge=c=>{
+   const i=c?.input||{};let y=Number(i.year),m=Number(i.month),d=Number(i.day);
+   if(!Number.isInteger(y)||!Number.isInteger(m)||!Number.isInteger(d)||y<1800||m<1||m>12||d<1||d>31)return null;
+   const n=new Date();return Math.max(0,n.getFullYear()-y-((n.getMonth()+1<m||(n.getMonth()+1===m&&n.getDate()<d))?1:0));
+ };
+ const actualChart=()=>{try{return typeof chart!=='undefined'&&chart?.pillars?chart:null}catch(_){return null}};
+ const actualLuck=c=>{try{return typeof currentLuck==='function'?currentLuck(c):null}catch(_){return null}};
+ const originalModel=c=>globalThis.GuiinInterpretation6322?.details?.(c)||null;
+ const byKicker=(root,title)=>qs('.easyLongCard',root).find(card=>clean(card.querySelector('.easyKicker')?.textContent)===title)||null;
+ const setBody=(card,str)=>{let t=card?.querySelector(':scope > .easyBody > p');if(t&&typeof str==='string')t.textContent=str};
+ const setHead=(card,str)=>{let t=card?.querySelector('h3');if(t&&typeof str==='string')t.textContent=str};
+ const setPoint=(card,label,text)=>{for(const e of qs('.easyPoint',card||document.createElement('div'))){if(clean(e.querySelector('b')?.textContent)===label){let p=e.querySelector('p');if(!p){p=document.createElement('p');e.appendChild(p)}p.textContent=text;return true}}return false};
+ const jobCore={
+   정관:['행정·조직운영','품질·규정관리','교육·훈련 기획'],편관:['위기 대응·안전관리','현장 운영','프로젝트 리스크 관리'],
+   정재:['회계·정산','운영·일정관리','고객 신뢰관리'],편재:['사업 개발','영업·고객관리','유통·거래 운영'],
+   상관:['콘텐츠·기획','서비스 개선','디자인·브랜딩'],식신:['기술·전문서비스','제작·제품 개발','교육·숙련직'],
+   편인:['연구·분석','전문적 해석·컨설팅','기술·콘텐츠 연구'],정인:['교육·코칭','문서·행정','학습·전문성 설계'],
+   비견:['독립 전문서비스','프로젝트 리딩','개인 고객업무'],겁재:['협업 프로젝트','조정·협상','사업·고객 운영']
+ };
+ const specialty={갑:'신규 사업·프로젝트 설계',을:'관계 조율·서비스 경험 설계',병:'발표·프로모션 기획',정:'편집·고객 경험 개선',무:'조직·운영 체계 정립',기:'생활 밀착형 서비스 운영',경:'품질·현장 문제 해결',신:'세부 검수·정밀 디자인',임:'정보 분석·기획',계:'상담·자료 분석'};
+ const stemTraits={갑:'성장 방향을 그리는',을:'맥락을 읽으며 조율하는',병:'표현을 행동으로 옮기는',정:'작은 신호를 포착해 집중하는',무:'전체 구조를 받쳐주는',기:'일상의 문제를 실제로 챙기는',경:'우선순위를 또렷하게 가리는',신:'작은 차이를 정밀하게 다듬는',임:'흐름과 정보를 연결하는',계:'미묘한 변화를 세밀하게 살피는'};
+ const godLabels={비견:'주도권·독립',겁재:'경쟁·분담',식신:'숙련·제작',상관:'표현·개선',편재:'기회·확장',정재:'운영·안정',편관:'압박·책임',정관:'약속·책임',편인:'연구·독창성',정인:'배움·지원'};
+ function distribution(c){
+   const counts=EL.map((el,i)=>({el,i,v:Math.max(0,Number(c?.elCount?.[el]||0))}));const total=counts.reduce((s,r)=>s+r.v,0);
+   if(!(total>0))return null;
+   const v=counts.map(r=>({...r,exact:r.v/total*100,percent:Math.floor(r.v/total*100)}));
+   const left=100-v.reduce((s,r)=>s+r.percent,0);
+   v.slice().sort((a,b)=>(b.exact-b.percent)-(a.exact-a.percent)||a.i-b.i).slice(0,left).forEach(r=>r.percent++);
+   const sorted=v.slice().sort((a,b)=>b.exact-a.exact||a.i-b.i), map=Object.fromEntries(v.map(r=>[r.el,r.percent]));
+   const tops=sorted.filter(r=>Math.abs(r.exact-sorted[0].exact)<.00001),close=sorted.filter(r=>sorted[0].exact-r.exact<=6.001);
+   return {map,sorted,tops,close,shownTotal:v.reduce((s,r)=>s+r.percent,0),rawTotal:total};
+ }
+ function interp(c){
+   const d=originalModel(c),p=c?.pillars||{},st=c?.dayMaster?.stem||p.day?.stem||'',mg=p.month?.god||'',db=p.day?.branch||'';
+   const a=distribution(c),first=a?.sorted[0],second=a?.sorted[1];
+   const t=stemTraits[st]||'자기에게 맞는 기준을 찾는',gn=godLabels[mg]||'일상의 선택';
+   const dText=d?.d||'경험에 따라 선택의 속도가 달라질 수 있는 모습';
+   const near=a?.close.length>1;
+   const eleMsg=near?`${a.close.slice(0,2).map(r=>`${r.el} ${r.percent}%`).join('와 ')}가 비슷하게 보여서 두 기능을 함께 살펴볼 필요가 있어`:`${first?.el||'오행'}의 비중이 상대적으로 높지만 그것만으로 성격을 단정할 수는 없어`;
+   const age=todayAge(c),luck=actualLuck(c);
+   return {model:d,st,mg,db,age,luck,distrib:a,trait:t,theme:gn,dayReaction:dText,eleMsg,near};
+ }
+ const possibleGod=(day,target)=>{
+   const di=STEM.indexOf(String(day||'')),ti=STEM.indexOf(String(target||''));if(di<0||ti<0)return null;
+   const a=Math.floor(di/2),b=Math.floor(ti/2),samePolarity=(di%2)===(ti%2);
+   if(a===b)return samePolarity?'비견':'겁재';
+   if((a+1)%5===b)return samePolarity?'식신':'상관';
+   if((a+2)%5===b)return samePolarity?'편재':'정재';
+   if((b+1)%5===a)return samePolarity?'편인':'정인';
+   return samePolarity?'편관':'정관';
+ };
+ function integrity(c){
+   const hard=[],advice=[],i=c?.input||{},p=c?.pillars||{},ref=interp(c),l=ref.luck;
+   if(!STEM.includes(ref.st))hard.push('unrecognized_day_stem');
+   for(const k of ['year','month','day',...(i.hourUnknown?[]:['hour'])]){
+     if(!p[k]){hard.push('missing_pillar_'+k);continue}
+     if(!STEM.includes(p[k].stem)||!BRANCH.includes(p[k].branch))hard.push('invalid_pillar_'+k);
+     if(k!=='day'&&p[k].god&&possibleGod(ref.st,p[k].stem)!==p[k].god)hard.push('ten_god_mismatch_'+k);
+   }
+   if(ref.distrib&&ref.distrib.shownTotal!==100)hard.push('element_percent_not_100');
+   if(Number.isInteger(Number(i.hour))&&!i.hourUnknown&&p.hour?.branch){
+     const h=Number(i.hour),expected=BRANCH[Math.floor(((h+1)%24)/2)];
+     if(h>=0&&h<=23&&p.hour.branch!==expected)advice.push('hour_branch_boundary_verify');
+   }
+   const ls=Array.isArray(c?.luck)?c.luck:[];
+   if(ls.length&&!l)hard.push('missing_current_luck');
+   if(l&&!ls.some(x=>x===l||(x?.ko===l.ko&&x?.god===l.god)))hard.push('current_luck_not_in_luck_rows');
+   let prev=-Infinity;
+   for(const r of ls){const start=Number(r?.fromAgeExact??r?.fromAge);if(!Number.isFinite(start))advice.push('luck_start_missing');else if(start<prev)hard.push('non_monotonic_luck_periods');else prev=start}
+   if(!ls.length)advice.push('luck_rows_unavailable');
+   if(ref.age===null)advice.push('birthdate_unavailable_for_age_check');
+   return {version:VERSION,hard:[...new Set(hard)],warnings:[...new Set(advice)],age:ref.age,luck:l?.ko||null,dayStem:ref.st,monthGod:ref.mg,elementShare:ref.distrib?.map||null};
+ }
+ function bridge(c){
+   if(!c?.pillars)return null;
+   const a=interp(c),r=globalThis.GuiinInterpretation6322?.report?.(c),dq=a.distrib?.map;
+   return {
+     version:VERSION,method:'chart-grounded, non-diagnostic interpretation',
+     pillars:['year','month','day','hour'].map(k=>[k,c.pillars?.[k]?.stem||null,c.pillars?.[k]?.branch||null]),
+     dayMaster:a.st,monthGod:a.mg,dayBranch:a.db,
+     elementsDisplay:dq||null,
+     presentStarNames:[...new Set((c?.stars?.hits||[]).map(x=>typeof x==='string'?x:x?.name).filter(Boolean))].slice(0,24),
+     currentLuck:a.luck?{ko:a.luck.ko||null,god:a.luck.god||null}:null,
+     interpretation:r?{personality:String(r.main||'').slice(0,620),emotion:String(r.emotion||'').slice(0,500),work:String(r.work||'').slice(0,450),money:String(r.money||'').slice(0,450),relationship:String(r.relationship||'').slice(0,500),comfort:String(r.comfort||'').slice(0,450)}:null,
+     caution:'Keep original chart and luck consistent across counseling; do not invent past events, psychological diagnoses, or certainty about finances, romance, or future.'
+   };
+ }
+ function visibleQA(root,c){
+   const problems=[];const i=integrity(c);if(i.hard.length)problems.push(...i.hard);
+   const text=clean(root.innerText||root.textContent),d=interp(c);
+   if(/수 있어는 아닌지|좋아\.이 나타날 수 있어|형로 보이지만|방합로 보이지만|충·형가 겹쳐|\(.*?\)현재/.test(text))problems.push('broken_korean_composition');
+   if(/(?:경향입니다|오래갑니다|쉽습니다|가깝습니다|가능성이 큽니다)/.test(text))problems.push('polite_sentence_leak');
+   for(const p of qs('.easyPoint',root))if(clean(p.querySelector('b')?.textContent)==='소모가 커지는 환경'&&!clean(p.querySelector('p')?.textContent))problems.push('blank_work_environment');
+   const life=root.querySelector('.guiinLifeFlow632');const cur=life?.querySelector('.guiinLifeRow632.current');
+   if(d.luck&&cur&&!clean(cur.textContent).includes(d.luck.ko||''))problems.push('luck_different_inside_result');
+   if((d.age??20)<18 &&/친밀감·성적 에너지|결혼·동거|사업을 고민한다면/.test(text))problems.push('age_gate_requires_review');
+   const blocks=['나라는 사람','속마음과 감정','일할 때의 나','재물운','연애운','마지막 한마디'].map(k=>clean(byKicker(root,k)?.querySelector('.easyBody p')?.textContent)).filter(Boolean);
+   for(let a=0;a<blocks.length;a++)for(let b=a+1;b<blocks.length;b++)if(blocks[a]===blocks[b]&&blocks[a].length>100)problems.push('duplicate_main_card');
+   return {version:VERSION,ok:problems.length===0,issues:[...new Set(problems)],warnings:i.warnings,age:d.age,currentLuck:d.luck?.ko||null,currentLuckGod:d.luck?.god||null,stem:d.st,monthGod:d.mg,displaySum:d.distrib?.shownTotal||null,at:new Date().toISOString()};
+ }
+ function grammarTail(root){
+   // Final text-only lint does not change any calculation or event handlers.
+   const tw=document.createTreeWalker(root,NodeFilter.SHOW_TEXT,{acceptNode:n=>/^(SCRIPT|STYLE|TEXTAREA|INPUT|OPTION|BUTTON)$/.test(n.parentElement?.tagName||'')?NodeFilter.FILTER_REJECT:NodeFilter.FILTER_ACCEPT});
+   let nd;while(nd=tw.nextNode()){
+     const old=nd.nodeValue||'';let v=old.replace(/\.이 나타날 수 있어\./g,'.').replace(/수 있어는 아닌지/g,'수 있는 건 아닌지').replace(/(육합|방합|삼합|천간합|충|형|파|해)로 보이지만/g,'$1으로 보이지만').replace(/\)현재(?=\s|$)/g,') · 현재').replace(/보완 후보는 (목|금) 순서야/g,'보완 후보는 $1이 우선이야').replace(/보완 후보는 (화|토|수) 순서야/g,'보완 후보는 $1가 우선이야').replace(/(목|금)가 우선이야/g,'$1이 우선이야');
+     v=v.replace(/(?:사주에서 읽는 관계 반응 경향입니다)/g,'사주에서 읽는 관계 반응 경향이야').replace(/강점이 오래갑니다/g,'강점이 오래가').replace(/이해하기 쉬워집니다/g,'이해하기 쉬워져').replace(/가능성이 큽니다/g,'가능성이 커').replace(/혼합형에 가깝습니다/g,'혼합형에 가까워');
+     if(v!==old)nd.nodeValue=v;
+   }
+ }
+ function alignDisplayedLuck(root,c){
+   // One authoritative current luck source: the existing front-end currentLuck(c)
+   // evaluates the chart's exact luck starting ages and today's date.
+   const luck=actualLuck(c);if(!luck?.ko)return false;
+   let changed=false;
+   const expected=`${luck.ko} · ${luck.god||''}`.trim();
+   for(const label of qs('span',root)){
+     if(clean(label.textContent)!=='현재 대운')continue;
+     const strong=label.parentElement?.querySelector('b');if(!strong)continue;
+     const original=clean(strong.textContent);
+     const re=/[갑을병정무기경신임계][자축인묘진사오미신유술해]\s*·\s*(비견|겁재|식신|상관|편재|정재|편관|정관|편인|정인)/;
+     if(re.test(original)&&!original.includes(expected)){strong.textContent=original.replace(re,expected);changed=true}
+   }
+   // Only current-tense sentences. Do not rewrite historical luck passages.
+   const walker=document.createTreeWalker(root,NodeFilter.SHOW_TEXT,{acceptNode:n=>{
+     const tag=n.parentElement?.tagName||'';
+     return /^(STYLE|SCRIPT|TEXTAREA|INPUT|OPTION|BUTTON)$/.test(tag)?NodeFilter.FILTER_REJECT:NodeFilter.FILTER_ACCEPT;
+   }});
+   let nd;
+   while(nd=walker.nextNode()){
+     const old=nd.nodeValue||'';
+     if(!/(현재|지금)/.test(old)||!/(?:대운|운의)/.test(old))continue;
+     const next=old.replace(/(현재는?\s*|지금은?\s*)([갑을병정무기경신임계][자축인묘진사오미신유술해])\s*대운(?:\s*\((?:비견|겁재|식신|상관|편재|정재|편관|정관|편인|정인)\))?/g,
+       (_m,lead)=>`${lead}${luck.ko} 대운(${luck.god||''})`);
+     if(next!==old){nd.nodeValue=next;changed=true}
+   }
+   return changed;
+ }
+ function personalize(root,c){
+   const x=interp(c),a=x.model;if(!a||!a.w||!a.g)return;
+   const tn=x.trait,byStem=a.w,byGod=a.g,cond=x.dayReaction;
+   const emotional=byKicker(root,'속마음과 감정');
+   if(emotional){
+     const modes={목:['앞으로 어떻게 달라질지를 생각하는 마음','가능성을 너무 많이 열어두면 마음을 정리할 시점이 늦어질 수 있어'],화:['말과 행동으로 감정을 표현하는 마음','반응을 서두르면 상대가 받아들일 시간이 부족할 수 있어'],토:['사람과 생활을 안정시키려는 마음','내 일과 남의 일을 구분하지 못하면 부담이 커질 수 있어'],금:['기준에 맞는지 꼼꼼히 확인하는 마음','다른 의견을 곧바로 잘못된 선택으로 판단하지 않도록 조심할 필요가 있어'],수:['상황과 관계의 맥락을 넓게 읽는 마음','확인하지 않은 변화까지 의미를 붙이면 생각이 길어질 수 있어']};
+     const high=x.distrib?.sorted[0],low=x.distrib?.sorted[1],m1=modes[high?.el]||['환경에 따라 달라지는 마음','감정과 현실을 함께 살펴볼 필요가 있어'],m2=modes[low?.el]||m1;
+     const combination=x.near?`${high.el} ${high.percent}%와 ${low.el} ${low.percent}%가 가까워 ${m1[0]}과 ${m2[0]}이 함께 나타날 수 있어.`:`${high?.el||'오행'} ${high?.percent??'-'}%가 상대적으로 높아 ${m1[0]}을 참고하되, ${low?.el||'다른 오행'}의 기능을 한쪽으로 무시하지 않는 게 좋아.`;
+     setHead(emotional,`월간 ${x.mg}의 ${x.theme} 성향이 감정에 나타날 때를 살펴봐.`);
+     setBody(emotional,`${tn} 힘이 바탕에 있어도 감정은 늘 한 방식으로만 표현되지 않아. 일지 ${x.db}에서는 ${cond}이 드러날 수 있고, 월간 ${x.mg}에서는 ${byGod.cost} 더 조심스러워질 수도 있어. ${combination} 이는 명리 상징을 연결한 가능성이지 실제 감정 습관을 확정하는 진단은 아니야.`);
+     setPoint(emotional,'감정의 장점',`${m1[0]}을 상황에 맞게 쓰고, ${byStem.strength}을 관계에서도 살릴 수 있어.`);
+     setPoint(emotional,'마음이 쌓이는 순간',`${m1[1]} 특히 ${byStem.cost}.`);
+     setPoint(emotional,'말로 풀어내는 법',`${byGod.care}. 내가 확인한 사실과 추측, 원하는 행동을 각각 나눠서 말해봐.`);
+   }
+   const charm=byKicker(root,'나만의 매력');
+   if(charm){setBody(charm,`일간 ${x.st}의 ${byStem.strength}을 바탕으로, 가까워질수록 일지 ${x.db}의 ${cond}이 나타날 수 있어. 월간 ${x.mg}에서는 ${byGod.act} 싶어 하는 방식도 보이니 사람 앞에서의 첫 반응과 오래 지낼 때의 모습이 달라질 수 있어.`)}
+   const family=byKicker(root,'가족과 가까운 사람에게');
+   if(family){setBody(family,`가까운 사람에게는 ${cond}이 두드러질 수 있어. 월간 ${x.mg}의 ${x.theme} 기질 때문에 서로 기대하는 역할을 정하는 방식이 중요해질 수 있어. 네가 편한 관계를 판단할 때는 ${byGod.love}처럼 실제 약속이 지켜지는지도 함께 확인해봐.`)}
+   const together=byKicker(root,'결혼·동거');
+   if(together && (x.age===null||x.age>=18)){
+     setHead(together,`${x.theme}의 기준과 매일의 생활 방식을 함께 맞춰봐.`);
+     setBody(together,`오래 함께 지내면 ${byGod.love} 같은 조건이 실제 생활에서 얼마나 지켜지는지가 중요해질 수 있어. ${byStem.strength}을 상대에게도 똑같이 기대하면 부담이 생길 수 있으니, 돈·집안일·혼자 있는 시간처럼 반복되는 부분은 두 사람이 직접 합의해봐.`);
+   }
+   const labor=byKicker(root,'일할 때의 나');
+   if(labor)setPoint(labor,'소모가 커지는 환경',`월간 ${x.mg}의 일하는 방식과 달리 ${byGod.cost}에는 ${tn} 힘을 충분히 쓰기 어려울 수 있어. 그럴 땐 책임·권한·마감 시점을 함께 확인해봐.`);
+   const jobs=byKicker(root,'직업을 실제 직군으로 풀면');
+   if(jobs){let list=jobCore[x.mg]?.slice(0,2)||['업무기획','실무 관리'];let third=specialty[x.st];if(third&&!list.includes(third))list.push(third);setHead(jobs,`${list.join(' · ')} 분야를 우선 살펴볼 수 있어.`);setBody(jobs,`월간 ${x.mg}의 ${x.theme} 작용과 일간 ${x.st}의 ${tn} 힘을 같이 본 직무 예시야. 일지 ${x.db}에서 ${cond}과 맞는 환경인지도 참고해봐. 실제 선택은 경력·수입·관심·근무조건을 함께 비교해야 해.`)}
+   const last=byKicker(root,'마지막 한마디');
+   if(last){setHead(last,`${tn} 능력을 다음 선택에서도 지켜봐.`);setBody(last,`${byStem.care}. ${x.mg}의 ${x.theme} 기질은 ${byGod.cost} 부담이 커질 수도 있어. ${x.dayReaction}이 언제 힘이 되는지 관찰해봐. ${byGod.care}. ${byStem.action} 작은 선택을 해봐.`)}
+   const note=root.querySelector('.guiinDistributionNote6321');
+   if(note&&x.distrib){note.textContent=`오행 표시 합계 ${x.distrib.shownTotal}% · ${x.distrib.tops.length>1?'비중 공동 1위 '+x.distrib.tops.map(r=>r.el+' '+r.percent+'%').join('·'):x.near?'가까운 상위 비중 '+x.distrib.close.slice(0,2).map(r=>r.el+' '+r.percent+'%').join('·'):'상위 비중 '+x.distrib.sorted[0].el+' '+x.distrib.sorted[0].percent+'%'} · 오행 분포와 계절·십성 구조는 별개로 읽어.`}
+   grammarTail(root);
+ }
+ let queued=false, running=false, revision=0, latestQA=null;
+ function run(){
+   queued=false;if(running)return;const root=document.getElementById('resultView'),c=actualChart();
+   if(!root||!c|| (typeof currentTab!=='undefined'&&currentTab!=='summary'))return;
+   if(!root.querySelector('.easyLongCard,.guiinCounselor30'))return;
+   running=true;
+   try{
+     for(const tool of ['GuiinQA630','GuiinInterpretation631','GuiinInterpretation632','GuiinInterpretation6321','GuiinInterpretation6322']){
+       try{globalThis[tool]?.apply?.()}catch(e){console.warn('GUIIN_633_LAYER_FAILED',tool,e)}
+     }
+     alignDisplayedLuck(root,c);
+     personalize(root,c);
+     latestQA=visibleQA(root,c);
+     try{sessionStorage.setItem('guiin_v633_qa',JSON.stringify(latestQA))}catch(_){/* storage optional */}
+     // Expose warnings to the site owner via browser console, never suppress chart discrepancies.
+     if(!latestQA.ok)console.warn('GUIIN_633_QA_REVIEW',latestQA);
+   }catch(e){console.warn('GUIIN_633_RUNTIME',e)}finally{running=false}
+ }
+ function schedule(){if(queued)return;queued=true;const f=()=>requestAnimationFrame(run);if(document.visibilityState==='hidden')setTimeout(run,50);else requestAnimationFrame(f)}
+ // Preserve the actual result renderer. Earlier interpretation layers expose apply() but no longer
+ // create their own multiple click listeners/timers; this is the sole v6.30+ orchestration point.
+ const prior=window.renderResult;
+ if(typeof prior==='function'){
+   const wrapped=function(){const result=prior.apply(this,arguments);revision++;const rv=revision;schedule();
+     // One low-priority reconciliation for older legacy UI modules that still render asynchronously.
+     setTimeout(()=>{if(rv===revision)schedule()},340);
+     return result;};
+   window.renderResult=wrapped;try{renderResult=wrapped}catch(_e){}
+ }
+ const root=document.getElementById('resultView');
+ if(root && typeof MutationObserver==='function'){
+   const mo=new MutationObserver(m=>{if(!running&&m.some(x=>x.type==='childList'&&x.target===root))schedule()});
+   mo.observe(root,{childList:true,subtree:false});
+ }
+ globalThis.GuiinInterpretation633={version:VERSION,possibleGod,distribution,integrity,bridge,interp,apply:run,qa:()=>latestQA,schedule};
+})();
+
+</script>
 </body></html>`);win.document.close();
  }
  globalThis.guiinPrintResult=printClone;try{guiinPrintResult=printClone}catch(_e){}
@@ -10629,11 +10862,8 @@ try{Object.assign(window,{guiinPaymentCenterStart});}catch(_e){}
   repairKorean(root);specificRelationEvidence(root,c);metricSemantics(root,c);supplementSemantics(root);currentLuckConsistency(root,c);fixPointLabels(root);fillBlankPoints(root,c);contextualFact(root,c);fixLifeStage(root,c);teenGate(root,c);relationshipEvidenceGate(root,c);shinsalCleanup(root);personalizedSurface(root,c);strengthLabelNuance(root,c);casualTone(root);removeNearDuplicateGeneric(root);fixPointLabels(root);fillBlankPoints(root,c);qaReport(root,c);
  }
  globalThis.GuiinQA630={version:'6.30',apply,report:()=>{try{return JSON.parse(sessionStorage.getItem('guiin_v630_interpretation_qa')||'null')}catch(_e){return null}}};
- const prev=window.renderResult;if(typeof prev==='function'){
-  const wrapped=function(){const out=prev.apply(this,arguments);setTimeout(apply,0);setTimeout(apply,70);setTimeout(apply,180);return out};window.renderResult=wrapped;try{renderResult=wrapped}catch(_e){}
- }
- document.addEventListener('click',()=>setTimeout(apply,0),{passive:true});
- setTimeout(apply,0);setTimeout(apply,250);
+
+  // v6.33: executed by the shared result scheduler, not by independent timers.
 })();
 
 </script>
@@ -10879,9 +11109,8 @@ try{Object.assign(window,{guiinPaymentCenterStart});}catch(_e){}
     cleanLanguage(root);metricLabels(root,c);supplementNote(root,c);fixDomainLabels(root);fillBlank(root,c);fixCharmEvidence(root,c);relationshipEvidenceGate(root,c);fixRelationFallback(root,c);updateCounselor(root,c);updateLastCard(root,c);teenGate(root,c);removeFixedRest(root);casualize(root);removeGenericRepeats(root);fixDomainLabels(root);fillBlank(root,c);fixRelationFallback(root,c);cleanLanguage(root);qaReport(root,c);
   }
   globalThis.GuiinInterpretation631={version:VERSION,apply,emotion:emotionProfile,pastLuck:pastLuckInsight,report:()=>{try{return JSON.parse(sessionStorage.getItem('guiin_v631_qa')||'null')}catch(_e){return null}}};
-  const prev=window.renderResult;if(typeof prev==='function'){const wrapped=function(){const out=prev.apply(this,arguments);for(const ms of [0,60,180,420])setTimeout(apply,ms);return out};window.renderResult=wrapped;try{renderResult=wrapped}catch(_e){}}
-  document.addEventListener('click',()=>{for(const ms of [0,80,220])setTimeout(apply,ms)},{passive:true});
-  for(const ms of [0,200,600])setTimeout(apply,ms);
+
+  // v6.33: executed by the shared result scheduler, not by independent timers.
 })();
 
 </script>
@@ -11010,8 +11239,8 @@ try{Object.assign(window,{guiinPaymentCenterStart});}catch(_e){}
   function contradictionQA(root,c){const text=norm(root.innerText),issues=[];const pairs=[['emotion_show_hide',/감정을 바로 다 보여주지[^.]{0,100}\.(?=[\s\S]{0,600}(?:표정|말)에[^.]{0,80}(?:잘 드러|바로 드러))/],['weak_strong',/(?:신약|다소 약해지기 쉬운)[\s\S]{0,600}(?:자기 기운과 주도성이 강한 편)/],['missing_star',/(?:도화·홍염|도화살·홍염살)/],['broken_triad',/·\s*–\s*(?:삼합|방합)/],['broken_josa',/(?:금가 높지만|목가 높지만|편재이라|정재이라|겁재이라|병가 천간에|임가 천간에|형로 보이지만|삼합로 보이지만)/],['blank_point',/(?:소모가 커지는 환경|왜 이 시기야\?)\s*(?:선택할 때|$)/]];for(const [k,re] of pairs)if(re.test(text))issues.push(k);const ss=stars(c);if(/실제 성립한 도화살/.test(text)&&!ss.includes('도화살'))issues.push('nonexistent_dohwa');if(/실제 성립한 홍염살/.test(text)&&!ss.includes('홍염살'))issues.push('nonexistent_hongyeom');const age=ageOf(c);if(age!==null&&age<18&&/친밀감·성적 에너지|성생활|결혼·동거|사업을 고민한다면/.test(text))issues.push('minor_adult_copy');const report={version:VERSION,ok:issues.length===0,issues:[...new Set(issues)],emotion:emotionProfile(c).primary,evidence:{personality:evidenceText(c,'personality'),work:evidenceText(c,'work'),money:evidenceText(c,'money'),relationship:evidenceText(c,'relationship')},history:history(c).map(x=>({ko:x.row?.ko,god:x.row?.god,age:rangeText(x),types:x.types,score:Number(x.score.toFixed(2))})),at:new Date().toISOString()};try{sessionStorage.setItem('guiin_v632_qa',JSON.stringify(report))}catch(_e){};if(!report.ok)console.warn('GUIIN_V632_QA',report);return report}
   function apply(){const root=document.getElementById('resultView'),c=chartNow();if(!root||!c)return;const summary=typeof currentTab==='undefined'||currentTab==='summary';if(summary){updateCounselor(root,c);insertLifeFlow(root,c);rewriteGenericCards(root,c);attachEvidence(root,c);semanticDedupe(root)}contradictionQA(root,c)}
   globalThis.GuiinInterpretation632={version:VERSION,apply,evidence:(c,d)=>evidenceText(c,d),history,emotion:emotionProfile,report:()=>{try{return JSON.parse(sessionStorage.getItem('guiin_v632_qa')||'null')}catch(_e){return null}}};
-  const prev=window.renderResult;if(typeof prev==='function'){const wrapped=function(){const out=prev.apply(this,arguments);for(const ms of [40,180,520,950])setTimeout(apply,ms);return out};window.renderResult=wrapped;try{renderResult=wrapped}catch(_e){}}
-  document.addEventListener('click',()=>{for(const ms of [60,260,700])setTimeout(apply,ms)},{passive:true});for(const ms of [300,900])setTimeout(apply,ms);
+
+  // v6.33: executed by the shared result scheduler, not by independent timers.
 })();
 </script>
 
@@ -11250,13 +11479,8 @@ try{Object.assign(window,{guiinPaymentCenterStart});}catch(_e){}
     }catch(e){console.warn('GUIIN_V6321_QA_RUNTIME',e)}
   }
   globalThis.GuiinInterpretation6321={version:VERSION,apply,profile,normalizeShare,history:toLuckList,report:()=>{try{return JSON.parse(sessionStorage.getItem('guiin_v6321_qa')||'null')||globalThis.__GUIIN_V6321_LAST_QA__||null}catch(_e){return globalThis.__GUIIN_V6321_LAST_QA__||null}}};
-  const old=window.renderResult;
-  if(typeof old==='function'){
-    const wrapped=function(){const result=old.apply(this,arguments);for(const delay of [110,1120])setTimeout(apply,delay);return result};
-    try{window.renderResult=wrapped;renderResult=wrapped}catch(_e){window.renderResult=wrapped}
-  }
-  document.addEventListener('click',()=>setTimeout(apply,890),{passive:true});
-  setTimeout(apply,1500);
+
+  // v6.33: executed by the shared result scheduler, not by independent timers.
 })();
 
 </script>
@@ -11376,10 +11600,227 @@ try{Object.assign(window,{guiinPaymentCenterStart});}catch(_e){}
   }
   globalThis.GuiinInterpretation6322={version:V,details,report,apply,main,emotional,work,money,relationship,comfort};
   // The v6.32 and v6.32.1 wrappers run asynchronously; run after them without observing the DOM recursively.
-  const prev=window.renderResult;
-  if(typeof prev==='function'){const wrapped=function(){const r=prev.apply(this,arguments);[150,650,1440].forEach(ms=>setTimeout(apply,ms));return r};window.renderResult=wrapped;try{renderResult=wrapped}catch(e){}}
-  document.addEventListener('click',()=>setTimeout(apply,1460),{passive:true});
-  setTimeout(apply,1680);
+
+  // v6.33: executed by the shared result scheduler, not by independent timers.
+})();
+
+</script>
+<script id="GUIIN_V633">
+/* GUIIN v6.33 · interpretation integrity, grounded personalization, AI context bridge,
+   and one-pass render QA. This changes no birth/pillar/luck calculators, payment,
+   authentication, backend endpoints, membership, or API credentials. */
+(function(){
+ 'use strict';
+ if(globalThis.__GUIIN_V633__)return;
+ globalThis.__GUIIN_V633__=true;
+ const VERSION='6.33', EL=['목','화','토','금','수'], STEM=['갑','을','병','정','무','기','경','신','임','계'], BRANCH=['자','축','인','묘','진','사','오','미','신','유','술','해'];
+ const clean=s=>String(s??'').replace(/\s+/g,' ').trim();
+ const qs=(s,r=document)=>Array.from(r.querySelectorAll(s));
+ const todayAge=c=>{
+   const i=c?.input||{};let y=Number(i.year),m=Number(i.month),d=Number(i.day);
+   if(!Number.isInteger(y)||!Number.isInteger(m)||!Number.isInteger(d)||y<1800||m<1||m>12||d<1||d>31)return null;
+   const n=new Date();return Math.max(0,n.getFullYear()-y-((n.getMonth()+1<m||(n.getMonth()+1===m&&n.getDate()<d))?1:0));
+ };
+ const actualChart=()=>{try{return typeof chart!=='undefined'&&chart?.pillars?chart:null}catch(_){return null}};
+ const actualLuck=c=>{try{return typeof currentLuck==='function'?currentLuck(c):null}catch(_){return null}};
+ const originalModel=c=>globalThis.GuiinInterpretation6322?.details?.(c)||null;
+ const byKicker=(root,title)=>qs('.easyLongCard',root).find(card=>clean(card.querySelector('.easyKicker')?.textContent)===title)||null;
+ const setBody=(card,str)=>{let t=card?.querySelector(':scope > .easyBody > p');if(t&&typeof str==='string')t.textContent=str};
+ const setHead=(card,str)=>{let t=card?.querySelector('h3');if(t&&typeof str==='string')t.textContent=str};
+ const setPoint=(card,label,text)=>{for(const e of qs('.easyPoint',card||document.createElement('div'))){if(clean(e.querySelector('b')?.textContent)===label){let p=e.querySelector('p');if(!p){p=document.createElement('p');e.appendChild(p)}p.textContent=text;return true}}return false};
+ const jobCore={
+   정관:['행정·조직운영','품질·규정관리','교육·훈련 기획'],편관:['위기 대응·안전관리','현장 운영','프로젝트 리스크 관리'],
+   정재:['회계·정산','운영·일정관리','고객 신뢰관리'],편재:['사업 개발','영업·고객관리','유통·거래 운영'],
+   상관:['콘텐츠·기획','서비스 개선','디자인·브랜딩'],식신:['기술·전문서비스','제작·제품 개발','교육·숙련직'],
+   편인:['연구·분석','전문적 해석·컨설팅','기술·콘텐츠 연구'],정인:['교육·코칭','문서·행정','학습·전문성 설계'],
+   비견:['독립 전문서비스','프로젝트 리딩','개인 고객업무'],겁재:['협업 프로젝트','조정·협상','사업·고객 운영']
+ };
+ const specialty={갑:'신규 사업·프로젝트 설계',을:'관계 조율·서비스 경험 설계',병:'발표·프로모션 기획',정:'편집·고객 경험 개선',무:'조직·운영 체계 정립',기:'생활 밀착형 서비스 운영',경:'품질·현장 문제 해결',신:'세부 검수·정밀 디자인',임:'정보 분석·기획',계:'상담·자료 분석'};
+ const stemTraits={갑:'성장 방향을 그리는',을:'맥락을 읽으며 조율하는',병:'표현을 행동으로 옮기는',정:'작은 신호를 포착해 집중하는',무:'전체 구조를 받쳐주는',기:'일상의 문제를 실제로 챙기는',경:'우선순위를 또렷하게 가리는',신:'작은 차이를 정밀하게 다듬는',임:'흐름과 정보를 연결하는',계:'미묘한 변화를 세밀하게 살피는'};
+ const godLabels={비견:'주도권·독립',겁재:'경쟁·분담',식신:'숙련·제작',상관:'표현·개선',편재:'기회·확장',정재:'운영·안정',편관:'압박·책임',정관:'약속·책임',편인:'연구·독창성',정인:'배움·지원'};
+ function distribution(c){
+   const counts=EL.map((el,i)=>({el,i,v:Math.max(0,Number(c?.elCount?.[el]||0))}));const total=counts.reduce((s,r)=>s+r.v,0);
+   if(!(total>0))return null;
+   const v=counts.map(r=>({...r,exact:r.v/total*100,percent:Math.floor(r.v/total*100)}));
+   const left=100-v.reduce((s,r)=>s+r.percent,0);
+   v.slice().sort((a,b)=>(b.exact-b.percent)-(a.exact-a.percent)||a.i-b.i).slice(0,left).forEach(r=>r.percent++);
+   const sorted=v.slice().sort((a,b)=>b.exact-a.exact||a.i-b.i), map=Object.fromEntries(v.map(r=>[r.el,r.percent]));
+   const tops=sorted.filter(r=>Math.abs(r.exact-sorted[0].exact)<.00001),close=sorted.filter(r=>sorted[0].exact-r.exact<=6.001);
+   return {map,sorted,tops,close,shownTotal:v.reduce((s,r)=>s+r.percent,0),rawTotal:total};
+ }
+ function interp(c){
+   const d=originalModel(c),p=c?.pillars||{},st=c?.dayMaster?.stem||p.day?.stem||'',mg=p.month?.god||'',db=p.day?.branch||'';
+   const a=distribution(c),first=a?.sorted[0],second=a?.sorted[1];
+   const t=stemTraits[st]||'자기에게 맞는 기준을 찾는',gn=godLabels[mg]||'일상의 선택';
+   const dText=d?.d||'경험에 따라 선택의 속도가 달라질 수 있는 모습';
+   const near=a?.close.length>1;
+   const eleMsg=near?`${a.close.slice(0,2).map(r=>`${r.el} ${r.percent}%`).join('와 ')}가 비슷하게 보여서 두 기능을 함께 살펴볼 필요가 있어`:`${first?.el||'오행'}의 비중이 상대적으로 높지만 그것만으로 성격을 단정할 수는 없어`;
+   const age=todayAge(c),luck=actualLuck(c);
+   return {model:d,st,mg,db,age,luck,distrib:a,trait:t,theme:gn,dayReaction:dText,eleMsg,near};
+ }
+ const possibleGod=(day,target)=>{
+   const di=STEM.indexOf(String(day||'')),ti=STEM.indexOf(String(target||''));if(di<0||ti<0)return null;
+   const a=Math.floor(di/2),b=Math.floor(ti/2),samePolarity=(di%2)===(ti%2);
+   if(a===b)return samePolarity?'비견':'겁재';
+   if((a+1)%5===b)return samePolarity?'식신':'상관';
+   if((a+2)%5===b)return samePolarity?'편재':'정재';
+   if((b+1)%5===a)return samePolarity?'편인':'정인';
+   return samePolarity?'편관':'정관';
+ };
+ function integrity(c){
+   const hard=[],advice=[],i=c?.input||{},p=c?.pillars||{},ref=interp(c),l=ref.luck;
+   if(!STEM.includes(ref.st))hard.push('unrecognized_day_stem');
+   for(const k of ['year','month','day',...(i.hourUnknown?[]:['hour'])]){
+     if(!p[k]){hard.push('missing_pillar_'+k);continue}
+     if(!STEM.includes(p[k].stem)||!BRANCH.includes(p[k].branch))hard.push('invalid_pillar_'+k);
+     if(k!=='day'&&p[k].god&&possibleGod(ref.st,p[k].stem)!==p[k].god)hard.push('ten_god_mismatch_'+k);
+   }
+   if(ref.distrib&&ref.distrib.shownTotal!==100)hard.push('element_percent_not_100');
+   if(Number.isInteger(Number(i.hour))&&!i.hourUnknown&&p.hour?.branch){
+     const h=Number(i.hour),expected=BRANCH[Math.floor(((h+1)%24)/2)];
+     if(h>=0&&h<=23&&p.hour.branch!==expected)advice.push('hour_branch_boundary_verify');
+   }
+   const ls=Array.isArray(c?.luck)?c.luck:[];
+   if(ls.length&&!l)hard.push('missing_current_luck');
+   if(l&&!ls.some(x=>x===l||(x?.ko===l.ko&&x?.god===l.god)))hard.push('current_luck_not_in_luck_rows');
+   let prev=-Infinity;
+   for(const r of ls){const start=Number(r?.fromAgeExact??r?.fromAge);if(!Number.isFinite(start))advice.push('luck_start_missing');else if(start<prev)hard.push('non_monotonic_luck_periods');else prev=start}
+   if(!ls.length)advice.push('luck_rows_unavailable');
+   if(ref.age===null)advice.push('birthdate_unavailable_for_age_check');
+   return {version:VERSION,hard:[...new Set(hard)],warnings:[...new Set(advice)],age:ref.age,luck:l?.ko||null,dayStem:ref.st,monthGod:ref.mg,elementShare:ref.distrib?.map||null};
+ }
+ function bridge(c){
+   if(!c?.pillars)return null;
+   const a=interp(c),r=globalThis.GuiinInterpretation6322?.report?.(c),dq=a.distrib?.map;
+   return {
+     version:VERSION,method:'chart-grounded, non-diagnostic interpretation',
+     pillars:['year','month','day','hour'].map(k=>[k,c.pillars?.[k]?.stem||null,c.pillars?.[k]?.branch||null]),
+     dayMaster:a.st,monthGod:a.mg,dayBranch:a.db,
+     elementsDisplay:dq||null,
+     presentStarNames:[...new Set((c?.stars?.hits||[]).map(x=>typeof x==='string'?x:x?.name).filter(Boolean))].slice(0,24),
+     currentLuck:a.luck?{ko:a.luck.ko||null,god:a.luck.god||null}:null,
+     interpretation:r?{personality:String(r.main||'').slice(0,620),emotion:String(r.emotion||'').slice(0,500),work:String(r.work||'').slice(0,450),money:String(r.money||'').slice(0,450),relationship:String(r.relationship||'').slice(0,500),comfort:String(r.comfort||'').slice(0,450)}:null,
+     caution:'Keep original chart and luck consistent across counseling; do not invent past events, psychological diagnoses, or certainty about finances, romance, or future.'
+   };
+ }
+ function visibleQA(root,c){
+   const problems=[];const i=integrity(c);if(i.hard.length)problems.push(...i.hard);
+   const text=clean(root.innerText||root.textContent),d=interp(c);
+   if(/수 있어는 아닌지|좋아\.이 나타날 수 있어|형로 보이지만|방합로 보이지만|충·형가 겹쳐|\(.*?\)현재/.test(text))problems.push('broken_korean_composition');
+   if(/(?:경향입니다|오래갑니다|쉽습니다|가깝습니다|가능성이 큽니다)/.test(text))problems.push('polite_sentence_leak');
+   for(const p of qs('.easyPoint',root))if(clean(p.querySelector('b')?.textContent)==='소모가 커지는 환경'&&!clean(p.querySelector('p')?.textContent))problems.push('blank_work_environment');
+   const life=root.querySelector('.guiinLifeFlow632');const cur=life?.querySelector('.guiinLifeRow632.current');
+   if(d.luck&&cur&&!clean(cur.textContent).includes(d.luck.ko||''))problems.push('luck_different_inside_result');
+   if((d.age??20)<18 &&/친밀감·성적 에너지|결혼·동거|사업을 고민한다면/.test(text))problems.push('age_gate_requires_review');
+   const blocks=['나라는 사람','속마음과 감정','일할 때의 나','재물운','연애운','마지막 한마디'].map(k=>clean(byKicker(root,k)?.querySelector('.easyBody p')?.textContent)).filter(Boolean);
+   for(let a=0;a<blocks.length;a++)for(let b=a+1;b<blocks.length;b++)if(blocks[a]===blocks[b]&&blocks[a].length>100)problems.push('duplicate_main_card');
+   return {version:VERSION,ok:problems.length===0,issues:[...new Set(problems)],warnings:i.warnings,age:d.age,currentLuck:d.luck?.ko||null,currentLuckGod:d.luck?.god||null,stem:d.st,monthGod:d.mg,displaySum:d.distrib?.shownTotal||null,at:new Date().toISOString()};
+ }
+ function grammarTail(root){
+   // Final text-only lint does not change any calculation or event handlers.
+   const tw=document.createTreeWalker(root,NodeFilter.SHOW_TEXT,{acceptNode:n=>/^(SCRIPT|STYLE|TEXTAREA|INPUT|OPTION|BUTTON)$/.test(n.parentElement?.tagName||'')?NodeFilter.FILTER_REJECT:NodeFilter.FILTER_ACCEPT});
+   let nd;while(nd=tw.nextNode()){
+     const old=nd.nodeValue||'';let v=old.replace(/\.이 나타날 수 있어\./g,'.').replace(/수 있어는 아닌지/g,'수 있는 건 아닌지').replace(/(육합|방합|삼합|천간합|충|형|파|해)로 보이지만/g,'$1으로 보이지만').replace(/\)현재(?=\s|$)/g,') · 현재').replace(/보완 후보는 (목|금) 순서야/g,'보완 후보는 $1이 우선이야').replace(/보완 후보는 (화|토|수) 순서야/g,'보완 후보는 $1가 우선이야').replace(/(목|금)가 우선이야/g,'$1이 우선이야');
+     v=v.replace(/(?:사주에서 읽는 관계 반응 경향입니다)/g,'사주에서 읽는 관계 반응 경향이야').replace(/강점이 오래갑니다/g,'강점이 오래가').replace(/이해하기 쉬워집니다/g,'이해하기 쉬워져').replace(/가능성이 큽니다/g,'가능성이 커').replace(/혼합형에 가깝습니다/g,'혼합형에 가까워');
+     if(v!==old)nd.nodeValue=v;
+   }
+ }
+ function alignDisplayedLuck(root,c){
+   // One authoritative current luck source: the existing front-end currentLuck(c)
+   // evaluates the chart's exact luck starting ages and today's date.
+   const luck=actualLuck(c);if(!luck?.ko)return false;
+   let changed=false;
+   const expected=`${luck.ko} · ${luck.god||''}`.trim();
+   for(const label of qs('span',root)){
+     if(clean(label.textContent)!=='현재 대운')continue;
+     const strong=label.parentElement?.querySelector('b');if(!strong)continue;
+     const original=clean(strong.textContent);
+     const re=/[갑을병정무기경신임계][자축인묘진사오미신유술해]\s*·\s*(비견|겁재|식신|상관|편재|정재|편관|정관|편인|정인)/;
+     if(re.test(original)&&!original.includes(expected)){strong.textContent=original.replace(re,expected);changed=true}
+   }
+   // Only current-tense sentences. Do not rewrite historical luck passages.
+   const walker=document.createTreeWalker(root,NodeFilter.SHOW_TEXT,{acceptNode:n=>{
+     const tag=n.parentElement?.tagName||'';
+     return /^(STYLE|SCRIPT|TEXTAREA|INPUT|OPTION|BUTTON)$/.test(tag)?NodeFilter.FILTER_REJECT:NodeFilter.FILTER_ACCEPT;
+   }});
+   let nd;
+   while(nd=walker.nextNode()){
+     const old=nd.nodeValue||'';
+     if(!/(현재|지금)/.test(old)||!/(?:대운|운의)/.test(old))continue;
+     const next=old.replace(/(현재는?\s*|지금은?\s*)([갑을병정무기경신임계][자축인묘진사오미신유술해])\s*대운(?:\s*\((?:비견|겁재|식신|상관|편재|정재|편관|정관|편인|정인)\))?/g,
+       (_m,lead)=>`${lead}${luck.ko} 대운(${luck.god||''})`);
+     if(next!==old){nd.nodeValue=next;changed=true}
+   }
+   return changed;
+ }
+ function personalize(root,c){
+   const x=interp(c),a=x.model;if(!a||!a.w||!a.g)return;
+   const tn=x.trait,byStem=a.w,byGod=a.g,cond=x.dayReaction;
+   const emotional=byKicker(root,'속마음과 감정');
+   if(emotional){
+     const modes={목:['앞으로 어떻게 달라질지를 생각하는 마음','가능성을 너무 많이 열어두면 마음을 정리할 시점이 늦어질 수 있어'],화:['말과 행동으로 감정을 표현하는 마음','반응을 서두르면 상대가 받아들일 시간이 부족할 수 있어'],토:['사람과 생활을 안정시키려는 마음','내 일과 남의 일을 구분하지 못하면 부담이 커질 수 있어'],금:['기준에 맞는지 꼼꼼히 확인하는 마음','다른 의견을 곧바로 잘못된 선택으로 판단하지 않도록 조심할 필요가 있어'],수:['상황과 관계의 맥락을 넓게 읽는 마음','확인하지 않은 변화까지 의미를 붙이면 생각이 길어질 수 있어']};
+     const high=x.distrib?.sorted[0],low=x.distrib?.sorted[1],m1=modes[high?.el]||['환경에 따라 달라지는 마음','감정과 현실을 함께 살펴볼 필요가 있어'],m2=modes[low?.el]||m1;
+     const combination=x.near?`${high.el} ${high.percent}%와 ${low.el} ${low.percent}%가 가까워 ${m1[0]}과 ${m2[0]}이 함께 나타날 수 있어.`:`${high?.el||'오행'} ${high?.percent??'-'}%가 상대적으로 높아 ${m1[0]}을 참고하되, ${low?.el||'다른 오행'}의 기능을 한쪽으로 무시하지 않는 게 좋아.`;
+     setHead(emotional,`월간 ${x.mg}의 ${x.theme} 성향이 감정에 나타날 때를 살펴봐.`);
+     setBody(emotional,`${tn} 힘이 바탕에 있어도 감정은 늘 한 방식으로만 표현되지 않아. 일지 ${x.db}에서는 ${cond}이 드러날 수 있고, 월간 ${x.mg}에서는 ${byGod.cost} 더 조심스러워질 수도 있어. ${combination} 이는 명리 상징을 연결한 가능성이지 실제 감정 습관을 확정하는 진단은 아니야.`);
+     setPoint(emotional,'감정의 장점',`${m1[0]}을 상황에 맞게 쓰고, ${byStem.strength}을 관계에서도 살릴 수 있어.`);
+     setPoint(emotional,'마음이 쌓이는 순간',`${m1[1]} 특히 ${byStem.cost}.`);
+     setPoint(emotional,'말로 풀어내는 법',`${byGod.care}. 내가 확인한 사실과 추측, 원하는 행동을 각각 나눠서 말해봐.`);
+   }
+   const charm=byKicker(root,'나만의 매력');
+   if(charm){setBody(charm,`일간 ${x.st}의 ${byStem.strength}을 바탕으로, 가까워질수록 일지 ${x.db}의 ${cond}이 나타날 수 있어. 월간 ${x.mg}에서는 ${byGod.act} 싶어 하는 방식도 보이니 사람 앞에서의 첫 반응과 오래 지낼 때의 모습이 달라질 수 있어.`)}
+   const family=byKicker(root,'가족과 가까운 사람에게');
+   if(family){setBody(family,`가까운 사람에게는 ${cond}이 두드러질 수 있어. 월간 ${x.mg}의 ${x.theme} 기질 때문에 서로 기대하는 역할을 정하는 방식이 중요해질 수 있어. 네가 편한 관계를 판단할 때는 ${byGod.love}처럼 실제 약속이 지켜지는지도 함께 확인해봐.`)}
+   const together=byKicker(root,'결혼·동거');
+   if(together && (x.age===null||x.age>=18)){
+     setHead(together,`${x.theme}의 기준과 매일의 생활 방식을 함께 맞춰봐.`);
+     setBody(together,`오래 함께 지내면 ${byGod.love} 같은 조건이 실제 생활에서 얼마나 지켜지는지가 중요해질 수 있어. ${byStem.strength}을 상대에게도 똑같이 기대하면 부담이 생길 수 있으니, 돈·집안일·혼자 있는 시간처럼 반복되는 부분은 두 사람이 직접 합의해봐.`);
+   }
+   const labor=byKicker(root,'일할 때의 나');
+   if(labor)setPoint(labor,'소모가 커지는 환경',`월간 ${x.mg}의 일하는 방식과 달리 ${byGod.cost}에는 ${tn} 힘을 충분히 쓰기 어려울 수 있어. 그럴 땐 책임·권한·마감 시점을 함께 확인해봐.`);
+   const jobs=byKicker(root,'직업을 실제 직군으로 풀면');
+   if(jobs){let list=jobCore[x.mg]?.slice(0,2)||['업무기획','실무 관리'];let third=specialty[x.st];if(third&&!list.includes(third))list.push(third);setHead(jobs,`${list.join(' · ')} 분야를 우선 살펴볼 수 있어.`);setBody(jobs,`월간 ${x.mg}의 ${x.theme} 작용과 일간 ${x.st}의 ${tn} 힘을 같이 본 직무 예시야. 일지 ${x.db}에서 ${cond}과 맞는 환경인지도 참고해봐. 실제 선택은 경력·수입·관심·근무조건을 함께 비교해야 해.`)}
+   const last=byKicker(root,'마지막 한마디');
+   if(last){setHead(last,`${tn} 능력을 다음 선택에서도 지켜봐.`);setBody(last,`${byStem.care}. ${x.mg}의 ${x.theme} 기질은 ${byGod.cost} 부담이 커질 수도 있어. ${x.dayReaction}이 언제 힘이 되는지 관찰해봐. ${byGod.care}. ${byStem.action} 작은 선택을 해봐.`)}
+   const note=root.querySelector('.guiinDistributionNote6321');
+   if(note&&x.distrib){note.textContent=`오행 표시 합계 ${x.distrib.shownTotal}% · ${x.distrib.tops.length>1?'비중 공동 1위 '+x.distrib.tops.map(r=>r.el+' '+r.percent+'%').join('·'):x.near?'가까운 상위 비중 '+x.distrib.close.slice(0,2).map(r=>r.el+' '+r.percent+'%').join('·'):'상위 비중 '+x.distrib.sorted[0].el+' '+x.distrib.sorted[0].percent+'%'} · 오행 분포와 계절·십성 구조는 별개로 읽어.`}
+   grammarTail(root);
+ }
+ let queued=false, running=false, revision=0, latestQA=null;
+ function run(){
+   queued=false;if(running)return;const root=document.getElementById('resultView'),c=actualChart();
+   if(!root||!c|| (typeof currentTab!=='undefined'&&currentTab!=='summary'))return;
+   if(!root.querySelector('.easyLongCard,.guiinCounselor30'))return;
+   running=true;
+   try{
+     for(const tool of ['GuiinQA630','GuiinInterpretation631','GuiinInterpretation632','GuiinInterpretation6321','GuiinInterpretation6322']){
+       try{globalThis[tool]?.apply?.()}catch(e){console.warn('GUIIN_633_LAYER_FAILED',tool,e)}
+     }
+     alignDisplayedLuck(root,c);
+     personalize(root,c);
+     latestQA=visibleQA(root,c);
+     try{sessionStorage.setItem('guiin_v633_qa',JSON.stringify(latestQA))}catch(_){/* storage optional */}
+     // Expose warnings to the site owner via browser console, never suppress chart discrepancies.
+     if(!latestQA.ok)console.warn('GUIIN_633_QA_REVIEW',latestQA);
+   }catch(e){console.warn('GUIIN_633_RUNTIME',e)}finally{running=false}
+ }
+ function schedule(){if(queued)return;queued=true;const f=()=>requestAnimationFrame(run);if(document.visibilityState==='hidden')setTimeout(run,50);else requestAnimationFrame(f)}
+ // Preserve the actual result renderer. Earlier interpretation layers expose apply() but no longer
+ // create their own multiple click listeners/timers; this is the sole v6.30+ orchestration point.
+ const prior=window.renderResult;
+ if(typeof prior==='function'){
+   const wrapped=function(){const result=prior.apply(this,arguments);revision++;const rv=revision;schedule();
+     // One low-priority reconciliation for older legacy UI modules that still render asynchronously.
+     setTimeout(()=>{if(rv===revision)schedule()},340);
+     return result;};
+   window.renderResult=wrapped;try{renderResult=wrapped}catch(_e){}
+ }
+ const root=document.getElementById('resultView');
+ if(root && typeof MutationObserver==='function'){
+   const mo=new MutationObserver(m=>{if(!running&&m.some(x=>x.type==='childList'&&x.target===root))schedule()});
+   mo.observe(root,{childList:true,subtree:false});
+ }
+ globalThis.GuiinInterpretation633={version:VERSION,possibleGod,distribution,integrity,bridge,interp,apply:run,qa:()=>latestQA,schedule};
 })();
 
 </script>
