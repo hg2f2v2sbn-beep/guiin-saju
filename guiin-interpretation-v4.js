@@ -21,15 +21,68 @@ function rels(c){return Array.isArray(c?.relations)?c.relations:[];} function ne
 function hash(s){let h=2166136261;for(const ch of String(s)){h^=ch.charCodeAt(0);h=Math.imul(h,16777619)}return h>>>0;}
 function seed(c,s=''){return hash([c?.pillars?.year?.ko,c?.pillars?.month?.ko,c?.pillars?.day?.ko,c?.pillars?.hour?.ko,c?.input?.gender,s].join('|'));}
 function pick(a,c,s){return a[seed(c,s)%a.length];} function ev(c,extra=''){return [c?.pillars?.day?.ko&&`일주 ${c.pillars.day.ko}`,c?.pillars?.month?.ko&&`월주 ${c.pillars.month.ko}`,extra].filter(Boolean).join(' · ');}
-function sec(id,title,body,c,evidence){const sig=signature(c,id);return {id,eyebrow:title,title,body:sig?body+' '+sig:body,evidence:ev(c,evidence)};}
+function sec(id,title,body,c,evidence){const deep=id==='self'?structureScene(c,id):'';return {id,eyebrow:title,title,body:[body,deep].filter(Boolean).join(' '),evidence:ev(c,evidence)};}
 function closeStyle(c){const b=branch(c), base=DAY[b]||'가까운 사람일수록 말보다 반복되는 행동을 더 오래 봐.'; const n=neg(c); if(!n.length)return base+' 한번 믿은 관계는 쉽게 버리지 않지만 행동이 계속 어긋나면 마음이 서서히 멀어져.'; const t=n[0].type; return base+(t==='충'?' 참다가 선을 넘었다고 느끼는 순간에는 관계 방식을 통째로 바꾸려 해.':t==='형'?' 같은 문제가 반복되면 머릿속에서 계속 되짚다가 결국 지쳐.':t==='해'?' 겉으로 넘어간 일도 마음속에 남아 다음 실망과 연결돼.':' 약속이 자꾸 바뀌면 사랑보다 신뢰부터 흔들려.');}
+
+function hiddenGods(c){
+ const out=[];
+ for(const k of ['year','month','day','hour']){
+   const h=c?.pillars?.[k]?.hidden;
+   if(Array.isArray(h))for(const x of h)if(x?.god)out.push({pillar:k,god:x.god,weight:Number(x.weight||0)});
+ }
+ return out.sort((a,b)=>b.weight-a.weight);
+}
+function yinYang(c){
+ const direct=c?.yinYang||c?.yin_yang||c?.polarity;
+ if(direct&&typeof direct==='object'){
+   const yang=Number(direct.yang??direct['양']??0),yin=Number(direct.yin??direct['음']??0),t=yang+yin;
+   if(t>0)return {yang:Math.round(yang*100/t),yin:Math.round(yin*100/t)};
+ }
+ const stems=['갑','병','무','경','임'], branches=['자','인','진','오','신','술'];
+ const ps=['year','month','day','hour'].map(k=>c?.pillars?.[k]).filter(Boolean);
+ if(!ps.length)return {yang:50,yin:50};
+ let yang=0,total=0;
+ for(const x of ps){if(x.stem){total++;if(stems.includes(x.stem))yang++}if(x.branch){total++;if(branches.includes(x.branch))yang++}}
+ return total?{yang:Math.round(yang*100/total),yin:Math.round((total-yang)*100/total)}:{yang:50,yin:50};
+}
+function relationProfile(c){
+ const xs=rels(c),count=t=>xs.filter(x=>x?.type===t).length;
+ return {combine:count('합'),clash:count('충'),punish:count('형'),harm:count('해'),break:count('파')};
+}
+function structureScene(c,tag){
+ const yy=yinYang(c),rp=relationProfile(c),hg=hiddenGods(c),topHidden=hg[0]?.god||'', a=order(c),gap=(a[0]?.[1]||0)-(a[4]?.[1]||0);
+ const scenes=[];
+ if(yy.yin>=70)scenes.push('겉으로 바로 반응하기보다 안에서 충분히 정리한 뒤 움직이는 힘이 강해서, 조용하다고 아무 생각이 없는 사람은 아니야.');
+ if(yy.yang>=70)scenes.push('생각이 정리되면 행동으로 옮기는 속도가 빨라서, 오래 고민만 하는 상황에서는 오히려 답답함을 크게 느껴.');
+ if(rp.clash+rp.punish>=2)scenes.push('서로 다른 기준이 안에서 동시에 작동하는 장면이 많아서, 평소엔 버티다가 어느 순간 방향을 크게 바꾸는 식의 결단이 나올 때가 있어.');
+ if(rp.combine>=2)scenes.push('사람이나 환경과 연결점을 찾아 맞추는 힘이 강해서, 혼자 밀어붙이기보다 관계 속에서 판을 만드는 능력이 살아나.');
+ if(rp.harm+rp.break>=2)scenes.push('겉으로 끝난 일도 신뢰가 어긋났다고 느끼면 오래 기억하는 편이라, 작은 약속이 반복해서 깨지는 상황에 특히 지쳐.');
+ if(gap>=25)scenes.push(`명식 안에서 ${a[0]?.[0]} 기운과 ${a[4]?.[0]} 기운의 차이가 커서, 잘하는 방식은 아주 선명하지만 반대 기능은 의식적으로 챙길수록 균형이 좋아져.`);
+ if(topHidden&&['편관','정관'].includes(topHidden))scenes.push('겉으로 보이는 모습보다 안쪽에는 책임과 긴장을 스스로 떠안는 습관이 숨어 있어서, 아무도 시키지 않았는데 혼자 기준을 높일 때가 있어.');
+ if(topHidden&&['식신','상관'].includes(topHidden))scenes.push('속으로는 표현하고 만들고 고치려는 욕구가 강해서, 참고만 있는 환경보다 결과물을 직접 보여줄 수 있을 때 훨씬 살아나.');
+ if(topHidden&&['편재','정재'].includes(topHidden))scenes.push('현실적인 손익과 지속 가능성을 속으로 계속 계산하는 편이라, 마음만 좋다고 오래 끌기보다 결국 유지되는지를 보게 돼.');
+ if(!scenes.length)return '';
+ return pick(scenes,c,'structure|'+tag);
+}
+function contradictionQA(rows){
+ const body=(rows||[]).map(x=>String(x.body||'')).join(' ');
+ const pairs=[
+  ['바로 말하고','바로 묻기보다 혼자'],
+  ['사람을 쉽게 믿','사람을 빨리 믿'],
+  ['계획적인 관리','계획 없이'],
+  ['혼자 생각할 시간이 필요','그 자리에서 바로 풀어야']
+ ];
+ const hits=[];
+ for(const [a,b] of pairs)if(body.includes(a)&&body.includes(b))hits.push([a,b]);
+ return {pass:hits.length===0,hits};
+}
 function sections(c){const n=name(c),a=order(c),hi=a[0]||['목',20],lo=a[4]||['수',20],g=mg(c), w=WORK[g]||WORK.일간, h=HIGH[hi[0]], p=pct(c); const rows=[];
  rows.push(sec('self','나는 어떤 사람?',`${n}는 ${pick(h,c,'self1')} ${pick(h,c,'self2')} 겉으로는 별일 아닌 것처럼 보여도 자기 기준에 걸리는 건 그냥 넘기지 않아. ${g==='정관'||g==='정재'?'한번 책임졌다고 생각한 일은 쉽게 놓지 않고 끝까지 챙기는 편이야.':g==='상관'||g==='편인'?'납득이 안 되는 건 이유를 찾아야 넘어가고, 남들이 당연하게 받아들이는 것도 혼자 다시 생각해봐.':g==='식신'||g==='정인'?'한번 자기 것으로 만든 건 오래 가져가고, 시간이 갈수록 실력이 더 안정되는 사람이야.':'마음이 정해지면 생각만 하고 있기보다 자기 방식대로 움직이는 힘이 있어.'}`,c,`중심 ${hi[0]} ${hi[1]}%`));
  rows.push(sec('inside','속마음',`${closeStyle(c)} ${lo[0]==='화'?'감정을 느끼는 것보다 표현하는 게 늦어서 상대가 네 속을 다 안다고 착각하면 엇갈려.':lo[0]==='수'?'계속 버티기만 하면 혼자 조용히 지쳐. 쉬어야 할 때까지 생각으로 버티지 않는 게 중요해.':lo[0]==='금'?'싫다는 말을 늦게 해서 네가 감당할 일이 늘어날 때가 있어.':lo[0]==='토'?'마음이 흔들릴 때 생활 리듬까지 같이 깨지지 않게 잡아주는 게 중요해.':'가능성을 너무 많이 열어두면 정작 네가 원하는 방향을 놓칠 때가 있어.'}`,c,`일지 ${branch(c)}`));
  rows.push(sec('work','일할 때',`${w[0]} ${w[1]} ${hi[0]==='금'?'특히 남들이 대충 넘긴 부분을 다시 잡아내고 완성도를 올리는 능력은 분명 경쟁력이야.':hi[0]==='토'?'특히 일이 꼬였을 때 끝까지 수습하고 정상으로 돌려놓는 힘이 강해.':hi[0]==='화'?'특히 현장에서 바로 판단하고 분위기를 바꾸는 힘이 강해.':hi[0]==='수'?'특히 복잡한 상황에서 먼저 흐름을 읽고 다음 수를 생각하는 힘이 강해.':'특히 막힌 일에서 새로운 방법을 찾아 다시 움직이게 만드는 힘이 강해.'} 반대로 네가 이것저것 다 챙기는데 중요한 결정은 다른 사람이 하고, 일이 꼬이면 네가 수습하는 상황이 반복되면 오래 못 버텨.`,c,`사회 작동 ${g}`));
- rows.push(sec('people','사람을 대할 때',`${closeStyle(c)} ${g==='편재'||g==='겁재'?'사람을 넓게 만날 수는 있어도 결국 오래 남는 사람은 네 속도와 경계를 존중하는 사람이야.':g==='정관'||g==='정재'?'말보다 약속을 지키는 사람에게 신뢰가 가고, 말과 행동이 계속 다르면 정이 빨리 떨어져.':'사람 수보다 편하게 내 모습을 보여줄 수 있는 몇 명이 더 중요해.'}`,c));
+ rows.push(sec('people','사람을 대할 때',`${neg(c).length?'사람 사이에서 불편한 일이 생겨도 처음부터 관계를 끊기보다 상대가 다음에 어떻게 행동하는지 한 번 더 보는 편이야.':'처음 만난 사람에게 전부 보여주기보다 행동을 보면서 천천히 신뢰를 정하는 편이야.'} ${g=='편재'||g==='겁재'?'사람을 넓게 만날 수는 있어도 결국 오래 남는 사람은 네 속도와 경계를 존중하는 사람이야.':g==='정관'||g==='정재'?'말보다 약속을 지키는 사람에게 신뢰가 가고, 말과 행동이 계속 다르면 정이 빨리 떨어져.':'사람 수보다 편하게 내 모습을 보여줄 수 있는 몇 명이 더 중요해.'}`,c));
  rows.push(sec('love','연애할 때',`${n}는 좋아하면 생각보다 많이 챙겨. 다만 사랑한다는 말 하나보다 평소 행동이 맞는지를 더 오래 봐. ${branch(c)==='유'||branch(c)==='술'?'작은 약속이 반복해서 깨지면 그때부터 상대를 보는 눈이 달라져.':branch(c)==='해'||branch(c)==='묘'?'상대가 달라졌다는 느낌을 빨리 알아채지만 바로 따지기보다 혼자 이유를 생각해보는 편이야.':branch(c)==='미'||branch(c)==='축'?'상대가 힘들면 네가 해결해주려는 마음이 커서 연애가 돌봄으로 바뀌지 않게 해야 해.':'감정이 생기면 관계를 애매하게 오래 두는 것보다 서로의 마음과 방향이 분명한 게 편해.'} 네가 계속 이해해주고 챙겨줘야만 유지되는 관계는 결국 사랑보다 책임처럼 느껴져.`,c));
- rows.push(sec('anger','화가 날 때',`${neg(c).length?closeStyle(c):'처음부터 크게 싸움을 만드는 타입이라기보다 반복되는 행동을 보고 판단하는 편이야.'} ${hi[0]==='화'?'화가 올라오면 말과 결론이 빨라져. 그 순간에는 관계 전체를 끝낼지까지 한꺼번에 결정하지 않는 게 좋아.':hi[0]==='금'?'화가 나면 무엇이 잘못됐는지가 아주 선명해져서 말이 정확하고 차가워질 수 있어.':hi[0]==='토'?'참을 만큼 참다가 한계를 넘으면 갑자기 손을 놓는 쪽이야.':hi[0]==='수'?'바로 터뜨리기보다 생각이 많아지고 말수가 줄어. 이미 조용해졌다면 속에서는 꽤 많이 정리한 뒤일 수 있어.':'처음에는 다른 방법을 찾아보지만 계속 막히면 더는 붙잡을 이유가 없다고 판단해.'}`,c));
+ rows.push(sec('anger','화가 날 때',`${neg(c).length?'갈등이 생기면 그 한 장면만 보는 게 아니라 이전에 비슷했던 일까지 같이 떠올라서, 반복이라고 느끼는 순간 화가 훨씬 커져.':'처음부터 크게 싸움을 만드는 타입이라기보다 반복되는 행동을 보고 판단하는 편이야.'} ${hi[0]==='화'?'화가 올라오면 말과 결론이 빨라져. 그 순간에는 관계 전체를 끝낼지까지 한꺼번에 결정하지 않는 게 좋아.':hi[0]==='금'?'화가 나면 무엇이 잘못됐는지가 아주 선명해져서 말이 정확하고 차가워질 수 있어.':hi[0]==='토'?'참을 만큼 참다가 한계를 넘으면 갑자기 손을 놓는 쪽이야.':hi[0]==='수'?'바로 터뜨리기보다 생각이 많아지고 말수가 줄어. 이미 조용해졌다면 속에서는 꽤 많이 정리한 뒤야.':'처음에는 다른 방법을 찾아보지만 계속 막히면 더는 붙잡을 이유가 없다고 판단해.'}`,c));
  rows.push(sec('cold','정 떨어지는 순간',`${n}가 가장 못 견디는 건 한 번의 실수보다 같은 실망이 반복되는 거야. ${g==='정관'?'약속과 책임을 말로만 하고 실제 행동은 피하는 사람':g==='식신'?'편안함을 당연하게 여기고 네 노력을 계속 받기만 하는 사람':g==='상관'?'문제가 뻔히 보이는데도 고칠 생각 없이 핑계만 반복하는 사람':g==='편인'?'네가 중요하게 보는 이유를 이해하려 하지 않고 가볍게 넘기는 사람':'네 호의와 능력을 당연한 몫처럼 쓰는 사람'}에게 마음이 빨리 식어. 한번 마음속에서 선을 넘었다고 판단하면 예전처럼 돌아가는 데 시간이 오래 걸려.`,c));
  rows.push(sec('money','돈 버는 방식',`${MONEY[g]||MONEY.일간} ${hi[0]==='금'?'품질과 완성도가 돈이 되는 구조':hi[0]==='토'?'꾸준히 운영하고 단골과 반복 수입을 만드는 구조':hi[0]==='화'?'사람 반응이 바로 오고 네 표현력과 실행력이 매출로 이어지는 구조':hi[0]==='수'?'정보와 흐름을 읽는 능력이 돈으로 이어지는 구조':'새로운 기회를 만들고 성장시키는 능력이 돈으로 이어지는 구조'}에서 강점이 더 분명해져. 돈을 더 버는 것만큼 네가 대신 부담하고 있는 비용이 없는지도 봐야 해.`,c,`${g} · ${hi[0]} 우세`));
  rows.push(sec('career','직장 vs 사업',`${g==='비견'||g==='겁재'||g==='상관'||g==='편재'?'남이 만든 틀에 오래 맞추는 것보다 네 판단이 결과에 직접 반영되는 일이 잘 맞아. 사업이나 독립적인 역할에서도 힘이 살아나는 구조야.':'무조건 사업이 답인 사주는 아니야. 다만 네 전문성과 판단을 인정받고 결과를 직접 확인할 수 있는 자리여야 오래 가.'} 처음부터 크게 벌이기보다 잘하는 기술 → 실제 반응 → 반복 고객이나 반복 성과 → 확장 순서로 가면 네 장점을 가장 안정적으로 돈으로 바꿀 수 있어.`,c));
@@ -74,7 +127,7 @@ function dedupe(rows,c,scope='saju'){
    return {...r,body:vary(c,scope+'|'+r.id,keep.join('\n\n'))};
  });
 }
-function pmodel(c){const a=order(c),g=mg(c);return {version:'human-v4',day_master:c?.dayMaster?.stem||'',month_god:g,strongest:{element:a[0]?.[0],percent:a[0]?.[1]},weakest:{element:a[4]?.[0],percent:a[4]?.[1]},day_branch:branch(c),relation_signal_types:[...new Set(rels(c).map(x=>x?.type).filter(Boolean))]};}
+function pmodel(c){const a=order(c),g=mg(c);return {version:'human-v5',day_master:c?.dayMaster?.stem||'',month_god:g,strongest:{element:a[0]?.[0],percent:a[0]?.[1]},weakest:{element:a[4]?.[0],percent:a[4]?.[1]},day_branch:branch(c),relation_signal_types:[...new Set(rels(c).map(x=>x?.type).filter(Boolean))],yin_yang:yinYang(c),relation_profile:relationProfile(c),hidden_gods:hiddenGods(c).slice(0,6)};}
 // Compatibility
 function prof(c){const a=order(c);return {c,n:name(c),hi:a[0],lo:a[4],g:mg(c),b:branch(c),dm:c?.dayMaster?.el||c?.pillars?.day?.stemEl||'',stem:c?.dayMaster?.stem||c?.pillars?.day?.stem||''};}
 function pairSeed(A,B,s){return hash([A.c?.pillars?.day?.ko,B.c?.pillars?.day?.ko,A.c?.pillars?.month?.ko,B.c?.pillars?.month?.ko,s].join('|'));} function pp(a,A,B,s){return a[pairSeed(A,B,s)%a.length];}
@@ -84,7 +137,7 @@ function pairSignature(A,B,tag){const a=A.c?.pillars?.month?.branch||'',b=B.c?.p
 const COMPAT_BANDS={
  excellent:{core:'끌림만 강한 관계가 아니라 서로의 장점을 실제 생활에서 살려주기 좋은 조합이야.',friction:'다퉈도 관계 전체를 의심하기보다 문제를 해결하는 쪽으로 돌아오기 쉬워.',long:'오래 갈수록 서로를 바꾸기보다 잘하는 역할을 나누는 게 강점이야.'},
  strong:{core:'서로 좋아지는 이유가 분명하고 함께 있을 때 장점도 잘 보이는 관계야. 다만 가까워질수록 생활 방식의 차이는 보여.',friction:'큰 문제보다 말투·연락·약속처럼 사소해 보이는 부분에서 서운함이 쌓이지 않게 하는 게 중요해.',long:'기본 궁합은 좋은 편이라 서로의 방식을 고치기보다 번역해주는 습관이 오래 가는 힘이 돼.'},
- mixed:{core:'좋아하는 마음과 불편한 지점이 같이 존재하는 관계야. 잘 맞을 때는 빠르게 가까워지지만 안 맞는 부분도 반복해서 눈에 들어와.',friction:'한쪽은 별일 아니라고 넘긴 일이 다른 쪽에는 중요한 문제일 수 있어. 싸움의 내용보다 중요하게 보는 기준이 다른 경우가 많아.',long:'감정만으로 버티기보다 연락·돈·시간·약속에서 둘만의 기준을 실제로 정해야 안정돼.'},
+ mixed:{core:'좋아하는 마음과 불편한 지점이 같이 존재하는 관계야. 잘 맞을 때는 빠르게 가까워지지만 안 맞는 부분도 반복해서 눈에 들어와.',friction:'한쪽은 별일 아니라고 넘긴 일이 다른 쪽에는 중요한 문제야. 싸움의 내용보다 중요하게 보는 기준이 다른 경우가 많아.',long:'감정만으로 버티기보다 연락·돈·시간·약속에서 둘만의 기준을 실제로 정해야 안정돼.'},
  effort:{core:'끌림은 있어도 편하게만 흘러가는 관계는 아니야. 서로 다른 방식 때문에 좋아하면서도 피곤하다는 느낌이 같이 생기기 쉬워.',friction:'한쪽이 밀어붙이면 다른 쪽이 닫히거나, 한쪽이 확인받으려 할수록 다른 쪽이 부담을 느끼는 식의 엇갈림을 조심해야 해.',long:'오래 만나려면 사랑의 크기를 증명하기보다 반복되는 갈등 하나씩 해결할 수 있는지가 더 중요해.'},
  fragile:{core:'처음의 끌림과 별개로 가까워질수록 서로에게 요구하는 방식이 크게 다를 수 있는 관계야.',friction:'같은 문제를 여러 번 설명해도 서로 받아들이는 방식이 달라 감정 소모가 커질 수 있어.',long:'참는 사람 한 명이 관계를 유지하는 구조가 되면 오래 가기 어려워. 경계와 약속이 실제로 지켜지는지를 먼저 봐야 해.'}
 };
@@ -93,19 +146,33 @@ function compatBuild(a,b,score){const A=prof(a),B=prof(b), same=A.hi[0]===B.hi[0
  secs.push({id:'core',category:'summary',title:'둘은 어떤 관계야?',body: high?`${A.n}와 ${B.n}는 서로에게 끌리는 힘뿐 아니라 관계를 다시 맞춰가는 힘도 강한 편이야. 처음부터 모든 게 똑같아서 편한 관계라기보다, 다른 부분이 있어도 결국 상대를 이해하려고 돌아오는 힘이 있어.`:low?`${A.n}와 ${B.n}는 좋아하는 마음만으로는 편하게 굴러가기 어려운 관계야. 서로가 사랑을 확인하는 방식과 문제를 처리하는 방식이 달라서, 마음은 있는데도 “왜 나만 노력하지?”라는 생각이 생기기 쉬워.`:`${A.n}와 ${B.n}는 끌림과 마찰이 같이 있는 관계야. 잘 맞을 때는 서로 부족한 부분을 채워주지만, 싸울 때는 같은 차이가 그대로 답답함으로 돌아와. 이 관계는 사랑의 크기보다 서로 다른 방식을 얼마나 이해하느냐가 오래 가는 힘을 결정해.`,evidence:`점수 ${s??'-'} · 중심 ${A.hi[0]}/${B.hi[0]}`});
  secs.push({id:'difference',category:'summary',title:'둘이 다르게 반응하는 이유',body:`${A.n}는 ${A.hi[0]==='화'?'생각이 서면 바로 말하고 움직이는 쪽':A.hi[0]==='수'?'충분히 생각한 뒤 움직이는 쪽':A.hi[0]==='금'?'무엇이 맞고 틀린지 기준부터 잡는 쪽':A.hi[0]==='토'?'현실적으로 누가 무엇을 책임질지 보는 쪽':'앞으로 어떻게 바꿀지 새 방향을 먼저 보는 쪽'}이고, ${B.n}는 ${B.hi[0]==='화'?'생각이 서면 바로 말하고 움직이는 쪽':B.hi[0]==='수'?'충분히 생각한 뒤 움직이는 쪽':B.hi[0]==='금'?'무엇이 맞고 틀린지 기준부터 잡는 쪽':B.hi[0]==='토'?'현실적으로 누가 무엇을 책임질지 보는 쪽':'앞으로 어떻게 바꿀지 새 방향을 먼저 보는 쪽'}이야. ${same?'둘이 비슷한 방식으로 반응해서 이해는 빠르지만, 싸울 때는 둘 다 자기 방식이 당연하다고 느끼기 쉬워.':'그래서 같은 사건을 겪어도 한쪽은 이미 결론을 냈는데 다른 한쪽은 아직 생각 중인 장면이 생겨.'}`,evidence:`중심 오행 ${A.hi[0]}/${B.hi[0]}`});
  secs.push({id:'love',category:'love',title:'사랑을 확인하는 방식',body:`${A.n}는 ${DAY[A.b]||'반복되는 행동에서 마음을 확인해.'} ${B.n}는 ${DAY[B.b]||'반복되는 행동에서 마음을 확인해.'} ${daySame?'둘의 기준이 닮아서 서로 원하는 걸 빨리 알아차릴 수 있지만, 기대치까지 똑같다고 생각하면 오해가 생겨.':'한 사람에게는 충분한 애정 표현이 다른 사람에게는 부족하게 느껴질 수 있어. “난 했잖아”보다 상대가 무엇을 사랑으로 받아들이는지를 보는 게 중요해.'}`,evidence:`일지 ${A.b}/${B.b}`});
- secs.push({id:'fight',category:'love',title:'싸우면 이렇게 엇갈려',body:`${A.n}는 ${A.hi[0]==='수'?'혼자 생각할 시간이 필요하고':A.hi[0]==='금'?'무엇이 잘못됐는지 분명히 정리돼야 풀리고':A.hi[0]==='토'?'말보다 실제 행동이 달라져야 마음이 풀리고':A.hi[0]==='화'?'감정이 올라온 순간 바로 말하고 싶어 하고':'앞으로 어떻게 바꿀지가 보여야 풀리고'}, ${B.n}는 ${B.hi[0]==='수'?'혼자 생각할 시간이 필요해':B.hi[0]==='금'?'잘못된 지점이 분명히 정리돼야 풀려':B.hi[0]==='토'?'실제 행동이 달라져야 마음이 풀려':B.hi[0]==='화'?'감정이 올라온 순간 바로 말하고 싶어 해':'앞으로 어떻게 바꿀지가 보여야 풀려'}. ${ng.length?'그래서 싸움이 커졌을 때 그 자리에서 관계 전체의 결론까지 내리면 상처가 오래 남아.':'큰 충돌 신호보다 말하는 타이밍이 문제를 키우기 쉬운 조합이야.'}`,evidence:`긴장 신호 ${ng.map(x=>x.type).slice(0,3).join('·')||'낮음'}`});
+ secs.push({id:'fight',category:'love',title:'싸우면 이렇게 엇갈려',body:`${A.n}는 ${A.hi[0]==='수'?'혼자 생각할 시간이 필요하고':A.hi[0]==='금'?'무엇이 잘못됐는지 분명히 정리돼야 풀리고':A.hi[0]==='토'?'말보다 실제 행동이 달라져야 마음이 풀리고':A.hi[0]==='화'?'감정이 올라온 순간 바로 말하고 싶어 하고':'문제가 생기면 다음 방법이 보여야 마음이 풀리고'}, ${B.n}는 ${B.hi[0]==='수'?'혼자 생각할 시간이 필요해':B.hi[0]==='금'?'잘못된 지점이 분명히 정리돼야 풀려':B.hi[0]==='토'?'실제 행동이 달라져야 마음이 풀려':B.hi[0]==='화'?'감정이 올라온 순간 바로 말하고 싶어 해':'문제가 생기면 다음 방법이 보여야 마음이 풀려'}. ${ng.length?'그래서 싸움이 커졌을 때 그 자리에서 관계 전체의 결론까지 내리면 상처가 오래 남아.':'큰 충돌 신호보다 말하는 타이밍이 문제를 키우기 쉬운 조합이야.'}`,evidence:`긴장 신호 ${ng.map(x=>x.type).slice(0,3).join('·')||'낮음'}`});
  secs.push({id:'money',category:'marriage',title:'돈과 생활에서 부딪히는 지점',body:`${A.n}는 ${MONEY[A.g]||MONEY.일간} ${B.n}는 ${MONEY[B.g]||MONEY.일간} 둘이 같이 살거나 공동지출이 생기면 누가 더 냈는지보다 누가 계속 계획하고, 누가 계속 결정하고, 누가 뒤처리를 하는지가 감정에 더 크게 남아. 한 사람이 계속 챙기는 구조가 되면 돈 문제처럼 보여도 실제로는 책임 문제로 싸우게 돼.`,evidence:`사회 작동 ${A.g}/${B.g}`});
  secs.push({id:'long',category:'marriage',title:'오래 만나려면',body: high?`이 둘은 좋은 감정만 유지하려고 애쓰기보다 서로 편해진 뒤에도 고마움을 표현하는 게 중요해. 잘 맞는다는 이유로 한 사람의 배려를 당연하게 여기지만 않으면 장기적으로 안정감이 커져.`:low?`이 관계는 참는 사람이 생기는 순간부터 급격히 힘들어져. 연락, 돈, 시간, 가족, 돌봄 중 반복해서 싸우는 한 가지를 그대로 두면 같은 갈등이 계속 돌아와. 사랑을 더 증명하는 것보다 그 한 가지 행동을 실제로 바꾸는 게 먼저야.`:`둘은 완벽하게 같은 사람이 아니라 맞춰갈 수 있는 사람들이야. 다만 서운한 걸 오래 모아두고 상대가 알아서 눈치채길 기다리면 관계가 급격히 차가워져. 작은 불편일 때 말하는 게 오래 가는 핵심이야.`,evidence:`점수 ${s??'-'}`});
  for(const x of secs){
    if(x.id==='core')x.body=bandProfile.core+' '+x.body;
    if(x.id==='fight')x.body=bandProfile.friction+' '+x.body;
    if(x.id==='long')x.body=bandProfile.long+' '+x.body;
-   x.body+=' '+pairSignature(A,B,x.id);
  }
  const finalSections=dedupe(secs,a,'compat-band-'+scoreBand);
- return {meta:{...meta,version:'human-v4.2',score:s,scoreBand,aName:A.n,bName:B.n,semanticQA:semanticQA(finalSections)},sections:finalSections};}
+ return {meta:{...meta,version:'human-v5',score:s,scoreBand,aName:A.n,bName:B.n,semanticQA:semanticQA(finalSections)},sections:finalSections};}
 function compatPick(x,tab){const s=x?.sections||[];if(!tab||tab==='summary')return s;if(tab==='love')return s.filter(v=>['core','difference','love','fight','long'].includes(v.id));if(tab==='marriage')return s.filter(v=>['core','difference','money','long'].includes(v.id));return s;}
-root.GuiinExpert={...BaseExpert,fullSections:sections,personalitySections:sections,fieldSections:sections,personModel:pmodel};
+
+function humanizeFlow(c,year){
+ const base=typeof BaseExpert.flowSections==='function'?BaseExpert.flowSections(c,year):{sections:[],rows:[]};
+ if(!base||typeof base!=='object')return base;
+ const out={...base,sections:Array.isArray(base.sections)?base.sections.map(x=>({...x})):[]};
+ const lk=(Array.isArray(base.rows)?base.rows.find(x=>x?.current):null)||(Array.isArray(c?.luck)?c.luck.find(x=>x?.current):null);
+ const god=lk?.god||'';
+ const plain={비견:'내 선택과 독립성이 커지는',겁재:'사람·경쟁·지출의 움직임이 커지는',식신:'기술과 결과물을 꾸준히 쌓는',상관:'답답한 방식을 고치고 표현이 강해지는',편재:'기회와 사람, 돈의 이동이 활발해지는',정재:'수입과 생활 기반을 안정시키는',편관:'책임과 압박 속에서 결단이 필요한',정관:'역할과 신뢰, 공식적인 책임이 커지는',편인:'방향을 다시 생각하고 전문성을 깊게 파는',정인:'배우고 정리하며 기반을 다지는'};
+ if(lk&&out.sections.length){
+   const intro=`지금은 ${lk.ko} 대운이 큰 배경이야. ${plain[god]||'삶의 우선순위를 다시 잡는'} 시간이 길게 이어지는 구간이라고 보면 돼. 좋은 일이나 나쁜 일이 정해졌다는 뜻이 아니라, 같은 선택을 해도 어디에 힘이 더 들어가는지가 달라지는 시기야.`;
+   out.sections=out.sections.map((x,i)=>i===0?{...x,title:'지금의 큰 흐름',body:intro+' '+String(x.body||'').replace(/대운\(大運[^)]*\)/g,'대운').replace(/세운\(歲運[^)]*\)/g,'세운')}:x);
+ }
+ out.humanQA={semantic:semanticQA(out.sections),currentLuck:lk?`${lk.ko} ${god}`.trim():null};
+ return out;
+}
+root.GuiinExpert={...BaseExpert,fullSections:sections,personalitySections:sections,fieldSections:sections,personModel:pmodel,flowSections:humanizeFlow};
 root.GuiinCompat={...BaseCompat,build:compatBuild,pick:compatPick};
-root.GUIIN_INTERPRETATION_V4={version:'human-v4.2',semanticQA,rules:{humanFirst:true,jargonInBody:false,confidentTone:true,repeatCards:false,semanticDuplicateQA:true,koreanVariantLayer:true}};
+root.GUIIN_INTERPRETATION_V4={version:'human-v5',semanticQA,contradictionQA,structureScene,rules:{humanFirst:true,jargonInBody:false,confidentTone:true,repeatCards:false,semanticDuplicateQA:true,koreanVariantLayer:true}};
 })(typeof globalThis!=='undefined'?globalThis:this);

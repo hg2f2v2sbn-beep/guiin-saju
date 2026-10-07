@@ -1705,6 +1705,12 @@ html{-webkit-text-size-adjust:100%;text-size-adjust:100%}
 @media(max-width:360px){.homeProductReview .productReviewTop{align-items:flex-start}.homeProductReview .productPrice{font-size:14px}.homeProductReview h3{font-size:14px}}
 .tilePrice{display:inline-block;margin-top:3px;color:#a16f16;font-size:9px;font-weight:950;letter-spacing:-.01em}
 </style>
+<style id="guiin-auth-live-v1">
+.authFieldHint{margin:-5px 2px 7px;font-size:11px;line-height:1.45;color:#8a8378}
+.authFieldHint.ok{color:#18794e;font-weight:800}.authFieldHint.bad{color:#b42318;font-weight:800}
+.authInput.is-ok{border-color:#56a67a!important}.authInput.is-bad{border-color:#d96b62!important}
+@media(max-width:480px){.authCard{padding-left:14px!important;padding-right:14px!important}.authInput{font-size:16px!important}}
+</style>
 </head>
 <body><div class="guiinDemoBadge">DEMO · 전체풀이 무료</div>
 <div class="app">
@@ -2072,11 +2078,11 @@ html{-webkit-text-size-adjust:100%;text-size-adjust:100%}
 <section id="signup" class="screen"><div class="topbar"><button class="ghost" onclick="go('login')" data-guiin-nav="login">‹</button><div class="brand"><div class="brandline">회원가입</div></div><span></span></div><div class="authHero"><div class="authMark"><img src="clover-mark.jpg" alt=""></div><h2>귀인사주 회원가입</h2><p>아이디와 비밀번호를 만들면 카카오 없이도 저장한 사주·상담·구매내역을 이어서 이용할 수 있어요.</p></div><div class="authCard card">
   <form class="authForm" onsubmit="return guiinPasswordSignup(event)">
     <label for="signupLoginId">아이디</label>
-    <input id="signupLoginId" class="authInput" type="text" autocomplete="username" maxlength="32" placeholder="영문·숫자 4~32자">
+    <input id="signupLoginId" class="authInput" type="text" autocomplete="username" maxlength="32" placeholder="영문·숫자 4~32자"><div id="signupLoginIdHint" class="authFieldHint">영문·숫자로 시작하고 4~32자로 만들어줘.</div>
     <label for="signupPassword">비밀번호</label>
     <input id="signupPassword" class="authInput" type="password" autocomplete="new-password" maxlength="128" placeholder="8자 이상">
     <label for="signupPasswordConfirm">비밀번호 확인</label>
-    <input id="signupPasswordConfirm" class="authInput" type="password" autocomplete="new-password" maxlength="128" placeholder="비밀번호를 한 번 더 입력해 주세요">
+    <input id="signupPasswordConfirm" class="authInput" type="password" autocomplete="new-password" maxlength="128" placeholder="비밀번호를 한 번 더 입력해 주세요"><div id="signupPasswordHint" class="authFieldHint">비밀번호를 한 번 더 입력하면 일치 여부를 바로 확인해줄게.</div>
     <label for="signupDisplayName">표시 이름 <span style="font-weight:500;color:#9a9286">(선택)</span></label>
     <input id="signupDisplayName" class="authInput" type="text" autocomplete="nickname" maxlength="40" placeholder="마이페이지에 표시할 이름">
     <button class="authBtn green" type="submit">아이디로 회원가입</button>
@@ -7187,6 +7193,36 @@ async function guiinPasswordLogin(event){
   }
   return false;
 }
+
+let guiinLoginIdCheckTimer=0,guiinLoginIdCheckSeq=0;
+async function guiinCheckLoginIdAvailability(){
+ const input=$('signupLoginId'),hint=$('signupLoginIdHint'); if(!input||!hint)return false;
+ const loginId=String(input.value||'').trim().toLowerCase(),seq=++guiinLoginIdCheckSeq;
+ input.classList.remove('is-ok','is-bad');hint.classList.remove('ok','bad');
+ if(!/^[a-z0-9][a-z0-9._-]{3,31}$/.test(loginId)){hint.textContent='영문·숫자로 시작하고 4~32자로 만들어줘.';return false;}
+ hint.textContent='아이디를 확인하고 있어…';
+ try{
+   const res=await fetch(guiinStableApiBase()+'/api/auth/password/availability?loginId='+encodeURIComponent(loginId),{method:'GET',mode:'cors',cache:'no-store',headers:guiinAuthHeaders({'Accept':'application/json'})});
+   const data=await res.json().catch(()=>({})); if(seq!==guiinLoginIdCheckSeq)return false;
+   if(!res.ok)throw new Error(data?.error||('HTTP '+res.status));
+   const ok=!!data.available; hint.textContent=ok?'사용할 수 있는 아이디야.':'이미 사용 중인 아이디야.';hint.classList.add(ok?'ok':'bad');input.classList.add(ok?'is-ok':'is-bad');return ok;
+ }catch(_e){if(seq===guiinLoginIdCheckSeq)hint.textContent='중복 확인은 가입할 때 한 번 더 확인할게.';return null;}
+}
+function guiinCheckPasswordMatch(){
+ const p=$('signupPassword'),c=$('signupPasswordConfirm'),h=$('signupPasswordHint');if(!p||!c||!h)return;
+ c.classList.remove('is-ok','is-bad');h.classList.remove('ok','bad');
+ if(!c.value){h.textContent='비밀번호를 한 번 더 입력하면 일치 여부를 바로 확인해줄게.';return}
+ const ok=p.value===c.value&&p.value.length>=8;c.classList.add(ok?'is-ok':'is-bad');h.classList.add(ok?'ok':'bad');
+ h.textContent=ok?'비밀번호가 일치해.':(p.value.length<8?'비밀번호는 8자 이상이어야 해.':'비밀번호가 일치하지 않아.');
+}
+function guiinBindSignupLiveChecks(){
+ const id=$('signupLoginId'),p=$('signupPassword'),c=$('signupPasswordConfirm');if(!id||id.dataset.liveBound)return;
+ id.dataset.liveBound='1';
+ id.addEventListener('input',()=>{clearTimeout(guiinLoginIdCheckTimer);guiinLoginIdCheckTimer=setTimeout(guiinCheckLoginIdAvailability,420)});
+ p?.addEventListener('input',guiinCheckPasswordMatch);c?.addEventListener('input',guiinCheckPasswordMatch);
+}
+if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',guiinBindSignupLiveChecks,{once:true});else guiinBindSignupLiveChecks();
+
 async function guiinPasswordSignup(event){
   event?.preventDefault?.();
   const msg=$('signupMsg'),loginId=String($('signupLoginId')?.value||'').trim(),password=String($('signupPassword')?.value||''),confirm=String($('signupPasswordConfirm')?.value||''),displayName=String($('signupDisplayName')?.value||'').trim();
@@ -11852,6 +11888,13 @@ try{Object.assign(window,{guiinPaymentCenterStart});}catch(_e){}
 </script>
 
 <!-- GUIIN v6.34 · human-first interpretation output layer; calculation/payment/auth untouched -->
-<script src="guiin-interpretation-v4.js?v=20261007v642"></script>
+<script src="guiin-interpretation-v4.js?v=20261007v650"></script>
+<script id="guiin-performance-v1">
+function guiinOptimizeStaticMedia(){
+ const imgs=[...document.images];
+ imgs.forEach((img,i)=>{if(i>1&&!img.hasAttribute('loading'))img.loading='lazy';if(!img.hasAttribute('decoding'))img.decoding='async';});
+}
+if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',guiinOptimizeStaticMedia,{once:true});else guiinOptimizeStaticMedia();
+</script>
 </body>
 </html>
