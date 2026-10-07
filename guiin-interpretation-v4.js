@@ -34,8 +34,43 @@ function sections(c){const n=name(c),a=order(c),hi=a[0]||['목',20],lo=a[4]||['�
  rows.push(sec('money','돈 버는 방식',`${MONEY[g]||MONEY.일간} ${hi[0]==='금'?'품질과 완성도가 돈이 되는 구조':hi[0]==='토'?'꾸준히 운영하고 단골과 반복 수입을 만드는 구조':hi[0]==='화'?'사람 반응이 바로 오고 네 표현력과 실행력이 매출로 이어지는 구조':hi[0]==='수'?'정보와 흐름을 읽는 능력이 돈으로 이어지는 구조':'새로운 기회를 만들고 성장시키는 능력이 돈으로 이어지는 구조'}에서 강점이 더 분명해져. 돈을 더 버는 것만큼 네가 대신 부담하고 있는 비용이 없는지도 봐야 해.`,c,`${g} · ${hi[0]} 우세`));
  rows.push(sec('career','직장 vs 사업',`${g==='비견'||g==='겁재'||g==='상관'||g==='편재'?'남이 만든 틀에 오래 맞추는 것보다 네 판단이 결과에 직접 반영되는 일이 잘 맞아. 사업이나 독립적인 역할에서도 힘이 살아나는 구조야.':'무조건 사업이 답인 사주는 아니야. 다만 네 전문성과 판단을 인정받고 결과를 직접 확인할 수 있는 자리여야 오래 가.'} 처음부터 크게 벌이기보다 잘하는 기술 → 실제 반응 → 반복 고객이나 반복 성과 → 확장 순서로 가면 네 장점을 가장 안정적으로 돈으로 바꿀 수 있어.`,c));
  rows.push(sec('stress','지쳤을 때',`${STRESS[hi[0]]} 네가 평소보다 ${hi[0]==='수'?'연락을 줄이고 혼자 생각만 늘리거나':hi[0]==='금'?'사소한 것까지 계속 고치고 마음에 안 들어 하거나':hi[0]==='토'?'아무 말 없이 더 떠안고 버티거나':hi[0]==='화'?'말과 결정이 지나치게 빨라지거나':'계획만 계속 늘리고 마무리를 못 하고 있다면'} 더 열심히 할 때가 아니라 덜어낼 때야.`,c));
- return dedupe(rows);}
-function norm(s){return String(s||'').toLowerCase().replace(/[\s\p{P}\p{S}]/gu,'');} function dedupe(rows){const seen=[];return rows.map(r=>{const ps=String(r.body||'').split(/\n\n+/).filter(Boolean);const keep=ps.filter(p=>{const k=norm(p);if(k.length<20)return true;if(seen.some(x=>x===k))return false;seen.push(k);return true;});return {...r,body:keep.join('\n\n')};});}
+ return dedupe(rows,c,'saju');}
+function norm(s){return String(s||'').toLowerCase().replace(/[\s\p{P}\p{S}]/gu,'');}
+const KR_VARIANTS={
+ '중요해':['중요해','핵심이야','가볍게 넘기면 안 돼','오래 가는 데 큰 영향을 줘'],
+ '편이야':['편이야','쪽이야','모습이 분명해','성향이 보여'],
+ '잘 맞아':['잘 맞아','궁합이 좋아','힘을 쓰기 좋아','장점이 살아나'],
+ '힘이 있어':['힘이 있어','강점이 분명해','능력이 돋보여','제 몫을 해내는 힘이 커'],
+ '쉽게':['쉽게','선뜻','금방','별 고민 없이'],
+ '반복되는':['반복되는','계속 이어지는','되풀이되는','여러 번 겹치는'],
+ '마음이':['마음이','속이','감정이','네 안의 기준이']
+};
+function vary(c,tag,text){
+ let out=String(text||'');
+ for(const [needle,arr] of Object.entries(KR_VARIANTS)){
+   if(!out.includes(needle))continue;
+   const idx=seed(c,'krv|'+tag+'|'+needle)%arr.length;
+   if(arr[idx]!==needle)out=out.replace(needle,arr[idx]);
+ }
+ return out.replace(/\s+/g,' ').trim();
+}
+function grams(s,n=4){const k=norm(s),a=[];for(let i=0;i<=k.length-n;i++)a.push(k.slice(i,i+n));return new Set(a)}
+function sim(a,b){const A=grams(a),B=grams(b);if(!A.size||!B.size)return 0;let hit=0;for(const x of A)if(B.has(x))hit++;return hit/(A.size+B.size-hit)}
+function semanticQA(rows){
+ const sentences=[];
+ for(const r of rows||[])for(const x of String(r.body||'').split(/[.!?]\s+/).map(x=>x.trim()).filter(x=>norm(x).length>=18))sentences.push({id:r.id,text:x});
+ const near=[];
+ for(let i=0;i<sentences.length;i++)for(let j=i+1;j<sentences.length;j++){const v=sim(sentences[i].text,sentences[j].text);if(v>=.72)near.push({a:sentences[i].id,b:sentences[j].id,similarity:+v.toFixed(3)});}
+ return {sentenceCount:sentences.length,nearDuplicates:near};
+}
+function dedupe(rows,c,scope='saju'){
+ const seen=[];
+ return rows.map(r=>{
+   const ps=String(r.body||'').split(/\n\n+/).filter(Boolean);
+   const keep=ps.filter(p=>{const k=norm(p);if(k.length<20)return true;if(seen.some(x=>x===k))return false;seen.push(k);return true;});
+   return {...r,body:vary(c,scope+'|'+r.id,keep.join('\n\n'))};
+ });
+}
 function pmodel(c){const a=order(c),g=mg(c);return {version:'human-v4',day_master:c?.dayMaster?.stem||'',month_god:g,strongest:{element:a[0]?.[0],percent:a[0]?.[1]},weakest:{element:a[4]?.[0],percent:a[4]?.[1]},day_branch:branch(c),relation_signal_types:[...new Set(rels(c).map(x=>x?.type).filter(Boolean))]};}
 // Compatibility
 function prof(c){const a=order(c);return {c,n:name(c),hi:a[0],lo:a[4],g:mg(c),b:branch(c),dm:c?.dayMaster?.el||c?.pillars?.day?.stemEl||'',stem:c?.dayMaster?.stem||c?.pillars?.day?.stem||''};}
@@ -50,9 +85,9 @@ function compatBuild(a,b,score){const A=prof(a),B=prof(b), same=A.hi[0]===B.hi[0
  secs.push({id:'fight',category:'love',title:'싸우면 이렇게 엇갈려',body:`${A.n}는 ${A.hi[0]==='수'?'혼자 생각할 시간이 필요하고':A.hi[0]==='금'?'무엇이 잘못됐는지 분명히 정리돼야 풀리고':A.hi[0]==='토'?'말보다 실제 행동이 달라져야 마음이 풀리고':A.hi[0]==='화'?'감정이 올라온 순간 바로 말하고 싶어 하고':'앞으로 어떻게 바꿀지가 보여야 풀리고'}, ${B.n}는 ${B.hi[0]==='수'?'혼자 생각할 시간이 필요해':B.hi[0]==='금'?'잘못된 지점이 분명히 정리돼야 풀려':B.hi[0]==='토'?'실제 행동이 달라져야 마음이 풀려':B.hi[0]==='화'?'감정이 올라온 순간 바로 말하고 싶어 해':'앞으로 어떻게 바꿀지가 보여야 풀려'}. ${ng.length?'그래서 싸움이 커졌을 때 그 자리에서 관계 전체의 결론까지 내리면 상처가 오래 남아.':'큰 충돌 신호보다 말하는 타이밍이 문제를 키우기 쉬운 조합이야.'}`,evidence:`긴장 신호 ${ng.map(x=>x.type).slice(0,3).join('·')||'낮음'}`});
  secs.push({id:'money',category:'marriage',title:'돈과 생활에서 부딪히는 지점',body:`${A.n}는 ${MONEY[A.g]||MONEY.일간} ${B.n}는 ${MONEY[B.g]||MONEY.일간} 둘이 같이 살거나 공동지출이 생기면 누가 더 냈는지보다 누가 계속 계획하고, 누가 계속 결정하고, 누가 뒤처리를 하는지가 감정에 더 크게 남아. 한 사람이 계속 챙기는 구조가 되면 돈 문제처럼 보여도 실제로는 책임 문제로 싸우게 돼.`,evidence:`사회 작동 ${A.g}/${B.g}`});
  secs.push({id:'long',category:'marriage',title:'오래 만나려면',body: high?`이 둘은 좋은 감정만 유지하려고 애쓰기보다 서로 편해진 뒤에도 고마움을 표현하는 게 중요해. 잘 맞는다는 이유로 한 사람의 배려를 당연하게 여기지만 않으면 장기적으로 안정감이 커져.`:low?`이 관계는 참는 사람이 생기는 순간부터 급격히 힘들어져. 연락, 돈, 시간, 가족, 돌봄 중 반복해서 싸우는 한 가지를 그대로 두면 같은 갈등이 계속 돌아와. 사랑을 더 증명하는 것보다 그 한 가지 행동을 실제로 바꾸는 게 먼저야.`:`둘은 완벽하게 같은 사람이 아니라 맞춰갈 수 있는 사람들이야. 다만 서운한 걸 오래 모아두고 상대가 알아서 눈치채길 기다리면 관계가 급격히 차가워져. 작은 불편일 때 말하는 게 오래 가는 핵심이야.`,evidence:`점수 ${s??'-'}`});
- secs.forEach(x=>{x.body+=' '+pairSignature(A,B,x.id);}); return {meta:{...meta,version:'human-v4',score:s,aName:A.n,bName:B.n},sections:dedupe(secs)};}
+ secs.forEach(x=>{x.body+=' '+pairSignature(A,B,x.id);}); const finalSections=dedupe(secs,a,'compat'); return {meta:{...meta,version:'human-v4.1',score:s,aName:A.n,bName:B.n,semanticQA:semanticQA(finalSections)},sections:finalSections};}
 function compatPick(x,tab){const s=x?.sections||[];if(!tab||tab==='summary')return s;if(tab==='love')return s.filter(v=>['core','difference','love','fight','long'].includes(v.id));if(tab==='marriage')return s.filter(v=>['core','difference','money','long'].includes(v.id));return s;}
 root.GuiinExpert={...BaseExpert,fullSections:sections,personalitySections:sections,fieldSections:sections,personModel:pmodel};
 root.GuiinCompat={...BaseCompat,build:compatBuild,pick:compatPick};
-root.GUIIN_INTERPRETATION_V4={version:'human-v4',rules:{humanFirst:true,jargonInBody:false,confidentTone:true,repeatCards:false}};
+root.GUIIN_INTERPRETATION_V4={version:'human-v4.1',semanticQA,rules:{humanFirst:true,jargonInBody:false,confidentTone:true,repeatCards:false,semanticDuplicateQA:true,koreanVariantLayer:true}};
 })(typeof globalThis!=='undefined'?globalThis:this);
