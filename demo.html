@@ -10891,5 +10891,134 @@ try{Object.assign(window,{guiinPaymentCenterStart});}catch(_e){}
 })();
 
 </script>
+
+<!-- GUIIN v6.32 · evidence-first interpretation upgrade -->
+<style id="GUIIN_INTERPRETATION_V632_STYLE">
+.guiinLifeFlow632{margin:12px 0 16px;padding:17px;border:1px solid rgba(80,101,72,.13);border-radius:20px;background:linear-gradient(180deg,#f8fbf4 0%,#fff 100%)}
+.guiinLifeFlow632 .mini{font-size:11px;font-weight:900;color:#52715a;margin-bottom:5px}.guiinLifeFlow632 h3{font-size:18px;line-height:1.45;margin:0 0 8px;color:#263f31}.guiinLifeFlow632>p{font-size:13px;line-height:1.72;color:#5e665f;margin:6px 0 12px;word-break:keep-all}
+.guiinLifeRows632{display:grid;gap:8px}.guiinLifeRow632{padding:12px 13px;border-radius:14px;background:#fff;border:1px solid rgba(0,0,0,.055)}.guiinLifeRow632 b{display:block;font-size:12px;color:#40584a;margin-bottom:4px}.guiinLifeRow632 p{margin:0;font-size:12.5px;line-height:1.68;color:#606760;word-break:keep-all}.guiinLifeRow632.current{background:#f1f8ef}.guiinLifeRow632 .tag{display:inline-block;margin-left:5px;padding:2px 6px;border-radius:999px;background:#e7f2e3;font-size:9px;color:#477054;vertical-align:1px}
+.guiinContrast632{margin-top:9px;padding:12px 13px;border-radius:15px;background:#f7f5fb;border:1px solid rgba(91,75,126,.09);font-size:13px;line-height:1.68;color:#565461;word-break:keep-all}.guiinContrast632 b{display:block;font-size:11px;color:#675d82;margin-bottom:4px}
+.guiinEvidence632{margin-top:10px;border-top:1px dashed rgba(83,71,50,.14);padding-top:8px}.guiinEvidence632 summary{cursor:pointer;list-style:none;font-size:11px;font-weight:850;color:#777166;padding:3px 0}.guiinEvidence632 summary::-webkit-details-marker{display:none}.guiinEvidence632 summary:after{content:' +';font-weight:900}.guiinEvidence632[open] summary:after{content:' −'}.guiinEvidence632 .box{margin-top:7px;padding:10px 11px;border-radius:12px;background:#f8f5ef;color:#756f66;font-size:11px;line-height:1.65;word-break:keep-all}.guiinEvidence632 .chips{display:flex;flex-wrap:wrap;gap:5px;margin-top:6px}.guiinEvidence632 .chip{padding:4px 7px;border-radius:999px;background:#fff;border:1px solid rgba(0,0,0,.06);font-size:10px;color:#666158}.guiinEvidence632 .confidence{font-weight:850;color:#45624f}
+</style>
+<script id="GUIIN_INTERPRETATION_V632">
+/* GUIIN v6.32 · evidence-first interpretation + lived-flow + contradiction/dedup QA */
+(function(){
+  if(globalThis.__GUIIN_INTERPRETATION_V632__) return;
+  globalThis.__GUIIN_INTERPRETATION_V632__=true;
+  const VERSION='6.32';
+  const norm=v=>String(v??'').replace(/\s+/g,' ').trim();
+  const esc=v=>String(v??'').replace(/[&<>"']/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]));
+  const q=(s,r=document)=>[...r.querySelectorAll(s)];
+  const chartNow=()=>{try{return (typeof chart!=='undefined'&&chart?.pillars)?chart:null}catch(_e){return null}};
+  const ageOf=c=>{try{const i=c?.input||{},y=Number(i.year||0),m=Number(i.month||1),d=Number(i.day||1);if(!y)return null;const n=new Date();let a=n.getFullYear()-y;if(n.getMonth()+1<m||(n.getMonth()+1===m&&n.getDate()<d))a--;return Math.max(0,a)}catch(_e){return null}};
+  const currentLuckRow=c=>{try{return typeof currentLuck==='function'?currentLuck(c):null}catch(_e){return null}};
+  const stars=c=>{try{return [...new Set((c?.stars?.hits||[]).map(h=>typeof h==='string'?h:(h?.name||h?.star||'')).filter(Boolean))]}catch(_e){return []}};
+  const rels=c=>Array.isArray(c?.relations)?c.relations:[];
+  const relTypes=c=>[...new Set(rels(c).map(x=>String(x?.type||'')).filter(Boolean))];
+  const monthGod=c=>String(c?.pillars?.month?.god||'');
+  const dayStem=c=>String(c?.dayMaster?.stem||c?.pillars?.day?.stem||'');
+  const dayBranch=c=>String(c?.pillars?.day?.branch||'');
+  const rootCount=c=>Array.isArray(c?.extras?.roots)?c.extras.roots.length:0;
+  function pct(c){const e=c?.elCount||{},t=Object.values(e).reduce((a,b)=>a+Number(b||0),0)||1,o={};for(const k of ['목','화','토','금','수'])o[k]=Math.round(Number(e[k]||0)/t*100);return o}
+  function elStats(c){const p=pct(c),a=Object.entries(p).sort((x,y)=>y[1]-x[1]),min=a[a.length-1]?.[1]??0;return {p,top:a[0]||['-',0],low:a.filter(x=>x[1]===min).map(x=>x[0])}}
+  const STEM={갑:'방향을 세우고 성장하려는 힘',을:'환경을 읽고 유연하게 길을 만드는 힘',병:'표현과 추진으로 분위기를 움직이는 힘',정:'작은 변화를 보고 필요한 곳에 집중하는 힘',무:'현실을 받치고 큰 흐름을 버티는 힘',기:'생활의 디테일을 챙기고 꾸준히 굴리는 힘',경:'문제를 분명히 나누고 결론을 내리는 힘',신:'작은 차이를 다듬고 완성도를 높이는 힘',임:'큰 흐름과 여러 선택지를 연결하는 힘',계:'미세한 변화와 맥락을 읽는 힘'};
+  const BRANCH={자:'머릿속에서 먼저 생각을 굴리고 작은 변화를 빨리 감지하는 경향',축:'확실해질 때까지 확인하고 오래 버티는 경향',인:'움직이면서 답을 찾고 방향을 직접 만들려는 경향',묘:'분위기와 관계의 결을 세밀하게 읽는 경향',진:'여러 변수를 묶어 현실적으로 정리하는 경향',사:'관심이 생기면 몰입과 반응 속도가 빨라지는 경향',오:'표현과 행동이 빠르고 열이 오르면 결론도 빨라지는 경향',미:'돌봄과 책임을 꾸준히 유지하려는 경향',신:'상황을 빨리 읽고 효율적인 답을 찾는 경향',유:'기준·정확성·완성도를 세밀하게 보는 경향',술:'원칙과 책임을 지키며 버티는 경향',해:'상대 사정과 맥락을 넓게 받아들이고 안에서 오래 생각하는 경향'};
+  const GOD={비견:'내 판단·독립성·역할 경계를 중요하게 쓰는 방식',겁재:'경쟁·분배·사람 사이에서 내 몫을 지키는 방식',식신:'기술·돌봄·생산을 반복해 결과로 만드는 방식',상관:'답답한 걸 발견하고 표현·개선하는 방식',편재:'사람·시장·기회를 넓게 읽고 움직이는 방식',정재:'생활·수입·일정을 안정적으로 관리하는 방식',편관:'압박 속에서 결단하고 책임지는 방식',정관:'규칙·약속·신뢰를 지키며 자리를 쌓는 방식',편인:'혼자 깊이 파고 다른 관점을 만드는 방식',정인:'배움·이해·지원으로 기반을 만드는 방식'};
+  const EL={목:'성장·기획·확장',화:'표현·속도·활력',토:'현실·책임·안정',금:'판단·정리·기준',수:'관찰·유연성·정보'};
+  const LUCK={비견:'독립성과 자기 기준을 세우는 주제',겁재:'경쟁·분배·관계 경계를 조정하는 주제',식신:'기술·성과·생활 리듬을 쌓는 주제',상관:'표현·변화·기존 방식을 고치는 주제',편재:'돈·사람·기회를 넓게 굴리는 주제',정재:'생활·수입·현실 기반을 정리하는 주제',편관:'책임·평가·압박에 대응하는 주제',정관:'자리·규칙·책임을 분명히 하는 주제',편인:'혼자 깊이 생각하고 전문성을 파는 주제',정인:'배움·지원·회복과 방향 재정비 주제'};
+  const STRESS_W={편관:2.6,정관:2.0,겁재:2.0,상관:1.7,편재:1.4,정재:1.2,편인:1.15,정인:1.0,비견:1.0,식신:.8};
+  const branchPairs={충:[['자','오'],['축','미'],['인','신'],['묘','유'],['진','술'],['사','해']],해:[['자','미'],['축','오'],['인','사'],['묘','진'],['신','해'],['유','술']],파:[['자','유'],['축','진'],['인','해'],['묘','오'],['사','신'],['미','술']],육합:[['자','축'],['인','해'],['묘','술'],['진','유'],['사','신'],['오','미']]};
+  function pair(type,a,b){return !!(branchPairs[type]||[]).find(g=>g.includes(a)&&g.includes(b))}
+  function tensionTypes(a,b){const o=[];for(const t of ['충','해','파'])if(pair(t,a,b))o.push(t);if((a==='자'&&b==='묘')||(a==='묘'&&b==='자'))o.push('형');if(a===b&&['진','오','유','해'].includes(a))o.push('형');for(const g of [['인','사','신'],['축','술','미']])if(g.includes(a)&&g.includes(b)&&a!==b)o.push('형');return [...new Set(o)]}
+  function natalBranches(c){return ['year','month','day','hour'].map(k=>String(c?.pillars?.[k]?.branch||'')).filter(Boolean)}
+  function natalStems(c){return ['year','month','day','hour'].map(k=>String(c?.pillars?.[k]?.stem||'')).filter(Boolean)}
+  function luckParts(ko){const s=String(ko||'');return {stem:s[0]||'',branch:s[1]||''}}
+
+  function evidence(c,domain){
+    const e=[],add=(label,reason,w=1,key='')=>e.push({label,reason,w,key:key||label});
+    const mg=monthGod(c),ds=dayStem(c),db=dayBranch(c),es=elStats(c),rt=relTypes(c),ss=stars(c),roots=rootCount(c),lk=currentLuckRow(c);
+    if(domain==='personality'||domain==='emotion'){
+      if(ds)add(`일간 ${ds}`,STEM[ds]||'기본 기질의 방향',1.2,'stem');
+      if(mg)add(`월간 ${mg}`,GOD[mg]||'사회에서 자주 쓰는 방식',2.0,'monthGod');
+      if(db)add(`일지 ${db}`,BRANCH[db]||'가까운 관계와 실제 반응을 보는 자리',1.7,'dayBranch');
+      if(es.top[0]!=='-')add(`오행 ${es.top[0]} ${es.top[1]}%`,`${EL[es.top[0]]} 기능을 자주 쓰기 쉬워`,1.2,'element');
+      if(rt.some(x=>['충','형','해','파'].includes(x)))add(`관계 긴장 ${rt.filter(x=>['충','형','해','파'].includes(x)).join('·')}`,'편할 때보다 압박받을 때 반응 차이가 커질 수 있어',1.4,'tension');
+      if(roots>=2)add(`직접 통근 ${roots}곳`,'외부 상황이 흔들려도 다시 자기 기준을 잡는 힘을 보태',1.0,'roots');
+    }
+    if(domain==='work'){
+      if(mg)add(`월간 ${mg}`,GOD[mg]||'일할 때 자주 쓰는 방식',2.4,'monthGod');
+      if(es.top[0]!=='-')add(`${es.top[0]} ${es.top[1]}%`,`${EL[es.top[0]]} 기능을 실제 업무에서 반복해서 쓰기 쉬워`,1.5,'element');
+      if(db)add(`일지 ${db}`,BRANCH[db]||'실제 문제 해결 방식',1.2,'dayBranch');
+      if(lk?.god)add(`현재 대운 ${lk.ko}·${lk.god}`,`${LUCK[lk.god]||'현재 역할 변화'}가 직업 선택에도 영향을 줄 수 있어`,1.0,'luck');
+    }
+    if(domain==='money'){
+      const pGods=['year','month','hour'].map(k=>String(c?.pillars?.[k]?.god||''));
+      const wealth=pGods.filter(x=>x==='편재'||x==='정재');
+      if(wealth.length)add(`재성 ${wealth.join('·')}`,wealth.includes('편재')?'기회·시장·현금흐름을 넓게 보는 성향이 재물 판단에 들어와':'예산·축적·생활 안정이 재물 판단에 들어와',2.0,'wealth');
+      if(mg)add(`월간 ${mg}`,GOD[mg]||'사회에서 돈을 다루는 방식',1.5,'monthGod');
+      if(es.top[0]!=='-')add(`${es.top[0]} ${es.top[1]}%`,`${EL[es.top[0]]} 기능이 소비·저축 결정에도 영향을 줄 수 있어`,1.0,'element');
+      if(['비견','겁재'].includes(mg))add('비겁 영향','내 몫·사람 사이 분배·경쟁 비용의 경계를 분명히 보는 게 중요해',1.2,'peer');
+    }
+    if(domain==='relationship'){
+      if(db)add(`일지 ${db}`,BRANCH[db]||'가까운 관계에서 실제로 나오는 반응',2.2,'dayBranch');
+      const rs=rels(c).filter(x=>['충','형','해','파','육합','천간합','삼합'].includes(String(x?.type||'')));
+      if(rs.length)add(`관계 신호 ${[...new Set(rs.map(x=>x.type))].join('·')}`,'가까운 관계가 흔들리거나 묶일 때 반응을 보조적으로 확인해',1.7,'relations');
+      const charm=['도화살','홍염살','원진살','귀문관살','과숙살'].filter(x=>ss.includes(x));
+      if(charm.length)add(`실제 성립 ${charm.slice(0,3).join('·')}`,'관계·매력·혼자 정리하는 방식의 보조 근거로만 써',1.0,'stars');
+      if(mg)add(`월간 ${mg}`,GOD[mg]||'평소 관계에서 자주 쓰는 방식',.8,'monthGod');
+    }
+    return e.sort((a,b)=>b.w-a.w).slice(0,5);
+  }
+  function confidence(ev){const n=ev.length,score=ev.reduce((a,b)=>a+b.w,0);return n>=4&&score>=6?'높음':n>=3&&score>=4?'중간 이상':'참고'}
+  function evidenceText(c,domain){const ev=evidence(c,domain),conf=confidence(ev);return {ev,conf,summary:ev.map(x=>x.label).join(' · ')}}
+
+  function emotionProfile(c){try{const x=globalThis.GuiinInterpretation631?.emotion?.(c);if(x?.primaryText)return x}catch(_e){};return {primary:'practical',secondary:'sensitivity',confidence:'soft',primaryText:{pattern:'현실적으로 처리해야 할 일을 먼저 챙기는 경향이 있어.',cost:'내 마음이 늘 나중 순서가 되면 피로를 늦게 알아차릴 수 있어.',comfort:'네 편안함도 현실의 일부야.'},secondaryText:{pattern:'사람의 변화와 분위기를 빨리 알아차리는 경향이 있어.',cost:'확인하지 않은 변화까지 의미로 연결하면 마음이 먼저 지칠 수 있어.',comfort:'느낀 건 존중하되 사실은 따로 확인해도 돼.'}}}
+  function rangeText(x){const a=Math.max(0,Math.floor(Number(x.start)||0)),b=Math.max(a,Math.floor((Number(x.end)||a+10)-.01));return a===b?`${a}세 무렵`:`${a}~${b}세 무렵`}
+  function history(c){
+    const age=ageOf(c),rows=Array.isArray(c?.luck)?c.luck:[],nb=natalBranches(c),ns=natalStems(c);if(age===null||!rows.length)return [];
+    const out=[];
+    for(let i=0;i<rows.length;i++){
+      const r=rows[i],start=Number(r?.fromAgeExact??r?.fromAge),next=Number(rows[i+1]?.fromAgeExact??rows[i+1]?.fromAge),end=Number.isFinite(next)?next:Number(r?.toAgeExact??r?.toAge);
+      if(!Number.isFinite(start)||start>=age-.5)continue;
+      const lp=luckParts(r?.ko),ts=[...new Set(nb.flatMap(b=>tensionTypes(lp.branch,b)))],sameStem=lp.stem&&ns.includes(lp.stem),sameBranch=lp.branch&&nb.includes(lp.branch);
+      const score=(STRESS_W[String(r?.god||'')]||.6)+ts.length*1.25+(sameStem?.45:0)+(sameBranch?.35:0);
+      out.push({row:r,start,end:Number.isFinite(end)?Math.min(end,age):age,types:ts,sameStem,sameBranch,score});
+    }
+    return out.sort((a,b)=>b.score-a.score).slice(0,3).sort((a,b)=>a.start-b.start);
+  }
+  function historySentence(x){const god=String(x?.row?.god||''),theme=LUCK[god]||'생활 방향을 다시 조정하는 주제',rel=x.types?.length?` 원국과 ${x.types.join('·')} 신호가 겹쳐 변화나 조정 압력을 더 크게 느낄 수 있었어.`:'',repeat=x.sameStem||x.sameBranch?' 원국 글자와 반복되는 부분도 있어서 같은 주제가 더 익숙하거나 선명하게 느껴졌을 수 있어.':'';return `${theme}가 평소보다 커질 수 있는 흐름이었어.${rel}${repeat} 실제로 비슷한 부담이나 변화가 있었다면 사건을 맞혔다기보다, 그 시기에 어떤 종류의 에너지를 많이 썼는지 돌아보는 근거로 봐.`}
+  function currentSentence(c){const lk=currentLuckRow(c),ep=emotionProfile(c);if(!lk)return `${ep.primaryText.cost} 지금은 그 비용을 줄이는 선택을 먼저 해도 돼.`;const t=LUCK[String(lk.god||'')]||'지금의 역할과 방향을 점검하는 주제';const advice={responsibility:'책임을 더 늘리기보다 내가 결정할 수 있는 범위와 끝나는 시점을 같이 정해봐.',inward:'마음이 완전히 정리될 때까지 기다리지 말고 정리 중인 생각도 조금씩 밖으로 꺼내봐.',expansion:'가능성을 더 늘리기보다 실제로 남길 한두 가지에 시간과 돈을 모아봐.',autonomy:'혼자 해내는 것보다 무엇을 같이 나눌지 정하는 게 주도권을 오래 지키는 방법이야.',perfection:'기준을 더 높이기보다 완료 기준을 정하고 끝낸 결과를 인정해봐.',sensitivity:'느낀 것과 확인된 사실을 나눠보면 관계와 마음이 훨씬 덜 소모돼.',practical:'해야 할 일뿐 아니라 내 체력·시간·감정도 실제 일정에 넣어봐.',expression:'결론을 크게 내기보다 불편함이 작을 때 먼저 말해봐.'}[ep.primary]||'지금의 부담을 더 키우기보다 오래 갈 수 있는 방식을 먼저 골라봐.';return `현재 ${lk.ko} 대운(${lk.god})에서는 ${t}가 눈에 들어와. ${advice}`}
+  function emotionalStory(c){const ep=emotionProfile(c),hs=history(c),first=hs.length?hs[hs.length-1]:null,lead=`${ep.primaryText.pattern} ${ep.primaryText.cost}`,past=first?` 특히 ${rangeText(first)} ${first.row.ko} 대운(${first.row.god})에는 ${LUCK[first.row.god]||'삶의 방향을 조정하는 주제'}가 커질 수 있었어.${first.types.length?` 원국과 ${first.types.join('·')}가 겹쳐 평소보다 조정 압력을 더 크게 느꼈을 가능성도 있어.`:''}`:'',guard=' 실제 사건을 사주로 확정하는 건 아니야. 그 무렵 비슷한 감정을 오래 안고 있었다면, 네가 약해서가 아니라 평소 방식만으로 감당할 게 많았을 수 있어.',comfort=` ${ep.primaryText.comfort}`;return `${lead}${past}${past?guard:''}${comfort}`}
+  function contrastText(c){const ep=emotionProfile(c),a=ep.primaryText,b=ep.secondaryText;if(!b||ep.primary===ep.secondary)return '';return `${a.pattern} 그런데 동시에 ${b.pattern.replace(/^./,m=>m.toLowerCase())} 둘 중 하나가 가짜 모습인 게 아니라, 일·관계·압박처럼 장면이 바뀔 때 서로 다른 기능이 앞에 나오는 거야.`}
+
+  function domainFromCard(card){const k=norm(card.querySelector('.easyKicker')?.textContent)+' '+norm(card.querySelector('h3')?.textContent);if(/직업|일할|나에게 맞는 일|사업|독립|적성/.test(k))return 'work';if(/재물|돈/.test(k))return 'money';if(/연애|관계|가족|곁에|끌리|정 떨어|권태|친밀감/.test(k))return 'relationship';if(/속마음|감정|나라는 사람|겉으로 보이는 나|매력|결정/.test(k))return 'personality';return null}
+  function attachEvidence(root,c){
+    q('.easyLongCard',root).forEach(card=>{
+      const domain=domainFromCard(card);if(!domain)return;
+      let d=card.querySelector('.guiinEvidence632');if(d)d.remove();
+      const x=evidenceText(c,domain);if(!x.ev.length)return;
+      d=document.createElement('details');d.className='guiinEvidence632';d.innerHTML=`<summary>왜 이렇게 읽었어?</summary><div class="box"><span class="confidence">근거 확신도 · ${esc(x.conf)}</span><div class="chips">${x.ev.map(v=>`<span class="chip">${esc(v.label)}</span>`).join('')}</div><div style="margin-top:7px">${esc(x.ev.map(v=>v.reason).join(' / '))}</div></div>`;
+      const old=card.querySelector('.guiinEvidenceFold,.easyEvidence');if(old)old.insertAdjacentElement('afterend',d);else card.appendChild(d);
+    })
+  }
+  function insertLifeFlow(root,c){
+    if(typeof currentTab!=='undefined'&&currentTab!=='summary')return;
+    q('.guiinLifeFlow632',root).forEach(x=>x.remove());const hs=history(c),lk=currentLuckRow(c),host=root.querySelector('.guiinCounselor30');if(!host)return;
+    const rows=[];for(const x of hs.slice(-2))rows.push(`<div class="guiinLifeRow632"><b>${esc(rangeText(x))} · ${esc(x.row.ko||'대운')} ${x.row.god?`(${esc(x.row.god)})`:''}</b><p>${esc(historySentence(x))}</p></div>`);if(lk)rows.push(`<div class="guiinLifeRow632 current"><b>지금 · ${esc(lk.ko||'현재 대운')} ${lk.god?`(${esc(lk.god)})`:''}<span class="tag">현재</span></b><p>${esc(currentSentence(c))}</p></div>`);
+    const sec=document.createElement('section');sec.className='guiinLifeFlow632';sec.dataset.guiinV632Life='1';sec.innerHTML=`<div class="mini">살아온 흐름을 연결해서 보면</div><h3>사건을 맞히기보다, 어떤 방식으로 버텨오고 바뀌어왔는지를 볼게.</h3><p>대운은 “무슨 일이 반드시 생긴다”는 예언이 아니야. 원국에서 가진 기질이 어떤 시기에 더 무겁게 쓰였는지, 어떤 종류의 선택과 감정을 많이 다뤘는지를 보는 배경으로 사용해.</p><div class="guiinLifeRows632">${rows.join('')||'<div class="guiinLifeRow632"><b>지나온 흐름</b><p>확정할 수 있는 과거 대운 데이터가 충분하지 않아, 현재 원국과 생활 패턴 중심으로 읽을게.</p></div>'}</div>`;host.insertAdjacentElement('afterend',sec)
+  }
+  function updateCounselor(root,c){const host=root.querySelector('.guiinCounselor30');if(!host)return;const emp=host.querySelector('.guiinToneCell.empathy');if(emp){const b=emp.querySelector('b'),p=emp.querySelector('p');if(b)b.textContent='살아온 방식까지 같이 보면';if(p)p.textContent=emotionalStory(c)}let ct=host.querySelector('.guiinContrast632');if(ct)ct.remove();const text=contrastText(c);if(text){ct=document.createElement('div');ct.className='guiinContrast632';ct.innerHTML=`<b>겉과 속이 다르게 보일 수 있는 지점</b>${esc(text)}`;const grid=host.querySelector('.guiinToneGrid');if(grid)grid.insertAdjacentElement('afterend',ct);else host.appendChild(ct)}const rest=host.querySelector('.guiinToneRest');if(rest){const b=rest.querySelector('b');if(b)b.textContent='지금 필요한 말';let node=[...rest.childNodes].find(n=>n.nodeType===Node.TEXT_NODE&&norm(n.nodeValue));const txt=currentSentence(c);if(node)node.nodeValue=txt;else rest.appendChild(document.createTextNode(txt))}}
+  function rewriteGenericCards(root,c){const ep=emotionProfile(c),repl={responsibility:{decision:'결정할 때 “내가 할 수 있나?”보다 “이 책임이 정말 내 몫인가?”를 먼저 확인해봐.',family:'가까운 사람을 지키는 힘과 상대의 책임까지 대신 지는 건 달라. 도와줄 범위를 먼저 정해두는 게 관계를 오래 지켜.',last:'책임을 오래 지는 힘은 이미 충분해. 앞으로는 더 많이 버티는 것보다 어떤 책임을 선택하고 어디서 끝낼지 정하는 힘을 써봐.'},inward:{decision:'답을 완벽하게 정리한 뒤 움직이려 하지 말고, 70%쯤 납득되면 작은 행동으로 확인해봐.',family:'말하지 않아도 알아주길 기다리면 혼자 생각이 길어질 수 있어. 가까운 사이일수록 정리 중인 마음도 조금씩 꺼내는 게 좋아.',last:'깊게 생각하는 힘은 네 자산이야. 이제는 그 생각을 혼자 붙잡는 데 쓰기보다 대화·결과물·선택으로 연결해봐.'},expansion:{decision:'새 선택이 좋아 보여도 기존 일정·돈·약속을 같이 놓고 “하나 더 늘려도 감당 가능한가?”를 먼저 봐.',family:'사람과 기회를 넓게 보는 장점 때문에 가까운 사람 부탁도 쉽게 품을 수 있어. 관계마다 줄 수 있는 시간과 역할을 다르게 정해도 돼.',last:'기회를 알아보는 눈은 이미 빨라. 앞으로는 더 많은 가능성보다 오래 가져갈 한두 가지를 고르는 힘이 성과를 더 선명하게 만들어.'},autonomy:{decision:'혼자 결정할 일과 같이 합의할 일을 먼저 나누면 판단 속도도 빨라지고 뒤늦은 책임 충돌도 줄어.',family:'도움을 받는다고 내 기준이 사라지는 건 아니야. 가까운 사람과 역할을 나눠도 마지막 판단권은 충분히 지킬 수 있어.',last:'혼자 해내는 힘은 이미 증명됐어. 이제는 맡길 것과 직접 잡을 것을 구분하는 힘이 네 기준을 더 오래 지켜줘.'},perfection:{decision:'더 좋은 답을 찾느라 결정이 늦어질 때는 “완벽한가?”보다 “충분히 괜찮고 수정 가능한가?”를 물어봐.',family:'가까운 사람에게도 내 기준을 그대로 적용하면 사랑보다 평가처럼 느껴질 수 있어. 중요한 기준과 그냥 다른 취향을 나눠봐.',last:'완성도를 높이는 힘은 분명한 재능이야. 앞으로는 부족한 점을 더 찾는 것만큼 잘 끝낸 결과를 인정하는 힘도 같이 써봐.'},sensitivity:{decision:'느낌이 강하게 들어도 바로 결론내리기보다 확인된 사실 2개와 내가 느낀 감정 1개를 따로 적어봐.',family:'가까운 사람의 작은 변화가 빨리 보이는 만큼 그 변화가 전부 내 문제는 아니라는 경계도 필요해.',last:'작은 변화를 읽는 감각은 장점이야. 앞으로는 그 감각을 걱정으로 키우기보다 사실을 확인하고 사람을 이해하는 힘으로 써봐.'},practical:{decision:'현실적으로 가능한지만 보다가 내 마음을 뒤로 미루지 말고, 선택 뒤에 남는 체력·시간까지 비용에 포함해봐.',family:'가까운 사람을 챙기는 것도 현실이지만 네 생활을 지키는 것도 같은 현실이야. 남의 몫과 내 몫을 숫자와 시간으로 나눠봐.',last:'현실을 챙기고 굴리는 힘은 이미 충분해. 앞으로는 해야 할 일 목록에 네 시간·체력·마음도 같은 비중으로 넣어야 오래 갈 수 있어.'},expression:{decision:'답답함이 커진 뒤 결론을 내리기보다 불편함이 30%일 때 먼저 말하면 정확함은 살리고 후회는 줄일 수 있어.',family:'맞는 말을 빨리 찾는 힘이 있어도 가까운 사람은 해결보다 이해를 먼저 원할 때가 있어. 답과 감정을 한 문장씩 나눠 말해봐.',last:'문제의 핵심을 빨리 보는 힘은 이미 있어. 앞으로는 그 정확함을 사람을 밀어내는 결론보다 개선안을 만드는 데 써봐.'}}[ep.primary]||{};
+    q('.easyLongCard',root).forEach(card=>{const k=norm(card.querySelector('.easyKicker')?.textContent),pts=q(':scope > .easyPoint p',card);if(/결정할 때의 나/.test(k)&&repl.decision&&pts[2])pts[2].textContent=repl.decision;if(/가족과 가까운 사람에게/.test(k)&&repl.family){const body=card.querySelector('.easyBody p');if(body)body.textContent=repl.family}if(/마지막 한마디/.test(k)&&repl.last){const body=card.querySelector('.easyBody p');if(body)body.textContent=repl.last}})
+  }
+  function semanticDedupe(root){const cards=q('.easyLongCard,.guiinCounselor30',root),seen=[];for(const card of cards){for(const p of q('p',card)){const t=norm(p.textContent);if(t.length<70)continue;const key=t.replace(/[\s.,!?"'“”‘’()·]/g,'');let dup=false;for(const s of seen){const a=key,b=s.key,min=Math.min(a.length,b.length);if(min<45)continue;let common=0;for(let i=0;i<min;i++){if(a[i]===b[i])common++;else if(i>20)break}if(common/min>.86){dup=true;break}}if(dup){const pt=p.closest('.easyPoint');if(pt)pt.remove();else if(!p.closest('.guiinToneCell.empathy'))p.remove()}else seen.push({key})}}
+  }
+  function contradictionQA(root,c){const text=norm(root.innerText),issues=[];const pairs=[['emotion_show_hide',/감정을 바로 다 보여주지[^.]{0,100}\.(?=[\s\S]{0,600}(?:표정|말)에[^.]{0,80}(?:잘 드러|바로 드러))/],['weak_strong',/(?:신약|다소 약해지기 쉬운)[\s\S]{0,600}(?:자기 기운과 주도성이 강한 편)/],['missing_star',/(?:도화·홍염|도화살·홍염살)/],['broken_triad',/·\s*–\s*(?:삼합|방합)/],['broken_josa',/(?:금가 높지만|목가 높지만|편재이라|정재이라|겁재이라|병가 천간에|임가 천간에|형로 보이지만|삼합로 보이지만)/],['blank_point',/(?:소모가 커지는 환경|왜 이 시기야\?)\s*(?:선택할 때|$)/]];for(const [k,re] of pairs)if(re.test(text))issues.push(k);const ss=stars(c);if(/실제 성립한 도화살/.test(text)&&!ss.includes('도화살'))issues.push('nonexistent_dohwa');if(/실제 성립한 홍염살/.test(text)&&!ss.includes('홍염살'))issues.push('nonexistent_hongyeom');const age=ageOf(c);if(age!==null&&age<18&&/친밀감·성적 에너지|성생활|결혼·동거|사업을 고민한다면/.test(text))issues.push('minor_adult_copy');const report={version:VERSION,ok:issues.length===0,issues:[...new Set(issues)],emotion:emotionProfile(c).primary,evidence:{personality:evidenceText(c,'personality'),work:evidenceText(c,'work'),money:evidenceText(c,'money'),relationship:evidenceText(c,'relationship')},history:history(c).map(x=>({ko:x.row?.ko,god:x.row?.god,age:rangeText(x),types:x.types,score:Number(x.score.toFixed(2))})),at:new Date().toISOString()};try{sessionStorage.setItem('guiin_v632_qa',JSON.stringify(report))}catch(_e){};if(!report.ok)console.warn('GUIIN_V632_QA',report);return report}
+  function apply(){const root=document.getElementById('resultView'),c=chartNow();if(!root||!c)return;const summary=typeof currentTab==='undefined'||currentTab==='summary';if(summary){updateCounselor(root,c);insertLifeFlow(root,c);rewriteGenericCards(root,c);attachEvidence(root,c);semanticDedupe(root)}contradictionQA(root,c)}
+  globalThis.GuiinInterpretation632={version:VERSION,apply,evidence:(c,d)=>evidenceText(c,d),history,emotion:emotionProfile,report:()=>{try{return JSON.parse(sessionStorage.getItem('guiin_v632_qa')||'null')}catch(_e){return null}}};
+  const prev=window.renderResult;if(typeof prev==='function'){const wrapped=function(){const out=prev.apply(this,arguments);for(const ms of [40,180,520,950])setTimeout(apply,ms);return out};window.renderResult=wrapped;try{renderResult=wrapped}catch(_e){}}
+  document.addEventListener('click',()=>{for(const ms of [60,260,700])setTimeout(apply,ms)},{passive:true});for(const ms of [300,900])setTimeout(apply,ms);
+})();
+</script>
 </body>
 </html>
