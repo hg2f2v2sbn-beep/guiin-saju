@@ -290,7 +290,27 @@ function foundationalExtras(pillars){
   void:{day:dayVoid,year:yearVoid},roots};
 }
 
+  // Stored charts retain calendar/correction markers. Restore their civil source once,
+  // rather than interpreting a solar date as lunar or applying solar time twice.
+  function validateBirthInput(input) {
+    if(!input || typeof input!=="object") throw new Error("invalid birth input");
+    const y=Number(input.year),m=Number(input.month),d=Number(input.day);
+    if(!Number.isInteger(y)||y<100||y>9999) throw new Error("출생연도 범위를 확인해.");
+    if(!Number.isInteger(m)||m<1||m>12||!Number.isInteger(d)||d<1) throw new Error("생년월일 범위를 확인해.");
+    if(input.calendar!=="음력") {
+      const date=new Date(Date.UTC(y,m-1,d));
+      if(date.getUTCFullYear()!==y||date.getUTCMonth()!==m-1||date.getUTCDate()!==d) throw new Error("존재하지 않는 양력 날짜야.");
+    }
+    if(!input.hourUnknown) {
+      const h=Number(input.hour),mi=Number(input.minute??0);
+      if(input.hour===null||input.hour===undefined||input.hour===""||!Number.isInteger(h)||h<0||h>23||!Number.isInteger(mi)||mi<0||mi>59) throw new Error("출생시간 범위를 확인해.");
+    }
+    if(input.trueSolarApply && !input.hourUnknown && (input.longitude===null||input.longitude===undefined||input.longitude===""||!Number.isFinite(Number(input.longitude))||Number(input.longitude)<-180||Number(input.longitude)>180)) throw new Error("진태양시 적용에는 유효한 출생지 경도가 필요해.");
+  }
   function calculate(input) {
+    if(input?.calendar==="음력" && input.originalDate) input={...input,year:input.originalDate.year,month:input.originalDate.month,day:input.originalDate.day,leapMonth:!!input.originalDate.leap};
+    if(input?.trueSolarApply && input.sourceDateTime) input={...input,...input.sourceDateTime};
+    validateBirthInput(input);
     const originalInput={...input};
     const requestedDayBoundary=input.dayBoundary==="00"?"00":"23";
     const requestedTrueSolar=!!input.trueSolarApply;
@@ -429,6 +449,7 @@ function foundationalExtras(pillars){
         trueSolarApply: requestedTrueSolar,
         longitude: Number.isFinite(requestedLongitude)?requestedLongitude:null,
         effectiveDateTime: trueSolarApplied?trueSolarApplied.corrected:null,
+        ...(trueSolarApplied?{sourceDateTime:{year:originalInput.year,month:originalInput.month,day:originalInput.day,hour:originalInput.hour,minute:originalInput.minute||0}}:{}),
       },
       yearForPillar,
       pillars: { year: yearP, month: monthP, day: dayP, hour: hourP },
@@ -453,7 +474,8 @@ function foundationalExtras(pillars){
         trueSolarCorrection: trueSolarApplied?trueSolarApplied.correction:null,
         dayBoundary: requestedDayBoundary==="23"?"23:00 다음 일주 적용":"00:00 자정 일주 변경",
         elementMethod: "천간 + 지장간 가중",
-        boundaryDiagnostics: boundaryDiagnostics({year,month,day,hour,minute,hourUnknown:!!input.hourUnknown})
+        boundaryDiagnostics: boundaryDiagnostics({year,month,day,hour,minute,hourUnknown:!!input.hourUnknown}),
+        ...(input.hourUnknown?{uncertainty:unknownTimeRange(year,month,day,gender,requestedDayBoundary)}:{})
       },
       luck,
       startAge,
@@ -732,6 +754,17 @@ function foundationalExtras(pillars){
     const correctedBranch=hourBranchIndex(h,mi);
     return {available:true,correction:corr,corrected:{year:dt.getUTCFullYear(),month:dt.getUTCMonth()+1,day:dt.getUTCDate(),hour:h,minute:mi},originalBranch,correctedBranch,branchChanged:originalBranch!==correctedBranch};
   }
+  function unknownTimeRange(year,month,day,gender,dayBoundary) {
+    // Existing known-hour engine computes endpoint candidates; no synthetic hour pillar is kept.
+    const minutes=new Set([0,720,1439]);
+    for(let n=0;n<24;n+=2){const term=new Date(solarTermMs(year,n)+9*3600000);if(term.getUTCMonth()+1===month&&term.getUTCDate()===day){const at=term.getUTCHours()*60+term.getUTCMinutes();[at-1,at,at+1].filter(m=>m>=0&&m<1440).forEach(m=>minutes.add(m));}}
+    const samples=[...minutes].map(m=>calculate({year,month,day,hour:Math.floor(m/60),minute:m%60,gender,calendar:"양력",dayBoundary,hourUnknown:false}));
+    const candidates={};
+    for(const key of ["year","month","day"]) candidates[key]=[...new Set(samples.map(c=>c.pillars[key].ko))];
+    const startAges=samples.map(c=>c.startAgeExact);
+    return {reference:"기존 정오 대표 계산 유지",candidates,uncertainPillars:Object.keys(candidates).filter(k=>candidates[k].length>1),startAgeExactRange:[Math.min(...startAges),Math.max(...startAges)],hourPillar:null,
+      note:"시간 미상: 시주는 제외했고 일주·절입일 연월주와 대운 시작 시점은 출생시각에 따라 달라져. 대표값을 확정값으로 보지 마."};
+  }
   function boundaryDiagnostics(input) {
     const out=[];
     if(input.hourUnknown) return [{type:"hour-unknown",level:"info",text:"출생시간 미상이라 시주와 시간 민감 해석을 제외합니다."}];
@@ -794,6 +827,8 @@ function foundationalExtras(pillars){
     lunarMonthDays,
     specialStars,
     calculate,
+    validateBirthInput,
+    unknownTimeRange,
     normalizeEl,
     tenGod,
     pillarName,

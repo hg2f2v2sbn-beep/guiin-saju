@@ -42,7 +42,7 @@
 <meta name="twitter:image" content="https://gwiinsaju.com/brand-home.jpg">
 <link rel="icon" href="clover-mark.jpg">
 <link rel="stylesheet" href="guiin-theme.css">
-<script src="saju-engine.js"></script>
+<script src="saju-engine.js?v=20261008-quality-audit"></script>
 <script src="guiin-fortune-v2.js?v=20260923v53"></script>
 <script src="expert-interpreter.js"></script>
 <script src="manse-view.js"></script>
@@ -50,7 +50,7 @@
 <script src="deep-interpretation-v3.js?v=20260918e"></script>
 <script src="guiin-runtime-config.js?v=20260920prod1"></script>
 <script src="guiin-production-guard-v6.27.js?v=20261004v627"></script>
-<script src="member-data-v1.js?v=20260919a"></script>
+<script src="member-data-v1.js?v=20261008-quality-audit"></script>
 <script src="https://js.tosspayments.com/v2/standard"></script>
 <script defer src="toss-payment.js?v=20261004v627"></script>
 <style>
@@ -1704,6 +1704,10 @@ html{-webkit-text-size-adjust:100%;text-size-adjust:100%}
 <style id="guiinStableLongResults">
 /* Keep actual card heights in long reports: estimated skipped heights made rapid scrolling show an empty frame. */
 #resultView .easyLongCard,#resultView .deepCard,#matchView .easyLongCard,#matchView .deepCard,#yearView .easyLongCard,#yearView .deepCard {content-visibility:visible;contain-intrinsic-size:none;}
+</style>
+<style id="GUIIN_QUALITY_READING_CSS">
+.guiinReadingTOC{display:flex;flex-wrap:wrap;gap:8px;padding:14px 0;margin-bottom:14px}.guiinReadingTOC a{padding:8px 10px;border:1px solid #e5dfd3;border-radius:12px;color:#1d5944;font-size:14px;line-height:1.5;overflow-wrap:anywhere}.guiinHumanCard{scroll-margin-top:24px}.guiinHumanCard p{font-size:16px;line-height:1.95;margin:0 0 18px;overflow-wrap:anywhere;word-break:keep-all}.guiinHumanCard details div,.guiinTimeNotice{overflow-wrap:anywhere}.guiinHumanCard h3{line-height:1.55}.guiinStarContext .guiinHumanCard{margin-top:18px}
+@media(max-width:360px){.guiinHumanCard p{font-size:15px;line-height:1.9}.guiinReadingTOC a{font-size:13px}}
 </style>
 </head>
 <body>
@@ -6633,6 +6637,7 @@ function guiinChartPayload(){
         year_focus:(yearSignal&&typeof guiinYearLabelV5==='function')?guiinYearLabelV5(yearSignal.topKey):null
       },
       uncertainty:{
+        ...(chart?.calculation?.uncertainty||{}),
         birth_time_unknown:!!chart?.input?.hourUnknown,
         hour_pillar:chart?.input?.hourUnknown?'unavailable':'available'
       }
@@ -6673,6 +6678,7 @@ function guiinChartPayload(){
     day:val(chart.pillars.day),
     hour:val(chart.pillars.hour)||'출생시간 모름',
     hourUnknown:!!chart?.input?.hourUnknown,
+    uncertainty:safePlain({...(chart?.calculation?.uncertainty||{}),birth_time_unknown:!!chart?.input?.hourUnknown,hour_pillar:chart?.input?.hourUnknown?'unavailable':'available'}),
     dayMaster:chart?.dayMaster?.stem||chart?.pillars?.day?.stem||'',
     tenGods,
     elements:safePlain(chart?.elCount||chart?.elements||null),
@@ -6684,6 +6690,8 @@ function guiinChartPayload(){
     timing_highlights:safePlain(timingHighlights),
     person_model:safePlain(personModel)
   };
+
+  if(out.person_model&&typeof out.person_model==='object')out.person_model.uncertainty={...(out.person_model.uncertainty||{}),...out.uncertainty};
 
   // v6.33: share the exact same interpretation evidence with the AI request.
   // Additive fields only; backend chooses whether it can read these. No policy/paywall changes.
@@ -11909,17 +11917,19 @@ try{Object.assign(window,{guiinPaymentCenterStart});}catch(_e){}
  }
 })();
 </script>
-<script src="guiin-interpretation-v4.js?v=20261008-premium-direct"></script>
+<script src="guiin-interpretation-v4.js?v=20261008-quality-audit"></script>
 <script id="GUIIN_RELEASE_INTEGRATION">
 /* Release QA integration: calculation, permission and navigation functions stay authoritative. */
 (function(){
  'use strict';
  const esc=v=>String(v??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
- const html=rows=>(rows||[]).map(s=>{
+ let reportSequence=0;
+ const html=rows=>{const prefix='guiin-read-'+(++reportSequence)+'-';const list=rows||[];const toc=list.length>1?'<nav class=guiinReadingTOC aria-label=리포트목차>'+list.map(s=>'<a href="#'+prefix+esc(s.id)+'">'+esc(s.title)+'</a>').join('')+'</nav>':'';return toc+list.map(s=>{
   const ps=Array.isArray(s.paragraphs)?s.paragraphs:String(s.body||'').split(/\n\n+/).filter(Boolean);
   const body=ps.map((text,i)=>'<p>'+(i===0&&s.lead?'<strong>'+esc(text)+'</strong>':esc(text))+'</p>').join('');
-  return `<article class="expertSection guiinHumanCard" data-human-section="${esc(s.id)}">${s.eyebrow&&s.eyebrow!==s.title?`<div class="eyebrow">${esc(s.eyebrow)}</div>`:""}<h3>${esc(s.title)}</h3>${body}<details class="r23Evidence"><summary>명리 근거 보기</summary><div>${esc(s.evidence)}</div></details></article>`;
- }).join('');
+  return `<article id="${prefix+esc(s.id)}" class="expertSection guiinHumanCard" data-human-section="${esc(s.id)}">${s.eyebrow&&s.eyebrow!==s.title?`<div class="eyebrow">${esc(s.eyebrow)}</div>`:""}<h3>${esc(s.title)}</h3>${body}<details class="r23Evidence"><summary>명리 근거 보기</summary><div>${esc(s.evidence)}</div></details></article>`;
+ }).join('');};
+ document.addEventListener('click',e=>{const a=e.target.closest?.('.guiinReadingTOC a');if(!a)return;e.preventDefault();const node=document.getElementById(a.getAttribute('href').slice(1));node?.scrollIntoView({behavior:'smooth',block:'start'});});
  const legacy={longSummaryHTML,personalityReport,fieldsReport,flowReport,fortuneRows};
  const intro='<div class="easyIntro card"><h2>겉모습부터 속마음, 일과 관계까지</h2><p>입력한 명식의 여러 신호를 겹쳐 본 성향이야. 실제 경험과 다른 부분은 네 경험을 우선해서 읽어.</p></div>';
  longSummaryHTML=function(c){return intro+html(GuiinExpert.fullSections(c))+`<button class="ctaGreen" onclick="setTab('stars')">내 신살·귀인 자세히 보기 ›</button>`;};
@@ -11927,7 +11937,9 @@ try{Object.assign(window,{guiinPaymentCenterStart});}catch(_e){}
  fieldsReport=function(c){return currentTab==='summary'?'':html(GuiinExpert.fieldSections(c));};
  flowReport=function(c){const rows=GuiinExpert.timingSections(c);if(!rows.length)return legacy.flowReport(c);return '<div class="card easyIntro"><h2>지금 정할 일과 앞으로 준비할 일</h2><p>계산한 운이 원국과 만나는 주제를 생활의 선택으로 옮겨봤어. 사건의 발생을 확정하는 설명은 아니야.</p></div>'+html(rows)+'<details class="r23Evidence"><summary>대운·세운 계산표와 자세한 근거</summary>'+legacy.flowReport(c)+'</details>';};
  // Retain the original functions for existing integrations and targeted QA.
- globalThis.GUIIN_RELEASE_QA={legacyReports:legacy,version:'20261008-premium-direct',html};
+ globalThis.GUIIN_RELEASE_QA={legacyReports:legacy,version:'20261008-quality-audit',html};
+ const priorStarDetails=starDetails;starDetails=function(c){return priorStarDetails(c)+'<details class="r23Evidence guiinStarContext"><summary>실제 성립 신살별 관계·일·현재 흐름 연결</summary>'+html(GuiinExpert.premiumStarContexts(c))+'</details>';};
+ function uncertainty(c,view){const u=c?.calculation?.uncertainty;if(!view)return;if(!u){const edge=(c?.calculation?.boundaryDiagnostics||[]).find(x=>x.type==='solar-term-boundary'&&x.minutes<=20);if(edge){let n=view.querySelector('[data-term-uncertainty]');if(!n){n=document.createElement('aside');n.className='card guiinTimeNotice';n.dataset.termUncertainty='1';view.prepend(n);}n.innerHTML='<strong>절기 경계 가까운 출생 · 정밀 역서 대조가 필요해</strong><p>현재 엔진은 태양 위치의 근사식으로 절입을 계산해. 입력 시각은 계산한 경계와 약 '+esc(edge.minutes)+'분 차이야. 정밀 역서와 대조하기 전에는 연주·월주와 대운 시작 시점을 확정 결과로 받아들이지 마.</p>';}return;}let node=view.querySelector('[data-time-uncertainty]');if(!node){node=document.createElement('aside');node.className='card guiinTimeNotice';node.dataset.timeUncertainty='1';view.prepend(node);}const label={year:'연주',month:'월주',day:'일주'};node.innerHTML='<strong>출생시간 미상 · 대표값으로 읽는 결과야</strong><p>'+esc(u.note)+'</p><details><summary>확정 정보와 시간에 따라 달라지는 정보</summary><p>시주는 계산하지 않았어. '+esc(Object.keys(u.candidates).map(k=>label[k]+': '+u.candidates[k].join(' / ')).join(' · '))+'</p><p>대운 시작 나이 범위: '+u.startAgeExactRange.map(n=>Number(n).toFixed(3)).join(' ~ ')+'년. 절기 자체는 천문 근사라 경계에서는 정밀 역서 확인이 필요해.</p></details>';}
  let seq=0,timer=null,controller=null;
  const idInput=document.getElementById('signupLoginId'),status=document.getElementById('signupIdStatus');
  async function checkId(value,revision){
@@ -11972,11 +11984,11 @@ try{Object.assign(window,{guiinPaymentCenterStart});}catch(_e){}
   if(!view||!a||!b||!GuiinExpert.premiumCompatibilitySections||tab==='partner')return;
   // Existing paid rendering is the authority; never render this report over a paywall.
   if(!view.querySelector('article[data-r24-key],article[data-r26-key]'))return;
-  const model=GuiinCompatQuality634.model(a,b),all=GuiinExpert.premiumCompatibilitySections(model);
+  const cached=view.__guiinPremiumCache;const all=cached&&cached.a===a&&cached.b===b&&cached.tab===tab?cached.rows:GuiinExpert.premiumCompatibilitySections(GuiinCompatQuality634.model(a,b));view.__guiinPremiumCache={a,b,tab,rows:all};
   const rows=tab==='love'?all.filter(r=>!['pair-money','pair-structure'].includes(r.id)):tab==='marriage'?all.filter(r=>r.id!=='pair-attraction'):all;
   let report=view.querySelector('[data-premium-compat-report]');
   if(!report){report=document.createElement('section');report.dataset.premiumCompatReport='1';view.appendChild(report);}
-  report.innerHTML=html(rows);
+  if(report.__guiinRows!==all||report.dataset.tab!==String(tab)){report.innerHTML=html(rows);report.__guiinRows=all;report.dataset.tab=String(tab);}
   let legacy=view.querySelector('details[data-legacy-compat]');
   if(!legacy){legacy=document.createElement('details');legacy.className='r23Evidence';legacy.dataset.legacyCompat='1';legacy.innerHTML='<summary>기존 관계 장면과 인물 해석 자세히 보기</summary>';view.appendChild(legacy);}
   const old=[...view.children].filter(node=>node!==report&&node!==legacy&&(node.matches('article[data-r24-key],article[data-r26-key],[data-r28-people]')||node.querySelector('article[data-r24-key],article[data-r26-key],[data-r28-people]')));
@@ -11985,7 +11997,7 @@ try{Object.assign(window,{guiinPaymentCenterStart});}catch(_e){}
  }
  for(const fname of ['renderResult','renderCompatCards','renderYearLuck','renderToday','renderFortunePeriod']){
   const prior=globalThis[fname];if(typeof prior!=='function')continue;
-  globalThis[fname]=function(){const out=prior.apply(this,arguments);if(fname==='renderCompatCards'){premiumPair();requestAnimationFrame(premiumPair);}if(fname==='renderToday'||fname==='renderFortunePeriod')fortunePlan(fname==='renderToday'?'today':arguments[0]);polish(document.getElementById(fname==='renderResult'?'resultView':fname==='renderCompatCards'?'matchView':fname==='renderYearLuck'?'yearView':'todayView'));return out;};
+  globalThis[fname]=function(){const out=prior.apply(this,arguments);if(fname==='renderCompatCards'){premiumPair();requestAnimationFrame(premiumPair);}if(fname==='renderResult')uncertainty(typeof chart!=='undefined'?chart:null,document.getElementById('resultView'));if(fname==='renderToday'||fname==='renderFortunePeriod')fortunePlan(fname==='renderToday'?'today':arguments[0]);polish(document.getElementById(fname==='renderResult'?'resultView':fname==='renderCompatCards'?'matchView':fname==='renderYearLuck'?'yearView':'todayView'));return out;};
  }
  // Finite one-shot cleanup after asynchronous legacy layers, not a subtree observer loop.
  document.addEventListener('click',e=>{const screen=e.target?.closest?.('#result,#matchResult,#yearLuck');if(!screen)return;requestAnimationFrame(()=>polish(screen.querySelector('#resultView,#matchView,#yearView')));},{passive:true});

@@ -165,7 +165,12 @@
     return readJsonResponse(r);
   }
 
+  function civilInput(input={}){
+    const date=input.calendar==="음력"&&input.originalDate?{year:input.originalDate.year,month:input.originalDate.month,day:input.originalDate.day}:{};
+    return {...input,...(input.trueSolarApply?input.sourceDateTime||{}:{}),...date};
+  }
   function inputPayload(input={}){
+    input=civilInput(input);
     const unknown=!!input.hourUnknown;
     return {
       label:String(input.name||"").trim().slice(0,40)||null,
@@ -267,7 +272,7 @@
   }
 
   function normalizedInputFromChart(c){
-    const i=c?.input||{};
+    const i=civilInput(c?.input||{});
     return {
       name:String(i.name||""),
       gender:String(i.gender||""),
@@ -339,7 +344,7 @@
         profile_id:profileId||null,
         normalized_input:normalizedInputFromChart(c),
         chart_facts:chartFacts(c),
-        uncertainty:c?.uncertainty||{
+        uncertainty:c?.calculation?.uncertainty||c?.uncertainty||{
           birth_time_unknown:!!c?.input?.hourUnknown,
           hour_pillar:c?.input?.hourUnknown?"unavailable":"available"
         },
