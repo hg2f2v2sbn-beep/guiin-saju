@@ -9169,7 +9169,7 @@ try{Object.assign(window,{guiinPaymentCenterStart});}catch(_e){}
   const base=[p.stem?`${p.stem} 일간`:'',p.season?`${p.season} 기운`:'',top?`중심오행 ${top}`:'',p.mg?`월주 ${p.mg}`:''].filter(Boolean).join(' · ');
   const intro=val(p.day?.day?.headline||p.day?.br?.outer,`${p.name}님은 자기 기준과 관계 리듬이 분명한 편이야.`);
   const relation=val(p.rp?.attachmentText,'가까운 관계에서는 신뢰와 거리의 균형이 중요하게 작용할 수 있어.');
-  return `<details class="r23Evidence" data-legacy-reading="r29SajuPortrait"><summary>원국·신살 통합 해석과 계산 근거</summary><section class="r28People r29SajuPortrait" data-r29-saju-portrait="1"><div class="mini">원국 + 신살 통합 인물 해석</div><h3>${E(p.name)}님이 “이래서 이런 사람”으로 읽히는 이유</h3><p class="lead">신살을 따로 나열하지 않고 일간·월령·오행·십성과 겹쳐 성격·관계 반응·지칠 때 모습까지 한 사람의 이야기로 연결했어. 신살은 보조 근거이며 행동을 확정하는 판정표는 아니야.</p><div class="r28PersonGrid"><div class="r28Person"><div class="who">${E(base)}</div><h4>${E(p.name)}님은 왜 이런 사람으로 읽히나</h4><p><b>원국부터 보면</b> ${E(intro)} ${E(relation)}</p>${chips.length?`<div class="r28StarChips">${chips.map(x=>`<span>${E(x)}</span>`).join('')}</div>`:''}${rows.map(x=>`<p>${E(x)}</p>`).join('')}<div class="r28Because">${synthesis(p)}</div><details class="r28Evidence"><summary>이 해석에 사용한 신살 근거 보기</summary><div>${E(p.stars.length?p.stars.join(' · '):'현재 계산된 신살은 적지만, 원국·오행·십성 중심으로 해석합니다.')}</div></details></div></div></section></details>`;
+  return `<section class="r28People r29SajuPortrait" data-r29-saju-portrait="1"><div class="mini">원국 + 신살 통합 인물 해석</div><h3>${E(p.name)}님이 “이래서 이런 사람”으로 읽히는 이유</h3><p class="lead">신살을 따로 나열하지 않고 일간·월령·오행·십성과 겹쳐 성격·관계 반응·지칠 때 모습까지 한 사람의 이야기로 연결했어. 신살은 보조 근거이며 행동을 확정하는 판정표는 아니야.</p><div class="r28PersonGrid"><div class="r28Person"><div class="who">${E(base)}</div><h4>${E(p.name)}님은 왜 이런 사람으로 읽히나</h4><p><b>원국부터 보면</b> ${E(intro)} ${E(relation)}</p>${chips.length?`<div class="r28StarChips">${chips.map(x=>`<span>${E(x)}</span>`).join('')}</div>`:''}${rows.map(x=>`<p>${E(x)}</p>`).join('')}<div class="r28Because">${synthesis(p)}</div><details class="r28Evidence"><summary>이 해석에 사용한 신살 근거 보기</summary><div>${E(p.stars.length?p.stars.join(' · '):'현재 계산된 신살은 적지만, 원국·오행·십성 중심으로 해석합니다.')}</div></details></div></div></section>`;
  }
  function apply(){
   const root=document.getElementById('resultView');if(!root)return;
@@ -11989,8 +11989,13 @@ try{Object.assign(window,{guiinPaymentCenterStart});}catch(_e){}
   let report=view.querySelector('[data-premium-compat-report]');
   if(!report){report=document.createElement('section');report.dataset.premiumCompatReport='1';view.appendChild(report);}
   if(report.__guiinRows!==all||report.dataset.tab!==String(tab)){report.innerHTML=html(rows);report.__guiinRows=all;report.dataset.tab=String(tab);}
-  let legacy=view.querySelector('details[data-legacy-compat]');
-  if(!legacy){legacy=document.createElement('details');legacy.className='r23Evidence';legacy.dataset.legacyCompat='1';legacy.innerHTML='<summary>기존 관계 장면과 인물 해석 자세히 보기</summary>';view.appendChild(legacy);}
+  let legacy=view.querySelector('[data-legacy-compat]');
+  if(legacy&&legacy.tagName==='DETAILS'){
+    const expanded=document.createElement('section');expanded.className='guiinExpandedCompat';expanded.dataset.legacyCompat='1';
+    [...legacy.children].filter(child=>child.tagName!=='SUMMARY').forEach(child=>expanded.appendChild(child));
+    legacy.replaceWith(expanded);legacy=expanded;
+  }
+  if(!legacy){legacy=document.createElement('section');legacy.className='guiinExpandedCompat';legacy.dataset.legacyCompat='1';view.appendChild(legacy);}
   const old=[...view.children].filter(node=>node!==report&&node!==legacy&&(node.matches('article[data-r24-key],article[data-r26-key],[data-r28-people]')||node.querySelector('article[data-r24-key],article[data-r26-key],[data-r28-people]')));
   old.forEach(node=>legacy.appendChild(node));
   // End of legacy asynchronous composition: one idempotent presentation pass.
