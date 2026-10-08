@@ -11923,7 +11923,7 @@ try{Object.assign(window,{guiinPaymentCenterStart});}catch(_e){}
  }
 })();
 </script>
-<script src="guiin-interpretation-v4.js?v=20261008-quality-audit"></script>
+<script src="guiin-interpretation-v4.js?v=20261008-star-integrated"></script>
 <script id="GUIIN_RELEASE_INTEGRATION">
 /* Release QA integration: calculation, permission and navigation functions stay authoritative. */
 (function(){
@@ -12015,5 +12015,23 @@ try{Object.assign(window,{guiinPaymentCenterStart});}catch(_e){}
 })();
 
 </script>
+<script id="GUIIN_STAR_INTEGRATED_20261008">
+(function(){
+ 'use strict';
+ const esc=v=>String(v??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+ const label={year:'년주',month:'월주',day:'일주',hour:'시주'};
+ function twelve(c){const ks=['year','month','day','hour'].filter(k=>c.pillars?.[k]);const rows=['년지','일지'].map(b=>'<tr><th scope="row">'+b+' 기준</th>'+ks.map(k=>'<td>'+esc((c.stars?.hits||[]).filter(h=>h.pillar===k&&h.basis===b+'·12신살').map(h=>h.name).join(' · ')||'확인 안 됨')+'</td>').join('')+'</tr>');return '<details class="r23Evidence"><summary>12신살 · 연지와 일지 기준을 나눠 보기</summary><div style="overflow-x:auto"><table><caption>기존 엔진의 두 기준 계산값</caption><thead><tr><th>기준</th>'+ks.map(k=>'<th>'+label[k]+' '+esc(c.pillars[k].ko)+'</th>').join('')+'</tr></thead><tbody>'+rows.join('')+'</tbody></table></div><p>두 기준은 각각 보존해. 같은 위치에서 이름이 달라도 오류나 길흉 점수로 합치지 않아.</p></details>';}
+ const previousStars=starDetails;
+ starDetails=function(c){const rows=GuiinExpert.premiumStarContexts(c),cat=c.stars?.catalogue||[],unsupported=cat.filter(r=>r.status!=='calculated');return '<section class="guiinIntegratedStars" data-integrated-stars="1"><h2>신살을 원국 안에서 한 사람의 힘으로 읽으면</h2><p>등록 '+cat.length+'종 · 계산 지원 '+(c.stars?.supportedCount||0)+'종 · 이 명식의 해석 '+rows.length+'종. 성립 위치와 근거를 빠짐없이 연결했어.</p>'+GUIIN_RELEASE_QA.html(rows)+twelve(c)+'<details class="r23Evidence"><summary>등록돼 있지만 계산하지 않는 항목 '+unsupported.length+'종</summary><p>'+esc(unsupported.map(r=>r.name).join(' · '))+'</p><p>현재 엔진에 성립 계산이 없어 원국에 있다고 표시하거나 해석하지 않아.</p></details></section><details class="r23Evidence" data-preserved-star-details="1"><summary>기존 신살·귀인 상세 화면과 용어 설명</summary>'+previousStars(c)+'</details>';};
+ function person(card,c){if(!card||!c)return;let box=card.querySelector('[data-integrated-person]');if(box)return;
+  const rows=GuiinExpert.fullSections(c),synth=GuiinExpert.premiumStarSynthesis(c);box=document.createElement('section');box.dataset.integratedPerson='1';box.className='guiinHumanCard';box.innerHTML='<h4>원국과 신살을 함께 본 너의 작동 방식</h4>'+rows.find(r=>r.id==='self').paragraphs.slice(0,2).map(p=>'<p>'+esc(p)+'</p>').join('')+synth.map(p=>'<p>'+esc(p)+'</p>').join('')+'<details class="r23Evidence"><summary>명리 근거 보기</summary><p>'+esc(rows.find(r=>r.id==='self').evidence)+'</p><p>'+esc(GuiinExpert.premiumStarContexts(c).map(r=>r.evidence).join(' / '))+'</p></details>';
+  const old=[...card.children].filter(n=>n.matches('p,.r28Because,.r28StarChips'));if(old.length){const d=document.createElement('details');d.className='r23Evidence';d.dataset.preservedPerson='1';d.innerHTML='<summary>기존 인물 해석의 보조 설명</summary>';old.forEach(n=>d.appendChild(n));card.appendChild(d);}card.prepend(box);
+ }
+ function update(){try{if(typeof chart!=='undefined'&&chart)person(document.querySelector('[data-r29-saju-portrait] .r28Person'),chart);let a,b;try{a=matchMeta?.a||matchAnalysis?.a;b=matchMeta?.b||matchAnalysis?.b}catch(_){}if(a&&b){const cards=[...document.querySelectorAll('#matchView [data-r28-people] .r28Person')];if(cards.length===1)person(cards[0],b);else{person(cards[0],a);person(cards[1],b);}}}catch(e){console.error('integrated-person-render',e);}}
+ for(const name of ['renderResult','renderCompatCards']){const prior=globalThis[name];if(typeof prior!=='function')continue;globalThis[name]=function(){const result=prior.apply(this,arguments);update();requestAnimationFrame(update);return result;};}
+ globalThis.GUIIN_STAR_INTEGRATION={version:'20261008-star-integrated',twelve,update};
+})();
+</script>
+
 </body>
 </html>

@@ -199,20 +199,94 @@ const QUALITY_STAR_SCENES={
  겁살:'원하는 방향을 지키려다 다른 사람의 몫까지 가져오는 경계를 봐.',재살:'일이 꼬였을 때 혼자 모든 변수를 통제하려는 긴장을 살펴.',천살:'내가 바꿀 일과 바꿀 수 없는 조건을 나누는 데 초점을 둬.',지살:'새 역할을 직접 경험하며 판단을 갱신하는 장면에 연결해.',도화살:'사람의 반응을 잘 얻는 것과 관계의 깊이가 같은 것은 아니야.',월살:'반응이 늦는 시기에도 일의 진행 기준을 잃지 않는지 봐.',망신살:'표현이 주목받는 자리에서 말의 내용과 공개할 범위를 구분해.',장성살:'결정을 맡았을 때 기준을 세우는 힘과 다른 사람 말을 듣는 시간을 같이 봐.',반안살:'쌓인 경험을 새로운 역할로 옮길 때 기존 방법에만 기대지 않는지 봐.',역마살:'환경이나 업무를 바꿀 때 생기는 활력과 마무리할 일을 함께 살펴.',육해살:'작은 불편을 넘기는 일과 필요한 도움을 요청하는 일을 구분해.',화개살:'혼자 몰입한 결과가 다른 사람에게 전달될 형태를 갖추는지 봐.',
  천을귀인:'문제를 설명하고 적절한 도움을 요청하는 경로에 연결해.',천덕귀인:'갈등을 풀 중간 기준이나 조정할 사람을 찾는 장면에 연결해.',월덕귀인:'사람과 일을 오래 이어갈 기준을 만드는 데 초점을 둬.',문창귀인:'생각을 말이나 글로 정리해서 다른 사람이 사용할 형태로 바꾸는 데 연결해.',태극귀인:'눈앞의 답보다 원리와 배경을 이해하려는 관심에 연결해.',천의성:'불편을 발견하고 돌봄과 지원이 필요한 범위를 구체화하는 데 연결해.',건록:'내가 직접 할 수 있는 일을 반복 가능한 결과로 만드는 데 연결해.',암록:'이미 익힌 기술과 주변 연결을 실제 지원 경로로 점검해.',학당귀인:'배운 내용을 실제 작업에 적용하고 남길 결과를 만드는 데 연결해.',홍염살:'호감이 오가는 반응과 친밀한 관계의 경계를 구분해.',양인살:'선을 넘은 요구를 끊는 결단과 그 이유를 전달하는 방식을 같이 봐.',괴강살:'압박 속에서 결론을 잡는 힘이 다른 의견을 건너뛰는 태도가 되는지 살펴.',귀문관살:'작은 반응을 오래 생각할 때 확인한 사실과 해석을 분리해.',원진살:'가까운 사람에게 기대한 행동이 어긋났을 때 감정을 설명하는 순서를 살펴.',공망:'기대와 실제로 남는 결과 사이의 빈칸을 점검하는 표식으로 봐.',고신살:'혼자 정리할 시간과 도움을 끊어버리는 행동을 구분해.',과숙살:'가까워져도 유지할 개인 영역을 미리 말하는 장면에 연결해.',백호살:'급하게 결론을 내리는 순간에도 말과 행동의 강도를 나누는 데 연결해.',현침살:'작은 차이를 발견하는 힘이 날카로운 지적으로만 전달되는지 살펴.',천라지망:'생각이나 역할이 얽힐 때 하나씩 종료 기준을 정하는 데 연결해.',삼기:'여러 방식의 판단을 결과 하나로 묶는 과정에 연결해.',형살:'같은 기준을 다시 확인하다 대화가 검토에서 비난으로 바뀌는지 살펴.',충살:'서로 다른 방향이 부딪힐 때 바꿀 문제와 지킬 기준을 나눠.',파살:'계획이 조금씩 달라질 때 변경 뒤의 책임이 남는지 살펴.',해살:'말하지 않은 불편이 다음 장면으로 옮겨가는지 살펴.',삼합:'함께 움직이는 연결이 있어도 역할이 한쪽에 몰리는지 확인해.'
 };
+// Interpretation data only. Never modifies a calculation or creates a star hit.
+const STAR_INTEGRATED={
+ 천을귀인:['사람을 통해 막힌 길을 풀어가는 조력의 힘','필요한 사람을 연결하고 서로의 역할을 알아보는 관계 감각이 장점이야. 도움을 구하는 일을 약점으로 여기기보다 네가 잘하는 일과 상대가 잘하는 일을 연결하면 협업의 폭이 넓어져.','협업·소개·고객 연결·문제 해결에서 지원을 요청할 상대와 필요한 내용을 구체적으로 정해.'],
+ 천덕귀인:['갈등의 온도를 낮추고 다시 대화할 자리를 만드는 인덕','누가 옳은지만 따지는 대화에서 서로 받아들일 기준을 찾는 완충력이야. 의견이 부딪힐 때 관계를 끝내는 결론보다 대화를 이어갈 통로를 찾는 장점으로 풀어.','조율·중재·고객 대응에서는 합의한 내용을 남겨. 상대 기분을 달래는 일과 문제를 해결하는 일을 연결해.'],
+ 월덕귀인:['함께 일하고 관계를 이어가는 과정에서 쌓이는 인덕','매번 새로 설득하기보다 신뢰가 쌓인 사람들과 일을 이어가는 관계 자원이야. 일을 주고받을 때 상대의 기여를 알아보고 돌려주는 태도가 이 장점을 실제 협력으로 이어줘.','단골·동료·협업 관계에서 서로 잘하는 일을 나누고 기여를 말로 인정하는 방식에 연결해.'],
+ 문창귀인:['생각을 말과 글로 정리해 다른 사람이 이해하게 하는 재능','복잡한 내용을 순서대로 풀고 핵심을 골라 전달하는 지적 강점이야. 아는 것이 많다는 칭찬에서 끝내지 않고 설명·기획·기록이 실제로 누구의 판단을 돕는지 봐.','기획안·설명서·교육 자료·콘텐츠처럼 생각을 남기는 작업에서 강점을 구체화해.'],
+ 학당귀인:['배운 내용을 자기 기술로 익혀 축적하는 학습의 힘','새로운 지식을 받아들이고 반복해 자기 것으로 만드는 학습 자원이야. 읽고 이해한 내용을 직접 적용해보는 과정에서 실력이 남아. 배움의 깊이를 결과물과 연결하는 방향으로 풀어.','교육·전문기술·연구에서는 배운 내용을 실제 작업에 적용하고 다음 작업의 기준으로 남겨.'],
+ 태극귀인:['겉의 답보다 원리와 의미를 찾는 통찰','왜 그런 결과가 나오는지 배경까지 이해하려는 탐구의 힘이야. 눈앞의 방법만 익히기보다 서로 다른 경험에서 공통 원리를 찾는 방향에 재능이 있어.','분석·연구·창작에서는 질문을 구체화하고 이해한 원리를 남도 사용할 언어로 옮겨.'],
+ 화개살:['혼자 깊이 몰입해 자기 분야를 만드는 힘','익숙한 답을 반복하기보다 취향과 기술을 오래 다듬는 집중의 상징이야. 예술·학문·전문기술처럼 한 작업을 깊게 파는 활동에서 독자적인 결과를 만드는 방향으로 풀어.','몰입한 결과를 보여줄 시점과 외부 의견을 받을 창구를 따로 마련해.'],
+ 역마살:['환경이 바뀔 때 새 기회를 찾는 활동력','변화를 단순한 불편으로만 보지 않고 다른 방법을 직접 시험하는 개척의 상징이야. 여행이나 이직 취향으로 고정하지 않고 업무·관계·역할의 변화에 대응하는 방식으로 봐.','현장 경험·프로젝트 전환·새 고객을 만나는 일에서 시작과 인수인계의 기준을 함께 정해.'],
+ 장성살:['결정을 맡았을 때 중심을 잡는 자기주도성','여러 의견을 실행할 방향으로 묶고 필요한 결정을 내리는 리더십의 상징이야. 조용히 책임지는 모습만 뜻하지 않아. 원국의 표현과 판단 구조에 따라 설득하는 리더와 바로 실행하는 리더가 갈려.','책임자·팀 운영·프로젝트에서는 결정권과 다른 사람 의견을 반영할 절차를 함께 확보해.'],
+ 반안살:['쌓인 경험을 다음 역할로 연결하는 성장의 발판','이미 해본 일을 더 큰 범위에 적용하고 실력을 인정받을 자리를 찾는 상승의 상징이야. 지위 자체를 예언하기보다 경험이 다음 기회의 근거가 되는 과정으로 봐.','실적·경력·작업 기록을 다음 제안의 자료로 남겨.'],
+ 겁살:['경쟁과 급변하는 상황에서 방향을 다시 잡는 돌파력','판이 흔들릴 때 필요한 자원을 찾고 대응을 시작하는 강한 반응의 상징이야. 경쟁심이 목표를 선명하게 만들면 추진력이 살아나고, 비교만 남으면 이기기 위해 쓰는 비용이 커져.','협상·경쟁·새 판을 여는 일에서는 목표와 감당할 손실 한도를 먼저 정해.'],
+ 재살:['제약 속에서 대응 방법을 찾아내는 긴장과 집중','조건이 까다로운 일에서 변수와 통제 범위를 살피는 힘으로 풀어. 모든 문제를 없애려 하면 확인과 대응에 에너지가 몰리니 네가 처리할 변수부터 골라야 해.','심사·관리·위기 대응에서는 필수 확인과 추가 확인을 나눠.'],
+ 천살:['내 힘 밖의 조건을 받아들이고 대응을 바꾸는 전환','의지로 밀어붙이는 것과 주어진 조건에 맞춰 방법을 바꾸는 것을 구분하는 상징이야. 결과를 모두 자기 능력 탓으로 돌리면 바꿀 수 없는 조건까지 떠안게 돼.','일정·제도·외부 사정이 바뀔 때 바꿀 선택과 유지할 목표를 나눠.'],
+ 지살:['직접 경험하며 적응하는 탐색의 힘','새 역할을 해보며 판단을 갱신하는 출발의 상징이야. 경험이 쌓일수록 선택이 구체화되지만 처음부터 모든 활동을 맡으면 정리할 시간이 빠져.','현장 학습·초기 프로젝트에서는 작게 시험하고 계속할 기준을 정해.'],
+ 도화살:['사람의 시선을 끌고 반응을 주고받는 표현 감각','분위기와 인상이 사람 사이의 접점이 되는 매력의 상징이야. 외모나 외도 여부로 바꾸지 않고 소개·표현·고객 반응이 관계에 들어오는 장면을 봐.','대인 업무·콘텐츠·모임에서는 호응을 얻는 표현과 개인적으로 허용할 친밀감을 구분해.'],
+ 월살:['반응이 더딘 구간에서도 필요한 준비를 이어가는 힘','눈에 바로 보이는 결과가 적을 때 과정과 속도를 점검하는 정체의 상징이야. 기다리는 일과 이미 효과가 없는 방법을 반복하는 일을 구분해야 해.','준비 작업·장기 과제에서는 중간 결과와 검토 날짜를 남겨.'],
+ 망신살:['내 말과 행동이 밖에 드러나는 사회적 표현','말과 결과가 주목받는 자리에서 존재감을 만드는 노출의 상징이야. 이름만 보고 수치나 실패를 예언하지 않아. 반응이 빠른 환경에서는 공개 범위를 먼저 정하는 판단이 중요해.','발표·홍보·대인 업무에서는 전달할 메시지와 사적인 내용을 나눠.'],
+ 육해살:['작은 불편을 알아채고 관계의 틈을 메우는 감각','아직 크게 드러나지 않은 부담을 살피는 긴장의 상징이야. 미리 알아채는 힘이 돌봄과 조율에 쓰이지만 모든 불편을 네 일로 받으면 부탁하지 않은 몫까지 늘어.','지원·서비스·관계에서는 필요한 도움과 대신 떠안을 책임을 나눠.'],
+ 천의성:['불편을 발견하고 돌봄의 필요를 정리하는 세심함','누가 어떤 도움을 필요로 하는지 살피는 돌봄의 상징이야. 지원을 구체화하고 불편을 덜어주는 서비스에 연결하되 의학적 능력이나 질병 판단으로 확장하지 않아.','돌봄·지원 업무에서는 필요한 조치와 담당할 범위를 구체적으로 정해.'],
+ 건록:['스스로 해낼 수 있는 일을 자기 기반으로 만드는 힘','익힌 능력을 바탕으로 내 몫의 결과를 만드는 자립의 상징이야. 기준과 실행을 연결하면 실력이 쌓이고, 혼자 해야 한다는 고집으로 바뀌면 협업의 이점이 빠져.','독립 실무·전문 작업에서는 반복 가능한 과정과 맡길 작업을 나눠.'],
+ 암록:['겉에 드러나지 않은 자원과 연결을 활용하는 힘','기존 경험과 주변 연결에서 실무적인 지원을 찾는 자원의 상징이야. 갑자기 돈이 생긴다고 말하지 않고 이미 가진 기술·자료·연결을 쓰는 경로로 풀어.','눈에 보이는 수입만 보지 말고 비용을 줄여주는 지식과 협력 자원도 정리해.'],
+ 홍염살:['자기 취향과 감정을 선명하게 전하는 매력','자기다운 표현이 상대에게 인상을 남기는 호감의 상징이야. 관심을 받는 능력과 오래 친밀함을 유지하는 행동은 구분하되, 표현의 존재감은 분명한 장점으로 봐.','연애·고객 관계에서는 상대의 호응과 네가 원하는 관계의 깊이를 각각 확인해.'],
+ 양인살:['경계를 지키고 결단을 밀어붙이는 강한 힘','밀려오는 요구 앞에서 자기 방향을 잡는 결단의 상징이야. 전문 작업과 긴급 대응에 집중하면 힘이 살아나지만 결론을 빨리 내는 것과 상대 선택을 없애는 것은 달라.','결정이 필요한 업무에서는 책임·권한·중단 기준을 함께 정해.'],
+ 괴강살:['복잡한 상황에서도 결론을 잡는 강단','어려운 문제를 피해 돌기보다 핵심 기준을 정하는 집중의 상징이야. 독립적인 전문 판단으로 쓰면 장점이 선명하고 다른 의견을 전부 방해로 보면 협력이 막혀.','판단을 맡는 일에서는 결정의 근거와 검토받을 절차를 남겨.'],
+ 백호살:['결단이 필요한 순간에 힘을 모으는 집중','강한 에너지를 한 과제에 투입하는 결단의 상징이야. 어려운 업무를 끝내는 추진력으로 연결하되 사고·수술·질병이 생긴다는 뜻으로 바꾸지 않아. 속도가 높아질수록 작업 순서를 지키는 편이 힘을 오래 써.','긴급·고난도 작업에서는 확인 절차와 쉴 구간을 일정에 함께 넣어.'],
+ 현침살:['작은 차이를 구별하고 정교하게 다루는 감각','세부 차이를 잡아내고 정확도를 올리는 날카로움의 상징이야. 기술·검토·표현의 정밀함으로 쓰면 장점이고, 지적이 사람 전체를 평가하는 말로 바뀌면 관계가 좁아져.','정밀 작업에서는 오류를 고치는 설명과 사람에게 하는 평가를 나눠.'],
+ 귀문관살:['작은 신호에 집중하고 다른 해석을 찾는 감각','남들이 넘긴 차이를 오래 들여다보는 섬세한 집중의 상징이야. 창작·분석에서는 새로운 관점이 되지만 확인하지 않은 의도까지 사실로 여기면 생각이 소모돼.','분석할 때 관찰한 사실과 네가 붙인 의미를 다른 칸에 적어.'],
+ 원진살:['가까운 관계의 작은 어긋남을 민감하게 받아들이는 긴장','관계의 온도와 반응을 세밀하게 보는 상징이야. 필요한 배려를 알아채는 장점으로 쓰되 상대가 하지 않은 말까지 대신 해석하면 감정이 앞서가.','서운했던 행동과 네가 기대한 행동을 구체적으로 나눠 말해.'],
+ 공망:['기대와 실제 결과 사이의 빈칸을 다시 보는 감각','남들이 당연하게 받아들이는 목표에도 거리를 두고 의미를 묻는 비워짐의 상징이야. 새 관점을 만들 힘으로 쓰되 결과를 남기기 전에 모든 의미를 지워버리면 시작한 일이 끝나지 않아.','목표를 정할 때 하고 싶은 이유와 완료 뒤 실제로 남길 결과를 나눠.'],
+ 고신살:['혼자 판단하고 정리할 영역을 지키는 독립성','혼자 생각할 공간에서 기준을 되찾는 거리의 상징이야. 자기 작업을 지킬 때 장점이 되고 필요한 설명과 도움까지 끊으면 다른 사람은 네 의도를 알기 어려워.','개인시간을 확보하되 협업과 관계에서 다시 연결할 방법도 남겨.'],
+ 과숙살:['가까운 관계에서도 자기 영역을 유지하는 거리감','친밀함과 개인 영역을 구분하는 상징이야. 가까워졌다는 이유로 모든 선택을 공유해야 한다고 느끼면 관계가 부담이 돼. 혼자 있을 필요를 설명하면 친밀함과 독립성을 함께 지킬 여지가 생겨.','함께할 일과 각자 선택할 일을 미리 말로 구분해.'],
+ 천라지망:['얽힌 조건을 하나씩 풀어내는 지속적인 검토','문제의 연결을 오래 붙잡고 빠진 조건을 찾는 얽힘의 상징이야. 복잡한 과제를 정리하는 데 쓰되 해결할 범위가 끝없이 늘면 검토 자체가 일을 막아.','복잡한 일에서는 이번에 끝낼 범위와 나중에 검토할 범위를 나눠.'],
+ 삼기:['서로 다른 자원을 한 결과로 묶는 구성력','여러 판단과 재료를 결합하는 연결의 상징이야. 한 가지 방식만 고집하기보다 각 요소의 역할을 구분해 결과를 만드는 방향으로 풀어.','기획·협업에서는 각자 잘하는 일과 최종 결과의 담당을 함께 정해.'],
+ 형살:['같은 기준을 다시 확인하며 완성도를 높이는 긴장','빠진 조건을 반복해서 살피는 검토의 상징이야. 오류를 줄일 힘으로 쓰되 같은 말을 되풀이하며 상대를 추궁하면 검토가 비난으로 바뀌어.','검토 횟수와 통과 기준을 정해.'],
+ 충살:['서로 다른 방향이 만날 때 방법을 바꾸는 변화','기존 방식과 다른 요구가 맞부딪히는 전환의 상징이야. 변화의 계기로 쓰되 매번 전부 바꾸면 유지할 기반도 흔들려.','바꿀 항목과 지킬 항목을 나눠.'],
+ 파살:['작은 변경을 알아채고 다시 조립하는 조정','계획의 연결이 조금씩 달라지는 틈의 상징이야. 변경을 빨리 발견하는 장점으로 쓰되 합의가 바뀐 뒤 책임을 확인하지 않으면 뒤처리가 남아.','변경된 내용과 완료 담당을 같은 기록에 남겨.'],
+ 해살:['말하지 않은 불편을 발견하고 조율하는 감각','겉의 합의와 속의 부담이 어긋나는 틈의 상징이야. 놓친 요구를 알아채는 힘으로 쓰되 혼자 이유를 추측하면 불편이 다음 장면으로 옮겨가.','불편한 지점에서 아직 확인하지 않은 사실을 먼저 물어봐.'],
+ 삼합:['여러 역할이 같은 방향으로 모이는 협력','각자의 자원이 한 목표를 향해 연결되는 결속의 상징이야. 함께 만드는 결과에 힘을 보태되 잘 맞는다는 이유로 역할을 말하지 않으면 보이지 않는 몫이 한쪽에 몰려.','공동 목표와 각자 완료할 일을 함께 정해.']
+};
+const STAR_POSITION={year:['년주','초년·가족·사회적 출발','처음 익힌 사람 대하는 방식과 바깥 인맥을 살펴'],month:['월주','직업·사회활동·성장 과정','함께 일할 때 판단을 드러내는 방식에 초점을 둬'],day:['일주','자기 자신·친밀한 관계·배우자 영역','가까워진 뒤 필요한 반응과 생활의 거리를 봐'],hour:['시주','후반기·자녀·결실 영역','시간을 들여 남길 작업과 결과의 방향을 봐']};
+const STAR_GOD_USE={비견:'네 판단으로 방법을 고르고 결과를 책임지는 방식',겁재:'사람들과 움직이며 역할을 나누고 경쟁을 결과로 바꾸는 방식',식신:'익힌 기술을 반복해 품질을 높이고 편안한 리듬을 만드는 방식',상관:'앞뒤가 맞지 않는 점을 찾아 고치고 생각을 표현하는 방식',편재:'사람 반응을 읽고 새 기회를 실제 거래나 활동으로 연결하는 방식',정재:'시간과 비용을 맞춰 반복 가능한 수입과 생활을 유지하는 방식',편관:'압박 속에서 대응을 정하고 필요한 결정을 실행하는 방식',정관:'역할과 기준을 세워 신뢰를 유지하는 방식',편인:'빠진 이유를 탐구하고 혼자 충분히 이해한 뒤 판단하는 방식',정인:'배운 것을 정리하고 설명과 지원을 주고받는 방식'};
+function starFacts(c,h){
+ const q=c.pillars?.[h.pillar],main=(q?.hidden||[]).find(x=>x.role==='본기')||q?.hidden?.[0];
+ const rs=(c.relations||[]).filter(r=>r.aKey===h.pillar||r.bKey===h.pillar||r.a===h.pillar||r.b===h.pillar||r.from===h.pillar||r.to===h.pillar||r.pillars?.includes(h.pillar));
+ return {name:h.name,pillar:h.pillar,basis:h.basis,ko:q?.ko||'',stemGod:q?.god||'',mainGod:main?.god||'',stemElement:q?.stemEl||'',branchElement:q?.branchEl||'',stage:c.twelveStages?.[h.pillar]||'',relations:rs};
+}
+function starBasisText(c,h){
+ const f=starFacts(c,h),refs=[];
+ if(/일간/.test(h.basis))refs.push('일간 '+c.dayMaster?.stem);
+ if(/년지/.test(h.basis))refs.push('년지 '+c.pillars?.year?.branch);
+ if(/일지/.test(h.basis))refs.push('일지 '+c.pillars?.day?.branch);
+ if(/월지|월령/.test(h.basis))refs.push('월지 '+c.pillars?.month?.branch);
+ const basis=String(h.basis||'').replace(/year|month|day|hour/g,k=>STAR_POSITION[k][0]+' '+(c.pillars?.[k]?.ko||''));
+ return `${STAR_POSITION[h.pillar]?.[0]||h.pillar} ${f.ko}: ${basis} 기준${refs.length?' ('+refs.join(' · ')+')':''}에서 성립 · 해당 위치 천간 ${c.pillars?.[h.pillar]?.stem}·지지 ${c.pillars?.[h.pillar]?.branch}`;
+}
 function premiumStarContexts(c){
- const p=premiumProfile(c,typeof BaseExpert.personModel==='function'?BaseExpert.personModel(c):{}),beh=premiumBehavior(p,c),hits=c.stars?.hits||[],names=[...new Set(hits.map(h=>h.name))];
- const labels={year:'년주',month:'월주',day:'일주',hour:'시주'};
+ const p=premiumProfile(c,typeof BaseExpert.personModel==='function'?BaseExpert.personModel(c):{}),hits=(c.stars?.hits||[]).filter(h=>h&&h.name&&c.pillars?.[h.pillar]),names=[...new Set(hits.map(h=>h.name))];
  let lk;try{lk=root.GuiinFortuneV2?.currentLuck?.(c)}catch(_){}
  return names.map(name=>{
-  const actual=hits.filter(h=>h.name===name),scene=QUALITY_STAR_SCENES[name];
-  const evidence=actual.map(h=>`${h.basis} 기준 → ${labels[h.pillar]||h.pillar} ${c.pillars?.[h.pillar]?.ko||'간지 미확인'}`).join(' / ');
+  const actual=hits.filter(h=>h.name===name),data=STAR_INTEGRATED[name],positions=[...new Set(actual.map(h=>h.pillar))];
+  const places=positions.map(k=>{const fact=starFacts(c,actual.find(h=>h.pillar===k)),pos=STAR_POSITION[k],god=STAR_GOD_USE[fact.mainGod]||STAR_GOD_USE[fact.stemGod];return `${pos[0]} ${fact.ko}에 놓여 ${pos[1]}에서 ${data?data[0]:'계산된 보조 상징'}를 살펴. ${pos[2]}. ${god?'이 자리의 십성 구조는 '+god+'과 연결돼.':''} ${fact.stage&&QUALITY_STAGE[fact.stage]?QUALITY_STAGE[fact.stage]:''}`;});
+  const rels=[...new Set(actual.flatMap(h=>starFacts(c,h).relations.map(r=>r.type)).filter(Boolean))];
+  const relation=rels.length?`이 별이 놓인 자리에는 ${rels.join('·')} 관계도 확인돼. 신살의 장점을 없애는 판정이 아니라, 같은 힘을 쓰는 과정에서 기준이나 속도를 조정할 구간으로 봐.`:'';
+  const repeat=positions.length>1?`서로 다른 ${positions.length}기둥에 겹쳐 있어. 한 영역의 장점이 다른 생활 영역으로 이어지는 구조로 보되 개수를 성공 점수로 더하지 않아.`:actual.length>1?'같은 위치에 여러 기준으로 성립했어. 기준의 중복을 별개 능력처럼 세지 않고 한 위치의 의미로 묶어.':'';
+  const others=[...new Set(actual.flatMap(h=>hits.filter(o=>o.pillar===h.pillar&&o.name!==name).map(o=>o.name)))];
+  const learn=others.filter(n=>['문창귀인','학당귀인','태극귀인','화개살'].includes(n)),assist=others.filter(n=>['천을귀인','천덕귀인','월덕귀인'].includes(n));
+  const mix=learn.length?`같은 자리의 ${learn.join('·')}와 묶으면 경험을 이해하고 자기 결과물로 남기는 강점까지 연결돼.`:assist.length?`같은 자리의 ${assist.join('·')}와 묶으면 혼자 해결하는 방식 밖에 협력과 조력의 통로도 함께 봐.`:'';
   return {id:'star-context-'+name,title:name,lead:true,paragraphs:[
-   scene||'현재 계산에서 성립한 보조 표식이야. 해석을 넓힐 근거가 부족하면 사건이나 성격을 더 붙이지 않아.',
-   `관계에서는 “${beh.inner?.question||'서로 필요한 대응이 무엇인가'}”라는 질문을 같이 봐. 이 조건이 빠진 채 ${name} 이름만 성격처럼 쓰면 가까운 관계에서 필요한 행동을 놓쳐.`,
-   `일에서는 “${beh.outer?.question||'판단을 결과로 어떻게 연결하는가'}”라는 질문이 먼저야. ${p.mode==='express'?'밖으로 표현하는 구조와 겹치니 반응을 얻은 뒤 마무리할 범위까지 정해.':p.mode==='reflect'?'혼자 정리하는 구조와 겹치니 생각을 결과물로 전달할 시점을 정해.':p.mode==='change'||p.mode==='connect'?'새 연결을 찾는 구조와 겹치니 시작할 일뿐 아니라 마칠 일도 정해.':'기준을 유지하는 구조와 함께 보되 판단과 실제로 맡을 책임의 범위를 나눠.'}`,
-   lk?`현재 계산된 ${lk.ko} 대운의 ${lk.god||'십신 미확인'} 주제도 함께 봐. ${QUALITY_ACTION[lk.god]?.rule||'현재 역할과 감당할 자원을 먼저 확인해.'} 별 하나로 이사·결혼·사고 같은 사건을 예언하지 않아.`:'현재 대운 근거는 확인되지 않아. 별의 이름으로 미래 흐름을 임의로 채우지 않을게.'
-  ],evidence:`실제 성립 ${actual.length}건 · ${evidence} · 일간 ${c.dayMaster?.stem} · 월지 ${c.pillars?.month?.branch} · 일지 ${c.pillars?.day?.branch} · 월간 ${p.g} · 일지 본기 ${p.pg}`};
+   data?`${data[0]}이 핵심이야. ${data[1]}`:'현재 계산에서 성립한 표식이야. 구체적인 통변 규칙이 없는 이름에는 별도의 성격이나 사건을 붙이지 않아.',
+   places.join(' '),
+   `${mix} ${repeat} ${relation} ${data?.[2]||''} 원국의 월간 ${p.g}·일지 본기 ${p.pg}와 ${p.season} 월령을 함께 보면 ${STAR_GOD_USE[p.g]||'실제 판단 방식'}이 이 상징을 사용하는 바탕이야.`.trim(),
+   lk?`현재 ${lk.ko} 대운에서는 “${QUALITY_ACTION[lk.god]?.question||'지금 선택할 일의 범위가 분명한가'}”를 같이 확인해. 원국에 있던 ${name}의 힘을 이 질문과 연결하되, 대운에 같은 신살이 새로 성립했다고 재계산하지 않아.`:'현재 대운 데이터가 없으니 시기별 활성화는 추가로 정하지 않을게.'
+  ],facts:actual.map(h=>starFacts(c,h)),evidence:actual.map(h=>starBasisText(c,h)).join(' / ')+' · '+positions.map(k=>{const f=starFacts(c,actual.find(h=>h.pillar===k));return `${STAR_POSITION[k][0]} 천간 ${f.stemGod}·지장간 본기 ${f.mainGod}·오행 ${f.stemElement}/${f.branchElement}·십이운성 ${f.stage}`}).join(' / ')};
  });
+}
+function premiumStarSynthesis(c){
+ const p=premiumProfile(c,{}),contexts=premiumStarContexts(c),names=contexts.map(r=>r.title),groups=[
+ ['조력과 협력',['천을귀인','천덕귀인','월덕귀인','암록'],'사람을 잘 알아보는 힘과 서로의 몫을 연결하는 관계 자원이 함께 보여. 도움을 요청할 내용을 명확히 하고 상대 기여를 알아보는 태도로 이 인복을 실제 협업에 이어가.'],
+ ['탐구와 전문성',['문창귀인','학당귀인','태극귀인','화개살'],'배우고 파고드는 힘을 네 언어와 작업으로 남기는 재능이 보여. 아는 것을 설명하고 결과의 품질을 스스로 다듬을 환경에서 이 강점을 살려.'],
+ ['활동과 표현',['역마살','지살','도화살','홍염살','망신살'],'새 환경에서 경험을 얻고 사람의 반응을 받아 움직이는 접점이 보여. 변화의 방향과 표현의 범위를 네가 고르는 환경에 연결해.'],
+ ['결단과 실행',['장성살','양인살','괴강살','백호살','겁살','건록'],'결정을 맡았을 때 힘을 모아 실행하는 상징이 겹쳐. 어려운 과제를 직접 처리할 권한이 있는 환경에 강점을 쓰고, 작업 속도와 함께 확인 절차를 확보해.'],
+ ['감각과 거리',['귀문관살','원진살','현침살','공망','고신살','과숙살'],'작은 차이를 살피고 자기 생각을 정리할 영역이 보여. 확인한 사실을 기준으로 판단하고 가까운 사람에게도 네가 필요한 거리와 설명을 직접 말해.'],
+ ['조정과 연결',['재살','천살','월살','반안살','육해살','천라지망','삼기','형살','충살','파살','해살','삼합','천의성'],'얽힌 조건을 나누고 다음 행동으로 연결할 단서가 보여. 한 번에 모두 해결하기보다 실제로 바꿀 항목과 맡길 역할을 정하는 데 이 힘을 써.']];
+ const out=groups.map(([title,list,scene])=>{const found=list.filter(n=>names.includes(n));if(!found.length)return null;const loc=[...new Set(contexts.filter(r=>found.includes(r.title)).flatMap(r=>r.facts.map(f=>STAR_POSITION[f.pillar][0])))];return `${title} — ${found.join('·')}가 ${loc.join('·')}에서 확인돼. ${scene}`;}).filter(Boolean);
+ if(out.length)out[0]+=` 월간 ${p.g}·일지 본기 ${p.pg}와 ${p.season} 월령이 이 상징을 실제로 쓰는 바탕이야.`;
+ return out.length?out:['실제 성립한 신살 자료가 없어. 원국에서 확인된 근거로 해석하고 없는 신살은 채우지 않아.'];
 }
 
 function premiumSections(c,existingModel){
@@ -301,19 +375,8 @@ function premiumSections(c,existingModel){
   ],`현재 대운 ${lk.ko} ${god||'십신 미확인'} · 직전 ${previous?.ko||'미확인'} · 교차 ${JSON.stringify(transit)}`);
  }else add('timing','7. 인생의 흐름 — 현재 대운',['현재 대운을 확인할 계산 자료가 없어. 지금의 운이나 과거의 전환점을 임의로 채우지 않을게. 출생 정보와 기존 운 계산 결과가 전달된 뒤 현재 흐름을 이어서 읽어.'], '현재 대운 미확인');
  const hits=(c?.stars?.hits||[]).filter(h=>h&&h.name&&(!('count' in h)||Number(h.count)>0)),starNames=new Set(hits.map(h=>h.name));
- const learning=[...starNames].filter(n=>/문창|학당|태극/.test(n)),quiet=[...starNames].filter(n=>/화개|귀문|고신|과숙/.test(n)),moving=[...starNames].filter(n=>/역마|지살/.test(n)),charm=[...starNames].filter(n=>/도화|홍염/.test(n)),help=[...starNames].filter(n=>/천을|천덕|월덕/.test(n));
- const starParagraphs=[];
- starParagraphs.push('신살과 귀인은 이미 본 성격을 보조하는 근거야. 하나의 이름으로 성격을 뒤집거나 사건을 정하지 않아. 원국에서 확인한 반응과 같은 방향으로 겹치는 부분만 생활 장면으로 연결해.');
- if(learning.length)starParagraphs.push(/정인|편인|식신|상관/.test(p.g+p.pg)?'학습·정리 계열 신호가 네 사고와 표현 방식에도 겹쳐. 알고 있는 것을 설명이나 문서, 검토할 결과물로 바꿀 때 신뢰가 남아. 혼자 잘 아는 것과 다른 사람이 사용할 형태로 전달하는 것은 다른 능력이야.':'학습·정리 보조 신호는 있지만 그것만으로 공부를 좋아하거나 특정 전문직이라고 정하지 않아. 지금 맡은 일을 기록하고 다음 사람이 다시 사용할 기준으로 남기는 방법부터 적용해. 잘한 경험이 설명 가능한 자료가 되면 도움을 주고받는 경로가 생겨.');
- if(quiet.length)starParagraphs.push(p.mode==='reflect'?'혼자 정리하는 보조 신호가 실제로 생각을 안에서 정리하는 구조와 겹쳐. 사람을 만난 뒤 바로 다음 약속을 잡으면 정리할 시간이 사라져. 관계를 피하는 시간과 다시 만나기 위해 회복하는 시간을 구분해야 해.':'혼자 정리하는 보조 신호가 있어도 늘 내향적인 사람이라고 정하지 않아. 밖에서 잘 움직이는 모습과 혼자 생각을 정돈하는 필요는 함께 있어. 약속 뒤에 비어 있는 시간을 남겨야 다음 반응이 네 선택으로 돌아와.');
- if(moving.length)starParagraphs.push(p.mode==='change'?'이동·변화 보조 신호가 새 방향을 찾는 구조와 겹쳐. 역할을 바꾸거나 새로운 과정을 익히는 일이 활력을 살려. 다만 장소를 바꾸는 것만으로 남겨둔 업무와 비용이 없어지지는 않아.':'이동·활동 보조 신호를 무조건 떠돌거나 이사한다는 뜻으로 쓰지 않아. 익숙한 일에도 다른 역할이나 새 방법을 넣어 반응을 확인하는 데 활용해. 변화의 크기보다 그 뒤 생활을 다시 정리할 여유가 중요해.');
- if(charm.length)starParagraphs.push('인상·호감 계열 보조 신호는 사람의 반응이 관계에 들어오는 지점이야. 시선을 받는 것과 네 마음을 이해받는 것은 별개야. 관심이 늘었다는 이유로 더 많은 만남을 책임지거나 외도 성향으로 결론내리지 않아.');
- if(help.length)starParagraphs.push('도움을 주고받는 귀인 신호는 기다리면 누군가 해결해준다는 약속이 아니야. 네 문제와 필요한 도움을 구체적으로 말해야 실제 연결이 생겨. 다른 사람을 돕는 역할만 익숙하다면 이번에는 지원받을 범위도 같은 무게로 남겨.');
- const hard=[...starNames].filter(n=>/백호|괴강|장성|양인/.test(n));
- if(hard.length)starParagraphs.push('결단·버팀 계열 보조 신호는 압박받는 상황에서 경계를 분명히 세우는 방향으로 봐. 단호하게 정한 뒤에도 이유를 전달해야 상대가 내용을 이해해. 기가 세다는 판정이나 사고 예언으로 사용하지 않아.');
- if(starParagraphs.length===1)starParagraphs.push(hits.length?'다른 보조 항목은 확인되지만, 앞의 해석과 겹칠 근거가 충분하지 않아 뜻을 억지로 확장하지 않을게. 이름의 개수보다 어떤 판단과 행동을 뒷받침하는지 봐.':'전달된 계산에서 성립한 신살을 확인하지 못했어. 없는 이름을 만들어 성격이나 운에 붙이지 않을게. 확인된 원국 구조만으로 설명한 내용을 우선해서 읽어.');
- // Missing or weak evidence stays short rather than manufacturing four paragraphs.
- add('stars','8. 신살과 귀인 — 삶에서 어떻게 쓰는가',starParagraphs.slice(0,7),[...starNames].join(' · '));
+ const starParagraphs=premiumStarSynthesis(c);
+ add('stars','8. 신살과 귀인 — 원국과 함께 읽는 강점',starParagraphs, [...starNames].join(' · '));
  add('core','9. 마지막 한 줄 핵심 정리',[`이 명식에서 가장 중요한 건 ${v.theme}이다.`],'교차 해석 '+p.support.join(' / '));
  return rows;
 }
@@ -389,7 +452,7 @@ function premiumCompatibilitySections(x){
  return rows;
 }
 
-function pmodel(c){const base=typeof BaseExpert.personModel==='function'?BaseExpert.personModel(c):{};return {...base,version:'premium-direct-v4',human_reading:premiumSections(c,base).map(s=>({id:s.id,title:s.title,body:s.body,evidence:s.evidence})),calculation_only:true};}
+function pmodel(c){const base=typeof BaseExpert.personModel==='function'?BaseExpert.personModel(c):{};return {...base,version:'premium-direct-v4',human_reading:premiumSections(c,base).map(s=>({id:s.id,title:s.title,body:s.body,evidence:s.evidence})),star_contexts:premiumStarContexts(c).map(r=>({title:r.title,facts:r.facts,evidence:r.evidence})),star_synthesis:premiumStarSynthesis(c),calculation_only:true};}
 // Compatibility
 function prof(c){const a=order(c);return {c,n:name(c),hi:a[0],lo:a[4],g:mg(c),b:branch(c),dm:c?.dayMaster?.el||c?.pillars?.day?.stemEl||'',stem:c?.dayMaster?.stem||c?.pillars?.day?.stem||''};}
 function pairSeed(A,B,s){return hash([A.c?.pillars?.day?.ko,B.c?.pillars?.day?.ko,A.c?.pillars?.month?.ko,B.c?.pillars?.month?.ko,s].join('|'));} function pp(a,A,B,s){return a[pairSeed(A,B,s)%a.length];}
@@ -474,7 +537,7 @@ function fortuneActions(c,period='today'){
  return {god,period,actions:[TIMING[god]||'먼저 끝낼 일을 하나 고르고 완료 기준을 정해.',money,love],evidence:evidence||[f.pillars?.year?.ko&&f.pillars.year.ko+' 세운',f.pillars?.month?.ko&&f.pillars.month.ko+' 월운',f.pillars?.day?.ko&&f.pillars.day.ko+' 일운',god].filter(Boolean).join(' · ')};
 }
 
-root.GuiinExpert={...BaseExpert,premiumStarContexts,premiumProfile,premiumBehavior,fortuneActions,timingSections,relationshipSections,fullSections:premiumSections,premiumCompatibilitySections,behaviorSections:sections,personalitySections:c=>premiumSections(c).filter(s=>!['work','career','money','leak','timing'].includes(s.id)),fieldSections:c=>premiumSections(c).filter(s=>['work','career','money','leak','love','timing'].includes(s.id)),personModel:pmodel};
+root.GuiinExpert={...BaseExpert,premiumStarContexts,premiumStarSynthesis,starFacts,starIntegratedNames:Object.keys(STAR_INTEGRATED),premiumProfile,premiumBehavior,fortuneActions,timingSections,relationshipSections,fullSections:premiumSections,premiumCompatibilitySections,behaviorSections:sections,personalitySections:c=>premiumSections(c).filter(s=>!['work','career','money','leak','timing'].includes(s.id)),fieldSections:c=>premiumSections(c).filter(s=>['work','career','money','leak','love','timing'].includes(s.id)),personModel:pmodel};
 root.GuiinCompat={...BaseCompat,build:compatBuild,pick:compatPick};
 root.GUIIN_INTERPRETATION_V4={version:'premium-direct-v4',rules:{humanFirst:true,jargonInBody:false,confidentTone:true,repeatCards:false}};
 })(typeof globalThis!=='undefined'?globalThis:this);
