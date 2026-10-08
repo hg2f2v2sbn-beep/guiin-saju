@@ -1,5 +1,4 @@
 <!doctype html>
-<!-- GUIIN PRODUCTION · v6.34 HUMAN-FIRST INTERPRETATION · 2026-10-07 -->
 <!-- GUIIN PRODUCTION · DEMO R28 MERGED · 2026-10-01 -->
 <!-- GUIIN R17 INTEGRATED RESTORE · feature-complete demo + R17 personalization · 2026-09-28 -->
 <!-- GUIIN R17 · QA-personalized longform saju + compatibility + full calculated-star interpretation · 2026-09-28 -->
@@ -967,6 +966,8 @@ button{position:relative}
     if(!el) return;
     var id=el.getAttribute('data-guiin-nav');
     if(!id) return;
+    // The main handler owns side effects once loaded; fallback must not navigate twice.
+    if(window.go!==nav)return;
     e.preventDefault();
     nav(id);
   },true);
@@ -1699,11 +1700,10 @@ html{-webkit-text-size-adjust:100%;text-size-adjust:100%}
 @media(max-width:360px){.homeProductReview .productReviewTop{align-items:flex-start}.homeProductReview .productPrice{font-size:14px}.homeProductReview h3{font-size:14px}}
 .tilePrice{display:inline-block;margin-top:3px;color:#a16f16;font-size:9px;font-weight:950;letter-spacing:-.01em}
 </style>
-<style id="guiin-auth-live-v1">
-.authFieldHint{margin:-5px 2px 7px;font-size:11px;line-height:1.45;color:#8a8378}
-.authFieldHint.ok{color:#18794e;font-weight:800}.authFieldHint.bad{color:#b42318;font-weight:800}
-.authInput.is-ok{border-color:#56a67a!important}.authInput.is-bad{border-color:#d96b62!important}
-@media(max-width:480px){.authCard{padding-left:14px!important;padding-right:14px!important}.authInput{font-size:16px!important}}
+<style id="GUIIN_RELEASE_MOBILE">.guiinContextAsk>b{display:none}.guiinHumanCard p{white-space:pre-line;line-height:1.85;overflow-wrap:anywhere}.screen{min-width:0}.authForm{min-width:0}.authInput{box-sizing:border-box;min-width:0;font-size:16px}#signupIdStatus{margin:4px 0 12px;overflow-wrap:anywhere}details.r23Evidence div{overflow-wrap:anywhere}button:disabled{cursor:wait}@media(max-width:420px){.topbar{gap:8px}.authCard{padding:16px}#matchView .r24Compare{grid-template-columns:1fr}.brandline{font-size:22px}}.bottomnav,.bottomNav{padding-bottom:env(safe-area-inset-bottom,0px)}</style>
+<style id="guiinStableLongResults">
+/* Keep actual card heights in long reports: estimated skipped heights made rapid scrolling show an empty frame. */
+#resultView .easyLongCard,#resultView .deepCard,#matchView .easyLongCard,#matchView .deepCard,#yearView .easyLongCard,#yearView .deepCard {content-visibility:visible;contain-intrinsic-size:none;}
 </style>
 </head>
 <body>
@@ -2072,11 +2072,12 @@ html{-webkit-text-size-adjust:100%;text-size-adjust:100%}
 <section id="signup" class="screen"><div class="topbar"><button class="ghost" onclick="go('login')" data-guiin-nav="login">‹</button><div class="brand"><div class="brandline">회원가입</div></div><span></span></div><div class="authHero"><div class="authMark"><img src="clover-mark.jpg" alt=""></div><h2>귀인사주 회원가입</h2><p>아이디와 비밀번호를 만들면 카카오 없이도 저장한 사주·상담·구매내역을 이어서 이용할 수 있어요.</p></div><div class="authCard card">
   <form class="authForm" onsubmit="return guiinPasswordSignup(event)">
     <label for="signupLoginId">아이디</label>
-    <input id="signupLoginId" class="authInput" type="text" autocomplete="username" maxlength="32" placeholder="영문·숫자 4~32자"><div id="signupLoginIdHint" class="authFieldHint">영문·숫자로 시작하고 4~32자로 만들어줘.</div>
+    <input id="signupLoginId" class="authInput" type="text" autocomplete="username" maxlength="32" placeholder="영문·숫자 4~32자">
+    <div id="signupIdStatus" class="authNotice" role="status" aria-live="polite">아이디를 입력하면 사용 가능한지 확인할게요.</div>
     <label for="signupPassword">비밀번호</label>
     <input id="signupPassword" class="authInput" type="password" autocomplete="new-password" maxlength="128" placeholder="8자 이상">
     <label for="signupPasswordConfirm">비밀번호 확인</label>
-    <input id="signupPasswordConfirm" class="authInput" type="password" autocomplete="new-password" maxlength="128" placeholder="비밀번호를 한 번 더 입력해 주세요"><div id="signupPasswordHint" class="authFieldHint">비밀번호를 한 번 더 입력하면 일치 여부를 바로 확인해줄게.</div>
+    <input id="signupPasswordConfirm" class="authInput" type="password" autocomplete="new-password" maxlength="128" placeholder="비밀번호를 한 번 더 입력해 주세요">
     <label for="signupDisplayName">표시 이름 <span style="font-weight:500;color:#9a9286">(선택)</span></label>
     <input id="signupDisplayName" class="authInput" type="text" autocomplete="nickname" maxlength="40" placeholder="마이페이지에 표시할 이름">
     <button class="authBtn green" type="submit">아이디로 회원가입</button>
@@ -2210,8 +2211,8 @@ function esc(s){return String(s??'').replace(/[&<>"']/g,m=>({'&':'&amp;','<':'&l
 function go(id){
  // 로그인 세션이 이미 있으면 로그인/회원가입 화면으로 다시 보내지 않습니다.
  if((id==='login'||id==='signup')&&guiinAuthSession()?.token)id='mypage';
+ const el=$(id); if(!el||!el.classList.contains('screen'))return;
  document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));
- const el=$(id); if(!el)return;
  el.classList.add('active');
  document.querySelectorAll('.bottom button').forEach(b=>b.classList.remove('active'));
  if(id==='home'&&$('navHome'))$('navHome').classList.add('active');
@@ -2229,9 +2230,19 @@ function go(id){
  if(id==='notifications')loadNotificationPrefs();
  if(id==='wallet')renderLedger();
  if(id==='paymentInfo')refreshPaymentReadiness();
- history.replaceState(null,'','#'+id); window.scrollTo(0,0);
+ if(location.hash!=='#'+id){if(window.__guiinHistoryRouting)history.replaceState(null,'','#'+id);else history.pushState(null,'','#'+id);} window.scrollTo(0,0);
 }
 window.go=go;
+(function(){
+ const route=()=>{
+  const id=location.hash.slice(1),screen=document.getElementById(id);
+  if(!screen?.classList.contains('screen')||screen.classList.contains('active'))return;
+  window.__guiinHistoryRouting=true;
+  try{go(id);}finally{window.__guiinHistoryRouting=false;}
+ };
+ window.addEventListener('popstate',route);
+ window.addEventListener('hashchange',route);
+})();
 window.goToday=window.goToday||function(){go('today');};
 
 function bindSeg(id,cb){
@@ -3838,6 +3849,7 @@ function guiinJaccard(a,b){
  return inter/(A.size+B.size-inter);
 }
 function guiinSemanticSimilarityReport(rootId){
+ if(globalThis.GUIIN_DEBUG_QA!==true)return {skipped:true,reason:"debug_only"};
  try{
   const root=$(rootId); if(!root)return null;
   const cards=[...root.querySelectorAll('.easyLongCard,.deepCard,.expertSection')].map((el,i)=>({i,text:(el.innerText||'').replace(/\s+/g,' ').trim()})).filter(x=>x.text.length>80);
@@ -3854,6 +3866,7 @@ function guiinSemanticSimilarityReport(rootId){
 }
 
 function guiinTextSimilarityReport(rootId){
+ if(globalThis.GUIIN_DEBUG_QA!==true)return {skipped:true,reason:"debug_only"};
  try{
   const root=document.getElementById(rootId); if(!root)return null;
   const parts=[...root.querySelectorAll('h2,h3,p,.easyPoint')].map(x=>x.textContent.replace(/\s+/g,' ').trim()).filter(x=>x.length>=28);
@@ -4648,7 +4661,7 @@ function renderResult(){
   else if(currentTab==='flow') body=manseTop+flowReport(c);
   else if(currentTab==='chart') body=manseTop+wongukHTML(c)+foundationReport(c);
   view.innerHTML=guiinR19PolishHTML(body?body+tailQuestionsHTML('사주'):emptyStateHTML('결과를 준비하지 못했어요.','화면을 새로고침하지 말고 다른 탭을 눌렀다가 다시 돌아와 주세요.'));
- setTimeout(()=>{guiinTextSimilarityReport('resultView');guiinSemanticSimilarityReport('resultView');},0);
+ if(globalThis.GUIIN_DEBUG_QA===true)setTimeout(()=>{guiinTextSimilarityReport('resultView');guiinSemanticSimilarityReport('resultView');},0);
  }catch(e){
   console.error('GUIIN_RESULT_RENDER_ERROR',e);
   view.innerHTML=emptyStateHTML('결과를 불러오는 중 문제가 생겼어요.','입력한 정보는 그대로예요. 잠시 후 다시 시도하거나 사주 입력 화면에서 다시 계산해 주세요.','<button class="ctaGold" onclick="renderResult()">다시 불러오기 ›</button>');
@@ -6758,7 +6771,7 @@ function guiinToggleAllExamples(){guiinExampleExpanded=!guiinExampleExpanded;gui
 function guiinQuestionIntent(q){
   const s=String(q||'');
   if(/연애|사랑|관계|결혼|재회|이상형|권태|질투|연인|헤어/.test(s))return 'relationship';
-  if(/돈|재물|수입|매출|저축|사업|직장|이직|직업|일|창업/.test(s))return 'career';
+  if(/돈|재물|수입|매출|저축|사업|직장|이직|직업|업무|팀 프로젝트|프로젝트|일|창업/.test(s))return 'career';
   if(/올해|내년|대운|세운|월운|시기|언제|앞으로|귀인|조심/.test(s))return 'timing';
   if(/성격|장점|단점|스트레스|사람|인간관계|손절|고집|나를|나는/.test(s))return 'personality';
   return 'personality';
@@ -7154,7 +7167,8 @@ function guiinPasswordErrorMessage(code){
 }
 async function guiinPasswordAuthRequest(path,payload){
   try{await window.GuiinMemberData?.ensureServerGuest?.();}catch(_e){}
-  const res=await fetch(guiinStableApiBase()+path,{method:'POST',mode:'cors',cache:'no-store',headers:guiinAuthHeaders({'Content-Type':'application/json','Accept':'application/json'}),body:JSON.stringify(payload)});
+  const controller=new AbortController(),timer=setTimeout(()=>controller.abort(),15000);
+  let res;try{res=await fetch(guiinStableApiBase()+path,{method:'POST',mode:'cors',cache:'no-store',signal:controller.signal,headers:guiinAuthHeaders({'Content-Type':'application/json','Accept':'application/json'}),body:JSON.stringify(payload)});}finally{clearTimeout(timer);}
   const data=await res.json().catch(()=>({}));
   if(!res.ok){const e=new Error(data?.error||('HTTP '+res.status));e.status=res.status;e.data=data;throw e;}
   return data;
@@ -7174,6 +7188,9 @@ async function guiinFinishPasswordLogin(data,msgEl){
 }
 async function guiinPasswordLogin(event){
   event?.preventDefault?.();
+  if(guiinPasswordLogin.busy)return false;
+  guiinPasswordLogin.busy=true;
+  const submit=event?.target?.querySelector?.('button[type="submit"]');if(submit)submit.disabled=true;
   const msg=$('loginMsg'),loginId=String($('loginLoginId')?.value||'').trim(),password=String($('loginPassword')?.value||'');
   if(msg)msg.textContent='아이디 로그인을 확인하고 있어요…';
   try{
@@ -7181,56 +7198,31 @@ async function guiinPasswordLogin(event){
     if(!password)throw new Error('invalid_credentials');
     const data=await guiinPasswordAuthRequest('/api/auth/password/login',{loginId,password});
     await guiinFinishPasswordLogin(data,msg);
+    for(const id of ['loginPassword','signupPassword','signupPasswordConfirm'])if($(id))$(id).value='';
   }catch(err){
     const code=String(err?.data?.error||err?.message||'password_login_failed');
     if(msg)msg.textContent=guiinPasswordErrorMessage(code);
-  }
+  }finally{guiinPasswordLogin.busy=false;if(submit)submit.disabled=false;}
   return false;
 }
-
-let guiinLoginIdCheckTimer=0,guiinLoginIdCheckSeq=0;
-async function guiinCheckLoginIdAvailability(){
- const input=$('signupLoginId'),hint=$('signupLoginIdHint'); if(!input||!hint)return false;
- const loginId=String(input.value||'').trim().toLowerCase(),seq=++guiinLoginIdCheckSeq;
- input.classList.remove('is-ok','is-bad');hint.classList.remove('ok','bad');
- if(!/^[a-z0-9][a-z0-9._-]{3,31}$/.test(loginId)){hint.textContent='영문·숫자로 시작하고 4~32자로 만들어줘.';return false;}
- hint.textContent='아이디를 확인하고 있어…';
- try{
-   const res=await fetch(guiinStableApiBase()+'/api/auth/password/availability?loginId='+encodeURIComponent(loginId),{method:'GET',mode:'cors',cache:'no-store',headers:guiinAuthHeaders({'Accept':'application/json'})});
-   const data=await res.json().catch(()=>({})); if(seq!==guiinLoginIdCheckSeq)return false;
-   if(!res.ok)throw new Error(data?.error||('HTTP '+res.status));
-   const ok=!!data.available; hint.textContent=ok?'사용할 수 있는 아이디야.':'이미 사용 중인 아이디야.';hint.classList.add(ok?'ok':'bad');input.classList.add(ok?'is-ok':'is-bad');return ok;
- }catch(_e){if(seq===guiinLoginIdCheckSeq)hint.textContent='중복 확인은 가입할 때 한 번 더 확인할게.';return null;}
-}
-function guiinCheckPasswordMatch(){
- const p=$('signupPassword'),c=$('signupPasswordConfirm'),h=$('signupPasswordHint');if(!p||!c||!h)return;
- c.classList.remove('is-ok','is-bad');h.classList.remove('ok','bad');
- if(!c.value){h.textContent='비밀번호를 한 번 더 입력하면 일치 여부를 바로 확인해줄게.';return}
- const ok=p.value===c.value&&p.value.length>=8;c.classList.add(ok?'is-ok':'is-bad');h.classList.add(ok?'ok':'bad');
- h.textContent=ok?'비밀번호가 일치해.':(p.value.length<8?'비밀번호는 8자 이상이어야 해.':'비밀번호가 일치하지 않아.');
-}
-function guiinBindSignupLiveChecks(){
- const id=$('signupLoginId'),p=$('signupPassword'),c=$('signupPasswordConfirm');if(!id||id.dataset.liveBound)return;
- id.dataset.liveBound='1';
- id.addEventListener('input',()=>{clearTimeout(guiinLoginIdCheckTimer);guiinLoginIdCheckTimer=setTimeout(guiinCheckLoginIdAvailability,420)});
- p?.addEventListener('input',guiinCheckPasswordMatch);c?.addEventListener('input',guiinCheckPasswordMatch);
-}
-if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',guiinBindSignupLiveChecks,{once:true});else guiinBindSignupLiveChecks();
-
 async function guiinPasswordSignup(event){
   event?.preventDefault?.();
+  if(guiinPasswordSignup.busy)return false;
+  guiinPasswordSignup.busy=true;
+  const submit=event?.target?.querySelector?.('button[type="submit"]');if(submit)submit.disabled=true;
   const msg=$('signupMsg'),loginId=String($('signupLoginId')?.value||'').trim(),password=String($('signupPassword')?.value||''),confirm=String($('signupPasswordConfirm')?.value||''),displayName=String($('signupDisplayName')?.value||'').trim();
   if(msg)msg.textContent='회원가입을 처리하고 있어요…';
   try{
     if(!/^[A-Za-z0-9][A-Za-z0-9._-]{3,31}$/.test(loginId.toLowerCase()))throw new Error('invalid_login_id');
-    if(password.length<8)throw new Error('password_too_short');
+    if(password.length<8||password.length>128)throw new Error('password_too_short');
     if(password!==confirm)throw new Error('password_mismatch');
     const data=await guiinPasswordAuthRequest('/api/auth/password/signup',{loginId,password,displayName:displayName.slice(0,40)});
     await guiinFinishPasswordLogin(data,msg);
+    for(const id of ['loginPassword','signupPassword','signupPasswordConfirm'])if($(id))$(id).value='';
   }catch(err){
     const code=String(err?.data?.error||err?.message||'password_signup_failed');
     if(msg)msg.textContent=guiinPasswordErrorMessage(code);
-  }
+  }finally{guiinPasswordSignup.busy=false;if(submit)submit.disabled=false;}
   return false;
 }
 
@@ -7355,6 +7347,11 @@ function logoutGuiin(){
       if($('myName'))$('myName').textContent='프로필을 만들어 보세요';
       if($('myBirth'))$('myBirth').textContent='사주를 계산하면 저장할 수 있어요.';
     }catch(_e){}
+    guiinClearVerifiedAccess();
+    GUIIN_SERVER_ACCOUNTING.free={used:0,reserved:0,limit:3,remaining:3};
+    GUIIN_SERVER_ACCOUNTING.wallet={balance:0,reserved:0,available:0};
+    if($('resultView'))$('resultView').replaceChildren();
+    if($('matchView'))$('matchView').replaceChildren();
     guiinCurrentUser=null;syncAuthUI();go('home');
     try{window.GuiinMemberData?.afterLogout?.().catch(()=>{});}catch(_e){}
   };
@@ -11737,9 +11734,11 @@ try{Object.assign(window,{guiinPaymentCenterStart});}catch(_e){}
    if(!root.querySelector('.easyLongCard,.guiinCounselor30'))return;
    running=true;
    try{
-     // v6.34: older interpretation layers remain available for diagnostics only.
-     // Do not let them overwrite GuiinExpert human-first output after render.
+     for(const tool of ['GuiinQA630','GuiinInterpretation631','GuiinInterpretation632','GuiinInterpretation6321','GuiinInterpretation6322']){
+       try{globalThis[tool]?.apply?.()}catch(e){console.warn('GUIIN_633_LAYER_FAILED',tool,e)}
+     }
      alignDisplayedLuck(root,c);
+     personalize(root,c);
      latestQA=visibleQA(root,c);
      try{sessionStorage.setItem('guiin_v633_qa',JSON.stringify(latestQA))}catch(_){/* storage optional */}
      // Expose warnings to the site owner via browser console, never suppress chart discrepancies.
@@ -11788,7 +11787,7 @@ try{Object.assign(window,{guiinPaymentCenterStart});}catch(_e){}
  }
  function model(a,b){
   const d=globalThis.guiinCompatR23PairData(a,b),m=guiinCompatMetricsV56(a,b);
-  return {d,m,A:person(a,d.A,d.AD),B:person(b,d.B,d.BD)};
+  return {d,m,a,b,A:person(a,d.A,d.AD),B:person(b,d.B,d.BD)};
  }
  function facts(p){return `${p.stem} 일간 · 일지 ${p.day} · ${p.month}월 · 월간 ${p.god} · ${p.tied.length>1?'공동 상위 '+p.tied.map(r=>r[0]+' '+r[1]+'%').join('·'):p.top+' '+p.share+'%'}`}
  function compare(x,a,b){
@@ -11825,6 +11824,7 @@ try{Object.assign(window,{guiinPaymentCenterStart});}catch(_e){}
    return `<div class="r24ScenarioStep"><b>${E(r.year)}년 · ${E(a)} / ${E(b)}</b>${E(A.name)}: ${E(a)} · ${E(B.name)}: ${E(b)}. ${E(guidance)}</div>`;
   }).join('')+'</div>';
   body.timing=`<p>${E(A.name)}: ${E(d.al?.ko||'확인 가능한 대운 없음')} ${E(d.al?.god||'')} / ${E(B.name)}: ${E(d.bl?.ko||'확인 가능한 대운 없음')} ${E(d.bl?.god||'')}.</p><p>${d.al?.god===d.bl?.god?'같은 대운 십신이 표시돼도 원국과 생활 조건이 다르므로 같은 사건이나 같은 관계 욕구를 뜻하지 않아.':'현재 대운의 십신이 서로 달라 각자 관심을 두는 주제를 함께 확인할 필요가 있어.'} 연도별 비교는 앞의 흐름 카드에서 보고, 여기서는 큰 결정을 할 때 각자의 일정·예산·책임 범위를 확인해.</p>`;
+  if(globalThis.GuiinExpert?.relationshipSections){x.legacyFuture=body.future;return GuiinExpert.relationshipSections(x);}
   return body;
  }
  function scoreEvidence(x){
@@ -11853,6 +11853,27 @@ try{Object.assign(window,{guiinPaymentCenterStart});}catch(_e){}
   const v=root.querySelector('[data-r27-verdict]')||root.querySelector('.matchHero');if(v){root.querySelectorAll('[data-compat-score-basis]').forEach(old=>old.remove());v.insertAdjacentHTML('beforeend',scoreEvidence(x));}
   root.querySelectorAll('.r23CompatIntro .easyKicker,.easyIntro .easyKicker').forEach(k=>{k.textContent=k.textContent.replace(/\s*·?\s*R\d+\s*심층상담/g,' · 관계 심층 풀이')});
   const time=[...root.querySelectorAll('.r21Rule')].find(r=>r.querySelector('b')?.textContent==='시간');if(time){const span=time.querySelector('span');if(span)span.textContent=`${x.A.name}: ${x.A.need[1]}. ${x.B.name}: ${x.B.need[1]}. 함께 만날 시간과 각자 쉴 시간을 실제 일정으로 맞춰봐.`;}
+  // Portrait and AI share the same multi-signal reading; stars remain available as folded evidence.
+  if(globalThis.GuiinExpert?.fullSections){
+   const portraits=[...root.querySelectorAll('[data-r28-people] .r28Person')];
+   const partnerOnly=root.querySelector('.r28PartnerPortrait');
+   portraits.forEach((card,i)=>{
+    const c=partnerOnly?b:(i===0?a:b),rows=GuiinExpert.fullSections(c);
+    const ps=[...card.querySelectorAll(':scope > p')];
+    if(ps[0])ps[0].textContent=rows.find(r=>r.id==='self').body;
+    ps.slice(1).forEach(p=>p.remove());
+    const because=card.querySelector('.r28Because');
+    if(because)because.textContent=rows.find(r=>r.id==='inside').body;
+    const evidence=card.querySelector('details .r28EvidenceBody')||card.querySelector('details > div');
+    const chips=card.querySelector('.r28StarChips');
+    if(evidence&&chips)evidence.appendChild(chips);
+    const who=card.querySelector('.who');if(who)who.textContent=(partnerOnly||i===1?'상대방':'나')+' · 명식의 여러 신호를 함께 본 성향';
+    const details=card.querySelector('details');
+    if(details&&!details.querySelector('[data-human-basis]')){
+      const basis=document.createElement('p');basis.dataset.humanBasis='1';basis.textContent=rows[0].evidence;details.appendChild(basis);
+    }
+   });
+  }
   normalize(root,x);
  }
  globalThis.GuiinCompatQuality634={version:'6.34',model,sections,scoreEvidence,person,tone,apply};
@@ -11880,15 +11901,65 @@ try{Object.assign(window,{guiinPaymentCenterStart});}catch(_e){}
  }
 })();
 </script>
-
-<!-- GUIIN v6.34 · human-first interpretation output layer; calculation/payment/auth untouched -->
-<script src="guiin-interpretation-v4.js?v=20261007v651"></script>
-<script id="guiin-performance-v1">
-function guiinOptimizeStaticMedia(){
- const imgs=[...document.images];
- imgs.forEach((img,i)=>{if(i>1&&!img.hasAttribute('loading'))img.loading='lazy';if(!img.hasAttribute('decoding'))img.decoding='async';});
-}
-if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',guiinOptimizeStaticMedia,{once:true});else guiinOptimizeStaticMedia();
+<script src="guiin-interpretation-v4.js?v=20261007-release"></script>
+<script id="GUIIN_RELEASE_INTEGRATION">
+/* Release QA integration: calculation, permission and navigation functions stay authoritative. */
+(function(){
+ 'use strict';
+ const esc=v=>String(v??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+ const html=rows=>(rows||[]).map(s=>`<article class="expertSection guiinHumanCard" data-human-section="${esc(s.id)}"><div class="eyebrow">${esc(s.eyebrow)}</div><h3>${esc(s.title)}</h3><p>${esc(s.body)}</p><details class="r23Evidence"><summary>명리 근거 보기</summary><div>${esc(s.evidence)}</div></details></article>`).join('');
+ const legacy={longSummaryHTML,personalityReport,fieldsReport,flowReport,fortuneRows};
+ const intro='<div class="easyIntro card"><h2>겉모습부터 속마음, 일과 관계까지</h2><p>입력한 명식의 여러 신호를 겹쳐 본 성향이야. 실제 경험과 다른 부분은 네 경험을 우선해서 읽어.</p></div>';
+ longSummaryHTML=function(c){return intro+html(GuiinExpert.fullSections(c))+`<button class="ctaGreen" onclick="setTab('stars')">내 신살·귀인 자세히 보기 ›</button>`;};
+ personalityReport=function(c){return currentTab==='summary'?'':html(GuiinExpert.personalitySections(c));};
+ fieldsReport=function(c){return currentTab==='summary'?'':html(GuiinExpert.fieldSections(c));};
+ flowReport=function(c){const rows=GuiinExpert.timingSections(c);if(!rows.length)return legacy.flowReport(c);return '<div class="card easyIntro"><h2>지금 정할 일과 앞으로 준비할 일</h2><p>계산한 운이 원국과 만나는 주제를 생활의 선택으로 옮겨봤어. 사건의 발생을 확정하는 설명은 아니야.</p></div>'+html(rows)+'<details class="r23Evidence"><summary>대운·세운 계산표와 자세한 근거</summary>'+legacy.flowReport(c)+'</details>';};
+ // Retain the original functions for existing integrations and targeted QA.
+ globalThis.GUIIN_RELEASE_QA={legacyReports:legacy,version:'20261007',html};
+ let seq=0,timer=null,controller=null;
+ const idInput=document.getElementById('signupLoginId'),status=document.getElementById('signupIdStatus');
+ async function checkId(value,revision){
+  controller?.abort();controller=new AbortController();
+  const timeout=setTimeout(()=>controller.abort(),10000);
+  try{
+   const res=await fetch(guiinStableApiBase()+'/api/auth/password/availability?loginId='+encodeURIComponent(value),{method:'GET',mode:'cors',cache:'no-store',signal:controller.signal,headers:{Accept:'application/json'}});
+   const data=await res.json();if(revision!==seq)return;
+   if(!res.ok)throw new Error(data.error||'availability_unavailable');
+   status.textContent=data.available?'사용 가능한 아이디예요. 가입할 때 다시 확인해요.':'이미 사용 중인 아이디예요.';
+   status.dataset.available=String(!!data.available);status.dataset.loginId=value;
+  }catch(e){if(revision!==seq)return;status.textContent=e.message==='rate_limited'?'확인 요청이 많아요. 잠시 뒤 다시 입력해 주세요.':'지금은 중복확인을 연결하지 못했어요. 가입할 때 서버에서 다시 확인해요.';delete status.dataset.available;}
+  finally{clearTimeout(timeout);}
+ }
+ idInput?.addEventListener('input',()=>{
+  clearTimeout(timer);controller?.abort();const revision=++seq,value=idInput.value.trim().toLowerCase();
+  delete status.dataset.available;delete status.dataset.loginId;
+  if(!/^[a-z0-9][a-z0-9._-]{3,31}$/.test(value)){status.textContent='영문·숫자로 시작하는 4~32자 아이디를 입력해 주세요. 점·밑줄·하이픈도 쓸 수 있어요.';return;}
+  status.textContent='아이디를 확인하고 있어요…';timer=setTimeout(()=>checkId(value,revision),700);
+ });
+ // Only normalize interpretation text. Preserve ID, attributes, handlers, tables and legal wording.
+ function polish(root){
+  if(!root)return;
+  const walk=document.createTreeWalker(root,NodeFilter.SHOW_TEXT,{acceptNode:n=>n.parentElement?.closest('script,style,button,table,input,textarea,select')?NodeFilter.FILTER_REJECT:NodeFilter.FILTER_ACCEPT});
+  let n;while(n=walk.nextNode()){
+   let t=n.nodeValue;
+   if(globalThis.GuiinCompatQuality634)t=GuiinCompatQuality634.tone(t);
+   const rules=[['풀어드립니다','풀어줄게'],['설명합니다','설명해'],['확인합니다','확인해'],['계산됩니다','계산돼'],['계산합니다','계산해'],['보여드립니다','보여줄게'],['읽었습니다','읽었어'],['연결합니다','연결해'],['봅니다','봐'],['입니다','이야'],['됩니다','돼'],['합니다','해'],['해요','해'],['있어요','있어'],['없어요','없어'],['찾아와요','찾아와'],['예측하지 않습니다','예측하지 않아'],['진단하지 않습니다','진단하지 않아'],['잘 맞습니다','잘 맞아'],['반복됩니다','반복돼'],['더 보입니다','더 보여'],['확인하세요','확인해'],['두세요','둬'],['봐야 합니다','봐야 해'],['관리할 수 있습니다','관리할 수 있어'],['판단하지는 않습니다','판단하지는 않아'],['도움이 됩니다','도움이 돼'],['좋습니다','좋아'],['필요가 있습니다','필요가 있어'],['여지가 있습니다','여지가 있어'],['확인해 보세요','확인해'],['확인해 주세요','확인해'],['조절하세요','조절해'],['살펴보세요','살펴봐'],['정하세요','정해'],['미루지 마세요','미루지 마'],['나누면 좋습니다','나눠'],['아니에요','아니야'],['달라요','달라'],['확인할 수 있어요','확인할 수 있어'],['열립니다','열려'],['이어집니다','이어져'],['이 부분을 AI한테 이어서 물어볼 수 있어.','궁금한 장면을 골라서 물어봐.']];
+   for(const [a,b]of rules)t=t.split(a).join(b);if(t!==n.nodeValue)n.nodeValue=t;
+  }
+ }
+ function fortunePlan(period){
+  if(typeof chart==='undefined'||!chart)return;
+  const data=GuiinExpert.fortuneActions(chart,period),box=document.querySelector('#todayView .guiinFortunePlan');if(!data||!box)return;
+  box.querySelectorAll('.guiinFortuneAction').forEach((node,i)=>{if(!data.actions[i])return;[...node.childNodes].filter(n=>n.nodeType===3).forEach(n=>n.remove());node.appendChild(document.createTextNode(data.actions[i]));});
+  let evidence=box.querySelector('[data-fortune-plan-basis]');if(!evidence){evidence=document.createElement('details');evidence.dataset.fortunePlanBasis='1';evidence.className='r23Evidence';box.appendChild(evidence);}evidence.innerHTML='<summary>명리 근거 보기</summary><div>'+esc(data.evidence)+'</div>';
+ }
+ for(const fname of ['renderResult','renderCompatCards','renderYearLuck','renderToday','renderFortunePeriod']){
+  const prior=globalThis[fname];if(typeof prior!=='function')continue;
+  globalThis[fname]=function(){const out=prior.apply(this,arguments);if(fname==='renderToday'||fname==='renderFortunePeriod')fortunePlan(fname==='renderToday'?'today':arguments[0]);polish(document.getElementById(fname==='renderResult'?'resultView':fname==='renderCompatCards'?'matchView':fname==='renderYearLuck'?'yearView':'todayView'));return out;};
+ }
+ // Finite one-shot cleanup after asynchronous legacy layers, not a subtree observer loop.
+ document.addEventListener('click',e=>{const screen=e.target?.closest?.('#result,#matchResult,#yearLuck');if(!screen)return;requestAnimationFrame(()=>polish(screen.querySelector('#resultView,#matchView,#yearView')));},{passive:true});
+})();
 </script>
 </body>
 </html>
