@@ -3779,8 +3779,8 @@ function premiumPersonalTeaserHTML(c){
   return `<div class="personalTeaser card">
     <div class="mini">실제 ${n}님의 명식으로 보는 미리보기</div>
     <h3>가까운 사람에게는 ${esc(krJoin(day.soft,'이/가'))} 드러나지만, 지칠 때는 ${esc(day.shadow)}</h3>
-    <p>${n}님은 ${esc(x.top)} 비중이 상대적으로 높고 ${esc(x.low)} 비중이 낮습니다. 이것만으로 성격을 단정하지 않고 일간·월령·십성·관계 신호를 함께 봅니다.</p>
-    <div class="easyPoint good"><b>지금부터 남은 타이밍 일부 공개</b><p>${moneyMonth?`${new Date().getFullYear()}년 남은 기간의 재물·현실 흐름에서는 ${moneyMonth}월이 상대적으로 먼저 눈에 띕니다.`:'월별 흐름을 계산하고 있습니다.'}${relationMonth?` 관계·인연 쪽은 ${relationMonth}월의 움직임도 함께 확인할 만합니다.`:''}</p></div>
+    <p>${n}님은 ${esc(x.top)} 비중이 상대적으로 높고 ${esc(x.low)} 비중이 낮아. 이것만으로 성격을 단정하지 않고 일간·월령·십성·관계 신호를 함께 봅니다.</p>
+    <div class="easyPoint good"><b>지금부터 남은 타이밍 일부 공개</b><p>${moneyMonth?`${new Date().getFullYear()}년 남은 기간의 재물·현실 흐름에서는 ${moneyMonth}월이 상대적으로 먼저 눈에 띄어.`:'월별 흐름을 계산하고 있습니다.'}${relationMonth?` 관계·인연 쪽은 ${relationMonth}월의 움직임도 함께 확인할 만합니다.`:''}</p></div>
     <div class="easyPoint tip"><b>앞으로의 큰 흐름</b><p>${futureMoneyYear?`앞으로 10년 비교에서는 ${futureMoneyYear}년의 재물·현실 신호가 상대적으로 눈에 띄는 구간 중 하나로 계산됩니다.`:'대운과 연운을 겹쳐 앞으로의 변곡점을 계산합니다.'} ${samjae?.applies?`올해는 띠 기준 ${esc(samjae.stage)}에 해당하지만, 삼재만으로 길흉을 정하지 않습니다.`:''}</p></div>
     <div class="easyPoint watch"><b>프리미엄에서 이어지는 내용</b><p>기가 센 편인지 · 불안/회피 반응 · 권태 속도 · 친밀감/성적 에너지 · 이상형 · 직장형/사업형 · 돈이 강해지는 연·월 · 귀인·도움 시기 · 구설·계약 주의 시기까지 실제 계산값으로 이어집니다.</p></div>
   </div>`;
@@ -3841,7 +3841,7 @@ function daeunPremiumPreviewHTML(c){
  let timing=null;
  try{timing=(globalThis.GuiinFortuneV2&&typeof GuiinFortuneV2.compactTiming==='function')?GuiinFortuneV2.compactTiming(c,new Date().getFullYear()):null;}catch(_e){}
  const tmon=timing?.remaining_months||timing?.months||{},money=tmon?.money?.[0],love=tmon?.relationship?.[0],watch=tmon?.caution?.[0];
- const actual=`<div class="personalTeaser card"><div class="mini">실제 내 운의 일부</div><h3>${new Date().getFullYear()}년은 한 가지 점수보다 분야별 월운을 나눠 보는 편이 정확합니다.</h3><p>${money?`재물·현실에서는 ${money.month}월(${esc(money.god||'월운')})이 상대적으로 먼저 눈에 띕니다.`:'월별 재물 흐름을 계산합니다.'} ${love?`관계 쪽은 ${love.month}월,`:''} ${watch?`조정 신호는 ${watch.month}월을 함께 확인합니다.`:''}</p></div>`;
+ const actual=`<div class="personalTeaser card"><div class="mini">실제 내 운의 일부</div><h3>${new Date().getFullYear()}년은 한 가지 점수보다 분야별 월운을 나눠 보는 편이 정확합니다.</h3><p>${money?`재물·현실에서는 ${money.month}월(${esc(money.god||'월운')})이 상대적으로 먼저 눈에 띄어.`:'월별 재물 흐름을 계산합니다.'} ${love?`관계 쪽은 ${love.month}월,`:''} ${watch?`조정 신호는 ${watch.month}월을 함께 확인합니다.`:''}</p></div>`;
  const sample={eyebrow:'대운 풀이 예시',title:'좋은 대운이라고 무조건 편한 것은 아니고, 역할이 커지는 만큼 책임도 커질 수 있습니다.',body:'대운은 10년 동안 반복되는 배경을 보고 세운과 월운은 그 안에서 언제 움직임이 커지는지를 봅니다. 그래서 같은 대운 안에서도 재물·관계·직업의 체감 시기는 달라질 수 있습니다.',good:'큰 흐름과 가까운 시기를 분리하면 무엇을 지금 준비할지 더 구체적으로 정할 수 있습니다.',watch:'대운 하나만 보고 퇴사·투자·결혼 같은 결정을 확정하지 않습니다.',support:'시기는 선택을 대신하는 답이 아니라 준비할 순서를 정하는 자료로 쓰세요.',evidence:'원국 + 현재 대운 + 세운 + 월운 교차'};
  return `<div class="premiumPreview"><div class="premiumHero card"><div class="mini">프리미엄 평생사주에 포함 · 대운·연월 상세</div><h2>${n}님의 10년 큰 흐름과 가까운 연·월 타이밍을 같이 봅니다.</h2><p>재물·직업·연애·도움·관계 조정 시기를 따로 계산하고 삼재는 보조 개념으로만 함께 표시합니다.</p></div>${actual}<div class="sampleNotice">가상 예시는 설명 방식만 보여주기 위한 1개 예시입니다.</div>${previewSampleCard(sample,'예시 화면 · 실제 내 대운 결과 아님')}<div class="premiumLock"><strong>내 실제 대운·세운·월운 상세 열기</strong><p>앞으로의 연도와 12개월 중 어디가 상대적으로 눈에 띄는지 분야별로 확인할 수 있어요.</p><button onclick="openPremiumPay()">프리미엄 평생사주 5,900원 ›</button></div></div>`;
 }
@@ -6431,8 +6431,16 @@ async function guiinApi(path,options={}){
 }
 
 
+function guiinFormatAIHighlights(d,text){
+  const value=String(text||'');if(!value.includes('**'))return;
+  const fragment=document.createDocumentFragment(),parts=value.split(/(\*\*[^*\n]+\*\*)/g);
+  for(const part of parts){if(part.startsWith('**')&&part.endsWith('**')&&part.length>4){const strong=document.createElement('strong');strong.textContent=part.slice(2,-2);fragment.appendChild(strong);}else fragment.appendChild(document.createTextNode(part));}
+  d.replaceChildren(fragment);
+}
 function guiinDecorateLongBubble(d,text){
-  if(!d||!d.classList?.contains('bot')||String(text||'').length<1150)return;
+  if(!d||!d.classList?.contains('bot'))return;
+  guiinFormatAIHighlights(d,text);
+  if(String(text||'').length<1150)return;
   d.classList.add('aiLongAnswer','collapsed');
   const btn=document.createElement('button');btn.type='button';btn.className='aiExpandBtn';btn.textContent='전체 답변 보기';
   btn.onclick=()=>{const collapsed=d.classList.toggle('collapsed');btn.textContent=collapsed?'전체 답변 보기':'답변 접기';if(!collapsed)d.scrollIntoView({behavior:'smooth',block:'nearest'});};
@@ -7647,7 +7655,7 @@ function renderUsageHistory(){const v=$('usageHistoryView');if(!v)return;let p=n
 async function renderPaymentHistory(){
  const v=$('paymentHistoryView');if(!v)return;
  const s=guiinAuthSession();
- if(!s){v.innerHTML='<p class="utilityHint">결제 내역은 로그인한 계정 기준으로 확인해요. 먼저 카카오 로그인을 해주세요.</p>';return;}
+ if(!s){v.innerHTML='<p class="utilityHint">결제 내역은 로그인한 계정 기준으로 확인해요. 아이디 또는 카카오로 로그인해 주세요.</p>';return;}
  v.innerHTML='<p class="utilityHint">서버에서 결제 내역을 확인하고 있어요…</p>';
  try{
   const res=await fetch(GUIIN_API_BASE+'/api/me/purchases',{headers:guiinAuthHeaders({'Accept':'application/json'})});
@@ -9159,7 +9167,7 @@ try{Object.assign(window,{guiinPaymentCenterStart});}catch(_e){}
   const base=[p.stem?`${p.stem} 일간`:'',p.season?`${p.season} 기운`:'',top?`중심오행 ${top}`:'',p.mg?`월주 ${p.mg}`:''].filter(Boolean).join(' · ');
   const intro=val(p.day?.day?.headline||p.day?.br?.outer,`${p.name}님은 자기 기준과 관계 리듬이 분명한 편이야.`);
   const relation=val(p.rp?.attachmentText,'가까운 관계에서는 신뢰와 거리의 균형이 중요하게 작용할 수 있어.');
-  return `<section class="r28People r29SajuPortrait" data-r29-saju-portrait="1"><div class="mini">원국 + 신살 통합 인물 해석</div><h3>${E(p.name)}님이 “이래서 이런 사람”으로 읽히는 이유</h3><p class="lead">신살을 따로 나열하지 않고 일간·월령·오행·십성과 겹쳐 성격·관계 반응·지칠 때 모습까지 한 사람의 이야기로 연결했어. 신살은 보조 근거이며 행동을 확정하는 판정표는 아니야.</p><div class="r28PersonGrid"><div class="r28Person"><div class="who">${E(base)}</div><h4>${E(p.name)}님은 왜 이런 사람으로 읽히나</h4><p><b>원국부터 보면</b> ${E(intro)} ${E(relation)}</p>${chips.length?`<div class="r28StarChips">${chips.map(x=>`<span>${E(x)}</span>`).join('')}</div>`:''}${rows.map(x=>`<p>${E(x)}</p>`).join('')}<div class="r28Because">${synthesis(p)}</div><details class="r28Evidence"><summary>이 해석에 사용한 신살 근거 보기</summary><div>${E(p.stars.length?p.stars.join(' · '):'현재 계산된 신살은 적지만, 원국·오행·십성 중심으로 해석합니다.')}</div></details></div></div></section>`;
+  return `<details class="r23Evidence" data-legacy-reading="r29SajuPortrait"><summary>원국·신살 통합 해석과 계산 근거</summary><section class="r28People r29SajuPortrait" data-r29-saju-portrait="1"><div class="mini">원국 + 신살 통합 인물 해석</div><h3>${E(p.name)}님이 “이래서 이런 사람”으로 읽히는 이유</h3><p class="lead">신살을 따로 나열하지 않고 일간·월령·오행·십성과 겹쳐 성격·관계 반응·지칠 때 모습까지 한 사람의 이야기로 연결했어. 신살은 보조 근거이며 행동을 확정하는 판정표는 아니야.</p><div class="r28PersonGrid"><div class="r28Person"><div class="who">${E(base)}</div><h4>${E(p.name)}님은 왜 이런 사람으로 읽히나</h4><p><b>원국부터 보면</b> ${E(intro)} ${E(relation)}</p>${chips.length?`<div class="r28StarChips">${chips.map(x=>`<span>${E(x)}</span>`).join('')}</div>`:''}${rows.map(x=>`<p>${E(x)}</p>`).join('')}<div class="r28Because">${synthesis(p)}</div><details class="r28Evidence"><summary>이 해석에 사용한 신살 근거 보기</summary><div>${E(p.stars.length?p.stars.join(' · '):'현재 계산된 신살은 적지만, 원국·오행·십성 중심으로 해석합니다.')}</div></details></div></div></section></details>`;
  }
  function apply(){
   const root=document.getElementById('resultView');if(!root)return;
@@ -9854,7 +9862,7 @@ try{Object.assign(window,{guiinPaymentCenterStart});}catch(_e){}
  }
  function summaryHTML(c){
   const d=info(c);
-  return `<section class="guiinCounselor30" data-guiin-counselor30="1"><div class="mini">귀인 상담가의 한마디</div><h3>좋은 건 크게 칭찬하고, 필요한 말은 돌리지 않을게.</h3><p class="lead">사주는 사람을 평가하는 표가 아니라, 내가 가진 좋은 힘과 반복되는 소모를 같이 이해하는 도구라고 보고 풀어볼게.</p><div class="guiinToneGrid"><div class="guiinToneCell praise"><b>이건 진짜 강점</b><p>${E(praiseText(c))}</p></div><div class="guiinToneCell fact"><b>팩트 하나만 말하면</b><p>${E(factText(c))}</p></div><div class="guiinToneCell empathy"><b>마음까지 같이 보면</b><p>${E(empathyText(c))}</p></div><div class="guiinToneCell charm"><b>인상·매력 포인트</b><p>${E(charmText(c))}</p></div></div><div class="guiinToneRest"><b>마지막으로</b>${E(restText(c))}</div></section>`;
+  return `<details class="r23Evidence" data-legacy-reading="guiinCounselor30"><summary>기존 상담가 해석 자세히 보기</summary><section class="guiinCounselor30" data-guiin-counselor30="1"><div class="mini">귀인 상담가의 한마디</div><h3>좋은 건 크게 칭찬하고, 필요한 말은 돌리지 않을게.</h3><p class="lead">사주는 사람을 평가하는 표가 아니라, 내가 가진 좋은 힘과 반복되는 소모를 같이 이해하는 도구라고 보고 풀어볼게.</p><div class="guiinToneGrid"><div class="guiinToneCell praise"><b>이건 진짜 강점</b><p>${E(praiseText(c))}</p></div><div class="guiinToneCell fact"><b>팩트 하나만 말하면</b><p>${E(factText(c))}</p></div><div class="guiinToneCell empathy"><b>마음까지 같이 보면</b><p>${E(empathyText(c))}</p></div><div class="guiinToneCell charm"><b>인상·매력 포인트</b><p>${E(charmText(c))}</p></div></div><div class="guiinToneRest"><b>마지막으로</b>${E(restText(c))}</div></section></details>`;
  }
  function addNote(card,kind,text,label){
   if(!card||card.querySelector(`.guiinToneNote.${kind}`))return;
@@ -11907,13 +11915,17 @@ try{Object.assign(window,{guiinPaymentCenterStart});}catch(_e){}
  }
 })();
 </script>
-<script src="guiin-interpretation-v4.js?v=20261007-release"></script>
+<script src="guiin-interpretation-v4.js?v=20261008-premium-direct"></script>
 <script id="GUIIN_RELEASE_INTEGRATION">
 /* Release QA integration: calculation, permission and navigation functions stay authoritative. */
 (function(){
  'use strict';
  const esc=v=>String(v??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
- const html=rows=>(rows||[]).map(s=>`<article class="expertSection guiinHumanCard" data-human-section="${esc(s.id)}"><div class="eyebrow">${esc(s.eyebrow)}</div><h3>${esc(s.title)}</h3><p>${esc(s.body)}</p><details class="r23Evidence"><summary>명리 근거 보기</summary><div>${esc(s.evidence)}</div></details></article>`).join('');
+ const html=rows=>(rows||[]).map(s=>{
+  const ps=Array.isArray(s.paragraphs)?s.paragraphs:String(s.body||'').split(/\n\n+/).filter(Boolean);
+  const body=ps.map((text,i)=>'<p>'+(i===0&&s.lead?'<strong>'+esc(text)+'</strong>':esc(text))+'</p>').join('');
+  return `<article class="expertSection guiinHumanCard" data-human-section="${esc(s.id)}">${s.eyebrow&&s.eyebrow!==s.title?`<div class="eyebrow">${esc(s.eyebrow)}</div>`:""}<h3>${esc(s.title)}</h3>${body}<details class="r23Evidence"><summary>명리 근거 보기</summary><div>${esc(s.evidence)}</div></details></article>`;
+ }).join('');
  const legacy={longSummaryHTML,personalityReport,fieldsReport,flowReport,fortuneRows};
  const intro='<div class="easyIntro card"><h2>겉모습부터 속마음, 일과 관계까지</h2><p>입력한 명식의 여러 신호를 겹쳐 본 성향이야. 실제 경험과 다른 부분은 네 경험을 우선해서 읽어.</p></div>';
  longSummaryHTML=function(c){return intro+html(GuiinExpert.fullSections(c))+`<button class="ctaGreen" onclick="setTab('stars')">내 신살·귀인 자세히 보기 ›</button>`;};
@@ -11921,7 +11933,7 @@ try{Object.assign(window,{guiinPaymentCenterStart});}catch(_e){}
  fieldsReport=function(c){return currentTab==='summary'?'':html(GuiinExpert.fieldSections(c));};
  flowReport=function(c){const rows=GuiinExpert.timingSections(c);if(!rows.length)return legacy.flowReport(c);return '<div class="card easyIntro"><h2>지금 정할 일과 앞으로 준비할 일</h2><p>계산한 운이 원국과 만나는 주제를 생활의 선택으로 옮겨봤어. 사건의 발생을 확정하는 설명은 아니야.</p></div>'+html(rows)+'<details class="r23Evidence"><summary>대운·세운 계산표와 자세한 근거</summary>'+legacy.flowReport(c)+'</details>';};
  // Retain the original functions for existing integrations and targeted QA.
- globalThis.GUIIN_RELEASE_QA={legacyReports:legacy,version:'20261007',html};
+ globalThis.GUIIN_RELEASE_QA={legacyReports:legacy,version:'20261008-premium-direct',html};
  let seq=0,timer=null,controller=null;
  const idInput=document.getElementById('signupLoginId'),status=document.getElementById('signupIdStatus');
  async function checkId(value,revision){
@@ -11949,7 +11961,7 @@ try{Object.assign(window,{guiinPaymentCenterStart});}catch(_e){}
   let n;while(n=walk.nextNode()){
    let t=n.nodeValue;
    if(globalThis.GuiinCompatQuality634)t=GuiinCompatQuality634.tone(t);
-   const rules=[['풀어드립니다','풀어줄게'],['설명합니다','설명해'],['확인합니다','확인해'],['계산됩니다','계산돼'],['계산합니다','계산해'],['보여드립니다','보여줄게'],['읽었습니다','읽었어'],['연결합니다','연결해'],['봅니다','봐'],['입니다','이야'],['됩니다','돼'],['합니다','해'],['해요','해'],['있어요','있어'],['없어요','없어'],['찾아와요','찾아와'],['예측하지 않습니다','예측하지 않아'],['진단하지 않습니다','진단하지 않아'],['잘 맞습니다','잘 맞아'],['반복됩니다','반복돼'],['더 보입니다','더 보여'],['확인하세요','확인해'],['두세요','둬'],['봐야 합니다','봐야 해'],['관리할 수 있습니다','관리할 수 있어'],['판단하지는 않습니다','판단하지는 않아'],['도움이 됩니다','도움이 돼'],['좋습니다','좋아'],['필요가 있습니다','필요가 있어'],['여지가 있습니다','여지가 있어'],['확인해 보세요','확인해'],['확인해 주세요','확인해'],['조절하세요','조절해'],['살펴보세요','살펴봐'],['정하세요','정해'],['미루지 마세요','미루지 마'],['나누면 좋습니다','나눠'],['아니에요','아니야'],['달라요','달라'],['확인할 수 있어요','확인할 수 있어'],['열립니다','열려'],['이어집니다','이어져'],['이 부분을 AI한테 이어서 물어볼 수 있어.','궁금한 장면을 골라서 물어봐.']];
+   const rules=[['작습니다','작아'],['읽습니다','읽어'],['높습니다','높아'],['눈에 띕니다','눈에 띄어'],['풀어드립니다','풀어줄게'],['설명합니다','설명해'],['확인합니다','확인해'],['계산됩니다','계산돼'],['계산합니다','계산해'],['보여드립니다','보여줄게'],['읽었습니다','읽었어'],['연결합니다','연결해'],['봅니다','봐'],['입니다','이야'],['됩니다','돼'],['합니다','해'],['해요','해'],['있어요','있어'],['없어요','없어'],['찾아와요','찾아와'],['예측하지 않습니다','예측하지 않아'],['진단하지 않습니다','진단하지 않아'],['잘 맞습니다','잘 맞아'],['반복됩니다','반복돼'],['더 보입니다','더 보여'],['확인하세요','확인해'],['두세요','둬'],['봐야 합니다','봐야 해'],['관리할 수 있습니다','관리할 수 있어'],['판단하지는 않습니다','판단하지는 않아'],['도움이 됩니다','도움이 돼'],['좋습니다','좋아'],['필요가 있습니다','필요가 있어'],['여지가 있습니다','여지가 있어'],['확인해 보세요','확인해'],['확인해 주세요','확인해'],['조절하세요','조절해'],['살펴보세요','살펴봐'],['정하세요','정해'],['미루지 마세요','미루지 마'],['나누면 좋습니다','나눠'],['아니에요','아니야'],['달라요','달라'],['확인할 수 있어요','확인할 수 있어'],['열립니다','열려'],['이어집니다','이어져'],['이 부분을 AI한테 이어서 물어볼 수 있어.','궁금한 장면을 골라서 물어봐.']];
    for(const [a,b]of rules)t=t.split(a).join(b);if(t!==n.nodeValue)n.nodeValue=t;
   }
  }
@@ -11959,13 +11971,32 @@ try{Object.assign(window,{guiinPaymentCenterStart});}catch(_e){}
   box.querySelectorAll('.guiinFortuneAction').forEach((node,i)=>{if(!data.actions[i])return;[...node.childNodes].filter(n=>n.nodeType===3).forEach(n=>n.remove());node.appendChild(document.createTextNode(data.actions[i]));});
   let evidence=box.querySelector('[data-fortune-plan-basis]');if(!evidence){evidence=document.createElement('details');evidence.dataset.fortunePlanBasis='1';evidence.className='r23Evidence';box.appendChild(evidence);}evidence.innerHTML='<summary>명리 근거 보기</summary><div>'+esc(data.evidence)+'</div>';
  }
+
+ function premiumPair(){
+  const view=document.getElementById('matchView');let a,b,tab;
+  try{a=matchMeta?.a||matchAnalysis?.a;b=matchMeta?.b||matchAnalysis?.b;tab=matchTab}catch(_){}
+  if(!view||!a||!b||!GuiinExpert.premiumCompatibilitySections||tab==='partner')return;
+  // Existing paid rendering is the authority; never render this report over a paywall.
+  if(!view.querySelector('article[data-r24-key],article[data-r26-key]'))return;
+  const model=GuiinCompatQuality634.model(a,b),all=GuiinExpert.premiumCompatibilitySections(model);
+  const rows=tab==='love'?all.filter(r=>!['pair-money','pair-structure'].includes(r.id)):tab==='marriage'?all.filter(r=>r.id!=='pair-attraction'):all;
+  let report=view.querySelector('[data-premium-compat-report]');
+  if(!report){report=document.createElement('section');report.dataset.premiumCompatReport='1';view.appendChild(report);}
+  report.innerHTML=html(rows);
+  let legacy=view.querySelector('details[data-legacy-compat]');
+  if(!legacy){legacy=document.createElement('details');legacy.className='r23Evidence';legacy.dataset.legacyCompat='1';legacy.innerHTML='<summary>기존 관계 장면과 인물 해석 자세히 보기</summary>';view.appendChild(legacy);}
+  const old=[...view.children].filter(node=>node!==report&&node!==legacy&&(node.matches('article[data-r24-key],article[data-r26-key],[data-r28-people]')||node.querySelector('article[data-r24-key],article[data-r26-key],[data-r28-people]')));
+  old.forEach(node=>legacy.appendChild(node));
+  // End of legacy asynchronous composition: one idempotent presentation pass.
+ }
  for(const fname of ['renderResult','renderCompatCards','renderYearLuck','renderToday','renderFortunePeriod']){
   const prior=globalThis[fname];if(typeof prior!=='function')continue;
-  globalThis[fname]=function(){const out=prior.apply(this,arguments);if(fname==='renderToday'||fname==='renderFortunePeriod')fortunePlan(fname==='renderToday'?'today':arguments[0]);polish(document.getElementById(fname==='renderResult'?'resultView':fname==='renderCompatCards'?'matchView':fname==='renderYearLuck'?'yearView':'todayView'));return out;};
+  globalThis[fname]=function(){const out=prior.apply(this,arguments);if(fname==='renderCompatCards'){premiumPair();requestAnimationFrame(premiumPair);}if(fname==='renderToday'||fname==='renderFortunePeriod')fortunePlan(fname==='renderToday'?'today':arguments[0]);polish(document.getElementById(fname==='renderResult'?'resultView':fname==='renderCompatCards'?'matchView':fname==='renderYearLuck'?'yearView':'todayView'));return out;};
  }
  // Finite one-shot cleanup after asynchronous legacy layers, not a subtree observer loop.
  document.addEventListener('click',e=>{const screen=e.target?.closest?.('#result,#matchResult,#yearLuck');if(!screen)return;requestAnimationFrame(()=>polish(screen.querySelector('#resultView,#matchView,#yearView')));},{passive:true});
 })();
+
 </script>
 </body>
 </html>
