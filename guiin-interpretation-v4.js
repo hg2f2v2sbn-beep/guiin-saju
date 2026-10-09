@@ -281,6 +281,46 @@ const NARRATIVE_GOD={
 };
 const NARRATIVE_ELEMENT={목:['방향과 성장','다음 단계와 확장 가능성을 살피는 관점'],화:['반응과 표현','생각을 밖으로 꺼내 반응을 확인하는 관점'],토:['유지와 축적','일이 계속 돌아갈 기반을 살피는 관점'],금:['구분과 완성','기준과 결과의 차이를 확인하는 관점'],수:['이해와 연결','정보와 사정의 맥락을 연결하는 관점']};
 const NARRATIVE_POSITION={year:'바깥 관계와 배경',month:'일과 사회적 역할',day:'가까운 생활과 관계',hour:'다음 계획과 개인 작업'};
+const NARRATIVE_FAMILY={비견:'self',겁재:'self',식신:'make',상관:'make',편재:'real',정재:'real',편관:'rule',정관:'rule',편인:'think',정인:'think'};
+const NARRATIVE_MECHANISM={
+ 'self/self':['혼자 정한 답을 실제로 책임지는 자립','고를 권한이 없는 일까지 맡으면 내 일인데 내 방식으로 할 수 없다는 답답함이 커질 수 있어.','도움을 거절하기보다 도움을 받을 범위와 최종 결정할 범위를 나눠.'],
+ 'self/make':['자기 판단을 말과 결과물로 보여주는 실행','결정은 네가 했는데 밖에 보여줄 결과가 남지 않으면 선택의 의미를 확인하기 어려워질 수 있어.','직접 고른 방법 하나를 작은 결과물로 완성한 뒤 다음 선택으로 넘어가.'],
+ 'self/real':['자유로운 선택을 생활의 실속으로 이어가는 운영','내 방식대로 해보고 싶어도 시간과 비용이 감당되지 않으면 선택의 자유가 부담으로 바뀔 수 있어.','자유롭게 시험할 범위와 반드시 유지할 비용을 시작 전에 분리해.'],
+ 'self/rule':['내 기준을 책임 있는 약속으로 만드는 결단','내가 선택했으니 끝까지 다 해야 한다고 느끼는 상황에서는 도움을 받아도 책임은 혼자 남을 수 있어.','정할 권한만큼 종료할 기준도 가져. 맡은 일을 끝낸 것과 다음 부탁을 받는 것은 다른 결정이야.'],
+ 'self/think':['자기 판단에 납득할 이유를 붙이는 독립','직접 선택하고 싶지만 아직 이유가 정리되지 않았다면 급한 결론과 더 생각하고 싶은 마음이 맞설 수 있어.','오늘 정할 선택과 확인을 마친 뒤 정할 선택을 나눠. 생각할 시간도 결정 과정에 포함해.'],
+ 'make/self':['만든 결과에 자기 색깔을 남기는 표현','결과는 만들었는데 네 생각을 넣을 틈이 없었다면 잘 끝냈어도 네 작업 같지 않다는 느낌이 남을 수 있어.','공통으로 지킬 품질과 네가 고를 표현 방식을 따로 정해.'],
+ 'make/make':['아이디어를 반복할 수 있는 결과로 바꾸는 생산','표현도 작업도 계속 새롭게 요구받으면 한 가지를 완성하기 전에 다음 일이 시작될 수 있어.','이번 결과의 완료 기준을 먼저 정하고 새 아이디어는 다음 작업 목록으로 옮겨.'],
+ 'make/real':['좋은 결과를 실제로 쓰이고 선택되게 만드는 전달','잘 만들었다는 만족과 그 결과에 시간·비용이 얼마나 들었는지는 따로 움직일 수 있어.','완성도와 원가를 같은 기록에 남겨. 고객이 알아보는 차이와 네가 추가로 쓰는 양을 비교해.'],
+ 'make/rule':['표현과 기술에 믿을 수 있는 기준을 세우는 전문성','수정할 곳을 알아보는 능력이 있으면 끝낼 기준보다 더 좋아질 가능성이 먼저 보일 수 있어.','꼭 고칠 문제와 다음 버전에서 다룰 개선을 나눠. 마무리도 결과의 일부야.'],
+ 'make/think':['이해한 내용을 자기 언어와 기술로 옮기는 설명','안에서는 충분히 이해해도 밖에 보여줄 말이나 작업이 정리되지 않으면 준비한 깊이가 잘 드러나지 않을 수 있어.','설명 하나·시안 하나·완성 예시 하나 중 오늘 꺼낼 형태를 정해.'],
+ 'real/self':['기회를 고르고 자기 몫을 분명히 만드는 판단','가능한 제안이 많아도 네가 결정할 영역이 없으면 활동은 늘고 선택권은 줄 수 있어.','좋아 보이는 제안에 답하기 전에 네가 정할 일과 맡을 책임을 함께 확인해.'],
+ 'real/make':['사람의 필요를 실제 서비스로 바꾸는 현장 감각','수요에 빠르게 반응하다 여러 요청을 동시에 받으면 만들 결과의 마무리가 뒤로 밀릴 수 있어.','받을 수 있는 작업량을 결과 하나에 드는 실제 시간으로 정해.'],
+ 'real/real':['시간과 자원을 거래의 실속으로 남기는 생활력','지금 가능한 선택을 모두 붙잡으면 각각은 타당해도 한 달 전체의 여유가 줄어들 수 있어.','선택 하나의 이익과 모든 선택을 감당할 자원을 따로 계산해.'],
+ 'real/rule':['거래를 한 번의 기회에서 오래 갈 신뢰로 바꾸는 운영','관계가 좋아서 받아준 추가 요청이 반복되면 합의한 비용과 실제 맡은 책임이 달라질 수 있어.','거래마다 기본 범위와 추가 범위를 남겨. 오래된 관계에도 바뀐 조건은 설명해.'],
+ 'real/think':['사람의 필요 뒤에 있는 이유까지 읽는 기획','빨리 잡아야 할 기회와 더 확인하고 싶은 이유가 동시에 있으면 시작하거나 멈출 기준이 흐려질 수 있어.','시험할 작은 범위부터 정해 실제 반응을 보고 생각을 갱신해.'],
+ 'rule/self':['책임을 자기 판단으로 지키는 주도성','결과의 책임은 큰데 방법을 고를 권한이 작으면 잘해내려는 힘이 계속 마찰에 쓰일 수 있어.','책임을 받기 전에 바꿀 수 있는 방법과 승인받아야 할 범위를 확인해.'],
+ 'rule/make':['약속을 실제 결과로 보여주는 실천','맡은 기준을 지키느라 표현이나 작업 리듬이 계속 끊기면 책임을 다하면서도 만드는 즐거움은 줄 수 있어.','연락·보고 시간과 실제 작업 시간을 나눠 집중할 구간을 확보해.'],
+ 'rule/real':['믿을 수 있는 일을 생활의 기반으로 남기는 관리','약속을 끝내는 데 집중해 추가 시간과 비용을 계속 흡수하면 신뢰는 쌓여도 실속은 남지 않을 수 있어.','성실하게 처리한 양을 시간과 비용으로도 기록해. 책임의 범위에 가격을 붙여.'],
+ 'rule/rule':['흔들린 상황을 다시 기준 안으로 정리하는 안정','끝난 일까지 다시 확인해야 한다고 느끼면 쉬는 시간에도 다음 문제를 대비하는 역할이 남을 수 있어.','완료 확인을 한 번 남기고 다시 볼 조건을 정해. 모든 가능성을 계속 점검할 필요는 없어.'],
+ 'rule/think':['책임의 이유까지 이해하며 기준을 세우는 신뢰','상대 사정을 이해한 뒤에도 네가 맡을 몫이 분명하지 않으면 공감한 일이 추가 책임으로 이어질 수 있어.','이해한 내용과 해줄 수 있는 행동을 다른 문장으로 말해.'],
+ 'think/self':['깊게 이해한 판단을 자기 선택으로 가져가는 통찰','이유를 더 확인하는 동안 선택할 시점이 지나가면 네 준비가 실제 판단에 쓰이지 못할 수 있어.','지금 확인된 사실로 정할 일과 새 정보가 필요할 일을 나눠.'],
+ 'think/make':['복잡한 이해를 다른 사람이 쓸 결과로 바꾸는 해석','충분히 이해해야 보여줄 수 있다고 생각하면 이미 정리한 내용도 오래 안에 남아 있을 수 있어.','완벽한 전체 설명보다 지금 해결할 한 질문부터 결과물로 꺼내.'],
+ 'think/real':['이해의 깊이를 실제 생활과 수요에 연결하는 기획','자료를 더 갖추는 일과 실제로 사용할 답을 만드는 일이 분리되면 준비 비용만 쌓일 수 있어.','새 자료를 사기 전에 이미 가진 정보로 해결할 요청 하나를 정해.'],
+ 'think/rule':['이유가 있는 설명을 믿을 수 있는 기준으로 만드는 전문성','논리와 기준을 모두 확인하려 하면 아직 모르는 사실과 이미 정한 약속이 같은 검토 목록에 남을 수 있어.','추가 확인할 사실과 지금 지킬 약속을 나눠. 모든 이해가 끝나야 행동하는 구조를 줄여.'],
+ 'think/think':['흩어진 경험에서 반복되는 원리를 찾는 깊이','생각을 정리한 뒤 또 다른 이유가 떠오르면 결론을 내린 일도 계속 열린 문제처럼 남을 수 있어.','이번에 답할 질문과 다음에 탐구할 질문을 구분해. 생각의 깊이에 종료 지점을 붙여.']
+};
+const NARRATIVE_REACTION={
+ 비견:['네 의견을 확인하기 전에 결정이 끝난 상황','왜 상의하지 않았는지 먼저 짚고 싶어질 수 있어','도움을 받기 싫어한다'],
+ 겁재:['함께한 일에서 기여가 비교되거나 빠진 상황','누가 무엇을 했는지 바로 확인하고 싶어질 수 있어','항상 이기려고 한다'],
+ 식신:['대화가 길어져 생활이나 작업 리듬이 무너진 상황','말을 더 잇기보다 일단 쉬고 싶어질 수 있어','관심이 없어서 대화를 피한다'],
+ 상관:['설명과 실제 행동이 앞뒤에 맞지 않는 상황','어긋난 이유와 고칠 방법을 먼저 말하고 싶어질 수 있어','내 감정까지 틀렸다고 평가한다'],
+ 편재:['새 제안과 이미 잡은 약속이 겹친 상황','가능한 다른 일정을 먼저 찾고 싶어질 수 있어','나는 늘 후순위다'],
+ 정재:['확정한 시간이나 비용이 갑자기 바뀐 상황','다시 가능한 조건부터 맞추고 싶어질 수 있어','내 선택을 전부 관리하려 한다'],
+ 편관:['해결하지 않은 일이 급한 문제로 남은 상황','먼저 대응과 결론을 잡고 싶어질 수 있어','내 설명을 들을 마음이 없다'],
+ 정관:['서로 정한 약속의 기준이 달라진 상황','누가 무엇을 맡았는지 다시 확인하고 싶어질 수 있어','나를 채점하고 있다'],
+ 편인:['아직 이유를 충분히 이해하지 못한 상황','즉시 결론보다 생각할 시간을 갖고 싶어질 수 있어','말없이 나를 밀어낸다'],
+ 정인:['상대의 설명을 듣다가 내 요청이 뒤로 밀린 상황','사정을 더 이해하면서 대화를 이어가고 싶어질 수 있어','이해했으니 내 부탁도 전부 받아준다']
+};
 function narrativeFinalize(rows){const seen=new Set();return rows.map(r=>{const paragraphs=r.paragraphs.filter(p=>{const k=p.replace(/\s+/g,' ').trim();if(seen.has(k))return false;seen.add(k);return true;});return {...r,paragraphs,body:paragraphs.join('\n\n')};});}
 function narrativeFacts(c){
  const facts=[],add=(id,kind,key,value)=>facts.push({id,kind,pillar:key,value});
@@ -311,7 +351,10 @@ function narrativeProfile(c){
  const social=NARRATIVE_GOD[c.pillars?.month?.god]?c.pillars.month.god:ranked[0];
  const main=(c.pillars?.day?.hidden||[]).find(h=>h.role==='본기');
  const intimate=NARRATIVE_GOD[main?.god]?main.god:null;
- const extra=ranked.find(g=>g!==social&&g!==intimate)||ranked.find(g=>g!==social);
+ // Weights order interpretation sources; they are not chart strength or auspiciousness scores.
+ // A single faint hidden stem cannot become a headline talent.
+ const supported=ranked.filter(g=>scores[g]>=1-1e-9);
+ const extra=supported.find(g=>g!==social&&g!==intimate)||supported.find(g=>g!==social);
  const relation=facts.filter(f=>f.kind==='relation'),strain=relation.filter(f=>['충','형','파','해'].includes(f.value.type)),links=relation.filter(f=>/합/.test(f.value.type));
  const elements=order(c),top=elements[0],second=elements[1],dominant=top[1]>second[1]?NARRATIVE_ELEMENT[top[0]]:null;
  const stage=c.twelveStages?.day;
@@ -341,16 +384,44 @@ function narrativeBlend(p){
  if(!i)return `일과 사회적 역할에서는 ${s.label}을 읽을 수 있어. 가까운 관계의 기준은 추가 자료 없이 채우지 않을게.`;
  return p.social===p.intimate?`밖에서 쓰는 ${s.label}이 가까운 생활에서도 이어져. 사람 앞에서 보여준 방식과 편한 관계에서 원하는 기준이 같은 방향이라, 네가 무엇을 중요하게 보는지 행동이 쌓일수록 선명해져.`:`밖에서는 ${s.label}으로 문제를 풀고, 가까운 관계에서는 ${i.need}에 마음이 놓이는 구조로 읽어. 일을 능숙하게 처리하는 모습만으로 네가 받고 싶은 관심까지 설명할 수 없는 이유가 여기 있어.`;
 }
+function narrativeMechanism(p){
+ const a=NARRATIVE_FAMILY[p.social],b=NARRATIVE_FAMILY[p.intimate];
+ return a&&b?NARRATIVE_MECHANISM[a+'/'+b]:null;
+}
+function narrativePairScene(pa,pb,an,bn){
+ const ra=NARRATIVE_REACTION[pa.social],rb=NARRATIVE_REACTION[pb.social];
+ const ia=NARRATIVE_GOD[pa.intimate],ib=NARRATIVE_GOD[pb.intimate];if(!ra||!rb||!ia||!ib)return '';
+ const fa=NARRATIVE_FAMILY[pa.social],fb=NARRATIVE_FAMILY[pb.social];
+ const situation=fa==='think'||fb==='think'?'중요한 결정을 오늘 안에 해야 하는데 한쪽이 아직 생각을 정리하지 못한 상황':fa==='real'||fb==='real'?'함께 정한 일정에 예상하지 못한 비용과 새 약속이 겹친 상황':fa==='self'||fb==='self'?'둘의 일정에 영향을 주는 선택을 한 사람이 먼저 확정한 상황':fa==='make'||fb==='make'?'함께 준비한 일에 수정 요청이 들어와 계획한 휴식까지 밀린 상황':'함께 정한 역할이 끝나지 않아 누가 마무리할지 다시 이야기하는 상황';
+ const common=pa.social===pb.social?`두 사람 모두 ${ra[1]}. 같은 반응이 나올 수 있으니 서로 반대 유형으로 몰지 않고 누가 먼저 요청을 말하고 누가 알아들은 뜻을 확인할지 정해.`:`${an}은 ${ra[0]}에 민감하게 반응하는 기준이라 ${ra[1]}. ${bn}은 ${rb[0]}을 먼저 살피며 ${rb[1]}.`;
+ return `예를 들어 ${situation}이라면 이렇게 확인해볼 수 있어. ${common} ${an}의 반응을 “${ra[2]}”, ${bn}의 반응을 “${rb[2]}”로 바로 결론내리면 의도 확인보다 평가가 먼저 나와. ${an}은 “${ia.request}”, ${bn}은 “${ib.request}”라고 요청을 밖으로 꺼내. 두 사람의 실제 반응이 이 예시와 다르면 실제 대화를 우선해서 맞춰.`;
+}
 function narrativeRows(c,existingModel){
  const p=narrativeProfile(c),s=NARRATIVE_GOD[p.social],i=NARRATIVE_GOD[p.intimate]||s,e=NARRATIVE_GOD[p.extra];
  if(!s)return [{id:'self',title:'확인할 명식 자료가 필요해',body:'주요 십성 자료가 없어 인물과 생활을 임의로 설명하지 않을게.',paragraphs:['주요 십성 자료가 없어 인물과 생활을 임의로 설명하지 않을게.'],evidence:ev(c),lead:true}];
+ if(!p.intimate){
+  // Missing close-life evidence is not a licence to reuse the social trait as a hidden need.
+  const limited=[
+   ['self','확인된 사회적 역할부터 읽어볼게',[s.scene,s.value]],
+   ['inside','가까운 생활의 기준은 추가 자료가 필요해',['일지 지장간 본기 자료가 없어 사회적 역할을 숨은 욕구로 바꾸어 설명하지 않을게.','혼자 있을 때 필요한 시간과 가까운 사람에게 원하는 행동은 실제 경험으로 먼저 확인해.']],
+   ['people','사람에게 보이는 기여',[`확인된 사회적 역할에서는 ${s.label}을 읽어. ${s.value}`,`이 인상이 가까운 생활에서도 같은지는 자료 없이 정하지 않아. 이번 만남에서 원하는 행동을 직접 확인해.`]],
+   ['love','애정의 기준을 확인할 때',['현재 자료만으로 받고 싶은 애정이나 결혼의 성향을 정하지 않을게. 일지 지장간 본기 자료가 전달되면 밖의 역할과 가까운 생활을 연결해 읽을 수 있어.','지금은 어떤 행동에서 사랑받는다고 느끼는지 실제 대화로 확인해.']],
+   ['work','확인된 재능의 사용처',[`사회적 역할에서 활용할 방향은 ${s.work}이야. ${s.move}`,`이 정보로 직업의 성공을 단정하지 않고 실제 업무의 권한과 환경을 비교해. ${s.cost}`]],
+   ['money','가치를 수입으로 옮길 방향',[`확인된 역할을 수입에 연결할 방법은 ${s.money}이야.`,`${s.budget} 가까운 생활의 소비 성향은 일지 근거 없이 새로 정하지 않아.`]],
+   ['timing','운의 계산 자료부터 확인해',['원국의 가까운 생활 기준이 빠져 있어 현재 운과 인물 전체를 연결한 해석은 보류할게.','기존 운 계산값과 출생 자료를 확인한 뒤 역할과 생활의 변화를 이어서 읽어.']],
+   ['stars','신살을 추가 성격으로 채우지 않아',['원국 자료가 일부 빠져 있으니 별의 이름으로 숨은 성격과 실제 과거를 채우지 않을게.','기존 신살 자세히 보기의 실제 성립 위치와 판정 근거를 먼저 확인해.']],
+   ['core','확인된 힘과 확인할 자료를 나눠',[`지금 확인되는 활용 방향은 ${s.label}이야. ${s.move}`,'일지 지장간 본기 자료가 있어야 가까운 관계의 기준과 인물 전체를 연결할 수 있어. 확인되지 않은 부분은 실제 경험으로 먼저 살펴.']]
+  ];
+  return limited.map(([id,title,paragraphs])=>({id,title,paragraphs,body:paragraphs.join('\n\n'),lead:true,eyebrow:'',evidence:narrativeEvidence(p,p.sources[p.social]||[]),claims:p.sources[p.social]||[]}));
+ }
  const baseIds=['pillar:day','pillar:month',...(p.sources[p.social]||[]),...(p.sources[p.intimate]||[]),'season'];
  const rows=[],add=(id,title,paragraphs,ids=baseIds)=>{const clean=paragraphs.filter(Boolean);rows.push({id,title,eyebrow:'',lead:true,paragraphs:clean,body:clean.join('\n\n'),evidence:narrativeEvidence(p,[...new Set(ids)]),claims:ids.filter(id=>p.facts.some(f=>f.id===id))});};
  const model=existingModel||(typeof BaseExpert.personModel==='function'?BaseExpert.personModel(c):{}),strength=model.structure?.strength;
  const structural=Number.isFinite(Number(strength?.score))&&strength?.evidence?(Number(strength.score)>=58?`원국의 계절·뿌리·배치를 함께 본 기존 지지력 평가에서는 네 판단을 유지할 자원이 모이는 쪽이야. ${s.label}을 네가 정한 결과에 쓰는 환경이 중요해.`:Number(strength.score)<=44?`원국의 계절·뿌리·배치를 함께 본 기존 지지력 평가에서는 주변 조건과 지원을 함께 챙길 필요가 있어. ${s.label}을 쓸 집중 시간과 역할의 경계가 확보될 때 네 기여가 더 선명하게 남아.`:`원국의 계절·뿌리·배치를 함께 본 기존 지지력 평가에서는 스스로 판단하는 일과 주변 자원을 받는 일을 함께 살펴. ${s.label}을 쓸 일과 도움받을 일을 나눠보는 게 좋아.`):'';
  const climate=p.season==='봄'?'성장과 확장을 살피는 봄의 배경':p.season==='여름'?'표현과 실행을 살피는 여름의 배경':p.season==='가을'?'구분과 결실을 살피는 가을의 배경':p.season==='겨울'?'준비와 축적을 살피는 겨울의 배경':'';
+ const mechanism=narrativeMechanism(p);
  add('self','1. '+s.title,[
-  s.scene,s.value,narrativeBlend(p),
+  s.scene,s.value,narrativeBlend(p),mechanism?`두 힘이 함께 만드는 재능은 ${mechanism[0]}이야. ${s.label}으로 시작한 일을 ${i.label}이라는 가까운 기준까지 이어갈 때 한 가지 장점만으로 설명할 수 없는 네 방식이 나타나.`:'',
   e?`함께 확인되는 또 하나의 자원은 ${e.label}이야. ${e.scene} 그래서 너를 ${s.label} 하나로만 설명하면 놓치는 부분이 생겨.`:'',
   climate?`${climate} 위에서 이 두 기준을 함께 읽었어. ${p.dominant?'오행 분포에서는 '+p.dominant[1]+'도 눈에 띄어. 이 분포는 위 행동을 읽는 보조 관점이야.':'오행 상위가 겹쳐 한 가지 성향으로 몰지 않고 역할의 차이를 먼저 봐.'}`:'',
   `네 가치는 ${s.label}을 실제 결과에 쓰는 데 있어. 잘하는 일을 이미 익숙하다는 이유로 작게 보지 마. ${s.move}`
@@ -358,6 +429,7 @@ function narrativeRows(c,existingModel){
  add('inside','2. 잘해내는 너에게도 필요한 것이 있어',[
   narrativeBlend(p),`가까운 생활에서 중요한 기준을 장면으로 풀면 이래. ${i.scene} 네가 받고 싶은 관심은 ${i.need}에 더 가까워.`,
   `이 힘을 쓰면서 부담이 되는 조건은 분명해. ${s.cost} ${p.intimate!==p.social?i.cost:''}`,
+  mechanism?`두 기준이 동시에 켜지는 장면도 봐. ${mechanism[1]} 이건 실제로 겪은 과거를 단정하는 말이 아니라, 네가 지치는 조건을 확인해볼 기준이야.`:'',
   structural,
   narrativeRelation(p),typeof p.stage==='string'&&QUALITY_STAGE[p.stage]?`에너지를 쓰는 과정을 보는 보조 상징도 있어. ${QUALITY_STAGE[p.stage]}`:'',
   `회복은 성격을 고치는 숙제가 아니야. ${i.pause} 도움을 요청할 때는 이렇게 말해봐. “${i.request}”`
@@ -385,6 +457,7 @@ function narrativeRows(c,existingModel){
   `사업에서는 ${s.money}을 작은 거래로 먼저 확인해. ${s.budget} 독립의 유불리는 이 재능만으로 정하지 않고 실제 거래와 비용을 함께 봐.`,
   `리더십의 자산은 ${s.label}이야. ${s.cost} ${s.move} 팀이 이 기준을 이해하고 직접 결정할 몫도 함께 정해.`,
   e?`아직 드러나지 않은 가능성은 ${e.label}의 사용처에서 찾아. ${e.move}`:`이미 가진 ${s.label}을 더 선명한 결과로 남겨봐. ${s.move}`
+  ,mechanism?`일의 운영 기준은 이렇게 정해봐. ${mechanism[2]} ${s.work}에서 이 기준이 지켜지는지 확인하면 적성이라는 말이 실제 환경 선택으로 이어져.`:''
  ],[...baseIds,...(p.sources[p.extra]||[])]);
  add('money','6. 돈을 만드는 재능과 실제로 남기는 기준',[
   `수입으로 연결할 방향은 ${s.money}이야. ${s.label}이 고객에게 어떤 결과로 전달됐는지 보여줘야 그 기여를 다시 선택할 이유가 생겨.`,
@@ -407,6 +480,7 @@ function narrativeRows(c,existingModel){
  add('core','9. 너의 힘을 앞으로 이렇게 써봐',[
   `너를 한 가지 단어로 줄이지 않을게. ${s.label}으로 세상에 기여하고 ${i.need}에서 마음의 기준을 찾는 사람이야. ${e?'여기에 '+e.label+'까지 확인돼, 주된 능력의 사용처를 넓힐 자원이 있어.':''}`,
   `이번 주 첫 행동은 이거야. ${s.move} 다음에는 ${i.pause} 결과를 만든 능력과 그 능력을 유지할 조건을 함께 챙겨.`,
+  mechanism?`반복되는 선택을 바꾸고 싶다면 ${mechanism[2]}`:'',
   `너의 ${s.label}은 ${s.work}에서 가치가 드러나고, 가까운 생활에서는 ${i.need}이 유지될 때 마음의 여유도 지킬 수 있어. 둘 중 어느 조건이 비어 있는지부터 확인하면 더 애쓸 일과 방식을 바꿀 일을 나누기 쉬워.`
  ]);
  return narrativeFinalize(rows);
@@ -449,6 +523,7 @@ function premiumCompatibilitySections(x){
   `함께 일정을 잡는다면 ${an}은 “${ia.request}”, ${bn}은 “${ib.request}”라고 말해볼 수 있어. 이 두 요청이 함께 반영된 경험이 쌓이면 서로에게 편한 관계의 조건이 선명해져.`
  ]);
  add('pair-conflict','3. 같은 일을 다르게 받아들이는 순간',[
+  narrativePairScene(pa,pb,an,bn),
   friction,`${an} 쪽에서 부담이 생기는 조건은 ${sa.cost} ${bn} 쪽에서는 ${sb.cost}`,
   `이 장면이 실제로 있다면 의도를 추측하기 전에 각자 원했던 행동을 확인해. ${an}: “${ia.request}” ${bn}: “${ib.request}”`,
   pa.social===pb.social?`둘 다 ${sa.label}으로 문제를 풀려는 만큼 같은 기준을 서로에게 증명하려는 논쟁에 빠지지 않는 게 좋아. 대화에서는 한 사람이 먼저 요청을 말하고 다른 사람이 알아들은 뜻을 확인한 뒤 역할을 바꿔.`:`${an}이 문제를 ${sa.label}으로 정리하는 동안 ${bn}은 ${sb.label}의 기준을 먼저 확인할 수 있어. 한 사건에서 해결할 일과 들어줄 마음을 각각 묻고, 둘 중 하나만 끝났다고 대화를 마치지 마.`,
@@ -533,7 +608,7 @@ function fortuneActions(c,period='today'){
  return {...original,actions:[`${v.label}은 이번 기간의 주제야. 평소 ${s.label}과 ${p.social===original.god?'같은 역할을 쓰니 익숙한 일을 실제로 끝낼 범위를 정해.':'다른 역할이 들어오니 지금 필요한 조건을 먼저 확인해.'}` ,`${v.move} 돈에서는 ${s.budget}`,`관계에서는 ${i.need}이 지금 어떻게 채워지는지 봐. “${i.request}”처럼 필요한 행동을 말해.`],evidence:original.evidence+' / '+narrativeEvidence(p,[...(p.sources[p.social]||[]),...(p.sources[p.intimate]||[])])};
 }
 
-function pmodel(c){const base=typeof BaseExpert.personModel==='function'?BaseExpert.personModel(c):{};return {...base,version:'premium-evidence-v5',human_reading:premiumSections(c,base).map(s=>({id:s.id,title:s.title,body:s.body,evidence:s.evidence})),star_contexts:premiumStarContexts(c).map(r=>({title:r.title,facts:r.facts,evidence:r.evidence})),star_synthesis:premiumStarSynthesis(c),calculation_only:true};}
+function pmodel(c){const base=typeof BaseExpert.personModel==='function'?BaseExpert.personModel(c):{};return {...base,version:'premium-evidence-v5.1',human_reading:premiumSections(c,base).map(s=>({id:s.id,title:s.title,body:s.body,evidence:s.evidence})),star_contexts:premiumStarContexts(c).map(r=>({title:r.title,facts:r.facts,evidence:r.evidence})),star_synthesis:premiumStarSynthesis(c),calculation_only:true};}
 // Compatibility
 function prof(c){const a=order(c);return {c,n:name(c),hi:a[0],lo:a[4],g:mg(c),b:branch(c),dm:c?.dayMaster?.el||c?.pillars?.day?.stemEl||'',stem:c?.dayMaster?.stem||c?.pillars?.day?.stem||''};}
 function pairSeed(A,B,s){return hash([A.c?.pillars?.day?.ko,B.c?.pillars?.day?.ko,A.c?.pillars?.month?.ko,B.c?.pillars?.month?.ko,s].join('|'));} function pp(a,A,B,s){return a[pairSeed(A,B,s)%a.length];}
@@ -555,5 +630,5 @@ function legacyFortuneActions(c,period='today'){
 
 root.GuiinExpert={...BaseExpert,premiumStarContexts,premiumStarSynthesis,starFacts,starIntegratedNames:Object.keys(STAR_INTEGRATED),narrativeProfile,narrativeFacts,premiumProfile,premiumBehavior,fortuneActions,timingSections,relationshipSections,fullSections:premiumSections,premiumCompatibilitySections,behaviorSections:sections,personalitySections:c=>premiumSections(c).filter(s=>!['work','career','money','leak','timing'].includes(s.id)),fieldSections:c=>premiumSections(c).filter(s=>['work','career','money','leak','love','timing'].includes(s.id)),personModel:pmodel};
 root.GuiinCompat={...BaseCompat,build:compatBuild,pick:compatPick};
-root.GUIIN_INTERPRETATION_V4={version:'premium-evidence-v5',rules:{humanFirst:true,jargonInBody:false,confidentTone:true,repeatCards:false}};
+root.GUIIN_INTERPRETATION_V4={version:'premium-evidence-v5.1',rules:{humanFirst:true,jargonInBody:false,confidentTone:true,repeatCards:false}};
 })(typeof globalThis!=='undefined'?globalThis:this);
