@@ -50,7 +50,7 @@
 <script src="deep-interpretation-v3.js?v=20260918e"></script>
 <script src="guiin-runtime-config.js?v=20260920prod1"></script>
 <script src="guiin-production-guard-v6.27.js?v=20261004v627"></script>
-<script src="member-data-v1.js?v=20261008-quality-audit"></script>
+<script src="member-data-v1.js?v=20261009-ai-context"></script>
 <script src="https://js.tosspayments.com/v2/standard"></script>
 <script defer src="toss-payment.js?v=20261004v627"></script>
 <style>
@@ -2010,8 +2010,8 @@ html{-webkit-text-size-adjust:100%;text-size-adjust:100%}
     <button type="button" onclick="clearAIChat()">대화 지우기</button>
   </div>
   <div class="msgs" id="msgs" aria-live="polite">
-    <div class="sysnote">귀인사주 상담이 시작되었습니다</div>
-    <div class="bubble bot" id="welcomeBot">사주를 먼저 계산해 두면 원국 기준으로 답합니다. 직업, 재물, 연애, 올해 흐름 중 무엇이 궁금한가요?</div>
+    <div class="sysnote">귀인사주 상담을 시작할게</div>
+    <div class="bubble bot" id="welcomeBot">사주를 먼저 계산하면 그 원국을 기준으로 답할게. 직업, 재물, 연애, 올해 흐름 중 무엇이 궁금해?</div>
   </div>
   <div id="askQuestionExamples" class="askExampleBox card">
     <div class="askExampleHead"><div><b>질문 예시</b><span>예시를 눌러도 바로 차감되지 않아요. 문장을 확인하거나 고친 뒤 보내기를 누르면 질문이 시작돼요.</span></div><button id="askExampleMoreBtn" type="button" onclick="guiinToggleAllExamples()">전체 20개 보기</button></div>
@@ -5186,6 +5186,8 @@ function submitMatch(){
   }catch(err){console.warn('GUIIN_COMPAT_PROFILE_SYNC_DEFERRED',err?.message||err);}
   const compatMetrics=guiinCompatMetricsV56(a,b);
   const {score,love,personality,money,future,band}=compatMetrics;
+  // Preserve the already computed relationship evidence for AI; no new score.
+  const aiRelationship=JSON.parse(JSON.stringify({signals:compatMetrics.q?.sig||null,dayRelation:compatMetrics.q?.dayRel||null}));
   matchMeta={a,b,score,love,personality,money,future,good:score>=82?'기본적인 호감과 상호 보완 가능성이 큰 편입니다. 서로 다른 강점을 역할로 나누면 함께 있을 때 혼자보다 선택지가 넓어질 수 있습니다.':'차이가 분명한 만큼 서로에게 없는 방식을 배우게 되는 관계입니다. 맞는 부분만 찾기보다 각자의 강점을 역할로 나누는 것이 중요합니다.',watch:compatMetrics.q?.dayRel==='충'?'일지의 충 신호가 있어 감정의 속도나 생활 리듬이 다를 때 갈등이 크게 느껴질 수 있습니다. 다툼 자체보다 다툰 뒤 어떻게 회복하는지가 핵심입니다.':'감정이 좋을 때는 차이를 매력으로 느끼지만, 피곤할 때는 같은 차이가 답답함으로 느껴질 수 있습니다. 특히 책임과 돈 문제를 말없이 넘기지 않는 것이 중요합니다.',tip:'연락·돈·시간·집안일·가족·혼자 있는 시간에 대한 기준을 구체적으로 맞추세요. 좋은 궁합은 점수보다 반복되는 갈등을 두 사람이 실제로 조율할 수 있을 때 오래 갑니다.'};
   const matchHeadline=score>=86?'보완성과 결속이 큰 관계예요.':score>=78?'끌림과 조율이 함께 필요한 관계예요.':score>=68?'차이를 맞춰갈수록 좋아지는 관계예요.':'점수보다 생활 합의가 더 중요한 관계예요.';
   const pairNow=compatPairProfile(a.dayMaster?.el||a.pillars?.day?.stemEl||'토',b.dayMaster?.el||b.pillars?.day?.stemEl||'토');
@@ -5196,6 +5198,7 @@ function submitMatch(){
    <div class="infoCard card"><h3>세부 궁합 지수</h3>${[['연애·끌림',love,'pink'],['성격·대화',personality,'mint'],['돈·생활',money,'gold'],['장기조율',future,'purple']].map(x=>`<div class="scoreRow"><span>${x[0]}</span><div class="scoreBar"><i class="${x[2]}" style="width:${x[1]}%"></i></div><b>${x[1]}</b></div>`).join('')}</div>`+
    guiinRenderMansePair(a,b);
   if(typeof GuiinCompat==='undefined') throw new Error('compatibility-interpreter.js가 로드되지 않았습니다.');
+  matchMeta.aiRelationship=aiRelationship;
   matchAnalysis=GuiinCompat.build(a,b,score);
   GUIIN_VERIFIED_ENTITLEMENTS.compat=false;GUIIN_PAID_RESOURCE_CONTEXT.PREMIUM_COMPAT=null;
   matchTab='summary';
@@ -6502,7 +6505,7 @@ function syncAskContext(){
     meta.textContent='명식이 있으면 그 결과를 기준으로 답해요.';
     if(heroTitle)heroTitle.textContent='사주를 기준으로 깊게 물어보세요.';
     if(heroCopy)heroCopy.textContent='사주를 먼저 계산하면 원국과 현재 흐름을 바탕으로 상담해드려요.';
-    if(welcome)welcome.textContent='사주를 먼저 계산해 두면 원국 기준으로 답합니다. 직업, 재물, 연애, 올해 흐름 중 무엇이 궁금한가요?';
+    if(welcome)welcome.textContent='사주를 먼저 계산하면 그 원국을 기준으로 답할게. 직업, 재물, 연애, 올해 흐름 중 무엇이 궁금해?';
     return;
   }
   const name=String(chart?.input?.name||'사용자').trim()||'사용자';
@@ -6538,7 +6541,24 @@ function guiinClearPendingAI(key){
   try{sessionStorage.removeItem(key);}catch(_e){}
 }
 
-function guiinChartPayload(){
+function guiinCurrentAIChart(){return chart;}
+const GUIIN_AI_CALENDAR_CACHE=new WeakMap();
+const GUIIN_AI_PAYLOAD_CACHE=new WeakMap();
+function guiinAISeoulToday(){
+  const parts=new Intl.DateTimeFormat('en-US',{timeZone:'Asia/Seoul',year:'numeric',month:'numeric',day:'numeric'}).formatToParts(new Date());
+  const p=Object.fromEntries(parts.map(x=>[x.type,x.value]));return new Date(Number(p.year),Number(p.month)-1,Number(p.day),12);
+}
+function guiinAIRequestChart(q){
+  const cp=guiinChartPayload();if(!cp)return cp;
+  const context=(guiinAIHistory||[]).slice(-4).map(r=>r.content||'').join(' ');
+  const pairQuestion=/궁합|우리|두 사람|둘이|상대/.test(String(q))||(/^(왜|그럼|그래서|후자|전자|더|자세히|응|웅)/.test(String(q))&&/궁합|두 사람|둘이/.test(context));
+  cp.compatibility_requested=pairQuestion;
+  if(pairQuestion&&matchMeta?.a?.pillars&&matchMeta?.b?.pillars){
+    cp.compatibility={a:guiinChartPayload(matchMeta.a),b:guiinChartPayload(matchMeta.b),metrics:{score:matchMeta.score,love:matchMeta.love,personality:matchMeta.personality,money:matchMeta.money,future:matchMeta.future},relationship:matchMeta.aiRelationship||null};
+  }
+  return cp;
+}
+function guiinChartPayload(chart=guiinCurrentAIChart()){
   if(!chart||!chart.pillars)return null;
 
   const val=p=>p&&((p.ko||'')||(String(p.stem||'')+String(p.branch||'')));
@@ -6547,19 +6567,26 @@ function guiinChartPayload(){
     catch(_e){return null;}
   };
 
-  const now=new Date();
+  const now=guiinAISeoulToday();
+  const payloadKey=JSON.stringify([now.getFullYear(),now.getMonth(),now.getDate(),chart.input,chart.pillars]);
+  const cachedPayload=GUIIN_AI_PAYLOAD_CACHE.get(chart);
+  if(cachedPayload?.key===payloadKey)return safePlain(cachedPayload.value);
   const currentLuckRow=currentLuck(chart);
 
   let yearFlow=null;
+  const calendarKey=[now.getFullYear(),now.getMonth(),now.getDate(),chart?.pillars?.day?.stemIndex,chart?.input?.hourUnknown?12:chart?.input?.hour,chart?.input?.minute,chart?.input?.dayBoundary].join('|');
+  const cachedCalendar=GUIIN_AI_CALENDAR_CACHE.get(chart);
   try{
-    if(globalThis.GuiinSaju&&typeof globalThis.GuiinSaju.flowForDate==='function'){
+    if(cachedCalendar?.key===calendarKey)yearFlow=cachedCalendar.value;
+    else if(globalThis.GuiinSaju&&typeof globalThis.GuiinSaju.flowForDate==='function'){
       yearFlow=globalThis.GuiinSaju.flowForDate(
         now.getFullYear(),now.getMonth()+1,now.getDate(),
         chart?.pillars?.day?.stemIndex,
-        Number(chart?.input?.hourUnknown?12:(chart?.input?.hour||12)),
+        Number(chart?.input?.hourUnknown?12:(chart?.input?.hour??12)),
         Number(chart?.input?.minute||0),
         {dayBoundary:chart?.input?.dayBoundary||'23'}
       );
+      GUIIN_AI_CALENDAR_CACHE.set(chart,{key:calendarKey,value:yearFlow});
     }
   }catch(_e){yearFlow=null;}
 
@@ -6691,6 +6718,21 @@ function guiinChartPayload(){
     person_model:safePlain(personModel)
   };
 
+  out.birth_info=safePlain(chart.input);
+  out.month_command={pillar:chart.pillars.month.ko,branch:chart.pillars.month.branch,god:chart.pillars.month.god};
+  out.day_branch=chart.pillars.day.branch;
+  out.twelve_stages=safePlain(chart.twelveStages||null);
+  out.precision=safePlain(chart.calculation||null);
+  out.structure_assessment=chart.engine2?{source:'existing-engine2',verification:'heuristic-not-validated-yongshin',strength:safePlain(chart.engine2.strength),structure:safePlain(chart.engine2.structure)}:null;
+  out.verified_useful_elements=null;
+  out.daeun=safePlain(chart.luck||null);
+  out.star_registry={registered:chart.stars?.catalogCount||null,calculated:chart.stars?.supportedCount||null,actual_names:[...new Set((chart.stars?.hits||[]).map(h=>h.name))]};
+  out.star_contexts=(globalThis.GuiinExpert?.premiumStarContexts?.(chart)||[]).map(r=>({name:r.title,facts:r.facts.map(h=>({pillar:h.pillar,basis:h.basis,ko:h.ko,stemGod:h.stemGod,mainGod:h.mainGod,stemElement:h.stemElement,branchElement:h.branchElement,stage:h.stage,relations:h.relations.map(x=>({type:x.type,aKey:x.aKey,bKey:x.bKey}))}))}));
+  if(yearFlow?.pillars){
+    out.current_seun={...safePlain(yearFlow.pillars.year),god:yearFlow.gods?.year||null,stage:yearFlow.stages?.year||null};
+    out.current_wolun={...safePlain(yearFlow.pillars.month),god:yearFlow.gods?.month||null,stage:yearFlow.stages?.month||null};
+    out.current_ilun={...safePlain(yearFlow.pillars.day),god:yearFlow.gods?.day||null,stage:yearFlow.stages?.day||null};
+  }
   if(out.person_model&&typeof out.person_model==='object')out.person_model.uncertainty={...(out.person_model.uncertainty||{}),...out.uncertainty};
 
   // v6.33: share the exact same interpretation evidence with the AI request.
@@ -6702,7 +6744,9 @@ function guiinChartPayload(){
       if(out.person_model&&typeof out.person_model==='object')out.person_model.interpretation_bridge=b;
     }
   }catch(_e){console.warn('GUIIN_V633_CONTEXT_BRIDGE_DEFERRED')}
-  return out.year&&out.month&&out.day?out:null;
+  if(!out.year||!out.month||!out.day)return null;
+  GUIIN_AI_PAYLOAD_CACHE.set(chart,{key:payloadKey,value:safePlain(out)});
+  return out;
 }
 
 
@@ -6826,10 +6870,12 @@ function guiinFollowupItems(q,answer){
 function guiinRenderFollowups(q,answer,serverItems){
   const box=$('msgs');if(!box)return;
   box.querySelectorAll('.followupBox').forEach(x=>x.remove());
+  if(/고마워|감사|그만|여기까지|됐어|마칠게|끝낼게/.test(String(q)))return;
   const d=document.createElement('div');d.className='followupBox';
   const remote=Array.isArray(serverItems)?serverItems.filter(x=>x&&x.question).slice(0,3).map(x=>[x.label||'이어보기',x.question]):[];
-  const items=remote.length?remote:guiinFollowupItems(q,answer);
-  items.push(['더 깊게 보기','방금 답변을 같은 말을 반복하지 말고 명리 근거와 실제 생활 장면을 더 연결해서 한 단계 깊게 풀어줘.']);
+  const answered=new Set(guiinAIHistory.filter(r=>r?.role==='user').map(r=>String(r.content||'').replace(/\s+/g,'')));
+  const items=(remote.length?remote:guiinFollowupItems(q,answer)).filter(x=>!answered.has(String(x[1]).replace(/\s+/g,''))).slice(0,1);
+  if(!items.length)return;
   d.innerHTML=`<b>여기서 더 이어볼까?</b><div class="followupChips">${items.map(x=>`<button type="button" data-ai-question="${esc(x[1])}">${esc(x[0])}</button>`).join('')}</div><div class="followupHint">버튼을 눌러도 바로 질문 횟수가 차감되지 않아. 입력창에서 확인한 뒤 보내기를 누르면 질문이 시작돼.</div>`;
   box.appendChild(d);box.scrollTop=box.scrollHeight;
 }
@@ -6952,17 +6998,19 @@ async function sendQ(preset){
 
   if(!chart)restoreProfile();
 
-  const cp=guiinChartPayload();
+  const cp=guiinAIRequestChart(q);
   if(!cp){
     guiinAppend('sysnote','AI가 내 사주를 기준으로 답하려면 사주를 먼저 계산해 주세요.');
     setTimeout(()=>go('saju'),450);
     return;
   }
 
+  guiinAISending=true;
   try{if(!GUIIN_SERVER_ACCOUNTING?.authoritative)await guiinRefreshServerState({silent:true});}catch(_e){}
   let freeRemaining=Math.max(0,3-freeUsed()),paidRemaining=Number(wallet?.coins||0),serverAuthoritative=false;
   try{if(GUIIN_SERVER_ACCOUNTING?.authoritative){serverAuthoritative=true;freeRemaining=Math.max(0,Number(GUIIN_SERVER_ACCOUNTING?.free?.remaining||0));paidRemaining=Math.max(0,Number(GUIIN_SERVER_ACCOUNTING?.wallet?.available||0));}}catch(_e){}
   if(freeRemaining<=0&&paidRemaining<=0){
+    guiinAISending=false;
     guiinAppend('sysnote','사용할 수 있는 무료 질문이나 AI 이용권이 없어. 이용권을 확인해줘.');
     syncWalletViews();
     return;
@@ -6977,11 +7025,11 @@ async function sendQ(preset){
 
   const status=document.createElement('div');
   status.className='sysnote aiWaitDots';
-  status.textContent='사주 근거를 확인해 답변을 만들고 있어요';
+  status.textContent='사주 근거를 확인해 답변을 만들고 있어';
   $('msgs')?.appendChild(status);
 
   const controller=new AbortController();
-  const waitHint=setTimeout(()=>{if(status?.isConnected){status.classList.remove('aiWaitDots');status.textContent='조금만 더 확인하고 있어요. 답변이 길어져도 중복 없이 정리할게요…';}},7000);
+  const waitHint=setTimeout(()=>{if(status?.isConnected){status.classList.remove('aiWaitDots');status.textContent='조금만 더 확인하고 있어. 답변이 길어져도 중복 없이 정리할게…';}},7000);
   const timer=setTimeout(()=>controller.abort(),45000);
 
   const requestMeta=guiinAIRequestMeta(q,cp);
@@ -6991,7 +7039,7 @@ async function sendQ(preset){
       serverContext=guiinResumedConversationContext||window.GuiinMemberData.currentContext?.(chart)||null;
       if(!serverContext){
         const warm=guiinPrewarmAIContext();
-        const quickWait=new Promise(resolve=>setTimeout(()=>resolve(null),180));
+        const quickWait=new Promise(resolve=>setTimeout(()=>resolve(null),6000));
         serverContext=(await Promise.race([warm,quickWait]))||window.GuiinMemberData.currentContext?.(chart)||null;
       }
     }
@@ -7000,6 +7048,7 @@ async function sendQ(preset){
   }
   try{
     const message=q;
+    if(window.GuiinMemberData&&!serverContext?.conversationId)throw new Error('conversation_prepare_failed');
 
     const res=await fetch(GUIIN_AI_API,{
       method:'POST',
@@ -7061,10 +7110,16 @@ async function sendQ(preset){
   }catch(err){
     console.error('GUIIN_AI_CHAT_ERROR',err);
 
+    const failure=String(err?.message||'');
     status.textContent=
-      err?.name==='AbortError'
-        ? '답변이 조금 늦어지고 있어요. 잠시 후 다시 질문해 주세요. 이번 질문은 차감되지 않았어요.'
-        : '상담사가 잠시 자리를 비웠나 봐요. 잠시 후 다시 말을 걸어주세요! 이번 질문은 무료 횟수나 AI 상담 이용권에서 차감되지 않았어요.';
+      /conversation_prepare_failed|context_session_changed|conversation_chart_mismatch/.test(failure)
+        ? '상담 프로필과 기록 연결을 확인하지 못했어. 현재 계정과 사주 프로필을 확인한 뒤 다시 보내줘.'
+        : failure==='ai_quality_validation_failed'
+          ? '명식과 답변의 일치 검사를 통과하지 못해서 답변을 보내지 않았어. 잠시 뒤 다시 질문해줘.'
+          : err?.name==='AbortError'||failure==='ai_request_timeout'
+            ? '아직 답변을 받지 못했어. 이용내역에서 처리 결과를 확인한 뒤 다시 보내줘.'
+            : '상담 연결에 문제가 생겼어. 이용내역에서 처리 결과를 확인한 뒤 다시 보내줘.';
+    if(GUIIN_SERVER_ACCOUNTING?.authoritative){try{await guiinRefreshServerUsage({silent:true});}catch(_e){}}
 
   }finally{
     clearTimeout(timer);

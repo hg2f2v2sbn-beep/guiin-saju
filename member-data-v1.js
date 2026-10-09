@@ -222,7 +222,9 @@
   function rowKey(row={}){return profileKey(row);}
 
   async function listProfiles(){
+    const owner=subjectKey();
     const d=await request("/api/profiles",{method:"GET",headers:{"Accept":"application/json"}});
+    if(subjectKey()!==owner)throw new Error("context_session_changed");
     const rows=Array.isArray(d?.profiles)?d.profiles:[];
     try{set(ls(),PROFILE_CACHE_KEY,JSON.stringify(rows));}catch(_){}
     return rows;
@@ -245,15 +247,18 @@
     if(!Number.isInteger(payload.birth_year)||!Number.isInteger(payload.birth_month)||!Number.isInteger(payload.birth_day)){
       throw new Error("profile_input_incomplete");
     }
-    const key=profileKey(payload);
+    const key=subjectKey()+"|"+profileKey(payload);
     if(profileSyncPromises.has(key))return profileSyncPromises.get(key);
 
     const job=(async()=>{
+      const owner=subjectKey();
       let rows=[];
       try{rows=await listProfiles();}catch(_){rows=cachedProfiles();}
+      if(subjectKey()!==owner)throw new Error("context_session_changed");
       const found=rows.find(x=>rowKey(x)===key);
       if(found){markLocalProfileOwner();return found;}
       const created=await saveProfilePayload(payload);
+      if(subjectKey()!==owner)throw new Error("context_session_changed");
       status("profile_synced",created?.id||"created");
       markLocalProfileOwner();
       try{await listProfiles();}catch(_){}
@@ -291,7 +296,7 @@
   function chartFacts(c){
     try{
       if(typeof root.guiinChartPayload==="function"){
-        const x=root.guiinChartPayload();
+        const x=root.guiinChartPayload(c);
         if(x&&typeof x==="object")return x;
       }
     }catch(_){}
@@ -376,20 +381,30 @@
     });
     return d?.conversation||null;
   }
-  async function ensureConversation(c,question=""){
+  const pendingConversations=new Map();
+  function ensureConversation(c,question=""){
+    if(!c?.pillars)return Promise.resolve(null);
+    const key=contextKey(c);if(pendingConversations.has(key))return pendingConversations.get(key);
+    const task=prepareConversation(c,question).finally(()=>pendingConversations.delete(key));pendingConversations.set(key,task);return task;
+  }
+  async function prepareConversation(c,question=""){
     if(!c?.pillars)return null;
-    const key=contextKey(c), map=contextMap();
+    const owner=subjectKey(),key=contextKey(c), map=contextMap();
+    const assertOwner=()=>{if(subjectKey()!==owner)throw new Error("context_session_changed");};
     const old=map[key];
     if(old?.conversationId&&old?.chartSnapshotId)return old;
 
     let profile=null;
     try{profile=await syncProfile(c);}catch(_){}
+    assertOwner();
     const snap=await createChartSnapshot(c,profile?.id||null);
+    assertOwner();
     if(!snap.chartSnapshotId)throw new Error("chart_snapshot_create_failed");
     const name=String(c?.input?.name||"사용자").trim()||"사용자";
     const q=String(question||"").trim().replace(/\s+/g," ");
     const title=q?`${name} · ${q.slice(0,42)}`:`${name}님의 AI 사주상담`;
     const conv=await createConversation(title,snap.chartSnapshotId);
+    assertOwner();
     if(!conv?.id)throw new Error("conversation_create_failed");
 
     const ctx={
@@ -398,8 +413,8 @@
       profileId:profile?.id||null,
       createdAt:new Date().toISOString()
     };
-    map[key]=ctx;
-    saveContextMap(map);
+    const latest=contextMap();latest[key]=ctx;
+    saveContextMap(latest);
     status("conversation_ready",conv.id);
     return ctx;
   }
