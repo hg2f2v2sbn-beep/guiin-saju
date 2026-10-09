@@ -245,6 +245,7 @@
     const rows=[productLabel(productCode),testMode?"테스트 결제":"",opts.orderId?"주문번호: "+opts.orderId:"",opts.code?"응답코드: "+opts.code:""].filter(Boolean);
     if(meta){meta.textContent=rows.join(" · ");meta.style.display=rows.length?"block":"none";}
     primary.onclick=function(){
+      if(String(productCode).startsWith("AI_CHAT_")&&root.guiinRestoreConsultReturn?.())return;
       if(testMode&&typeof root.go==="function")root.go("paymentInfo");
       else if(String(productCode).startsWith("AI_CHAT_")&&typeof root.go==="function")root.go("wallet");
       else if(productCode==="PREMIUM_COMPAT"&&typeof root.go==="function")root.go("matchResult");
@@ -254,6 +255,7 @@
     if(typeof root.go==="function")root.go("paymentResult");
   }
   async function start(productCode,messageId,buttonId){
+    if(root.guiinDemoConsultationBlocked?.()){message(messageId,"데모 결제는 분리된 staging 테스트 환경이 필요해. 운영 주문은 만들지 않았어.");return;}
     const btn=el(buttonId);
     if(paymentBusy){message(messageId,"이미 결제 절차가 진행 중이에요. 열린 결제창을 먼저 확인해 주세요.");return;}
     let keepBusy=false;
@@ -270,6 +272,7 @@
       if(testMode&&!cfg.testCheckoutReady)throw new Error("toss_test_not_ready");
       if(!testMode&&!cfg.liveCheckoutReady)throw new Error("toss_live_not_ready");
       message(messageId,testMode?"토스 테스트 결제창을 준비하고 있어요…":"토스페이먼츠 결제창을 준비하고 있어요…");
+      if(String(productCode).startsWith("AI_CHAT_"))root.guiinSaveConsultReturn?.();
       const order=await timed(createOrder(productCode,mode),10000,"order_create_timeout");
       saveLast(productCode,order.id,mode);
       const tossPayments=root.TossPayments(cfg.clientKey);

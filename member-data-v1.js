@@ -326,7 +326,11 @@
       i.dayBoundary||"23",i.trueSolarApply?1:0,i.longitude??""
     ].join("|"));
   }
-  function contextKey(c){return subjectKey()+"|"+chartFingerprint(c);}
+  function consultationFacts(c){
+    const selected=root.guiinCurrentAIChart?.();
+    return selected===c&&typeof root.guiinAIRequestChart==='function'?root.guiinAIRequestChart(''):chartFacts(c);
+  }
+  function contextKey(c){const facts=consultationFacts(c);return subjectKey()+"|"+root.location.pathname+"|"+chartFingerprint(c)+"|"+simpleHash(JSON.stringify([facts?.consultation_kind||'personal',facts?.compatibility?.a?.birth_info,facts?.compatibility?.b?.birth_info]));}
   function currentContext(c){
     const map=contextMap();
     return map[contextKey(c)]||null;
@@ -341,14 +345,14 @@
     saveContextMap(map);
   }
 
-  async function createChartSnapshot(c,profileId){
+  async function createChartSnapshot(c,profileId,facts=chartFacts(c)){
     const d=await request("/api/chart-snapshots",{
       method:"POST",
       headers:{"Accept":"application/json"},
       body:JSON.stringify({
         profile_id:profileId||null,
         normalized_input:normalizedInputFromChart(c),
-        chart_facts:chartFacts(c),
+        chart_facts:facts,
         uncertainty:c?.calculation?.uncertainty||c?.uncertainty||{
           birth_time_unknown:!!c?.input?.hourUnknown,
           hour_pillar:c?.input?.hourUnknown?"unavailable":"available"
@@ -388,8 +392,9 @@
     const task=prepareConversation(c,question).finally(()=>pendingConversations.delete(key));pendingConversations.set(key,task);return task;
   }
   async function prepareConversation(c,question=""){
+    if(root.guiinDemoConsultationBlocked?.())throw new Error("demo_isolation_required");
     if(!c?.pillars)return null;
-    const owner=subjectKey(),key=contextKey(c), map=contextMap();
+    const owner=subjectKey(),key=contextKey(c), map=contextMap(),facts=consultationFacts(c);
     const assertOwner=()=>{if(subjectKey()!==owner)throw new Error("context_session_changed");};
     const old=map[key];
     if(old?.conversationId&&old?.chartSnapshotId)return old;
@@ -397,12 +402,13 @@
     let profile=null;
     try{profile=await syncProfile(c);}catch(_){}
     assertOwner();
-    const snap=await createChartSnapshot(c,profile?.id||null);
+    const snap=await createChartSnapshot(c,profile?.id||null,facts);
     assertOwner();
     if(!snap.chartSnapshotId)throw new Error("chart_snapshot_create_failed");
     const name=String(c?.input?.name||"사용자").trim()||"사용자";
     const q=String(question||"").trim().replace(/\s+/g," ");
-    const title=q?`${name} · ${q.slice(0,42)}`:`${name}님의 AI 사주상담`;
+    const scope=facts?.compatibility?`${name} × ${facts.compatibility.b.name||"상대방"} 궁합`:facts?.consultation_kind==="lifetime"?`${name} 평생사주`:`${name} 개인사주`;
+    const title=q?`${scope} · ${q.slice(0,42)}`:scope+" 상담";
     const conv=await createConversation(title,snap.chartSnapshotId);
     assertOwner();
     if(!conv?.id)throw new Error("conversation_create_failed");
@@ -529,6 +535,7 @@
   }
 
   async function openConversation(id){
+    if(typeof root.guiinResumeConversation==="function")return root.guiinResumeConversation(id);
     const messages=await listMessages(id);
     const history=messages
       .filter(x=>x&&(x.role==="user"||x.role==="assistant")&&typeof x.content==="string")

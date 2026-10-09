@@ -49,8 +49,8 @@
 <script src="compatibility-interpreter.js"></script>
 <script src="deep-interpretation-v3.js?v=20260918e"></script>
 <script src="guiin-runtime-config.js?v=20260920prod1"></script>
-<script src="guiin-production-guard-v6.27.js?v=20261004v627"></script>
-<script src="member-data-v1.js?v=20261009-ai-context"></script>
+<script src="guiin-production-guard-v6.27.js?v=20261009-clover-atomic"></script>
+<script src="member-data-v1.js?v=20261009-clover-context"></script>
 <script src="https://js.tosspayments.com/v2/standard"></script>
 <script defer src="toss-payment.js?v=20261004v627"></script>
 <style>
@@ -6503,6 +6503,7 @@ function clearAIChat(){
   }
 }
 function syncAskContext(){
+  const chart=guiinCurrentAIChart();
   const title=$('askContextTitle'),meta=$('askContextMeta'),welcome=$('welcomeBot');
   const heroTitle=$('askHeroTitle'),heroCopy=$('askHeroCopy');
   if(!title||!meta)return;
@@ -6516,16 +6517,16 @@ function syncAskContext(){
   }
   const name=String(chart?.input?.name||'사용자').trim()||'사용자';
   const dm=chart?.dayMaster?.stem||chart?.pillars?.day?.stem||'';
-  title.textContent=name+'님의 사주로 상담 중';
+  title.textContent=guiinSelectedConsultation?.pair?name+' × '+guiinSelectedConsultation.pair.b.input.name+' 궁합 상담 중':name+' 사주 상담 중';
   meta.textContent=dm?`일간 ${dm} · 계산된 원국과 현재 흐름을 함께 참고합니다.`:'계산된 원국과 현재 흐름을 함께 참고합니다.';
   if(heroTitle)heroTitle.textContent=name+'님의 사주로 물어보세요.';
   if(heroCopy)heroCopy.textContent='계산된 원국과 현재 흐름을 바탕으로 필요한 내용을 이어서 설명해드려요.';
-  if(welcome)welcome.textContent=`${name}님의 계산된 사주를 기준으로 답할게요. 직업, 재물, 연애, 올해 흐름 중 무엇이 가장 궁금한가요?`;
+  if(welcome)welcome.textContent=guiinSelectedConsultation?.pair?'두 사람의 계산된 원국과 궁합 결과를 함께 놓고 답할게. 어떤 장면이 가장 궁금해?':`${name}의 계산된 사주를 기준으로 답할게. 직업, 재물, 연애, 올해 흐름 중 무엇이 궁금해?`;
 }
 
 
 function guiinAIStableKey(question,chartPayload){
-  const basis=String(question||'')+'|'+String(chartPayload?.day||'')+'|'+String(chartPayload?.year||'')+'|'+String(chartPayload?.month||'');
+  const basis=String(question||'')+'|'+JSON.stringify([chartPayload?.pillars,chartPayload?.birth_info,chartPayload?.consultation_kind,chartPayload?.compatibility?.a?.birth_info,chartPayload?.compatibility?.b?.birth_info]);
   let h=2166136261;
   for(let i=0;i<basis.length;i++){
     h^=basis.charCodeAt(i);
@@ -6547,7 +6548,44 @@ function guiinClearPendingAI(key){
   try{sessionStorage.removeItem(key);}catch(_e){}
 }
 
-function guiinCurrentAIChart(){return chart;}
+var guiinSelectedConsultation=null;
+function guiinDemoConsultationBlocked(){return /\/demo\.html$/.test(location.pathname)&&window.GuiinRuntimeConfig?.activeEnvironment?.()!=='staging';}
+window.guiinDemoConsultationBlocked=guiinDemoConsultationBlocked;
+function guiinCurrentAIChart(){if(guiinSelectedConsultation?.owner&&window.GuiinMemberData?.subjectKey?.()!==guiinSelectedConsultation.owner)guiinSelectedConsultation=null;return guiinSelectedConsultation?.primary||chart;}
+function guiinOpenResultConsultation(kind,question=''){
+  if(guiinAISending)return;
+  const pair=kind==='compatibility'?matchMeta:null;
+  const primary=pair?.a||chart;if(!primary?.pillars){go('saju');return;}
+  guiinSelectedConsultation={kind,owner:window.GuiinMemberData?.subjectKey?.(),primary,pair:pair?.b?.pillars?pair:null};
+  guiinResumedConversationContext=null;guiinAIContextWarmPromise=null;
+  clearAIChat();go('ask');syncAskContext();
+  if($('askQ'))$('askQ').value=question;
+}
+window.guiinOpenResultConsultation=guiinOpenResultConsultation;
+function guiinConsultReturnKey(){return 'guiin_consult_return_v1:'+location.pathname;}
+window.guiinSaveConsultReturn=function(){
+  const c=guiinCurrentAIChart();if(!c?.pillars)return;
+  const cp=guiinAIRequestChart('');
+  sessionStorage.setItem(guiinConsultReturnKey(),JSON.stringify({owner:GuiinMemberData.subjectKey(),facts:cp,question:$('askQ')?.value||'',conversation:guiinResumedConversationContext||GuiinMemberData.currentContext(c),created:Date.now()}));
+};
+window.guiinRestoreConsultReturn=function(){
+  try{
+    const data=JSON.parse(sessionStorage.getItem(guiinConsultReturnKey())||'null');
+    if(!data)return false;
+    if(data.owner!==GuiinMemberData.subjectKey()||Date.now()-data.created>86400000){sessionStorage.removeItem(guiinConsultReturnKey());return false;}
+    guiinSelectStoredConsultation(data.facts);guiinResumedConversationContext=data.conversation||null;
+    go('ask');syncAskContext();if($('askQ'))$('askQ').value=data.question||'';
+    sessionStorage.removeItem(guiinConsultReturnKey());return true;
+  }catch(_){return false;}
+};
+function guiinSelectStoredConsultation(facts,normalized){
+  const fromInput=i=>GuiinSaju.calculate(GuiinMemberData.rowToInput(GuiinMemberData.inputPayload(i)));
+  const primary=normalized?fromInput(normalized):fromInput(facts?.birth_info);
+  if(!primary?.pillars)throw new Error('consultation_chart_missing');
+  const pair=facts?.compatibility;
+  guiinSelectedConsultation={owner:window.GuiinMemberData?.subjectKey?.(),kind:pair?'compatibility':facts?.consultation_kind||'personal',primary,pair:pair?{a:primary,b:fromInput(pair.b.birth_info),...pair.metrics,aiRelationship:pair.relationship}:null};
+  guiinAIContextWarmPromise=null;
+}
 const GUIIN_AI_CALENDAR_CACHE=new WeakMap();
 const GUIIN_AI_PAYLOAD_CACHE=new WeakMap();
 function guiinAISeoulToday(){
@@ -6556,11 +6594,14 @@ function guiinAISeoulToday(){
 }
 function guiinAIRequestChart(q){
   const cp=guiinChartPayload();if(!cp)return cp;
+  cp.consultation_kind=guiinSelectedConsultation?.kind||'personal';
   const context=(guiinAIHistory||[]).slice(-4).map(r=>r.content||'').join(' ');
   const pairQuestion=/궁합|우리|두 사람|둘이|상대/.test(String(q))||(/^(왜|그럼|그래서|후자|전자|더|자세히|응|웅)/.test(String(q))&&/궁합|두 사람|둘이/.test(context));
-  cp.compatibility_requested=pairQuestion;
-  if(pairQuestion&&matchMeta?.a?.pillars&&matchMeta?.b?.pillars){
-    cp.compatibility={a:guiinChartPayload(matchMeta.a),b:guiinChartPayload(matchMeta.b),metrics:{score:matchMeta.score,love:matchMeta.love,personality:matchMeta.personality,money:matchMeta.money,future:matchMeta.future},relationship:matchMeta.aiRelationship||null};
+  const pair=guiinSelectedConsultation?guiinSelectedConsultation.pair:(pairQuestion?matchMeta:null);
+  cp.compatibility_requested=!!pair;
+  if(pair?.a?.pillars&&pair?.b?.pillars){
+    cp.consultation_kind='compatibility';
+    cp.compatibility={a:guiinChartPayload(pair.a),b:guiinChartPayload(pair.b),metrics:{score:pair.score,love:pair.love,personality:pair.personality,money:pair.money,future:pair.future},relationship:pair.aiRelationship||null};
   }
   return cp;
 }
@@ -6801,7 +6842,7 @@ async function guiinSetConsultStyle(mode){
   const allowed=['balanced','fact','warm','brief','deep'];mode=allowed.includes(mode)?mode:'balanced';
   try{localStorage.setItem(GUIIN_AI_STYLE_KEY,mode);}catch(_e){}
   guiinRenderConsultStyle();
-  const cid=guiinResumedConversationContext?.conversationId||window.GuiinMemberData?.currentContext?.(chart)?.conversationId;
+  const cid=guiinResumedConversationContext?.conversationId||window.GuiinMemberData?.currentContext?.(guiinCurrentAIChart())?.conversationId;
   if(cid&&guiinAuthSession()?.token&&window.GuiinMemberData){try{await window.GuiinMemberData.request('/api/conversations/'+encodeURIComponent(cid)+'/style',{method:'POST',headers:{'Accept':'application/json'},body:JSON.stringify({styleMode:mode})});}catch(_e){}}
   return false;
 }
@@ -6922,10 +6963,7 @@ async function guiinLoadAccountConsultations(){
     const usable=rows.filter(x=>Number(x?.message_count||0)>0||x?.last_message);
     if(!usable.length){guiinConsultRows=[];list.innerHTML='<div class="accountConsultEmpty">아직 계정에 저장된 AI 상담이 없어. 첫 질문을 보내면 여기에 자동으로 저장돼.</div>';return;}
     guiinConsultRows=usable;
-    if(!guiinResumedConversationContext&&guiinAIHistory.length&&usable[0]?.id){
-      guiinResumedConversationContext={conversationId:String(usable[0].id),chartSnapshotId:String(usable[0].chart_snapshot_id||'')||null};
-      if(active){active.hidden=false;active.textContent='로그인 전에 이어오던 상담을 계정 기록과 연결했어. 그대로 이어서 물어보면 돼.';}
-    }
+
     guiinRenderConsultationRows();
   }catch(err){
     console.warn('GUIIN_ACCOUNT_CONSULT_LIST_FAILED',err?.message||err);
@@ -6938,10 +6976,15 @@ async function guiinResumeConversation(id,chartSnapshotId,styleMode){
   if(styleMode)guiinSetConsultStyle(styleMode);
   const active=$('accountConsultActive');if(active){active.hidden=false;active.textContent='이전 상담을 불러오고 있어요…';}
   try{
+    if(!chartSnapshotId){const rows=await window.GuiinMemberData.listConversations();chartSnapshotId=rows.find(x=>String(x.id)===String(id))?.chart_snapshot_id;}
+    if(!chartSnapshotId)throw new Error('conversation_chart_missing');
     const [messages,snapData]=await Promise.all([
       window.GuiinMemberData.listMessages(id),
-      chartSnapshotId?window.GuiinMemberData.request('/api/chart-snapshots/'+encodeURIComponent(chartSnapshotId),{method:'GET',headers:{'Accept':'application/json'}}).catch(()=>null):Promise.resolve(null)
+      chartSnapshotId?window.GuiinMemberData.request('/api/chart-snapshots/'+encodeURIComponent(chartSnapshotId),{method:'GET',headers:{'Accept':'application/json'}}):Promise.resolve(null)
     ]);
+    const storedSnapshot=snapData?.chartSnapshot;
+    if(!storedSnapshot?.chart_facts)throw new Error('conversation_chart_missing');
+    guiinSelectStoredConsultation(storedSnapshot.chart_facts,storedSnapshot.normalized_input);
     const history=(messages||[]).filter(x=>x&&(x.role==='user'||x.role==='assistant')&&typeof x.content==='string').slice(-16).map(x=>({role:x.role,content:x.content}));
     const chatBox=$('msgs');if(chatBox)chatBox.querySelectorAll('.bubble.me,.bubble.bot:not(#welcomeBot),.followupBox,.aiExpandBtn').forEach(x=>x.remove());
     guiinAIHistory=history.slice(-12);persistAIHistory();restoreAIChatBubbles();
@@ -6954,6 +6997,7 @@ async function guiinResumeConversation(id,chartSnapshotId,styleMode){
     guiinResumedConversationContext={conversationId:String(id),chartSnapshotId:String(chartSnapshotId||snap?.id||'')||null};
     if(active){active.hidden=false;active.textContent=`이전 상담 ${history.length}개 대화를 불러왔어요. 여기서 그대로 이어서 물어보면 됩니다.`;}
     const box=$('msgs');if(box){box.scrollTop=box.scrollHeight;}
+    go('ask');syncAskContext();
     const input=$('askQ');if(input)input.focus();
     return false;
   }catch(err){
@@ -6974,16 +7018,17 @@ window.guiinResumeConversation=guiinResumeConversation;
 window.guiinStartNewConsultation=guiinStartNewConsultation;
 
 function guiinPrewarmAIContext(){
-  if(!chart?.pillars||!window.GuiinMemberData)return Promise.resolve(null);
+  if(guiinDemoConsultationBlocked())return Promise.resolve(null);
+  if(!guiinCurrentAIChart()?.pillars||!window.GuiinMemberData)return Promise.resolve(null);
   try{
-    const cached=window.GuiinMemberData.currentContext?.(chart);
+    const cached=window.GuiinMemberData.currentContext?.(guiinCurrentAIChart());
     if(cached?.conversationId&&cached?.chartSnapshotId)return Promise.resolve(cached);
   }catch(_e){}
   if(guiinAIContextWarmPromise)return guiinAIContextWarmPromise;
   guiinAIContextWarmPromise=(async()=>{
     try{
       await window.GuiinMemberData.ensureServerGuest?.();
-      return await window.GuiinMemberData.ensureConversation?.(chart,'');
+      return await window.GuiinMemberData.ensureConversation?.(guiinCurrentAIChart(),'');
     }catch(err){console.warn('GUIIN_AI_CONTEXT_PREWARM_DEFERRED',err?.message||err);return null;}
     finally{setTimeout(()=>{guiinAIContextWarmPromise=null;},0);}
   })();
@@ -6992,6 +7037,7 @@ function guiinPrewarmAIContext(){
 
 async function sendQ(preset){
   if(guiinAISending)return;
+  if(guiinDemoConsultationBlocked()){guiinAppend('sysnote','데모 상담은 분리된 staging 환경이 필요해. 운영 클로버와 상담 기록을 보호하려고 여기서는 요청하지 않았어.');return;}
 
   const input=$('askQ');
   const q=String(preset||(input?input.value:'')||'').trim();
@@ -7004,6 +7050,7 @@ async function sendQ(preset){
 
   if(!chart)restoreProfile();
 
+  if(!guiinSelectedConsultation&&/궁합|우리|두 사람|둘이|상대/.test(q)&&matchMeta?.a?.pillars&&matchMeta?.b?.pillars)guiinOpenResultConsultation('compatibility',q);
   const cp=guiinAIRequestChart(q);
   if(!cp){
     guiinAppend('sysnote','AI가 내 사주를 기준으로 답하려면 사주를 먼저 계산해 주세요.');
@@ -7017,7 +7064,8 @@ async function sendQ(preset){
   try{if(GUIIN_SERVER_ACCOUNTING?.authoritative){serverAuthoritative=true;freeRemaining=Math.max(0,Number(GUIIN_SERVER_ACCOUNTING?.free?.remaining||0));paidRemaining=Math.max(0,Number(GUIIN_SERVER_ACCOUNTING?.wallet?.available||0));}}catch(_e){}
   if(freeRemaining<=0&&paidRemaining<=0){
     guiinAISending=false;
-    guiinAppend('sysnote','사용할 수 있는 무료 질문이나 AI 이용권이 없어. 이용권을 확인해줘.');
+    guiinAppend('sysnote','사용할 수 있는 무료 질문이나 클로버가 없어. 충전 상품과 가격을 먼저 확인해줘.');
+    const charge=document.createElement('button');charge.type='button';charge.className='ctaGreen';charge.textContent='클로버 충전 상품 확인';charge.onclick=()=>{guiinSaveConsultReturn();go('wallet');};$('msgs')?.append(charge);
     syncWalletViews();
     return;
   }
@@ -7042,11 +7090,11 @@ async function sendQ(preset){
   let serverContext=null;
   try{
     if(window.GuiinMemberData){
-      serverContext=guiinResumedConversationContext||window.GuiinMemberData.currentContext?.(chart)||null;
+      serverContext=guiinResumedConversationContext||window.GuiinMemberData.currentContext?.(guiinCurrentAIChart())||null;
       if(!serverContext){
         const warm=guiinPrewarmAIContext();
         const quickWait=new Promise(resolve=>setTimeout(()=>resolve(null),6000));
-        serverContext=(await Promise.race([warm,quickWait]))||window.GuiinMemberData.currentContext?.(chart)||null;
+        serverContext=(await Promise.race([warm,quickWait]))||window.GuiinMemberData.currentContext?.(guiinCurrentAIChart())||null;
       }
     }
   }catch(err){
@@ -12085,6 +12133,37 @@ try{Object.assign(window,{guiinPaymentCenterStart});}catch(_e){}
  function update(){try{if(typeof chart!=='undefined'&&chart)person(document.querySelector('[data-r29-saju-portrait] .r28Person'),chart);let a,b;try{a=matchMeta?.a||matchAnalysis?.a;b=matchMeta?.b||matchAnalysis?.b}catch(_){}if(a&&b){const cards=[...document.querySelectorAll('#matchView [data-r28-people] .r28Person')];if(cards.length===1)person(cards[0],b);else{person(cards[0],a);person(cards[1],b);}}}catch(e){console.error('integrated-person-render',e);}}
  for(const name of ['renderResult','renderCompatCards']){const prior=globalThis[name];if(typeof prior!=='function')continue;globalThis[name]=function(){const result=prior.apply(this,arguments);update();requestAnimationFrame(update);return result;};}
  globalThis.GUIIN_STAR_INTEGRATION={version:'20261008-star-integrated',twelve,update};
+})();
+</script>
+
+<script id="GUIIN_CLOVER_CONSULT_ENTRY">
+(function(){
+ var ledgerGeneration=0;
+ window.renderLedger=async function(){
+  var target=document.getElementById('ledger');if(!target)return;
+  var generation=++ledgerGeneration,owner=GuiinMemberData.subjectKey();target.textContent='서버 이용 내역을 확인하고 있어.';
+  try{
+   if(guiinDemoConsultationBlocked())throw new Error('demo_isolation_required');
+   var response=await GuiinMemberData.request('/api/me/purchases',{method:'GET'});
+   if(generation!==ledgerGeneration||owner!==GuiinMemberData.subjectKey())return;
+   var rows=response.purchases?.wallet_ledger||response.purchases?.walletLedger||response.walletLedger||[];
+   target.replaceChildren();
+   if(!rows.length){target.textContent='아직 충전·사용 내역이 없어.';return;}
+   rows.slice(0,30).forEach(function(row){var p=document.createElement('p');p.textContent=(row.created_at||'')+' · '+(row.note||row.kind||'이용 내역')+' · '+(Number(row.delta)>0?'+':'')+Number(row.delta)+'개 · 처리 후 '+Number(row.balance_after)+'개';target.append(p);});
+  }catch(_){if(generation===ledgerGeneration&&owner===GuiinMemberData.subjectKey())target.textContent='서버 내역을 확인하지 못했어. 잠시 뒤 다시 열어줘.';}
+ };
+ function install(){
+  for(const [id,kind,label] of [['resultView','lifetime','내 사주 AI에게 물어보기'],['matchView','compatibility','우리 궁합 AI에게 물어보기']]){
+   const host=document.getElementById(id);if(!host||!host.children.length||host.querySelector('[data-clover-consult]'))continue;
+   const box=document.createElement('div');box.className='card';box.style.cssText='padding:18px;margin:12px 0';box.dataset.cloverConsult=kind;
+   const b=document.createElement('button');b.type='button';b.className='ctaGreen';b.textContent=label;b.onclick=()=>guiinOpenResultConsultation(kind);box.append(b);
+   const note=document.createElement('p');note.textContent='무료 질문부터 사용해. 이후 질문 1회에 클로버(질문 이용권) 1개를 사용해. 충전분은 구매 후 30일 동안 사용할 수 있어.';note.style.cssText='font-size:13px;line-height:1.6';box.append(note);host.append(box);
+  }
+  const card=document.querySelector('#ask .composer');if(card&&!document.getElementById('cloverConsultCost')){const p=document.createElement('p');p.id='cloverConsultCost';p.className='sysnote';p.textContent='질문 1회: 무료 잔여 질문 우선 사용 → 이후 클로버 1개. 서버에서 답변 저장을 확인한 뒤 최종 차감해.';card.before(p);}
+ }
+ if(location.hash==='#ask')setTimeout(()=>window.guiinRestoreConsultReturn?.(),0);
+ const hosts=['resultView','matchView'].map(id=>document.getElementById(id)).filter(Boolean);
+ const observer=new MutationObserver(install);hosts.forEach(host=>observer.observe(host,{childList:true}));install();
 })();
 </script>
 
