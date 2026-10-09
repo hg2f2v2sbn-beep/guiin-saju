@@ -268,6 +268,7 @@
       if(btn)btn.disabled=true;
       const cfg=await timed(config(),8000,"toss_config_timeout");
       const mode=cfg.mode;
+      if(root.GuiinRuntimeConfig?.activeEnvironment?.()==="staging"&&mode!=="test")throw new Error("staging_live_payment_blocked");
       const testMode=mode==="test";
       if(testMode&&!cfg.testCheckoutReady)throw new Error("toss_test_not_ready");
       if(!testMode&&!cfg.liveCheckoutReady)throw new Error("toss_live_not_ready");

@@ -6,7 +6,22 @@
   "use strict";
 
   const VERSION="runtime-env-v1";
-  const ACTIVE_ENVIRONMENT="production";
+  const demoPage=/\/demo\.html$/.test(root.location?.pathname||"");
+  const ACTIVE_ENVIRONMENT=demoPage?"staging":"production";
+  // Same-origin demo pages must not inherit production authentication or drafts.
+  if(demoPage&&root.Storage){
+    const p=root.Storage.prototype, prefix="guiin_demo_staging:", get=p.getItem,set=p.setItem,remove=p.removeItem,key=p.key;
+    p.getItem=function(k){return get.call(this,prefix+k)};
+    p.setItem=function(k,v){return set.call(this,prefix+k,v)};
+    p.removeItem=function(k){return remove.call(this,prefix+k)};
+    p.clear=function(){const keys=[];for(let i=0;i<this.length;i++){const k=key.call(this,i);if(k?.startsWith(prefix))keys.push(k)}keys.forEach(k=>remove.call(this,k))};
+    const originalFetch=root.fetch;
+    if(originalFetch)root.fetch=function(input,options){
+      const target=String(input?.url||input);
+      if(/^https:\/\/guiin-saju-api\.blue-wls\.workers\.dev(?:\/|$)/.test(target))return Promise.reject(new Error("demo_production_api_blocked"));
+      return originalFetch.call(this,input,options);
+    };
+  }
   const PRODUCTION_VERIFIED=true;
 
   const API_BASES=Object.freeze({

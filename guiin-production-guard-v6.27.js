@@ -6,6 +6,7 @@
   const PROD_API="https://guiin-saju-api.blue-wls.workers.dev";
   const PROD_HOSTS=new Set(["gwiinsaju.com","www.gwiinsaju.com"]);
   const host=String(root.location?.hostname||"").toLowerCase();
+  if(/\/demo\.html$/.test(root.location?.pathname||""))return;
   if(!PROD_HOSTS.has(host))return;
   let current="";
   try{current=String(root.GuiinRuntimeConfig?.apiBase?.()||"").replace(/\/+$/,"");}catch(_e){}

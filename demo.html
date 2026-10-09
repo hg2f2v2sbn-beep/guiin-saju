@@ -48,11 +48,11 @@
 <script src="manse-view.js"></script>
 <script src="compatibility-interpreter.js"></script>
 <script src="deep-interpretation-v3.js?v=20260918e"></script>
-<script src="guiin-runtime-config.js?v=20260920prod1"></script>
-<script src="guiin-production-guard-v6.27.js?v=20261009-clover-atomic"></script>
+<script src="guiin-runtime-config.js?v=20261009-isolation-20260920prod1"></script>
+<script src="guiin-production-guard-v6.27.js?v=20261009-isolation"></script>
 <script src="member-data-v1.js?v=20261009-clover-context"></script>
 <script src="https://js.tosspayments.com/v2/standard"></script>
-<script defer src="toss-payment.js?v=20261004v627"></script>
+<script defer src="toss-payment.js?v=20261009-recovery"></script>
 <style>
 :root{
  --bg:#fffaf1;--paper:#fffefa;--ink:#203128;--sub:#7c837d;--line:#ece5d7;
@@ -7224,6 +7224,7 @@ window.guiinSendAI=function(ev,preset){
 try{guiinRenderExamples();guiinRenderConsultStyle();}catch(_e){}
 
 async function startKakaoLogin(){
+  if(GuiinRuntimeConfig.activeEnvironment()==='staging'){toast('데모 카카오 로그인은 테스트 콜백 분리 확인 후 사용할 수 있어.');return;}
   const m=$('loginMsg')||$('signupMsg');
   if(m)m.textContent='카카오 로그인 상태를 확인하고 있어요…';
 
