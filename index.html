@@ -12020,7 +12020,7 @@ try{Object.assign(window,{guiinPaymentCenterStart});}catch(_e){}
  }
 })();
 </script>
-<script src="guiin-interpretation-v4.js?v=20261008-star-integrated"></script>
+<script src="guiin-interpretation-v4.js?v=20261009-recognition"></script>
 <script id="GUIIN_RELEASE_INTEGRATION">
 /* Release QA integration: calculation, permission and navigation functions stay authoritative. */
 (function(){
@@ -12093,12 +12093,13 @@ try{Object.assign(window,{guiinPaymentCenterStart});}catch(_e){}
   if(!report){report=document.createElement('section');report.dataset.premiumCompatReport='1';view.appendChild(report);}
   if(report.__guiinRows!==all||report.dataset.tab!==String(tab)){report.innerHTML=html(rows);report.__guiinRows=all;report.dataset.tab=String(tab);}
   let legacy=view.querySelector('[data-legacy-compat]');
-  if(legacy&&legacy.tagName==='DETAILS'){
-    const expanded=document.createElement('section');expanded.className='guiinExpandedCompat';expanded.dataset.legacyCompat='1';
-    [...legacy.children].filter(child=>child.tagName!=='SUMMARY').forEach(child=>expanded.appendChild(child));
-    legacy.replaceWith(expanded);legacy=expanded;
+  if(legacy&&legacy.tagName!=='DETAILS'){
+    const folded=document.createElement('details');folded.className='guiinExpandedCompat';folded.dataset.legacyCompat='1';
+    const summary=document.createElement('summary');summary.textContent='기존 상세 풀이·명리 자료 펼쳐보기';folded.appendChild(summary);
+    while(legacy.firstChild)folded.appendChild(legacy.firstChild);
+    legacy.replaceWith(folded);legacy=folded;
   }
-  if(!legacy){legacy=document.createElement('section');legacy.className='guiinExpandedCompat';legacy.dataset.legacyCompat='1';view.appendChild(legacy);}
+  if(!legacy){legacy=document.createElement('details');legacy.className='guiinExpandedCompat';legacy.dataset.legacyCompat='1';const summary=document.createElement('summary');summary.textContent='기존 상세 풀이·명리 자료 펼쳐보기';legacy.appendChild(summary);view.appendChild(legacy);}
   const old=[...view.children].filter(node=>node!==report&&node!==legacy&&(node.matches('article[data-r24-key],article[data-r26-key],[data-r28-people]')||node.querySelector('article[data-r24-key],article[data-r26-key],[data-r28-people]')));
   old.forEach(node=>legacy.appendChild(node));
   // End of legacy asynchronous composition: one idempotent presentation pass.
