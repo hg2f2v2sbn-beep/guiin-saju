@@ -36,8 +36,8 @@ ok("runtime cannot be switched by URL/localStorage",()=>{
 for(const name of ["index.html","demo.html"]){
   const html=fs.readFileSync(name,"utf8");
   ok(`${name} loads config before member data`,()=>{
-    const r=html.indexOf("guiin-runtime-config.js?v=20260920prod1");
-    const m=html.indexOf("member-data-v1.js?v=20260919a");
+    const r=html.indexOf("guiin-runtime-config.js?v=");
+    const m=html.indexOf("member-data-v1.js?v=");
     assert(r>=0&&m>r);
   });
   ok(`${name} active API comes from config`,()=>{

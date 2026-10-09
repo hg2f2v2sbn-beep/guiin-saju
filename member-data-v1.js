@@ -255,7 +255,7 @@
       let rows=[];
       try{rows=await listProfiles();}catch(_){rows=cachedProfiles();}
       if(subjectKey()!==owner)throw new Error("context_session_changed");
-      const found=rows.find(x=>rowKey(x)===key);
+      const found=rows.find(x=>rowKey(x)===profileKey(payload));
       if(found){markLocalProfileOwner();return found;}
       const created=await saveProfilePayload(payload);
       if(subjectKey()!==owner)throw new Error("context_session_changed");
