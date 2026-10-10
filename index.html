@@ -2296,7 +2296,8 @@ function openTailQuestion(q, el){
   const primary=(pair&&pair.a)|| (typeof chart!=='undefined'?chart:null);
   const selected=typeof guiinSelectedConsultation!=='undefined'?guiinSelectedConsultation:null;
   const sameKind=!!(selected&&selected.kind===kind);
-  const samePeople=kind!=='compatibility'||!!(selected&&selected.pair&&pair&&selected.pair.b&&pair.b&&selected.primary?.input?.name===primary?.input?.name&&selected.pair.b.input?.name===pair.b.input?.name&&String(selected.primary?.input?.year)===String(primary?.input?.year)&&String(selected.pair.b.input?.year)===String(pair.b.input?.year));
+  const bk=o=>{const n=o&&o.input;return n?[n.name,n.gender,n.calendar,n.leapMonth,n.year,n.month,n.day,n.hour,n.minute,n.hourUnknown,n.longitude,n.trueSolarApply,n.dayBoundary].map(v=>String(v==null?'':v)).join('|'):'';};
+  const samePeople=kind!=='compatibility'?(!!selected&&!!bk(primary)&&bk(selected.primary)===bk(primary)):!!(selected&&selected.pair&&pair&&pair.b&&bk(primary)&&bk(pair.b)&&bk(selected.primary)===bk(primary)&&bk(selected.pair.b)===bk(pair.b));
   if(!(sameKind&&samePeople)){
    guiinOpenResultConsultation(kind, q||'');
    return;

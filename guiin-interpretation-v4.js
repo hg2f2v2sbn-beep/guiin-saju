@@ -422,52 +422,52 @@ function chartBits(c){
 const GEN_EL={목:'화',화:'토',토:'금',금:'수',수:'목'};
 const CTRL_EL={목:'토',토:'수',수:'화',화:'금',금:'목'};
 const GOD_MOVE={
- 비견:'통보된 결론 옆에 직접 고를 범위를 다시 긋는다',
- 겁재:'끝까지 가져갈 이름을 적기 전에, 누가 더 움직였는지를 먼저 헤아린다',
- 식신:'말을 늘리기보다 내일도 같은 품질로 낼 수 있는 분량만 남긴다',
- 상관:'앞뒤가 안 맞는 문장을 집어 고친 안을 옆에 둔다',
- 편재:'새 제안의 반응을 먼저 보고, 이미 잡은 일정과 겹치는지는 한 박자 늦게 확인한다',
- 정재:'시간과 비용을 맞춰 본 뒤에야 다음 약속을 받는다',
- 편관:'급한 순서부터 적고 설명은 그 다음에 붙인다',
- 정관:'맡은 사람과 끝나는 기준을 한 줄로 남긴다',
- 편인:'바로 답하지 않고 설명에서 빠진 이유를 따로 적는다',
- 정인:'상대 사정을 정리한 뒤, 직접 맡을 범위를 마지막에 적는다'
+ 비견:'통보된 결론 옆에 직접 고를 범위를 다시 그어',
+ 겁재:'끝까지 가져갈 이름을 적기 전에, 누가 더 움직였는지를 먼저 헤아려',
+ 식신:'말을 늘리기보다 내일도 같은 품질로 낼 수 있는 분량만 남겨',
+ 상관:'앞뒤가 안 맞는 문장을 집어 고친 안을 옆에 둬',
+ 편재:'새 제안의 반응을 먼저 보고, 이미 잡은 일정과 겹치는지는 한 박자 늦게 확인해',
+ 정재:'시간과 비용을 맞춰 본 뒤에야 다음 약속을 받아',
+ 편관:'급한 순서부터 적고 설명은 그 다음에 붙여',
+ 정관:'맡은 사람과 끝나는 기준을 한 줄로 남겨',
+ 편인:'바로 답하지 않고 설명에서 빠진 이유를 따로 적어',
+ 정인:'상대 사정을 정리한 뒤, 직접 맡을 범위를 마지막에 적어'
 };
 const GOD_WORTH={
- 비견:'방향을 못 정한 자리에서 첫 기준을 내놓으면, 그 문장 때문에 옆 사람이 다음 한 걸음을 시작한다',
- 겁재:'흩어진 의욕을 한 번의 실행으로 모으면, 같이 있던 사람이 자기 몫을 꺼내게 된다',
- 식신:'매번 비슷한 품질로 돌아오는 결과는 고객과 가까운 사람에게 안심이라는 형태가 된다',
- 상관:'다들 익숙해서 넘긴 불편에 이름을 붙이면, 그 다음부터 일이 덜 헛돌고 결과가 나아진다',
- 편재:'필요한 사람과 그 필요가 있는 자리 사이에 길을 놓으면, 생각만 있던 일이 실제 만남이 된다',
- 정재:'작아도 지킬 수 있는 조건을 남기면, 다른 사람은 그 숫자 덕분에 덜 불안하게 일을 맡긴다',
- 편관:'상황이 흔들릴 때 첫 조치를 잡으면, 현장은 완벽한 계획 대신 다시 움직일 방향을 얻는다',
- 정관:'완료의 기준을 행동으로 지키면, 한 번의 박수보다 다음에도 믿고 맡길 수 있다는 예측이 남는다',
- 편인:'통하지 않는 답을 다른 각도에서 다시 보면, 그 시간에 쉽게 대체되지 않는 판단이 담긴다',
- 정인:'흩어진 경험을 남이 따라 할 수 있는 순서로 묶으면, 친절을 넘어 누군가의 결정을 돕게 된다'
+ 비견:'방향을 못 정한 자리에서 첫 기준을 내놓으면, 그 문장 때문에 옆 사람이 다음 한 걸음을 시작해',
+ 겁재:'흩어진 의욕을 한 번의 실행으로 모으면, 같이 있던 사람이 자기 몫을 꺼내',
+ 식신:'매번 비슷한 품질로 돌아오는 결과는 고객과 가까운 사람에게 안심이라는 형태가 돼',
+ 상관:'다들 익숙해서 넘긴 불편에 이름을 붙이면, 그 다음부터 일이 덜 헛돌고 결과가 나아져',
+ 편재:'필요한 사람과 그 필요가 있는 자리 사이에 길을 놓으면, 생각만 있던 일이 실제 만남이 돼',
+ 정재:'작아도 지킬 수 있는 조건을 남기면, 다른 사람은 그 숫자 덕분에 덜 불안하게 일을 맡겨',
+ 편관:'상황이 흔들릴 때 첫 조치를 잡으면, 현장은 완벽한 계획 대신 다시 움직일 방향을 얻어',
+ 정관:'완료의 기준을 행동으로 지키면, 한 번의 박수보다 다음에도 믿고 맡길 수 있다는 예측이 남아',
+ 편인:'통하지 않는 답을 다른 각도에서 다시 보면, 그 시간에 쉽게 대체되지 않는 판단이 담겨',
+ 정인:'흩어진 경험을 남이 따라 할 수 있는 순서로 묶으면, 친절을 넘어 누군가의 결정을 돕게 돼'
 };
 const GOD_BURDEN={
- 비견:'결정에 끼지 못한 채 결과만 안으면, 실력보다 선택권이 빠졌다는 사실이 먼저 지치게 한다',
- 겁재:'기여를 비교하기 시작하면, 같이 달리던 힘이 누구 편이냐는 소모로 바뀐다',
- 식신:'리듬이 깨진 채 더 만들라고 하면, 잘하던 손도 무거워진다',
- 상관:'고치는 속도가 상대의 마음을 듣는 속도보다 빠르면, 좋은 제안이 평가로 들린다',
- 편재:'새 기회에 시간을 먼저 주면, 이미 약속한 마무리가 뒤로 밀리고 그 밀림을 혼자 알게 된다',
- 정재:'틀어진 계획을 맞추다 상대의 선택까지 관리하면, 도움은 감독으로 들리고 부담도 같이 커진다',
- 편관:'모든 일을 긴급으로 처리하면, 상대가 설명할 시간과 회복할 시간이 같이 사라진다',
- 정관:'기준을 확인하는 질문이 잘잘못을 매기는 말로 들리면, 대화가 평가처럼 느껴질 수 있다',
- 편인:'생각이 닫힐 때까지 답을 미루면, 기다리는 사람은 관심도 준비도 볼 수 없다',
- 정인:'상대 사정을 듣는 동안 자기 요청이 빠지면, 공감이 그 몫까지 맡겠다는 약속처럼 끝난다'
+ 비견:'결정에 끼지 못한 채 결과만 안으면, 실력보다 선택권이 빠졌다는 사실이 먼저 지치게 해',
+ 겁재:'기여를 비교하기 시작하면, 같이 달리던 힘이 누구 편이냐는 소모로 바뀌어',
+ 식신:'리듬이 깨진 채 더 만들라고 하면, 잘하던 손도 무거워져',
+ 상관:'고치는 속도가 상대의 마음을 듣는 속도보다 빠르면, 좋은 제안이 평가로 들려',
+ 편재:'새 기회에 시간을 먼저 주면, 이미 약속한 마무리가 뒤로 밀리고 그 밀림을 혼자 알게 돼',
+ 정재:'틀어진 계획을 맞추다 상대의 선택까지 관리하면, 도움은 감독으로 들리고 부담도 같이 커져',
+ 편관:'모든 일을 긴급으로 처리하면, 상대가 설명할 시간과 회복할 시간이 같이 사라져',
+ 정관:'기준을 확인하는 질문이 잘잘못을 매기는 말로 들리면, 대화가 평가처럼 느껴질 수 있어',
+ 편인:'생각이 닫힐 때까지 답을 미루면, 기다리는 사람은 관심도 준비도 볼 수 없어',
+ 정인:'상대 사정을 듣는 동안 자기 요청이 빠지면, 공감이 그 몫까지 맡겠다는 약속처럼 끝나'
 };
 const GOD_ON_OTHER={
- 비견:'같이 정하기 전에 방향을 먼저 잡아 준다',
- 겁재:'같이 움직일 판을 먼저 연다',
- 식신:'말보다 챙기는 행동을 남긴다',
- 상관:'어색한 지점을 집어 고쳐 준다',
- 편재:'새로운 약속과 장소를 들고 온다',
- 정재:'시간과 비용을 현실에 붙여 준다',
- 편관:'흐린 문제를 오늘 정하자고 당긴다',
- 정관:'맡은 사람과 끝나는 시각을 적어 준다',
- 편인:'바로 맞장구하지 않고 이유를 한 번 더 묻는다',
- 정인:'사정을 정리해 주고 할 수 있는 범위를 나눠 준다'
+ 비견:'같이 정하기 전에 방향을 먼저 잡아 줘',
+ 겁재:'같이 움직일 판을 먼저 열어',
+ 식신:'말보다 챙기는 행동을 남겨',
+ 상관:'어색한 지점을 집어 고쳐 줘',
+ 편재:'새로운 약속과 장소를 들고 와',
+ 정재:'시간과 비용을 현실에 붙여 줘',
+ 편관:'흐린 문제를 오늘 정하자고 당겨',
+ 정관:'맡은 사람과 끝나는 시각을 적어 줘',
+ 편인:'바로 맞장구하지 않고 이유를 한 번 더 물어',
+ 정인:'사정을 정리해 주고 할 수 있는 범위를 나눠 줘'
 };
 const MONTH_ROOM={
  자:'문이 닫힌 뒤 혼자 남은 책상',축:'자료가 아직 반쯤인 회의 앞',인:'새 안건이 놓인 월요일',묘:'말투가 싸해진 대화',
@@ -749,22 +749,21 @@ function narrativeRelation(p){
  return `${relPlaces(r)} 사이에 ${subj(r.type)} 있어. 방향이나 속도를 달리 쓰는 연결이야. ${action}`;
 }
 function premiumStarSynthesis(c){
- const p=narrativeProfile(c), L=readingLens(c,p), s=L.s, i=L.i, contexts=premiumStarContexts(c);
- if(!s) return ['주요 자료가 없어 별로 성격을 채우지 않을게.'];
- if(!contexts.length) return [tidy(`성립한 별이 없어, 별 이름으로 ${s.label}을 포장하지 않았어. 별이 없어도 일에 보이는 힘과 가까운 생활의 기준만으로 이미 충분한 사람이야.`)];
- const place={month:'일과 사람 앞에서',day:'가까워진 생활에서',year:'사람을 처음 대하는 태도에서',hour:'시간을 들여 남기는 작업에서'};
- const lines=contexts.slice(0,4).map(r=>{
-  const fact=r.facts?.[0]; if(!fact) return '';
-  const theme=STAR_INTEGRATED[r.title]; if(!theme) return '';
-  const where=place[fact.pillar]||'그 생활에서';
-  const rare=[
-   `${r.title}을 가지고 있다는 것 자체가 이미 흔한 자리가 아니야. 장식이 아니야. ${theme[0]}을 네 생활로 가져오는 표식이야.`,
-   `이 별이 네 명식에 서 있어. ${r.title}은 있으면 좋은 점 정도가 아니야. 이것을 가진 사람은 ${theme[0]}으로 주변을 다르게 만들어.`,
-   `${r.title}이 있다는 건 성공을 약속하는 도장이 아니야. 그보다 더 가까운 말이야. 너는 이미 ${theme[0]}을 살아 낼 사람이야.`
-  ][seed(c,'star:'+r.title+':'+(fact.pillar||''))%3];
-  const lane=fact.pillar==='day'?`가까운 사람에게 ${i.label}이 닿는 방식과 이어져.`:`${s.label}이 밖으로 보이는 방식과 이어져. 별이 재능을 새로 만들지는 않아. 이미 있는 힘을 더 또렷하게 해.`;
-  return tidy(`${rare} ${where} ${theme[1]} ${lane} 이렇게 쓰면 그 특별함이 생활이 돼. ${theme[2]}`);
- }).filter(Boolean);
+ const a=buildPersonAnalysis(c);
+ if(!a||!a.sGod) return ['주요 자료가 없어 별로 성격을 채우지 않을게.'];
+ const hits=(c.stars?.hits||[]).filter(h=>h&&h.name&&c.pillars?.[h.pillar]&&!(h.pillar==='hour'&&c.input?.hourUnknown)&&STAR_INTEGRATED[h.name]);
+ if(!hits.length) return [tidy(`성립한 별이 없어, 별 이름으로 ${a.socialLabel}을 보태지 않았어. 월주와 일지의 손만으로 이 사람을 읽어.`)];
+ const seen=new Set();
+ const lines=[];
+ for(const h of hits){
+  if(seen.has(h.name)) continue;
+  seen.add(h.name);
+  const theme=STAR_INTEGRATED[h.name];
+  const pos=STAR_POSITION[h.pillar]?.[0]||h.pillar;
+  if(!lines.length) lines.push(tidy(`${topic(h.name)} ${pos}에 보조로 있어. ${theme[0]} 쪽을 조금 더 드러내. 그래도 중심은 ${a.socialLabel}이고, 마음이 놓이는 조건은 ${a.closeNeed?ida(a.closeNeed):'일지 근거가 있을 때만 말해'}. 별이 다른 성격을 만들거나 지난 일을 증명하지는 않아.`));
+  else lines.push(tidy(`${topic(h.name)} ${pos}에 보조로 있어. ${theme[0]} 쪽만 조금 보태. 중심을 이 별의 이름으로 바꾸지는 않아.`));
+  if(lines.length>=2) break;
+ }
  return lines.length?lines:['별은 위치 근거가 부족해 성격으로 확장하지 않았어.'];
 }
 function narrativePairScene(pa,pb,an,bn,a,b,dayRel){
@@ -810,104 +809,554 @@ function centerTitle(c,p){
  if(L.axis==='bound') return `1. 사람과 같이 구르는 재능 — ${close}`;
  return `1. 세상에 남기는 재능 — ${close}`;
 }
-function narrativeRows(c,existingModel){
- const p=narrativeProfile(c), s=NARRATIVE_GOD[p.social], i=NARRATIVE_GOD[p.intimate]||s, e=NARRATIVE_GOD[p.extra];
- const b=chartBits(c);
- if(!s) return [{id:'self',title:'확인할 명식 자료가 필요해',body:'주요 십성 자료가 없어 인물과 생활을 임의로 설명하지 않을게.',paragraphs:['주요 십성 자료가 없어 인물과 생활을 임의로 설명하지 않을게.'],evidence:ev(c),lead:true}];
- if(!p.intimate){
-  const limited=[
-   ['self',`1. ${b.dayKo||'이 명식'}에서 확인된 역할`,`${s.label}부터 읽을 수 있어. ${sceneLine(c,p)} ${praiseLine(c,{...p,intimate:p.social})}`],
-   ['inside','2. 가까운 생활의 기준은 비워 둘게','일지 지장간 본기가 없어, 사회적 역할을 숨은 욕구로 바꾸어 설명하지 않을게. 혼자 있을 때 필요한 시간과 가까운 사람에게 원하는 행동은 실제 경험으로 확인해.'],
-   ['people','3. 사람에게 보이는 부분',`${b.monthKo}에서 보이는 기여는 ${s.label}이야. ${s.value} 이 인상이 가까운 생활에서도 같은지는 자료 없이 정하지 않아.`],
-   ['love','4. 애정은 확인 전','현재 자료만으로 받고 싶은 애정이나 결혼 성향을 정하지 않을게. 어떤 행동에서 사랑받는다고 느끼는지는 대화로 확인해.'],
-   ['work','5. 확인된 일의 자리',`${s.work}에서 ${s.label}이 평가와 권한에 반영되는지를 봐. ${s.cost} ${hourCraft(c,p)}`],
-   ['money','6. 확인된 수입의 방향',`${s.money} ${s.budget} 가까운 생활의 소비 성향은 일지 근거 없이 만들지 않았어.`],
-   ['timing','7. 운은 역할까지만','가까운 생활 기준이 빠져 시기별 마음까지 연결하지 않을게. 기존 운 계산값만 역할의 변화로 읽어.'],
-   ['stars','8. 별은 성격을 채우지 않아','원국 일부가 비어 있으니 별 이름으로 숨은 성격이나 과거를 만들지 않을게.'],
-   ['core','9. 이번 주',`${s.move} 일지 본기 자료가 오면 가까운 관계의 기준을 이어서 읽을 수 있어.`]
-  ];
-  return limited.map(([id,title,text])=>{
-   const paragraphs=String(text).split(/\n\n+/).map(tidy).filter(Boolean);
-   return {id,title,paragraphs,body:paragraphs.join('\n\n'),lead:true,eyebrow:'',evidence:narrativeEvidence(p,p.sources[p.social]||[]),claims:p.sources[p.social]||[]};
-  });
+const REST_COST={
+ 비견:'결정할 몫이 네 문장으로 안 닫혀 있으면, 자리를 떠나도 그 선택이 머리를 붙들고 있어.',
+ 겁재:'누가 얼마를 했는지 정리가 안 된 채 끝나면, 같이 웃고 나서도 기여를 되짚게 돼.',
+ 식신:'오늘 몫이 중간에 끊기면, 쉬라는 말을 들어도 손이 남은 분량부터 찾아.',
+ 상관:'고치다 만 부분이 남아 있으면, 대화를 끝내고도 더 나은 안이 계속 떠올라.',
+ 편재:'새로 잡은 일의 끝이 안 보이면, 이미 약속한 일정을 앞에 두고는 쉬질 못해.',
+ 정재:'미완료된 정산이나 남은 목록이 있으면, 쉬기 전에 그 숫자를 한 번 더 맞추게 돼.',
+ 편관:'대응이 안 끝난 일이 남아 있으면, 쉬는 시간에도 다음 연락을 기다리게 돼.',
+ 정관:'끝이 확인되지 않은 일이 남아 있으면, 쉬어도 마음이 놓이지 않고 완료 기준을 다시 보게 돼.',
+ 편인:'이유가 안 닫힌 질문이 남으면, 쉬라는 말과 상관없이 그 구멍을 계속 파.',
+ 정인:'상대 사정을 듣다 만 상태면, 쉬는 일이 그 사람 몫을 버린 것처럼 느껴져 자리를 못 비켜.'
+};
+const USE_NOW={
+ 비견:'오늘 닫을 선택 하나만 문장으로 적고, 나머지는 내일의 선택으로 넘겨.',
+ 겁재:'같이 한 일에서 각자 끝낸 것 하나씩만 적고, 비교는 거기에서 멈춰.',
+ 식신:'오늘 남길 분량을 정하고, 그 분량이 끝나면 나머지는 내일 리듬으로 넘겨.',
+ 상관:'고칠 항목 하나만 결과로 남기고, 다른 개선은 다음 목록으로 옮겨.',
+ 편재:'새로 잡은 약속 하나와 이미 있는 일정 하나를 같이 적고, 겹치면 새 약속부터 줄여.',
+ 정재:'남은 목록에서 오늘 숫자로 닫을 항목 하나만 고르고, 나머지는 미완료로 적어 둔 채 쉬어.',
+ 편관:'지금 대응할 일 하나만 순서를 적고, 나머지가 내일로 가도 된다고 한 줄 남겨.',
+ 정관:'오늘 끝낼 일의 완료 문장만 남기고, 그 문장이 채워지면 다음 요청은 내일의 결정으로 분리해.',
+ 편인:'지금 답할 질문 하나만 적고, 닫히지 않은 이유는 다음 검토 시각으로 넘겨.',
+ 정인:'이해한 사정과 네가 맡을 범위를 다른 문장으로 적고, 범위 밖은 오늘 내려놔.'
+};
+function asWho(text, who){
+ let s=String(text||'');
+ if(!who) return s;
+ s=s.replace(/너는/g, topic(who)).replace(/네가/g, subj(who)).replace(/너를/g, obj(who)).replace(/너에게/g, who+'에게').replace(/네 /g, who+'의 ');
+ return s;
+}
+function banmal(s){
+ return String(s||'')
+  .replace(/합니다/g,'해').replace(/됩니다/g,'돼')
+  .replace(/한다(?=$|[.!\s])/g,'해')
+  .replace(/된다(?=$|[.!\s])/g,'돼');
+}
+function say(s){
+ s=banmal(tidy(s));
+ if(!s) return '';
+ if(/[.!?…]$/.test(s)) return s;
+ return s+'.';
+}
+function glue(parts){return tidy(parts.map(say).filter(Boolean).join(' '));}
+function clip(s){return banmal(String(s||'')).replace(/[.!?…]+$/g,'').trim();}
+function relSpoken(type){
+ if(/천간합/.test(type||'')) return '서로를 끌어당기는 합';
+ if(/삼합|반합|육합/.test(type||'')) return '같이 있으면 빨라지는 합';
+ if(type==='충') return '속도가 부딪히는 충';
+ if(type==='형') return '같은 자리를 다시 보게 하는 형';
+ if(type==='파') return '작은 변경이 남는 파';
+ if(type==='해') return '넘긴 말이 남는 해';
+ return type||'관계';
+}
+function buildPersonAnalysis(c, existingModel){
+ const p=narrativeProfile(c), sGod=NARRATIVE_GOD[p.social], iGod=NARRATIVE_GOD[p.intimate]||null;
+ if(!sGod) return null;
+ const L=readingLens(c,p), b=L.b;
+ const model=existingModel||(typeof BaseExpert.personModel==='function'?BaseExpert.personModel(c):{});
+ const strength=model?.structure?.strength||null;
+ const top=p.elements[0], second=p.elements[1], margin=top[1]-second[1], useElement=margin>=8;
+ const used=['pillar:day','pillar:month','season'];
+ (p.sources[p.social]||[]).forEach(id=>used.push(id));
+ if(p.intimate) (p.sources[p.intimate]||[]).forEach(id=>used.push(id));
+ if(useElement) used.push('elements');
+ const who=`${stemBit(b.dm)}, ${beat(b.db)}`;
+ let coreFeature;
+ if(!iGod){
+  coreFeature=`${topic(b.dayKo)} 일지 본기가 없어 가까운 생활의 기준은 비워 둘게. 사람 앞에서 확인되는 힘은 월주 ${b.monthKo}의 ${sGod.label}이야. ${who} 사람이야.`;
+ }else if(L.axis==='rooted'){
+  coreFeature=`${topic(b.dayKo)} 일에서도 가까운 사람 앞에서도 같은 손을 쓰는 사람이야. ${who} 사람이야. 월주 ${b.monthKo}에서 먼저 보이는 힘과 일지 ${b.db} 본기가 둘 다 ${sGod.label}이라, 역할과 마음이 한 결로 이어져.`;
+ }else if(L.axis==='clash'){
+  const r=L.dayMonthStrain.value; used.push(L.dayMonthStrain.id);
+  coreFeature=`${topic(b.dayKo)} ${who} 사람이야. 그런데 월주 ${b.monthKo}의 ${sGod.label}과 일지 생활이 ${relPlaces(r)} 사이 ${relSpoken(r.type)}으로 맞닿아 있어. 재능이 적어서 단순해 보이는 게 아니라, 사람 앞에서 푸는 속도와 마음이 놓이는 속도가 한자리에서 부딪히는 사람이야.`;
+ }else if(L.axis==='bound'){
+  const r=L.dayMonthLink.value; used.push(L.dayMonthLink.id);
+  coreFeature=`${topic(b.dayKo)} ${who} 사람이야. 월주 ${b.monthKo}의 ${sGod.label}이 ${relPlaces(r)} 사이 ${relSpoken(r.type)}으로 가까운 생활까지 끌어당겨. 같이 있으면 일이 빨리 구르고, 그 빠름이 이 얼굴이야.`;
+ }else{
+  coreFeature=`${topic(b.dayKo)} 한 얼굴로 끝나지 않아. ${who} 사람이야. 밖에서 먼저 보이는 손은 월주 ${b.monthKo}의 ${sGod.label}이고, 마음이 놓이는 쪽은 일지 ${b.db} 본기의 ${iGod.label}이야.`;
  }
- const baseIds=['pillar:day','pillar:month',...(p.sources[p.social]||[]),...(p.sources[p.intimate]||[]),'season'];
- const askBank={
-  self:[`내가 ${s.label}으로 사람들에게 남기는 신뢰를 더 크게 말해 줄 수 있어?`,`내가 작다고 넘겨 온 기여가 사실은 얼마나 값진지 이어서 봐 줘`,`${beat(b.db)} 이 결이 내 재능이랑 만나면 어떤 장면이 제일 빛나?`],
-  inside:[`이 힘을 쓰다가 내가 먼저 지치는 조건을 더 정확하게 짚어 줘`,` ${i.need}이 비었을 때 내가 어떤 말로 도와 달라고 하면 되는지 봐 줘`.trim(),`쉬어도 내 ${s.label}이 안 사라진다는 걸 내 상황에 더 붙여서 말해 줘`],
-  people:[`처음 보이는 나와 가까워진 뒤에 필요한 내가 다를 때 뭐라고 말하면 돼?`,`사람들이 내 좋은 면을 오해할 때, 그 오해를 푸는 말 하나만 정해 줘`],
-  love:[`내가 주는 사랑과 내가 받아야 놓이는 사랑이 다를 때, 오늘 밤에 할 말 하나만 정해 줘`,`오래 같이 살려면 내 재능이 고정 의무가 되지 않게 뭘 나눠야 해?`],
-  work:[`내 ${s.label}이 좋은 사람으로만 남지 않고 권한으로 남으려면 지금 뭘 확인해?`,`이 재능으로 일을 키우기 전에 작게 확인할 거래가 뭐야?`],
-  money:[`버는 방식과 지키는 방식이 다를 때, 이번 달 돈은 어떻게 나누면 돼?`,`내 버는 감각을 과소평가하지 않으려면 어떤 결과를 보여 줘야 해?`],
-  timing:[`지금 운에서 내 재능이 넓어지는 일과, 비워 둬야 하는 일을 나눠 줘`],
-  stars:[`내가 가진 별이 실제로 어떤 장면에서 특별해지는지 더 들려줘`,`이 별을 성공 약속이 아니라 쓰는 힘으로 풀면 이번 주에 뭘 하면 돼?`],
-  core:[`이번 주에 내 힘을 지키면서도 지치지 않을 행동 하나만 정해 줘`]
+ const amplifiers=[];
+ if(L.seasonSplit && L.monthRoot && NARRATIVE_GOD[L.monthRoot.god]){
+  amplifiers.push(`같은 월주 안에서도 갈림이 있어. 월간에 내놓는 얼굴은 ${sGod.label}인데, 월지 본기는 ${NARRATIVE_GOD[L.monthRoot.god].label}이야. 일에 보이는 손과 계절이 밀어 주는 손이 같지 않아.`);
+ }
+ if(useElement && CLIMATE[L.climate]) amplifiers.push(CLIMATE[L.climate](top[0], top[1]));
+ if(MONTH_BREATH[b.mb]) amplifiers.push(MONTH_BREATH[b.mb]);
+ if(L.y && L.y.label!==sGod.label){
+  amplifiers.push(`년주 ${b.yearKo}에서 사람을 처음 대하는 방식은 ${L.y.label}이야. 지금 일에 쓰는 ${sGod.label}과 결이 달라, 바깥 태도와 일 처리가 한 문장으로 안 끝나.`);
+  used.push('visible:year');
+ }
+ if(b.hour && L.hg && b.hour.god!==p.social){
+  amplifiers.push(`시주 ${b.hour.ko}는 시간을 들여 남기는 작업이야. ${L.hg.label}이라, 지금 맡은 역할과 나중에 손에 남는 결과의 기준이 같아지지 않아.`);
+  used.push('visible:hour');
+ }else if(c.input?.hourUnknown){
+  amplifiers.push('태어난 시각이 없어 시주가 만들 작업의 결은 넣지 않았어.');
+ }
+ const starHit=(c.stars?.hits||[]).find(h=>h&&STAR_INTEGRATED[h.name]&&(h.pillar==='month'||h.pillar==='day')&&!(h.pillar==='hour'&&c.input?.hourUnknown))||null;
+ if(starHit){
+  amplifiers.push(`${STAR_POSITION[starHit.pillar][0]}의 ${starHit.name}은 보조야. ${STAR_INTEGRATED[starHit.name][0]} 쪽이 조금 더 드러날 뿐, 사람의 중심을 이 별의 이름으로 바꾸지는 않아.`);
+  const fact=p.facts.find(f=>f.kind==='star'&&f.value?.name===starHit.name&&f.pillar===starHit.pillar);
+  if(fact) used.push(fact.id);
+ }
+ let strainNote='';
+ const primary=p.strain[0];
+ const strainAlready=L.axis==='clash'&&L.dayMonthStrain&&primary&&primary.id===L.dayMonthStrain.id;
+ if(primary&&!strainAlready){
+  const r=primary.value; used.push(primary.id);
+  const fx={충:'한쪽 속도를 지키면 다른 쪽이 밀려.',형:'이미 정한 일을 다시 확인하는 말이 늘어.',파:'작은 변경이 담당의 빈칸으로 남아.',해:'넘긴 말이 다음 약속의 온도로 남아.'}[r.type]||'기준이 갈려.';
+  strainNote=`${relPlaces(r)} 사이 ${subj(r.type)} 있어. ${fx}`;
+ }else if(!p.strain.length&&p.links.length&&L.axis!=='bound'){
+  const r=p.links[0].value; used.push(p.links[0].id);
+  strainNote=`${relPlaces(r)} 사이 ${subj(r.type)} 확인돼. 같이 묶이면 일이 빨리 굴러가는 대신, 누가 마칠지 말하지 않으면 수고가 한쪽으로 남아.`;
+ }
+ const room=MONTH_ROOM[b.mb]||'일이 한곳에 모인 자리';
+ const talentBehavior=glue([`${room} 같은 장면을 예로 들면, 너는 ${banmal(GOD_MOVE[p.social])}`, `${beat(b.db)} 결이 그 장면에 실려`]);
+ const outerLook=glue([`처음 보는 사람은 이 손이 먼저 보여.`, banmal(GOD_ON_OTHER[p.social]), useElement?`${top[0]} ${top[1]}%가 그 인상을 더 키워`:'오행이 한쪽으로 크게 기울지 않아, 인상은 월간의 손버릇으로 좁혀 읽었어']);
+ const misread=say(`그 모습을 ${BRANCH_MISREAD[b.db]||MISREAD[fam(p.social)]} 받아들이기 쉬워`);
+ let support='';
+ if(strength&&Number.isFinite(Number(strength.score))){
+  const n=Number(strength.score);
+  const band=n>=68?'판단을 밀어붙일 자원이 비교적 모이는 쪽':n<=40?'혼자 버티는 양보다 환경과 회복을 먼저 봐야 하는 쪽':'스스로 미는 일과 도움을 받는 일을 같이 봐야 하는 쪽';
+  support=glue([`계절과 뿌리를 함께 본 기존 지지력은 ${n}점이야`, `${band}이라, ${sGod.label}을 쓸 시간과 역할의 경계를 여기서 봐`, '잘나고 못난 점수는 아니야']);
+ }
+ const extra=NARRATIVE_GOD[p.extra];
+ const extraNote=extra&&p.extra!==p.social&&p.extra!==p.intimate&&(p.scores[p.extra]||0)>=1?glue([`옆에서 ${extra.label}도 보태`, extra.value, '중심을 바꾸지는 않고, 맡은 일의 결과 폭을 넓혀']):'';
+ if(extraNote) (p.sources[p.extra]||[]).forEach(id=>used.push(id));
+ const burdenBits=[GOD_BURDEN[p.social]];
+ if(iGod&&p.social!==p.intimate) burdenBits.push(`가까이서는 ${iGod.label}이 비면 같은 힘이 더 무거워져. ${iGod.cost}`);
+ else if(iGod) burdenBits.push(`일과 마음이 같은 ${sGod.label}이라, 일의 완료 기준을 가까운 사람에게도 씌우면 그 장점이 감독이 돼.`);
+ if(strainNote) burdenBits.push(strainNote);
+ const weekMove=say(USE_NOW[p.social]);
+ const closeLine=iGod&&p.social!==p.intimate?glue([`가까운 곳에 필요한 건 ${ida(iGod.need)}`, iGod.move]):iGod?say('집에서는 일의 완료 기준을 그대로 쓰지 마. 가까워진 뒤에 필요한 행동을 따로 남겨.'):'';
+ return {c,p,L,b,sGod,iGod,axis:L.axis,coreFeature:say(coreFeature),amplifier:glue(amplifiers),talentBehavior,talentValue:say(GOD_WORTH[p.social]),outerLook,misread,closeNeed:iGod?iGod.need:'',burden:glue(burdenBits),rest:say(REST_COST[p.social]),weekMove,closeLine,leverage:glue([weekMove,closeLine].filter(Boolean)),giving:say(sGod.love),workField:sGod.work,workScene:say(sGod.scene),moneyWay:say(INCOME[p.social]||sGod.money),moneyKeep:say(sGod.money),lifeBudget:say(iGod?iGod.budget:sGod.budget),support,extraNote,social:p.social,intimate:p.intimate,socialLabel:sGod.label,innerLabel:iGod?iGod.label:'',sameRoom:!!(iGod&&p.social===p.intimate),room,used:[...new Set(used)],starHit,strength,onOther:GOD_ON_OTHER[p.social],move:say(GOD_MOVE[p.social])};
+}
+function personEvidence(a){
+ const base=narrativeEvidence(a.p,a.used);
+ const bits=[base];
+ if(a.strength&&a.strength.evidence) bits.push('기존 지지력 '+a.strength.evidence);
+ return bits.filter(Boolean).join(' · ');
+}
+function sectionAsk(c,id,a){
+ const bank={
+  self:[`${a.socialLabel}이 옆에 남기는 값을 내 장면으로 더 봐 줘`,`${a.b.dayKo}와 월주가 만나면 어떤 행동이 제일 선명한지 이어서 봐 줘`],
+  inside:[`이 힘이 부담이 되는 조건을 내 생활 장면에 더 붙여 줘`,`쉬면서도 ${a.socialLabel}을 잃지 않으려면 이번 주에 뭘 닫아야 해`],
+  people:[`처음 보이는 나와 가까워진 뒤에 필요한 내가 다를 때 뭐라고 말하면 돼?`],
+  love:[`내가 건네는 행동과 내가 놓이는 조건을 오늘 밤에 할 말로 바꿔 줘`],
+  work:[`${a.socialLabel}이 뒤처리로 안 남으려면 지금 어떤 권한을 확인해?`],
+  money:[`버는 손과 새는 조건이 같은 힘이라면, 이번 달 돈은 어디를 나눠?`],
+  timing:[`평소의 나와 이번 운의 주제를 나눠서 이번 달 일정만 정해 줘`],
+  stars:[`이 별은 중심을 바꾸지 않고 어디서만 보태는지 더 짚어 줘`],
+  core:[`이번 주에 이 힘을 지키면서 쉬기도 하는 행동 하나만 정해 줘`]
  };
- const askOf=id=>{const list=askBank[id];return list?list[seed(c,'ask:'+id)%list.length]:'';};
- const rows=[], add=(id,title,paragraphs,ids=baseIds)=>{
-  const clean=paragraphs.map(tidy).filter(Boolean);
-  rows.push({id,title,eyebrow:'',lead:true,paragraphs:clean,body:clean.join('\n\n'),ask:askOf(id),evidence:narrativeEvidence(p,[...new Set(ids)]),claims:ids.filter(id=>p.facts.some(f=>f.id===id))});
- };
- const model=existingModel||(typeof BaseExpert.personModel==='function'?BaseExpert.personModel(c):{}), strength=model.structure?.strength;
- const L=readingLens(c,p);
- const y=L.y;
- add('self',centerTitle(c,p),[
-  sceneLine(c,p),
-  praiseLine(c,p),
-  e&&e!==s&&e!==i?`너에게는 하나 더 있어. ${e.label}. ${e.value} 이것까지 가진 너를, 한 줄 소개로 줄이지 마.`:''
- ],[...baseIds,...(p.sources[p.extra]||[]),'elements']);
- add('inside','2. 이 재능을 쓰면서 필요한 것',[
-  comfortLine(c,p)
- ],[...baseIds,...p.strain.map(f=>f.id),'stage:day']);
- if(strength) rows[rows.length-1].evidence+=' · 기존 지지력 근거 '+strength.evidence;
- add('people','3. 처음엔 이렇게 보이고, 가까워지면 이렇게 필요해',[
-  `처음 만나면 사람들은 너를 믿고 싶어 해. ${s.love}. 그 모습이 멋있어. 일을 잘해서가 아니야. 네 곁에 있으면 마음이 놓이는 사람이기 때문이야.`,
-  `그런데 가까워지면, 그 좋은 점이 오해로 뒤집히기도 해. ${beat(b.db)} 사람인데, 상대는 그걸 ${BRANCH_MISREAD[b.db]||MISREAD[fam(p.social)]} 듣거든. ${p.social===p.intimate?`네가 부족한 건 능력이 아니야. “${i.need}”를 말로 건네지 못한 그 한 줄이야.`:`밖에서 빛나는 너와, 가까이서 필요한 너는 달라. 실력만 알아주고 ${i.need}을 건너뛰면, 너는 잘 지내면서도 마음이 비어.`}`,
-  e&&e!==s&&e!==i?`관계에 보태는 다른 재능도 있어. ${e.label}. ${e.love} 다정의 종류를 하나만 정하지 마.`:'',
-  `오해를 푸는 말은 짧아도 돼. “일은 이렇게 하고, 가까워진 뒤에 필요한 건 ${i.need}야.” ${i.move}`
+ const list=bank[id]||['이 장면만 더 봐 줘'];
+ return list[seed(c,'ask:'+id)%list.length];
+}
+function pushSection(rows,a,id,title,paragraphs,extraIds){
+ const clean=paragraphs.map(tidy).filter(Boolean);
+ const ids=[...a.used,...(extraIds||[])];
+ rows.push({id,title,eyebrow:'',lead:true,paragraphs:clean,body:clean.join('\n\n'),ask:sectionAsk(a.c,id,a),evidence:personEvidence(a),claims:ids.filter(id=>a.p.facts.some(f=>f.id===id))});
+}
+function composePersonSections(a){
+ const rows=[];
+ const day=a.b.dayKo, month=a.b.monthKo;
+ if(!a.iGod){
+  pushSection(rows,a,'self',`1. ${day}에서 확인된 손`,[a.coreFeature,`${a.talentBehavior} ${a.talentValue}`]);
+  pushSection(rows,a,'inside','2. 가까운 생활의 기준은 비워 둘게',['일지 지장간 본기가 없어, 사회적 역할을 숨은 욕구로 바꾸어 설명하지 않을게. 혼자 있을 때 필요한 시간과 가까운 사람에게 원하는 행동은 실제 경험으로 확인해.']);
+  pushSection(rows,a,'people','3. 사람에게 보이는 부분',[`${month}에서 보이는 기여는 ${a.socialLabel}이야. ${a.talentValue} 이 인상이 가까운 생활에서도 같은지는 자료 없이 정하지 않아.`]);
+  pushSection(rows,a,'love','4. 애정은 확인 전',['현재 자료만으로 받고 싶은 애정이나 결혼 성향을 정하지 않을게. 어떤 행동에서 사랑받는다고 느끼는지는 대화로 확인해.']);
+  pushSection(rows,a,'work','5. 확인된 일의 자리',[`${a.workField}에서 ${a.socialLabel}이 평가와 권한에 반영되는지를 봐. ${a.sGod.cost}`]);
+  pushSection(rows,a,'money','6. 확인된 수입의 방향',[`${a.moneyWay} ${a.sGod.budget} 가까운 생활의 소비 성향은 일지 근거 없이 만들지 않았어.`]);
+  pushSection(rows,a,'timing','7. 운은 역할까지만',['가까운 생활 기준이 빠져 시기별 마음까지 연결하지 않을게. 기존 운 계산값만 역할의 변화로 읽어.']);
+  pushSection(rows,a,'stars','8. 별은 성격을 채우지 않아',['원국 일부가 비어 있으니 별 이름으로 숨은 성격이나 과거를 만들지 않을게.']);
+  pushSection(rows,a,'core','9. 이번 주',[`${a.leverage} 일지 본기 자료가 오면 가까운 관계의 기준을 이어서 읽을 수 있어.`]);
+  return rows;
+ }
+ const close=TITLE_CLOSE[a.b.db]||'자기 결을 지키는 사람';
+ const title=a.axis==='rooted'?`1. 일과 마음이 같은 손 — ${close}`:a.axis==='clash'?`1. 부딪혀도 손이 보이는 사람 — ${close}`:a.axis==='bound'?`1. 같이 있으면 빨라지는 사람 — ${close}`:`1. 밖에 보이는 손과 마음이 놓이는 자리 — ${close}`;
+ pushSection(rows,a,'self',title,[
+  glue([a.coreFeature, a.amplifier]),
+  glue(['너는 손에 일을 쥐면 이렇게 움직여.', a.talentBehavior, '그래서 옆에 남는 값은 결과가 멋진 척이 아니야.', a.talentValue, a.extraNote]),
+  glue(['그 값은 공짜로 나오지 않아.', a.rest])
  ]);
- add('love','4. 사랑을 건네는 방식, 그리고 네가 받는 방식',[
-  loveScene(c,p),
-  `네가 건네는 애정은 그 자체로 값져. ${s.love}. 크게 약속하지 않아도, 그 행동이 반복되면 상대는 사랑을 알아봐. 이 표현을 서툰 애정으로 낮추지 마.`,
-  `받고 싶은 쪽은 따로야. ${ida(i.need)}. ${p.social===p.intimate?'주고 받는 결이 이어져서, 집의 기준을 일의 기준과 한 번만 나눠 말하면 돼.':'잘해 주는 방식과 위로받는 방식이 달라. 허전함은 사랑이 없어서가 아니라, 도착한 방식이 달랐다는 신호일 수 있어.'}`,
-  `오래 같이 사는 생활에서는 설렘보다, ${i.need}이 평일 저녁에도 반복되는지를 봐. 시간·돈·집안일에서 ${s.label}이 네 고정 의무가 되지 않게, 담당과 끝나는 기준을 정해.`,
-  `마음이 식었는지는 이 자료로 확정하지 않아. 부담이 반복되는 조건만 분명해. ${i.cost} 그 장면을 만나면 감정을 단정하기 전에, 서로 바꿀 행동 하나만 확인해.`,
-  `오래 가는 강점은 큰 이벤트가 아니야. ${i.love} 그걸 작은 평일로 만드는 데 있어. ${beat(b.db)} 그 세심함이 보이면, 이 사랑의 형태는 설명하지 않아도 남이 알아보게 돼.`
+ pushSection(rows,a,'inside','2. 같은 힘이 무거워지는 조건',[
+  glue(['잘해서 무거워지는 장면이 따로 있어.', a.burden, `실력 부족으로 설명할 장면이 아니야. ${a.socialLabel}을 그 조건에서도 같은 크기로 쓰려 할 때 쉬기 어려워져.`]),
+  glue(['그래서 이 손을 버리라는 말이 아니야. 옆에 남는 값은 앞에서 봤고, 여기서는 그 값을 지키면서 무게만 줄일게.', '전부 끝낸 뒤에 쉬겠다는 조건을 오늘 닫을 한 칸으로 바꿔.', a.sameRoom?'일의 완료 기준을 가까운 사람에게 그대로 씌우지 마.':`가까이서 비면 더 무거워지는 조건은 ${ida(a.closeNeed)}. 그 말이 빠진 채 일만 잘하면, 힘은 남고 마음은 비어.`])
  ]);
- add('work','5. 이 재능이 일과 권한으로 남는 자리',[
-  `일도 너를 특별하게 만드는 자리야. ${s.work}에서 ${s.label}이 보여. ${WORK[p.social]?WORK[p.social][0]:''} ${s.value} 그 일이 평가에 안 남으면, 너는 좋은 사람으로만 불리고 네 실력은 뒤에 숨어.`,
-  e&&e!==s?`${e.label}도 일의 재료야. ${e.work} 쪽에 보태면, 한 손만 쓸 때와 다른 결과가 가능해. 이 기여를 덤으로 넘기지 마.`:'',
-  hourCraft(c,p),
-  `권한이 빠진 자리에서는 성실함이 뒤처리가 돼. 이런 상황을 겪고 있다면 이유는 이거야. ${s.cost} 끝낸 일의 범위가 평가 문장에 없으면, 실력은 좋은 사람으로만 남아.`,
-  `사업을 키우기 전에 작은 거래로 확인해. ${s.money} ${s.budget} 독립이 맞는지 틀린지는 재능 칭찬으로 정하지 않아. 실제 거래와 비용을 같이 봐.`,
-  `사람을 이끌 때의 자산도 ${s.label}이야. 팀이 이 기준을 이해하고 직접 정할 몫을 같이 가져야, 네 추진이 통제로 안 들려.`
- ],[...baseIds,...(p.sources[p.extra]||[])]);
- add('money','6. 버는 힘과, 그 돈을 지키는 기준',[
-  `버는 방식은 ${s.label}에 가까워. ${INCOME[p.social]||s.money} ${s.money}. 고객에게 보이는 건 성격이 아니라, 그 힘이 만든 결과야. 결과가 안 보이면 가격의 이유가 흐려져. 이 버는 감각을 운 좋은 재주로 낮추지 마.`,
-  `지키는 기준은 따로야. ${i.budget} ${p.social===p.intimate?'버는 판단과 쓰는 판단이 같아. 익숙한 기준을 믿기 쉬우니, 매출과 실제로 남은 돈을 다른 칸에 적어.':'일에서는 타당한 지출도 생활의 여유를 줄일 수 있어. 업무 비용과 개인 비용을 분리해. '+s.budget}`,
-  y?`바깥에서 익힌 돈 감각은 배경이야. ${y.money}. 그 배경을 지금 네 수입 방식으로 착각하지 마.`:'',
-  e&&e!==s?`다른 재능을 돈에 붙이는 실험은 작게. ${e.money} 기존 일에 결과물 하나만 붙여 보고, 실제로 선택되는지만 확인해.`:'',
-  `이번 달에는 거래 하나의 재료·연락·수정·마무리 시간을 모두 남겨. ${s.label}을 계속 쓸 체력이 돈과 함께 남는지가 기준이야.`
+ pushSection(rows,a,'people','3. 처음 보이는 얼굴, 가까워져야 나오는 조건',[
+  tidy(`${a.outerLook} ${a.misread} 그 오해는 성격 이름이 아니라, ${day}의 생활 결을 ${month}의 손으로만 봐서 생겨.`),
+  a.sameRoom
+    ? tidy(`가까워져도 손이 크게 바뀌지는 않아. 필요한 건 ${ida(a.closeNeed)}. 다만 그 말을 안 하면, 상대는 네가 알아서 다 하는 사람으로만 기억해. “일은 이렇게 하고, 가까이서는 ${subj(a.closeNeed)} 필요해.”`)
+    : tidy(`가까워지면 밖에서 쓰던 ${a.socialLabel}만으로는 안 놓여. 필요한 건 ${ida(a.closeNeed)}. 실력만 알아주고 이 조건이 빠지면, 일은 잘 돌아가는데 마음은 비어. “일은 ${a.socialLabel}으로 하고, 가까이서는 ${subj(a.closeNeed)} 필요해.”`)
  ]);
- const timing=timingSections(c);
- add('timing','7. 이 시기에 재능이 넓어지는지',[
-  `바탕은 ${s.label}이고, 운은 그 바탕에 다른 역할이 들어오는 흐름이야. 볼 질문은 하나야. 지금 이 힘을 쓸 자리가 넓어지는지, 그리고 ${i.need}이 같이 남는가.`,
-  ...timing.filter(r=>r.id==='timing-현재 대운'||/^timing-\d{4}년$/.test(r.id)).slice(0,3).map(r=>`${r.title}. ${r.paragraphs?.[0]||''} ${r.paragraphs?.[3]||r.paragraphs?.[2]||''}`),
-  !timing.length?'현재 운 자료가 없어 시기 이야기를 채우지 않았어.':'',
-  `운의 이름이 삶을 갈아엎으라고 말하지 않아. 사건은 예언하지 않아. 가까운 달의 일정에서, 끝낼 범위와 쉴 자리가 같이 있는지만 봐.`
- ],[...baseIds]);
- const stars=premiumStarSynthesis(c);
- const starName=(c.stars?.hits||[]).find(h=>h&&h.name&&c.pillars?.[h.pillar]&&!(h.pillar==='hour'&&c.input?.hourUnknown));
- add('stars', starName?`8. ${starName.name}, 이렇게 쓰면 값이 보여`:`8. 보탤 별은 근거가 있을 때만`,[
-  ...stars,
-  `별 하나로 특별한 운명이나 반드시 성공하는 삶을 약속하지 않아. 위치와 쓰임이 맞을 때만, 이미 있는 ${s.label}이 더 또렷해져.`
- ],[...baseIds,...p.facts.filter(f=>f.kind==='star').map(f=>f.id)]);
- add('core','9. 이번 주, 하나만',[
-  `${s.label} 한 단어로 이 사람을 닫지 않아. 세상에 남기는 힘은 ${s.label}이고, 마음이 놓이는 조건은 ${ida(i.need)}. ${e&&e!==s?e.label+'은 그 힘을 넓히는 자원이야.':''}`,
-  adviceLine(c,p),
-  `막히면 더 애쓰기 전에 둘 중 무엇이 비었는지 물어. ${s.label}이 결과로 인정받고 있는가, ${i.need}이 생활에 남아 있는가. 빈 쪽이 일이면 권한을 보고, 빈 쪽이 마음이면 요청의 문장을 바꿔. 둘 다 있다면 이미 네 힘을 그 자리에 쓰고 있는 거야.`
+ const loveWhen=a.sameRoom
+  ? tidy(`주고 받는 결이 이어져 있어서, 집의 기준을 한 번만 말해 주면 상대가 따라오기 쉬워. 반대로 일의 완료 기준을 식탁에 그대로 가져오면, 같은 세심함이 돌봄이 아니라 점검이 돼.`)
+  : tidy(`건네는 행동은 ${clip(a.giving)} 쪽이야. 그 행동이 사랑으로 도착하려면 ${subj(a.closeNeed)} 같이 가야 해. 일의 방식만 전달되면 상대는 도움을 받았는데, 너는 마음을 건넨 줄 알고 서로 허전할 수 있어.`);
+ pushSection(rows,a,'love','4. 건네는 행동과, 그 행동이 사랑으로 남는 조건',[
+  tidy(`마음을 건넬 때도 다른 사람이 되는 건 아니야. ${a.giving} 가까운 생활에서는 ${beat(a.b.db)} 방식으로 그 마음이 나가. 가능한 장면으로 보면, ${a.room}에서 하던 그 손이 식탁으로 따라오는 거야.`),
+  loveWhen,
+  tidy(`오래 같이 사는 생활에서는 설렘보다, ${subj(a.closeNeed||a.socialLabel)} 평일 저녁에도 반복되는지를 봐. ${a.socialLabel}이 네 고정 의무가 되지 않게, 담당과 끝나는 기준을 정해. 마음이 식었는지는 이 자료로 확정하지 않아. 부담이 반복되는 조건만 분명해.`)
  ]);
+ pushSection(rows,a,'work','5. 일을 맡았을 때 움직이는 방식',[
+  glue([a.workScene, `${a.workField}에서 그 손이 결과로 남아.`, a.talentValue, '고객이나 동료가 보는 건 성격 이름이 아니라, 그 행동이 남긴 결과야.']),
+  glue([a.extraNote, '권한이 빠진 자리에서는 같은 손이 뒤처리가 돼.', a.sGod.cost, '끝낸 범위가 평가 문장에 없으면, 실력은 좋은 사람으로만 남아.', a.b.hour?`시간을 들여 남기는 작업은 시주 ${a.b.hour.ko}의 ${a.L.hg?a.L.hg.label:'다른 결'}이야. 지금 역할과 같으면 두 번 세지 말고, 다르면 결과 칸을 따로 둬.`:'태어난 시각이 없어 시주 작업은 나누지 않았어.', a.support]),
+  glue(['키우기 전에 작은 거래로 확인해.', a.moneyWay, '독립이 맞는지는 재능 칭찬으로 정하지 않아. 실제 거래와 비용을 같이 봐.', '사람을 이끌 때도 팀이 이 기준을 알고 자기 몫을 가져야, 네 추진이 통제로 안 들려.'])
+ ]);
+ pushSection(rows,a,'money','6. 버는 손, 그리고 그 손이 새는 조건',[
+  tidy(`버는 방식도 ${a.socialLabel}에서 나와. ${a.moneyWay} 그 손이 돈으로 남는 모양은 ${clip(a.moneyKeep)}이야. 결과가 안 보이면 가격의 이유가 흐려져. 이 감각을 운 좋은 재주로 낮추지 마.`),
+  a.sameRoom
+    ? tidy(`지키는 기준도 같은 손이야. ${a.lifeBudget} 익숙한 기준을 믿기 쉬우니, 매출과 실제로 남은 돈을 다른 칸에 적어. ${a.rest} 돈에서도 같아. 미완료 장부가 남아 있으면 쉬기 전에 숫자를 다시 맞추게 돼.`)
+    : tidy(`생활에서 돈을 지키는 기준은 일에서 버는 손과 달라. ${a.lifeBudget} 일에서는 타당한 지출도 생활의 여유를 줄일 수 있어. 업무 비용과 개인 비용을 분리해. ${a.sGod.budget}`)
+ ]);
+ const timingRows=timingSections(a.c).filter(r=>r.id==='timing-현재 대운'||/^timing-\d{4}년$/.test(r.id)).slice(0,2);
+ const timingParas=[tidy(`평소의 너는 ${a.socialLabel}으로 움직여. 운은 그 성격을 다른 사람으로 갈아끼우지 않아. 원국 위에 다른 역할의 주제가 잠깐 올라오는 시기야. 볼 건, 지금 이 손을 쓸 자리가 넓어지는지, 그리고 ${a.closeNeed||'가까운 생활의 조건'}이 같이 남는가 하는 거야.`)];
+ timingRows.forEach(r=>timingParas.push(tidy(`${r.title}. ${r.paragraphs?.[0]||''} 이건 평소 성격이 아니라 이 시기의 과제야. ${r.paragraphs?.[2]||''}`)));
+ if(!timingRows.length) timingParas.push('현재 운 자료가 없어 시기 이야기를 채우지 않았어. 평소의 원국만 읽어.');
+ timingParas.push('운의 이름이 사건을 예언하지 않아. 가까운 달의 일정에서, 끝낼 범위와 쉴 자리가 같이 있는지만 봐.');
+ pushSection(rows,a,'timing','7. 평소의 손과, 이 시기의 주제',timingParas);
+ const stars=premiumStarSynthesis(a.c);
+ pushSection(rows,a,'stars',a.starHit?`8. ${a.starHit.name}은 중심이 아니라 보탬`:'8. 보탤 별은 근거가 있을 때만',stars);
+ pushSection(rows,a,'core','9. 이번 주에 닫을 것 하나',[
+  glue([`${a.socialLabel} 한 단어로 이 사람을 닫지 않아.`, `밖에 남는 힘은 ${a.socialLabel}이고, 마음이 놓이는 조건은 ${a.closeNeed?ida(a.closeNeed):'아직 일지 근거가 부족해'}.`]),
+  glue(['이번 주는 더 잘하는 주가 아니라, 같은 힘의 무게를 줄이는 주야.', a.weekMove, a.closeLine]),
+  glue([`막히면 더 애쓰기 전에 둘 중 무엇이 비었는지 물어. ${a.socialLabel}이 결과로 인정받고 있는가, ${a.closeNeed||'가까운 조건'}이 생활에 남아 있는가.`, '빈 쪽이 일이면 권한과 완료 문장을 보고, 빈 쪽이 마음이면 요청의 문장을 바꿔.'])
+ ]);
+ return rows;
+}
+function auditPerson(rows,a){
+ const issues=[];
+ const paras=rows.flatMap(r=>r.paragraphs||[]);
+ const norms=paras.map(p=>p.replace(/\s+/g,''));
+ norms.forEach((n,i)=>{if(n.length>30&&norms.indexOf(n)!==i)issues.push('dup');});
+ paras.forEach(p=>{
+  if(/특별한 사람|너는 특별|이미 귀한 사람/.test(p)) issues.push('praise-slogan');
+  if(p.length>20 && !/[.!?…]$/.test(p.replace(/[”"']+$/g,'')) && !/[야어아여지해줘마봐네걸까래]$/.test(p.replace(/[”"']+$/g,''))) issues.push('ending');
+ });
+ const self=(rows.find(r=>r.id==='self')?.body)||'';
+ if(a.b?.dayKo && !self.includes(a.b.dayKo)) issues.push('self-missing-day');
+ if(a.socialLabel && !self.includes(a.socialLabel)) issues.push('self-missing-role');
+ const inside=(rows.find(r=>r.id==='inside')?.body)||'';
+ if(a.iGod && a.rest && inside.includes(a.rest) && self.includes(a.rest)) issues.push('rest-repeated');
+ rows.forEach(r=>{
+  r.paragraphs=r.paragraphs.map(p=>p.replace(/너는 특별한 사람이야\.?\s*/g,'').replace(/너는 특별해\.?\s*/g,'').trim()).filter(Boolean);
+  r.body=r.paragraphs.join('\n\n');
+ });
+ rRemember('person',a.b?.dayKo||'',issues);
  return narrativeFinalize(rows);
+}
+function rRemember(kind,key,issues){
+ if(!issues.length) return;
+ root.GUIIN_READING_AUDIT=root.GUIIN_READING_AUDIT||[];
+ root.GUIIN_READING_AUDIT.push({kind,key,issues:[...new Set(issues)]});
+}
+function lands(actor, other){
+ const need=other.closeNeed||'';
+ const table={
+  비견:/의견|선택|결정/,
+  겁재:/기여|같이|함께|몫/,
+  식신:/일상|리듬|쉬|유지|반복/,
+  상관:/생각|이유|제안|듣/,
+  편재:/경험|약속|시간|새/,
+  정재:/시간|비용|약속|지켜/,
+  편관:/권한|경계|대응|책임/,
+  정관:/약속|행동|몫|지켜|분명/,
+  편인:/시간|이해|이유|관심/,
+  정인:/설명|범위|이해|듣|사정/
+ };
+ const help=!!(table[actor.social]&&table[actor.social].test(need));
+ if(actor.social&&other.social&&actor.social===other.social){
+  return {
+   help:true,
+   stable:`한 사람이 필요한 행동을 먼저 말하고, 다른 사람은 그 범위만 맡아 결과를 확인할 때 ${actor.socialLabel}은 안정이 돼.`,
+   hard:`같은 ${actor.socialLabel}을 서로에게 증명하려고 하면, 그 장점이 간섭과 재판이 돼.`
+  };
+ }
+ const hand=clip(actor.onOther), move=clip(actor.move);
+ if(help){
+  return {
+   help:true,
+   stable:`${other.name?topic(other.name):'상대가'} 필요로 하는 “${need}”에 이 손이 닿아. ${hand}. 그 조건에 닿으면 안정이 돼.`,
+   hard:`같은 손도, 상대가 그 말을 하기 전에 ${move}. 순서가 바뀌면 도움이 간섭처럼 들려.`
+  };
+ }
+ return {
+  help:false,
+  stable:`부탁한 범위 안에서만 이렇게 해. ${hand}. 없는 장면을 채워 주는 손이야.`,
+  hard:`상대가 원하는 건 “${need}”인데, 나오는 손은 이거야. ${move}. 그 손만 나오면 노력은 했는데 다른 숙제를 받은 기분이 돼.`
+ };
+}
+function pairDomain(A,B,dayRel,weakKey){
+ if(weakKey==='money') return 'money';
+ if(/충/.test(dayRel||'')) return 'pace';
+ if(weakKey==='personality') return 'talk';
+ const think=g=>['편인','정인'].includes(g), make=g=>['식신','상관'].includes(g);
+ if((think(A.social)&&make(B.social))||(think(B.social)&&make(A.social))) return 'draft';
+ if(['편관','정관'].includes(A.social)&&['편관','정관'].includes(B.social)) return 'duty';
+ if(['비견','겁재'].includes(A.social)||['비견','겁재'].includes(B.social)) return 'choice';
+ if(/형|파|해/.test(dayRel||'')) return 'pace';
+ if(['정재','편재'].includes(A.social)&&['정재','편재'].includes(B.social)) return 'money';
+ if(weakKey==='love') return 'talk';
+ return 'task';
+}
+const PAIR_PLACE={
+ money:'같이 쓴 돈을 정산하는 식탁',
+ pace:'귀가 속도가 어긋난 현관',
+ duty:'마감이 겹쳐 누가 끝을 볼지 정해지지 않은 저녁',
+ draft:'고칠 문장을 같이 보는 자리',
+ choice:'다음 일정을 고르는 대화',
+ talk:'서운한 말을 아직 안 꺼낸 밤',
+ task:'끝이 안 보이는 집안일이 쌓인 저녁'
+};
+function pairPlan(A,B,domain){
+ const an=A.name, bn=B.name;
+ const aNeed=A.closeNeed, bNeed=B.closeNeed, same=!!(aNeed&&aNeed===bNeed);
+ const aHand=A.socialLabel, bHand=B.socialLabel;
+ const mine=g=>g?`나한테 필요한 건 ${ida(g)}.`:'';
+ if(domain==='money') return same?{
+  aDo:`${topic(an)} ${aHand}으로 본 공동 지출에서, 한도를 넘긴 항목과 지킬 금액을 먼저 적어 ${bn}에게 보여.`,
+  bDo:`${topic(bn)} 그 목록을 낭비라고 부르지 않고, ${bHand}으로 자기가 맡을 금액과 날짜만 답으로 적어.`,
+  aLine:`${bn}, 우리 둘 다 마음이 놓이려면 ${subj(aNeed)} 필요해. 오늘은 내가 넘긴 항목이랑 나눌 금액을 먼저 적을게. 네가 맡을 금액만 답해 줘.`,
+  bLine:`나도 같은 조건이 필요해. 낭비라고 부르기 전에 들을게. 내가 맡을 금액은 여기까지고, 날짜는 다음 정산일이야.`
+ }:{
+  aDo:`${topic(an)} ${aHand}으로 본 이번 공동 지출에서, 한도를 넘긴 항목을 적고 ${bn}에게 먼저 보여.`,
+  bDo:`${topic(bn)} 그 목록을 듣기 전에 낭비라고 부르지 않아. ${bHand}으로 맡을 금액과 날짜를 답으로 적어.`,
+  aLine:`${bn}, 같이 쓴 돈 중에 한도를 넘긴 항목이 있어. ${mine(aNeed)} 넘긴 만큼은 오늘 어떻게 나눌지 정하자.`,
+  bLine:`낭비라고 부르기 전에 들을게. ${mine(bNeed)} 내가 맡을 금액은 여기까지고, 나머지는 다음 정산 날짜에 맞출게.`
+ };
+ if(domain==='pace') return same?{
+  aDo:`${topic(an)} 오늘 ${aHand}으로 결론을 닫지 않고, 다시 볼 시각만 먼저 말해.`,
+  bDo:`${topic(bn)} 그 시각이 오기 전에는 ${bHand}으로 혼자 결론을 확정하지 않아.`,
+  aLine:`${bn}, 오늘 저녁은 내 속도가 안 나와. 우리 둘 다 ${subj(aNeed)} 필요한데, 오늘은 내가 먼저 그 속도를 맞출게. 지금 정할 건 내일 몇 시에 다시 볼지만 하자.`,
+  bLine:`내일 아침 9시에 보자. 그 전에는 내가 혼자 결론을 정하지 않을게. 같은 조건이니까, 내일은 내가 먼저 그 행동을 할게.`
+ }:{
+  aDo:`${topic(an)} 오늘 ${aHand}으로 결론을 닫지 않고, 다시 볼 시각만 먼저 말해.`,
+  bDo:`${topic(bn)} 그 시각이 오기 전에는 ${bHand}으로 혼자 결론을 확정하지 않아.`,
+  aLine:`${bn}, 오늘 저녁은 내 속도가 안 나와. ${mine(aNeed)} 결론은 내일로 미루고, 지금 정할 건 내일 몇 시에 다시 볼지만 하자.`,
+  bLine:`내일 아침 9시에 보자. ${mine(bNeed)} 오늘 결론은 내가 혼자 정하지 않을게.`
+ };
+ if(domain==='duty') return {
+  aDo:`${topic(an)} ${aHand}으로 오늘 끝낼 일과 내일로 넘길 일을 나눠, 끝낼 일의 완료 문장을 먼저 써.`,
+  bDo:`${topic(bn)} ${bHand}으로 그 문장 안의 자기 담당만 맡고, 문장 밖 긴급을 오늘 가져가지 않아.`,
+  aLine:same
+   ? `${bn}, 우리 둘 다 ${subj(aNeed)} 필요해. 오늘은 내가 완료 문장을 먼저 쓸게. 네 담당은 이 문장 안이야.`
+   : `${bn}, 오늘 안에 끝낼 건 이 완료 문장까지야. ${mine(aNeed)} 네 담당은 여기까지고, 나머지는 내일 아침으로 넘기자.`,
+  bLine:same
+   ? `같은 조건이니까 채점하지 않을게. 문장 안의 내 담당은 내가 끝내고, 문장 밖은 오늘 가져가지 않을게.`
+   : `그 문장 안의 내 담당은 내가 끝낼게. ${mine(bNeed)} 문장 밖 일은 오늘 내가 가져가지 않을게.`
+ };
+ if(domain==='draft') return {
+  aDo:`${topic(an)} ${aHand}으로 볼 때 고칠 항목과 건드리지 말 항목을 나눠 말해.`,
+  bDo:`${topic(bn)} ${bHand}으로 고칠 항목에만 답을 하고, 사람 전체를 평가하지 않아.`,
+  aLine:same
+   ? `${bn}, 우리 둘 다 ${subj(aNeed)} 필요해. 고쳤으면 하는 건 이 한 군데야. 나머지는 네 표현 그대로 둘게.`
+   : `${bn}, 이 문장에서 고쳤으면 하는 건 이 한 군데야. ${mine(aNeed)} 나머지는 네 표현 그대로 두고 싶어.`,
+  bLine:same
+   ? `그 한 군데만 이렇게 바꿀게. 같은 필요니까, 네 문장 전체를 평가하지는 않을게.`
+   : `그 한 군데는 이렇게 바꿀게. ${mine(bNeed)} 나머지 문장은 네가 쓴 대로 둘게.`
+ };
+ if(domain==='choice') return same?{
+  aDo:`${topic(an)} ${aHand}으로 같이 정할 일과 혼자 고를 일을 나눠, 후보를 두 개만 올려.`,
+  bDo:`${topic(bn)} ${bHand}으로 그 두 후보 안에서만 고르고, 후보 밖은 다시 묻기 전에 확정하지 않아.`,
+  aLine:`${bn}, 우리 둘 다 ${subj(aNeed)} 필요해. 오늘은 내가 먼저 후보 두 개를 올릴게. 같이 정할 약속은 이 둘 중 하나였으면 해.`,
+  bLine:`같은 조건이니까 누가 더 특별한지는 안 가를게. 나는 두 번째 후보로 하자. 네가 혼자 고르겠다는 일정은 내가 대신 정하지 않을게.`
+ }:{
+  aDo:`${topic(an)} ${aHand}으로 같이 정할 일과 혼자 고를 일을 나눠, 후보를 두 개만 올려.`,
+  bDo:`${topic(bn)} ${bHand}으로 그 후보 안에서 고르고, 후보 밖은 다시 묻기 전에 확정하지 않아.`,
+  aLine:`${bn}, 같이 정할 약속은 이 두 후보 중 하나였으면 해. ${mine(aNeed)} 그 밖의 일정은 내가 ${aHand}으로 고를게.`,
+  bLine:`그럼 나는 두 번째 후보로 하자. ${mine(bNeed)} 네가 고르겠다는 일정은 내가 ${bHand}으로 대신 정하지 않을게.`
+ };
+ if(domain==='talk') return same?{
+  aDo:`${topic(an)} ${aHand}으로 해결보다 먼저, 서운했던 행동 한 가지를 말해.`,
+  bDo:`${topic(bn)} ${bHand}으로 그 행동의 사실과 다음 행동만 답하고, 다른 주제로 넘기지 않아.`,
+  aLine:`${bn}, 우리 둘 다 ${subj(aNeed)} 필요해. 오늘은 내가 먼저 말할게. 서운했던 건 시간을 혼자 바꾼 그 행동이야.`,
+  bLine:`그 행동은 맞다. 같은 필요가 있으니 주제를 바꾸지 않을게. 다음에는 바꾸기 전에 말하고, 다시 가능한 시각을 지금 정할게.`
+ }:{
+  aDo:`${topic(an)} ${aHand}으로 해결보다 먼저, 서운했던 행동 한 가지를 말해.`,
+  bDo:`${topic(bn)} ${bHand}으로 그 행동의 사실과 다음 행동만 답하고, 다른 주제로 넘기지 않아.`,
+  aLine:`${bn}, 지금 필요한 건 해결책이 아니야. ${mine(aNeed)} 네가 시간을 혼자 바꾼 그 행동이 서운했어.`,
+  bLine:`시간을 혼자 바꾼 건 맞다. ${mine(bNeed)} 다음에는 바꾸기 전에 말하고, 오늘 다시 가능한 시각을 지금 정할게.`
+ };
+ return same?{
+  aDo:`${topic(an)} ${aHand}으로 오늘 닫을 집안일 하나만 골라 ${bn}에게 넘겨.`,
+  bDo:`${topic(bn)} ${bHand}으로 그 항목의 완료만 맡고, 다른 집안일까지 오늘 가져가지 않아.`,
+  aLine:`${bn}, 우리 둘 다 ${subj(aNeed)} 필요해. 오늘은 내가 먼저 닫을 일을 고를게. 오늘 닫을 집안일은 설거지 끝까지야.`,
+  bLine:`같은 조건이니까 누가 더 챙기는 사람인지는 안 가를게. 설거지는 내가 끝낼게. 다른 정리는 오늘 내가 열지 않을게.`
+ }:{
+  aDo:`${topic(an)} ${aHand}으로 오늘 닫을 항목 하나만 골라 ${bn}에게 넘겨.`,
+  bDo:`${topic(bn)} ${bHand}으로 그 항목의 완료를 맡고, 다른 집안일까지 같이 가져가지 않아.`,
+  aLine:`${bn}, 오늘 닫을 집안일은 설거지 끝까지야. ${mine(aNeed)} 다른 정리는 내일로 넘기자.`,
+  bLine:`설거지는 내가 끝낼게. ${mine(bNeed)} 다른 정리는 오늘 내가 열지 않을게.`
+ };
+}
+function analyzePair(x){
+ const A0=buildPersonAnalysis(x.a), B0=buildPersonAnalysis(x.b);
+ if(!A0||!B0||!A0.sGod||!B0.sGod) return null;
+ const an=String(x.A?.name||name(x.a)).replace(/님$/,''), bn=String(x.B?.name||name(x.b)).replace(/님$/,'');
+ const A={...A0,name:an}, B={...B0,name:bn};
+ const m=x.m||{}, score=Number(m.score);
+ const sig=x.d?.q?.sig||m.q?.sig||{};
+ const bond=Number(sig.bond??sig.combine??0), tension=Number(sig.tension??0);
+ const dayRel=x.d?.q?.dayRel||m.q?.dayRel||'';
+ const dimensions=[['애정',m.love,'love'],['대화',m.personality,'personality'],['돈과 생활',m.money,'money'],['장기 관계',m.future,'future']].filter(v=>Number.isFinite(Number(v[1]))).sort((p,q)=>Number(q[1])-Number(p[1]));
+ const strongest=dimensions[0]||null, weakest=dimensions[dimensions.length-1]||null;
+ const sameNeed=!!(A.closeNeed&&A.closeNeed===B.closeNeed);
+ const domain=pairDomain(A,B,dayRel,weakest&&weakest[2]);
+ const place=PAIR_PLACE[domain];
+ const aLand=lands(A,B), bLand=lands(B,A);
+ const plan=pairPlan(A,B,domain);
+ let flow='';
+ try{
+  const rel=root.GuiinCompat?.dayMasterRelation?.(x.a,x.b);
+  if(rel?.type==='A생B') flow=`기운의 방향은 ${subj(an)} 먼저 보태는 쪽이야. 그 보탬이 당연해지면 ${an}만 지쳐.`;
+  else if(rel?.type==='B생A') flow=`기운의 방향은 ${subj(bn)} 먼저 북돋우는 쪽이야. ${topic(an)} 그 힘을 알아주는 말이 필요해.`;
+  else if(rel?.type==='A극B') flow=`${subj(an)} 기준을 잡을 때 ${bn}에게는 압박으로 닿을 수 있어.`;
+  else if(rel?.type==='B극A') flow=`${bn}의 기준이 ${an}에게 압박으로 느껴지는 장면을 따로 봐.`;
+  else if(rel?.type==='동행') flow=`일간 오행이 닮아 속도는 비슷해 보여도, 놓고 싶은 말까지 같다고 생각하면 안 돼.`;
+ }catch(_){}
+ let cross='';
+ try{
+  const cr=root.GuiinCompat?.crossTenGod?.(x.a,x.b);
+  if(cr&&NARRATIVE_GOD[cr.aSeesB]&&NARRATIVE_GOD[cr.bSeesA]){
+   cross=`${topic(an)} ${bn}에게서 ${NARRATIVE_GOD[cr.aSeesB].label}을 기대하기 쉽고, ${topic(bn)} ${an}에게서 ${NARRATIVE_GOD[cr.bSeesA].label}을 기대해. 실제로 사는 손과, 서로 바라는 역할이 여기서 갈릴 수 있어.`;
+  }
+ }catch(_){}
+ return {A,B,an,bn,m,score,bond,tension,dayRel,strongest,weakest,sameNeed,domain,place,aLand,bLand,plan,flow,cross,x};
+}
+function fitLine(score, an, bn){
+ if(score>=85) return `${andw(an)} ${bn}의 ${score}점은 같이 있을 때 서로를 살리는 계산이 더 큰 쪽이야. 최고의 인연이라고 운명을 확정하지는 않아.`;
+ if(score>=75) return `${andw(an)} ${bn}의 ${score}점은 잘 맞는 쪽이 더 큰 계산이야. 맞춰 말하지 않은 장면이 반복되면, 그 장면만 사람을 닳게 해.`;
+ if(score>=65) return `${andw(an)} ${bn}의 ${score}점은 끌림과 생활의 난도가 함께 있는 계산이야. 좋아해도 역할을 안 나누면, 맞추지 않은 몫이 먼저 터져.`;
+ return `${andw(an)} ${bn}의 ${score}점은 마음과 별개로 생활의 마찰이 더 크게 잡힌 계산이야. 최악의 인연이라고 단정하지는 않아. 반복되는 조건부터 줄여야 해.`;
+}
+function axisMeaning(key){
+ return {money:'시간과 비용을 같이 맞추는 일이 둘의 기반으로 보여.',personality:'같은 문제를 말로 풀고 판단하는 통로가 기반으로 보여.',love:'관심이 오가는 표현이 기반으로 보여.',future:'반복되는 생활과 약속을 같이 지키는 힘이 기반으로 보여.'}[key]||'';
+}
+function composePair(pair){
+ const {A,B,an,bn,m,score,strongest,weakest,sameNeed,place,aLand,bLand,plan,domain}=pair;
+ const rows=[];
+ const askBank={
+  'pair-core':[`${andw(an)} ${bn}의 강점이 생활의 어느 장면에서 보이는지 더 봐 줘`],
+  'pair-attraction':[`${bn}에게 안정이 되는 ${an}의 손과, 간섭이 되는 조건을 나눠 줘`],
+  'pair-conflict':['같은 장면이 반복되면 누가 먼저 지치는지 조건만 더 봐 줘'],
+  'pair-cooling':['애정이 오가는 장면에서 오늘 확인할 말만 정해 줘'],
+  'pair-money':['우리 돈에서 낭비라고 부르기 전에 나눠야 할 기준이 뭐야?'],
+  'pair-space':['각자 쉬는 방식이 거리로 오해되지 않게 문장을 정해 줘'],
+  'pair-structure':[`${score}점 아래에서 실제로 맞춰야 할 장면만 골라 줘`],
+  'pair-rules':['이번 주에 각자 먼저 할 행동과, 그 요청에 대한 답을 정해 줘'],
+  'pair-final':['오래 가져갈 힘과, 반복되면 힘들어지는 조건을 나눠 줘']
+ };
+ const add=(id,title,paras)=>{
+  const paragraphs=paras.map(tidy).filter(Boolean);
+  rows.push({id,title,eyebrow:'',lead:true,paragraphs,body:paragraphs.join('\n\n'),ask:(askBank[id]||['우리 장면만 더 봐 줘'])[0],evidence:`${an}: ${personEvidence(A)} / ${bn}: ${personEvidence(B)} / 기존 궁합 ${score} · 애정 ${m.love} · 대화 ${m.personality} · 돈 ${m.money} · 장기 ${m.future} · 일지 관계 ${pair.dayRel||'직접 관계 미확인'} · 결속 ${pair.bond} · 마찰 ${pair.tension}`});
+ };
+ const needLine=sameNeed
+  ? `둘 다 마음이 놓이는 조건이 같아. ${ida(A.closeNeed)}. 그래서 누구의 마음이 더 특별한지를 나누지 않을게. 비는 건 누가 먼저 그 행동을 하느냐야.`
+  : `${topic(an)} 마음이 놓이려면 ${ida(A.closeNeed)}. ${topic(bn)} 마음이 놓이려면 ${ida(B.closeNeed)}. 주는 손과 필요한 조건이 여기서 갈려. 노력을 안 해서가 아니라, 도착한 조건이 다를 때 서운해져.`;
+ const axisWord=k=>k==='clash'?'일과 생활이 부딪히는 구조':k==='rooted'?'일과 마음이 같은 구조':k==='bound'?'같이 있으면 빨라지는 구조':'밖에 보이는 손과 마음 조건이 다른 구조';
+ add('pair-core',`1. ${topic(an)} 이런 사람, ${topic(bn)} 이런 사람`,[
+  tidy(`${fitLine(score,an,bn)} ${strongest?`가장 큰 장점은 ${strongest[0]} ${strongest[1]}점이야. ${axisMeaning(strongest[2])}`:''} ${weakest&&weakest!==strongest?`가장 먼저 힘들어지는 쪽은 ${weakest[0]} ${weakest[1]}점이야. 이 축은 좋아하는 마음만으로 넘기지 말고, 이번 주에 행동 하나를 정해.`:''}`),
+  tidy(asWho(`${obj(an)} 이렇게 읽어. ${A.coreFeature} 일에 손을 대면 ${clip(A.move)}.`, an)),
+  tidy(asWho(`${obj(bn)} 이렇게 읽어. ${B.coreFeature} 일에 손을 대면 ${clip(B.move)}.`, bn)),
+  tidy(`${place}에서 ${topic(an)} ${clip(A.move)}. ${topic(bn)} 그 행동을 ${asw(aLand.help?'자기에게 필요한 도움':'아직 요청하지 않은 정리')} 받아. 그러면 ${topic(bn)} ${clip(B.move)}. 그 반응이 ${an}에게 돌아가면, ${asWho(A.rest, an)}`),
+  tidy(needLine)
+ ]);
+ add('pair-attraction','2. 같은 손이 안정이 될 때, 간섭이 될 때',[
+  tidy(`${bn} 곁에서 ${an}의 ${A.socialLabel}이 빛나려면 조건이 필요해. ${asWho(aLand.stable, an)} 그때 ${bn}의 하루에는 이런 손이 들어가. ${say(A.onOther)}`),
+  tidy(`같은 ${A.socialLabel}이 ${bn}에게 부담이 되는 조건도 있어. ${asWho(aLand.hard, an)} 장점이 사라져서가 아니라, 쓰이는 상황이 바뀐 거야.`),
+  tidy(`${an} 곁에서 ${bn}의 ${B.socialLabel}도 같아. ${asWho(bLand.stable, bn)} 반대로 ${asWho(bLand.hard, bn)}`),
+  tidy(pair.cross||'서로 기대하는 역할은 실제로 사는 손과 다를 수 있어. 기대만으로 상대의 하루를 설명하지 마.'),
+  A.social===B.social
+   ? tidy(`둘 다 ${A.socialLabel}이 세. 말 안 해도 기준이 보여서 편한 날이 있어. 닮은 만큼, 누가 먼저 요청할지를 정하지 않으면 같은 장점으로 싸워.`)
+   : tidy(`${subj(bn)} ${an}에게 없는 장면을 채우고, ${subj(an)} ${bn}에게 없는 장면을 채워. 그 다름이 끌림이야. 다름을 고쳐야 할 흠으로 보면 끌림이 잔소리가 돼.`)
+ ]);
+ add('pair-conflict','3. 부딪히는 장면, 그리고 반복되면 힘든 조건',[
+  tidy(`${subj(place)} 이 둘의 마찰이 보이는 장면이야. ${topic(an)} ${clip(A.move)}. ${topic(bn)} 그걸 ${aLand.help?'도움을 받은 일':'자기 속도가 밀린 일'}로 느껴. 그래서 ${topic(bn)} ${clip(B.move)}. 그 반응이 ${an}에게는 ${A.socialLabel}을 알아봐 주지 않는 대답으로 돌아올 수 있어.`),
+  tidy(`${subj(an)} 지치는 조건은 이거야. ${asWho(A.burden, an)} ${subj(bn)} 지치는 조건은 이거야. ${asWho(B.burden, bn)}`),
+  tidy(`한 번이면 조율이야. 같은 장면이 매주 반복되면, 애정보다 이 두 조건의 피로가 먼저 남아. 성격이 나빠져서가 아니야. 상황을 안 바꾸고 손만 더 쓰기 때문이야.`),
+  tidy(A.social===B.social
+   ? `둘 다 ${A.socialLabel}으로 문제를 풀어. 같은 말로 서로를 설득하면 대화가 재판이 돼. 한 사람은 요청하고, 한 사람은 알아들은 뜻을 확인해.`
+   : `${topic(an)} ${A.socialLabel}으로 정리하는 동안 ${topic(bn)} ${B.socialLabel}으로 자기 조건을 확인해. 일 하나만 끝났다고 대화를 닫지 마.`)
+ ]);
+ add('pair-cooling',`4. 애정이 오가는 방식`,[
+  tidy(`${subj(an)} 애정을 ${clip(A.giving)} 쪽으로 건네. ${beat(A.b.db)} 결이 그 사랑에 실려. ${subj(bn)} 애정을 ${clip(B.giving)} 쪽으로 건네. ${beat(B.b.db)} 결이 실려. ${A.social===B.social?'주는 손이 닮아 있어. 닮았다고 말이 없어도 되는 건 아니야.':'둘 다 가치 있는 표현이야. 종류가 다를 뿐, 한쪽이 더 어른스러운 사랑은 아니야.'}`),
+  tidy(`받았는지 물을 때는 “내가 해 줬는데 왜 그래?”보다, 오늘 한 행동 중 어느 부분이 닿았는지를 물어. ${sameNeed?`필요한 조건이 같으니, 오늘 그 행동을 누가 먼저 했는지만 확인하면 돼.`:`${an}에게는 ${subj(A.closeNeed)} 닿았는지, ${bn}에게는 ${subj(B.closeNeed)} 닿았는지를 따로 물어.`}`),
+  tidy(`애정이 식었는지, 숨은 속마음이 무엇인지는 이 자료로 확정하지 않아. 반복되는 부담을 줄일 행동만 정해.`)
+ ]);
+ add('pair-money',`5. 돈 앞에서 각자 쓰는 손`,[
+  tidy(`${subj(an)} 이렇게 벌어. ${A.moneyWay} ${subj(bn)} 이렇게 벌어. ${B.moneyWay} ${A.social===B.social?'버는 말의 결이 비슷해 이해하기 쉬워. 소득의 크기까지 같다는 뜻은 아니야.':'버는 재능이 달라, 한 결과에 서로의 강점을 보탤 수 있어. 누구의 방식이 더 현실적인지로 서열을 만들지 마.'}`),
+  tidy(`생활의 돈은 버는 손과 또 다를 수 있어. ${subj(an)} ${A.lifeBudget} ${subj(bn)} ${B.lifeBudget} ${sameNeed?'같은 지출 이유를 이해하기 좋은 구조지만, 실제 예산이 같다는 뜻은 아니야. 누가 먼저 한도를 말할지를 정해.':'어느 지출이 값진지 판단하는 순서가 달라. 이유를 듣기 전에 낭비라고 부르면 돈 이야기와 무시가 섞여.'}`),
+  tidy(`생활·금전 지수는 ${m.money}점이야. ${Number(m.money)>=80?'계산상 같이 쓰기 좋은 축이야. 그래도 규칙을 안 정하면 점수가 생활을 대신하지 않아.':'같이 편해지려면 지출의 이유와 책임 범위를 구체적으로 볼 축이야.'} 공동 지출, 각자 자유 예산, 미리 상의할 금액을 나눠.`),
+  tidy(`같이 살 때 ${an}의 ${A.socialLabel}과 ${bn}의 ${B.socialLabel}이 늘 그 사람 고정 담당이 되면, 장점이 집안일과 돈의 짐이 돼. 각자 끝낼 항목을 따로 가져.`)
+ ]);
+ const sameRest=A.rest===B.rest;
+ add('pair-space','6. 가까움과 각자 쉬는 조건',[
+  tidy(`${subj(an)} 쉬어야 하는 조건은 이거야. ${asWho(A.rest, an)} ${subj(bn)} 쉬어야 하는 조건은 이거야. ${asWho(B.rest, bn)}`),
+  sameRest
+   ? '회복의 문장이 비슷해서 서로의 쉼을 이해하기 좋은 출발이야. 그래도 쉬는 시간의 길이는 각자 달라. 길이를 같이 정해야 해.'
+   : '회복의 조건이 다르면, 한쪽의 쉼이 다른 쪽에게는 거리 두기로 보여. 쉬겠다는 말과 함께 다시 만날 시각을 붙여.',
+  tidy(A.b.db===B.b.db
+    ? `둘 다 일지 ${A.b.db}의 생활이 한집에 있어. 둘만의 확정 일정과 각자 고를 일정을 나누고, 공동 약속이 바뀔 때만 알릴 책임을 정해. 친구를 만난 사실만으로 마음의 크기를 단정하지 마.`
+    : `${an}의 일지 ${andw(A.b.db)} ${bn}의 일지 ${B.b.db} 생활이 한집에 있어. 둘만의 확정 일정과 각자 고를 일정을 나누고, 공동 약속이 바뀔 때만 알릴 책임을 정해. 친구를 만난 사실만으로 마음의 크기를 단정하지 마.`),
+ ]);
+ const direct=/충|형|파|해/.test(pair.dayRel)?`가까운 생활 자리에 ${subj(pair.dayRel)} 있어. 같이 있는 시간이 늘수록 말투와 속도, 역할을 확인하는 데 이 신호를 써. 나쁜 인연이라는 뜻은 아니야.`:/합/.test(pair.dayRel)?`가까운 생활 자리에 ${subj(pair.dayRel)} 있어. 같이 있으면 편해지는 강점이야. 편한 만큼 역할을 말하지 않으면 수고가 한쪽으로 몰려.`:'가까운 생활 자리에 강한 직접 관계는 확인되지 않아. 이 한 칸으로 좋고 나쁨을 정하지 않고, 월간의 손과 오행, 결속·마찰을 같이 읽어.';
+ add('pair-structure',`7. ${score}점 아래에 있는 계산`,[
+  tidy(`총점 ${score}, 애정 ${m.love}, 대화 ${m.personality}, 돈·생활 ${m.money}, 장기 ${m.future}점이야. 가장 높은 축과 가장 낮은 축의 장면을 같이 봐야 숫자가 관계가 돼. 이 점수는 성공률이 아니야.`),
+  direct,
+  tidy(`결속 신호 ${pair.bond}, 마찰 신호 ${pair.tension}. ${pair.bond>pair.tension?'맞물리는 신호가 더 커서, 관계의 자원으로 쓸 장점이 있어.':pair.tension>pair.bond?'마찰 신호가 더 커서, 반복되는 생활 조건을 확인하는 일이 중요해.':'두 신호의 크기가 비슷해, 어느 장면에서 연결되고 어느 장면에서 피로한지 나눠.'} 이 값을 사건의 횟수나 이별 확률로 바꾸지 마.`),
+  tidy([pair.flow, pair.cross?'서로 기대하는 역할은 앞에서 갈렸어. 그 기대를 오늘의 요청으로만 남기고, 점수에 다시 더하지 마.':''].filter(Boolean).join(' ')),
+  tidy(`각자 원국 안의 기준도 따로야. ${topic(an)} ${axisWord(A.axis)}야. ${topic(bn)} ${axisWord(B.axis)}야. 둘 사이의 관계와, 각자 안에서 쓰는 기준을 혼동하지 마.`)
+ ]);
+ add('pair-rules',`8. ${subj(an)} 먼저 할 일, ${subj(bn)} 먼저 할 일`,[
+  tidy(`${plan.aDo}`),
+  tidy(`${plan.bDo}`),
+  tidy(`요청과 그 요청에 대한 답은 이렇게 짝이야. ${an}: “${plan.aLine}” ${bn}: “${plan.bLine}”`),
+  tidy(`갈등 뒤에는 이미 잘한 행동 하나를 인정하고, 다음에 바꿀 행동 하나만 말해. ${sameNeed?'같은 필요를 상대를 채점하는 잣대로 쓰지 마. 누가 먼저 할지만 정해.':'다른 방식의 노력을 알아보되, 받지 못한 행동까지 괜찮다고 넘기지는 마.'} 일주일이 지나면 그 행동이 바뀌었는지만 확인해. 못 지켰다면 의지를 더 세게 요구하지 말고, 범위와 시간을 다시 정해.`)
+ ]);
+ add('pair-final','9. 오래 가져갈 힘, 반복되면 남을 부담',[
+  tidy(`${an}에게서 오래 가져갈 힘은 ${A.socialLabel}이야. ${A.talentValue} ${bn}에게서 오래 가져갈 힘은 ${B.socialLabel}이야. ${B.talentValue} ${strongest?strongest[0]+' '+strongest[1]+'점이 그 힘을 숫자로 보여 줘. ':''}그 장점을 평일에 쓰지 않으면 점수는 글로만 남아.`),
+  tidy(`${place}에서 그 교환이 이번 주 일정에 남을 때, 궁합은 설명이 아니라 생활이 돼. ${topic(an)} ${clip(A.onOther)}. ${topic(bn)} ${clip(B.onOther)}.`),
+  sameNeed
+   ? tidy(`오래 가려면 같은 필요를 말로 남겨. 둘 다 ${subj(A.closeNeed)} 필요해. 같아서 말이 없어도 되는 건 아니야. 누가 먼저 그 행동을 할지를 정해. 그 필요가 매주 빠지면, 좋은 사람이 지친 사람이 돼.`)
+   : tidy(`오래 가려면 서로 다른 필요를 말로 남겨. ${topic(an)} ${subj(A.closeNeed)} 필요하고, ${topic(bn)} ${subj(B.closeNeed)} 필요해. 장점만 말하고 그 필요가 빠지면, 좋은 사람이 지친 사람이 돼.`)
+ ]);
+ return rows;
+}
+function auditPair(rows, pair){
+ const issues=[];
+ const blob=rows.map(r=>r.body).join('\n');
+ ['score','love','personality','money','future'].forEach(k=>{
+  if(!blob.includes(String(pair.m[k]))) issues.push('score-'+k);
+ });
+ if(pair.sameNeed && /받는 방식이 다르|받는 자리가 다르|도착한 방식이 달랐/.test(blob)) issues.push('same-need-slogan');
+ const rules=rows.find(r=>r.id==='pair-rules')?.body||'';
+ if(!rules.includes(pair.an)||!rules.includes(pair.bn)||!/[“"]/.test(rules)) issues.push('advice-pair');
+ if(pair.domain!=='pace' && pair.domain!=='choice' && /연락이 늦어지면/.test(rules)) issues.push('advice-collapsed-to-contact');
+ const norms=[];
+ rows.forEach(r=>(r.paragraphs||[]).forEach(p=>{
+  const n=p.replace(/\s+/g,'');
+  if(n.length>40 && norms.includes(n)) issues.push('dup');
+  norms.push(n);
+  if(/특별한 사람|너는 특별/.test(p)) issues.push('praise-slogan');
+ }));
+ rRemember('pair',pair.an+':'+pair.bn,issues);
+ return narrativeFinalize(rows);
+}
+
+function narrativeRows(c,existingModel){
+ const a=buildPersonAnalysis(c,existingModel);
+ if(!a) return [{id:'self',title:'확인할 명식 자료가 필요해',body:'주요 십성 자료가 없어 인물과 생활을 임의로 설명하지 않을게.',paragraphs:['주요 십성 자료가 없어 인물과 생활을 임의로 설명하지 않을게.'],evidence:ev(c),lead:true}];
+ return auditPerson(composePersonSections(a), a);
 }
 function elementPicture(L){
  const el=L.top&&L.top[0];
@@ -938,106 +1387,9 @@ function spokenPerson(who, chart, profile){
  return [tidy(mine(face)), tidy(mine(`${worth} ${cost}`))];
 }
 function premiumCompatibilitySections(x){
- const {a,b,m,d}=x, pa=narrativeProfile(a), pb=narrativeProfile(b);
- const sa=NARRATIVE_GOD[pa.social], sb=NARRATIVE_GOD[pb.social], ia=NARRATIVE_GOD[pa.intimate]||sa, ib=NARRATIVE_GOD[pb.intimate]||sb;
- if(!sa||!sb) return [];
- const an=String(x.A?.name||name(a)).replace(/님$/,''), bn=String(x.B?.name||name(b)).replace(/님$/,'');
- const score=Number(m.score), sig=d?.q?.sig||m.q?.sig||{};
- const bond=Number(sig.bond??sig.combine??0), tension=Number(sig.tension??0);
- const dayRel=d?.q?.dayRel||m.q?.dayRel||'';
- const ba=chartBits(a), bb=chartBits(b);
- const dimensions=[['애정',m.love,'love'],['대화',m.personality,'personality'],['돈과 생활',m.money,'money'],['장기 관계',m.future,'future']].filter(v=>Number.isFinite(Number(v[1]))).sort((p,q)=>Number(q[1])-Number(p[1]));
- const strongest=dimensions[0], weakest=dimensions[dimensions.length-1];
- const shared=pa.intimate===pb.intimate&&!!pa.intimate;
- const axisLine=k=>k==='money'?'시간과 비용을 같이 맞추는 일이 둘의 기반으로 보여.':k==='personality'?'같은 문제를 말로 풀고 판단하는 통로가 기반으로 보여.':k==='love'?'관심이 오가는 표현과 같이하는 경험이 기반으로 보여.':'반복되는 생활과 약속을 같이 지키는 힘이 기반으로 보여.';
- const weakLine=n=>Number(n)>=80?'이 축도 비교적 높아서 문제라고 부풀리지 않을게. 장점을 유지하려면 필요한 행동을 실제로 확인해.':Number(n)>=70?'안 맞는다는 결론보다, 기대하는 행동이 어디서 갈리는지 봐.':'좋아하는 마음만으로 넘기지 말고 시간·행동·책임의 합의를 구체적으로 확인해.';
- const needScene=shared?`둘 다 마음이 놓이는 조건이 ${ida(ia.need)} 서로에게 필요한 행동을 이해하기 좋은 출발이야. 다만 같은 걸 원하면 상대가 먼저 해 주기를 기다리기 쉬워.`:`${topic(an)} 중요한 건 ${ia.need}, ${topic(bn)} 중요한 건 ${ida(ib.need)} ${andw(ba.dayKo)} ${topic(bb.dayKo)} 같은 하루를 잘 보내고도 무엇이 채워졌는지를 다르게 느껴.`;
- const interaction=pa.social===pb.social?`둘 다 월간의 힘이 ${sa.label}이야. 일을 시작하는 기준이 닮아, 한 사람이 해낸 일을 다른 사람이 알아보기 쉬워. 닮은 만큼 그 기준을 서로에게 증명하려는 말싸움만 피하면 돼.`:`${topic(an)} ${ba.monthKo}의 ${sa.label}과 ${topic(bn)} ${bb.monthKo}의 ${sb.label}이 한 문제에 다른 손을 보태. 그게 이 관계의 재능이야.`;
- const friction=shared?`원하는 것이 같아도 누가 먼저 요청할지, 어떤 행동으로 답할지를 말하지 않으면 둘 다 서운해져.`:`${subj(an)} ${asw(sa.love)} 마음을 보여도 ${topic(bn)} 바라는 ${subj(ib.need)} 채워졌는지를 봐. 반대로 ${subj(bn)} ${asw(sb.love)} 애써도 ${an}에게 ${subj(ia.need)} 빠지면 충분히 받았다는 느낌이 안 남아. 노력의 양이 아니라 전달되는 방향이 문제인 장면이야.`;
- const pairAsk={
-  'pair-core':[`${an}와 ${bn}, 우리 강점을 각자 더 크게 말해 줘`,`${score}점이 우리 생활에서 어떤 장면으로 보이는지 더 봐 줘`],
-  'pair-attraction':[`${bn}의 하루를 바꾸는 내 강점과, 내 하루를 바꾸는 ${bn}의 강점을 더 들려줘`],
-  'pair-conflict':[`우리가 같은 일을 다르게 받는 지점을 더 정확히 찔러 줘`,`계속 만나면 누가 먼저 지치는지 조건만 더 봐 줘`],
-  'pair-cooling':[`서로 주는 사랑의 방식이 다를 때, 오늘 확인할 질문 하나만 정해 줘`],
-  'pair-money':[`우리 돈 이야기에서 낭비라고 부르기 전에 나눠야 할 기준이 뭐야?`],
-  'pair-space':[`각자 쉬는 방식이 다를 때, 거리 두기로 오해하지 않을 문장을 정해 줘`],
-  'pair-structure':[`${score}점 아래에서 우리가 실제로 맞춰야 할 장면만 골라 줘`],
-  'pair-rules':[`이번 주에 ${an}이 먼저 할 일과 ${bn}이 먼저 할 일을 한 줄씩만 정해 줘`],
-  'pair-final':[`우리 조합이 오래 가려면 이번 주에 바꿀 행동 하나만 정해 줘`]
- };
- const askOf=id=>{const list=pairAsk[id]||[`우리 궁합에서 더 듣고 싶은 장면이 있어`];return list[seed(a,'pairask:'+id)%list.length];};
- const rows=[], add=(id,title,paras)=>{
-  const paragraphs=paras.map(tidy).filter(Boolean);
-  rows.push({id,title,eyebrow:'',lead:true,paragraphs,body:paragraphs.join('\n\n'),ask:askOf(id),evidence:`${an}: ${narrativeEvidence(pa,['pillar:day','pillar:month',...(pa.sources[pa.social]||[]),...(pa.sources[pa.intimate]||[])])} / ${bn}: ${narrativeEvidence(pb,['pillar:day','pillar:month',...(pb.sources[pb.social]||[]),...(pb.sources[pb.intimate]||[])])} / 기존 궁합 ${score} · 애정 ${m.love} · 대화 ${m.personality} · 돈 ${m.money} · 장기 ${m.future} · 일지 관계 ${dayRel||'직접 관계 미확인'} · 결속 ${bond} · 마찰 ${tension}`});
- };
- const verdict=score>=85?`직설적으로 말하면, ${score}점은 오래 같이 가도 서로를 살리는 쪽에 가깝다. 최고의 궁합이라고 운명을 확정하진 않아. 다만 이 점수대는, 상대에게 우리 풀이를 보여 주고 싶을 만큼 강점이 이미 세다.`:score>=75?`직설적으로 말하면, ${score}점은 잘 맞는 궁합이다. 안 맞는 장면을 말로 안 남기면, 계속 만나면서 그 장면만 사람을 닳게 한다.`:score>=65?`직설적으로 말하면, ${score}점은 끌림과 생활이 다른 궁합이다. 좋아해도 같이 사는 궁합으로 그냥 두면, 맞추지 않은 역할이 먼저 터진다.`:`직설적으로 말하면, ${score}점은 만나면 만날수록 한 사람이 소모되기 쉬운 궁합이다. 최악의 인연이라고 단정하지는 않아. 지금 이 점수만 보면, 마음과 별개로 생활의 마찰이 더 크다.`;
- add('pair-core',`1. ${an}은 이런 사람, ${bn}은 이런 사람`,[
-  ...spokenPerson(an,a,pa),
-  ...spokenPerson(bn,b,pb),
-  `${score}점은 기존 계산이 묶어 낸 참고 지수야. 성공률도 운명도 아니야. ${verdict}`,
-  `잘 맞는 점은 빈칸이야. ${topic(an)} ${GOD_ON_OTHER[pa.social]}. ${topic(bn)} ${GOD_ON_OTHER[pb.social]}. 혼자서는 비는 장면을 상대가 채울 때, 이 둘은 편해져.`,
-  (shared?`받는 자리가 다르다고 말하지 않을게. 둘 다 마음이 놓이는 조건이 ${ida(ia.need)} 같은 필요라서, 상대가 먼저 해 주기를 기다리기 쉬워. 안 맞는 점은 마음이 달라서가 아니라, 누가 먼저 그 행동을 하느냐야.`:`안 맞는 점은 애정이 없어서가 아니야. ${topic(an)} ${asw(sa.love)} 마음을 보여. ${bn}이 놓이는 건 ${ida(ib.need)}. ${topic(bn)} ${asw(sb.love)} 마음을 보여. ${an}에게 필요한 건 ${ida(ia.need)}. 둘 다 주고 있어. 받는 자리가 다를 뿐이야.`),
-  `그래서 성격의 좋고 나쁨이 아니야. ${an}의 장점인 ${sa.label}이 ${bn}에게는 과한 방식으로 닿을 수 있고, ${bn}의 장점인 ${sb.label}도 ${an}에게는 다른 필요로 비껴갈 수 있어.`,
-  strongest?`숫자로 보면 제일 잘 맞는 축은 ${strongest[0]} ${strongest[1]}점이야. ${axisLine(strongest[2])}`:'',
-  weakest&&weakest!==strongest?`제일 먼저 부딪힐 축은 ${weakest[0]} ${weakest[1]}점이야. ${weakLine(weakest[1])}`:''
- ]);
- add('pair-attraction',`2. 서로에게 특출난 점`,[
-  `${bn} 곁에서 ${an}이 빛나는 장면이야. ${GOD_ON_OTHER[pa.social]}. ${sa.value} 그 힘이 ${bn}에게 “${ib.need}”로 닿으면 매력이 돼. 안 닿으면 ${an}은 잘해 준 것 같은데 ${bn}은 허전해.`,
-  `${an} 곁에서 ${bn}이 빛나는 장면이야. ${GOD_ON_OTHER[pb.social]}. ${sb.value} 그 힘이 ${an}에게 “${ia.need}”로 닿으면 도움이 돼. 안 닿으면 좋은 사람인데 내 사람은 아닌 느낌이 남아.`,
-  crossLine(a,b,an,bn),
-  pa.social===pb.social?`둘 다 ${sa.label}이 세. 손을 닮아서 말 안 해도 기준이 보여. 닮은 만큼, 누가 먼저 요청할지 정하지 않으면 같은 장점으로 싸워.`:`${an}에게 없는 손을 ${bn}이 가지고, ${bn}에게 없는 손을 ${an}이 가지고 있어. 그 다름이 끌림이야. 다름을 고쳐야 할 흠으로 보면 끌림이 잔소리가 돼.`,
-  `같이 일정을 잡을 때는 둘의 기준을 한 약속에 둘 다 적어. 온도가 달라도 역할이 되면, 그 다름은 싸움이 아니라 분담이야.`
- ]);
- add('pair-conflict',`3. 안 맞는 지점`,[
-  narrativePairScene(pa,pb,an,bn,a,b,dayRel),
-  (pa.social===pb.social?`같은 눈으로 받아. 둘 다 ${sa.label}이야. 그래서 서로를 알아보기도 하고, 같은 기준으로 서로를 재기도 해.`:`같은 일을 다르게 받아. ${topic(an)} ${sa.label}의 눈으로 보고, ${topic(bn)} ${sb.label}의 눈으로 봐. 한쪽이 끝났다고 느끼는 순간, 다른 쪽은 아직 마음이 안 끝났을 수 있어.`),
-  `${subj(an)} 지치는 조건은 이거야. ${sa.cost} ${subj(bn)} 지치는 조건은 이거야. ${sb.cost} 계속 만나면 힘든 점은 성격이 나빠서가 아니야. 이 조건이 반복되면 애정보다 피로가 먼저 쌓여.`,
-  pa.social===pb.social?`둘 다 ${sa.label}으로 문제를 풀어. 같은 장점으로 서로를 설득하면 대화가 재판이 돼. 한 사람은 요청하고, 한 사람은 알아들은 뜻을 확인해.`:`${an}이 ${sa.label}으로 정리하는 동안, ${bn}은 ${sb.label}으로 마음을 확인해. 일 하나만 끝났다고 대화를 닫지 마.`,
-  `고칠 문장은 이거면 돼. ${an}은 “${ia.request}” ${bn}은 “${ib.request}” 이번 주에 바꿀 행동 하나만 정하고, 일주일 뒤에 그 행동만 봐.`
- ]);
- add('pair-cooling',`4. ${subj(ba.dayKo)} 건네고 ${subj(bb.dayKo)} 확인하는 애정`,[
-  `${subj(an)} 주기 쉬운 애정은 ${sa.love} ${beat(ba.db)} 그 방식으로 사랑이 나가. ${subj(bn)} 주기 쉬운 애정은 ${sb.love} ${beat(bb.db)} 그 방식으로 나가. ${pa.social===pb.social?'주는 방식이 닮아 있어. 닮았다고 말이 없어도 되는 건 아니야.':'둘 다 가치 있는 표현이야. 종류가 다를 뿐이야.'}`,
-  needScene,
-  `받았는지 확인할 때는 “내가 해 줬는데 왜 그래?”보다 “내 행동 중 어느 부분이 너에게 닿았어?”라고 물어. ${topic(an)} ${subj(ia.need)} 닿았는지, ${topic(bn)} ${subj(ib.need)} 닿았는지를 따로 물어야 해.`,
-  `바빠서 답이 줄어든 날, 마음을 판정하지 마. ${topic(an)} ${adviceOf(ba.db)} ${topic(bn)} ${adviceOf(bb.db)}`,
-  `애정이 식었는지, 숨은 속마음이 무엇인지는 이 자료로 확정하지 않아. 반복되는 부담을 줄일 행동만 정해. ${topic(an)} “${ia.request}” ${topic(bn)} “${ib.request}” 이 두 요청을 실제로 듣고 답할 시간을 만들어.`
- ]);
- add('pair-money',`5. ${an}의 ${sa.label}, ${bn}의 ${sb.label}이 돈을 대하는 방식`,[
-  `${topic(an)} 수입은 ${sa.money} ${topic(bn)} 수입은 ${sb.money} ${pa.social===pb.social?'버는 방식의 언어가 비슷해 이해하기 쉬워. 소득의 크기까지 같다는 뜻은 아니야.':'버는 재능이 달라, 한 결과에 서로의 강점을 보탤 수 있어. 누구의 방식이 더 어른스러운지로 서열을 만들지 마.'}`,
-  `생활의 돈은 또 달라. ${topic(an)} ${ia.label}의 기준으로 ${ia.budget} ${topic(bn)} ${ib.label}의 기준으로 ${ib.budget} ${shared?'같은 지출 이유를 이해하기 좋은 구조지만, 실제 예산이 같다는 뜻은 아니야.':'어느 지출이 값진지 판단하는 순서가 달라. 이유를 듣기 전에 낭비라고 부르면 돈 이야기와 무시가 섞여.'}`,
-  `생활·금전 지수는 ${m.money}점이야. ${Number(m.money)>=80?'계산상 같이 쓰기 좋은 축이야. 그래도 규칙을 안 정하면 점수가 생활을 대신하지 않아.':'같이 편해지려면 지출의 이유와 책임 범위를 구체적으로 볼 축이야.'} 공동 지출, 각자 자유 예산, 미리 상의할 금액을 나눠.`,
-  `같이 살 때는 집안일 개수뿐 아니라 예약·준비·완료 확인까지 나눠. ${subj(an)} 잘하는 ${sa.label}과 ${subj(bn)} 잘하는 ${sb.label}이 늘 그 사람 고정 담당이 되면 장점이 집안일의 짐이 돼. ${andw(ba.dayKo)} ${subj(bb.dayKo)} 각자 끝낼 항목을 가져.`
- ]);
- add('pair-space',`6. ${andw(ba.db)} ${bb.db}, 가까움과 각자의 시간`,[
-  `${topic(an)} 회복은 ${ia.pause} ${beat(ba.db)} 사람이라 ${costOf(ba.db)}이 오기 전에 이 휴식이 필요해. ${topic(bn)} 회복은 ${ib.pause} ${beat(bb.db)} 사람이라 ${costOf(bb.db)}이 오기 전에 자기 방식이 필요해.`,
-  shared?'회복의 문장이 비슷해서 서로의 쉼을 이해하기 좋은 출발이야. 그래도 쉬는 시간의 길이는 각자 달라.':'회복의 순서가 다르면, 한쪽의 쉼이 다른 쪽에게는 거리 두기로 보여. 쉬겠다는 말과 함께 다시 만날 시간을 붙여.',
-  `연락은 횟수보다 기다리는 답의 종류를 말해. ${topic(an)} “${ia.request}” ${topic(bn)} “${ib.request}” 바쁜 날 가능한 반응과 다시 이야기할 시간을 같이 알려 줘.`,
-  `친구·외출·혼자 있는 시간의 갈등을 질투의 크기로 단정하지 않아. ${andw(ba.dayKo)} ${subj(bb.dayKo)} 둘만의 확정 일정과 각자 고를 일정을 나누고, 공동 약속이 바뀔 때만 알릴 책임을 정해.`,
-  `“${ba.db}의 나에겐 정리할 시간이 필요해. ${bb.db}의 너와 잡은 약속은 지킬 거고, 다시 말할 시간도 정하자.” 개인 시간과 관계의 약속을 한 문장에서 같이 지키는 방식이야.`
- ]);
- const direct=/충|형|파|해/.test(dayRel)?`가까운 생활 자리에 ${subj(dayRel)} 있어. 같이 있는 시간이 늘수록 말투·일정·역할을 확인하는 데 이 신호를 써. 나쁜 인연이라는 뜻은 아니야.`:/합/.test(dayRel)?`가까운 생활 자리에 ${subj(dayRel)} 있어. 같이 있으면 편해지는 강점이야. 편한 만큼 역할을 말하지 않으면 수고가 한쪽으로 몰려.`:'가까운 생활 자리에 강한 직접 관계는 확인되지 않아. 이 한 칸으로 좋고 나쁨을 정하지 않고, 월간과 오행, 결속·마찰 신호를 같이 읽어.';
- add('pair-structure',`7. ${score}점 아래에 있는 ${ba.dayKo}·${bb.dayKo}`,[
-  `총점 ${score}, 애정 ${m.love}, 대화 ${m.personality}, 돈·생활 ${m.money}, 장기 ${m.future}점이야. 가장 높은 축과 가장 낮은 축의 실제 장면을 같이 봐야 숫자가 관계가 돼.`,
-  direct,
-  `결속 신호 ${bond}, 마찰 신호 ${tension}. ${bond>tension?'맞물리는 신호가 더 커서, 관계의 자원으로 쓸 장점이 있어.':tension>bond?'마찰 신호가 더 커서, 반복되는 생활 조건을 확인하는 일이 중요해.':'두 신호의 크기가 비슷해, 어느 장면에서 연결되고 어느 장면에서 피로한지 나눠.'} 이 값을 사건의 횟수나 이별 확률로 바꾸지 마.`,
-  dmRelLine(a,b,an,bn),
-  crossLine(a,b,an,bn),
-  `${topic(an)} ${narrativeBlend(pa)} ${topic(bn)} ${narrativeBlend(pb)}`,
-  `각자 원국 안의 기준도 따로야. ${an}: ${narrativeRelation(pa)} ${bn}: ${narrativeRelation(pb)} 둘 사이의 관계와, 각자 안에서 쓰는 기준을 혼동하지 마.`
- ]);
- add('pair-rules',`8. ${subj(an)} 먼저 할 일, ${subj(bn)} 먼저 할 일`,[
-  `${subj(an)} 먼저 할 일. 약속이 바뀌거나 연락이 늦어지면, ${bn}에게 바꿀 시간과 다시 만날 시각을 먼저 말해. “${ib.request}”를 듣고, 이번에 지킬 범위만 답해.`,
-  `${subj(bn)} 먼저 할 일. 돈이나 일정이 겹치면, ${subj(an)} 이미 준비한 것을 먼저 듣고 뒤처리를 나눠. “${ia.request}”를 들은 뒤, 혼자 쉴 시간이 필요하면 그 시각과 돌아오는 시각을 같이 정해.`,
-  `첫 문장은 이렇게 바꿔. ${an}: “내게 필요한 건 ${ida(ia.need)}. 너는 어떤 행동이 필요해?” ${bn}: “내게 필요한 건 ${ida(ib.need)}. ${andw(ba.dayKo)} ${subj(bb.dayKo)} 같이 지킬 방법만 정하자.”`,
-  `갈등 뒤에는 이미 잘한 행동 하나를 인정하고, 다음에 바꿀 행동 하나만 말해. ${shared?'닮은 필요가 상대를 채점하는 잣대가 되지 않게 해.':'다른 방식의 노력을 알아보되, 받지 못한 행동까지 괜찮다고 넘기지는 마.'}`,
-  `일주일이 지나면 그 행동이 바뀌었는지만 확인해. 못 지켰다면 의지를 더 세게 요구하지 말고, ${an}의 범위와 ${bn}의 시간, 담당을 다시 정해.`
- ]);
- add('pair-final',`9. 오래 가져갈 힘, 그리고 남겨야 할 단점`,[
-  `${an}에게서 오래 가져갈 힘은 ${sa.label}이야. ${bn}에게서 오래 가져갈 힘은 ${sb.label}이야. ${strongest?strongest[0]+' '+strongest[1]+'점이 그 힘을 숫자로 보여 줘. ':''}그 장점을 평일에 쓰지 않으면 점수는 글로만 남아.`,
-  `${topic(an)} ${bn}의 하루에 ${GOD_ON_OTHER[pa.social]}. ${topic(bn)} ${an}의 하루에 ${GOD_ON_OTHER[pb.social]}. 그 교환이 이번 주 일정에 남을 때, 궁합은 설명이 아니라 생활이 돼.`,
-  (shared?`오래 가려면 같은 필요를 말로 남겨. 둘 다 ${ia.need}이 필요해. 같아서 말이 없어도 되는 건 아니야. 누가 먼저 그 행동을 할지를 정해. 그 필요가 빠지면, 좋은 사람이 지친 사람이 될 수 있어.`: `오래 가려면 서로 다른 필요를 말로 남겨. ${topic(an)} ${ia.need}이 필요하고, ${topic(bn)} ${ib.need}이 필요해. 장점만 말하고 그 필요가 빠지면, 좋은 사람이 지친 사람이 될 수 있어.`),
- ]);
- return narrativeFinalize(rows);
+ const pair=analyzePair(x);
+ if(!pair) return [];
+ return auditPair(composePair(pair), pair);
 }
 function placeName(dayRel){
  if(/충/.test(dayRel||'')) return '같은 저녁';
@@ -1102,7 +1454,7 @@ function fortuneActions(c,period='today'){
  return {...original,actions:[`${v.label}은 이번 기간의 주제야. 평소 ${s.label}과 ${p.social===original.god?'같은 역할을 쓰니 익숙한 일을 실제로 끝낼 범위를 정해.':'다른 역할이 들어오니 지금 필요한 조건을 먼저 확인해.'}` ,`${v.move} 돈에서는 ${s.budget}`,`관계에서는 ${i.need}이 지금 어떻게 채워지는지 봐. “${i.request}”처럼 필요한 행동을 말해.`],evidence:original.evidence+' / '+narrativeEvidence(p,[...(p.sources[p.social]||[]),...(p.sources[p.intimate]||[])])};
 }
 
-function pmodel(c){const base=typeof BaseExpert.personModel==='function'?BaseExpert.personModel(c):{};return {...base,version:'premium-evidence-v5.12',human_reading:premiumSections(c,base).map(s=>({id:s.id,title:s.title,body:s.body,evidence:s.evidence})),star_contexts:premiumStarContexts(c).map(r=>({title:r.title,facts:r.facts,evidence:r.evidence})),star_synthesis:premiumStarSynthesis(c),calculation_only:true};}
+function pmodel(c){const base=typeof BaseExpert.personModel==='function'?BaseExpert.personModel(c):{};return {...base,version:'premium-evidence-v5.14',human_reading:premiumSections(c,base).map(s=>({id:s.id,title:s.title,body:s.body,evidence:s.evidence})),star_contexts:premiumStarContexts(c).map(r=>({title:r.title,facts:r.facts,evidence:r.evidence})),star_synthesis:premiumStarSynthesis(c),calculation_only:true};}
 // Compatibility
 function prof(c){const a=order(c);return {c,n:name(c),hi:a[0],lo:a[4],g:mg(c),b:branch(c),dm:c?.dayMaster?.el||c?.pillars?.day?.stemEl||'',stem:c?.dayMaster?.stem||c?.pillars?.day?.stem||''};}
 function pairSeed(A,B,s){return hash([A.c?.pillars?.day?.ko,B.c?.pillars?.day?.ko,A.c?.pillars?.month?.ko,B.c?.pillars?.month?.ko,s].join('|'));} function pp(a,A,B,s){return a[pairSeed(A,B,s)%a.length];}
@@ -1122,7 +1474,1350 @@ function legacyFortuneActions(c,period='today'){
  return {god,period,actions:[TIMING[god]||'먼저 끝낼 일을 하나 고르고 완료 기준을 정해.',money,love],evidence:evidence||[f.pillars?.year?.ko&&f.pillars.year.ko+' 세운',f.pillars?.month?.ko&&f.pillars.month.ko+' 월운',f.pillars?.day?.ko&&f.pillars.day.ko+' 일운',god].filter(Boolean).join(' · ')};
 }
 
-root.GuiinExpert={...BaseExpert,premiumStarContexts,premiumStarSynthesis,starFacts,starIntegratedNames:Object.keys(STAR_INTEGRATED),narrativeProfile,narrativeFacts,premiumProfile,premiumBehavior,fortuneActions,timingSections,relationshipSections,fullSections:premiumSections,premiumCompatibilitySections,behaviorSections:sections,personalitySections:c=>premiumSections(c).filter(s=>!['work','career','money','leak','timing'].includes(s.id)),fieldSections:c=>premiumSections(c).filter(s=>['work','career','money','leak','love','timing'].includes(s.id)),personModel:pmodel};
+const premiumStarContexts_513=premiumStarContexts;
+/* ================= GUIIN V5.14 narrative engine =================
+ * 파이프라인: (1) 계산된 근거 정리 analyze → (2) 인물상·관계 분석 → (3) 문단 작성 compose → (4) 근거·반복·문맥 검사 audit
+ * 계산 엔진·점수식·가격·권한은 읽기만 한다. 실패하면 v5.13 출력으로 되돌린다. */
+const V514=(function(root){
+'use strict';
+const GR=['비겁','식상','재성','관성','인성'];
+const G2={비견:'비겁',겁재:'비겁',식신:'식상',상관:'식상',정재:'재성',편재:'재성',정관:'관성',편관:'관성',정인:'인성',편인:'인성'};
+const SEASON_OF={인:'봄',묘:'봄',진:'봄',사:'여름',오:'여름',미:'여름',신:'가을',유:'가을',술:'가을',해:'겨울',자:'겨울',축:'겨울'};
+const SHIFT=['진','술','축','미'];
+const PK={year:'년주',month:'월주',day:'일주',hour:'시주'};
+function fin(w){const s=String(w||'').trim(),ch=s.charCodeAt(s.length-1);if(ch>=0xAC00&&ch<=0xD7A3){const j=(ch-0xAC00)%28;return j===0?0:(j===8?2:1);}const dg=s.slice(-1);if(/[0-9]/.test(dg)){return {0:1,1:2,2:0,3:1,4:0,5:0,6:1,7:2,8:2,9:0}[+dg];}return 0;}
+function J(w,t){w=String(w||'');const f=fin(w);const m={'이/가':['가','이'],'은/는':['는','은'],'을/를':['를','을'],'과/와':['와','과'],'으로/로':['로','으로'],'이야/야':['야','이야'],'이고/고':['고','이고'],'이라/라':['라','이라']};const p=m[t]||['',''];let r=p[f?1:0];if(t==='으로/로'&&f===2)r='로';return w+r;}
+function nm(c){return String(c?.input?.name||'너').replace(/님$/,'');}
+function uniq(a){return [...new Set(a)];}
+function sum(a){return a.reduce((s,x)=>s+(+x||0),0);}
+function hash(s){let h=2166136261;for(const ch of String(s)){h^=ch.charCodeAt(0);h=Math.imul(h,16777619)}return h>>>0;}
+function sentences(t){return String(t||'').split(/(?<=[.?!])\s+/).map(s=>s.trim()).filter(Boolean);}
+function P_(...a){return a.filter(x=>x&&String(x).trim()).map(x=>String(x).trim()).join(' ');}
+function cap(a,n){return a.slice(0,n);}
+/* 같은 키 → 같은 선택(재현 가능). 이름·성별은 시드에 넣지 않고 원국만 쓴다 */
+function pickBy(arr,seed){return arr[seed%arr.length];}
+
+/* ===== 일간별 인물 소재 ===== */
+const DM={
+갑:{img:'곧게 뻗어 올라가는 큰 나무',head:'방향을 먼저 세우는',charm:'망설이는 사람 앞에서 먼저 길을 자기 주는 시원한 추진력',
+ trait:'한번 방향을 잡으면 쉽게 꺾이지 않고 위로 뻗어 가려는 사람',
+ scene:'여럿이 어디로 갈지 망설이는 자리에서 “일단 이쪽으로 가 보자” 하고 첫 방향을 세우는 일이 네 몫이 되기 쉬운 성향이야. 정보가 다 모이기 전에도 기준 하나를 먼저 세우는 편이라, 제자리에서 맴도는 시간을 줄이는 쪽으로 힘이 나와.',
+ relief:'이런 성향은 길이 안 보이는 상황에서 곁의 사람이 적어도 어디로 가는지는 알 수 있게 해 줄 근거가 돼. 방향이 없다는 불안이 줄어드는 쪽으로 작용하기 쉬워.',
+ trust:'네가 앞에 서는 팀에서는 에너지가 헛돌 가능성이 줄고, 다른 사람이 자기 일에 집중하기 쉬워져. 시작을 망설이는 사람에게는 먼저 간 길이 용기가 될 수 있는 성향이야.',
+ cost:'방향을 정한 사람은 그 방향의 결과까지 마음속에서 같이 지고 가. 따라오던 사람이 중간에 멈춰 있거나 정해 둔 길이 흐지부지되면, 몸은 쉬어도 마음은 그 길 위에 서 있게 돼.',
+ comfort:'그건 네가 예민해서가 아니라 방향을 책임지는 일이 원래 쉬는 시간까지 따라오기 때문이야. 지칠 때는 더 앞서 가라는 신호가 아니라, 지고 있는 방향 일부를 다른 사람에게 넘길 때가 됐다는 신호일 수 있어.',
+ flaw:'머릿속에서는 이미 정리된 길을 설명 없이 밀어붙이면, 따라오는 사람은 의견 낼 틈을 잃고 통보받았다고 느껴. 네 방향이 맞았더라도 과정에서 빠진 사람은 그 길을 자기 길로 받아들이지 못해.',
+ fix:'방향을 말한 직후에 “여기까지 따라올 만해?” 하고 속도를 한 번 물어봐. 맞는 길이라면 물어서 달라질 건 없고, 같이 가는 사람이 늘어나.',
+ seen:'시원시원하고 믿음직한 사람',give:'novelty',stress:'push',tempo:'fast'},
+을:{img:'바람에 휘어도 끝내 자리를 잡는 덩굴과 풀',head:'부딪히기 전에 길을 찾아내는',charm:'긴장된 자리를 부드럽게 풀어 모두가 숨 쉬게 만드는 유연함',
+ trait:'상황을 살피면서 길을 바꿔도 목표는 놓지 않는 사람',
+ scene:'의견이 갈려서 분위기가 팽팽해질 때 누구 편도 들지 않고 “이렇게 하면 둘 다 괜찮지 않을까?” 하고 중간 길을 찾으려는 성향이야. 한쪽이 이기는 결론보다 둘 다 남는 결론을 만들려는 쪽으로 움직여.',
+ relief:'이런 조율 방식은 말을 꺼내도 관계가 상하지 않을 거라는 안정감을 줄 수 있어. 일이 부딪혀 깨지기보다 어떻게든 이어지는 쪽으로 가게 하는 힘이야.',
+ trust:'조율이 잘 되는 팀은 일이 끝난 뒤에도 사람이 남기 쉬워. 눈에 보이는 성과보다 사람이 떠나지 않는 구조를 만드는 능력이라, 오래 가는 일일수록 네 몫이 커질 수 있어.',
+ cost:'이렇게 조율하는 동안 너는 모든 사람의 반응을 계속 살펴야 해. 누군가의 불편이 풀리지 않은 채 남아 있으면 일이 끝나도 마음은 그 사람 쪽에 가 있어서 쉬는 느낌이 안 들어.',
+ comfort:'그런 피로는 네가 마음이 약해서가 아니라 사람들 사이의 긴장을 대신 들고 있어서 생길 수 있어. 조율하는 사람의 피로는 눈에 보이지 않아서 인정받기도 어렵지만, 네가 지치는 건 그만큼 실제로 일을 하고 있다는 뜻이야.',
+ flaw:'맞춰 주다 보면 정작 네가 원한 건 말하지 않게 돼. 상대는 괜찮은 줄 알고 계속 가다가, 어느 날 쌓인 서운함을 한꺼번에 듣고 당황할 수 있어. 그때 상대는 지금 처음 듣는 이야기라고 느껴서 네 서운함이 오히려 갑작스러운 비난처럼 전달될 수 있어.',
+ fix:'맞춰 주기 전에 자기가 원하는 걸 한 문장으로 먼저 말해 둬. “나는 이쪽이 편한데, 네 생각은 어때?” 정도면 충분해.',
+ seen:'부드럽고 편한 사람',give:'space',stress:'adapt',tempo:'slow'},
+병:{img:'모두를 환하게 비추는 해',head:'자리를 먼저 데우는',charm:'굳은 분위기를 먼저 풀고 사람들 마음을 열게 하는 밝은 에너지',
+ trait:'마음이 움직이면 표현도 행동도 빠르고, 같이 있는 사람에게 온도를 나눠 주는 사람',
+ scene:'어색하게 굳은 모임에서 먼저 웃고 말을 꺼내서 다른 사람들이 입을 열 수 있게 만드는 쪽이야. 네가 먼저 솔직하게 드러내면 상대도 방어를 내려놓기 쉬워지는 방식으로 분위기를 열어.',
+ relief:'이런 성향은 이 자리에서는 편하게 말해도 된다는 신호가 되어 줄 수 있어. 눈치 볼 일이 줄어드는 쪽으로 작용하기 쉬워.',
+ trust:'네가 있는 자리에서는 침묵이 불편함이 아니라 여유로 읽힐 수 있어. 사람을 움직이는 데 설득보다 분위기가 더 큰 힘을 가질 때가 많은데, 그걸 자연스럽게 해내는 타입이야.',
+ cost:'늘 반응해 주고 에너지를 내보내려면 안쪽에서는 계속 연료를 태우고 있어. 자기 말이 허공에 뜬 느낌이 들거나 반응 없는 조용함이 길어지면 에너지가 생각보다 빨리 떨어져.',
+ comfort:'밝아 보인다고 지치지 않는 건 아니야. 분위기를 데우는 사람은 정작 자기 온도를 채울 곳이 마땅치 않을 때가 많아. 그럴 땐 더 밝아져야 한다고 자신을 몰아붙이지 말고, 자기 쪽에서 받는 반응이 있는지부터 봐.',
+ flaw:'기분이 말과 표정으로 바로 나가는 편이라 서운함까지 그대로 전달돼. 네가 순간 한 말은 가볍게 던진 건데, 듣는 사람은 그 말을 오래 기억하면서 방어부터 하게 돼. 그러면 정작 원하던 이해는 멀어지고 분위기만 식어.',
+ fix:'감정이 올라온 날은 결론 대신 요청만 짧게 말하고, 나머지는 하룻밤 두었다가 다시 이야기해.',
+ seen:'환하고 당당한 사람',give:'words',stress:'blaze',tempo:'fast'},
+정:{img:'어둠 속에서 한 곳을 오래 비추는 촛불',head:'한 사람을 오래 헤아리는',charm:'말하지 않은 마음까지 알아채 주는 섬세한 배려',
+ trait:'한 사람, 한 가지에 깊이 집중하고 작은 신호까지 놓치지 않는 사람',
+ scene:'모두가 지나친 사람의 표정 변화를 알아채고, 나중에 조용히 “그때 괜찮았어?” 하고 물어보는 쪽이야. 큰 소리로 챙기지 않아도 이 사람이 내 상태를 봤다는 감각을 남기는 방식으로 마음을 써.',
+ relief:'이런 알아챔은 상대가 말하지 못한 사정을 혼자 감당하지 않아도 된다고 느끼게 할 수 있어. 설명하지 않아도 알아주는 사람이 한 명 있다는 건 생각보다 큰 안심이 돼.',
+ trust:'깊은 신뢰는 대개 이런 작은 알아챔이 쌓여서 만들어져. 네 앞에서는 평소보다 솔직해지기 쉽고, 한번 맺은 관계가 오래 가는 쪽으로 힘이 실리는 성향이야.',
+ cost:'속으로 계속 살피고 헤아리는 일은 겉으로 드러나지 않지만 에너지를 꽤 써. 누군가의 상태가 마음에 걸린 채 확인하지 못하면, 다른 일을 하는 동안에도 그 생각이 배경에서 계속 돌아가.',
+ comfort:'네가 지치는 건 티 내지 않고 오래 헤아리는 방식이 원래 조용히 에너지를 쓰기 때문이야. 쉬는 시간에도 마음이 한 곳에 머물러 있다면, 걱정이 많아서라기보다 신경 쓰는 사람이 많아서일 수 있어.',
+ flaw:'서운함이 생겨도 상대가 알아주길 기다리다가 혼자 오래 품게 돼. 상대는 이유를 모른 채 네가 조금씩 닫혀 가는 걸 느끼고, 뭔가 잘못했나 하며 눈치만 보게 될 수 있어. 말하지 않은 마음은 상대에게는 거리처럼 보여.',
+ fix:'서운함이 생기면 사흘을 넘기기 전에 “그때 이런 느낌이 들었어” 하고 사실만 먼저 꺼내 봐. 해결을 요구하지 않고 말하는 것만으로도 충분히 달라져.',
+ seen:'차분하고 따뜻한 사람',give:'comfort',stress:'ember',tempo:'slow'},
+무:{img:'자리를 지키는 큰 산',head:'흔들려도 중심을 잡아 주는',charm:'어떤 상황에서도 자리를 지켜 주는 든든함',
+ trait:'쉽게 흔들리지 않고 현실을 붙잡아 책임지는 사람',
+ scene:'일이 꼬여서 다들 당황할 때 “내가 정리할게” 하고 중심에서 흐름을 붙잡는 쪽이야. 감정이 격해진 자리에서도 해야 할 일의 순서를 먼저 정리하는 편이라, 주변이 숨을 돌릴 틈을 만들어 줘.',
+ relief:'이런 성향은 주변이 이 사람이 맡았으면 끝까지 가겠다고 믿고 다른 일에 신경을 쓸 수 있는 근거가 돼.',
+ trust:'사람은 흔들릴 때 기댈 곳이 있다는 사실만으로 훨씬 멀리 가기도 해. 네가 중심을 지키는 팀은 안전하게 시도하고 실수할 여지가 커지는 구조야.',
+ cost:'모두가 기대는 자리를 지키는 동안 네 몫의 부담은 맨 나중으로 밀리기 쉬워. 맡은 일에 구멍이 남아 있거나 마무리가 확실하지 않으면, 몸이 쉬어도 마음은 그 구멍을 메우러 가 있어.',
+ comfort:'버티는 힘이 있는 사람일수록 힘들다는 말이 늦게 나와. 지금 지친다면 약해져서가 아니라 너무 오래 혼자 중심을 맡아서일 수 있어. 책임을 인정받는다는 건 그 책임을 끝없이 요구받지 않는 것까지 포함해야 해.',
+ flaw:'도움을 청하지 않고 혼자 지다가 어느 순간 말수가 줄고 표정이 굳어. 주변은 이유를 모른 채 눈치를 보다가 네가 자기를 필요로 하지 않는다고 오해하고 물러설 수 있어. 결국 혼자 더 많이 지게 되는 순환이 생겨.',
+ fix:'맡기 전에 “이건 내 몫, 이건 같이 하자” 하고 선을 한 번 긋고, 힘든 날엔 상황 설명 없이 “오늘은 좀 지쳐”라고만 말해도 돼.',
+ seen:'듬직하고 무게 있는 사람',give:'steady',stress:'carry',tempo:'slow'},
+기:{img:'씨앗을 키워 내는 부드러운 논밭',head:'빠진 칸을 채워 주는',charm:'작은 부분까지 챙겨서 실제로 돌아가게 만드는 따뜻한 실무력',
+ trait:'눈에 띄지 않는 부분까지 챙겨서 일이 실제로 굴러가게 만드는 사람',
+ scene:'다들 큰 그림만 이야기할 때 “그럼 이건 누가 언제까지 해?” 하고 빠진 칸을 채우는 쪽이야. 아이디어가 실제 약속과 일정으로 바뀌는 마지막 구간을 이어 주는 방식으로 일해.',
+ relief:'이런 성향은 뭔가 빠뜨린 건 아닌지 마음 졸이는 시간을 줄여 줄 수 있어. 네가 한 번 확인한 일은 정리돼 있을 거라는 기대를 주변이 갖기 쉬워.',
+ trust:'좋은 아이디어가 흐지부지되지 않고 결과가 되려면 이런 사람이 꼭 필요해. 시작하는 사람이 마음 놓고 새로운 걸 벌일 수 있는 건 뒤를 받쳐 주는 네 방식이 있어서일 수 있어.',
+ cost:'챙기는 일은 해도 해도 티가 나지 않고, 하나라도 빠지면 눈에 띄어. 그래서 해야 할 일이 목록에 남아 있거나 누군가 잊은 걸 아직 챙기지 못했을 때 쉬는 시간에도 마음이 편하지 않아.',
+ comfort:'네가 지치는 건 일을 못해서가 아니라 보이지 않는 일을 가장 많이 들고 있어서야. 당연한 것처럼 받아들여지는 일일수록 인정받기 어려운데, 그 피로가 쌓인다고 해서 자신을 탓할 필요는 없어.',
+ flaw:'챙겨 주던 일이 어느새 당연하게 굳으면, 하는 만큼 인정받지 못한다는 마음이 쌓여. 그런데 상대는 네가 힘들어한다는 걸 몰라서 계속 같은 부탁을 하기 쉬워. 말하지 않은 채 서운함이 커지면 어느 날 챙김 자체가 짜증처럼 나가기도 해.',
+ fix:'챙기는 일 중에서 상대가 직접 할 수 있는 것 하나를 이름 붙여서 넘겨 봐. “이건 이제 네가 맡아 줘” 한마디면 돼.',
+ seen:'세심하고 현실적인 사람',give:'action',stress:'handle',tempo:'slow'},
+경:{img:'단단하게 벼려진 쇠',head:'애매한 걸 끝내 주는',charm:'흐릿한 상황을 단번에 정리해 주는 시원한 결단',
+ trait:'기준이 분명하고 필요 없는 걸 정리하는 속도가 빠른 사람',
+ scene:'회의가 길어지고 결론이 안 날 때 “결국 핵심은 이거고 이건 빼자” 하고 정리해서 끝을 내는 쪽이야. 돌려 말하느라 아무도 꺼내지 못한 불편한 이야기를 제때 꺼내는 편이라, 일이 곪기 전에 풀릴 여지를 만들어.',
+ relief:'이런 성향은 사람들이 빙빙 돌려 짐작하지 않아도 되게 하는 근거가 돼. 이 사람이 말하면 그게 실제라는 믿음이 생기기 쉬워서 판단이 쉬워져.',
+ trust:'분명한 기준은 팀에 방향과 안전선을 줘. 무엇이 되고 안 되는지 알 수 있으면 불필요하게 눈치 보는 시간이 줄어드는 쪽으로 작용해.',
+ cost:'기준에 맞지 않는 걸 알면서 참고 넘어가려면 스스로를 계속 눌러야 해. 결론 없이 시간만 끌거나 약속이 슬쩍 바뀌는 상황이 이어지면, 쉬는 중에도 속에서는 정리 못 한 것들이 계속 거슬려.',
+ comfort:'단호한 사람은 힘이 세 보여서 피로를 인정받지 못하기 쉬워. 하지만 기준을 지키는 일은 정말 에너지를 써. 지친다는 건 기준이 높아서가 아니라 기준이 무너지는 환경에 오래 있었다는 신호일 수 있어.',
+ flaw:'핵심만 말한 건데 듣는 사람은 평가받았다고 느낄 수 있어. 하려던 말의 내용은 사라지고 어조만 남아서, 맞는 말인데도 상대가 방어하거나 멀어질 수 있어. 정확하게 말할수록 소통이 막히는 순간이 생기는 거야.',
+ fix:'결론을 말하기 전에 상대가 이미 잘한 점 하나를 먼저 짚어. 칭찬이 아니라 사실 확인으로 시작하면 뒤의 말이 훨씬 잘 전달돼.',
+ seen:'단호하고 믿을 만한 사람',give:'candid',stress:'cut',tempo:'fast'},
+신:{img:'정교하게 세공된 보석',head:'마지막 한 군데까지 확인하는',charm:'세밀하게 보고 완성도를 올려 주는 깔끔한 감각',
+ trait:'기준에 맞는지 가려내는 눈이 예리하고 마무리를 놓치지 않는 사람',
+ scene:'모두가 괜찮다고 넘긴 숫자, 문장, 약속 시간에서 어긋난 곳을 먼저 알아채는 쪽이야. 말로 “다 됐어”라고 하는 데서 멈추지 않고 실제로 그렇게 됐는지 한 번 더 들여다보는 성향이라, 네가 마무리한 일은 뒤에서 다시 열어 볼 일이 적어질 가능성이 커.',
+ relief:'이런 확인 습관은 함께 일하는 사람이 검수를 한 번 줄여도 되겠다고 느낄 근거가 될 수 있어. 나중에 터질 문제를 미리 걱정하던 신경을 다른 일에 쓸 여지가 생기는 거야.',
+ trust:'일을 벌이는 사람은 많아도 일이 끝까지 믿을 만한 상태로 남게 만드는 사람은 드물어. 이런 성향은 큰 한 방보다 마무리가 쌓이면서 평판이 되는 쪽으로 작용해.',
+ cost:'기준에 못 미친 부분이 눈에 들어오는 순간부터는 쉬는 시간에도 머릿속 점검표가 켜져 있어. 확인하지 못한 항목이 남아 있거나 고치고 싶은데 손댈 수 없는 일이 있으면 몸은 누워 있어도 신경은 그 일 옆에 서 있게 돼.',
+ comfort:'꼼꼼함이 일하는 시간에서 끝나지 않고 쉬는 시간까지 따라오기 때문에 생기는 피로야. 그래서 지칠 때는 더 성실해질 방법이 아니라 어디까지가 자기 확인 몫이고 어디부터가 다른 사람 몫인지 나누는 방법을 찾아야 해.',
+ flaw:'상대가 속상했던 이야기를 꺼내는 중에 네가 원인을 분석하거나 해결책을 먼저 내놓으면, 내용이 맞아도 상대는 아직 들어 주지도 않았는데 정리부터 당했다고 느껴. 또 눈에 보이는 고칠 점을 그때그때 말하면 상대는 같이 있는 시간이 점검 시간처럼 느껴져 마음을 놓지 못해.',
+ fix:'상대의 이야기가 끝날 때까지는 방법을 말하지 말고 어떤 점이 속상했는지 한 번 되짚어 주기만 해. 고칠 점은 하루에 한 가지로 줄이고, 말할 때는 잘된 부분을 먼저 하나 사실로 짚어 줘.',
+ seen:'차분하고 깔끔한 사람',give:'order',stress:'audit',tempo:'slow'},
+임:{img:'넓게 흐르며 모든 걸 품는 큰 물',head:'여러 사정을 한꺼번에 읽는',charm:'서로 다른 입장을 이어 주는 넓은 이해력',
+ trait:'한 방향만 보지 않고 여러 가능성과 사람들의 사정을 같이 생각하는 사람',
+ scene:'서로 다른 말을 하는 사람들 사이에서 “그러니까 각자 원하는 건 이거네” 하고 한 줄로 이어 주는 쪽이야. 겉으로 부딪히는 주장 아래의 공통 이유를 찾는 성향이라, 대화가 다시 굴러가게 하는 데 강해.',
+ relief:'이런 성향은 각자가 자기 입장이 무시당하지 않았다고 느끼게 할 수 있어. 이해받았다는 감각이 있으면 양보도 훨씬 쉬워지는 경향이 있어.',
+ trust:'여러 사정을 동시에 읽는 사람이 있으면 결정이 한쪽으로 쏠릴 가능성이 줄어. 소수의 의견도 사라지지 않고 검토되는 쪽으로 작용하는 성향이야.',
+ cost:'여러 입장과 가능성을 동시에 머릿속에 올려 두는 건 계속 에너지를 쓰는 일이야. 결정을 미뤄서 선택지가 열려 있는 동안에는 어느 쪽으로 가도 아쉬울 것 같아서 마음이 쉬지 못해.',
+ comfort:'생각이 많다고 자책하지 않아도 돼. 넓게 보는 사람은 그만큼 고려할 것이 많은 거야. 지칠 때는 더 생각하라는 신호가 아니라 선택지를 줄여도 된다는 신호일 수 있어.',
+ flaw:'생각이 넓어서 결정이 늦어지면, 기다리는 상대는 “그래서 어떻게 하자는 거야?” 하고 묻게 돼. 네게는 신중함인데 상대에게는 마음이 없는 것처럼 보일 수 있어. 가능성을 열어 두는 동안 상대의 시간이 쓰이고 있다는 점을 놓치기 쉬워.',
+ fix:'선택지를 두 개로 줄이고 언제까지 정할지 날짜를 같이 말해. “금요일까지 둘 중 하나로 정해서 알려 줄게” 정도면 상대는 기다릴 수 있어.',
+ seen:'여유 있고 속을 알 수 없는 사람',give:'listen',stress:'ponder',tempo:'mid'},
+계:{img:'조용히 스며드는 비와 이슬',head:'분위기의 변화를 먼저 읽는',charm:'말하지 않아도 편안함을 만들어 주는 섬세한 감지력',
+ trait:'작은 변화와 분위기를 먼저 감지하고 필요할 때 조용히 움직이는 사람',
+ scene:'아무도 말하지 않은 불편한 기류를 먼저 알아채는 쪽이야. 누가 어디서 힘들어하는지 눈치채면 큰일이 되기 전에 조용히 풀거나 부담을 덜어 주는 방식으로 움직여.',
+ relief:'이런 성향은 문제가 터지기 전에 막히는 경우를 늘려 줄 수 있어. 주변은 모르는 사이에 보호받는 셈이 되는 거야.',
+ trust:'징후를 읽는 사람은 조직에서 눈에 안 보이는 안전장치 역할을 하기 쉬워. 말하지 않아도 이해받는 편안함을 주는 성향이라 사람이 쉽게 곁을 떠나지 않는 쪽으로 작용해.',
+ cost:'모든 분위기와 감정을 안테나처럼 받아들이다 보면 혼자 정리해야 하는 양이 많아. 공기가 어색한 채로 풀리지 않았거나 상대 마음을 아직 확인하지 못했을 때는 쉬는 중에도 계속 신호를 읽고 있어.',
+ comfort:'감지하는 능력이 높은 사람은 남들이 느끼지 못하는 피로를 같이 느껴. 지치는 건 예민해서가 아니라 처리하는 정보가 많아서야. 혼자 정리하는 시간을 따로 확보하는 건 사치가 아니라 필요한 조건이야.',
+ flaw:'혼자 정리한 결론을 먼저 내리고 말하지 않으면, 상대는 이유를 모른 채 거리가 생겼다고 느껴. 네게는 충분히 생각한 결과인데 상대에게는 갑작스러운 변화처럼 보여서 오해가 깊어져.',
+ fix:'혼자 정리하기 전에 “이렇게 느꼈는데 맞아?” 하고 확인 한 줄을 먼저 보내. 확인만 해도 혼자 상상으로 키우는 부담이 줄어.',
+ seen:'조용하고 깊은 사람',give:'steady',stress:'sense',tempo:'slow'}
+};
+
+/* ===== 십성 배치(5묶음)의 재능과 부담 ===== */
+const GRP={
+비겁:{mode:'직접 쥐고 판단하는',
+ scene:'맡은 일은 누가 시켜서가 아니라 “이건 내 일”이라는 감각으로 붙잡아서, 중간에 흔들려도 자기 기준으로 끝까지 밀고 가.',
+ relief:'맡기는 사람 입장에서는 중간마다 점검하는 데 힘을 덜 써도 되고, 정해 둔 기준이 결과의 품질을 지켜 준다는 기대를 가질 수 있어.',
+ trust:'스스로 굴러가는 사람이 한 명 있으면 주변의 감독 부담이 줄어드는 쪽으로 작용해. 지켜보는 비용이 낮아진다는 게 가장 실용적인 신뢰야.',
+ lack:'자기 기준을 세우고 지키는 힘이 상대적으로 얇아서, 주변 기대에 맞추다 보면 자기 속도를 잃기 쉬워.',
+ fill:'하루 일정에서 “내가 정하는 시간” 한 칸을 먼저 막아 두는 것'},
+식상:{mode:'꺼내서 표현하는',
+ scene:'머릿속에 있는 생각을 말, 글, 결과물로 꺼내서 다른 사람이 이해할 수 있는 모양으로 만들어. 떠오른 걸 오래 묵히지 않고 바로 내놓는 편이야.',
+ relief:'복잡하게 얽혀 있던 이야기가 설명을 거치면 정리되기 쉬워서, 듣는 사람이 “아, 그거였구나” 하고 안도할 수 있는 성향이야.',
+ trust:'설명이 되는 사람이 있으면 팀이 같은 그림을 보기 쉬워. 아이디어가 사람들 사이에서 통하는 언어가 되는 데 이런 성향이 큰 몫을 해.',
+ lack:'생각을 밖으로 꺼내는 통로가 상대적으로 좁아서, 마음에 담아 두다가 한꺼번에 쏟아내기 쉬워.',
+ fill:'하루에 한 번 메모나 짧은 말로 생각을 꺼내 놓는 시간을 만드는 것'},
+재성:{mode:'현실 조건을 읽는',
+ scene:'좋은 생각이 있어도 비용과 일정, 상대의 사정이 맞는지부터 따져서 실제로 가능한 모양으로 옮겨.',
+ relief:'손해 볼 일을 미리 걸러 주고 기회를 놓치지 않게 챙기는 쪽이라, 주변이 현실에서 발이 묶이는 일이 줄어드는 방향으로 작용해.',
+ trust:'현실 감각이 있는 사람이 곁에 있으면 좋은 아이디어가 살아남기 쉬워. 꿈을 현실의 속도에 맞춰 주는 건 눈에 잘 띄지 않지만 결과를 가장 크게 바꾸는 능력일 수 있어.',
+ lack:'현실의 이익과 비용을 챙기는 감각이 상대적으로 얇아서, 좋은 일을 하고도 보상을 말하지 못하기 쉬워.',
+ fill:'자기가 한 일의 가치를 숫자와 말로 정리해서 요청해 보는 연습'},
+관성:{mode:'역할과 약속을 지키는',
+ scene:'정해진 역할과 약속 안에서 맡은 몫을 빈틈없이 해내고, 규칙이 흐려지면 먼저 기준을 세워서 일이 굴러가게 해.',
+ relief:'일의 순서와 책임이 분명해지는 쪽으로 움직여서, 누가 뭘 하는지 헷갈리는 일이 줄고 각자 자기 일에 집중하기 쉬워져.',
+ trust:'약속을 지키는 사람이 있으면 관계에 예측 가능성이 생겨. 예측 가능한 사람 곁에서는 상대가 훨씬 편안하게 일하고 쉴 수 있어.',
+ lack:'규칙과 마감으로 자신을 묶어 주는 틀이 상대적으로 약해서, 스스로 순서를 세워야 안정돼.',
+ fill:'마감과 순서를 달력에 먼저 적어서 자신을 묶어 주는 틀을 만드는 것'},
+인성:{mode:'이해하고 소화하는',
+ scene:'충분히 이해한 뒤에 움직이고, 한번 소화한 것은 깊이 있게 설명하거나 가르칠 수 있을 만큼 자기 것으로 만들어.',
+ relief:'급하게 판단하지 않고 근거를 확인하는 사람이 곁에 있으면 중요한 결정을 할 때 마음이 놓일 수 있어.',
+ trust:'깊이 있게 소화한 사람의 말은 쉽게 흔들리지 않는 편이야. 배움을 사람에게 돌려주는 방식으로 신뢰를 쌓아 가는 타입이야.',
+ lack:'기대어 쉬고 정리할 자리가 상대적으로 얇아서, 배운 것을 소화하는 시간을 따로 챙겨야 해.',
+ fill:'정리하고 쉬는 시간을 고정 일정으로 먼저 잡아 두는 것'}
+};
+/* 부담이 커지는 조건(많은 쪽 기준) */
+const BURDEN={
+비겁:{when:'자기 방식으로 밀고 가는 일에 다른 의견이 계속 끼어들거나, 자기가 정할 수 없는 결정이 쌓일 때',
+ self:'“내가 해야 제대로 된다”는 생각 때문에 일이 몰려도 도움을 늦게 청하고, 혼자 버티다 한꺼번에 소진돼.',
+ others:'곁의 사람들이 끼어들 틈을 못 찾다가 “필요 없나 보다” 하고 물러설 수 있고, 그러면 너는 더 외롭게 많은 걸 지게 돼.',
+ fix:'일이 몰렸을 때 도움을 “이 부분만 맡아 줘”처럼 구체적인 단위로 한 가지씩 요청해 봐.',
+ week:'이번 주에 부탁할 수 있는 일 하나를 골라서 구체적으로 맡겨 보고, 생각보다 괜찮았는지 확인해 봐.'},
+식상:{when:'말하고 만들고 챙겨 주는 일은 계속 이어지는데, 받아들이고 채우는 시간이 없을 때',
+ self:'내보내기만 하다가 어느 날 말도 하기 싫고 몸도 따라 주지 않는 식으로 한꺼번에 방전돼.',
+ others:'주변에서는 갑자기 사람이 변한 것처럼 느껴져서 어떻게 대해야 할지 몰라 하고, 네가 보낸 신호를 놓친 걸 자책하기도 해.',
+ fix:'만드는 시간 뒤에 아무것도 내놓지 않는 시간을 일정에 먼저 넣어 둬.',
+ week:'이번 주 이틀은 읽기, 산책, 낮잠처럼 받아들이는 시간으로 비워 두고, 그 뒤 컨디션이 달라지는지 적어 봐.'},
+재성:{when:'결과와 성과가 눈앞에 보여서 쉬는 시간이 비용처럼 느껴질 때',
+ self:'쉬면 뒤처진다는 마음 때문에 일정이 빈 날에도 마음이 편하지 않고, 기회를 놓친 것 같은 느낌이 계속 따라와.',
+ others:'가까운 사람은 함께 있어도 네 마음이 다른 곳에 가 있다고 느껴 서운해할 수 있고, 너는 그 서운함을 또 일로 해결하려 하기 쉬워.',
+ fix:'일 이야기를 하지 않는 시간을 하루에 한 번 정해서 폰과 일정을 내려놓아 봐.',
+ week:'이번 주 하루, 성과와 상관없는 활동 한 시간을 잡고 그때 마음이 얼마나 불편했는지 숫자로 적어 봐.'},
+관성:{when:'책임진 일이 눈앞에 쌓여 있고 누군가의 평가가 느껴질 때',
+ self:'해야 한다는 마음이 쉬는 시간까지 따라와서, 쉬어도 쉰 것 같지 않고 긴장이 풀리지 않아.',
+ others:'곁의 사람이 네가 바쁘고 긴장해 있다고 느끼면, 부탁이나 속마음을 꺼내기를 조심스러워할 수 있어.',
+ fix:'하루에 “오늘 끝낼 것”을 두세 개로만 정하고, 나머지는 이름만 붙여서 내일로 넘겨.',
+ week:'이번 주 하루는 저녁 이후에 일 확인을 하지 않고, 그래도 실제로 문제가 된 일이 있었는지 적어 봐.'},
+인성:{when:'충분히 알기 전에 결정하거나 결과를 보여 줘야 하는 상황이 닥칠 때',
+ self:'준비가 길어지는 만큼 실행이 늦어지고, 늦어진 자신을 다그치면서 더 지쳐.',
+ others:'곁의 사람은 기다리는 동안 마음이 있는 건지 없는 건지 헷갈릴 수 있고, 너는 설명하지 못한 채 부담만 느끼기 쉬워.',
+ fix:'준비가 70퍼센트쯤 됐을 때 일부만 먼저 보여 주는 날짜를 정해 둬.',
+ week:'이번 주 안에 70퍼센트 상태의 결과물을 한 사람에게 보여 주고 반응을 받아 봐.'}
+};
+const TIER={
+약:'받쳐 주는 힘이 얇은 구조라 같은 일도 혼자 감당하면 훨씬 무겁게 느껴져. 그래서 능력이 모자란 게 아니라 환경과 도움이 있느냐에 따라 체감이 크게 달라져.',
+중:'밀고 갈 힘과 받쳐 주는 힘이 비슷한 구조라 상황에 따라 혼자 해도 되고 같이 해도 돼. 다만 한쪽으로 몰아 쓰는 기간이 길어지면 균형이 먼저 무너져.',
+강:'스스로 밀고 갈 힘이 충분한 구조라 웬만한 일은 혼자 해내. 그래서 힘이 있다는 이유로 짐이 점점 네 쪽으로 쌓이고, 부담을 나누자는 말이 늦게 나와.'};
+/* 월간 십성: 사회에서 보이는 모습 */
+const MG={
+비견:{role:'남이 정해 준 답보다 자기 기준으로 결과를 만드는 사람',scene:'일에서도 “내가 직접 판단할 수 있는 범위”가 분명할수록 속도가 붙어',arena:'결정권이 분명하고 자기 이름이 남는 일',drain:'권한 없이 지시만 따라야 하는 자리',ask:'자기가 정할 수 있는 범위를 처음에 분명히 하고 싶어요',money:'자기 기준으로 직접 관리해야 마음이 놓이는',income:'자기 판단과 기술을 직접 납품하는 방식'},
+겁재:{role:'사람과 일이 빠르게 오가는 현장에서 속도와 승부감을 내는 사람',scene:'경쟁이나 협업이 붙을 때 오히려 집중력이 올라가',arena:'사람이 많고 변화가 빠른 현장',drain:'비교와 경쟁이 끝없이 이어지는 자리',ask:'자기 몫과 성과 기준을 처음에 같이 정하고 싶어요',money:'사람과 활동이 늘면 같이 움직이는',income:'협업과 현장에서 사람을 연결해 성사시키는 방식'},
+식신:{role:'꾸준히 만들고 돌보면서 결과를 차곡차곡 쌓아 가는 사람',scene:'재촉받지 않고 자기 리듬으로 반복할 때 품질이 올라가',arena:'자기 리듬으로 반복해서 숙련을 쌓을 수 있는 일',drain:'충분한 시간 없이 계속 재촉받는 자리',ask:'완성하는 데 필요한 시간을 먼저 확보하고 싶어요',money:'잘하는 한 가지를 반복해서 꾸준히 만드는',income:'익힌 기술을 서비스나 상품으로 반복 제공하는 방식'},
+상관:{role:'불합리한 걸 그냥 넘기지 못하고 고치거나 새로 만드는 사람',scene:'앞뒤가 안 맞는 걸 보면 지나치지 못하고 대안을 내놓게 돼',arena:'개선 의견이 실제로 반영되는 일',drain:'말해도 바뀌지 않는 구조',ask:'개선 의견을 낼 수 있는 통로가 있으면 좋겠어요',money:'아이디어와 개선 능력을 돈으로 바꾸는',income:'문제를 찾아 고친 결과에 대가를 받는 방식'},
+정재:{role:'생활과 일정을 안정적으로 관리하는 사람',scene:'약속한 만큼 꾸준히 지켜 가는 데서 신뢰를 쌓아',arena:'기준이 분명하고 꾸준히 쌓이는 일',drain:'계획이 수시로 뒤집히는 환경',ask:'일정이 바뀔 때는 미리 알려 주세요',money:'정해진 수입과 지출을 안정적으로 관리하는',income:'꾸준한 월 수입과 반복 가능한 거래'},
+편재:{role:'사람과 기회, 돈의 흐름을 넓게 보고 움직이는 사람',scene:'새로운 사람과 기회를 연결하는 데서 에너지가 올라와',arena:'사람과 수요를 직접 만나며 방향을 바꿀 수 있는 일',drain:'선택지가 좁고 변화가 없는 자리',ask:'지금 우선순위가 무엇인지 같이 정하고 싶어요',money:'기회가 보이면 크게 움직이는',income:'사람과 기회를 연결하며 수입 통로를 넓히는 방식'},
+정관:{role:'약속과 원칙, 책임을 지키는 사람',scene:'기준이 분명한 자리에서 신뢰를 쌓는 데 강해',arena:'역할과 평가 기준이 분명한 조직',drain:'기준이 불분명해서 눈치를 봐야 하는 자리',ask:'평가 기준과 역할 범위를 분명히 해 주세요',money:'원칙을 정해 놓고 계획적으로 쓰는',income:'조직의 역할과 책임을 통한 안정적인 수입'},
+편관:{role:'압박이 있어도 결과를 끝까지 내는 사람',scene:'어려운 과제일수록 집중하고 돌파하는 힘이 나와',arena:'도전적인 과제와 분명한 목표가 있는 일',drain:'긴장 상태가 일상이 되어 쉴 틈이 없는 환경',ask:'마감 사이에 회복할 시간을 넣어 주세요',money:'책임질 일이 생기면 크게 쓰는',income:'어려운 문제를 해결하는 대가로 받는 방식'},
+정인:{role:'배우고 이해한 뒤에 안정된 기반을 만드는 사람',scene:'충분히 이해한 일은 깊이 있게 설명하고 가르칠 수 있어',arena:'배경과 이유를 이해하고 일할 수 있는 곳',drain:'이해할 시간 없이 곧바로 결과를 내라는 압박',ask:'배경과 이유를 먼저 설명해 주세요',money:'배움과 자격에 투자해 기반을 만드는',income:'전문성과 자격을 바탕으로 신뢰를 쌓는 방식'},
+편인:{role:'혼자 깊게 생각해서 남들이 못 본 관점을 찾는 사람',scene:'남들이 지나친 부분에서 다른 해석을 끌어내',arena:'혼자 파고드는 시간이 보장되는 일',drain:'생각이 정리되기 전에 의견을 내야 하는 자리',ask:'생각할 시간을 하루만 주세요',money:'필요하다고 판단하면 깊이 파고들어 사는',income:'독특한 관점과 전문 지식을 상품화하는 방식'}
+};
+/* 일지 본기 십성: 가까운 사이에서의 모습 */
+const DG={
+비견:{close:'가까운 사이에서도 서로 대등하길 바라서, 결정과 시간을 나눠 갖는 관계에서 편안함을 느껴',want:'space',hurt:'자기 결정이 말없이 뒤집히거나 선택이 당연하게 대신 내려질 때'},
+겁재:{close:'마음에 든 사람에게는 솔직하고 적극적으로 다가가고, 속을 숨기는 걸 어려워해',want:'candid',hurt:'말하지 않은 속셈이나 은근한 눈치 싸움이 느껴질 때'},
+식신:{close:'함께 먹고 쉬고 웃는 평범한 시간에서 마음을 확인하고, 편안한 일상을 만드는 데 힘을 써',want:'comfort',hurt:'쉬는 시간이 평가되거나 일상이 계속 점검받을 때'},
+상관:{close:'가까울수록 생각을 숨기지 않고 말로 풀어내길 원해서, 대화가 막히면 답답함이 빨리 커져',want:'listen',hurt:'말을 꺼내자마자 반박이나 정정부터 돌아올 때'},
+정재:{close:'약속한 만큼 꾸준히 지키는 방식으로 마음을 보여 주고, 같은 패턴이 이어질 때 안정감을 느껴',want:'steady',hurt:'약속이 가볍게 바뀌거나 연락과 일정이 흐릿해질 때'},
+편재:{close:'같이 새로운 곳에 가고 경험을 넓히면서 관계가 살아나고, 고정된 틀에 오래 있으면 답답해해',want:'novelty',hurt:'관계가 같은 틀로 굳어서 설렘이 사라졌다고 느껴질 때'},
+정관:{close:'예의와 책임을 지키는 모습에서 신뢰를 느끼고, 신중하게 시간을 들여 마음을 열어',want:'order',hurt:'약속과 예의가 가볍게 다뤄질 때'},
+편관:{close:'힘든 순간에 곁에 있어 주는 사람에게 마음이 크게 기울고, 위기에서 드러나는 태도를 중요하게 봐',want:'action',hurt:'말만 앞서고 행동이 따라오지 않을 때'},
+정인:{close:'이해받고 돌봄받는다고 느껴야 마음을 놓고 기대는 편이라, 설명 없이 넘어가는 걸 오래 기억해',want:'words',hurt:'마음을 설명했는데 이유를 듣지 않고 넘어갈 때'},
+편인:{close:'혼자만의 시간이 보장될 때 오히려 더 깊이 마음을 열어, 가까워도 혼자 생각할 틈이 필요해',want:'space',hurt:'생각을 정리할 시간 없이 바로 답을 요구받을 때'}
+};
+const STAGE={장생:'새로 시작하는 관계에 에너지가 붙는',목욕:'분위기와 감정 변화에 민감하게 반응하는',관대:'인정받고 싶은 마음이 함께 움직이는',건록:'스스로 자리를 세우려는 힘이 분명한',제왕:'주관이 뚜렷하고 주도권이 중요한',쇠:'한 박자 물러나 지켜보는',병:'마음이 먼저 지쳐서 돌봄이 필요해지기 쉬운',사:'정리하고 내려놓는 판단이 빠른',묘:'속에 쌓아 두고 천천히 간직하는',절:'끊고 새로 시작하는 결단이 쉬운',태:'가능성을 품고 조심스럽게 키우는',양:'돌보고 길러 가는 데 마음이 가는'};
+/* 겉(월간 묶음) × 속(일지 묶음) */
+const OI={
+비겁:{비겁:'겉으로도 속으로도 자기 기준이 선명해서, 누가 대신 정해 주는 일을 가장 불편해하는 쪽이야.',
+ 식상:'밖에서는 자기 기준으로 밀고 가는데, 가까운 사람 앞에서는 속에 있는 말을 털어놓아야 풀리는 사람이야.',
+ 재성:'밖에서는 자기 판단을 앞세우지만, 가까운 사람에게는 현실적인 안정과 약속을 챙겨 주는 쪽이야.',
+ 관성:'밖에서는 자기 방식이 분명한데, 가까운 사이에서는 예의와 약속이 지켜지는지를 오래 지켜보는 사람이야.',
+ 인성:'밖에서는 독립적으로 보이지만, 가까운 사람에게는 이해받고 기대고 싶은 마음을 따로 갖고 있어.'},
+식상:{비겁:'밖에서는 표현하고 만드는 쪽인데, 가까운 사람과는 대등하게 서로의 영역을 존중하는 관계를 원해.',
+ 식상:'겉도 속도 마음에 담아 두지 못하는 사람이라, 생각이 생기면 말이나 결과물로 흘러나와.',
+ 재성:'밖에서는 아이디어를 내놓는 쪽인데, 가까운 사람에게는 생활이 현실적으로 안정되게 챙겨 주려 해.',
+ 관성:'밖에서는 자유롭게 표현하는데, 가까운 사이에서는 책임과 예의를 중요하게 지켜서 겉과 속의 온도가 달라.',
+ 인성:'밖에서는 말과 결과물로 움직이는데, 가까운 사람에게는 이해받고 쉴 자리를 원하는 면이 있어.'},
+재성:{비겁:'밖에서는 현실과 기회를 살피는 쪽인데, 가까운 사람과는 서로 간섭하지 않는 대등함을 바라.',
+ 식상:'밖에서는 현실 감각으로 움직이지만, 가까운 사람에게는 마음속 이야기를 풀어놓아야 편해져.',
+ 재성:'겉도 속도 현실과 실속을 먼저 보는 사람이라, 마음도 약속과 행동으로 확인하고 싶어 해.',
+ 관성:'밖에서는 기회를 넓게 보는데, 가까운 사이에서는 약속과 예의가 지켜지는지를 신중하게 봐.',
+ 인성:'밖에서는 현실적으로 움직이지만, 가까운 사람 앞에서는 이해받고 기대고 싶은 마음이 올라와.'},
+관성:{비겁:'밖에서는 책임과 원칙을 지키는 사람인데, 가까운 사이에서는 서로 대등하게 결정을 나누길 원해.',
+ 식상:'밖에서는 규칙을 지키는 쪽인데, 가까운 사람에게는 쌓아 둔 말을 풀어놓는 시간이 필요해.',
+ 재성:'밖에서는 원칙을 지키지만, 가까운 사람에게는 생활이 실제로 안정되도록 챙기는 쪽이야.',
+ 관성:'겉도 속도 약속과 예의를 중요하게 여겨서, 가볍게 다뤄지는 걸 오래 기억하는 사람이야.',
+ 인성:'밖에서는 책임을 지는 쪽인데, 가까운 사람 앞에서는 내려놓고 기대고 싶은 마음이 있어.'},
+인성:{비겁:'밖에서는 충분히 이해하고 움직이는 사람인데, 가까운 사이에서는 서로 영역을 존중하는 관계를 원해.',
+ 식상:'밖에서는 신중하게 준비하는 쪽인데, 가까운 사람에게는 생각이 말로 쏟아져 나와.',
+ 재성:'밖에서는 배우고 준비하는 쪽인데, 가까운 사람에게는 현실적으로 챙겨 주려는 면이 있어.',
+ 관성:'밖에서는 이해를 우선하는 사람인데, 가까운 사이에서는 약속과 책임을 분명히 지키는 쪽이야.',
+ 인성:'겉도 속도 이해하고 소화한 뒤에야 마음을 여는 사람이라, 가까워지는 데 시간이 걸리지만 한번 열면 깊어.'}
+};
+/* 십성이 하는 일(관계 설명용 짧은 말) */
+const GODACT={비견:'자기 기준을 지키는 쪽',겁재:'사람과 속도를 겨루며 움직이는 쪽',식신:'꾸준히 만들고 돌보는 쪽',상관:'어긋난 걸 고치고 말로 드러내는 쪽',정재:'생활을 꾸준히 관리하는 쪽',편재:'사람과 기회를 넓게 보는 쪽',정관:'약속과 원칙을 지키는 쪽',편관:'압박을 견디며 결과를 내는 쪽',정인:'이해하고 소화한 뒤 움직이는 쪽',편인:'혼자 깊이 파고들어 다른 관점을 찾는 쪽'};
+/* 기둥 사이 관계의 의미와 효과 */
+const AXIS={'month-day':'사회에서 보이는 모습과 가까운 사람 앞의 마음','year-month':'자라며 익힌 방식과 지금 사회에서 쓰는 방식','day-year':'오래된 습관과 지금의 마음','day-hour':'지금의 마음과 앞으로 만들어 갈 결과','hour-month':'일에서 쓰는 방식과 앞으로 남기고 싶은 것','hour-year':'처음에 중요하게 여기던 것과 마지막에 남기고 싶은 것'};
+const TTYPE={
+ 충:{eff:'서로 반대 방향으로 당겨서, 선택할 때마다 어느 쪽 기준을 따를지 한 번 더 정하게 돼',scene:'결정은 했는데 하고 나서 다른 쪽 마음이 따로 움직이는 느낌이 들 수 있어',tip:'결정할 때 두 쪽에 각각 “이건 지킨다”를 하나씩 정해 두면 흔들림이 줄어'},
+ 형:{eff:'같은 종류의 문제가 모양을 바꿔 반복되면서, 한번 정한 기준을 계속 다듬게 만들어',scene:'비슷한 상황에서 비슷한 불편이 돌아오는 느낌이 들 수 있어',tip:'반복되는 불편을 한 줄로 적어 두면 같은 일에 매번 새로 놀라지 않게 돼'},
+ 파:{eff:'정해 둔 계획이 중간에 한 번 어긋나서 다시 맞추는 일이 생겨',scene:'잘 짜 놓은 계획이 중간에 조금 틀어지는 경험이 이어질 수 있어',tip:'계획에 여유 구간을 처음부터 넣어 두면 어긋남이 실패로 느껴지지 않아'},
+ 해:{eff:'좋은 뜻으로 한 말이 다르게 전달돼서 서운함이 남기 쉬워',scene:'분명 잘해 주려 했는데 상대가 다르게 받아들이는 일이 생길 수 있어',tip:'중요한 말은 뜻을 한 번 더 확인하는 질문으로 마무리해'},
+ 합:{eff:'서로 끌려서 한 덩어리처럼 움직이는 힘이 있어, 한쪽이 흔들리면 다른 쪽도 같이 반응해',scene:'두 영역이 서로 영향을 주고받아서 편하지만 분리하기도 어려울 수 있어',tip:'합쳐진 부분을 의식적으로 따로 점검해 보면 균형이 잡혀'}
+};
+function relKind(t){t=String(t||'');if(/충/.test(t))return '충';if(/형/.test(t))return '형';if(/파/.test(t))return '파';if(/해/.test(t))return '해';if(/합/.test(t))return '합';return '';}
+
+/* ===== 마음을 주고받는 방식 ===== */
+const CUR={
+words:{fam:'E',give:'좋은 마음을 말로 분명하게 표현해 주는 것',want:'마음을 말로 확인받는 것',miss:'말이 없으면 마음이 식었나 하고 혼자 추측하게 돼',req:'“요즘 네가 고마운 건 이거야, 너도 한 줄만 말해 줄래?”',rep:'“그렇게 말해 주니까 좋다. 나도 오늘 네가 한 말이 계속 생각났어.”'},
+listen:{fam:'E',give:'상대의 이야기를 끊지 않고 끝까지 들어주는 것',want:'자기 이야기를 끊기지 않고 끝까지 들어주는 것',miss:'말을 꺼내도 중간에 정리당하면 입을 닫게 돼',req:'“조언은 말고 일단 끝까지 들어줘. 다 말하면 그때 물어볼게.”',rep:'“알겠어, 끝까지 들을게. 정리되면 말해 줘.”'},
+action:{fam:'R',give:'필요한 걸 먼저 알아보고 실제로 해 주는 것',want:'말보다 행동으로 챙김받는 것',miss:'말만 오가고 행동이 없으면 공허해져',req:'“이번 주에 이거 하나만 같이 해 줄래?”',rep:'“응, 수요일 저녁에 같이 하자. 시간 비워 둘게.”'},
+steady:{fam:'R',give:'약속을 지키고 연락을 일정하게 이어 주는 것',want:'약속과 연락이 일정하게 지켜지는 것',miss:'연락이 들쭉날쭉하면 마음이 어디 있는지 몰라서 불안해져',req:'“늦어질 때는 미리 한 줄만 남겨 줄래?”',rep:'“그럴게. 늦어질 것 같으면 먼저 말해 줄게.”'},
+space:{fam:'F',give:'상대의 속도와 결정을 밀지 않고 기다려 주는 것',want:'자기 시간과 결정을 존중받는 것',miss:'일정과 선택을 대신 정해 주면 숨이 막혀',req:'“이건 내가 정할게. 정해지면 바로 알려 줄게.”',rep:'“좋아, 네가 정해서 알려 줘. 기다릴게.”'},
+novelty:{fam:'N',give:'같이 가 볼 곳과 해 볼 일을 먼저 꺼내는 것',want:'같이 새로운 경험을 쌓는 것',miss:'같은 패턴이 계속되면 관계가 식어 간다고 느껴',req:'“이번 주엔 안 해 본 걸 하나만 해 보자.”',rep:'“좋아, 후보 두 개 골라 봐. 하나 정하자.”'},
+comfort:{fam:'E',give:'말없이 곁에 있으면서 편한 분위기를 만들어 주는 것',want:'긴장 없이 쉬고 먹고 웃는 일상을 나누는 것',miss:'함께 있어도 긴장되면 마음이 쉬지 못해',req:'“오늘은 계획 없이 그냥 같이 쉬고 싶어.”',rep:'“좋아, 아무것도 안 정하고 쉬자.”'},
+order:{fam:'R',give:'일정과 기준을 정리해서 서로 헷갈리지 않게 해 주는 것',want:'계획과 생활 기준이 분명한 것',miss:'기준이 흐릿하면 눈치를 보게 돼서 피곤해져',req:'“이 부분은 이렇게 하기로 미리 정해 두자.”',rep:'“그래, 정해 두면 편하다. 적어 놓자.”'},
+candid:{fam:'D',give:'불편한 이야기도 돌리지 않고 솔직하게 말해 주는 것',want:'속뜻 없이 솔직하게 말해 주는 것',miss:'말을 돌리면 속셈이 있는 것 같아서 마음이 닫혀',req:'“마음에 걸리는 건 지금 바로 말해 줘.”',rep:'“알겠어. 사실은 이게 걸렸어.”'}
+};
+const STRESS={
+push:{tag:'결정을 먼저 정하고 밀어붙이는',act:'방향을 이미 정해 놓고 설명 없이 밀어붙이게 돼',felt:'의견을 낼 틈이 없다고 느껴서 통보받는 기분이 들어',fix:'결정 전에 “이렇게 하려는데 어때?” 하고 한 번 물어봐'},
+adapt:{tag:'맞춰 주다가 속에 쌓아 두는',act:'맞춰 주다가 정작 원하는 건 말하지 않고 쌓아 두게 돼',felt:'괜찮은 줄 알고 있다가 한꺼번에 서운함을 듣고 당황해',fix:'원하는 걸 한 문장으로 먼저 말해 둬'},
+blaze:{tag:'감정이 바로 말과 표정으로 나가는',act:'감정이 표정과 말로 바로 나가',felt:'순간 나온 말을 오래 기억하면서 방어부터 하게 돼',fix:'감정이 큰 날은 요청만 말하고 이야기는 다음 날로 미뤄'},
+ember:{tag:'서운함을 말하지 않고 품는',act:'서운함을 말하지 않고 속으로 오래 품게 돼',felt:'이유를 모른 채 네가 조금씩 닫혀 가는 걸 느끼고 눈치만 보게 돼',fix:'사흘 안에 “그때 이런 느낌이었어” 하고 사실만 먼저 꺼내 봐'},
+carry:{tag:'도움을 청하지 않고 혼자 지는',act:'도움을 청하지 않고 혼자 지다가 말수가 줄어',felt:'이유를 모른 채 자기가 필요 없다고 느끼는 걸로 오해해',fix:'“오늘은 좀 지쳐” 한마디라도 먼저 해 봐'},
+handle:{tag:'상대 몫까지 먼저 챙겨 놓는',act:'상대 몫까지 먼저 챙겨 놓게 돼',felt:'도움을 받으면서도 자기 일을 대신 결정당한 기분이 들 수 있어',fix:'챙기던 일 하나를 이름 붙여 상대에게 넘겨 봐'},
+cut:{tag:'핵심만 단호하게 잘라 말하는',act:'핵심만 단호하게 말하고 정리해 버려',felt:'평가당했다고 느끼고 마음이 닫혀',fix:'결론 앞에 상대가 잘한 점 하나를 사실로 먼저 짚어'},
+audit:{tag:'고칠 점을 바로 짚는',act:'고칠 점이 보이는 대로 짚게 돼',felt:'계속 점검받는 기분이 들어서 편하게 있기 어려워져',fix:'지적 하나에 인정 하나를 붙이고 고칠 건 한 가지로 줄여'},
+ponder:{tag:'생각이 길어져 결정이 늦어지는',act:'생각이 넓어져 결정이 늦어져',felt:'마음이 없는 건지 헷갈려서 기다리다 지쳐',fix:'선택지를 둘로 줄이고 정할 날짜를 같이 말해'},
+sense:{tag:'혼자 결론을 내리고 말하지 않는',act:'혼자 정리한 결론을 먼저 내리고 말하지 않아',felt:'이유 없이 거리가 생겼다고 느끼고 불안해져',fix:'“이렇게 느꼈는데 맞아?” 하고 확인 한 줄을 먼저 보내'}
+};
+/* 대운·세운·월운 십성 주제 */
+const LUCK={
+비견:{theme:'기준과 자리를 다시 세우는 흐름',use:'혼자 정할 일과 같이 정할 일을 나눠서 주도권을 챙겨',watch:'고집으로 보이지 않게 이유를 같이 말해'},
+겁재:{theme:'사람과 경쟁, 나눔이 커지는 흐름',use:'협업에서 자기 몫과 기준을 분명히 하면 힘이 돼',watch:'함께 쓰는 돈과 시간의 경계를 미리 정해 둬'},
+식신:{theme:'꾸준히 만들고 쌓는 흐름',use:'잘하는 한 가지를 정해 반복해서 결과물로 남겨',watch:'몸의 리듬이 무너지지 않게 쉬는 시간도 일정에 넣어'},
+상관:{theme:'바꾸고 표현하고 싶은 마음이 커지는 흐름',use:'불편하던 걸 개선안과 결과물로 내놓아',watch:'말이 앞서 관계에 상처가 남지 않게 개선안부터 말해'},
+정재:{theme:'생활과 수입을 안정시키는 흐름',use:'고정비와 일정을 정돈해서 기반을 다져',watch:'안정만 지키다 새 기회를 놓치지 않게 작은 시도 하나를 넣어'},
+편재:{theme:'사람과 기회, 돈의 움직임이 커지는 흐름',use:'넓어진 접점 중 실제로 이어 갈 곳을 골라',watch:'기회가 많아 보여도 한 번에 넣는 돈과 시간을 나눠'},
+정관:{theme:'책임과 역할, 평가가 분명해지는 흐름',use:'맡은 역할의 기준을 글로 정해서 신뢰를 쌓아',watch:'기대에 맞추느라 자기 한계를 넘지 않게 선을 정해'},
+편관:{theme:'압박과 도전이 큰 흐름',use:'어려운 과제를 단계로 쪼개서 하나씩 끝내',watch:'긴장이 일상이 되지 않게 회복 시간을 먼저 잡아'},
+정인:{theme:'배우고 정리하며 기반을 만드는 흐름',use:'공부와 자격, 정리해 둘 일에 시간을 써',watch:'준비만 길어지지 않게 결과물을 낼 날짜를 정해'},
+편인:{theme:'혼자 깊이 생각하고 새 관점을 찾는 흐름',use:'혼자 파고드는 시간을 확보해서 아이디어를 모아',watch:'혼자 내린 결론을 사실처럼 말하기 전에 한 번 확인해'}
+};
+/* 신살·귀인: g=핵심 뜻 / t=재능 / b=가까운 관계에서 / l=일과 생활에서 / o=과해질 때 행동 / a=살리는 방법 */
+const SB={
+도화살:{g:'사람의 시선과 호감을 끄는 기운',t:'처음 만난 사람의 마음을 열고 분위기를 부드럽게 만드는 호감과 표현',b:'사람의 시선을 끄는 표현이 자연스러워서 가까워지는 속도가 빠른 편이야',l:'사람 앞에서 표현하고 소통하는 일에서 존재감이 눈에 띄어',o:'받는 관심을 상대의 확신으로 바로 해석하거나, 인기를 확인하느라 에너지를 쓰는 일',a:'호감이 생긴 장면을 일이나 관계의 실제 결과로 연결해 봐'},
+역마살:{g:'움직임과 변화에 반응하는 기운',t:'새 환경에 빨리 적응하고 이동 속에서 기회를 찾는 감각',b:'한자리에 앉아 있기보다 같이 움직이는 시간이 있을 때 가까워져',l:'이동, 출장, 여행처럼 변화가 있는 자리에서 활력이 살아나',o:'변화 자체가 목적이 되어 방향을 자주 바꾸는 일',a:'움직임 안에서도 끝까지 가져갈 한 가지를 정해 둬'},
+화개살:{g:'혼자 깊이 파고드는 몰입과 감성의 기운',t:'한 분야를 깊게 파서 취향과 전문성으로 만드는 몰입',b:'가까운 사이에도 혼자 있는 시간이 필요하다는 걸 알려 주는 편이야',l:'예술, 연구, 기술처럼 조용히 깊어지는 일에서 힘이 나',o:'혼자 결론을 내리고 바깥의 피드백을 놓치는 일',a:'몰입한 결과를 한 사람에게라도 보여 주는 습관을 들여 봐'},
+천을귀인:{g:'어려울 때 도움을 알아보고 청하는 기운',t:'필요한 순간에 도움이 될 사람을 알아보고 연결하는 감각',b:'곤란할 때 사람에게 기대어 푸는 일을 어색해하지 않는 편이야',l:'막힌 일을 혼자 끌지 않고 사람을 통해 푸는 방식이 잘 맞아',o:'도움을 기다리기만 하고 직접 청하지 않는 일',a:'도움이 필요할 때 구체적인 요청으로 말해 봐'},
+문창귀인:{g:'배움과 글, 정리 능력의 기운',t:'배운 걸 글, 말, 문서로 정리해서 전달하는 재능',b:'말로 이해를 주고받을 때 가까워져',l:'공부, 기록, 교육, 문서 일에서 장점이 살아나',o:'아는 데서 멈추고 실제 결과로 옮기지 않는 일',a:'배운 걸 한 장짜리 글이나 설명으로 남겨 봐'},
+태극귀인:{g:'이해력과 탐구심의 기운',t:'복잡한 걸 이해해서 자기 방식으로 정리하는 힘',b:'깊은 이야기가 통하는 사람과 오래 가',l:'원리와 의미를 파고드는 일에서 흥미가 오래가',o:'생각이 깊어서 행동이 늦어지는 일',a:'이해한 걸 작은 행동 하나로 바로 옮겨 봐'},
+홍염살:{g:'매력과 감수성이 짙게 드러나는 기운',t:'분위기와 감성으로 사람을 끌어당기는 표현',b:'호감 표현이 진하고 감정의 온도가 높은 편이야',l:'감성, 표현, 서비스 쪽 일에서 매력이 쓰여',o:'감정이 앞서 관계의 속도가 빨라지는 일',a:'감정이 클 때 하루를 두고 결정해 봐'},
+양인살:{g:'추진과 결단이 날카로운 기운',t:'결정해야 할 때 망설이지 않고 정리하는 결단',b:'관계에서도 문제를 피하지 않고 정면으로 다뤄',l:'위기나 경쟁처럼 힘이 필요한 자리에서 버텨',o:'말이나 결정이 너무 단호해서 상대가 베인 듯 느끼는 일',a:'결정 뒤에 상대가 받아들일 시간을 따로 줘'},
+괴강살:{g:'기준과 주도권이 강한 기운',t:'기준을 세우고 판을 이끄는 주도력',b:'기준이 분명하고 타협이 쉽지 않은 편이야',l:'리더 역할이나 원칙이 필요한 자리에서 존재감이 커',o:'높은 기준을 가까운 사람에게도 똑같이 대는 일',a:'기준을 지키는 영역과 유연하게 둘 영역을 나눠 봐'},
+귀문관살:{g:'감각이 예민하고 몰입이 깊은 기운',t:'남들이 놓치는 미세한 신호를 포착하는 감각',b:'상대의 분위기 변화를 빨리 알아채',l:'창작, 상담, 분석처럼 섬세한 감각이 필요한 일에서 쓰여',o:'신호를 과하게 해석해서 혼자 걱정을 키우는 일',a:'알아챈 걸 짐작으로 두지 말고 한 번 물어서 확인해 봐'},
+원진살:{g:'가까울수록 어긋남이 생기기 쉬운 기운',t:'관계의 미묘한 간격을 알아채고 조율하는 감각',b:'친해질수록 기대와 어긋남이 같이 올라오기 쉬워',l:'가까운 사람과 거리를 조절하는 연습이 필요한 장면이 있어',o:'좋아하는데 자꾸 어긋나는 느낌에 지쳐 거리를 두는 일',a:'어긋났을 때 사정 확인을 먼저 하는 말을 정해 둬'},
+공망:{g:'비워지고 재정비되는 자리의 기운',t:'집착을 내려놓고 새로 정리하는 힘',b:'기대가 어긋났을 때 털고 다시 시작하는 편이야',l:'채우기보다 비워서 방향을 새로 잡는 일에 강점이 있어',o:'허전함을 메우려고 일을 급하게 벌이는 일',a:'비어 있는 자리를 서둘러 채우지 말고 한 달만 지켜봐'},
+건록:{g:'스스로 서는 힘의 기운',t:'남에게 기대지 않고 자기 힘으로 자리를 만드는 자립',b:'관계에서도 독립적인 모습을 중요하게 여겨',l:'자기 이름으로 일하는 자리에서 안정돼',o:'혼자 해결하려는 습관이 도움 요청을 막는 일',a:'혼자 할 수 있는 일도 일부러 한 가지는 같이 해 봐'},
+천덕귀인:{g:'큰 어려움 앞에서 충격을 줄이는 쪽으로 움직이는 기운',t:'위기 순간에 충격을 줄이는 완충 감각',b:'갈등이 커지기 전에 한 걸음 물러나 분위기를 가라앉히는 방식을 쓰는 편이야',l:'꼬일 것 같은 일을 부드럽게 풀어 가는 방식이 몸에 배어 있어서 조정과 협상이 필요한 자리에서 쓰여',o:'완충에 기대서 대비를 미루는 일',a:'덜 꼬이는 때일수록 대비 하나를 미리 해 둬'},
+월덕귀인:{g:'일과 관계에서 어려움을 키우지 않으려는 기운',t:'사회생활에서 문제가 크게 번지지 않게 하는 감각',b:'일터 사람들과 신뢰를 쌓는 방식이 몸에 배어 있는 편이야',l:'직장이나 사업 관계에서 신뢰를 자산으로 쌓는 일에 강점이 있어',o:'지지에 기대서 스스로 준비를 미루는 일',a:'도움을 준 사람에게 결과를 알려서 관계를 이어 가'},
+암록:{g:'드러나지 않게 기반을 쌓아 가는 기운',t:'눈에 띄지 않는 곳에서 쌓이는 신뢰와 기반',b:'조용히 챙겨 주는 방식으로 관계를 이어 가는 편이야',l:'눈에 안 띄는 노력을 기록하고 이어 가며 기반으로 쌓는 일에 강점이 있어',o:'도움이 보이지 않아 고마움을 놓치는 일',a:'받은 도움을 한 번씩 적어 보며 챙긴 사람에게 인사해'},
+학당귀인:{g:'배움과 전문성의 기운',t:'한 분야를 배워서 전문성으로 쌓는 힘',b:'배우는 태도가 닮은 사람과 잘 맞아',l:'공부, 훈련, 자격이 필요한 일에서 성장해',o:'배움만 쌓고 실행을 미루는 일',a:'배운 걸 쓸 작은 자리를 먼저 만들어 봐'},
+천의성:{g:'돌봄과 회복의 기운',t:'지친 사람을 돌보고 회복시키는 감각',b:'곁의 사람을 챙기고 회복시키는 일에 자연스럽게 마음이 가는 편이야',l:'건강, 상담, 돌봄 분야에서 재능이 쓰여',o:'남을 돌보느라 자기 회복을 미루는 일',a:'돌봄에 쓰는 시간만큼 자기 회복 시간도 일정에 넣어'},
+백호살:{g:'강하고 급한 에너지의 기운',t:'위기 상황에서 빠르게 대응하는 순발력',b:'감정이 올라오면 반응이 빠르고 세게 나와',l:'긴급 대응이나 현장 일에서 힘이 쓰여',o:'급한 반응이 상대에게 센 말로 전달되는 일',a:'급한 반응이 올라올 때 열을 세고 첫 문장을 부드럽게 바꿔 봐'},
+현침살:{g:'날카로운 관찰과 말의 기운',t:'작은 허점도 바로 찾아내는 예리한 눈',b:'가까운 사람의 사소한 부분도 눈에 들어와 말이 날카로워지기 쉬워',l:'정밀 작업, 분석, 검수 같은 일에서 강점이 돼',o:'알아챈 걸 그대로 말해서 상대가 찔린 듯 느끼는 일',a:'지적하기 전에 상대가 잘한 점 하나를 먼저 말해 봐'},
+고신살:{g:'혼자 있는 시간과 관계 거리의 기운',t:'혼자서도 중심을 유지하는 독립심',b:'가까워지는 데 시간이 걸리고 혼자만의 영역이 중요해',l:'혼자 몰입하는 일에서 안정돼',o:'외로움을 말하지 않고 혼자 감당하는 일',a:'혼자 있고 싶은 날과 같이 있고 싶은 날을 미리 알려 줘'},
+과숙살:{g:'혼자 있는 시간과 관계 거리의 기운',t:'혼자서도 중심을 유지하는 독립심',b:'가까워지는 데 시간이 걸리고 혼자만의 영역이 중요해',l:'혼자 몰입하는 일에서 안정돼',o:'외로움을 말하지 않고 혼자 감당하는 일',a:'혼자 있고 싶은 날과 같이 있고 싶은 날을 미리 알려 줘'},
+고란살:{g:'가까운 관계에서 혼자만의 방식을 지키려는 기운',t:'관계에서도 자기 중심을 잃지 않는 독립성',b:'관계의 속도를 자기가 정하고 싶어하는 편이야',l:'혼자 판단해서 움직이는 일에서 편안해',o:'속도를 말하지 않아서 상대가 거리를 짐작하게 하는 일',a:'관계의 속도에 대한 자기 기준을 상대에게 한 번 말해 봐'},
+지살:{g:'새로 시작할 자리를 만드는 기운',t:'새 판을 시작하는 첫 움직임',b:'새 인연이나 새 환경을 여는 데 마음이 가',l:'시작과 개척이 필요한 일에서 힘이 나',o:'시작만 하고 마무리가 약해지는 일',a:'시작한 일에는 끝나는 날짜를 같이 정해 둬'},
+장성살:{g:'중심에 서서 이끄는 기운',t:'책임을 지고 앞에서 이끄는 중심감',b:'관계에서도 중심 역할을 맡기 쉬워',l:'팀을 이끄는 자리에서 존재감이 커',o:'혼자 중심을 지다가 지치는 일',a:'중심 역할의 일부를 정해서 다른 사람에게 나눠 줘'},
+반안살:{g:'안정되게 자리를 잡는 기운',t:'자리를 잡고 지켜 내는 안정감',b:'오래 안정되게 이어지는 관계를 선호해',l:'기반을 쌓아 가는 일에서 편안해져',o:'안정에 머물러 새 시도를 미루는 일',a:'안정된 기반 위에서 작은 새 시도 하나를 해 봐'},
+겁살:{g:'빼앗기거나 부딪히는 일을 민감하게 의식하는 기운',t:'위험 신호를 먼저 알아채는 경계 감각',b:'경계를 분명히 하는 편이야',l:'위험 관리가 필요한 일에서 쓰여',o:'지나친 경계로 기회를 늦게 받아들이는 일',a:'경계할 부분과 열어 둘 부분을 나눠서 적어 봐'},
+재살:{g:'예상 밖 변수에 반응하는 기운',t:'변수에 대비하는 대응력',b:'갑작스러운 변화에 민감해',l:'변수가 많은 일에서 유연해져',o:'변수를 걱정하다가 계획을 못 정하는 일',a:'대비책은 하나만 정하고 나머지는 상황이 오면 판단해'},
+천살:{g:'자기 뜻과 무관한 변수에 영향을 받는 기운',t:'외부 변수 속에서 중심을 잡는 힘',b:'환경 변화에 따라 관계의 리듬이 달라지기 쉬워',l:'바깥 조건이 크게 작용하는 일에서 적응력이 필요해',o:'바깥 탓으로 돌리며 자기 선택을 미루는 일',a:'바꿀 수 있는 것 한 가지에 먼저 집중해'},
+월살:{g:'기운이 쉽게 소모되는 기운',t:'소모를 알아채고 회복 시간을 챙기는 감각',b:'감정 에너지가 쉽게 닳아',l:'쉬는 구간을 의식적으로 둘 때 힘이 오래가',o:'지친 줄 모르고 계속 달리는 일',a:'일정에 쉬는 칸을 먼저 넣어 둬'},
+망신살:{g:'체면과 드러남에 민감한 기운',t:'남들 앞에서 솔직하게 드러내는 용기',b:'솔직한 모습이 오해와 친밀감을 같이 불러올 수 있어',l:'노출이 있는 일에서 존재감이 생겨',o:'체면을 지키려다 솔직한 요청을 못 하는 일',a:'체면보다 필요를 먼저 말해 봐'},
+육해살:{g:'조용히 소진되는 부분을 알려 주는 기운',t:'작은 불편 신호를 놓치지 않는 감각',b:'사소한 서운함이 쌓이기 쉬워',l:'작은 피로를 일찍 정리해야 힘이 유지돼',o:'사소한 불편을 쌓아 두다가 한꺼번에 터뜨리는 일',a:'작은 불편은 그날 안에 한 줄로 말하거나 적어 둬'},
+천라지망:{g:'막힌 듯 답답한 느낌과 그걸 돌파하려는 기운',t:'막힌 상황에서 돌파구를 찾아내는 끈기',b:'관계가 갇힌 느낌이 들 때 숨 쉴 틈을 찾아',l:'제약 속에서 방법을 만들어 내는 일에서 힘이 나',o:'답답함을 참다가 갑자기 판을 흔드는 일',a:'답답함이 작을 때 숨 쉴 구멍을 미리 하나 만들어 둬'},
+삼기:{g:'특별한 재능이 결합되는 기운',t:'서로 다른 재능을 하나로 묶어 쓰는 감각',b:'특이한 취향이나 관점을 공유하는 사람과 깊어져',l:'남다른 조합으로 결과를 만드는 일에서 쓰여',o:'특이함을 알아주지 않는다고 느끼면 혼자 멀어지는 일',a:'자기 조합을 설명하는 한 문장을 만들어 사람들에게 보여 줘'},
+형살:{g:'같은 종류의 조정이 반복되는 기운',t:'반복되는 문제를 통해 기준을 다듬는 힘',b:'비슷한 서운함이 돌아오면서 관계의 규칙을 다듬게 돼',l:'같은 문제를 겪으며 방식을 개선하는 일에서 성장해',o:'같은 상황에서 같은 방식으로 반응하다 지치는 일',a:'반복되는 상황에서 반응을 하나만 바꿔 봐'},
+충살:{g:'서로 반대 방향이 만나는 기운',t:'기존 방식과 다른 요구를 맞닥뜨리며 전환하는 힘',b:'의견이 갈릴 때 확실하게 정리하게 돼',l:'변화가 필요한 시점에 결단하는 일에서 쓰여',o:'매번 전부 바꾸고 싶어지는 일',a:'바꿀 것과 지킬 것을 나눠서 정해'},
+파살:{g:'계획이 중간에 어긋나 다시 조립되는 기운',t:'작은 변경을 빨리 알아채고 다시 맞추는 감각',b:'약속이 조금씩 달라지는 일에 민감해',l:'변경이 잦은 일에서 재조정 능력이 쓰여',o:'변경이 생길 때 책임을 확인하지 않아 뒤처리가 남는 일',a:'변경된 내용과 담당을 같은 기록에 남겨'},
+해살:{g:'말하지 않은 불편이 쌓이는 기운',t:'숨은 불편을 먼저 알아채는 감각',b:'겉의 합의와 속의 부담이 어긋나기 쉬워',l:'놓친 요구를 발견하는 일에서 쓰여',o:'혼자 이유를 추측해서 불편이 다음 장면으로 옮겨 가는 일',a:'확인하지 않은 사실을 먼저 물어봐'},
+삼합:{g:'여러 역할이 같은 방향으로 모이는 기운',t:'각자의 자원을 하나의 목표로 모으는 협력',b:'함께 만드는 일에서 관계가 깊어져',l:'공동 목표가 있는 일에서 힘이 커져',o:'잘 맞는다는 이유로 역할을 말하지 않아 한쪽에 몫이 몰리는 일',a:'공동 목표와 각자 맡을 일을 말로 정해 둬'}
+};
+const SPOS={year:{n:'년주',w:'처음 사람을 대하는 방식과 바깥 인맥',tag:'초년과 바깥 환경'},month:{n:'월주',w:'일하는 자리와 사회 속 역할',tag:'일과 사회'},day:{n:'일주',w:'가까운 사람 앞의 모습과 자기 자신',tag:'가까운 관계'},hour:{n:'시주',w:'시간을 들여 남기는 결과물과 앞으로의 방향',tag:'결과물과 후반'}};
+
+/* ===== 1단계: 계산 결과에서 근거 수집(읽기 전용) / 2단계: 인물상 분석 ===== */
+const SEASON_TXT={봄:'새로 시작하고 뻗어 나가는 에너지가 바탕에 깔려 있고',여름:'표현과 활동이 밖으로 커지는 바탕이고',가을:'정리하고 기준을 세우는 쪽으로 힘이 모이는 바탕이고',겨울:'안으로 모으고 깊이 생각하는 바탕이고',환절:'계절이 바뀌는 달에 태어나 상황에 따라 방식을 전환하는 면이 있고'};
+const MG_TAG={비견:'기준이 분명한',겁재:'승부감이 빠른',식신:'꾸준히 쌓아 가는',상관:'고치고 표현하는',정재:'꾸준히 관리하는',편재:'기회를 넓게 보는',정관:'원칙을 지키는',편관:'압박에도 해내는',정인:'이해하고 준비하는',편인:'남다르게 해석하는'};
+const DG_TAG={비견:'대등함을 바라는',겁재:'솔직하게 다가가는',식신:'편안한 일상을 만드는',상관:'말로 풀어야 하는',정재:'약속을 꾸준히 지키는',편재:'함께 새로운 걸 하고 싶어 하는',정관:'신뢰를 천천히 쌓는',편관:'위기에서 곁을 지키는',정인:'이해받고 싶어 하는',편인:'혼자 생각할 틈이 필요한'};
+const TOOL={갑:'방향을 세우는 힘',을:'조율하는 감각',병:'분위기를 여는 표현력',정:'작은 신호를 알아채는 섬세함',무:'중심을 잡는 책임감',기:'빠진 곳을 채우는 실무력',경:'결론을 내리는 결단',신:'끝까지 확인하는 정밀함',임:'여러 입장을 잇는 이해력',계:'분위기를 먼저 읽는 감지력'};
+BURDEN.비겁.short='혼자 쥐고 가는 일이 쌓일 때';BURDEN.식상.short='내보내기만 하고 채우지 못할 때';BURDEN.재성.short='쉬는 시간이 비용처럼 느껴질 때';BURDEN.관성.short='책임이 쉬는 시간까지 따라올 때';BURDEN.인성.short='준비가 길어져 실행이 밀릴 때';
+GRP.비겁.work='일을 맡으면 처음부터 끝까지 자기 방식으로 책임지는 흐름이 가장 편해서, 중간에 다른 사람의 방식으로 바뀌는 일이 가장 거슬려';
+GRP.식상.work='머릿속에 있는 걸 바로 결과물이나 말로 꺼내 보면서 다듬는 흐름이 편해서, 오래 기획만 하는 단계는 답답해';
+GRP.재성.work='가능한 범위와 비용, 상대 사정을 먼저 따져서 현실에 맞는 모양으로 가져가는 흐름이 편해서, 막연한 이상만 이야기하는 회의는 힘이 빠져';
+GRP.관성.work='역할과 순서, 마감이 분명한 흐름이 편해서, 누가 뭘 하는지 흐릿한 상태가 이어지면 일보다 눈치에 힘을 써';
+GRP.인성.work='충분히 이해하고 준비한 뒤에 들어가는 흐름이 편해서, 배경 설명 없이 바로 결과를 요구받으면 평소 실력이 안 나와';
+GRP.비겁.leak='동료나 친구가 같이 쓰자는 분위기일 때 거절하지 못해 나가는 돈';
+GRP.식상.leak='일이 잘 풀린 직후 기분 좋아서 쓰는 보상성 지출';
+GRP.재성.leak='기회라고 느낀 곳에 서둘러 넣는 돈과 사람 관리에 드는 비용';
+GRP.관성.leak='체면이나 책임 때문에 어쩔 수 없이 내는 돈';
+GRP.인성.leak='준비와 학습 명목으로 먼저 사 두는 교육비와 장비·도구 구입비';
+GRP.비겁.rule='함께 쓰는 돈은 시작하기 전에 한도와 정산일을 말로 정해 두는 것';
+GRP.식상.rule='수입이 들어오면 며칠 안에 저축할 몫을 먼저 떼어 두는 것';
+GRP.재성.rule='새 기회에 쓰는 돈은 한 번에 정하지 않고 두 번에 나눠서 쓰는 것';
+GRP.관성.rule='자동으로 나가는 고정비를 분기마다 한 번 점검하는 것';
+GRP.인성.rule='새로 사기 전에 이미 가진 자료를 먼저 끝까지 써 보는 것';
+const ZONE={year:'년주',month:'월주',day:'일주',hour:'시주'};
+function axisKey(a,b){const k=[a,b].join('-'),r=[b,a].join('-');if(AXIS[k])return k;if(AXIS[r])return r;return '';}
+function tierOf(score){return score<=42?'약':score>=62?'강':'중';}
+function vectorOf(c){
+  const v={비겁:0,식상:0,재성:0,관성:0,인성:0},W={year:{s:1,h:.6},month:{s:1.3,h:1.5},day:{s:0,h:1.2},hour:{s:1,h:.8}};
+  for(const k of ['year','month','day','hour']){const p=c?.pillars?.[k];if(!p)continue;if(k==='hour'&&c.input?.hourUnknown)continue;
+    if(W[k].s&&G2[p.god])v[G2[p.god]]+=W[k].s;
+    (p.hidden||[]).forEach(h=>{if(G2[h.god])v[G2[h.god]]+=(+h.weight||0)*W[k].h;});}
+  return v;
+}
+function relsOf(c,unknownHour){
+  const rank={충:4,형:3,파:2,해:2,합:1},zoneRank={'month-day':4,'day-hour':3,'year-month':2,'day-year':2,'hour-month':1,'hour-year':1};
+  return (Array.isArray(c?.relations)?c.relations:[]).map(r=>{
+    const type=relKind(r.type);if(!type)return null;
+    if(unknownHour&&(r.aKey==='hour'||r.bKey==='hour'))return null;
+    const ak=axisKey(r.aKey,r.bKey);return {type,raw:r.type,a:r.aKey,b:r.bKey,axis:ak,score:(rank[type]||0)*10+(zoneRank[ak]||0),label:(r.aLabel&&r.bLabel)?`${r.aLabel}–${r.bLabel} ${r.type}`:r.type};
+  }).filter(Boolean).sort((x,y)=>y.score-x.score);
+}
+function godAt(c,k){const p=c.pillars[k];if(!p)return '';if(k==='day'){const h=(p.hidden||[]).find(x=>x.role==='본기')||p.hidden?.[0];return h?.god||'';}return p.god||'';}
+function starsOf(c,unknownHour){
+  const hits=Array.isArray(c?.stars?.hits)?c.stars.hits:[];const order={day:0,month:1,hour:2,year:3};const seen=new Set(),rows=[];
+  hits.filter(h=>h&&h.name&&order[h.pillar]!==undefined&&!(unknownHour&&h.pillar==='hour')).sort((a,b)=>order[a.pillar]-order[b.pillar]).forEach(h=>{const k=h.name+'|'+h.pillar;if(seen.has(k))return;seen.add(k);rows.push({name:h.name,pillar:h.pillar,basis:h.basis||'',meta:h.meta||{}});});
+  return rows;
+}
+function analyze(c){
+  const pil=c.pillars,dm=c.dayMaster||{},stem=dm.stem||pil.day.stem,E2=c.engine2||{};
+  const unknownHour=!pil.hour||!!c.input?.hourUnknown;
+  const mg=pil.month.god||'비견';
+  const mainGod=(pil.month.hidden||[]).find(h=>h.role==='본기')?.god||E2.structure?.season?.mainGod||mg;
+  const dayGod=godAt(c,'day')||'비견';
+  const stage=c.twelveStages?.day||'';
+  const vec=vectorOf(c),tot=sum(Object.values(vec))||1,pct=Object.fromEntries(GR.map(g=>[g,Math.round(vec[g]*100/tot)]));
+  const ord=GR.slice().sort((a,b)=>vec[b]-vec[a]||GR.indexOf(a)-GR.indexOf(b));
+  const top=ord[0],second=ord[1],low=ord[4],hasLow=pct[low]<=6;
+  const sc=+E2.strength?.score,score=Number.isFinite(sc)?sc:50,tier=tierOf(score);
+  const mgG=G2[mg]||'비겁',dayG=G2[dayGod]||'비겁';
+  const bm=pil.month.branch,season=SHIFT.includes(bm)?'환절':(SEASON_OF[bm]||'');
+  const rels=relsOf(c,unknownHour),tension=rels.filter(r=>r.type!=='합'),harmony=rels.filter(r=>r.type==='합');
+  const main=tension[0]||null;
+  const D=DM[stem]||DM['무'];
+  const stars=starsOf(c,unknownHour);
+  const t=E2.transit||{};
+  const P={c,name:nm(c),stem,el:dm.el||'',yin:dm.yin||'',D,mg,mainGod,dayGod,hourGod:unknownHour?'':(pil.hour?.god||''),yearGod:pil.year?.god||'',stage,vec,pct,ord,top,second,low,hasLow,score,tier,mgG,dayG,season,rels,tension,harmony,main,unknownHour,stars,
+    climate:E2.climate||{},roots:E2.structure?.root?.score,pattern:E2.structure?.pattern?.candidate||'',
+    give:D.give,want:DG[dayGod]?.want||'steady',stress:D.stress,tempo:D.tempo,
+    transit:{luck:t.luck?{god:t.luck.god,ko:t.luck.ko,from:t.luck.fromAge,to:t.luck.toAge}:null,year:t.year?{god:t.year.god,pillar:t.year.pillar?.ko||'',rels:(t.year.relations||[]).map(r=>relKind(typeof r==='string'?r:r?.type)).filter(Boolean)}:null,month:t.month?{god:t.month.god,pillar:t.month.pillar?.ko||'',rels:(t.month.relations||[]).map(r=>relKind(typeof r==='string'?r:r?.type)).filter(Boolean)}:null},
+    seed:hash([pil.year.ko,pil.month.ko,pil.day.ko,pil.hour?.ko||'-'].join('|'))};
+  /* 겉과 속의 구조 */
+  P.gap=P.mgG!==P.dayG;
+  /* 내적 갈등: 가장 두드러진 긴장 관계를 두 영역의 십성과 함께 해석 */
+  if(main){const [za,zb]=main.axis?main.axis.split('-'):[main.a,main.b];P.conflict={rel:main,axis:AXIS[main.axis]||'원국의 두 영역',za,zb,ga:godAt(c,za),gb:godAt(c,zb)};}
+  P.ev=evidenceMap(P);
+  return P;
+}
+function evidenceMap(P){
+  const c=P.c,E={},pd=c.pillars.day,pm=c.pillars.month;
+  E.DM=`일간 ${P.stem}${P.el}(${P.yin})`;E.DP=`일주 ${pd.ko}`;
+  E.MG=`월주 ${pm.ko} · 월간 십성 ${P.mg}`;
+  E.ML=`월령 ${pm.branch}월(${P.season==='환절'?'환절기':P.season}) · 월지 본기 ${P.mainGod}`;
+  E.DB=`일지 ${pd.branch} 본기 ${P.dayGod}`+(P.stage?` · 12운성 ${P.stage}`:'');
+  E.VEC=`십성 배치 ${GR.map(g=>g+' '+P.pct[g]+'%').join(' · ')}`;
+  E.STR=`강약 ${P.tier==='약'?'신약 쪽':P.tier==='강'?'신강 쪽':'중간'}(${P.score}점)`+(P.roots!==undefined?` · 통근 점수 ${P.roots}`:'')+(P.pattern?` · ${P.pattern}`:'');
+  E.CLM=P.climate.label?`조후 ${P.climate.label}`:'';
+  P.rels.forEach((r,i)=>{E['REL'+i]=`관계 ${r.label}`;});
+  P.stars.forEach((s,i)=>{E['STAR'+i]=`${s.name}(${SPOS[s.pillar].n}${s.basis?' · '+s.basis:''})`;});
+  const t=P.transit;
+  if(t.luck)E.LUCK=`현재 대운 ${t.luck.ko}(${t.luck.god}) ${t.luck.from}~${t.luck.to}세`;
+  if(t.year)E.YEAR=`올해 세운 ${t.year.pillar} ${t.year.god}`+(t.year.rels.length?` · 원국과 ${t.year.rels.join('·')}`:'');
+  if(t.month)E.MONTH=`이번 달 월운 ${t.month.pillar} ${t.month.god}`;
+  return E;
+}
+function evOf(P,ids){return uniq(ids).map(i=>P.ev[i]).filter(Boolean).join(' · ');}
+
+/* ===== Round C: 강점의 가치·위로·직설 단점 (명식 조합별로 문장이 달라지도록 일간/십성/강약/원국 관계에서 조립) ===== */
+const VAL_DM={
+갑:{v:'다들 머뭇거릴 때 먼저 방향을 정해서 다른 사람이 자기 몫을 정하고 움직일 수 있게 만드는 일',w:'일은 누군가 첫 결정을 해야 시작되는데, 그 부담을 질 수 있다는 건 팀에도 가까운 사이에도 출발선이 되어 주기 때문이야'},
+을:{v:'엇갈린 입장 사이에서 둘 다 남는 길을 찾아 일이 끊기지 않게 잇는 일',w:'충돌을 이기고 지는 문제로 키우지 않고 이어 가게 하는 힘은 오래 가는 팀과 관계에서 가장 먼저 필요해지기 때문이야'},
+병:{v:'가라앉은 자리에서 먼저 말을 꺼내 다른 사람이 마음을 열 틈을 만드는 일',w:'분위기가 열려야 숨어 있던 의견과 도움 요청이 나오는데, 그 문을 먼저 여는 사람이 있어야 뒤의 일이 풀리기 때문이야'},
+정:{v:'말로 드러나지 않은 불편과 필요를 알아채고 알맞은 때에 조용히 챙기는 일',w:'사람은 자기 사정을 다 말하지 못하는 경우가 많아서, 말하기 전에 알아주는 감각이 곁의 사람에게 오래 남는 도움이 되기 때문이야'},
+무:{v:'상황이 흔들려도 중심을 잡고 맡은 일을 끝까지 가져가서 다른 사람이 기댈 곳을 만드는 일',w:'변동이 큰 때일수록 기댈 곳이 있다는 사실이 주변 사람의 판단을 안정시키기 때문이야'},
+기:{v:'빠진 부분을 채우고 느슨한 약속을 실제로 돌아가는 일상으로 만드는 일',w:'좋은 계획도 누가 챙기지 않으면 흐지부지되는데, 마지막 실무를 붙드는 힘이 계획을 현실로 만들기 때문이야'},
+경:{v:'애매하게 남은 일을 끊어서 결론을 내고 기준을 분명하게 세우는 일',w:'결정이 미뤄질수록 모두의 에너지가 새는데, 매듭을 지을 수 있는 사람이 있으면 다음 단계로 넘어갈 수 있기 때문이야'},
+신:{v:'남들이 넘기기 쉬운 작은 어긋남을 먼저 알아채고 확인해서 결과물의 질을 지키는 일',w:'작은 오류는 나중에 큰 비용으로 돌아오기 쉬워서, 앞 단계에서 걸러 주는 눈은 일을 맡기는 쪽에 큰 안심이 되기 때문이야'},
+임:{v:'정해진 틀 밖까지 넓게 보고 막힌 상황에서 다른 길과 연결 고리를 찾아내는 일',w:'한 가지 방법이 막혔을 때 선택지를 만들어 주는 사람이 있어야 포기하지 않고 다음 시도로 넘어갈 수 있기 때문이야'},
+계:{v:'겉으로 드러나지 않은 분위기와 마음의 결을 읽고 필요한 말을 건네는 일',w:'조용히 가라앉은 문제는 잘 보이지 않아서, 터지기 전에 알아보는 감각이 갈등을 키우지 않고 푸는 데 쓰이기 때문이야'}
+};
+const VAL_GRP={
+비겁:{form:'스스로 세운 기준과 자기 몫을 끝까지 지키는 쪽으로 쓰여서',worth:'시키지 않아도 책임을 놓지 않는 사람이라는 신뢰의 재료가 돼'},
+식상:{form:'생각을 말과 결과물로 꺼내는 쪽으로 쓰여서',worth:'가만히 있었다면 보이지 않았을 아이디어와 마음이 다른 사람 눈에 보이는 모양이 돼'},
+재성:{form:'현실 조건과 사람, 자원을 따져 실제 결과로 옮기는 쪽으로 쓰여서',worth:'좋은 생각이 현실에서 굴러가게 하는 계산과 감각이 돼'},
+관성:{form:'역할과 약속, 책임의 틀을 세우는 쪽으로 쓰여서',worth:'여럿이 일할 때 누가 무엇을 하는지 분명하게 해 주는 중심이 돼'},
+인성:{form:'충분히 이해하고 근거를 쌓은 뒤 움직이는 쪽으로 쓰여서',worth:'섣부른 판단을 줄이고 깊이 있게 결정하게 해 주는 바탕이 돼'}
+};
+const ENV_NEED={
+약:'이 구조에서 강점이 오래 가려면 역할이 나뉘어 있고 쉬어도 되는 팀이나 관계가 필요해. 혼자 모든 걸 끌고 가는 자리에서는 같은 능력도 빨리 닳아서, 일이나 사람을 고를 때 “나를 받쳐 줄 사람과 시간이 있는가”를 먼저 확인하는 쪽이 이 구조에 맞아.',
+중:'이 구조는 혼자 하는 일과 함께 하는 일을 오갈 수 있어서 환경 폭이 넓어. 다만 한쪽으로만 오래 몰리면 균형이 깨지니까, 맡는 일의 성격이 번갈아 바뀌는 환경이 강점을 가장 오래 유지시켜 줘.',
+강:'이 구조는 힘이 넘치는 편이라 환경이 모자라서 막히기보다 힘이 한쪽으로 쏠려서 문제가 생겨. 그래서 의견을 되돌려 줄 사람, 속도를 늦추라고 말해 줄 사람이 있는 환경이 강점을 가장 안전하게 키워 줘.'
+};
+const SBLAME={
+비겁:'혼자 다 해내지 못했을 때 “내가 부족해서”라고 탓해 왔다면, 구조로는 혼자 쥐는 몫이 처음부터 커서 생기는 피로로 읽을 수 있어. 부족해서라기보다 맡은 양이 많아서일 가능성이 커.',
+식상:'말이나 표현을 쏟은 뒤에 허탈하거나 후회가 올 때 “내가 쓸데없이 많이 말했나” 하고 탓해 왔다면, 내보내는 힘이 큰 구조라 채우는 시간이 따로 필요해서 생기는 반응으로 읽을 수 있어.',
+재성:'쉬는 시간에 죄책감이 들어서 스스로를 게으르다고 탓해 왔다면, 현실의 비용과 시간을 계속 계산하는 구조라 쉬어도 계산이 꺼지지 않아서 생기는 반응으로 읽을 수 있어.',
+관성:'책임을 내려놓지 못하는 걸 융통성 없다고 탓해 왔다면, 기준과 책임이 몸에 붙은 구조라 내려놓는 데 드는 비용이 커서 그런 것으로 읽을 수 있어.',
+인성:'결정을 미루거나 준비가 길어지는 걸 우유부단하다고 탓해 왔다면, 충분히 이해해야 움직이는 구조라 정보가 덜 찬 상태로 움직이는 게 큰 부담이라 그런 것으로 읽을 수 있어.'
+};
+const PROT={
+비겁:'네 가치를 지키는 방법은 네 몫과 남의 몫을 말로 나누는 거야. “이건 내가 할게, 이건 같이 하자”를 일을 받는 순간에 말하면 책임감이 소모되지 않고 쌓여.',
+식상:'네 가치를 지키는 방법은 내보낸 만큼 채우는 시간을 일정에 먼저 넣는 거야. 말하거나 만든 날 뒤에는 입력만 하는 시간을 하나 붙이면 표현이 닳지 않아.',
+재성:'네 가치를 지키는 방법은 쉬는 시간도 일정표에 계획으로 넣는 거야. 비용으로 느껴지는 시간에 이름을 붙여 두면 계산이 쉬는 시간까지 따라오는 일이 줄어.',
+관성:'네 가치를 지키는 방법은 책임의 범위를 말로 정해 두는 거야. “여기까지는 내 몫이고 여기부터는 같이 정하자”를 처음에 말하면 책임이 쉬는 시간까지 번지지 않아.',
+인성:'네 가치를 지키는 방법은 준비의 끝을 먼저 정해 두는 거야. “여기까지 확인하면 시작한다”를 정해 두면 이해하는 힘은 그대로 쓰면서 시작이 미뤄지지 않아.'
+};
+const FL_DM={
+갑:{tire:'상대 의견이 나오기 전에 결론을 세워 두고 설명 없이 밀어붙이면, 같이 가는 사람은 자기 몫이 없다고 느껴서 지쳐',trust:'방향을 바꾸면서 이유를 말하지 않으면 믿고 따르던 사람이 다음 약속도 흔들릴 수 있다고 느껴서 신뢰가 줄어',opp:'혼자 정해 놓고 가는 습관은 도와줄 사람이 붙을 자리를 줄여서 네 기회도 좁혀',fix:'결정을 알리기 전에 “이 방향인데 걸리는 점 있어?”를 한 번 묻고, 방향을 바꿀 때는 이유를 한 줄로 말해 봐'},
+을:{tire:'맞춰 주기만 하다가 한참 뒤에 한꺼번에 서운함을 꺼내면, 상대는 그동안 신호를 받지 못한 채 갑자기 비난받았다고 느껴서 지쳐',trust:'“괜찮아”라고 하면서 속으로는 다른 판단이 쌓이면 상대는 네 괜찮다는 말을 믿기 어려워져',opp:'원하는 걸 말하지 않으면 정작 필요한 기회와 지원이 네 몫으로 오지 않아',fix:'불편한 일은 그날 안에 “이건 좀 어려워”처럼 한 문장으로 말하고, 두 가지 중 어느 쪽을 원하는지 먼저 골라 말해 봐'},
+병:{tire:'기분의 오르내림이 그대로 말과 표정으로 나가면, 곁의 사람은 그 기분을 살피는 일까지 맡게 돼서 지쳐',trust:'시작할 때의 열정만큼 마무리까지 가지 않는 일이 쌓이면 약속의 무게가 가볍게 보여서 신뢰가 줄어',opp:'열어 둔 일이 많아지면 새 제안이 와도 맡기기 불안한 사람으로 읽힐 수 있어',fix:'새 일을 벌이기 전에 열려 있는 일 하나의 마감 날짜를 정하고, 기분이 큰 날은 결정과 약속을 하루 미뤄 봐'},
+정:{tire:'서운함을 말하지 않고 품다가 거리를 두면, 상대는 이유를 모른 채 눈치만 보다가 지쳐',trust:'말없이 정리해 버린 관계가 반복되면 상대는 문제가 생겨도 이야기할 기회를 받지 못했다고 느껴서 신뢰가 줄어',opp:'섬세하게 본 것을 말하지 않으면 네 판단과 기여가 다른 사람 눈에 보이지 않아',fix:'서운한 일은 사흘 안에 사실 한 가지와 바라는 것 한 가지만 말해 봐'},
+무:{tire:'한번 정하면 느리게 움직이는 모습이 반복되면, 변화를 기다리는 사람은 말해도 소용없다고 느끼고 지쳐',trust:'약속은 지키는데 상대가 요청한 변화에는 답이 없으면 “듣고 있나” 하는 의심이 생겨서 신뢰가 줄어',opp:'변화가 빠른 판에서 결정이 늦어지면 먼저 잡을 수 있던 자리를 놓칠 수 있어',fix:'요청을 받으면 바로 하지 못해도 “이번 주 안에 답할게”처럼 답할 날짜부터 말해 봐'},
+기:{tire:'챙기느라 자기 몫을 뒤로 미루다 말없이 지치면, 상대는 도움받은 줄만 알다가 부담을 뒤늦게 알고 미안함과 거리감을 같이 느껴서 지쳐',trust:'과하게 맡아 놓고 다 해내지 못하면 약속이 늘어져 보여서 신뢰가 줄어',opp:'다 챙기는 사람으로 굳어지면 네 성과가 당연한 일로 취급되기 쉬워',fix:'맡기 전에 “이번 주는 여기까지”라고 범위를 말하고, 해 준 일은 숨기지 말고 한 번 말해 봐'},
+경:{tire:'결론을 짧고 단호하게 말하면 내용이 맞아도 상대는 평가받는 기분이 들어서 지쳐',trust:'틀린 점 지적은 빠르고 잘한 일 인정은 늦으면 곁의 사람은 보여 주기를 줄여서 신뢰가 줄어',opp:'사람들이 문제를 일찍 알려 주지 않게 되면 중요한 정보가 네게 늦게 와서 기회가 줄어',fix:'지적하기 전에 잘된 점 하나를 먼저 말하고, 결론 뒤에 “네 생각은 어때?”를 붙여 봐'},
+신:{tire:'고칠 점이 눈에 들어오는 대로 짚으면 함께 있는 시간이 점검받는 시간처럼 느껴져서 지쳐',trust:'작은 흠을 계속 말하면 상대는 노력을 인정받지 못한다고 느껴서 마음을 닫고 신뢰가 줄어',opp:'기준이 높아 보여서 도움을 청하려는 사람이 줄면 협력할 기회도 줄어',fix:'피드백은 하루에 하나, 가장 중요한 것만 말하고 나머지는 보류해 봐'},
+임:{tire:'생각이 커지면서 결정이 늦거나 혼자 결론을 내리면, 상대는 상황을 뒤늦게 알고 지쳐',trust:'계획이 자주 바뀌는데 이유가 공유되지 않으면 “믿고 맞춰도 되나” 하는 불안이 생겨서 신뢰가 줄어',opp:'선택지를 오래 쥐고 있다가 결정 시점을 놓치면 좋은 제안이 지나갈 수 있어',fix:'결정이 길어질 때는 “언제까지 정할게”를 상대에게 먼저 알려 줘'},
+계:{tire:'속으로 정리한 결론을 설명 없이 행동으로 옮기면, 상대는 이유 없이 거리가 생겼다고 느끼고 지쳐',trust:'말하지 않은 판단이 쌓이면 상대는 네 반응을 추측해야 해서 신뢰보다 눈치가 늘어',opp:'읽어 낸 것을 말하지 않으면 중요한 통찰이 네 몫으로 인정받지 못해',fix:'거리를 두기로 마음먹었다면 이유를 한 문장으로 말해 두고, 상대가 물을 때는 “아직 정리 중이야”라도 답해 줘'}
+};
+const FL_GRP={
+비겁:'기준이 강한 구조라 상대의 방식을 “틀린 것”으로 먼저 처리하면, 같이 일하는 사람이 의견 내기를 포기하게 돼. 네 기준이 틀려서가 아니라 상대 방식을 확인하는 순서가 빠져 있어서 생기는 문제야.',
+식상:'말이 빠른 구조라 확인되지 않은 말이나 다듬지 않은 표현이 먼저 나가서 상대에게 오래 남을 수 있어. 한 번 나간 말은 취소되지 않으니, 감정이 큰 날의 말은 요청과 사실만 남기는 편이 안전해.',
+재성:'비용과 효율을 먼저 따지는 구조라, 마음이 있어도 계산이 앞서는 사람으로 보일 수 있어. 상대가 마음을 건넨 자리에서 비용부터 말하면 관계에서 신뢰가 깎여.',
+관성:'규칙과 책임을 앞세우는 구조라, 상대 사정을 말하면 변명으로 들리고 비판이 먼저 나갈 수 있어. 기준을 지키는 것과 사람의 사정을 듣는 것은 별개라서 둘 다 해야 해.',
+인성:'생각과 준비가 길어지는 구조라, 그동안 상대에게는 아무 반응이 없는 상태로 보여서 기다리다 지치게 만들 수 있어. 결과가 없어도 진행 상황을 짧게 알리는 것이 필요해.'
+};
+function valuePara(P){
+  const V=VAL_DM[P.stem],G=VAL_GRP[P.top];
+  if(!V)return '';
+  const sec=P.pct[P.second]>=20&&P.second!==P.top?` ${J(P.second,'이/가')} ${P.pct[P.second]}%로 곁에서 받치기 때문에 ${VAL_GRP[P.second].form.replace(/쓰여서$/,'쓰이는 면도 같이 있어서')} 한 가지 방식에 머물지 않아.`:'';
+  return P_(`${J(P.top,'이/가')} ${P.pct[P.top]}%로 가장 큰 구조라 ${J(TOOL[P.stem],'이/가')} ${G.form} ${G.worth}.${sec}`,`이 힘이 소중한 이유는 ${V.w}.`);
+}
+function comboLine(P){
+  const dg=DG_TAG[P.dayGod],mg=MG_TAG[P.mg];
+  if(!dg||!mg)return '';
+  const same=P.mgG===P.dayG;
+  return same?`밖에서 쓰는 ${mg} 얼굴과 가까운 사이에서 드러나는 ${dg} 면이 같은 방향이라, 어느 자리에서나 비슷한 사람으로 읽히는 일관성이 있어. 이 일관성이 ${P.stem}${P.el}의 힘을 흩어지지 않게 모아 줘.`:`밖에서 쓰는 ${mg} 얼굴과 가까운 사이에서 드러나는 ${dg} 면이 서로 달라서, 한 가지 말로 묶이지 않는 입체적인 사람이야. 이 차이는 흠이 아니라 자리에 따라 다른 힘을 꺼내 쓸 수 있다는 뜻이기도 해.`;
+}
+function hardLine(P){
+  const out=[];
+  out.push(ENV_NEED[P.tier]);
+  if(P.conflict){const T=TTYPE[P.conflict.rel.type];out.push(`원국에는 ${J(P.conflict.rel.raw,'이/가')} 있어서 불리하게 읽히기도 하지만, ${J(ZONE[P.conflict.za],'과/와')} ${J(ZONE[P.conflict.zb],'이/가')} 서로 다른 방향을 쓰기 때문에 한 방식에 갇히지 않고 상황을 바꿔 볼 수 있는 힘으로도 쓸 수 있어. 대신 ${T.tip}.`);}
+  if(P.hasLow)out.push(`${J(P.low,'이/가')} ${P.pct[P.low]}%로 얇은 건 약점이라기보다 이 영역을 혼자 해결하려 하면 힘이 든다는 뜻이야. 그래서 자리를 고를 때 이 영역을 채울 수 있는 환경인지 먼저 확인하고, ${GRP[P.low].fill}도 같이 해 봐.`);
+  return out;
+}
+function flawInside(P){
+  const F=FL_DM[P.stem];if(!F)return '';
+  return `직설적으로 말하면, ${F.tire}. 이건 강점이 있다는 사실과 별개로 고쳐야 하는 행동이야.`;
+}
+
+const FIXS={갑:'결정을 알리기 전에 상대 의견을 한 번 묻는 것',을:'불편을 그날 말로 꺼내는 것',병:'열어 둔 일의 마감을 먼저 정하는 것',정:'서운함을 사흘 안에 사실로 말하는 것',무:'변화 요청에 답할 날짜를 먼저 말하는 것',기:'맡기 전에 범위를 정해 말하는 것',경:'지적 전에 잘된 점을 먼저 말하는 것',신:'피드백을 하루 한 가지로 줄이는 것',임:'결정 기한을 먼저 알리는 것',계:'거리를 두는 이유를 한 문장으로 말하는 것'};
+
+const FL_MG={
+비견:'일하는 자리에서는 자기 방식을 고수하는 모습이 나올 수 있어서, 동료가 제안을 꺼내기 전에 접는 일이 생길 수 있어.',
+겁재:'일하는 자리에서는 승부와 속도가 앞서서, 동료의 몫과 속도를 챙기지 않는 것으로 읽힐 수 있어.',
+식신:'일하는 자리에서는 편한 속도로 꾸준히 하는 모습이 마감이 급한 사람에게는 느리다는 인상으로 닿을 수 있어.',
+상관:'일하는 자리에서는 고치고 말하는 힘이 강해서, 지적이 먼저 나가면 윗사람이나 동료가 방어적으로 변할 수 있어.',
+정재:'일하는 자리에서는 꼼꼼히 관리하는 모습이 상대에게 간섭이나 통제로 받아들여질 수 있어.',
+편재:'일하는 자리에서는 기회를 넓게 보는 모습이 한 가지를 끝까지 하지 않는다는 인상으로 닿을 수 있어.',
+정관:'일하는 자리에서는 원칙을 앞세우는 모습이 융통성이 없다는 인상으로 닿을 수 있어.',
+편관:'일하는 자리에서는 압박 속에서 밀어붙이는 모습이 주변을 긴장시켜 의견을 숨기게 할 수 있어.',
+정인:'일하는 자리에서는 충분히 이해한 뒤 움직이는 모습이 결정을 미루는 것으로 보일 수 있어.',
+편인:'일하는 자리에서는 독특한 관점이 설명 없이 나오면 주변이 의도를 이해하지 못해 거리감을 느낄 수 있어.'
+};
+const FL_TIER={
+약:'받쳐 주는 힘이 얇은 구조라 이 행동은 컨디션이 떨어지는 때에 더 빨리 커지는 경향으로 읽을 수 있어. 지치는 때를 미리 알아 두는 것이 가장 쉬운 예방이야.',
+중:'균형이 있는 구조라 이 행동은 일이나 관계가 한쪽으로 몰리는 때에 커지는 경향으로 읽을 수 있어. 몰리는 때를 알아차리는 것이 첫 단계야.',
+강:'힘이 센 구조라 이 행동은 본인은 문제를 못 느끼는데 곁의 사람이 먼저 느끼는 방식으로 나오기 쉬워. 그래서 주변의 반응을 직접 물어보는 확인이 필요해.'
+};
+function flawRow(P){
+  const F=FL_DM[P.stem],S=STRESS[P.stress];
+  const kinds=['tire','trust','opp'],lab={tire:'상대를 지치게 하는 건',trust:'신뢰가 깎이는 지점은',opp:'네 기회가 줄어드는 지점은'};
+  const skip=(GR.indexOf(P.top)+['약','중','강'].indexOf(P.tier))%3;
+  const pick=kinds.filter((k,i)=>i!==skip);
+  return [
+    P_('여기부터는 직설적으로 말할게. 아래는 명식 구조에서 읽히는 경향이고, 실제로 이런 행동이 있었는지는 네가 가장 잘 알아. 해당되는 것만 가져가면 돼.',`압박이 커지는 조건에서 가장 먼저 나오는 건 ${S.tag} 쪽이야. ${S.act}.`,FL_TIER[P.tier]),
+    P_(...pick.map(k=>`${lab[k]} 이거야. ${F[k]}.`),FL_MG[P.mg]),
+    P_(FL_GRP[P.top],`${TOOL[P.stem]}이 강점이라는 사실이 이 행동의 이유가 되지는 않아. 강점은 그대로 두고 행동만 바꾸면 돼.`),
+    P_(`바꾸는 첫걸음은 이거야. ${F.fix}.`,`압박이 커질 때는 ${S.fix}.`,'한 달 뒤에 이 행동이 실제로 몇 번 줄었는지 직접 세어 보면 달라졌는지 알 수 있어.')
+  ];
+}
+
+/* ===== 3단계: 문단 작성(사주 1~9번, 요약용) ===== */
+const CNAME={words:{g:'말로 표현하기',w:'말로 확인받기'},listen:{g:'끝까지 들어주기',w:'끝까지 이해받기'},action:{g:'행동으로 챙기기',w:'행동으로 챙김받기'},steady:{g:'꾸준히 지키기',w:'꾸준히 지켜지기'},space:{g:'기다려 주기',w:'시간과 결정을 존중받기'},novelty:{g:'새로운 걸 제안하기',w:'같이 새로운 걸 하기'},comfort:{g:'편안하게 곁에 있기',w:'편안하게 쉬기'},order:{g:'정리해 주기',w:'기준이 분명하기'},candid:{g:'솔직하게 말하기',w:'솔직하게 듣기'}};
+function wantTxt(k,v){const t=CUR[k].want;return v===3?t:t.replace(/자기 /g,'네 ');}
+function w3(c){return c.want;}
+function hurtTxt(g){return String(DG[g].hurt).replace(/자기 /g,'네 ');}
+const HOWT={약:'혼자 밀어붙이기보다 주변의 사람과 자원을 모아서 해내는 방식이라, 결과가 한 번에 끝나지 않고 오래 이어져.',중:'혼자 해낼 때와 같이 해낼 때를 상황에 따라 바꿀 수 있는 균형이 있어서, 어떤 자리에서든 제 몫을 해.',강:'스스로 끌고 갈 힘이 충분해서 이 능력을 혼자서도 끝까지 끌고 갈 수 있어.'};
+const TIERSHORT={약:'구조상 혼자 감당하기보다 도움과 환경을 모을 때 힘이 커지는 쪽이야.',중:'구조상 혼자와 함께를 오가며 균형을 잡는 쪽이야.',강:'구조상 스스로 끌고 가는 힘이 충분한 쪽이야.'};
+function seasonLine(P){
+  if(!P.season)return '';
+  const pre=P.season==='환절'?'':`${P.season}에 태어난 명식이라 `;
+  let t=`${pre}${SEASON_TXT[P.season]} ${TIERSHORT[P.tier]}`;
+  const th=P.climate.temp;
+  if(typeof th==='number'&&th>=1.5)t+=' 명식 전체의 온도가 높은 편이라 말과 행동이 빨리 뜨거워지는 때가 있어.';
+  else if(typeof th==='number'&&th<=-1.5)t+=' 명식 전체의 온도가 낮은 편이라 마음을 표현하는 데 시간이 걸리는 때가 있어.';
+  return t;
+}
+function innerConflict(P){
+  const cf=P.conflict;
+  if(cf){
+    const T=TTYPE[cf.rel.type],zn={year:'자란 환경',month:'일하는 자리',day:'가까운 사람 앞',hour:'앞으로 남길 결과'};
+    const a=GODACT[cf.ga],b=GODACT[cf.gb];
+    const ends=(cf.ga&&cf.gb&&cf.ga!==cf.gb)?`${zn[cf.za]}에서는 ${a}인데 ${zn[cf.zb]}에서는 ${b}이어서,`:'두 영역이 같은 방향을 쓰면서도 서로 다른 속도로 움직여서,';
+    return `원국에는 ${J(ZONE[cf.za],'과/와')} ${ZONE[cf.zb]} 사이에 ${J(cf.rel.raw,'이/가')} 있어. ${cf.axis} 사이에서 ${T.eff}. ${ends} ${T.scene}. ${T.tip}.`;
+  }
+  const h=P.harmony[0];
+  if(h){const T=TTYPE.합;return `원국에는 ${J(h.label,'이/가')} 있어서 ${J(AXIS[h.axis]||'두 영역','이/가')} ${T.eff}. 그래서 ${T.scene}. ${T.tip}.`;}
+  return P.gap?`원국 안에서 크게 부딪히는 관계는 보이지 않아. 대신 겉에서 쓰는 방식(${GODACT[P.mg]})과 가까운 곳에서 원하는 방식(${GODACT[P.dayGod]})이 달라서, 상황에 따라 다른 사람처럼 보이는 일은 있을 수 있어.`:'원국 안에서 서로 크게 부딪히는 관계가 보이지 않아서, 겉과 속이 같은 방향으로 움직여. 흔들림이 적은 대신 한번 정한 방식을 오래 유지하는 편이야.';
+}
+function mgMismatch(P){
+  if(P.mainGod&&P.mainGod!==P.mg&&G2[P.mainGod]!==P.mgG)return `태어난 달의 뿌리(월지 본기)는 ${J(P.mainGod,'이라/라')} ${MG_TAG[P.mainGod]} 바탕도 같이 있어서, 겉으로 보이는 얼굴과 안쪽 뿌리가 조금 달라.`;
+  return '';
+}
+function R(id,title,paras,P,ev,ask,extra){const ps=paras.filter(Boolean);return Object.assign({id,eyebrow:'',title,lead:false,paragraphs:ps,body:ps.join('\n\n'),ask,evidence:evOf(P,ev),claims:ev.filter(x=>P.ev[x])},extra||{});}
+const TIERPRAISE={약:'이 강점은 혼자 끝까지 밀어붙이는 힘보다 주변의 사람과 자원을 정리해 쓰는 쪽으로 나오는 구조라, 여럿이 함께 가는 일에서 가치가 더 크게 드러날 수 있어.',중:'혼자 마무리할 때와 팀을 위해 쓸 때를 오갈 수 있는 균형이 있어서, 자리가 바뀌어도 같은 수준을 유지하기 쉬운 구조야.',강:'이 강점을 남에게 기대지 않고 스스로 끌고 갈 힘이 받쳐 주는 구조라, 일이 막히거나 사람이 부족한 상황에서도 기준을 유지하기 쉬워.'};
+const ACT={갑:'방향을 먼저 세우는',을:'사이를 이어 둘 다 남는 길을 찾는',병:'먼저 열어 분위기를 풀어 주는',정:'표정과 기색의 변화를 알아채고 챙기는',무:'흐름을 붙잡고 순서를 정리하는',기:'빠진 칸을 채워 약속으로 만드는',경:'핵심만 남기고 끝을 내는',신:'어긋난 곳을 먼저 알아채 바로잡는',임:'엇갈린 입장의 공통 이유를 찾아 잇는',계:'불편한 기류를 먼저 알아채 푸는'};
+const OBJ={비겁:'자기 몫과 직접 세운 기준이 걸린 일',식상:'말과 글, 결과물의 표현',재성:'비용, 일정, 수량 같은 현실 조건',관성:'규칙, 약속, 역할 분담',인성:'자료의 근거와 앞뒤 맥락'};
+const ENVS={봄:'새로 시작하고 키워 가는 단계',여름:'사람과 활동이 활발하게 오가는 환경',가을:'정리하고 마감하며 기준을 세우는 단계',겨울:'조용히 깊이 들어가 집중할 수 있는 환경',환절:'일의 국면이 바뀌는 시기'};
+function focusLine(P){
+  const act=ACT[P.stem]||P.D.head;
+  const se=P.season&&ENVS[P.season]?` 월령의 결로 보면 ${ENVS[P.season]}에서 이 힘이 더 또렷하게 드러나는 편이야.`:'';
+  const sc=P.pct[P.second]>=20&&P.second!==P.top?` ${J(P.second,'이/가')} ${P.pct[P.second]}%로 받쳐서 ${OBJ[P.second]}을 다룰 때도 같은 힘이 쓰여.`:'';
+  return `네 구조에서는 ${OBJ[P.top]}에서 ${act} 힘이 가장 선명하게 나와.${se}${sc}`;
+}
+function secSelf(P){
+  const D=P.D,n=J(P.name,'은/는'),g=GRP[P.top],mgd=MG[P.mg],bs=P.pct[P.second]>=20?` 두 번째로 큰 ${J(P.second,'의')} 힘(${P.pct[P.second]}%)도 같이 써서 ${GRP[P.second].mode} 면이 곁들여져.`:'';
+  const p1=P_(`${n} ${D.img}에 가까운 ${P.stem}${P.el} 일간이야. ${D.trait}.`,OI[P.mgG][P.dayG],seasonLine(P));
+  const TP=TIERPRAISE[P.tier];
+  const p2=P_(D.scene,focusLine(P),P.tier!=='강'?D.relief:'',P.tier!=='약'?D.trust:'',TP);
+  const sec2=P.pct[P.second]>=20?GRP[P.second].relief:'';
+  const p3=P_(`여기에 십성 배치에서 ${J(P.top,'이/가')} ${P.pct[P.top]}%로 가장 커서 ${g.mode} 쪽으로 힘이 모여.`,g.scene,g.relief,g.trust,sec2);
+  const p4=P_(`사회에서 먼저 보이는 얼굴은 ${mgd.role}이야. ${mgd.scene}.`,mgMismatch(P));
+  const t=`1. ${P.c.pillars.day.ko} 일주 — ${D.head} 사람, 사회에서는 ${MG_TAG[P.mg]} 얼굴`;
+  const r=R('self',t,[p1,p2,p3,valuePara(P),p4],P,['DM','DP','ML','MG','VEC','STR','CLM'],`내가 가진 ${J(TOOL[P.stem],'이/가')} 지금 하는 일에서 어떻게 더 잘 쓰이는지 내 상황으로 알려 줘`);
+  const gs=GRP[P.top];
+  r.body=P_(`${J(P.name,'은/는')} ${D.img}에 가까운 ${P.stem}${P.el} 일간이야. ${D.trait}.`,`${J(PDM[P.stem].gift,'이/가')} 곁의 사람에게 믿음을 줘.`,OI[P.mgG][P.dayG],`십성 배치는 ${gs.mode} 쪽으로 힘이 모여.`);
+  r.lead=true;
+  if(P.unknownHour)r.evidence+=' · 출생 시각 미입력으로 시주는 제외';
+  return r;
+}
+function secInside(P){
+  const D=P.D,B=BURDEN[P.top];
+  const p1=P_('먼저 네 강점이 쉬는 시간까지 따라오는 이유부터 말할게.',D.cost,D.comfort);
+  const p2=P_(`두 번째는 구조야. 십성 배치에서 ${J(P.top,'이/가')} ${P.pct[P.top]}%로 가장 커서, ${B.when} 특히 힘이 많이 들어.`,TIER[P.tier],B.self);
+  const lack=P.hasLow?`반대로 ${J(P.low,'은/는')} ${P.pct[P.low]}%로 가장 적은 쪽이야. ${GRP[P.low].lack}`:'';
+  const p3=P_(innerConflict(P),lack);
+  const p4=P_(`이런 상태가 이어지면 주변에는 이렇게 보일 수 있어. ${B.others}`,`바꿀 수 있는 건 어렵지 않은 쪽부터야. ${B.fix}`,P.hasLow?`${GRP[P.low].fill}도 도움이 돼.`:'');
+  const pc=P_(SBLAME[P.top],PROT[P.top]);
+  const r=R('inside',`2. 지치는 이유 — ${J(TOOL[P.stem],'이/가')} 쉬는 시간까지 따라올 때`,[p1,p2,p3,pc,flawInside(P),p4],P,['STR','VEC','DP',P.main?'REL'+P.rels.indexOf(P.main):''].filter(Boolean),`${B.short} 쉬는 시간을 지키려면 어떤 말로 부탁하거나 거절하면 좋을지 내 상황에 맞게 만들어 줘`);
+  r.body=P_(`${J(P.name,'은/는')} ${B.when} 힘이 특히 많이 들어. ${B.self}`,PDM[P.stem].edge+'이 가까운 사람에게는 부담으로 닿을 수 있어.',P.hasLow?`${J(P.low,'은/는')} 얇은 편이라 ${GRP[P.low].lack}`:'');
+  return r;
+}
+const PEOPLE_TOP={비겁:'가까워질수록 네 기준과 방식이 분명하게 드러나서, 친해진 사람은 네가 무엇을 양보하지 않는지 알게 되기 쉬워.',식상:'가까워질수록 생각과 감정을 말로 꺼내는 양이 늘어서, 처음의 차분함보다 표현이 풍부한 모습이 나오는 편이야.',재성:'가까워질수록 상대의 사정과 상황을 현실적으로 챙기게 돼서, 말보다 실질적인 도움으로 마음을 보여 주는 편이야.',관성:'가까워질수록 약속과 예의를 지키는 모습이 더 분명해지고, 상대에게도 같은 성실함을 기대하게 되는 편이야.',인성:'가까워질수록 상대를 이해하려는 질문과 관찰이 늘고, 마음을 여는 데 시간이 걸리는 대신 한번 열면 깊게 이야기하는 편이야.'};
+const PEOPLE_REL={충:o=>`가까운 자리의 모습과 ${o}의 모습이 서로 반대로 당겨서, 곁의 사람이 어느 쪽이 진짜 너인지 헷갈릴 수 있어`,형:o=>`${o}과의 형이 비슷한 불편을 가까운 사이에서도 되풀이하게 만들어서, 친해질수록 같은 지점에서 부딪히는 경향이 있어`,파:o=>`${o}과의 파가 정해 둔 관계의 틀을 한 번씩 흔들어서, 가까운 사이에서도 약속이 중간에 바뀌는 일에 민감한 편이야`,해:o=>`${o}과의 해가 좋은 뜻으로 한 말을 다르게 전달하게 만들어서, 가까운 사이일수록 말의 뜻을 한 번 더 확인하는 게 도움이 돼`,합:o=>`${o}과 합이 있어서 가까운 자리가 그쪽 영향을 받아 움직이기 쉬워`};
+const LOVE_REL={충:o=>`일주와 ${o}의 충은 연애에서도 마음과 상황이 따로 움직이는 순간을 만들 수 있어서, 결정을 하루 미루고 확인하는 습관이 도움이 돼.`,형:o=>`일주와 ${o}의 형은 연애에서 같은 서운함이 모양만 바꿔 돌아오는 느낌을 줄 수 있어서, 반복되는 지점을 한 줄로 적어 두면 좋아.`,파:o=>`일주와 ${o}의 파는 정해 둔 약속이 중간에 틀어지는 일에 예민하게 만들 수 있어서, 약속을 바꿀 때는 이유를 먼저 말해 주는 게 중요해.`,해:o=>`일주와 ${o}의 해는 잘해 주려던 마음이 다르게 닿는 일을 만들 수 있어서, 마음을 전할 때 뜻을 한 번 더 확인하는 질문이 도움이 돼.`};
+function secPeople(P){
+  const D=P.D,mgd=MG[P.mg],dg=DG[P.dayGod];
+  const p1=P_(`처음 만나는 사람에게 너는 ${J(D.seen,'으로/로')} 보여. ${J(D.charm,'이/가')} 첫인상의 중심이 되기 때문이야.`);
+  const stg=P.stage&&STAGE[P.stage]?` 일지의 12운성이 ${J(P.stage==='사'?'사(死)':P.stage,'이라/라')} 가까운 사이에서는 ${STAGE[P.stage]} 면도 있어.`:'';
+  const relD=P.tension.find(r=>r.a==='day'||r.b==='day');
+  const relTxt=relD?`일주와 ${ZONE[relD.a==='day'?relD.b:relD.a]} 사이에 ${J(relD.label,'이/가')} 있어. ${PEOPLE_REL[relD.type](ZONE[relD.a==='day'?relD.b:relD.a])}.`:'원국에서 일주를 직접 흔드는 충·형·파·해가 없어서, 가까운 자리의 모습이 비교적 일정하게 이어지는 편이야.';
+  const p2=P_(`가까워지면 다른 면이 보이기 시작해. ${dg.close}.${stg}`,PEOPLE_TOP[P.top],relTxt);
+  const p3=P.gap
+    ?P_(`겉에서는 ${MG_TAG[P.mg]} 모습이 먼저 읽히고 가까운 곳에서는 ${DG_TAG[P.dayGod]} 모습이 움직이기 때문에, 처음 본 사람과 오래 본 사람이 서로 다른 너를 이야기할 수 있어.`,`이 차이를 모르는 상대는 처음과 다르다며 당황할 수 있고, 가까워진 뒤에야 알게 된 모습을 더 진짜라고 느끼는 사람도 있을 수 있어. 어느 쪽도 거짓이 아니라 같은 사람의 다른 층이야.`)
+    :P_(`겉에서 읽히는 쪽과 가까운 곳에서 움직이는 쪽이 같은 방향이라, 가까워져도 인상이 크게 달라지지 않아. 처음부터 한결같은 사람으로 읽히기 쉽고, 상대가 네 속마음을 비교적 빨리 짐작할 수 있는 구조야.`);
+  const p4=P_(`가까운 사람에게 미리 알려 두면 좋은 게 하나 있어. 너는 ${hurtTxt(P.dayGod)} 그 순간을 오래 기억하는 편이야.`,'이걸 알고 있으면 상대가 네 반응을 오해하는 일이 줄어들고, 너도 무엇 때문에 마음이 닫혔는지 설명하기 쉬워져.');
+  return R('people',`3. 처음엔 ${D.seen}, 가까워지면 ${DG_TAG[P.dayGod]} 사람`,[p1,p2,p3,p4],P,['MG','DB','DM'],`처음 보는 사람이 나를 ${J(D.seen,'으로/로')} 보다가 가까워지면 다르게 느끼는 걸 어떻게 설명하면 좋을지 알려 줘`);
+}
+const CVAL={
+words:'마음을 말로 분명하게 건네는 사람 곁에서는 상대가 추측하는 데 에너지를 덜 써도 돼. 사랑을 확인받는 일이 대화 속에서 일어나니까 오해가 쌓일 틈이 줄어드는 쪽이야.',
+listen:'끝까지 들어주는 사람 곁에서는 상대가 말을 정리하지 않고도 꺼내기 쉬워져. 이야기를 꺼낸 것만으로 마음이 가벼워질 여지를 주는 건 생각보다 드문 능력이야.',
+action:'필요한 걸 먼저 알아보고 실제로 해 주는 사람 곁에서는 상대가 도움을 요청하는 부담을 덜 수 있어. 말보다 행동으로 증명되는 마음이라 신뢰가 오래 가는 쪽이야.',
+steady:'약속과 연락이 일정한 사람 곁에서는 상대가 마음의 위치를 추측하지 않아도 되는 쪽이야. 예측할 수 있는 관계가 주는 안정감은 큰 사건보다 오래 남기 쉬워.',
+space:'결정과 속도를 기다려 주는 사람 곁에서는 상대가 자기 속도를 지켜도 관계가 흔들리지 않는다는 걸 경험하기 쉬워. 압박 없이 가까워지는 경험은 상대를 더 솔직하게 만드는 쪽으로 작용해.',
+novelty:'새로운 곳과 할 일을 먼저 꺼내는 사람 곁에서는 관계가 일상에 묻히지 않기 쉬워. 함께 쌓는 기억이 늘어서 시간이 지나도 이야기할 거리가 마르지 않는 쪽이야.',
+comfort:'곁에 있는 것만으로 분위기를 풀어 주는 사람 곁에서는 상대가 긴장을 내려놓기 쉬워. 잘 보이려 하지 않아도 되는 자리를 만들어 주는 건 사랑의 중요한 형태야.',
+order:'일정과 기준을 정리해 주는 사람 곁에서는 상대가 눈치를 덜 보게 되기 쉬워. 헷갈릴 일이 줄면 두 사람의 에너지를 서로에게 쓸 수 있어.',
+candid:'불편한 이야기도 돌리지 않는 사람 곁에서는 상대가 속뜻을 읽느라 지치는 일이 줄어. 말이 곧 마음이라는 믿음이 쌓이면 갈등도 짧게 끝나는 쪽이야.'
+};
+const LOVE_TOP={
+비겁:'연애에서도 자기 기준과 속도를 지키려는 힘이 큰 구조라, 상대와 보조를 맞추다가도 결정권이 흐려지면 거리를 두기 쉬워. 이 모습은 믿음직한 독립성으로 읽힐 수도, 벽으로 읽힐 수도 있어서 어느 쪽으로 닿는지는 네가 말로 설명하느냐에 달려 있어.',
+식상:'마음을 말과 행동으로 꺼내 보이는 힘이 큰 구조라, 좋은 감정은 빨리 전해지지만 서운함도 순간적으로 나오기 쉬워. 말이 빠른 만큼 상대가 정리할 시간을 주는 것이 관계의 온도를 지켜.',
+재성:'관계를 시간과 비용, 일정 같은 현실의 모양으로 챙기는 힘이 큰 구조라, 데이트 계획과 실질적인 배려에서 애정이 드러나. 반대로 성과가 걸린 시기에는 마음이 일 쪽에 가 있다는 인상을 줄 수 있어.',
+관성:'관계에서도 약속과 예의를 중요하게 지키는 구조라, 신뢰를 천천히 쌓는 사랑이야. 상대가 약속을 가볍게 다루는 것처럼 보이면 마음의 문이 생각보다 빨리 닫힐 수 있어.',
+인성:'상대를 충분히 이해한 뒤에 마음을 여는 힘이 큰 구조라, 가까워지는 속도는 느리지만 깊이가 있어. 이해할 시간이 부족하면 마음을 열기보다 침묵으로 넘기기 쉬워.'};
+const LOVE_TIER={약:'받쳐 주는 힘이 얇은 구조라, 연애에서는 상대의 안정감과 정서적 지지가 네 컨디션에 크게 작용할 수 있어.',중:'혼자 있는 시간과 함께하는 시간을 오갈 수 있는 균형이 있어서, 관계의 리듬을 조절하기 쉬운 편이야.',강:'스스로 중심을 잡는 힘이 충분해서 관계에 휘둘리지 않지만, 그만큼 상대에게 기대는 모습을 보이는 데 시간이 걸릴 수 있어.'};
+function secLove(P){
+  const D=P.D,gv=CUR[P.give],w=CUR[P.want],same=P.give===P.want,wt=wantTxt(P.want,2);
+  const p1=same
+    ?P_(`${J(gv.give,'으로/로')} 마음을 건네고, 같은 방식으로 받을 때 가장 마음이 놓이는 사람이야.`,`주는 것과 받고 싶은 것이 같아서, 같은 표현을 쓰는 상대를 만나면 빠르게 가까워져. 다만 이 필요가 채워지지 않으면 ${w.miss}. 이 점은 알아 둬.`)
+    :P_(`애정 표현은 ${J(gv.give,'으로/로')} 나와.`,`그런데 네 마음이 놓이는 쪽은 ${wt}이야. ${w.miss}.`,`주는 방식과 받고 싶은 방식이 달라서, 상대가 네 방식으로 마음을 받고도 네가 원하는 방식으로는 돌려주지 못할 수 있어. 그건 마음이 모자라서가 아니라 서로 쓰는 표현이 달라서야.`);
+  const pv=`네가 마음을 건네는 방식에는 분명한 가치가 있어. ${CVAL[P.give]}`;
+  const hD=P.harmony.find(r=>r.a==='day'||r.b==='day'),tD=P.tension.find(r=>(r.a==='day'||r.b==='day'));
+  const loveRel=hD?`일주와 ${ZONE[hD.a==='day'?hD.b:hD.a]} 사이에 ${J(hD.label,'이/가')} 있어서 ${TTYPE.합.eff}. 사랑에서는 한번 마음이 붙으면 쉽게 떼어 놓기 어려운 쪽이라, ${TTYPE.합.tip}.`:(tD&&LOVE_REL[tD.type]?LOVE_REL[tD.type](ZONE[tD.a==='day'?tD.b:tD.a]):'');
+  const pt=P_(LOVE_TOP[P.top],LOVE_TIER[P.tier],loveRel);
+  const p2=P_(`깊어질수록 이 필요는 더 커져. ${hurtTxt(P.dayGod)} 그 순간이 오래 남아서 마음의 문이 천천히 닫혀.`);
+  const p3=P_('그리고 네 쪽에서 조심할 부분도 있어.',D.flaw,D.fix);
+  const p4=P_(`원하는 걸 말로 꺼낼 때는 이렇게 시작해 볼 수 있어. ${w.req}`,`상대가 ${w.rep} 하고 받아 준다면 방향이 맞게 가고 있는 거야.`);
+  return R('love',`4. 주는 건 ${CNAME[P.give].g}, 받고 싶은 건 ${CNAME[P.want].w}`,[p1,pv,pt,p2,p3,p4],P,['DB','DM','VEC'],`나는 ${J(wt,'을/를')} 원하는데 상대가 모를 때, 서운하게 들리지 않게 말하는 방법을 연애 상황으로 알려 줘`);
+}
+function secWork(P){
+  const mgd=MG[P.mg],g=GRP[P.top];
+  const p1=P_(`일에서 힘이 가장 잘 나오는 자리는 ${mgd.arena}이야. 월간의 ${J(P.mg,'이/가')} 보여 주는 얼굴과 맞기 때문이야.`,`십성 배치에서 ${J(P.top,'이/가')} 가장 커서, ${g.work}.`);
+  const tierW={약:'혼자 모든 걸 책임지는 구조보다 역할이 나뉜 팀에서 성과가 오래 남는 편이고, 받쳐 주는 동료가 있느냐가 결과를 크게 좌우할 수 있어.',중:'혼자서도 팀에서도 일할 수 있지만 한쪽으로 오래 몰리면 균형이 먼저 깨져.',강:'혼자서도 끌고 갈 수 있어서 어느새 가장 많은 일을 맡는 위치에 서기 쉬워. 양이 늘수록 권한과 보상도 같이 이야기해야 해.'}[P.tier];
+  const p2=P_(`반대로 ${mgd.drain}에서는 능력과 상관없이 소진이 빨라져.`,tierW);
+  const sw=P.pct[P.second]>=20?`${P.second}도 ${P.pct[P.second]}%로 커서 ${GRP[P.second].work}.`:'';
+  const p3=P_(sw,`일을 맡을 때 먼저 이렇게 말해 보면 좋아. “${mgd.ask}.” 시작 전에 이 한 문장을 확인하면 나중에 수습하는 시간이 줄어.`);
+  return R('work','5. 일에서 힘이 나는 자리와 지치는 자리',[p1,p2,p3],P,['MG','VEC','STR'],`${mgd.drain}에서 “${mgd.ask}”라고 말하려면 어떤 순서로 이야기하면 좋을지 알려 줘`);
+}
+function secMoney(P){
+  const mgd=MG[P.mg],g=GRP[P.top];
+  const p1=P_(`돈에서는 ${mgd.money} 편이야. 수입의 모양은 ${mgd.income}에 잘 맞아.`);
+  const p2=P_(`새기 쉬운 곳은 ${J(g.leak,'이야/야')}. 크지 않아 보여도 쌓이면 달마다 체감이 달라져.`);
+  const safe={약:'비상금 통장을 먼저 따로 만들어 두면 수입이 흔들리는 달에도 마음이 덜 흔들려.',중:'수입과 지출의 균형을 달마다 한 번 점검하면 충분해.',강:'큰 지출은 결정한 날 바로 쓰지 말고 하루를 두고 다시 확인하는 쪽이 맞아.'}[P.tier];
+  const sl=P.pct[P.second]>=20?`${P.second}도 ${P.pct[P.second]}%로 큰 편이라 ${GRP[P.second].leak}도 같이 새기 쉬워.`:'';
+  const p3=P_(sl,`지키는 방법은 어렵지 않아. ${g.rule}부터 시작해 봐.`,safe);
+  return R('money','6. 돈이 들어오는 방식과 새는 곳',[p1,p2,p3],P,['MG','VEC','STR'],`${J(g.leak,'을/를')} 줄이려면 이번 달에 어떤 기준부터 정하면 좋을지 알려 줘`);
+}
+
+const GFAM=g=>G2[g]||'';
+function luckLine(P,t,label){
+  if(!t)return '';
+  const fam=GFAM(t.god),L=LUCK[t.god];if(!L)return '';
+  let rel;
+  if(P.hasLow&&fam===P.low)rel=`원국에서 가장 적은 ${J(P.low,'이/가')} 들어오는 때라, 평소 의식해서 채워야 하던 쪽이 자연스럽게 따라오는 시기야.`;
+  else if(fam===P.top)rel=`원국에서 이미 가장 큰 ${J(P.top,'이/가')} 한 번 더 들어오는 때라, 평소 쓰던 방식이 더 강해져. 그만큼 쉬는 시간을 일정에 먼저 넣어야 해.`;
+  else rel=`원국의 중심(${P.top})과는 결이 다른 힘이라, 익숙한 방식만으로는 풀리지 않는 일이 생기면 이 힘이 요구하는 쪽으로 방식을 조금 바꿔 봐.`;
+  return {t:`${label} ${t.god}: ${L.theme}.`,r:rel,u:`${L.use}. ${L.watch}.`};
+}
+function secTiming(P){
+  const tr=P.transit,Ls=luckLine(P,tr.luck,`지금 대운(${tr.luck?.ko||''})은`),Ys=luckLine(P,tr.year,`올해 세운(${tr.year?.pillar||''})은`),Ms=luckLine(P,tr.month,`이번 달 월운(${tr.month?.pillar||''})은`);
+  const ps=[];
+  if(Ls)ps.push(P_(Ls.t,'대운은 몇 년 단위의 배경이라 올해 하루하루보다 방향을 정할 때 참고하면 돼.',Ls.r,Ls.u));
+  if(Ys){const rl=tr.year.rels.length?`올해 기운은 원국과 ${uniq(tr.year.rels).join('·')} 관계가 생겨서, ${tr.year.rels.includes('충')?'바뀌는 일이 한 번에 몰리지 않도록 일정을 나눠서 받아':tr.year.rels.includes('합')?'새 인연이나 제안이 붙기 쉬우니 받아들일 범위를 먼저 정해':'기존 약속을 조정해야 하는 일이 생기기 쉬우니 변경 기준을 미리 정해'}.`:'';ps.push(P_(Ys.t,Ys.r,Ys.u,rl));}
+  if(Ms)ps.push(P_(Ms.t,Ms.u));
+  if(!ps.length)ps.push('이 명식에서는 현재 대운·세운 자료를 읽지 못해서 시기별 해석은 비워 둘게. 원국 중심의 해설만 신뢰해 줘.');
+  ps.push('원국의 성향은 평생 가져가는 바탕이고, 대운과 세운은 그 바탕에 어떤 과제가 들어오는지를 알려 주는 시기별 신호야. 그래서 같은 사람도 시기에 따라 쉬운 해와 힘든 해가 달라져.');
+  return R('timing',`7. 지금 시기 — ${tr.luck?`${LUCK[tr.luck.god]?.theme||''}`:'원국을 중심으로 읽어'}`,ps,P,['LUCK','YEAR','MONTH'],`올해와 이번 달 흐름 안에서 ${J(TOOL[P.stem],'을/를')} 어디에 쓰면 좋을지 일정으로 알려 줘`);
+}
+function pickStars(P){
+  const seen=new Set(),out=[];
+  const pri=P.stars.filter(s=>SB[s.name]);
+  ['day','month','hour','year'].forEach(k=>pri.filter(s=>s.pillar===k).forEach(s=>{if(!seen.has(s.name)){seen.add(s.name);out.push(s);}}));
+  return out;
+}
+const STAR_CAT={도화살:'REL',홍염살:'REL',망신살:'REL',역마살:'MOVE',지살:'MOVE',천살:'MOVE',재살:'MOVE',충살:'MOVE',파살:'MOVE',화개살:'DEEP',귀문관살:'DEEP',삼기:'DEEP',현침살:'DEEP',고신살:'DEEP',과숙살:'DEEP',고란살:'DEEP',문창귀인:'LEARN',태극귀인:'LEARN',학당귀인:'LEARN',천을귀인:'HELP',천덕귀인:'HELP',월덕귀인:'HELP',암록:'HELP',천의성:'HELP',양인살:'DRIVE',괴강살:'DRIVE',백호살:'DRIVE',건록:'DRIVE',장성살:'DRIVE',겁살:'DRIVE',반안살:'KEEP',월살:'KEEP',육해살:'KEEP',공망:'KEEP',천라지망:'KEEP',원진살:'TUNE',형살:'TUNE',해살:'TUNE',삼합:'TUNE'};
+const STAR_USE={
+REL:{비겁:'자기 기준이 분명한 채로 호감을 쓰기 때문에, 사람을 끌어도 휘둘리지 않고 관계의 속도를 직접 정하는 쪽으로 나와',식상:'말과 글, 표현으로 호감이 바로 드러나서 발표·콘텐츠·서비스처럼 내놓는 일에서 존재감이 커져',재성:'호감이 사람과 기회를 이어 주는 힘으로 쓰여서 영업·제휴·고객 응대처럼 관계가 곧 일이 되는 자리에 잘 맞아',관성:'호감을 예의와 책임 안에서 쓰기 때문에 신뢰를 주는 인상으로 자리 잡고, 조직 안의 대외 역할에 잘 맞아',인성:'호감이 깊이 있는 대화로 이어져서 많은 사람보다 한 사람과 깊게 통하는 상담·교육 같은 자리에서 힘이 커져'},
+MOVE:{비겁:'새 환경에서도 자기 방식을 유지한 채 적응하기 때문에 혼자 개척하거나 독립해서 움직이는 일에 잘 맞아',식상:'움직이는 곳마다 새 이야기와 아이디어가 쌓여서 여행·취재·현장 콘텐츠처럼 이동이 소재가 되는 일에 맞아',재성:'이동과 변화 속에서 사람과 돈의 흐름을 읽기 때문에 유통·영업·해외·출장이 있는 일에서 기회를 보는 눈이 살아나',관성:'변화 속에서도 맡은 역할과 약속을 지키려 해서 순환 근무나 현장 관리처럼 책임이 따르는 이동에 잘 맞아',인성:'움직이며 보고 배운 것을 안에서 소화해서 연수·유학·견학처럼 배움을 동반한 이동에서 힘이 커져'},
+DEEP:{비겁:'혼자 파고드는 시간을 스스로 지킬 수 있어서 독립 작업이나 전문 영역을 자기 이름으로 쌓는 일에 맞아',식상:'깊이 파고든 결과를 표현으로 꺼낼 수 있어서 창작·글쓰기·기술 해설처럼 몰입이 작품이 되는 일에 맞아',재성:'몰입한 결과를 현실 가치로 바꾸는 감각이 같이 있어서 전문 기술이나 취향을 수입으로 연결하기 좋아',관성:'몰입을 규칙과 기준 안에서 다듬는 편이라 연구·품질·정밀 업무처럼 기준이 있는 깊이에 잘 맞아',인성:'몰입이 학습과 이해로 이어져서 연구·분석·자격 공부처럼 오래 파는 일에서 가장 크게 힘을 내'},
+LEARN:{비겁:'배운 것을 자기 방식으로 정리해 자기 것으로 만드는 힘이 강해서 혼자 공부하고 독립적으로 쓰는 전문성에 맞아',식상:'배운 것을 바로 말과 글로 풀어낼 수 있어서 강의·집필·콘텐츠처럼 지식을 전달하는 일에 맞아',재성:'배운 것을 현실 문제 해결로 연결하는 힘이 있어서 실무 자격이나 실용 지식으로 수입을 만드는 데 맞아',관성:'배운 것을 기준과 절차로 만드는 힘이 있어서 제도·표준·매뉴얼을 다루는 일에 맞아',인성:'배움 자체가 중심이라 공부와 연구가 깊어질수록 안정되고, 가르치는 일에서도 설득력이 커져'},
+HELP:{비겁:'최종 판단은 스스로 하려는 구조라서, 필요한 순간에 도움을 구체적으로 한 가지씩 청하는 연습이 이 별의 쓰임을 넓혀 줘',식상:'자기 상황을 말로 잘 설명할 수 있어서, 무엇이 필요한지 분명히 전달하는 방식으로 이 별의 쓰임이 살아나',재성:'사람과 자원을 연결하는 감각이 있어서, 필요한 사람과 자원을 이어 주는 쪽으로 이 별의 쓰임이 나와',관성:'도움을 청하는 일도 예의와 절차를 갖춰서 하는 편이라, 조직 안에서 신뢰를 바탕으로 지원을 구하기 좋아',인성:'조언과 지식을 소화해 쓰는 구조라, 선배나 전문가의 조언을 자기 상황에 맞게 바꿔 쓰는 데 이 별의 쓰임이 살아나'},
+DRIVE:{비겁:'결단과 추진을 자기 책임으로 끌고 가서 독립해서 승부를 내거나 직접 판을 여는 일에 맞아',식상:'결단이 말과 행동으로 빨리 나와서 현장 발표·협상·즉흥 대응처럼 속도가 필요한 일에 맞아',재성:'결단이 현실 판단과 붙어서 투자·사업·거래처럼 선택이 곧 결과인 일에서 힘이 나',관성:'결단이 원칙과 책임 안에서 나와서 위기 대응이나 조직의 최종 결정 역할에 어울려',인성:'결단 전에 충분히 이해하려는 구조라 근거를 확인한 뒤 단호하게 정리하는 모양으로 나와'},
+KEEP:{비겁:'안정을 자기 힘으로 지키는 쪽이라 자기 기반과 시간을 스스로 관리할 때 가장 오래 가',식상:'안정된 기반 위에서 표현할 때 힘이 커져서 일상 루틴을 먼저 세워 두면 창작과 표현이 꾸준해져',재성:'기반을 숫자와 현실로 관리하는 감각이 있어서 저축·자산·재고처럼 쌓이는 것을 지키는 일에 맞아',관성:'기반을 규칙과 약속으로 지키는 쪽이라 정해진 체계 안에서 오래 일할수록 안정감이 커져',인성:'기반을 배움과 휴식으로 채우는 쪽이라 충분히 쉬고 소화하는 시간을 확보할 때 힘이 오래가'},
+TUNE:{비겁:'관계의 간격을 직접 조정하려는 구조라 불편한 지점을 숨기지 않고 먼저 꺼내 조율하는 방식이 맞아',식상:'조율을 말로 풀어내는 힘이 있어서 서운함이 쌓이기 전에 대화로 정리하는 방식이 잘 맞아',재성:'조율을 현실 조건으로 정리하는 감각이 있어서 역할·비용·시간을 나누는 합의로 푸는 쪽이 맞아',관성:'조율을 규칙과 약속으로 만드는 힘이 있어서 반복되는 문제를 약속으로 고정해 두면 잘 풀려',인성:'조율 전에 상대의 사정을 충분히 이해하려 해서 이유를 먼저 묻고 정리하는 방식이 맞아'}
+};
+const STAR_TIER={약:'받쳐 주는 힘이 얇은 구조라 이 재능은 혼자보다 사람이나 환경과 함께 쓸 때 더 크게 나와.',중:'밀고 갈 힘과 받쳐 주는 힘이 비슷한 구조라 혼자 쓸 때와 함께 쓸 때를 상황에 맞게 바꿀 수 있어.',강:'스스로 끌고 갈 힘이 충분한 구조라 이 재능을 혼자서도 꺼내 쓸 수 있지만, 나눠 쓰는 연습이 있어야 오래 가.'};
+function starPara(P,s,deep,idx){
+  const b=SB[s.name],pos=SPOS[s.pillar],rel=P.rels.filter(r=>r.a===s.pillar||r.b===s.pillar)[0];
+  const gd=godAt(P.c,s.pillar),stg=P.c.twelveStages?.[s.pillar],cat=STAR_CAT[s.name]||'TUNE';
+  const where={day:`가까운 사람 앞에서`,month:`일하고 사회에서 역할을 맡는 자리에서`,hour:`시간을 들여 남기는 결과물과 앞으로의 방향에서`,year:`처음 사람을 대하는 방식과 바깥 인연에서`}[s.pillar];
+  const useSum={day:b.b,month:b.l,hour:b.l,year:b.b}[s.pillar],useAlt={day:b.l,month:b.b,hour:b.b,year:b.l}[s.pillar];
+  if(!deep){
+    const open=[
+      `${J(s.name,'은/는')} ${pos.n}에 있어서, ${pos.tag} 쪽으로 ${J(b.g,'이/가')} 작동해.`,
+      `${pos.n}의 ${J(s.name,'은/는')} ${pos.tag}에서 ${J(b.t,'으로/로')} 쓰이는 재능으로 읽혀.`,
+      `${pos.n}에 ${J(s.name,'이/가')} 성립해서 ${pos.tag}에서 ${J(b.g,'이/가')} 힘을 내.`
+    ][(idx||0)%3];
+    const topUse=STAR_USE[cat][P.top];
+    return P_(open,`${useSum}.`,topUse?`네 중심 힘이 ${J(P.top,'이라/라')} ${topUse}.`:'');
+  }
+  const basis=s.basis?`(${String(s.basis).replace(/year/g,'년지').replace(/month/g,'월지').replace(/day/g,'일지').replace(/hour/g,'시지').replace(/↔/g,'·')})`:'';
+  const first=[
+    `${pos.n}${basis}에 ${J(s.name,'이/가')} 성립했어. ${J(pos.n,'은/는')} ${J(pos.w,'을/를')} 보여 주는 자리라서, ${J(b.g,'이/가')} ${pos.tag} 쪽에서 작동한다는 뜻이야.`,
+    `${J(s.name,'은/는')} ${pos.n}${basis}에서 잡혔어. ${J(pos.w,'이/가')} 걸린 자리라서 ${J(b.t,'을/를')} 쓰는 곳도 ${pos.tag} 쪽이야.`,
+    `${pos.n}${basis}에 ${J(s.name,'이/가')} 놓였어. 이 자리는 ${pos.w+'에'} 해당해서, ${J(b.g,'이/가')} ${pos.tag}에서 먼저 드러나.`
+  ][(idx||0)%3];
+  const link=gd?`그 자리의 십성이 ${J(gd,'이라/라')} ${GODACT[gd]} 방향으로 이 재능이 쓰이는 모양이야.`:'';
+  const topUse=STAR_USE[cat][P.top];
+  const mix=topUse?`네 명식에서 가장 큰 힘은 ${P.top}(${P.pct[P.top]}%)이라서, ${J(s.name,'은/는')} ${topUse}.`:'';
+  const tier=STAR_TIER[P.tier];
+  const ext=(rel&&TTYPE[rel.type])?`같은 자리에 ${J(rel.label,'이/가')} 걸려 있어서, 이 재능을 쓸 때 ${TTYPE[rel.type].eff.replace(/[요]$/,'')}. ${TTYPE[rel.type].tip}.`:(stg&&STAGE[stg]?`이 자리의 12운성이 ${J(stg==='사'?'사(死)':stg,'이라/라')} ${STAGE[stg]} 쪽으로도 이 재능이 나타나.`:'');
+  return P_(first,link,mix,tier,ext,`생활로 옮기면 ${useAlt}. 이 힘이 과해지면 ${/는 일$/.test(b.o)?b.o.replace(/는 일$/,'는 쪽으로 기울기 쉬우니'):b.o+' 같은 일이 생기기 쉬우니'}, ${b.a}.`);
+}
+function secStars(P){
+  const st=pickStars(P).slice(0,3);
+  if(!st.length){
+    return R('stars','8. 신살·귀인 — 이 명식에서 뚜렷하게 성립한 별은 없어',[P_('이번 계산에서 일주·월주·시주 기준으로 성립한 신살이나 귀인은 확인되지 않았어. 그건 부족하다는 뜻이 아니라, 이 명식의 특징이 별 이름보다 십성의 배치와 원국 관계에서 더 분명하게 읽힌다는 뜻이야.',`그래서 이 명식에서는 앞에서 읽은 ${J(TOOL[P.stem],'과/와')} ${GRP[P.top].mode} 힘이 재능의 중심이야.`)],P,['DM','VEC'],'별 이름이 없는 대신 내 재능을 가장 잘 쓰는 방법을 알려 줘');
+  }
+  const names=st.map(s=>s.name),ps=st.map((s,i)=>starPara(P,s,false,i));
+  const more=P.stars.length>st.length?`성립한 다른 별은 ‘신살·귀인 자세히 보기’에서 위치와 원국 관계까지 자세히 볼 수 있어.`:'';
+  const t=`8. 신살·귀인 — ${J(names.join('·'),'이/가')} 말해 주는 재능의 쓰임`;
+  const ev=st.map(s=>'STAR'+P.stars.indexOf(s));
+  return R('stars',t,[...ps,more],P,ev,`${J(names[0],'이/가')} 있는 내 명식에서 그 재능을 일상에서 쓰는 방법을 알려 줘`);
+}
+function secCore(P){
+  const B=BURDEN[P.top],D=P.D,mgd=MG[P.mg];
+  const p1=P_(`정리하면 너는 ${D.head} 사람이야. ${mgd.arena}에서 힘이 가장 잘 나고, ${B.short} 쉽게 지쳐.`);
+  const p2=P_(`이번 주에 해 볼 한 가지는 이거야. ${B.week}`,P.hasLow?`그리고 얇은 ${P.low} 쪽은 ${GRP[P.low].fill}부터 가볍게 시작해 봐.`:'',`일주일 뒤에는 지친 정도가 달라졌는지, 그리고 요청이나 거절을 한 번이라도 말로 해 봤는지만 확인하면 돼.`);
+  const p3=`이 글을 덮기 전에 이 문장을 네 말로 이어 써 봐. “나는 ${D.head} 사람이고, ${B.short} 지쳐. 그래서 이번 주에는 ___부터 바꿔 볼 거야.” 직접 쓴 마지막 줄이 오늘 읽은 내용 중 네 것이 된 부분이야.`;
+  return R('core','9. 지금 바로 해볼 한 가지',[p1,p2,p3],P,['DM','VEC','MG'],`이번 주에 해 볼 한 가지를 내 일정에 맞게 더 작게 쪼개 줘`);
+}
+function personRows(c){const P=analyze(c);return [secSelf(P),secInside(P),secPeople(P),secLove(P),secWork(P),secMoney(P),secTiming(P),secStars(P),secCore(P)];}
+/* 상세(개인성격·분야 탭): 요약과 다른 내용만 */
+function deepRows(c){
+  const P=analyze(c),S=STRESS[P.stress],D=P.D,tempo={fast:'결정과 행동이 빠른 편이라 상대가 따라오기 전에 먼저 가 있는 일이 있어.',slow:'결정과 행동이 천천히 무르익는 편이라 급하게 재촉받으면 평소 실력이 나오지 않아.'}[P.tempo]||'';
+  const hid=(P.c.pillars.day.hidden||[]).map(h=>`${h.stem}(${h.god})`).join('·');
+  const rows=[];
+  rows.push(R('deep-value','네 강점이 소중한 이유와 필요한 환경',[P_(`${P.stem}${P.el} 일간의 힘이 사람과 일에 만드는 가치로 풀면 ${VAL_DM[P.stem].v}이야.`,`이 힘이 ${GRP[P.top].mode} 쪽 구조 위에서 쓰이기 때문에, 사회에서는 ${MG[P.mg].arena}에서 가장 크게 쓰이는 걸로 읽혀.`),P_(comboLine(P)),P_(...hardLine(P))],P,['DM','VEC','STR','MG','DB'],'내 강점이 가장 잘 쓰이는 환경과 피해야 할 환경을 내 상황에 맞춰 정리해 줘'));
+  rows.push(R('deep-flaw','고쳐야 할 행동을 직설적으로',flawRow(P),P,['DM','VEC','DB','MG','STR'],'내 고쳐야 할 행동을 상대가 기분 상하지 않게 바꾸는 말 습관으로 정리해 줘'));
+  rows.push(R('deep-stress','스트레스를 받으면 이렇게 움직여',[P_(`압박이 커지면 너는 ${S.act}.`,`그러면 곁의 사람은 ${S.felt}.`,`그래서 이럴 땐 ${S.fix}.`),P_(tempo,`일지 안에 숨은 기운(${hid})이 가까운 관계에서 말하지 않아도 작동해서, 겉으로 보이는 것보다 속에서 먼저 반응하는 면이 있어.`)],P,['DB','DP'],'스트레스를 받을 때 내가 보이는 행동을 주변 사람에게 어떻게 설명하면 좋을지 알려 줘'));
+  rows.push(R('deep-lack',P.hasLow?`${J(P.low,'이/가')} 얇은 구조가 만드는 일`:`한쪽으로 치우치지 않은 구조`,[P.hasLow?P_(`${J(P.low,'은/는')} ${P.pct[P.low]}%로 적은 편이라 ${GRP[P.low].lack}`,`그래서 ${J(GRP[P.low].fill,'이/가')} 의식해서 채워야 할 부분이야.`):P_(`십성 배치에서 가장 얇은 쪽도 ${P.pct[P.low]}%라 한 영역이 비어 있다고 보기는 어려워.`,`대신 ${J(P.top,'이/가')} ${P.pct[P.top]}%로 가장 커서 ${GRP[P.top].mode} 힘이 중심을 잡아 줘.`)],P,['VEC'],'내 명식에서 의식해서 채워야 할 부분을 일상 습관으로 바꿔 줘'));
+  return rows;
+}
+function fullRows(c){return personRows(c);}
+function personalityRows(c){const all=personRows(c);return [...all.filter(r=>['self','inside','people','stars'].includes(r.id)),...deepRows(c)];}
+function fieldRows(c){const all=personRows(c);return all.filter(r=>['love','work','money','timing'].includes(r.id));}
+/* 신살 상세 카드 */
+function starContexts(c){
+  const P=analyze(c),names=uniq(P.stars.map(s=>s.name));
+  let base=[];try{base=(typeof premiumStarContexts_513==='function'?premiumStarContexts_513(c):[])||[];}catch(_){}
+  const fMap={};base.forEach(r=>{fMap[r.title]=r;});
+  return names.map(n=>{
+    const hits=P.stars.filter(s=>s.name===n),b=SB[n];
+    const old=fMap[n];
+    if(!b)return old||{id:'star-context-'+n,title:n,lead:true,paragraphs:[`${J(n,'은/는')} 계산에서 성립했지만 이 해설에서 풀이를 추가하지 않은 표식이야. 성립한 위치(${hits.map(h=>SPOS[h.pillar].n).join('·')})만 확인해 둘게.`],facts:old?.facts||[],evidence:hits.map(h=>`${n}(${SPOS[h.pillar].n}${h.basis?' · '+h.basis:''})`).join(' / ')};
+    const ps=hits.map((h,i)=>starPara(P,h,true,i));
+    const who=uniq(P.stars.filter(s=>s.pillar!==hits[0].pillar&&hits.every(h=>h.pillar!==s.pillar)).map(s=>s.name)).slice(0,0);
+    const luck=P.transit.luck&&LUCK[P.transit.luck.god]?`지금 대운 ${J(P.transit.luck.ko,'은/는')} ${J(LUCK[P.transit.luck.god].theme,'이라/라')}, ${n}의 재능(${b.t})을 쓸 때는 이 방향이 잘 맞아. ${LUCK[P.transit.luck.god].use}.`:'';
+    return {id:'star-context-'+n,title:`${n} — ${b.g}`,lead:true,paragraphs:[...ps,luck].filter(Boolean),facts:old?.facts||hits.map(h=>({name:n,pillar:h.pillar,basis:h.basis})),evidence:hits.map(h=>`${n}(${SPOS[h.pillar].n}${h.basis?' · '+h.basis:''})`).join(' / ')+' · '+P.ev.DM};
+  });
+}
+const CATADJ={REL:'호감과 표현',MOVE:'변화에 반응하는 감각',DEEP:'깊은 몰입',LEARN:'배움과 정리',HELP:'도움을 알아보고 청하는 감각',DRIVE:'결단과 추진',KEEP:'기반을 지키는 힘',TUNE:'관계를 조율하는 감각'};
+function starSynthesis(c){
+  const P=analyze(c),st=pickStars(P);
+  if(!st.length)return ['이 명식에서는 뚜렷하게 성립한 신살·귀인이 확인되지 않았어. 성격과 재능은 앞의 십성 배치와 원국 관계에서 읽어.'];
+  const lead=st.slice(0,3).map(s=>`${s.name}(${SPOS[s.pillar].n})`).join(', ');
+  const cats=uniq(st.slice(0,3).map(s=>STAR_CAT[s.name]||'TUNE'));
+  const link=cats.length>=2?`${J(CATADJ[cats[0]],'과/와')} ${J(CATADJ[cats[1]],'이/가')} 한 명식에 함께 있어서, ${J(CATADJ[cats[0]],'으로/로')} 문을 열고 ${J(CATADJ[cats[1]],'으로/로')} 이어 가는 구성으로 읽혀.`:`${st.slice(0,3).length>1?'같은 결의 별이 겹쳐서':'이 별 하나가'} ${CATADJ[cats[0]]} 쪽 재능을 분명하게 보여 줘.`;
+  return [P_(`이 명식의 별은 ${J(lead,'이/가')} 중심이야.`,...st.slice(0,3).map(s=>`${SPOS[s.pillar].tag}에서는 ${J(SB[s.name].t,'이/가')} 살아나.`),link,`이 별들은 ${J(P.top,'이/가')} 중심인 네 구조에서 ${GRP[P.top].mode} 방식으로 쓸 때 가장 선명하게 쓰여.`)];
+}
+
+/* ===== 궁합 재료 은행 ===== */
+/* 일간별 3인칭 소개: gift=관계에서 상대가 누리는 장점 / edge=가까워질수록 상대에게 닿는 부담 */
+const PDM={
+갑:{gift:'방향이 흐릿할 때 먼저 길을 정하고 함께 가는 사람이 불안하지 않게 앞에 서 주는 힘',edge:'한번 정한 방향은 쉽게 굽히지 않아서, 상대 의견이 나오기 전에 결론이 서 있는 일이 생기는 것'},
+을:{gift:'상대의 기분과 상황에 맞춰 부드럽게 길을 내고 어려운 자리를 풀어 주는 감각',edge:'맞춰 주는 동안 정작 자기가 원하는 걸 말하지 않다가 한참 뒤에 지쳐서 꺼내는 것'},
+병:{gift:'어느 자리에서든 분위기를 밝히고 먼저 마음을 열어서 사람들이 편하게 말을 꺼내게 하는 힘',edge:'기분이 크게 오르내리는 모습이 그대로 얼굴과 말에 드러나서 상대가 분위기를 맞추게 되는 것'},
+정:{gift:'작은 표정과 말투의 변화를 알아채고 필요한 순간에 조용히 챙기는 섬세함',edge:'서운한 마음을 말하지 않고 오래 품다가 어느 날 한꺼번에 거리를 두는 것'},
+무:{gift:'흔들리는 상황에서 중심을 잡고 약속한 일은 끝까지 지켜서 곁의 사람이 기댈 수 있게 하는 힘',edge:'한번 마음을 정하면 느리게 움직여서 상대가 바라는 변화가 한참 뒤에야 닿는 것'},
+기:{gift:'상대의 사정을 받아 주고 일상을 실제로 돌아가게 만드는 현실적인 돌봄',edge:'챙기느라 자기 몫을 뒤로 미루다가 말 없이 지치고, 그 피로를 상대가 뒤늦게 알게 되는 것'},
+경:{gift:'옳고 그름을 분명히 가르고 결단해서 흐지부지되던 일을 매듭짓는 힘',edge:'결론을 짧고 단호하게 말해서, 내용이 맞아도 상대는 평가받았다고 느끼는 것'},
+신:{gift:'모두가 넘긴 어긋남을 먼저 알아채고 끝까지 확인해서 곁의 사람이 안심하고 맡기게 만드는 꼼꼼함',edge:'고칠 점이 눈에 들어오는 대로 짚어서 상대가 같이 있는 시간을 점검받는 시간처럼 느끼는 것'},
+임:{gift:'넓게 보고 유연하게 움직이면서 막힌 상황에서도 다른 길을 찾아내는 힘',edge:'생각이 커지면서 결정이 늦어지거나 혼자 결론을 내려서 상대가 상황을 뒤늦게 아는 것'},
+계:{gift:'눈에 띄지 않는 분위기와 마음의 결을 읽고 필요한 말을 건네는 깊은 감각',edge:'속으로 이미 정리한 결론을 설명 없이 행동으로 옮겨서 상대가 이유 없이 거리가 생겼다고 느끼는 것'}
+};
+/* 상대를 어떻게 보는가(일간 기준 상대 십성) */
+const SEES={
+비견:{short:'대등한 거울 같은 사람',kw:'대등한 편안함',pull:'말하지 않아도 속도와 기준이 비슷하게 읽혀서 편하게 느껴져'},
+겁재:{short:'가까운 곳에서 자극을 주는 맞수 같은 사람',kw:'자극을 주는 맞수 같은 힘',pull:'닮은 승부감과 솔직함이 보여서 신경이 계속 가'},
+식신:{short:'곁에서 마음 놓고 쉴 수 있는 사람',kw:'마음 놓이는 편안함',pull:'같이 있으면 긴장이 풀리고 가진 걸 편하게 내보이게 돼'},
+상관:{short:'자기 틀을 흔들면서 새로운 표현을 끌어내는 사람',kw:'새로운 표현을 끌어내는 자극',pull:'평소 안 하던 말과 시도가 나오게 해서 같이 있으면 생기가 생겨'},
+정재:{short:'챙기고 싶고 현실적으로 믿음이 가는 사람',kw:'현실적인 믿음',pull:'약속과 생활을 성실하게 다루는 모습이 보여서 마음이 놓여'},
+편재:{short:'활기와 기회를 넓혀 주는 사람',kw:'세상이 넓어지는 활기',pull:'같이 있으면 세상이 넓어지는 느낌이 들고 새로운 곳에 가고 싶어져'},
+정관:{short:'기준과 책임으로 믿음을 주는 사람',kw:'기준과 책임에서 오는 믿음',pull:'말과 행동이 일치하는 단정한 모습에 존중하는 마음이 생겨'},
+편관:{short:'긴장과 카리스마로 끌어당기는 사람',kw:'긴장 섞인 카리스마',pull:'강한 존재감 앞에서 스스로를 더 단단하게 만들고 싶은 마음이 생겨'},
+정인:{short:'자기를 받아 주고 이해해 주는 사람',kw:'받아 주는 이해',pull:'기대고 싶고 이야기를 털어놓으면 정리되는 느낌이 들어'},
+편인:{short:'생각이 독특해서 대화가 깊어지는 사람',kw:'깊어지는 대화',pull:'다른 관점으로 설명해 주는 모습에 호기심이 오래 가'}
+};
+/* 총점대 */
+function toneOf(score){return score>=80?'high':score>=70?'good':score>=60?'mid':'hard';}
+const TONE_TXT={
+high:'전체 결이 잘 맞는 편이라, 차이가 있어도 서로를 이해하는 속도가 빠른 관계로 읽혀.',
+good:'장점이 뚜렷하게 크고 그에 맞는 차이도 있어서, 어떻게 합의하느냐에 따라 편안함이 더 커지는 관계로 읽혀.',
+mid:'끌리는 부분과 부딪히는 부분이 비슷한 비중으로 있어서, 서로의 방식을 배우는 과정이 꼭 필요한 관계로 읽혀.',
+hard:'서로의 방식이 많이 달라서 의식적으로 맞추는 노력이 없으면 같은 불편이 반복되기 쉬운 관계로 읽혀.'
+};
+const IDX={love:'연애 흐름',personality:'성향 조화',money:'돈 감각',future:'앞으로의 방향',distance:'거리감'};
+const IDX_PRO={
+love:'감정이 오가는 속도와 서로를 향한 호감이 자연스럽게 이어지는 점',
+personality:'서로의 성격이 부딪히기보다 보완되는 점',
+money:'돈과 소비를 보는 감각이 비슷하거나 서로를 채워 주는 점',
+future:'앞으로의 방향과 생활 리듬을 맞춰 갈 수 있는 점',
+distance:'가까움과 혼자 있는 시간의 균형을 비교적 편하게 맞출 수 있는 점'
+};
+const IDX_CON={
+love:'감정을 표현하고 받는 방식에서 엇갈리기 쉬운 점',
+personality:'성격 차이가 커서 같은 말도 다르게 닿기 쉬운 점',
+money:'돈을 쓰고 모으는 기준이 달라 합의가 필요한 점',
+future:'앞으로의 방향과 속도를 맞추는 데 대화가 많이 필요한 점',
+distance:'가까움과 혼자 있는 시간의 기대가 달라 거리 조절이 필요한 점'
+};
+/* 핫/콜드 스트레스 반응 */
+const HOT=['blaze','push','cut','audit'],COLD=['ember','carry','adapt','sense'];
+/* 주는 방식 → 받는 방식 어긋남(가족 단위) */
+const MISM={
+ 'E>R':(g,r)=>`${g}의 방식은 말과 분위기로 마음을 보여 주는 쪽인데, ${J(r,'은/는')} 실제로 지켜진 약속과 행동에서 마음을 확인해. 그래서 다정한 말이 많아도 지켜지지 않은 일 하나가 더 오래 남을 수 있어.`,
+ 'E>F':(g,r)=>`${J(g,'은/는')} 마음을 자주 표현하고 곁에 머물려 하는데, ${J(r,'은/는')} 자기 속도와 결정을 존중받을 때 마음이 열려. 다정한 접근이 반복되면 ${r}에게는 마음은 알겠지만 숨 쉴 틈이 줄어드는 느낌이 먼저 올 수 있어.`,
+ 'E>D':(g,r)=>`${J(g,'은/는')} 상대 기분을 살피며 부드럽게 돌려 말하는데, ${J(r,'은/는')} 돌리지 않은 말이 진심이라고 느껴. 부드러운 표현이 ${r}에게는 뭔가 감추는 것처럼 들릴 수 있어.`,
+ 'R>E':(g,r)=>`${J(g,'은/는')} 약속을 지키고 해야 할 일을 챙기는 것으로 마음을 쓰는데, ${J(r,'은/는')} 마음을 말로 확인받고 이야기를 들어 줄 때 사랑받는다고 느껴. 행동은 충분한데 말이 없으면 ${J(r,'은/는')} 마음이 있는지 확신이 약해질 수 있어.`,
+ 'R>F':(g,r)=>`${J(g,'은/는')} 계획과 규칙으로 안정을 주려 하는데, ${J(r,'은/는')} 자기 선택권이 있어야 숨이 쉬어져. ${g}의 챙김이 ${r}에게는 정해진 틀로 느껴질 수 있어.`,
+ 'R>D':(g,r)=>`${J(g,'은/는')} 말없이 일정과 기준을 맞춰 주는 걸 성의로 생각하는데, ${J(r,'은/는')} 솔직한 한마디를 원해. 조용한 맞춤이 ${r}에게는 속마음을 말하지 않는 것으로 읽힐 수 있어.`,
+ 'F>E':(g,r)=>`${J(g,'은/는')} 밀어붙이지 않고 기다려 주는 걸 배려로 생각하는데, ${J(r,'은/는')} 먼저 다가와 말해 주길 바라. 기다림이 ${r}에게는 무관심으로 읽힐 수 있어.`,
+ 'F>R':(g,r)=>`${J(g,'은/는')} 상대의 속도와 결정을 존중하며 느슨하게 열어 두는 쪽인데, ${J(r,'은/는')} 정한 일이 지켜지는 데서 안심해. ${g}의 느슨함이 ${r}에게는 약속을 가볍게 여기는 것처럼 보일 수 있어.`,
+ 'F>D':(g,r)=>`${J(g,'은/는')} 서로의 자유를 존중하느라 불편한 이야기를 미루는 편인데, ${J(r,'은/는')} 바로 말해 주길 원해. 미룬 이야기가 ${r}에게는 거리를 두는 신호로 읽힐 수 있어.`,
+ 'F>N':(g,r)=>`${J(g,'은/는')} 서로의 시간을 존중하느라 각자 보내는 시간이 길어지는 편인데, ${J(r,'은/는')} 같이 새로운 걸 해 볼 때 관계가 살아 있다고 느껴. 존중하는 거리가 ${r}에게는 함께할 의지가 약한 것으로 읽힐 수 있어.`,
+ 'D>E':(g,r)=>`${J(g,'은/는')} 솔직하게 말하는 것이 성의라고 생각하는데, ${J(r,'은/는')} 말투와 순서에서 마음을 확인해. 내용이 맞아도 ${r}에게는 차갑게 닿을 수 있어.`,
+ 'D>R':(g,r)=>`${J(g,'은/는')} 돌리지 않고 말해 주는 걸로 신뢰를 쌓으려 하는데, ${J(r,'은/는')} 말보다 실제로 지켜지는 행동을 믿어. 솔직한 말에 행동이 따르지 않으면 ${r}에게는 말뿐으로 느껴질 수 있어.`,
+ 'D>F':(g,r)=>`${J(g,'은/는')} 바로 말해 주는 걸 신뢰라고 생각하는데, ${J(r,'은/는')} 정리할 시간이 필요해. 즉각적인 직설이 ${r}에게는 몰아붙임으로 느껴질 수 있어.`,
+ 'D>N':(g,r)=>`${J(g,'은/는')} 솔직한 한마디로 마음을 보여 주는데, ${J(r,'은/는')} 같이 해 보는 경험에서 마음을 확인해. 말은 선명한데 함께 한 일이 적으면 ${r}에게는 허전하게 남을 수 있어.`,
+ 'E>N':(g,r)=>`${J(g,'은/는')} 말과 분위기로 곁을 지키는데, ${J(r,'은/는')} 같이 새로운 걸 해 볼 때 관계가 살아 있다고 느껴. 익숙한 다정함이 반복되면 ${r}에게는 마음은 알아도 설렘이 줄어드는 시간으로 읽힐 수 있어.`,
+ 'R>N':(g,r)=>`${J(g,'은/는')} 약속과 일정으로 안정을 만드는데, ${J(r,'은/는')} 같은 틀이 이어지면 관계가 식어 간다고 느껴. 안정을 지키는 노력이 ${r}에게는 변화를 막는 것으로 읽힐 수 있어.`,
+ 'N>E':(g,r)=>`${J(g,'은/는')} 새로운 곳과 할 일을 먼저 꺼내서 즐거움을 주려 하는데, ${J(r,'은/는')} 마음을 말로 확인받는 게 먼저야. 이벤트가 많아도 마음을 물어봐 주지 않았다고 느끼면 ${r}에게는 공허하게 남을 수 있어.`,
+ 'N>R':(g,r)=>`${J(g,'은/는')} 새 계획을 먼저 꺼내서 관계에 활력을 주려 하는데, ${J(r,'은/는')} 이미 한 약속이 지켜지는 데서 안심해. 특히 ${J(g,'이/가')} 좋은 마음으로 새 일정을 먼저 정해 버리면, ${r}에게는 설렘보다 자기 시간과 의견이 빠진 채 결정됐다는 느낌이 먼저 올 수 있어. 문제는 제안이 아니라 함께 정할 일을 혼자 확정하는 순간이야.`,
+ 'N>D':(g,r)=>`${J(g,'은/는')} 새 제안으로 분위기를 띄우는 편인데, ${J(r,'은/는')} 솔직한 말에서 마음을 확인해. 불편한 이야기를 하기 전에 새 계획이 나오면 ${r}에게는 대화를 피하는 방법으로 보일 수 있어.`,
+ 'N>F':(g,r)=>`${J(g,'은/는')} 새 계획을 신나게 꺼내는 편인데, ${J(r,'은/는')} 자기 속도와 결정이 존중될 때 마음이 열려. 제안이 연달아 오면 ${r}에게는 고를 여유가 줄어든다고 느껴질 수 있어.`
+};
+const MISM_SAMEFAM=(g,r,cg,cw)=>`${J(g,'과/와')} ${J(r,'은/는')} 마음을 쓰는 큰 방향은 같아. 다만 ${J(g,'이/가')} 건네는 건 ${cg.give}인데 ${J(r,'이/가')} 확실하게 느끼는 건 ${w3(cw)}이라서, 같은 마음이 조금 다른 모양으로 닿아.`;
+/* (미사용 보관) */
+const NOVEL_R=(g,r)=>`특히 ${J(g,'이/가')} 좋은 마음으로 새 계획을 먼저 정해 버리면, ${r}에게는 설렘보다 자기 시간과 의견이 빠진 채 결정됐다는 느낌이 먼저 올 수 있어. 문제는 제안이 아니라 함께 정할 일을 혼자 확정하는 순간이야.`;
+/* 둘 다 같은 것을 원할 때 */
+function sameWant(a,b,w){
+  const c=CUR[w];
+  return `${J(a,'과/와')} ${J(b,'은/는')} 둘 다 ${J(w3(c),'을/를')} 가장 원해. 같은 필요를 가진 사이라 서로의 마음을 빨리 이해하는 장점이 있지만, 그만큼 둘 다 받으려고 기다리는 순간이 생기기 쉬워. 그래서 이 조합에서 중요한 건 받는 방식의 차이가 아니라 누가 먼저 건네느냐야.`;
+}
+/* 스트레스 패턴 */
+function stressPattern(a,b){
+  const ha=HOT.includes(a),hb=HOT.includes(b),ca=COLD.includes(a),cb=COLD.includes(b);
+  if(a===b)return 'mirror';
+  if(ha&&hb)return 'HH';
+  if(ca&&cb)return 'CC';
+  if((ha&&cb)||(ca&&hb))return ha?'HC':'CH';
+  return 'MIX';
+}
+const ZN={year:'자란 환경과 바깥 사람을 대하는 방식',month:'일하고 사회에서 쓰는 방식',day:'가까운 사람 앞의 본모습',hour:'앞으로 남기고 싶은 결과와 방향'};
+const PTYPE={
+ 합:{eff:'서로 끌려서 한 덩어리처럼 움직이려는 힘',good:'같은 방향으로 모이려는 힘이라 말이 덜 필요한 편안함이 생겨',cost:'서로 맞춰 주는 데 익숙해져 불편한 이야기를 미루기 쉬워',tip:'편한 대로 흘러가는 부분에서도 한 달에 한 번은 서운한 점이 없는지 물어봐'},
+ 충:{eff:'서로 반대로 당기는 힘',good:'서로 몰랐던 방식을 보여 줘서 자극이 되고 한쪽이 놓친 방향을 잡아 줘',cost:'결정할 때마다 서로 다른 기준이 부딪혀 의견이 갈리기 쉬워',tip:'결정 전에 각자 양보할 수 없는 한 가지만 먼저 말해 두면 부딪힘이 줄어'},
+ 형:{eff:'같은 종류의 불편이 모양을 바꿔 반복되는 힘',good:'서로의 기준을 계속 다듬게 해서 관계가 깊어질수록 단단해질 여지가 있어',cost:'비슷한 불편이 계속 돌아와 지친다는 느낌이 들기 쉬워',tip:'반복되는 불편은 감정이 가라앉았을 때 한 줄로 적어 서로 공유해'},
+ 파:{eff:'정해 둔 계획이 중간에 어긋나는 힘',good:'틀에 박힌 계획이 깨져 새로운 방식이 들어올 여지가 생겨',cost:'약속과 일정이 중간에 바뀌어 한쪽이 번번이 다시 맞춰야 해',tip:'일정은 처음부터 여유 구간을 두고 바뀌면 바로 알리는 걸 규칙으로 해'},
+ 해:{eff:'좋은 뜻이 다르게 전달되는 힘',good:'서로를 챙기려는 마음이 있다는 신호이기도 해',cost:'잘해 주려 한 말이 오해로 닿아 서운함이 남기 쉬워',tip:'중요한 말 끝에는 “내 말이 어떻게 들렸어?”라고 물어 확인해'}
+};
+
+/* ===== 궁합 분석·작성 ===== */
+const SCENE={
+words:'바빠서 연락이 뜸했던 날 저녁',listen:'하루 동안 속상했던 일을 꺼낸 밤',action:'부탁해 둔 일이 며칠째 그대로인 주말',steady:'약속 시간이 말없이 30분 밀린 날',space:'주말 일정을 한쪽이 먼저 정해서 알려 온 날',novelty:'몇 주째 같은 장소, 같은 코스로 만나는 평일',comfort:'쉬려고 만난 날 일정이 빡빡하게 짜여 있던 때',order:'만날 장소와 시간이 막판까지 정해지지 않은 날',candid:'마음에 걸리는 게 있는데 한쪽이 “괜찮아”라고만 한 날'
+};
+const SCENE_GEN={HH:'둘 다 컨디션이 안 좋은 날 사소한 일로 말이 오간 저녁',CC:'둘 다 바쁜 한 주를 보내고 오랜만에 마주 앉은 날',mirror:'같은 일로 둘 다 지쳐 있는 날',HC:'한쪽이 급하게 정리하고 싶어 하는 일이 생긴 날',CH:'한쪽이 급하게 정리하고 싶어 하는 일이 생긴 날',MIX:'일정과 기대가 어긋난 날'};
+const ZS={year:'년주',month:'월주',day:'일주',hour:'시주'};
+const ZG={year:'자란 환경',month:'일하는 방식',day:'가까운 사람 앞의 모습',hour:'앞으로의 방향'};
+function zp(a,b,h){return `${a}의 ${ZS[h.ak]}(${ZG[h.ak]})와 ${b}의 ${ZS[h.bk]}(${ZG[h.bk]})`;}
+function dedupeHits(d){
+  const seen=new Set(),out=[];
+  const hs=(d?.q?.sig?.hits||[]).slice().sort((x,y)=>(y.weight||0)-(x.weight||0)||(((y.ak==='day'||y.bk==='day')?1:0)-((x.ak==='day'||x.bk==='day')?1:0)));
+  hs.forEach(h=>{const t=relKind(h.type);if(!t)return;const k=t+'|'+h.ak+'|'+h.bk;if(seen.has(k))return;seen.add(k);out.push({type:t,raw:h.type,ak:h.ak,bk:h.bk,w:h.weight||1});});
+  return out;
+}
+function pairCtx(x){
+  const ca=x.a||x.d?.a,cb=x.b||x.d?.b,d=x.d||{},m=x.m||d.m||{};
+  const PA=analyze(ca),PB=analyze(cb),a=PA.name,b=PB.name;
+  const score=Math.round(Number.isFinite(+m.score)?+m.score:(Number.isFinite(+d.score)?+d.score:0)),tone=toneOf(score);
+  const idxKeys=['love','personality','money','future','distance'].filter(k=>Number.isFinite(+m[k]));
+  const byIdx=idxKeys.slice().sort((p,q)=>m[q]-m[p]);
+  const hits=dedupeHits(d),cross=d.cross||{},patt=stressPattern(PA.stress,PB.stress);
+  const dir=(PG,PR)=>{const cg=CUR[PG.give],cw=CUR[PR.want];const match=PG.give===PR.want;const same=!match&&cg.fam===cw.fam;return {match,same,fg:cg.fam,fr:cw.fam};};
+  return {x,ca,cb,d,m,PA,PB,a,b,score,tone,idx:{keys:idxKeys,best:byIdx[0],worst:byIdx[byIdx.length-1]},hits,cross,patt,ab:dir(PA,PB),ba:dir(PB,PA),sameW:PA.want===PB.want,tempoDiff:!!(PA.tempo&&PB.tempo&&PA.tempo!==PB.tempo),opp:!!d.q?.oppositeTemp,tension:d.q?.sig?.tension||0,combine:d.q?.sig?.combine||0};
+}
+const fl=s=>String(s).replace(/네가/g,'상대가').replace(/네 /g,'상대 ');
+function dirText(g,r,PG,PR,o){
+  const cg=CUR[PG.give],cw=CUR[PR.want];
+  if(o.match)return `${J(g,'이/가')} 건네는 방식(${cg.give})이 ${J(r,'이/가')} 가장 편하게 받는 방식(${w3(cw)})과 맞아떨어져. ${J(r,'은/는')} 따로 설명하지 않아도 마음이 닿는 경험을 하게 돼.`;
+  if(o.same)return `${J(g,'과/와')} ${J(r,'은/는')} 마음을 쓰는 큰 방향은 같아. 다만 ${J(g,'이/가')} 건네는 건 ${cg.give}인데 ${J(r,'이/가')} 확실하게 느끼는 건 ${w3(cw)}이라서, 같은 마음이 조금 다른 모양으로 닿아.`;
+  return MISM[o.fg+'>'+o.fr](g,r);
+}
+function fixLine(g,r,PR){const cw=CUR[PR.want];return `${J(g,'이/가')} 바꿀 건 하나야. ${r}에게는 ${J(w3(cw),'이/가')} 확인되는 순간이 필요하니까, ${cw.give} 쪽을 일주일에 한두 번이라도 의식해서 해 봐.`;}
+function mismatchPick(C){
+  const {PA,PB,a,b,ab,ba}=C;
+  const wt=o=>o.match?0:o.same?2:5;
+  const wa=wt(ab),wb=wt(ba);
+  if(!wa&&!wb)return null;
+  return wa>=wb?{g:a,r:b,PG:PA,PR:PB,o:ab}:{g:b,r:a,PG:PB,PR:PA,o:ba};
+}
+function pattSentence(C){
+  const {PA,PB,a,b,patt}=C;
+  return {
+    HC:`한쪽이 다가갈수록 다른 쪽이 물러나는 고리라서, 서로의 반응이 상대의 불안을 키우는 구조야.`,
+    CH:`한쪽이 다가갈수록 다른 쪽이 물러나는 고리라서, 서로의 반응이 상대의 불안을 키우는 구조야.`,
+    HH:`둘 다 바로 반응하는 쪽이라 누가 맞는지 가리기 전에 속도를 늦추는 약속이 필요해.`,
+    CC:`둘 다 조용히 처리하는 쪽이라 크게 싸우는 대신 서로 말하지 않은 채 멀어지는 형태로 진행돼.`,
+    mirror:`두 사람이 같은 방식으로 반응해서 이해는 빠르지만, 아무도 흐름을 바꾸지 않으면 같은 지점에서 함께 멈춰.`,
+    MIX:`한 사람의 반응이 다른 사람의 반응을 부르는 구조라, 시작점을 끊어 주는 쪽이 있으면 훨씬 가벼워져.`
+  }[patt];
+}
+function stressChainOnly(C){
+  const {PA,PB,a,b,patt}=C,SA=STRESS[PA.stress],SB_=STRESS[PB.stress];
+  const hotIsA=HOT.includes(PA.stress);
+  let f,s,Pf,Ps;
+  if(patt==='HC'||patt==='CH'){[f,s,Pf,Ps]=hotIsA?[a,b,PA,PB]:[b,a,PB,PA];}else{[f,s,Pf,Ps]=[a,b,PA,PB];}
+  return P_(`압박이 생기면 ${J(f,'은/는')} ${STRESS[Pf.stress].act}.`,`그러면 ${J(s,'은/는')} ${fl(STRESS[Pf.stress].felt)}.`,`${J(s,'은/는')} ${STRESS[Ps.stress].act}.`,`${J(f,'은/는')} 그 모습을 보면서 ${fl(STRESS[Ps.stress].felt)}.`);
+}
+function pairEv(C,extra){
+  const {m,PA,PB,a,b}=C;
+  const ev=[`총점 ${C.score}`,`연애 ${m.love} · 성향 ${m.personality} · 돈 ${m.money} · 방향 ${m.future} · 거리 ${m.distance}`];
+  ev.push(`${a} ${PA.stem}${PA.el} 일간 · 월간 ${PA.mg} · 일지 ${PA.dayGod}`,`${b} ${PB.stem}${PB.el} 일간 · 월간 ${PB.mg} · 일지 ${PB.dayGod}`);
+  if(C.cross.aSeesB)ev.push(`${a}→${b} 십성 ${C.cross.aSeesB} · ${b}→${a} ${C.cross.bSeesA}`);
+  return [...ev,...(extra||[])].join(' · ');
+}
+function PR_(id,title,paras,C,ask,extraEv){const ps=paras.filter(Boolean);return {id,eyebrow:'',title,lead:false,paragraphs:ps,body:ps.join('\n\n'),ask,evidence:pairEv(C,extraEv)};}
+function frictionBrief(C){
+  const {PA,PB,a,b,patt,sameW}=C,list=[];
+  const hotIsA=HOT.includes(PA.stress);
+  const [f,s,Pf,Ps]=(patt==='HC'||patt==='CH')&&!hotIsA?[b,a,PB,PA]:[a,b,PA,PB];
+  list.push({w:{mirror:3,HH:5,HC:6,CH:6,CC:4,MIX:2}[patt]||2,t:()=>patt==='mirror'?`갈등이 커질 때 두 사람 모두 ${STRESS[PA.stress].tag} 쪽으로 반응해서 같은 지점에서 함께 멈추기 쉬운 점이야.`:`갈등이 커질 때 ${J(f,'은/는')} ${STRESS[Pf.stress].tag} 쪽이고 ${J(s,'은/는')} ${STRESS[Ps.stress].tag} 쪽이라, 서로의 반응이 서로를 키우는 점이야.`});
+  const mp=mismatchPick(C);
+  if(mp)list.push({w:mp.o.same?2:5,t:()=>`${J(mp.g,'이/가')} 마음을 쓰는 방식(${CUR[mp.PG.give].give})과 ${J(mp.r,'이/가')} 마음 놓이는 방식(${w3(CUR[mp.PR.want])})이 어긋나는 점이야.`});
+  if(sameW)list.push({w:4,t:()=>`둘 다 ${J(w3(CUR[PA.want]),'을/를')} 가장 원해서 누가 먼저 건네느냐가 문제가 되는 점이야.`});
+  if(C.tempoDiff)list.push({w:3,t:()=>`${J(PA.tempo==='fast'?a:b,'은/는')} 결정과 행동이 빠르고 ${J(PA.tempo==='fast'?b:a,'은/는')} 천천히 무르익는 편이라서 속도가 다른 점이야.`});
+  if(C.tension>=6)list.push({w:C.tension>=10?6:4,t:()=>`두 원국이 여러 층에서 부딪히는 구조라 결정할 때마다 의견이 갈리기 쉬운 점이야.`});
+  list.sort((p,q)=>q.w-p.w);
+  return list[0].t();
+}
+const HOLD=['정','기','계'],OPEN=['겁재','상관'];
+function portrait(P,n,v){
+  const dg=DG[P.dayGod],w=PDM[P.stem];
+  const contra=HOLD.includes(P.stem)&&OPEN.includes(P.dayGod);
+  const edge=contra?`가까운 사이에서는 마음을 말로 풀어내길 원하는 사람인데, 정작 부담으로 드러나는 건 정반대로 ${w.edge}이야. 평소에 표현하는 사람이라 상대는 그 순간의 침묵을 더 낯설게 느껴.`:`가까워질수록 부담으로 드러나는 건 ${J(w.edge,'이야/야')}.`;
+  if(v===0)return P_(`${J(n,'은/는')} ${J(w.gift,'을/를')} 가진 사람이야.`,`처음엔 ${J(P.D.seen,'으로/로')} 보이고, 가까워지면 ${dg.close}.`,edge.replace('가까운 사이에서는 마음을 말로 풀어내길 원하는 사람인데, 정작 ','그런데 '));
+  return P_(`${n}의 첫인상은 ${J(P.D.seen,'이야/야')}.`,`가까워지면 ${dg.close}.`,`곁의 사람에게 주는 건 ${J(w.gift,'이고/고')}, ${contra?edge.replace('가까운 사이에서는 마음을 말로 풀어내길 원하는 사람인데, 정작 부담으로 드러나는 건 정반대로','부담으로 드러나는 건 정반대로 '):edge}`);
+}
+function pairCore(C){
+  const {PA,PB,a,b,score,m,tone,idx}=C;
+  const p1=P_(`${a}님과 ${b}님의 총점은 ${score}점이야. ${TONE_TXT[tone]}`,`세부 지수는 연애 흐름 ${m.love}, 성향 조화 ${m.personality}, 돈 감각 ${m.money}, 앞으로의 방향 ${m.future}, 거리감 ${m.distance}인데, ${IDX[idx.best]}(${m[idx.best]})이 가장 높고 ${IDX[idx.worst]}(${m[idx.worst]})이 가장 낮아.`,`점수는 두 원국이 맞물리는 구조를 정리한 지표라서 마음이나 앞으로의 결과를 정하는 숫자로 읽지 않았으면 해.`);
+  const p2=portrait(PA,a,0),p3=portrait(PB,b,1);
+  const fr=frictionBrief(C);
+  const strong=P_(`두 사람의 가장 큰 장점은 ${IDX_PRO[idx.best]}이야.`,C.cross.aSeesB&&C.cross.bSeesA?`${J(a,'은/는')} ${J(b,'을/를')} ${J(SEES[C.cross.aSeesB].short,'으로/로')} 느끼고, ${J(b,'은/는')} ${J(a,'을/를')} ${J(SEES[C.cross.bSeesA].short,'으로/로')} 느끼는 구조라서 서로에게 끌리는 이유가 분명해.`:'');
+  const hard=`가장 큰 어려움은 ${fr}`;
+  const p4=P_(strong);
+  const title=`${a}님과 ${b}님 — ${score}점, ${{high:'기본 결이 잘 맞는',good:'장점이 크고 합의가 중요한',mid:'끌림과 마찰이 함께 있는',hard:'차이가 커서 조율이 필요한'}[tone]} 조합`;
+  return PR_('pair-core',title,[p1,...openAnswers(C),p2,p3,p4],C,`${a}님과 ${b}님 관계에서 가장 먼저 지켜야 할 한 가지가 뭔지 알려 줘`);
+}
+function pairAttraction(C){
+  const {PA,PB,a,b,cross,hits,tone}=C;
+  const sa=SEES[cross.aSeesB],sb=SEES[cross.bSeesA];
+  const ps=[];
+  if(sa&&sb){
+    ps.push(P_(`${J(a,'은/는')} ${J(b,'을/를')} ${J(sa.short,'으로/로')} 느껴. ${sa.pull}.`,`${J(b,'이/가')} 평소 건네는 ${J(CUR[PB.give].give,'이/가')} 그 인상을 만들어.`));
+    ps.push(P_(`${b} 쪽에서는 ${J(a,'이/가')} ${J(sb.short,'으로/로')} 보여. ${sb.pull}.`,`${J(a,'이/가')} 건네는 ${J(CUR[PA.give].give,'이/가')} ${b}에게 닿는 부분이야.`));
+  }else{
+    ps.push(`${J(a,'은/는')} ${b}가 건네는 ${CUR[PB.give].give}에 끌려.`);
+    ps.push(`${J(b,'은/는')} ${a}가 건네는 ${CUR[PA.give].give}에 마음이 가.`);
+  }
+  const comp=[];
+  [[PA,PB,a,b],[PB,PA,b,a]].forEach(([G,R,g,r])=>{if(R.hasLow&&G.pct[R.low]>=22)comp.push(`${r}의 명식에서는 ${J(R.low,'이/가')} ${R.pct[R.low]}%로 가장 적은데 ${J(g,'은/는')} ${G.pct[R.low]}%로 풍부해서, ${J(r,'은/는')} ${g} 곁에서 평소 의식해서 채워야 하던 부분이 자연스럽게 채워져.`);});
+  if(comp.length)ps.push(comp.join(' '));
+  else if(PA.top===PB.top)ps.push(`두 사람 모두 ${J(PA.top,'이/가')} 가장 큰 구조라서 ${GRP[PA.top].mode} 방식이 서로 통해. 같은 언어를 쓴다는 편안함이 크지만, 같은 약점도 함께 가지고 있다는 뜻이기도 해.`);
+  else ps.push(`${J(a,'은/는')} ${GRP[PA.top].mode} 힘이 중심이고 ${J(b,'은/는')} ${GRP[PB.top].mode} 힘이 중심이라, 서로가 가진 것이 달라서 관심이 오래 가.`);
+  const hp=hits.filter(h=>h.type==='합').slice(0,2);
+  if(hp.length)ps.push(`원국에서도 두 사람 사이에 ${hp.map(h=>h.raw).filter((v,k,x)=>x.indexOf(v)===k).join('·')} 관계가 확인돼. 그래서 길게 설명하지 않아도 통하는 순간이 자주 생기는 쪽이야.`);
+  if(C.ab.match||C.ba.match){
+    const both=C.ab.match&&C.ba.match;
+    const [g,r,PG]=C.ab.match?[a,b,PA]:[b,a,PB];
+    ps.push(both?`게다가 두 사람은 서로가 건네는 방식과 받고 싶은 방식이 모두 맞아떨어져. ${J(a,'은/는')} ${J(CUR[PA.give].give,'을/를')} 건네고 ${J(b,'은/는')} ${J(CUR[PB.give].give,'을/를')} 건네는데, 둘 다 상대가 가장 편하게 받는 방식이야.`:`특히 ${J(g,'이/가')} 건네는 방식(${CUR[PG.give].give})은 ${J(r,'이/가')} 가장 편하게 받는 방식과 같아서, ${J(r,'은/는')} 따로 부탁하지 않아도 마음이 닿는 경험을 해.`);
+  }
+  if(tone==='high'||tone==='good')ps.push(`이 끌림이 일상의 편안함으로 이어지는 이유는 서로의 장점을 있는 그대로 알아보기 때문이야. ${J(b,'이/가')} ${J(CUR[PB.give].give,'을/를')} 해 주면 ${J(a,'은/는')} 그것을 자연스러운 배려로 받고, ${J(a,'이/가')} ${J(CUR[PA.give].give,'을/를')} 해 주면 ${J(b,'은/는')} 안정감으로 느낄 수 있어.`);
+  if(tone==='high'||tone==='good'){
+    const eff=(G,R,g,r)=>`${J(g,'은/는')} ${GRP[G.top].mode} 힘이 중심이라 곁에 있는 ${r}에게 분명한 도움이 돼. ${GRP[G.top].relief}`;
+    ps.push(P_(eff(PA,PB,a,b),eff(PB,PA,b,a)));
+    if(tone==='high')ps.push(`두 사람은 서로의 약점을 크게 건드리지 않고 장점을 끌어내는 쪽으로 맞물려 있는 것으로 읽혀. 이 편안함은 구조에서 읽히는 장점이라 처음에는 노력 없이도 느껴질 수 있어. 다만 편안함이 생활 합의와 표현을 대신해 주지는 않아서, 다음 영역별 무게에서 약한 쪽을 같이 봐야 해.`);
+  }
+  const title=sa&&sb?`끌리는 이유 — ${J(a,'은/는')} ${SEES[cross.aSeesB].kw}에, ${J(b,'은/는')} ${SEES[cross.bSeesA].kw}에 마음이 가`:'끌리는 이유';
+  return PR_('pair-attraction',title,ps,C,`${a}님과 ${b}님이 서로의 매력을 더 편하게 표현하려면 어떤 말과 행동이 좋을지 알려 줘`);
+}
+function pairConflict(C){
+  const {PA,PB,a,b,patt,tone}=C;
+  const mp=mismatchPick(C);
+  const ps=[];
+  if(mp){
+    const {g,r,PG,PR,o}=mp;
+    ps.push(P_(`반복될 가능성이 가장 큰 장면은 ${SCENE[PR.want]}이야.`,dirText(g,r,PG,PR,o)));
+    ps.push(P_(`그 순간 ${J(r,'은/는')} ${STRESS[PR.stress].act}.`,`${J(g,'은/는')} 그 모습을 보면서 ${fl(STRESS[PR.stress].felt)}.`,`그러면 ${J(g,'은/는')} ${STRESS[PG.stress].act}.`,`${J(r,'은/는')} 이런 ${J(g,'을/를')} 보며 ${fl(STRESS[PG.stress].felt)}.`));
+    ps.push(P_(pattSentence(C),`이 순서가 몇 주 이어지면 처음 문제였던 일보다 서로의 반응에 대한 서운함이 더 크게 남아.`,tone==='hard'||tone==='mid'?`이 부분은 좋게 넘어가기 어려워. 고치지 않으면 같은 장면이 이름만 바뀌어 되풀이돼.`:`다만 이 고리는 한쪽이 먼저 끊으면 쉽게 풀리는 편이야.`));
+    ps.push(P_(`풀려면 ${J(g,'은/는')} ${STRESS[PG.stress].fix}. ${J(r,'은/는')} ${STRESS[PR.stress].fix}.`));
+  }else{
+    ps.push(P_(`방식이 어긋나서 생기는 갈등은 크지 않은 조합이야. 반복될 수 있는 장면은 ${SCENE_GEN[patt]}이야.`,stressChainOnly(C)));
+    ps.push(P_(pattSentence(C),`${J(a,'은/는')} ${STRESS[PA.stress].fix}. ${J(b,'은/는')} ${STRESS[PB.stress].fix}.`));
+  }
+  const t=C.hits.filter(h=>h.type!=='합')[0];
+  if(t&&tone!=='high')ps.push(`원국에서도 두 사람 사이에 ${t.raw} 관계가 있어서 ${PTYPE[t.type].cost}. ${PTYPE[t.type].tip}.`);
+  const title=`부딪히는 과정 — ${{HC:'한쪽은 다가가고 한쪽은 물러나는 고리',CH:'한쪽은 다가가고 한쪽은 물러나는 고리',HH:'둘 다 바로 반응해 불이 커지는 고리',CC:'둘 다 말을 아껴 쌓이는 고리',mirror:'같은 반응이 서로를 비추는 고리',MIX:'한 사람의 반응이 다른 사람의 반응을 부르는 고리'}[patt]}`;
+  return PR_('pair-conflict',title,ps,C,`${a}님과 ${b}님이 다투는 상황에서 서로 어떻게 반응을 늦추면 좋을지 구체적인 말로 알려 줘`,[`스트레스 반응 ${a}: ${PA.stress} / ${b}: ${PB.stress}`]);
+}
+function recv(X,Y,PX,PY,o){
+  const wx=w3(CUR[PX.want]),gy=CUR[PY.give].give,miss=CUR[PX.want].miss;
+  if(o.match)return `${J(X,'이/가')} 마음 놓이는 방식은 ${wx}이야. ${J(Y,'이/가')} 평소 건네는 방식이 정확히 이거라서, 이 부분에서는 서운함이 생기기 어려워.`;
+  if(o.same)return `${J(X,'이/가')} 마음 놓이는 방식은 ${wx}인데 ${J(Y,'이/가')} 평소 건네는 건 ${gy}이야. 방향은 비슷해도 모양이 달라서, ${J(Y,'이/가')} 충분히 하고 있어도 ${X}에게는 조금 모자란 느낌이 남을 수 있어.`;
+  return `${J(X,'이/가')} 마음 놓이는 방식은 ${wx}인데 ${J(Y,'이/가')} 평소 건네는 건 ${gy}이야. ${X} 쪽에서는 ${miss}. 그래서 ${J(Y,'이/가')} 마음을 쓰고 있어도 ${X}에게는 닿지 않은 것처럼 느껴질 수 있어.`;
+}
+function pairCooling(C){
+  const {PA,PB,a,b,ab,ba}=C;
+  const ps=[];
+  ps.push(P_('서운함은 누가 잘못해서가 아니라, 마음을 건네는 방식과 받아서 안심하는 방식이 달라서 쌓이는 경우가 많아.',recv(a,b,PA,PB,ba)));
+  ps.push(C.sameW?sameWant(a,b,PA.want):recv(b,a,PB,PA,ab));
+  const need=[];
+  if(!ba.match)need.push(fixLine(b,a,PA));
+  if(!ab.match)need.push(fixLine(a,b,PB));
+  ps.push(need.length?need.join(' '):'두 사람은 서로의 방식이 잘 맞아서 서운함이 방식 차이에서 생기지는 않아. 대신 바빠지거나 익숙해지면 표현이 줄어드는 시기를 조심하면 돼.');
+  const title=`서운해지는 순간 — ${ab.match&&ba.match?'방식은 맞고 익숙함을 조심':ab.match||ba.match?'한쪽만 어긋나는 구조':'서로 어긋나게 건네는 구조'}`;
+  return PR_('pair-cooling',title,ps,C,`${a}님과 ${b}님이 서운함을 느낄 때 상대에게 어떻게 말하면 좋을지 알려 줘`,[`${a} 주는 방식 ${PA.give} / 원하는 방식 ${PA.want}`,`${b} 주는 방식 ${PB.give} / 원하는 방식 ${PB.want}`]);
+}
+function pairSpace(C){
+  const {PA,PB,a,b,m}=C,sa=PA.want==='space'||PA.give==='space',sb=PB.want==='space'||PB.give==='space';
+  const ps=[];
+  const lv=m.distance>=70?'거리감 지수가 높은 편이라 가까움과 혼자 있는 시간의 균형을 비교적 편하게 맞출 수 있어.':m.distance<=55?'거리감 지수가 낮은 편이라 각자 기대하는 가까움의 정도가 달라 의식적인 조율이 필요해.':'거리감 지수는 중간 정도라 서로의 기대를 말로 확인하면 잘 맞춰 갈 수 있어.';
+  ps.push(P_(lv,sa&&sb?`두 사람 모두 자기 시간과 선택을 존중받는 걸 중요하게 여겨서 서로를 풀어 주는 장점이 있지만, 아무도 먼저 다가가지 않아서 자연스럽게 멀어지는 시기를 조심해야 해.`:sa?`${J(a,'은/는')} 자기 시간과 결정권이 보장될 때 마음이 열리는 사람이고, ${J(b,'은/는')} ${J(w3(CUR[PB.want]),'이/가')} 중요한 사람이라 ${a}의 혼자 있는 시간이 ${b}에게는 거리 두기로 읽힐 수 있어.`:sb?`${J(b,'은/는')} 자기 시간과 결정권이 보장될 때 마음이 열리는 사람이고, ${J(a,'은/는')} ${J(w3(CUR[PA.want]),'이/가')} 중요한 사람이라 ${b}의 혼자 있는 시간이 ${a}에게는 거리 두기로 읽힐 수 있어.`:`두 사람 모두 혼자 있는 시간이 가장 중요한 필요는 아니라서 함께하는 시간이 자연스럽게 늘어나는 편이야. 다만 그만큼 서로의 일정이 겹치고 개인 시간이 줄어도 모르고 지나가기 쉬워.`));
+  if(C.tempoDiff){const f=PA.tempo==='fast'?a:b,s=PA.tempo==='fast'?b:a;ps.push(`속도도 달라. ${J(f,'은/는')} 결정과 행동이 빠르고 ${J(s,'은/는')} 천천히 무르익어서, ${J(f,'이/가')} 먼저 답을 정해 두면 ${J(s,'은/는')} 따라가야 하는 기분을 느낄 수 있어. ${J(f,'은/는')} 결정 전에 “아직 정한 건 아니고 이런 생각이야”라고 먼저 말해 주면 부담이 줄어.`);}
+  else ps.push(`결정과 행동의 속도는 비슷한 편이라 일정을 정할 때 한쪽이 끌려가는 느낌은 적어. 다만 같은 속도로 움직이다 보니 둘 다 놓친 부분은 아무도 챙기지 못하니, 중요한 약속은 한 사람이 최종 확인하기로 정해 두면 좋아.`);
+  ps.push(`거리 문제에서 각자 민감한 지점도 달라. ${J(a,'은/는')} ${String(DG[PA.dayGod].hurt)} 마음이 닫히고, ${J(b,'은/는')} ${String(DG[PB.dayGod].hurt)} 마음이 닫혀.`);
+  if(C.opp)ps.push(`한 사람의 명식은 열이 높고 한 사람은 차가운 편이라, 감정이 올라오는 속도에도 차이가 있어. 한쪽이 뜨거워졌을 때 상대가 같이 맞받아치기보다 시간을 두고 반응해 주면 풀림이 빨라.`);
+  ps.push(`현실적인 규칙을 하나 정한다면 이거야. ${sa||sb?'혼자 보내는 시간은 이유를 묻지 않고 존중하되, 연락이 닿지 않을 때는 끝나는 시간만 한 줄로 알려 줘.':'바쁜 주에는 연락이 줄어도 괜찮은 날을 미리 정해 두고, 그 외에는 짧게라도 안부를 이어 가.'}`);
+  return PR_('pair-space',`거리와 속도 — ${sa||sb?'혼자 있는 시간을 어떻게 다룰까':'가까움이 자연스러운 만큼 챙길 것'}`,ps,C,`${a}님과 ${b}님의 연락 빈도와 만나는 시간을 편하게 조율하는 방법을 알려 줘`);
+}
+function pairMoney(C){
+  const {PA,PB,a,b,m}=C,ga=GRP[PA.top],gb=GRP[PB.top],ma=MG[PA.mg],mb=MG[PB.mg];
+  const ps=[];
+  ps.push(PA.top===PB.top?P_(`돈을 쓰는 모습은 ${J(a,'은/는')} ${ma.money} 편이고 ${J(b,'은/는')} ${mb.money} 편이야.`,`새기기 쉬운 곳은 둘 다 ${J(ga.leak,'이야/야')}. 같은 곳으로 새는 구조라 서로의 소비를 이해하기는 쉽지만, 한쪽이 멈춰 주기도 어려워.`):P_(`돈을 쓰는 모습은 서로 달라. ${J(a,'은/는')} ${ma.money} 편이고 새기기 쉬운 곳은 ${J(ga.leak,'이야/야')}.`,`${J(b,'은/는')} ${mb.money} 편이고 새기기 쉬운 곳은 ${gb.leak}이야.`));
+  ps.push(m.money>=70?`돈 감각 지수는 ${J(m.money,'으로/로')} 높은 편이라 소비 기준이 크게 충돌할 구조는 아니야. 그래도 데이트나 여행에서 쓰는 비용은 기분 좋을 때 말해 두는 게 나중에 편해.`:m.money<=55?`돈 감각 지수는 ${J(m.money,'으로/로')} 낮은 편이라 소비 기준 차이가 감정 문제로 번지기 쉬워. 같이 쓰는 돈은 일찍 기준을 정할수록 좋아.`:`돈 감각 지수는 ${J(m.money,'으로/로')} 중간 정도라 서로의 소비 습관을 알아 두면 충분히 맞춰 갈 수 있어.`);
+  ps.push(`비용은 사전 합의와 책임을 나눠서 정해 봐. 함께 정한 일에 드는 돈은 미리 합의한 비율로 나누고, 한쪽이 혼자 일정을 바꾸거나 예약을 취소해서 생긴 추가 비용은 바꾼 사람이 책임지는 식이야.`);
+  const lk=ga.leak+' '+gb.leak;
+  const dlg=/사람|동료|친구|모임|분위기/.test(lk)?`“모임이나 선물 비용은 가기 전에 한도부터 말하고 가자.” “좋아. 넘으면 그 자리에서 서로 한마디 하기로 하자.”`:/교육|도구|장비|구독|학습/.test(lk)?`“새로 사고 싶은 도구나 강의는 사기 전에 이유를 한 줄만 말해 줄래?” “응, 쓸 계획까지 같이 말할게.”`:/체면|책임|경조|대신/.test(lk)?`“누가 대신 내 준 돈은 그날 바로 정리하자.” “좋아. 얼마였는지 그날 메모해 둘게.”`:/기회|투자|충동|즉흥/.test(lk)?`“마음이 급할 때 쓰는 돈은 하루만 지나고 다시 얘기하자.” “알겠어. 하루 지나도 필요하면 같이 보자.”`:[`“이번 달에 같이 쓰는 데이트 비용은 얼마쯤으로 할까?” “나는 이 정도면 괜찮아. 넘을 것 같으면 그때 미리 말하자.”`,`“이번 여행은 예약 전에 총비용부터 같이 보고 정하자.” “좋아. 각자 부담할 부분까지 같이 적어 두자.”`,`“선물이나 큰 지출은 사기 전에 한 번 말해 주면 좋겠어.” “알겠어. 얼마 이상은 말하는 걸로 정하자.”`][hash(a+b+PA.stem+PB.stem)%3];
+  ps.push(`이런 대화로 시작해 봐. ${dlg}`);
+  ps.push(`혹시 앞으로 생활을 함께하게 되는 시기가 오면 공동 생활비는 그때 따로 기준을 정하고, 지금은 데이트·여행·선물처럼 실제로 겹치는 비용부터 정리하면 돼.`);
+  return PR_('pair-money',`돈과 소비 — ${m.money>=70?'기준은 맞고 합의만 필요':m.money<=55?'기준 차이를 먼저 정리':'차이를 알고 맞추는'}`,ps,C,`${a}님과 ${b}님이 데이트·여행 비용을 편하게 나누는 기준을 만들어 줘`);
+}
+function pairStructure(C){
+  const {PA,PB,a,b,hits,d}=C;
+  const ps=[];
+  const list=hits.slice(0,3),seen=new Set();
+  const zz=(who,k)=>{const key=who+k;const t=seen.has(key)?`${who}의 ${ZS[k]}`:`${who}의 ${ZS[k]}(${ZG[k]})`;seen.add(key);return t;};
+  if(list.length){
+    ps.push('원국이 맞물리는 방식에서 눈에 띄는 건 세 가지야.'.replace('세 가지',['하나','두 가지','세 가지'][list.length-1]));
+    list.forEach(h=>ps.push(`${zz(a,h.ak)}와 ${zz(b,h.bk)} 사이에 ${J(h.raw,'이/가')} 있어서 ${J(PTYPE[h.type].eff,'이/가')} 작용해. ${h.type==='합'?PTYPE.합.good:PTYPE[h.type].good}. 반면 ${PTYPE[h.type].cost}.`));
+  }else ps.push('두 원국 사이에 뚜렷한 합이나 충이 확인되지 않아서, 관계의 분위기는 구조보다 서로의 성향과 생활 습관이 더 크게 좌우해.');
+  const age=d.age?.text;
+  ps.push(P_(age?`두 사람의 나이 차이는 약 ${J(age,'이야/야')}. 숫자 자체보다 생활 리듬과 책임의 무게가 다른 시기라면 서로의 상황을 먼저 이해하는 게 중요해.`:'',d.q?.dayRel&&d.q.dayRel!=='직접 관계 없음'?`일지끼리는 ${d.q.dayRel} 관계가 있어서 가까운 사이에서 드러나는 모습에 영향을 줘.`:'일지끼리는 직접 부딪히거나 합쳐지는 관계가 없어서 가까운 사이의 모습은 비교적 독립적이야.',d.q?.sameStem?'일간이 같아서 서로의 사고방식을 쉽게 이해하지만 같은 약점이 겹치기도 해.':''));
+  return PR_('pair-structure',`원국이 맞물리는 방식 — ${list.length?list.map(h=>h.raw).filter((v,i,x)=>x.indexOf(v)===i).slice(0,2).join('·')+' 관계':'뚜렷한 충·합 없음'}`,ps,C,`${a}님과 ${b}님 원국에서 확인되는 관계가 실제 생활에서 어떻게 나타날 수 있는지 알려 줘`,list.map(h=>`${h.raw}(${a} ${ZS[h.ak]}–${b} ${ZS[h.bk]})`));
+}
+function pairRules(C){
+  const {PA,PB,a,b}=C;
+  const dl=(asker,PAsk,resp)=>{const c=CUR[PAsk.want];return `${J(asker,'이/가')} 먼저 말한다면: ${c.req} 그러면 ${J(resp,'은/는')} 이렇게 답해 줘. ${c.rep}`;};
+  const ps=[];
+  if(C.sameW){const c=CUR[PA.want];ps.push(P_(`두 사람은 같은 것을 원하니까 번갈아 건네는 규칙을 만들어 봐. ${J(a,'이/가')} 먼저 말하는 주에는 ${J(b,'이/가')} 받아 주고, 다음 주에는 순서를 바꾸는 거야.`,`${J(a,'이/가')} 이렇게 말해 볼 수 있어. ${c.req} ${J(b,'은/는')} 이렇게 답해 줘. ${c.rep}`));}
+  else{ps.push(dl(a,PA,b));ps.push(dl(b,PB,a));}
+  ps.push(`2주 뒤에는 이렇게 확인해 봐. ${J(a,'이/가')} 원하는 방식(${w3(CUR[PA.want])})과 ${J(b,'이/가')} 원하는 방식(${w3(CUR[PB.want])}) 중에서 실제로 일어난 일이 각각 한 번이라도 있었는지, 그 일이 부담이 아니라 도움으로 닿았는지 서로 말해 줘. 없었다면 의지를 탓하기 전에 요청 문장을 더 구체적으로 바꿔 보면 돼.`);
+  return PR_('pair-rules','서로 이렇게 말해 봐 — 요청과 답변',ps,C,`${a}님과 ${b}님이 서운함을 말할 때 쓸 수 있는 자연스러운 문장을 더 만들어 줘`);
+}
+function pairFinal(C){
+  const {PA,PB,a,b,d,tone}=C;
+  const ps=[];
+  const sum={high:`한마디로 ${a}님과 ${b}님은 서로의 장점을 알아보기 쉬운 조합이야. 편안함이 큰 만큼, 익숙함 속에서 표현을 아끼지 않는 것이 이 관계의 가장 큰 숙제야.`,good:`한마디로 ${a}님과 ${b}님은 강점이 뚜렷하고, 그 강점을 살리려면 합의의 습관이 필요한 조합이야.`,mid:`한마디로 ${a}님과 ${b}님은 끌림도 있고 부딪힘도 있어서, 서로의 방식을 배우려는 태도가 관계의 방향을 정하는 조합이야.`,hard:`한마디로 ${a}님과 ${b}님은 방식이 많이 달라서 같은 오해가 반복되기 쉬운 조합이야. 그래서 각자 바꿀 행동이 분명하게 필요해.`}[tone];
+  ps.push(sum);
+  const yrs=(d.years||[]).slice(0,2).map(r=>{const ga=r.A?.god,gb=r.B?.god;if(!LUCK[ga]||!LUCK[gb])return '';return `${r.year}년에는 ${a}에게 ${J(LUCK[ga].theme,'이/가')}, ${b}에게 ${J(LUCK[gb].theme,'이/가')} 들어와. ${ga===gb?'같은 주제를 함께 겪는 해라 같이 정리할 일을 하나 정하기 좋아.':'각자 다른 주제를 겪는 해라 서로의 상황을 먼저 물어보는 게 도움이 돼.'}`;}).filter(Boolean);
+  if(yrs.length)ps.push(P_('시기별로는 이렇게 읽어.',...yrs));
+  ps.push(`이번 달이 끝날 때 서로에게 이렇게 물어봐. “이번 달에 내가 한 행동 중 가장 편했던 것과 가장 불편했던 것을 하나씩 말해 줄래?” 그 답이 다음 달에 바꿀 행동이 돼.`);
+  return PR_('pair-final',`정리 — ${tone==='high'?'장점을 키우는 관계':tone==='good'?'합의로 단단해지는 관계':tone==='mid'?'서로를 배워 가는 관계':'바꿀 행동을 먼저 정하는 관계'}`,ps,C,`${a}님과 ${b}님이 이번 달에 할 수 있는 가장 작은 실천을 알려 줘`);
+}
+function pairSections(x){
+  const C=pairCtx(x);
+  return [pairCore(C),pairAttraction(C),pairWeight(C),pairConflict(C),pairCooling(C),pairMoney(C),pairSpace(C),pairStructure(C),pairConditions(C),pairRules(C),pairVerdict(C)];
+}
+
+/* ===== Round C 궁합: 판단 질문 답변 / 영역별 무게 / 유지 조건 / 판단형 결론 ===== */
+const AREAS=[
+ {k:'attr',n:'끌림',idx:['love'],lab:'연애 흐름'},
+ {k:'talk',n:'대화',idx:['personality'],lab:'성향 조화'},
+ {k:'life',n:'생활',idx:['money','distance'],lab:'돈 감각·거리감'},
+ {k:'long',n:'장기 유지',idx:['future'],lab:'앞으로의 방향'}
+];
+const AREA_TXT={
+attr:{강:'서로를 향한 호감이 자연스럽게 생기고 가까워지는 속도도 빠르게 읽혀. 다만 끌림은 관계를 시작하게 하는 힘이지 유지하게 하는 힘은 아니야.',중:'끌림은 있지만 압도적이지는 않아서, 관계가 이어지려면 호감 말고 다른 영역이 같이 받쳐 줘야 해.',약:'끌림이 저절로 이어지는 구조는 아니라서, 설렘에 기대기보다 함께 있는 시간의 질로 관계를 만들어야 해.'},
+talk:{강:'말뜻이 비교적 잘 통해서 설명하는 데 드는 힘이 적은 편이야. 편하다는 이유로 말을 아끼면 이 장점은 줄어들어.',중:'말이 통하는 날과 어긋나는 날이 갈려서, 중요한 이야기는 따로 시간을 잡고 해야 해.',약:'같은 말이 다르게 닿는 일이 잦은 구조라, 서운함이 생기면 해석하기 전에 무슨 뜻인지 먼저 물어야 해.'},
+life:{강:'돈을 쓰는 기준과 가까움을 조절하는 방식이 큰 충돌 없이 맞물리는 편이라 일상이 덜 소모적일 수 있어.',중:'생활 방식은 맞는 부분과 합의가 필요한 부분이 섞여 있어서, 돈·연락·시간은 미리 정해 둘수록 편해.',약:'돈 감각이나 거리에 대한 기대가 달라서 일상에서 마찰이 나기 쉬워. 이 영역은 마음이 아니라 합의로 풀어야 해.'},
+long:{강:'앞으로의 방향과 생활 리듬을 맞춰 갈 바탕이 있는 편으로 읽혀. 다만 바탕이 있다는 건 같이 가기로 정해졌다는 뜻이 아니라 가기 쉬운 길이라는 뜻이야.',중:'방향이 맞을 때와 어긋날 때가 섞여 있어서, 중요한 선택은 시기마다 다시 이야기해야 해.',약:'앞으로의 방향과 속도를 맞추는 데 대화가 많이 필요한 구조로 읽혀. 마음이 커도 방향 합의 없이는 같은 문제가 반복돼.'}
+};
+const WEIGHT_X={
+'attr>talk':'끌려서 가까워졌는데 말이 엇갈리는 조합이라, 설렘 때문에 대화 문제를 덮으면 서운함이 쌓여.',
+'attr>life':'마음은 빨리 붙는데 같이 지내는 방식에서 부딪히기 쉬워. 설렘이 생활 차이를 덮는 기간이 지나면 같은 문제를 다시 만나.',
+'attr>long':'지금의 끌림이 앞으로의 방향까지 보장하지는 않아. 좋아하는 마음과 같이 갈 수 있는 길은 따로 확인해야 해.',
+'talk>attr':'말은 잘 통하지만 설렘이 크게 받쳐 주는 구조는 아니라서, 편한 친구처럼 지내다 마음의 온도가 식었다고 느끼는 때를 조심해야 해.',
+'talk>life':'이야기는 되는데 생활 방식이 다른 조합이라, 말로 합의한 것이 실제 행동으로 이어지는지가 관계의 질을 좌우해.',
+'talk>long':'지금 대화는 편하지만 앞으로의 방향은 따로 이야기해야 해. 편한 대화가 방향 합의를 대신하지는 않아.',
+'life>attr':'일상은 편하게 맞는데 설렘이 약해질 수 있어서, 익숙함 속에서도 표현을 이어 가는 일이 숙제가 돼.',
+'life>talk':'생활은 맞지만 대화에서 엇갈리면 같은 일상 안에서 오해가 쌓일 수 있어. 편하다고 말을 줄이지 않는 게 중요해.',
+'life>long':'일상은 맞아도 앞으로의 방향이 약하면, 일·돈·만나는 빈도 같은 중요한 선택 앞에서 의견이 갈릴 수 있어.',
+'long>attr':'방향은 맞춰 갈 수 있어도 끌림이 약하면 같이 가는 이유가 의무처럼 느껴질 수 있어.',
+'long>talk':'방향은 맞는데 말이 엇갈리면 같은 곳을 보면서도 서로 이해받지 못한다고 느낄 수 있어.',
+'long>life':'방향은 맞는데 생활 합의가 약하면 큰 계획보다 작은 일상 마찰이 먼저 지치게 해.'
+};
+const lvOf=v=>v>=75?'강':v>=60?'중':'약';
+function areaStats(C){
+  const {m}=C;
+  const arr=AREAS.map(A=>{const vs=A.idx.map(k=>+m[k]).filter(Number.isFinite);const v=vs.length?Math.round(vs.reduce((s,x)=>s+x,0)/vs.length):null;return Object.assign({},A,{v,lv:v===null?null:lvOf(v)});}).filter(x=>x.v!==null);
+  const s=arr.slice().sort((p,q)=>q.v-p.v);
+  return {arr,strong:s[0],weak:s[s.length-1],spread:s.length?s[0].v-s[s.length-1].v:0};
+}
+function areaHit(C,A){
+  const {hits,a,b,tension,combine,patt,tempoDiff,PA,PB}=C;
+  if(A.k==='attr'){const h=hits.find(x=>x.type==='합');if(h)return A.lv==='약'?`원국에는 ${zp(a,b,h)} 사이에 ${J(h.raw,'이/가')} 있어서 끌리는 계기는 있지만, 지수가 낮은 만큼 그 계기가 관계 전체의 끌림으로 이어진다고 보기는 어려워.`:`원국에서도 ${zp(a,b,h)} 사이에 ${J(h.raw,'이/가')} 있어서 끌림을 뒷받침해.`;const t=hits.find(x=>x.type!=='합'&&(x.ak==='day'||x.bk==='day'));if(t)return `다만 ${zp(a,b,t)} 사이에는 ${J(t.raw,'이/가')} 있어서, 끌리면서도 마음이 흔들리는 순간이 같이 올 수 있어.`;return '';}
+  if(A.k==='talk'){return {HC:'갈등이 생기면 한쪽은 다가가고 한쪽은 물러나는 반응이 겹쳐서 대화가 끊기기 쉬워.',CH:'갈등이 생기면 한쪽은 다가가고 한쪽은 물러나는 반응이 겹쳐서 대화가 끊기기 쉬워.',HH:'둘 다 바로 반응하는 쪽이라 말이 빨리 커질 수 있어.',CC:'둘 다 조용히 삼키는 쪽이라 말하지 않은 채 쌓이는 일이 생길 수 있어.',mirror:'두 사람의 반응 방식이 같아서 이해는 빠르지만 같은 지점에서 함께 멈출 수 있어.',MIX:'한 사람의 반응이 다른 사람의 반응을 부르는 구조야.'}[patt]||'';}
+  if(A.k==='life'){return tempoDiff?`결정과 행동의 속도가 달라서 일정을 정할 때 한쪽이 끌려간다고 느낄 수 있어.`:(PA.want!==PB.want?`원하는 마음 놓임의 방식이 달라서 같은 날을 보내도 만족하는 지점이 다를 수 있어.`:`원하는 방식이 같아서 서로 건네는 순서만 정하면 돼.`);}
+  if(A.k==='long'){return tension>=10?`원국에서 여러 층이 부딪혀서 중요한 선택을 할 때 의견이 자주 갈릴 수 있어.`:tension>=6?`원국에서 부딪히는 지점이 있어서 큰 선택은 미리 이야기해 두는 편이 좋아.`:(combine>=1?`원국에서 합이 받쳐 줘서 방향을 모으는 데 도움이 돼.`:'');}
+  return '';
+}
+function weightLine(C,st){
+  const {strong:S,weak:W,spread,arr}=st;
+  if(!S||!W)return '';
+  if(spread<8){
+    return arr.every(x=>x.v>=70)?`모든 영역이 높은 편이라 한 영역에만 기대는 관계는 아니야. 이런 조합은 문제가 없어서가 아니라 문제가 생겼을 때 다른 영역이 받쳐 줄 여지가 크다는 뜻이야.`:arr.every(x=>x.v<60)?`모든 영역이 낮은 편이라 어느 한 영역이 다른 영역의 부담을 덜어 주기 어려워. 그래서 이 관계는 영역마다 합의를 따로 만들어야 하는 구조야.`:`영역 사이의 점수 차가 크지 않아서 어느 한 영역이 관계를 끌고 가는 구조는 아니야. 뚜렷하게 좋은 곳도 약한 곳도 없는 대신, 어느 영역이든 소홀해지면 바로 눈에 띄는 조합이야.`;
+  }
+  return `가장 힘이 실린 쪽은 ${J(S.n,'이야/야')}(${S.v}), 가장 약한 쪽은 ${J(W.n,'이야/야')}(${W.v}). ${WEIGHT_X[S.k+'>'+W.k]||''} ${S.n}의 장점은 ${W.n}의 부담을 덜어 주지 못해서, 한 영역이 좋다는 이유로 관계 전체를 괜찮다고 판단하면 안 돼.`;
+}
+function helpBurden(C){
+  const {PA,PB,a,b,ab,ba}=C;
+  const one=(X,Y,PX,PY,o)=>{
+    const tool=VAL_DM[PX.stem].v,tire=FL_DM[PX.stem].tire;
+    const reach=o.match?`${J(X,'이/가')} 마음을 건네는 방식이 ${J(Y,'이/가')} 원하는 방식과 같아서 이 도움이 그대로 닿는 편이야.`:o.same?`${J(X,'이/가')} 건네는 방식이 ${J(Y,'이/가')} 원하는 방식과 비슷한 결이라 대체로 닿지만 모양이 조금 달라.`:`${J(X,'이/가')} 건네는 방식이 ${J(Y,'이/가')} 원하는 방식과 달라서 도움이 도움으로 닿지 않는 일이 생길 수 있어.`;
+    return P_(`${X}님이 ${Y}님에게 줄 수 있는 도움은 ${J(tool,'이야/야')}. ${reach}`,`반대로 ${X}님 쪽에서는 ${tire}. ${Y}님이 ${J(w3(CUR[PY.want]),'을/를')} 확인하고 싶은 순간에는 이 부담이 더 크게 닿을 수 있어.`);
+  };
+  return [one(a,b,PA,PB,ab),one(b,a,PB,PA,ba)];
+}
+function adjustables(C){
+  const {PA,PB,a,b,m,tempoDiff,sameW,tension,patt,ab,ba}=C;
+  const adj=[],str=[];
+  const f=PA.tempo==='fast'?a:b,s=PA.tempo==='fast'?b:a;
+  if(!ab.match||!ba.match)adj.push({k:'express',t:'마음을 건네는 방식과 받고 싶은 방식의 차이',how:`각자 “내가 마음 놓이는 건 이거야”를 한 문장으로 정해 말하고, 상대는 일주일에 한두 번 그 방식으로 건네기로 합의해. ${a}님은 ${w3(CUR[PA.want])}이 확인될 때, ${b}님은 ${w3(CUR[PB.want])}이 확인될 때 마음이 놓여.`});
+  if(tempoDiff)adj.push({k:'tempo',t:'결정과 행동 속도의 차이',how:`${f}님은 결정하기 전에 “아직 정한 건 아니고 이런 생각이야”를 먼저 말하고, ${s}님은 바로 답하지 못해도 답할 날짜를 먼저 알려 주는 것으로 합의해.`});
+  if(m.distance<65||PA.want==='space'||PB.want==='space')adj.push({k:'contact',t:'연락과 혼자 있는 시간의 기대 차이',how:`연락은 하루 몇 번, 어느 시간대, 바쁜 날에는 끝나는 시간만 알리기처럼 횟수와 시간대로 정해. 혼자 있는 시간은 이유를 캐묻지 않고 존중하되 끝나는 시간만 한 줄로 알려 주는 것으로 합의해.`});
+  if(m.money<70)adj.push({k:'money',t:'돈을 쓰고 나누는 기준',how:`같이 쓰는 돈은 한도와 정산일을 사전에 정하고, 한쪽이 일정을 바꾸거나 취소해서 생긴 추가 비용은 바꾼 사람이 책임지는 기준을 정해.`});
+  if(sameW)adj.push({k:'turn',t:'같은 것을 서로 원하는 구조',how:`누가 먼저 건네느냐로 다투지 않게 번갈아 건네는 순서를 정하고, 순서가 지켜졌는지 2주 뒤에 확인해.`});
+  if(tension>=6||['HH','HC','CH','CC'].includes(patt))str.push({k:'react',t:patt==='CC'?'서로 말하지 않고 쌓는 반응 습관':patt==='HH'?'둘 다 바로 커지는 반응 습관':(patt==='HC'||patt==='CH')?'한쪽은 다가가고 한쪽은 물러나는 반응 습관':'갈등이 커질 때 서로의 반응이 서로를 키우는 습관',how:'합의만으로 사라지지 않고, 각자 압박을 받을 때 나오는 첫 반응을 직접 바꿔야 줄어들어.'});
+  return {adj,str};
+}
+function tendency(C){
+  const {PA,PB,a,b}=C;
+  const acc=P=>COLD.includes(P.stress)||['을','기','정','계'].includes(P.stem);
+  const mgr=P=>HOT.includes(P.stress)||['갑','경','신','무'].includes(P.stem);
+  const xa=acc(PA),xb=acc(PB),ya=mgr(PA),yb=mgr(PB);
+  let x=null,y=null;
+  if(xa&&!xb){x=a;y=b;}else if(xb&&!xa){x=b;y=a;}else if(xa&&xb){x='both';}
+  if(!y&&(ya||yb)&&x!=='both'){y=ya&&!yb?a:yb&&!ya?b:null;}
+  return {x,y};
+}
+function openAnswers(C){
+  const {PA,PB,a,b,score,m,tone}=C,st=areaStats(C),fr=frictionBrief(C),ad=adjustables(C);
+  const q1=`${a}님과 ${b}님은 ${score}점이고, 영역별로 나눠 보면 ${st.strong&&st.weak?(st.spread>=8?`가장 잘 맞는 쪽은 ${st.strong.n}(${st.strong.v}점)이고 가장 약한 쪽은 ${st.weak.n}(${st.weak.v}점)이야.`:`영역 사이의 점수 차(${st.weak.v}~${st.strong.v}점)가 크지 않아서 어느 한 영역이 관계를 끌고 가는 구조는 아니야.`):''} 끌림이 큰 것과 대화가 편한 것, 생활이 맞는 것, 오래 가는 것은 서로 다른 문제라서 이 글에서는 따로 읽을게.`;
+  const q2=`서로에게 주는 좋은 영향은 ${a}님의 ${TOOL[PA.stem]}과 ${b}님의 ${TOOL[PB.stem]}이야. 부담은 ${J(a,'이/가')} ${STRESS[PA.stress].tag} 쪽이고 ${J(b,'이/가')} ${STRESS[PB.stress].tag} 쪽이라는 점에서 와.`;
+  const q3=`좋아하는 마음이 있어도 함께 있을 때 힘이 드는 이유는 ${fr}`;
+  const adjT=ad.adj.length?ad.adj.slice(0,3).map(x=>x.t).join(', '):'';
+  const strT=ad.str.length?ad.str.map(x=>x.t).join(', '):'';
+  const q4=adjT&&strT?`합의로 조정할 수 있는 차이는 ${J(adjT,'이고/고')} 합의만으로는 줄지 않고 각자의 반응 습관이 바뀌어야 줄어드는 차이는 ${J(strT,'이야/야')}.`:adjT?`맞춰 갈 수 있는 차이는 ${J(adjT,'이야/야')}. 이쪽은 합의와 실천으로 비교적 줄일 수 있어.`:strT?`합의로 풀 수 있는 생활 차이는 크지 않고, ${J(strT,'이/가')} 핵심이라 각자의 반응 습관을 바꿔야 줄어들어.`:`합의로 풀어야 할 큰 생활 차이는 두드러지지 않아. 대신 바쁜 시기에 표현이 줄어드는 것을 의식해야 해.`;
+  const rep={HC:'한쪽이 다가가면 한쪽이 물러나고, 물러난 모습이 다시 다가감을 키우는 순서',CH:'한쪽이 다가가면 한쪽이 물러나고, 물러난 모습이 다시 다가감을 키우는 순서',HH:'둘 다 바로 반응해서 처음 문제보다 말투가 더 큰 문제가 되는 순서',CC:'둘 다 말을 아끼다가 서운함이 쌓인 뒤 한꺼번에 거리가 생기는 순서',mirror:'같은 반응이 서로를 비추면서 같은 지점에서 함께 멈추는 순서',MIX:'한 사람의 반응이 상대의 다른 반응을 불러 서로 지치는 순서'}[C.patt]||'서운함이 쌓이는 순서';
+  const q5=`계속 만나면 반복되기 쉬운 건 ${rep}야. 이 순서를 누가 끊느냐가 이 관계의 핵심이야.`;
+  const q6=`관계가 이어지려면 ${a}님은 ${FIXS[PA.stem]}, ${b}님은 ${FIXS[PB.stem]}이 가장 먼저 바뀌어야 해. 구체적인 방법은 아래 조건에서 풀어 줄게.`;
+  return [q1,q2,q3,q4,q5,q6];
+}
+function pairWeight(C){
+  const {a,b,m}=C,st=areaStats(C);
+  const ps=[];
+  ps.push(`끌림, 대화, 생활, 장기 유지는 서로 다른 문제야. 기존 점수 항목을 이렇게 묶어서 읽었어. 끌림은 연애 흐름, 대화는 성향 조화, 생활은 돈 감각과 거리감, 장기 유지는 앞으로의 방향이야.`);
+  st.arr.forEach(A=>ps.push(P_(`${A.n}(${A.lab} ${A.v}점, ${A.lv==='강'?'강한 편':A.lv==='중'?'중간':'약한 편'}) — ${AREA_TXT[A.k][A.lv]}`,areaHit(C,A))));
+  ps.push(weightLine(C,st));
+  const hb=helpBurden(C);
+  ps.push('이제 장점과 부담을 양쪽 방향으로 나눠 볼게.',...hb);
+  ps.push(`이 숫자와 원국 관계는 어느 영역이 구조상 편하고 어느 영역에 의식적인 합의가 필요한지 보여 줘. 관계가 잘될지, 끝날지, 서로의 속마음이 어떤지를 정하는 근거로 쓰지는 않았어.`);
+  return PR_('pair-weight',`무엇이 잘 맞고 무엇이 약한가 — ${st.strong&&st.weak&&st.spread>=8?(st.strong.lv==='강'?J(st.strong.n,'은/는')+' 강하고 ':'상대적으로 '+J(st.strong.n,'이/가')+' 낫고 ')+J(st.weak.n,'은/는')+(st.weak.lv==='약'?' 약해':' 가장 낮아'):'영역별 무게'}`,ps.filter(Boolean),C,`${a}님과 ${b}님의 끌림·대화·생활·장기 유지 중 지금 가장 먼저 챙길 영역을 알려 줘`,[`끌림 ${m.love} · 대화 ${m.personality} · 생활 ${m.money}/${m.distance} · 장기 ${m.future}`]);
+}
+function pairConditions(C){
+  const {PA,PB,a,b}=C,ad=adjustables(C),td=tendency(C);
+  const ps=[];
+  ps.push(`차이를 두 종류로 나눠서 풀어야 해. 합의와 실천으로 줄일 수 있는 차이가 있고, 각자의 반응 습관이 바뀌어야 줄어드는 차이가 있어.`);
+  if(ad.adj.length)ad.adj.forEach(x=>ps.push(`${x.t}는 이렇게 합의해 봐. ${x.how}`));
+  else ps.push('합의로 풀어야 할 큰 생활 차이는 두드러지지 않아서, 중요한 약속이 바빠질 때 줄어들지 않는지만 월 1회 확인하면 돼.');
+  if(ad.str.length)ps.push(`${ad.str[0].t}은 합의만으로는 풀리지 않고, 압박을 받을 때 나오는 첫 반응을 각자 바꿔야 줄어. 각자 바꿀 행동은 아래에서 따로 나누고, 한 사람이 계속 참거나 상대를 관리하는 방식으로 풀지 않게 해.`);
+  ps.push(`각자 맡을 행동을 나눠 볼게. ${J(a,'은/는')} ${FL_DM[PA.stem].fix}. ${J(b,'은/는')} ${FL_DM[PB.stem].fix}.`);
+  if(td.x==='both')ps.push(`두 사람 모두 속으로 맞춰 주다가 지치는 쪽으로 기울기 쉬운 구조라, 먼저 참는 사람이 아니라 먼저 말하는 사람이 되기로 서로 약속해 두는 게 좋아.`);
+  else if(td.x&&td.y)ps.push(`${J(td.x,'은/는')} 맞춰 주는 쪽으로 기울기 쉬워서 참기만 하면 신호가 상대에게 가지 않아. 불편은 그날 말해야 하고, ${J(td.y,'은/는')} 챙기거나 정리한다는 이유로 상대 몫을 대신 정하지 않게 조심해야 해.`);
+  else if(td.x)ps.push(`${J(td.x,'은/는')} 맞춰 주는 쪽으로 기울기 쉬워서, 불편을 속으로 쌓지 않고 그날 말하는 것이 이 관계를 지키는 조건이야.`);
+  else if(td.y)ps.push(`${J(td.y,'은/는')} 챙기거나 정리하는 쪽으로 기울기 쉬워서, 상대 몫은 상대가 정하게 두는 것이 이 관계를 지키는 조건이야.`);
+  ps.push(`이 글은 명식 구조로 읽은 거라 두 사람이 실제로 어떻게 행동하는지는 확인하지 못했어. 그래서 현실에서 볼 기준을 따로 줄게. 첫째, 합의한 행동이 2~4주 안에 실제로 달라졌는지. 둘째, 잘못했을 때 변명보다 인정과 회복하는 행동이 있었는지. 셋째, 서로의 거절과 경계를 존중하는지.`);
+  ps.push(`같은 일로 같은 상처가 반복되는데 한 사람만 바꾸려 하고 있다면, 끌림이나 장점으로는 그 부담이 사라지지 않아. 그건 궁합 차이가 아니라 관계의 균형 문제로 봐야 해.`);
+  ps.push(`폭력, 협박, 강요, 연락·돈·만남을 통제하는 행동이 실제로 있다면 궁합이나 성향 차이로 설명할 수 없고 참으며 맞출 일도 아니야. 그런 일이 있다면 이 해설보다 안전이 먼저라서, 믿을 수 있는 사람이나 전문 상담 기관과 먼저 이야기해 봐.`);
+  return PR_('pair-conditions','이어 가려면 필요한 조건 — 합의, 책임, 현실에서 확인할 것',ps,C,`${a}님과 ${b}님이 연락·시간·돈 합의를 실제로 정하는 대화를 만들어 줘`);
+}
+function pairVerdict(C){
+  const {PA,PB,a,b,d,tone,m,idx}=C,st=areaStats(C),fr=frictionBrief(C);
+  const ps=[];
+  ps.push(`장점부터 정리하면, ${st.strong?(st.spread>=8?`${J(st.strong.n,'이/가')} 가장 힘이 실린 영역이고 ${IDX_PRO[idx.best]}이 이 관계의 바탕이야.`:`${IDX_PRO[idx.best]}이 이 관계의 바탕이야.`):''} 어려움은 ${st.weak?(st.spread>=8?`${st.weak.n} 영역(${st.weak.v}점)에 몰려 있고, 이 영역은 합의 없이 두면 같은 일이 되풀이돼.`:`특정 영역에 몰려 있지 않고, 어느 영역이든 합의가 지켜지지 않으면 바로 드러나는 점이야.`):''}`);
+  ps.push(`이 정보만으로 계속 만나야 하는지 헤어져야 하는지를 정할 수는 없어. 대신 판단할 조건을 줄게.`);
+  ps.push(`이어갈 여지가 커지는 변화는 앞에서 나눈 각자의 행동이 실제로 달라지는 거야. 거기에 합의한 연락·시간·돈 기준이 한 달 뒤에도 지켜지고 있는지를 더해서 봐.`);
+  ps.push(`다시 검토해야 하는 신호는 이거야. 합의한 행동이 4주 넘게 반복해서 지켜지지 않을 때, 같은 문제로 한쪽만 계속 참거나 맞출 때, 잘못한 뒤에 인정과 회복 없이 넘어갈 때, 한쪽의 거절이나 경계가 무시될 때야. 이 중 하나라도 반복된다면 ${tone==='high'||tone==='good'?'점수가 높아도 끌림이 커도':'끌리는 부분이 있어도'} 관계를 다시 보는 게 맞아.`);
+  if(tone==='hard')ps.push(`이 조합은 시간이 지나면 저절로 맞춰지는 구조로 읽히지 않아. 바뀐 행동이 실제로 확인되기 전에는 기대를 앞서 쌓지 않는 게 안전해.`);
+  else if(tone==='mid')ps.push(`이 조합은 강한 영역이 약한 영역을 대신해 주지 못해서, 좋았던 시기의 기억만으로 약한 영역의 문제를 넘기면 같은 일이 되풀이돼.`);
+  const yrs=(d.years||[]).slice(0,2).map(r=>{const ga=r.A?.god,gb=r.B?.god;if(!LUCK[ga]||!LUCK[gb])return '';return `${r.year}년에는 ${a}에게 ${J(LUCK[ga].theme,'이/가')}, ${b}에게 ${J(LUCK[gb].theme,'이/가')} 들어와. ${ga===gb?'같은 주제를 함께 겪는 해라 같이 정리할 일을 하나 정하기 좋아.':'각자 다른 주제를 겪는 해라 서로의 상황을 먼저 물어보는 게 도움이 돼.'}`;}).filter(Boolean);
+  if(yrs.length)ps.push(P_('시기별로는 이렇게 읽어.',...yrs));
+  ps.push(`이번 달 끝에 서로에게 이렇게 물어봐. “이번 달에 합의한 것 중 실제로 달라진 게 뭐고, 아직 안 달라진 게 뭐야?” 이 답이 계속 이어갈지 다시 볼지를 정할 현실의 근거가 돼.`);
+  return PR_('pair-final',`정리 — ${tone==='high'?'끌림과 편안함이 큰 만큼 합의를 지켜야 하는 관계':tone==='good'?'장점은 크지만 약한 영역을 합의로 메워야 하는 관계':tone==='mid'?'강한 영역과 약한 영역을 나눠서 다뤄야 하는 관계':'바꿀 행동이 먼저 확인되어야 하는 관계'}`,ps.filter(Boolean),C,`우리 관계를 이어갈지 고민 중이야. 아래에 실제로 있었던 행동을 적을게. 질문에 먼저 직접 답하고, 내가 적은 행동만 근거로 ${a}님과 ${b}님이 이어갈 조건과 다시 볼 신호를 판단해 줘`);
+}
+
+/* ===== 4단계: 검사와 반환 ===== */
+const BAD=/undefined|NaN|\[object|\$\{|\{[0-9a-z]{4}\}|null/;
+function tidy(t){return String(t).replace(/\s+([.,?!])/g,'$1').replace(/\.{2,}/g,'.').replace(/([.?!”])\s*\./g,'$1').replace(/[ \t]{2,}/g,' ').trim();}
+/* 검사에 걸린 행은 던지지 않고 __bad 표시만 한다. 연결부가 그 행만 v5.13의 같은 행으로 바꾼다 */
+function audit(rows,label){
+  const seen=new Set();
+  rows.forEach(r=>{
+    r.paragraphs=r.paragraphs.map(p=>{
+      const kept=sentences(tidy(p)).filter(s=>{const k=s.replace(/[\s“”"'.]/g,'');if(k.length<18)return true;if(seen.has(k))return false;seen.add(k);return true;});
+      return kept.join(' ');
+    }).filter(Boolean);
+    r.body=r.body?tidy(r.body):r.paragraphs.join('\n\n');
+    const all=r.paragraphs.join(' ')+' '+r.title,mm=all.match(BAD);
+    if(mm)r.__bad=`${label}: 미해결 값 감지 (${r.id}: ${all.slice(Math.max(0,mm.index-25),mm.index+25)})`;
+    else if(!r.paragraphs.length)r.__bad=`${label}: 빈 문단 (${r.id})`;
+  });
+  return rows;
+}
+const API={
+  version:'premium-evidence-v5.14',
+  analyze,
+  fullRows:c=>audit(personRows(c),'사주'),
+  personalityRows:c=>{const r=personalityRows(c);return audit(r,'성격');},
+  fieldRows:c=>audit(fieldRows(c),'분야'),
+  starContexts:c=>audit(starContexts(c),'신살'),
+  starSynthesis:starSynthesis,
+  pairSections:x=>audit(pairSections(x),'궁합')
+};
+return API;
+})(root);
+
+/* ===== V5.14 연결 =====
+ * 되돌림은 두 단계다.
+ *  (1) 행 단위: 검사(audit)에 걸린 행(미해결 값·빈 문단)만 v5.13의 같은 행으로 바꾼다. 대응 행이 없으면 그 행만 뺀다.
+ *  (2) 묶음 단위: V514 함수가 예외를 던지면 그 함수가 돌려주는 묶음 전체를 v5.13 출력으로 되돌린다.
+ * 어느 쪽이든 __V514_STATE에 기록하고 GUIIN_INTERPRETATION_V4.lastError()/fallbackLog()로 확인한다. */
+const __V514_STATE={lastError:null,fallbacks:0,rows:[]};
+function __note(name,msg){__V514_STATE.lastError={name,message:String(msg)};try{if(root.console&&root.console.warn)root.console.warn('[guiin v5.14 fallback]',name,msg);}catch(_){}}
+function __guard(name,fn,old,same){
+  return function(){
+    const args=arguments;
+    try{
+      const r=fn.apply(this,args);
+      if(r==null)throw new Error('빈 결과');
+      if(!Array.isArray(r)||!r.some(x=>x&&x.__bad))return r;
+      let oldRows=null;const out=[];
+      r.forEach(x=>{
+        if(!(x&&x.__bad)){out.push(x);return;}
+        __V514_STATE.rows.push({fn:name,id:x.id,reason:x.__bad});__note(name,x.__bad);
+        if(oldRows===null){try{oldRows=old.apply(this,args)||[];}catch(_){oldRows=[];}}
+        const o=oldRows.find(y=>y&&(same?same(x,y):y.id===x.id));
+        if(o)out.push(o);
+      });
+      return out;
+    }catch(e){
+      __V514_STATE.fallbacks++;__note(name,e&&e.message||e);
+      return old.apply(this,args);
+    }
+  };
+}
+const __OLD={premiumSections,premiumStarContexts,premiumStarSynthesis,premiumCompatibilitySections};
+premiumSections=__guard('premiumSections',c=>V514.fullRows(c),__OLD.premiumSections);
+premiumStarContexts=__guard('premiumStarContexts',c=>V514.starContexts(c),__OLD.premiumStarContexts,(n,o)=>o.title===String(n.title).split(' — ')[0]);
+premiumStarSynthesis=__guard('premiumStarSynthesis',c=>V514.starSynthesis(c),__OLD.premiumStarSynthesis);
+premiumCompatibilitySections=__guard('premiumCompatibilitySections',x=>V514.pairSections(x),__OLD.premiumCompatibilitySections);
+const personalitySections514=__guard('personalitySections',c=>V514.personalityRows(c),c=>__OLD.premiumSections(c).filter(s=>!['work','career','money','leak','timing'].includes(s.id)));
+const fieldSections514=__guard('fieldSections',c=>V514.fieldRows(c),c=>__OLD.premiumSections(c).filter(s=>['work','career','money','leak','love','timing'].includes(s.id)));
+
+root.GuiinExpert={...BaseExpert,premiumStarContexts,premiumStarSynthesis,starFacts,starIntegratedNames:Object.keys(STAR_INTEGRATED),narrativeProfile,narrativeFacts,premiumProfile,premiumBehavior,fortuneActions,timingSections,relationshipSections,fullSections:premiumSections,premiumCompatibilitySections,behaviorSections:sections,personalitySections:personalitySections514,fieldSections:fieldSections514,personModel:pmodel};
 root.GuiinCompat={...BaseCompat,build:compatBuild,pick:compatPick};
-root.GUIIN_INTERPRETATION_V4={version:'premium-evidence-v5.12',rules:{humanFirst:true,jargonInBody:false,confidentTone:true,repeatCards:false}};
+root.GUIIN_INTERPRETATION_V4={version:'premium-evidence-v5.14',generation:'template-v5.14(no-external-ai)',engine:V514,lastError:()=>__V514_STATE.lastError,fallbackLog:()=>({bundle:__V514_STATE.fallbacks,rows:__V514_STATE.rows.slice()}),state:__V514_STATE,rules:{humanFirst:true,jargonInBody:false,confidentTone:true,repeatCards:false}};
 })(typeof globalThis!=='undefined'?globalThis:this);
