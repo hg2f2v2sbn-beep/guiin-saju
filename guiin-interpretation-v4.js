@@ -2011,16 +2011,145 @@ const FL_TIER={
 강:'힘이 센 구조라 이 행동은 본인은 문제를 못 느끼는데 곁의 사람이 먼저 느끼는 방식으로 나오기 쉬워. 그래서 주변의 반응을 직접 물어보는 확인이 필요해.'
 };
 function flawRow(P){
-  const F=FL_DM[P.stem],S=STRESS[P.stress];
+  const F=FL_DM[P.stem],S=STRESS[P.stress],X=indivLines(P);
   const kinds=['tire','trust','opp'],lab={tire:'상대를 지치게 하는 건',trust:'신뢰가 깎이는 지점은',opp:'네 기회가 줄어드는 지점은'};
-  const skip=(GR.indexOf(P.top)+['약','중','강'].indexOf(P.tier))%3;
+  const skip=sigN(P)%3;
   const pick=kinds.filter((k,i)=>i!==skip);
+  const intro=vp(P,1,['여기부터는 직설적으로 말할게. 아래는 명식 구조에서 읽히는 경향이고, 실제로 이런 행동이 있었는지는 네가 가장 잘 알아. 해당되는 것만 가져가면 돼.','돌려 말하지 않고 고칠 점만 짚을게. 명식에서 읽히는 경향이라서 네 생활과 맞지 않는 부분은 빼고 읽어도 돼.','이 부분은 듣기 편하진 않을 수 있어. 대신 바꿀 수 있는 행동 단위로만 말할게. 지금 네 모습과 맞는 것만 골라 가져가.']);
   return [
-    P_('여기부터는 직설적으로 말할게. 아래는 명식 구조에서 읽히는 경향이고, 실제로 이런 행동이 있었는지는 네가 가장 잘 알아. 해당되는 것만 가져가면 돼.',`압박이 커지는 조건에서 가장 먼저 나오는 건 ${S.tag} 쪽이야. ${S.act}.`,FL_TIER[P.tier]),
-    P_(...pick.map(k=>`${lab[k]} 이거야. ${F[k]}.`),FL_MG[P.mg]),
-    P_(FL_GRP[P.top],`${TOOL[P.stem]}이 강점이라는 사실이 이 행동의 이유가 되지는 않아. 강점은 그대로 두고 행동만 바꾸면 돼.`),
+    P_(intro,`압박이 커지는 조건에서 가장 먼저 나오는 건 ${S.tag} 쪽이야. ${S.act}.`,FL_TIER[P.tier]),
+    P_(...pick.map(k=>`${lab[k]} 이거야. ${F[k]}.`),FL_MG[P.mg],X.day?`일지의 ${P.dayGod} 자리 때문에 ${X.day}.`:''),
+    P_(FL_GRP[P.top],shapeLine(P,'flaw'),X.low?`특히 ${X.low}.`:'',X.rel?`또 ${X.rel}.`:'',`${TOOL[P.stem]}이 강점이라는 사실이 이 행동의 이유가 되지는 않아. 강점은 그대로 두고 행동만 바꾸면 돼.`),
     P_(`바꾸는 첫걸음은 이거야. ${F.fix}.`,`압박이 커질 때는 ${S.fix}.`,'한 달 뒤에 이 행동이 실제로 몇 번 줄었는지 직접 세어 보면 달라졌는지 알 수 있어.')
   ];
+}
+
+/* ===== 5c: 같은 일간이어도 구조가 다르면 다른 문장을 고르는 개별화 계층 =====
+   근거: 일지 본기 십성, 가장 얇은 십성 영역, 가장 센 합충형, 두 번째 큰 영역, 계절.
+   원국 계산값은 읽기만 하고 바꾸지 않는다. */
+function sigN(P){
+  const pl=P.c.pillars||{},unk=!!P.c.input?.hourUnknown;
+  const k=[P.stem,pl.year?.branch,pl.month?.branch,pl.day?.branch,unk?'':pl.hour?.branch,...GR.map(g=>P.pct[g])].join('|');
+  let h=7;for(let i=0;i<k.length;i++)h=(h*31+k.charCodeAt(i))>>>0;return h;
+}
+function vp(P,salt,arr){return arr[(sigN(P)+(salt||0)*7)%arr.length];}
+const FL_DG={
+비견:'가까운 사이에서는 대등하길 바라서, 상대가 먼저 맞춰 주지 않는다고 느끼면 말투가 딱딱해지는 쪽으로 이 행동이 커져',
+겁재:'가까운 사이일수록 솔직함이 거칠게 나가서, 맞는 말이어도 방금 한 말이 상처로 남는지 놓치는 쪽으로 이 행동이 커져',
+식신:'편안한 사이에서는 긴장이 풀려 말이 길어지니, 별 뜻 없이 덧붙인 지적이 쌓이는 쪽으로 이 행동이 커져',
+상관:'가까운 사이에서는 생각이 말로 바로 나오다 보니, 하려던 말보다 말투가 먼저 기억에 남는 쪽으로 이 행동이 커져',
+편재:'가까운 사이에서도 새 계획과 변수가 먼저 눈에 들어와서, 상대의 지금 이야기가 뒤로 밀리는 쪽으로 이 행동이 커져',
+정재:'가까운 사이에서 약속과 비용을 정확히 따지는 편이라, 상대에게는 마음보다 계산이 먼저 보이는 쪽으로 이 행동이 커져',
+편관:'가까운 사이에서도 긴장을 풀지 못해서, 상대는 함께 있어도 평가받는 느낌을 받는 쪽으로 이 행동이 커져',
+정관:'가까운 사이에서도 예의와 도리를 먼저 지키려다 정작 힘든 속마음은 말하지 않고 넘기는 쪽으로 이 행동이 커져',
+편인:'가까운 사이에서 혼자 생각을 오래 굴리다 결론만 던져서, 상대는 과정을 모른 채 통보받는 느낌을 받는 쪽으로 이 행동이 커져',
+정인:'가까운 사이에서 이해해 주려다 내 불편을 늦게 말해서, 쌓였다가 한꺼번에 나오는 쪽으로 이 행동이 커져'
+};
+const FL_LOW={
+비겁:'자기 기준을 세우고 지키는 힘이 가장 얇은 구조라, 참고 맞춰 주다가 어느 순간 한꺼번에 반응하는 식으로 이 행동이 튀어나오기 쉬워',
+식상:'속마음을 말로 꺼내는 통로가 가장 좁은 구조라, 말하지 못한 불편이 날 선 지적으로 새어 나오기 쉬워',
+재성:'현실의 시간과 돈을 챙기는 힘이 가장 얇은 구조라, 여유가 없는 시기에 마음의 여유까지 같이 줄면서 이 행동이 커지기 쉬워',
+관성:'스스로를 조이는 틀과 순서가 가장 얇은 구조라, 일정과 약속이 흐트러지는 날에 날카로움이 상대에게 먼저 가기 쉬워',
+인성:'쉬면서 회복하고 이해받는 통로가 가장 얇은 구조라, 지친 날에 여유 없이 반응하는 식으로 이 행동이 커지기 쉬워'
+};
+const FL_REL={
+충:l=>`${J(l,'이/가')} 걸려 있어서, 이 행동은 결정을 내린 직후나 환경이 바뀐 직후에 평소보다 세게 나오는 편이야`,
+형:l=>`${J(l,'이/가')} 걸려 있어서, 같은 지적이 같은 모양으로 되풀이되면서 굳어지기 쉬워`,
+파:l=>`${J(l,'이/가')} 걸려 있어서, 계획이 틀어진 날에 이 행동이 가장 먼저 켜지는 편이야`,
+해:l=>`${J(l,'이/가')} 걸려 있어서, 말하지 않은 서운함이 쌓였다가 이 행동으로 나오기 쉬워`
+};
+const STR_TRIG={
+비겁:'내 기준을 존중해 줄 사람이 곁에 없다고 느끼는 날',
+식상:'하고 싶은 말을 못 꺼내고 쌓아 두는 날',
+재성:'시간이나 돈의 여유가 없다고 느끼는 날',
+관성:'일정과 역할이 흐트러지는 날',
+인성:'충분히 쉬거나 이해받지 못한 채 일이 이어지는 날'
+};
+const SEC_NOTE={
+비겁:'받쳐 주는 두 번째 힘이 자기 기준이라, 힘들수록 혼자 해결하려는 쪽으로 기울어',
+식상:'두 번째 힘이 표현이라, 힘들수록 말이나 글로 풀어내야 정리가 돼',
+재성:'두 번째 힘이 현실 감각이라, 힘들수록 비용과 결과를 먼저 계산하게 돼',
+관성:'두 번째 힘이 책임감이라, 힘들수록 해야 할 일 목록이 먼저 떠올라',
+인성:'두 번째 힘이 이해와 준비라, 힘들수록 더 알아보고 준비하려는 쪽으로 움직여'
+};
+function indivLines(P){
+  const cr=P.conflict&&P.conflict.rel,main=cr&&FL_REL[cr.type]?cr:null;
+  return {
+    day:P.dayGod&&FL_DG[P.dayGod]?FL_DG[P.dayGod]:'',
+    low:FL_LOW[P.low]?`${J(P.low,'이/가')} ${P.pct[P.low]}%로 가장 낮은데, ${FL_LOW[P.low]}`:'',
+    rel:main?FL_REL[main.type](main.label):'',
+    trig:STR_TRIG[P.low]?`${J(P.low,'이/가')} ${P.pct[P.low]}%로 가장 얇은 구조라, ${STR_TRIG[P.low]}에 이 반응이 가장 먼저 켜져`:'',
+    sec:SEC_NOTE[P.second]?`${J(P.second,'이/가')} ${P.pct[P.second]}%로 두 번째여서 ${SEC_NOTE[P.second]}`:''
+  };
+}
+const SEASON_DRAIN={
+봄:'봄에 태어난 명식은 뻗어 나가려는 기운이 바탕이라, 멈춰 있는 시간이 길어질 때 오히려 답답함이 쌓이는 편이야. 쉬는 시간도 완전히 멈추기보다 가볍게 움직이며 쉬는 쪽이 회복에 맞아.',
+여름:'여름에 태어난 명식은 열이 밖으로 올라가는 바탕이라, 쉬는 날에도 머리가 계속 가동 중인 느낌이 남기 쉬워. 쉬려고 애쓰기보다 조용한 시간과 가벼운 활동처럼 열을 식히는 환경을 만들어 두는 쪽이 맞아.',
+가을:'가을에 태어난 명식은 정리하고 거두는 쪽으로 힘이 모여서, 마무리가 안 된 일이 남아 있으면 쉬는 동안에도 신경이 그 일에 가 있어. 쉬기 전에 오늘의 끝 지점을 하나 정해 두는 게 휴식의 조건이야.',
+겨울:'겨울에 태어난 명식은 안으로 모으는 기운이 바탕이라, 사람이 많은 자리가 이어지면 회복에 시간이 더 필요해. 혼자 있는 시간을 사치가 아니라 충전으로 일정에 넣어 두는 게 맞아.',
+환절:'환절기에 태어난 명식은 두 계절의 기운이 섞여 있어서 환경이 바뀔 때마다 리듬이 한 번씩 흔들려. 쉬는 시간대와 루틴을 고정해 두면 그 흔들림이 훨씬 작아져.'
+};
+function seasonDrain(P){return SEASON_DRAIN[P.season]||'';}
+function topSecLine(P,kind){
+  const t=P.pct[P.top],s=P.pct[P.second],a=GRP[P.top].mode,b=GRP[P.second].mode;
+  if(kind==='tire'&&shapeOf(P)==='tie')return '';
+  if(kind==='tire')return `중심인 ${J(P.top,'은/는')} ${t}%이고 ${J(P.second,'이/가')} ${s}%로 곁에서 같이 움직이는 구조라, ${a} 일과 ${b} 일이 한꺼번에 들어오는 날 에너지가 가장 빨리 빠져.`;
+  if(kind==='love')return `연애에서는 ${a} 면(${P.top} ${t}%)이 먼저 나가고 ${b} 면(${P.second} ${s}%)이 뒤따라서, 상대는 처음 본 모습과 시간이 지나 드러나는 모습이 조금 다르다고 느낄 수 있어.`;
+  return '';
+}
+/* 대운 십성이 원국의 어느 자리(중심/보조/가장 얇은 영역)에 놓이는지 */
+function luckPlace(P){
+  const tr=P.transit&&P.transit.luck;if(!tr||!tr.god||!G2[tr.god])return '';
+  const g=G2[tr.god],pc=P.pct[g];
+  if(g===P.top)return `이 대운의 ${tr.god}은 원국에서 ${P.top}(${P.pct[P.top]}%)이 중심인 구조에 같은 결을 더해서, 평소 쓰던 방식이 힘을 받는 시기로 읽혀. 다만 한쪽으로 쏠리기 쉬워서 얇은 ${P.low}(${P.pct[P.low]}%) 쪽을 의식해서 챙기면 균형이 맞아.`;
+  if(g===P.second)return `이 대운의 ${tr.god}은 원국에서 두 번째로 큰 ${P.second}(${pc}%)과 같은 결이라, 곁에서 받치던 힘이 전면에 나오는 시기로 읽혀. 평소에 보조로만 쓰던 방식을 주된 방식으로 써 볼 기회야.`;
+  if(g===P.low)return `이 대운의 ${tr.god}은 원국에서 가장 얇은 ${P.low}(${pc}%)을 채우는 방향이라, 평소 약했던 영역을 시험하고 익히기에 맞는 시기로 읽혀. 처음엔 서툴러도 정상이야.`;
+  return `이 대운의 ${tr.god}은 원국의 ${g}(${pc}%) 쪽 힘이라, 중심인 ${P.top}과는 다른 결의 과제가 들어오는 시기로 읽혀. 이 흐름은 미래 사건을 정해 주는 게 아니라 어떤 역할이 자주 요구될지 알려 주는 참고 신호야.`;
+}
+/* 분포 형태: 같은 일간·같은 최대 영역이어도 힘이 몰렸는지 퍼졌는지 맞서는지에 따라 풀이가 달라진다 */
+function shapeOf(P){
+  const t=P.pct[P.top],s=P.pct[P.second];
+  if(t-s<=3)return 'tie';
+  if(t>=40)return 'focus';
+  if(t>=30)return 'lean';
+  return 'spread';
+}
+function topWord(P){
+  const t=P.pct[P.top],s=P.pct[P.second];
+  return shapeOf(P)==='tie'?`${P.top}(${t}%)과 ${P.second}(${s}%)이 나란히`:`${J(P.top,'이/가')} ${t}%로`;
+}
+const SHAPE_TXT={
+tire:{
+ focus:P=>`한 방향(${P.top})에 힘이 크게 몰린 구조라, 그 방향의 일이 막히면 다른 곳에서 보완할 여지가 적어서 피로가 한꺼번에 와.`,
+ lean:P=>`중심(${P.top})은 분명하지만 ${P.second}이 받쳐 줘서, 한 방향이 막혀도 다른 방식으로 돌려 쓸 수 있는 편이야. 대신 돌려 쓰는 데 드는 노력이 보이지 않아서 남들은 네가 얼마나 애쓰는지 모를 수 있어.`,
+ spread:P=>`힘이 한쪽에 몰리지 않고 여러 방향이 비슷하게 있어서, 같은 일도 어느 방식으로 풀지 매번 고르게 돼. 그 선택에 쓰는 에너지가 눈에 띄지 않게 새는 게 네 피로의 한 몫이야.`,
+ tie:P=>`${P.top}과 ${P.second}이 거의 같은 크기로 맞서 있어서, 같은 상황에서도 두 방식 중 어느 쪽을 따를지 정하는 데 힘이 들어. 한 번 정해도 다른 쪽이 계속 불러서 결정 뒤에도 마음이 쉬지 못해.`
+},
+love:{
+ focus:P=>`연애에서도 한 가지 방식으로 일관되게 다가가서 상대가 예측하기 쉬운 편이야. 대신 그 방식이 상대와 맞지 않으면 바꿀 대안이 적어서 같은 방식으로 더 밀어붙이기 쉬워.`,
+ lean:P=>`연애에서 중심이 되는 방식이 있지만 다른 방식도 곁들여서, 상대에 따라 접근법을 어느 정도 바꿀 수 있어.`,
+ spread:P=>`연애에서 여러 모습이 비슷한 비중으로 있어서 상대는 어떤 날은 이런 사람, 어떤 날은 저런 사람이라고 느낄 수 있어. 어느 쪽이 진짜냐는 질문을 받으면 전부라고 답해도 돼.`,
+ tie:P=>`연애에서 ${P.top}과 ${P.second}의 방식이 팽팽해서, 같은 상대 앞에서도 마음은 한쪽으로 가고 행동은 다른 쪽으로 나가는 순간이 생길 수 있어.`
+},
+flaw:{
+ focus:P=>`이 행동은 한 가지 패턴으로 굳어 있어서 곁의 사람은 "또 저 말이 나오겠네" 하고 예측할 수 있어. 패턴이 분명한 만큼 한 가지 습관만 바꿔도 체감이 커.`,
+ lean:P=>`이 행동은 중심 패턴이 있지만 보조 힘이 섞여서 상황마다 강도가 달라. 강하게 나오는 상황을 먼저 알아내면 바꾸기 쉬워.`,
+ spread:P=>`이 행동은 상황마다 다른 모습으로 나와서 곁의 사람은 어떤 날의 너를 기준으로 삼아야 할지 헷갈려. 그래서 하나만 고치라고 하면 다른 모습이 튀어나오기 쉬워. 가장 자주 나오는 상황 하나부터 정해.`,
+ tie:P=>`이 행동은 ${P.top}과 ${P.second}이 맞서는 순간에 가장 크게 나와서, 결정이 갈리는 장면에서 상대에게 날카롭게 닿기 쉬워.`
+},
+core:{
+ focus:P=>`이번 주는 한 가지 방향에만 힘을 쓰는 연습을 해 봐. 이미 한 방향이 강한 구조라 새로 늘리기보다 쏠림을 줄이는 쪽이 효과가 커.`,
+ lean:P=>`이번 주는 중심 방식 하나와 보조 방식 하나를 짝지어 써 봐. 두 힘을 같이 쓰면 부담이 나뉘어.`,
+ spread:P=>`이번 주는 여러 방향 중 하나만 골라서 끝까지 해 봐. 힘이 고르게 퍼진 구조라 한 가지에 모을 때 효과가 가장 눈에 띄어.`,
+ tie:P=>`이번 주는 ${P.top}과 ${P.second}이 부딪히는 장면을 하나만 찾아서, 어느 쪽을 따를지 미리 정해 둬 봐.`
+}};
+function shapeLine(P,kind){const f=SHAPE_TXT[kind]&&SHAPE_TXT[kind][shapeOf(P)];return f?f(P):'';}
+
+/* 이 명식만의 조합: 이론상 조합 수는 산술일 뿐 확률이나 운명의 주장이 아니다 */
+function identityPara(P){
+  const pl=P.c.pillars||{},day=pl.day&&pl.day.ko,mb=pl.month&&pl.month.branch;
+  if(!day||!mb)return '';
+  return `네 명식의 조합을 한 줄로 쓰면 ${day} 일주, ${mb}월생, 중심 ${P.top}(${P.pct[P.top]}%), 보조 ${P.second}(${P.pct[P.second]}%), 가장 얇은 ${P.low}(${P.pct[P.low]}%)야. 일주 60가지와 월지 12가지, 영역 순서 60가지만 곱해도 이론상 4만 가지가 넘는 조합이라, 같은 일간이어도 이 구성으로 읽히는 사람의 힘의 모양은 따로 있어. 그래서 어디서 본 일반적인 ${P.stem}${P.el} 일간 설명이 네 일부만 맞게 느껴졌다면 이상한 게 아니야. 이 해설은 그 일반 설명 위에 네 구성을 하나씩 얹어서 읽은 거야.`;
 }
 
 /* ===== 3단계: 문단 작성(사주 1~9번, 요약용) ===== */
@@ -2064,7 +2193,7 @@ function focusLine(P){
   const act=ACT[P.stem]||P.D.head;
   const se=P.season&&ENVS[P.season]?` 월령의 결로 보면 ${ENVS[P.season]}에서 이 힘이 더 또렷하게 드러나는 편이야.`:'';
   const sc=P.pct[P.second]>=20&&P.second!==P.top?` ${J(P.second,'이/가')} ${P.pct[P.second]}%로 받쳐서 ${OBJ[P.second]}을 다룰 때도 같은 힘이 쓰여.`:'';
-  return `네 구조에서는 ${OBJ[P.top]}에서 ${act} 힘이 가장 선명하게 나와.${se}${sc}`;
+  return `네 구조에서는 ${act} 힘이 가장 선명하게 나오고, ${J(P.top,'이/가')} 가장 큰 구조라 그 힘은 ${J(OBJ[P.top],'을/를')} 다룰 때 가장 잘 쓰여.${se}${sc}`;
 }
 function secSelf(P){
   const D=P.D,n=J(P.name,'은/는'),g=GRP[P.top],mgd=MG[P.mg],bs=P.pct[P.second]>=20?` 두 번째로 큰 ${J(P.second,'의')} 힘(${P.pct[P.second]}%)도 같이 써서 ${GRP[P.second].mode} 면이 곁들여져.`:'';
@@ -2072,10 +2201,10 @@ function secSelf(P){
   const TP=TIERPRAISE[P.tier];
   const p2=P_(D.scene,focusLine(P),P.tier!=='강'?D.relief:'',P.tier!=='약'?D.trust:'',TP);
   const sec2=P.pct[P.second]>=20?GRP[P.second].relief:'';
-  const p3=P_(`여기에 십성 배치에서 ${J(P.top,'이/가')} ${P.pct[P.top]}%로 가장 커서 ${g.mode} 쪽으로 힘이 모여.`,g.scene,g.relief,g.trust,sec2);
+  const p3=P_(`여기에 십성 배치에서 ${topWord(P)} 가장 커서 ${g.mode} 쪽으로 힘이 모여.`,g.scene,g.relief,g.trust,sec2);
   const p4=P_(`사회에서 먼저 보이는 얼굴은 ${mgd.role}이야. ${mgd.scene}.`,mgMismatch(P));
   const t=`1. ${P.c.pillars.day.ko} 일주 — ${D.head} 사람, 사회에서는 ${MG_TAG[P.mg]} 얼굴`;
-  const r=R('self',t,[p1,p2,p3,valuePara(P),p4],P,['DM','DP','ML','MG','VEC','STR','CLM'],`내가 가진 ${J(TOOL[P.stem],'이/가')} 지금 하는 일에서 어떻게 더 잘 쓰이는지 내 상황으로 알려 줘`);
+  const r=R('self',t,[p1,p2,p3,valuePara(P),p4,identityPara(P)],P,['DM','DP','ML','MG','VEC','STR','CLM'],`내가 가진 ${J(TOOL[P.stem],'이/가')} 지금 하는 일에서 어떻게 더 잘 쓰이는지 내 상황으로 알려 줘`);
   const gs=GRP[P.top];
   r.body=P_(`${J(P.name,'은/는')} ${D.img}에 가까운 ${P.stem}${P.el} 일간이야. ${D.trait}.`,`${J(PDM[P.stem].gift,'이/가')} 곁의 사람에게 믿음을 줘.`,OI[P.mgG][P.dayG],`십성 배치는 ${gs.mode} 쪽으로 힘이 모여.`);
   r.lead=true;
@@ -2085,9 +2214,9 @@ function secSelf(P){
 function secInside(P){
   const D=P.D,B=BURDEN[P.top];
   const p1=P_('먼저 네 강점이 쉬는 시간까지 따라오는 이유부터 말할게.',D.cost,D.comfort);
-  const p2=P_(`두 번째는 구조야. 십성 배치에서 ${J(P.top,'이/가')} ${P.pct[P.top]}%로 가장 커서, ${B.when} 특히 힘이 많이 들어.`,TIER[P.tier],B.self);
+  const p2=P_(`두 번째는 구조야. 십성 배치에서 ${topWord(P)} 가장 커서, ${B.when} 특히 힘이 많이 들어.`,TIER[P.tier],B.self,shapeLine(P,'tire'));
   const lack=P.hasLow?`반대로 ${J(P.low,'은/는')} ${P.pct[P.low]}%로 가장 적은 쪽이야. ${GRP[P.low].lack}`:'';
-  const p3=P_(innerConflict(P),lack);
+  const p3=P_(innerConflict(P),lack,topSecLine(P,'tire'),seasonDrain(P));
   const p4=P_(`이런 상태가 이어지면 주변에는 이렇게 보일 수 있어. ${B.others}`,`바꿀 수 있는 건 어렵지 않은 쪽부터야. ${B.fix}`,P.hasLow?`${GRP[P.low].fill}도 도움이 돼.`:'');
   const pc=P_(SBLAME[P.top],PROT[P.top]);
   const r=R('inside',`2. 지치는 이유 — ${J(TOOL[P.stem],'이/가')} 쉬는 시간까지 따라올 때`,[p1,p2,p3,pc,flawInside(P),p4],P,['STR','VEC','DP',P.main?'REL'+P.rels.indexOf(P.main):''].filter(Boolean),`${B.short} 쉬는 시간을 지키려면 어떤 말로 부탁하거나 거절하면 좋을지 내 상황에 맞게 만들어 줘`);
@@ -2136,7 +2265,7 @@ function secLove(P){
   const pv=`네가 마음을 건네는 방식에는 분명한 가치가 있어. ${CVAL[P.give]}`;
   const hD=P.harmony.find(r=>r.a==='day'||r.b==='day'),tD=P.tension.find(r=>(r.a==='day'||r.b==='day'));
   const loveRel=hD?`일주와 ${ZONE[hD.a==='day'?hD.b:hD.a]} 사이에 ${J(hD.label,'이/가')} 있어서 ${TTYPE.합.eff}. 사랑에서는 한번 마음이 붙으면 쉽게 떼어 놓기 어려운 쪽이라, ${TTYPE.합.tip}.`:(tD&&LOVE_REL[tD.type]?LOVE_REL[tD.type](ZONE[tD.a==='day'?tD.b:tD.a]):'');
-  const pt=P_(LOVE_TOP[P.top],LOVE_TIER[P.tier],loveRel);
+  const pt=P_(LOVE_TOP[P.top],shapeLine(P,'love'),topSecLine(P,'love'),LOVE_TIER[P.tier],loveRel);
   const p2=P_(`깊어질수록 이 필요는 더 커져. ${hurtTxt(P.dayGod)} 그 순간이 오래 남아서 마음의 문이 천천히 닫혀.`);
   const p3=P_('그리고 네 쪽에서 조심할 부분도 있어.',D.flaw,D.fix);
   const p4=P_(`원하는 걸 말로 꺼낼 때는 이렇게 시작해 볼 수 있어. ${w.req}`,`상대가 ${w.rep} 하고 받아 준다면 방향이 맞게 가고 있는 거야.`);
@@ -2174,7 +2303,7 @@ function luckLine(P,t,label){
 function secTiming(P){
   const tr=P.transit,Ls=luckLine(P,tr.luck,`지금 대운(${tr.luck?.ko||''})은`),Ys=luckLine(P,tr.year,`올해 세운(${tr.year?.pillar||''})은`),Ms=luckLine(P,tr.month,`이번 달 월운(${tr.month?.pillar||''})은`);
   const ps=[];
-  if(Ls)ps.push(P_(Ls.t,'대운은 몇 년 단위의 배경이라 올해 하루하루보다 방향을 정할 때 참고하면 돼.',Ls.r,Ls.u));
+  if(Ls)ps.push(P_(Ls.t,'대운은 몇 년 단위의 배경이라 올해 하루하루보다 방향을 정할 때 참고하면 돼.',luckPlace(P)||Ls.r,Ls.u));
   if(Ys){const rl=tr.year.rels.length?`올해 기운은 원국과 ${uniq(tr.year.rels).join('·')} 관계가 생겨서, ${tr.year.rels.includes('충')?'바뀌는 일이 한 번에 몰리지 않도록 일정을 나눠서 받아':tr.year.rels.includes('합')?'새 인연이나 제안이 붙기 쉬우니 받아들일 범위를 먼저 정해':'기존 약속을 조정해야 하는 일이 생기기 쉬우니 변경 기준을 미리 정해'}.`:'';ps.push(P_(Ys.t,Ys.r,Ys.u,rl));}
   if(Ms)ps.push(P_(Ms.t,Ms.u));
   if(!ps.length)ps.push('이 명식에서는 현재 대운·세운 자료를 읽지 못해서 시기별 해석은 비워 둘게. 원국 중심의 해설만 신뢰해 줘.');
@@ -2199,7 +2328,7 @@ KEEP:{비겁:'안정을 자기 힘으로 지키는 쪽이라 자기 기반과 �
 TUNE:{비겁:'관계의 간격을 직접 조정하려는 구조라 불편한 지점을 숨기지 않고 먼저 꺼내 조율하는 방식이 맞아',식상:'조율을 말로 풀어내는 힘이 있어서 서운함이 쌓이기 전에 대화로 정리하는 방식이 잘 맞아',재성:'조율을 현실 조건으로 정리하는 감각이 있어서 역할·비용·시간을 나누는 합의로 푸는 쪽이 맞아',관성:'조율을 규칙과 약속으로 만드는 힘이 있어서 반복되는 문제를 약속으로 고정해 두면 잘 풀려',인성:'조율 전에 상대의 사정을 충분히 이해하려 해서 이유를 먼저 묻고 정리하는 방식이 맞아'}
 };
 const STAR_TIER={약:'받쳐 주는 힘이 얇은 구조라 이 재능은 혼자보다 사람이나 환경과 함께 쓸 때 더 크게 나와.',중:'밀고 갈 힘과 받쳐 주는 힘이 비슷한 구조라 혼자 쓸 때와 함께 쓸 때를 상황에 맞게 바꿀 수 있어.',강:'스스로 끌고 갈 힘이 충분한 구조라 이 재능을 혼자서도 꺼내 쓸 수 있지만, 나눠 쓰는 연습이 있어야 오래 가.'};
-function starPara(P,s,deep,idx){
+function starPara(P,s,deep,idx,ord,before){
   const b=SB[s.name],pos=SPOS[s.pillar],rel=P.rels.filter(r=>r.a===s.pillar||r.b===s.pillar)[0];
   const gd=godAt(P.c,s.pillar),stg=P.c.twelveStages?.[s.pillar],cat=STAR_CAT[s.name]||'TUNE';
   const where={day:`가까운 사람 앞에서`,month:`일하고 사회에서 역할을 맡는 자리에서`,hour:`시간을 들여 남기는 결과물과 앞으로의 방향에서`,year:`처음 사람을 대하는 방식과 바깥 인연에서`}[s.pillar];
@@ -2210,28 +2339,36 @@ function starPara(P,s,deep,idx){
       `${pos.n}의 ${J(s.name,'은/는')} ${pos.tag}에서 ${J(b.t,'으로/로')} 쓰이는 재능으로 읽혀.`,
       `${pos.n}에 ${J(s.name,'이/가')} 성립해서 ${pos.tag}에서 ${J(b.g,'이/가')} 힘을 내.`
     ][(idx||0)%3];
-    const topUse=STAR_USE[cat][P.top];
-    return P_(open,`${useSum}.`,topUse?`네 중심 힘이 ${J(P.top,'이라/라')} ${topUse}.`:'');
+    const nu=(idx||0)%3,gk=nu===0?P.top:nu===1?P.second:null,topUse=gk?STAR_USE[cat][gk]:'';
+    return P_(open,`${useSum}.`,topUse?(nu===0?`네 중심 힘이 ${J(P.top,'이라/라')} ${topUse}.`:`두 번째로 큰 ${J(P.second,'이/가')} 곁에서 받치는 구조라 ${topUse}.`):'');
   }
   const basis=s.basis?`(${String(s.basis).replace(/year/g,'년지').replace(/month/g,'월지').replace(/day/g,'일지').replace(/hour/g,'시지').replace(/↔/g,'·')})`:'';
-  const first=[
+  const o=ord||0,bf=(before||[]);
+  const firsts=[
     `${pos.n}${basis}에 ${J(s.name,'이/가')} 성립했어. ${J(pos.n,'은/는')} ${J(pos.w,'을/를')} 보여 주는 자리라서, ${J(b.g,'이/가')} ${pos.tag} 쪽에서 작동한다는 뜻이야.`,
     `${J(s.name,'은/는')} ${pos.n}${basis}에서 잡혔어. ${J(pos.w,'이/가')} 걸린 자리라서 ${J(b.t,'을/를')} 쓰는 곳도 ${pos.tag} 쪽이야.`,
     `${pos.n}${basis}에 ${J(s.name,'이/가')} 놓였어. 이 자리는 ${pos.w+'에'} 해당해서, ${J(b.g,'이/가')} ${pos.tag}에서 먼저 드러나.`
-  ][(idx||0)%3];
+  ];
+  const first=bf.length?[
+    `같은 ${pos.n}에는 ${bf[0]}도 있는데, ${J(s.name,'은/는')}${basis} 결이 달라서 ${J(b.g,'이/가')} 따로 작동해. ${J(b.t,'은/는')} ${pos.tag} 쪽에서 쓰여.`,
+    `${pos.n}에 ${J(bf[0],'과/와')} 함께 ${J(s.name,'이/가')}${basis} 겹쳐 있어서, ${pos.tag}에서 ${J(b.t,'이/가')} 한 겹 더해져.`
+  ][o%2]:firsts[o%3];
   const link=gd?`그 자리의 십성이 ${J(gd,'이라/라')} ${GODACT[gd]} 방향으로 이 재능이 쓰이는 모양이야.`:'';
-  const topUse=STAR_USE[cat][P.top];
-  const mix=topUse?`네 명식에서 가장 큰 힘은 ${P.top}(${P.pct[P.top]}%)이라서, ${J(s.name,'은/는')} ${topUse}.`:'';
-  const tier=STAR_TIER[P.tier];
+  const gk=[P.top,P.second,null][o%3],topUse=gk?STAR_USE[cat][gk]:'';
+  const mix=topUse?(gk===P.top?`네 명식에서 가장 큰 힘은 ${P.top}(${P.pct[P.top]}%)이라서, ${J(s.name,'은/는')} ${topUse}.`:`${P.second}(${P.pct[P.second]}%)이 두 번째로 받쳐 주기 때문에 ${J(s.name,'은/는')} ${topUse}.`):'';
+  const tier=o%4===1?STAR_TIER[P.tier]:'';
   const ext=(rel&&TTYPE[rel.type])?`같은 자리에 ${J(rel.label,'이/가')} 걸려 있어서, 이 재능을 쓸 때 ${TTYPE[rel.type].eff.replace(/[요]$/,'')}. ${TTYPE[rel.type].tip}.`:(stg&&STAGE[stg]?`이 자리의 12운성이 ${J(stg==='사'?'사(死)':stg,'이라/라')} ${STAGE[stg]} 쪽으로도 이 재능이 나타나.`:'');
-  return P_(first,link,mix,tier,ext,`생활로 옮기면 ${useAlt}. 이 힘이 과해지면 ${/는 일$/.test(b.o)?b.o.replace(/는 일$/,'는 쪽으로 기울기 쉬우니'):b.o+' 같은 일이 생기기 쉬우니'}, ${b.a}.`);
+  const over=/는 일$/.test(b.o)?b.o.replace(/는 일$/,'는 쪽으로 기울기 쉬우니'):b.o+' 같은 일이 생기기 쉬우니';
+  const lead3=['이 힘이 과해지면','다만 한쪽으로 쏠리면','반대로 지나치게 쓰면'][o%3];
+  const life=['생활로 옮기면','일상에서는','실제 장면으로 옮기면'][(o+1)%3];
+  return P_(first,link,mix,tier,ext,`${life} ${useAlt}. ${lead3} ${over}, ${b.a}.`);
 }
 function secStars(P){
   const st=pickStars(P).slice(0,3);
   if(!st.length){
     return R('stars','8. 신살·귀인 — 이 명식에서 뚜렷하게 성립한 별은 없어',[P_('이번 계산에서 일주·월주·시주 기준으로 성립한 신살이나 귀인은 확인되지 않았어. 그건 부족하다는 뜻이 아니라, 이 명식의 특징이 별 이름보다 십성의 배치와 원국 관계에서 더 분명하게 읽힌다는 뜻이야.',`그래서 이 명식에서는 앞에서 읽은 ${J(TOOL[P.stem],'과/와')} ${GRP[P.top].mode} 힘이 재능의 중심이야.`)],P,['DM','VEC'],'별 이름이 없는 대신 내 재능을 가장 잘 쓰는 방법을 알려 줘');
   }
-  const names=st.map(s=>s.name),ps=st.map((s,i)=>starPara(P,s,false,i));
+  const names=st.map(s=>s.name),ps=st.map((s,i)=>starPara(P,s,false,i,i,[]));
   const more=P.stars.length>st.length?`성립한 다른 별은 ‘신살·귀인 자세히 보기’에서 위치와 원국 관계까지 자세히 볼 수 있어.`:'';
   const t=`8. 신살·귀인 — ${J(names.join('·'),'이/가')} 말해 주는 재능의 쓰임`;
   const ev=st.map(s=>'STAR'+P.stars.indexOf(s));
@@ -2239,20 +2376,20 @@ function secStars(P){
 }
 function secCore(P){
   const B=BURDEN[P.top],D=P.D,mgd=MG[P.mg];
-  const p1=P_(`정리하면 너는 ${D.head} 사람이야. ${mgd.arena}에서 힘이 가장 잘 나고, ${B.short} 쉽게 지쳐.`);
-  const p2=P_(`이번 주에 해 볼 한 가지는 이거야. ${B.week}`,P.hasLow?`그리고 얇은 ${P.low} 쪽은 ${GRP[P.low].fill}부터 가볍게 시작해 봐.`:'',`일주일 뒤에는 지친 정도가 달라졌는지, 그리고 요청이나 거절을 한 번이라도 말로 해 봤는지만 확인하면 돼.`);
+  const p1=P_(`정리하면 너는 ${D.head} 사람이야. ${mgd.arena}에서 힘이 가장 잘 나고, ${B.short} 쉽게 지쳐.`,`구조로 보면 ${J(P.top,'이/가')} ${P.pct[P.top]}%로 중심이고 ${J(P.second,'이/가')} ${P.pct[P.second]}%로 그 뒤를 받치는데, ${J(P.low,'은/는')} ${P.pct[P.low]}%로 가장 낮아서 그 방향의 일이 몰리는 날 가장 먼저 피로가 와.`);
+  const p2=P_(`이번 주에 해 볼 한 가지는 이거야. ${B.week}`,shapeLine(P,'core'),P.hasLow?`그리고 얇은 ${P.low} 쪽은 ${GRP[P.low].fill}부터 가볍게 시작해 봐.`:'',`일주일 뒤에는 지친 정도가 달라졌는지, 그리고 요청이나 거절을 한 번이라도 말로 해 봤는지만 확인하면 돼.`);
   const p3=`이 글을 덮기 전에 이 문장을 네 말로 이어 써 봐. “나는 ${D.head} 사람이고, ${B.short} 지쳐. 그래서 이번 주에는 ___부터 바꿔 볼 거야.” 직접 쓴 마지막 줄이 오늘 읽은 내용 중 네 것이 된 부분이야.`;
   return R('core','9. 지금 바로 해볼 한 가지',[p1,p2,p3],P,['DM','VEC','MG'],`이번 주에 해 볼 한 가지를 내 일정에 맞게 더 작게 쪼개 줘`);
 }
 function personRows(c){const P=analyze(c);return [secSelf(P),secInside(P),secPeople(P),secLove(P),secWork(P),secMoney(P),secTiming(P),secStars(P),secCore(P)];}
 /* 상세(개인성격·분야 탭): 요약과 다른 내용만 */
 function deepRows(c){
-  const P=analyze(c),S=STRESS[P.stress],D=P.D,tempo={fast:'결정과 행동이 빠른 편이라 상대가 따라오기 전에 먼저 가 있는 일이 있어.',slow:'결정과 행동이 천천히 무르익는 편이라 급하게 재촉받으면 평소 실력이 나오지 않아.'}[P.tempo]||'';
+  const P=analyze(c),S=STRESS[P.stress],D=P.D,X_=indivLines(P),tempo={fast:'결정과 행동이 빠른 편이라 상대가 따라오기 전에 먼저 가 있는 일이 있어.',slow:'결정과 행동이 천천히 무르익는 편이라 급하게 재촉받으면 평소 실력이 나오지 않아.'}[P.tempo]||'';
   const hid=(P.c.pillars.day.hidden||[]).map(h=>`${h.stem}(${h.god})`).join('·');
   const rows=[];
   rows.push(R('deep-value','네 강점이 소중한 이유와 필요한 환경',[P_(`${P.stem}${P.el} 일간의 힘이 사람과 일에 만드는 가치로 풀면 ${VAL_DM[P.stem].v}이야.`,`이 힘이 ${GRP[P.top].mode} 쪽 구조 위에서 쓰이기 때문에, 사회에서는 ${MG[P.mg].arena}에서 가장 크게 쓰이는 걸로 읽혀.`),P_(comboLine(P)),P_(...hardLine(P))],P,['DM','VEC','STR','MG','DB'],'내 강점이 가장 잘 쓰이는 환경과 피해야 할 환경을 내 상황에 맞춰 정리해 줘'));
   rows.push(R('deep-flaw','고쳐야 할 행동을 직설적으로',flawRow(P),P,['DM','VEC','DB','MG','STR'],'내 고쳐야 할 행동을 상대가 기분 상하지 않게 바꾸는 말 습관으로 정리해 줘'));
-  rows.push(R('deep-stress','스트레스를 받으면 이렇게 움직여',[P_(`압박이 커지면 너는 ${S.act}.`,`그러면 곁의 사람은 ${S.felt}.`,`그래서 이럴 땐 ${S.fix}.`),P_(tempo,`일지 안에 숨은 기운(${hid})이 가까운 관계에서 말하지 않아도 작동해서, 겉으로 보이는 것보다 속에서 먼저 반응하는 면이 있어.`)],P,['DB','DP'],'스트레스를 받을 때 내가 보이는 행동을 주변 사람에게 어떻게 설명하면 좋을지 알려 줘'));
+  rows.push(R('deep-stress','스트레스를 받으면 이렇게 움직여',[P_(`압박이 커지면 너는 ${S.act}.`,`그러면 곁의 사람은 ${S.felt}.`,`그래서 이럴 땐 ${S.fix}.`),P_(X_.trig?X_.trig+'.':'',X_.sec?X_.sec+'.':'',tempo,`일지 안에 숨은 기운(${hid})이 가까운 관계에서 말하지 않아도 작동해서, 겉으로 보이는 것보다 속에서 먼저 반응하는 면이 있어.`)],P,['DB','DP'],'스트레스를 받을 때 내가 보이는 행동을 주변 사람에게 어떻게 설명하면 좋을지 알려 줘'));
   rows.push(R('deep-lack',P.hasLow?`${J(P.low,'이/가')} 얇은 구조가 만드는 일`:`한쪽으로 치우치지 않은 구조`,[P.hasLow?P_(`${J(P.low,'은/는')} ${P.pct[P.low]}%로 적은 편이라 ${GRP[P.low].lack}`,`그래서 ${J(GRP[P.low].fill,'이/가')} 의식해서 채워야 할 부분이야.`):P_(`십성 배치에서 가장 얇은 쪽도 ${P.pct[P.low]}%라 한 영역이 비어 있다고 보기는 어려워.`,`대신 ${J(P.top,'이/가')} ${P.pct[P.top]}%로 가장 커서 ${GRP[P.top].mode} 힘이 중심을 잡아 줘.`)],P,['VEC'],'내 명식에서 의식해서 채워야 할 부분을 일상 습관으로 바꿔 줘'));
   return rows;
 }
@@ -2268,9 +2405,9 @@ function starContexts(c){
     const hits=P.stars.filter(s=>s.name===n),b=SB[n];
     const old=fMap[n];
     if(!b)return old||{id:'star-context-'+n,title:n,lead:true,paragraphs:[`${J(n,'은/는')} 계산에서 성립했지만 이 해설에서 풀이를 추가하지 않은 표식이야. 성립한 위치(${hits.map(h=>SPOS[h.pillar].n).join('·')})만 확인해 둘게.`],facts:old?.facts||[],evidence:hits.map(h=>`${n}(${SPOS[h.pillar].n}${h.basis?' · '+h.basis:''})`).join(' / ')};
-    const ps=hits.map((h,i)=>starPara(P,h,true,i));
+    const ni=names.indexOf(n),ps=hits.map((h,i)=>starPara(P,h,true,i,ni+i,uniq(P.stars.filter(x=>x.pillar===h.pillar&&names.indexOf(x.name)<ni).map(x=>x.name))));
     const who=uniq(P.stars.filter(s=>s.pillar!==hits[0].pillar&&hits.every(h=>h.pillar!==s.pillar)).map(s=>s.name)).slice(0,0);
-    const luck=P.transit.luck&&LUCK[P.transit.luck.god]?`지금 대운 ${J(P.transit.luck.ko,'은/는')} ${J(LUCK[P.transit.luck.god].theme,'이라/라')}, ${n}의 재능(${b.t})을 쓸 때는 이 방향이 잘 맞아. ${LUCK[P.transit.luck.god].use}.`:'';
+    const luck=ni===0&&P.transit.luck&&LUCK[P.transit.luck.god]?`지금 대운 ${J(P.transit.luck.ko,'은/는')} ${J(LUCK[P.transit.luck.god].theme,'이라/라')}, ${n}의 재능(${b.t})을 쓸 때는 이 방향이 잘 맞아. ${LUCK[P.transit.luck.god].use}.`:'';
     return {id:'star-context-'+n,title:`${n} — ${b.g}`,lead:true,paragraphs:[...ps,luck].filter(Boolean),facts:old?.facts||hits.map(h=>({name:n,pillar:h.pillar,basis:h.basis})),evidence:hits.map(h=>`${n}(${SPOS[h.pillar].n}${h.basis?' · '+h.basis:''})`).join(' / ')+' · '+P.ev.DM};
   });
 }
@@ -2278,10 +2415,12 @@ const CATADJ={REL:'호감과 표현',MOVE:'변화에 반응하는 감각',DEEP:'
 function starSynthesis(c){
   const P=analyze(c),st=pickStars(P);
   if(!st.length)return ['이 명식에서는 뚜렷하게 성립한 신살·귀인이 확인되지 않았어. 성격과 재능은 앞의 십성 배치와 원국 관계에서 읽어.'];
-  const lead=st.slice(0,3).map(s=>`${s.name}(${SPOS[s.pillar].n})`).join(', ');
-  const cats=uniq(st.slice(0,3).map(s=>STAR_CAT[s.name]||'TUNE'));
-  const link=cats.length>=2?`${J(CATADJ[cats[0]],'과/와')} ${J(CATADJ[cats[1]],'이/가')} 한 명식에 함께 있어서, ${J(CATADJ[cats[0]],'으로/로')} 문을 열고 ${J(CATADJ[cats[1]],'으로/로')} 이어 가는 구성으로 읽혀.`:`${st.slice(0,3).length>1?'같은 결의 별이 겹쳐서':'이 별 하나가'} ${CATADJ[cats[0]]} 쪽 재능을 분명하게 보여 줘.`;
-  return [P_(`이 명식의 별은 ${J(lead,'이/가')} 중심이야.`,...st.slice(0,3).map(s=>`${SPOS[s.pillar].tag}에서는 ${J(SB[s.name].t,'이/가')} 살아나.`),link,`이 별들은 ${J(P.top,'이/가')} 중심인 네 구조에서 ${GRP[P.top].mode} 방식으로 쓸 때 가장 선명하게 쓰여.`)];
+  const byP={},order=[];st.slice(0,4).forEach(s=>{if(!byP[s.pillar]){byP[s.pillar]=[];order.push(s.pillar);}byP[s.pillar].push(s);});
+  const parts=order.map(k=>{const L=byP[k],pos=SPOS[k],nm=L.map(s=>s.name).join('·'),ts=L.map(s=>SB[s.name].t);
+    return L.length>1?`${pos.n}에는 ${J(nm,'이/가')} 함께 있어서, ${pos.tag}에서 ${ts.join(', ')}의 쓰임이 한꺼번에 받쳐 줘.`:`${pos.n}의 ${J(nm,'은/는')} ${pos.tag}에서 ${J(ts[0],'이/가')} 살아나게 해.`;});
+  const cats=uniq(st.slice(0,4).map(s=>STAR_CAT[s.name]||'TUNE'));
+  const link=cats.length>=2?`${J(CATADJ[cats[0]],'과/와')} ${J(CATADJ[cats[1]],'이/가')} 한 명식에 함께 있어서, ${J(CATADJ[cats[0]],'으로/로')} 문을 열고 ${J(CATADJ[cats[1]],'으로/로')} 이어 가는 구성으로 읽혀.`:`${st.length>1?'같은 결의 별이 겹쳐서':'이 별 하나가'} ${CATADJ[cats[0]]} 쪽 재능을 분명하게 보여 줘.`;
+  return [P_(`이 명식의 별은 ${parts.join(' ')}`,link,`이 별들은 ${J(P.top,'이/가')} 중심인 네 구조에서 ${GRP[P.top].mode} 방식으로 쓸 때 가장 선명하게 쓰여.`)];
 }
 
 /* ===== 궁합 재료 은행 ===== */
@@ -2480,7 +2619,7 @@ function pairCore(C){
   const hard=`가장 큰 어려움은 ${fr}`;
   const p4=P_(strong);
   const title=`${a}님과 ${b}님 — ${score}점, ${{high:'기본 결이 잘 맞는',good:'장점이 크고 합의가 중요한',mid:'끌림과 마찰이 함께 있는',hard:'차이가 커서 조율이 필요한'}[tone]} 조합`;
-  return PR_('pair-core',title,[p1,...openAnswers(C),p2,p3,p4],C,`${a}님과 ${b}님 관계에서 가장 먼저 지켜야 할 한 가지가 뭔지 알려 줘`);
+  return PR_('pair-core',title,[pairConcl(C)+` 가장 큰 관계 자원은 ${IDX_PRO[idx.best]}이고, 가장 어려운 문제는 ${IDX_CON[idx.worst]}이야.`,p1,...openAnswers(C),p2,p3,p4],C,`${a}님과 ${b}님 관계에서 가장 먼저 지켜야 할 한 가지가 뭔지 알려 줘`);
 }
 function pairAttraction(C){
   const {PA,PB,a,b,cross,hits,tone}=C;
@@ -2609,7 +2748,7 @@ function pairFinal(C){
 }
 function pairSections(x){
   const C=pairCtx(x);
-  return [pairCore(C),pairAttraction(C),pairWeight(C),pairConflict(C),pairCooling(C),pairMoney(C),pairSpace(C),pairStructure(C),pairConditions(C),pairRules(C),pairVerdict(C)];
+  return [pairCore(C),pairAttraction(C),pairWeight(C),pairConflict(C),pairCooling(C),pairMoney(C),pairSpace(C),pairStructure(C),pairConditions(C),pairRules(C),pairPull(C),pairVerdict(C)];
 }
 
 /* ===== Round C 궁합: 판단 질문 답변 / 영역별 무게 / 유지 조건 / 판단형 결론 ===== */
@@ -2739,9 +2878,10 @@ function pairConditions(C){
 function pairVerdict(C){
   const {PA,PB,a,b,d,tone,m,idx}=C,st=areaStats(C),fr=frictionBrief(C);
   const ps=[];
-  ps.push(`장점부터 정리하면, ${st.strong?(st.spread>=8?`${J(st.strong.n,'이/가')} 가장 힘이 실린 영역이고 ${IDX_PRO[idx.best]}이 이 관계의 바탕이야.`:`${IDX_PRO[idx.best]}이 이 관계의 바탕이야.`):''} 어려움은 ${st.weak?(st.spread>=8?`${st.weak.n} 영역(${st.weak.v}점)에 몰려 있고, 이 영역은 합의 없이 두면 같은 일이 되풀이돼.`:`특정 영역에 몰려 있지 않고, 어느 영역이든 합의가 지켜지지 않으면 바로 드러나는 점이야.`):''}`);
-  ps.push(`이 정보만으로 계속 만나야 하는지 헤어져야 하는지를 정할 수는 없어. 대신 판단할 조건을 줄게.`);
-  ps.push(`이어갈 여지가 커지는 변화는 앞에서 나눈 각자의 행동이 실제로 달라지는 거야. 거기에 합의한 연락·시간·돈 기준이 한 달 뒤에도 지켜지고 있는지를 더해서 봐.`);
+  const concl=pairEndConcl(C);
+  if(concl)ps.push(concl+' 이 결론은 구조에서 읽은 경향이고, 이어 갈지는 두 사람의 실제 행동으로 정해져.');
+  pairSeven(C).forEach(x=>ps.push(x));
+  ps.push('이 정보만으로 계속 만나야 하는지 헤어져야 하는지를 정할 수는 없어. 대신 위의 변화가 확인되는지, 아래 신호가 반복되는지를 기준으로 삼아.');
   ps.push(`다시 검토해야 하는 신호는 이거야. 합의한 행동이 4주 넘게 반복해서 지켜지지 않을 때, 같은 문제로 한쪽만 계속 참거나 맞출 때, 잘못한 뒤에 인정과 회복 없이 넘어갈 때, 한쪽의 거절이나 경계가 무시될 때야. 이 중 하나라도 반복된다면 ${tone==='high'||tone==='good'?'점수가 높아도 끌림이 커도':'끌리는 부분이 있어도'} 관계를 다시 보는 게 맞아.`);
   if(tone==='hard')ps.push(`이 조합은 시간이 지나면 저절로 맞춰지는 구조로 읽히지 않아. 바뀐 행동이 실제로 확인되기 전에는 기대를 앞서 쌓지 않는 게 안전해.`);
   else if(tone==='mid')ps.push(`이 조합은 강한 영역이 약한 영역을 대신해 주지 못해서, 좋았던 시기의 기억만으로 약한 영역의 문제를 넘기면 같은 일이 되풀이돼.`);
@@ -2750,16 +2890,78 @@ function pairVerdict(C){
   ps.push(`이번 달 끝에 서로에게 이렇게 물어봐. “이번 달에 합의한 것 중 실제로 달라진 게 뭐고, 아직 안 달라진 게 뭐야?” 이 답이 계속 이어갈지 다시 볼지를 정할 현실의 근거가 돼.`);
   return PR_('pair-final',`정리 — ${tone==='high'?'끌림과 편안함이 큰 만큼 합의를 지켜야 하는 관계':tone==='good'?'장점은 크지만 약한 영역을 합의로 메워야 하는 관계':tone==='mid'?'강한 영역과 약한 영역을 나눠서 다뤄야 하는 관계':'바꿀 행동이 먼저 확인되어야 하는 관계'}`,ps.filter(Boolean),C,`우리 관계를 이어갈지 고민 중이야. 아래에 실제로 있었던 행동을 적을게. 질문에 먼저 직접 답하고, 내가 적은 행동만 근거로 ${a}님과 ${b}님이 이어갈 조건과 다시 볼 신호를 판단해 줘`);
 }
+/* 끌림과 불편이 함께 있는 이유: 점수는 영역별 강약을 읽는 근거로만 쓰고 확률로 쓰지 않는다 */
+function pairPull(C){
+  const {a,b,idx,m,tone}=C,st=areaStats(C);
+  const bi=idx.best,wi=idx.worst,same=bi===wi||!Number.isFinite(+m[bi])||!Number.isFinite(+m[wi]);
+  const gap=same?0:(m[bi]-m[wi]);
+  const p1=same
+    ?`헤어지고 싶다가도 다시 끌리는 건 이상한 일이 아니야. 이 궁합은 영역별 차이가 크게 갈리지 않아서, 끌림도 불편도 한 가지 이유로 나뉘지 않고 생활 곳곳에 조금씩 섞여 있어.`
+    :`헤어지고 싶다가도 다시 끌리는 건 이상한 일이 아니야. 이 궁합에서는 끌리게 하는 쪽(${IDX[bi]} ${m[bi]}점, ${IDX_PRO[bi]})과 ${m[wi]>=75?'상대적으로 덜 받쳐 주는':'지치게 하는'} 쪽(${IDX[wi]} ${m[wi]}점, ${IDX_CON[wi]})이 서로 다른 영역에서 나와. 한 영역이 좋다고 다른 영역의 불편이 사라지지 않고, 불편하다고 끌림이 같이 꺼지지도 않아서 마음이 양쪽으로 당겨져.`;
+  const p2=`그래서 흐름이 이렇게 돌기 쉬워. 가까워지는 시기에는 ${a}님과 ${b}님이 편안한 쪽의 힘을 주고받으며 안정을 느껴. 그러다 불편한 영역의 일이 한 번 걸리면 한쪽은 설명하려 하고 다른 쪽은 물러나면서 거리가 생겨. 거리가 생기면 불편은 잠깐 줄지만 편안했던 순간의 빈자리가 커져서 다시 끌려. 다시 가까워졌을 때 같은 문제를 합의 없이 넘기면 같은 장면이 돌아와. 끌림이 반복해서 돌아오는 것과 문제가 반복해서 돌아오는 것이 같은 고리 안에서 일어나는 거야.`;
+  const p3=`끌린다는 사실은 이 관계가 건강하다는 증거도, 끝내야 한다는 증거도 아니야. 판단은 이렇게 따로 해 봐. 지난 다툼 뒤에 회복되기까지 며칠 걸렸는지, 사과가 말에서 끝났는지 행동 변화로 이어졌는지, 헤어지고 싶었던 이유가 매번 같은 문제인지 다른 문제인지 적어 봐. 같은 문제가 같은 모양으로 돌아오는데 달라진 행동이 없다면 끌림은 이유가 아니라 습관일 수 있어. 반대로 문제가 줄고 회복이 빨라지고 있다면 끌림을 믿어도 되는 근거가 쌓이고 있는 거야.`;
+  const p4=`다시 끌릴 때는 이렇게 말해 볼 수 있어. “보고 싶은 건 맞는데, 지난번에 부딪힌 그 문제부터 어떻게 할지 정하고 만나고 싶어.” 받는 쪽이 “그래, 먼저 그것부터 정하자”라고 답하고 실제로 정한 대로 움직인다면 끌림이 관계를 좋은 쪽으로 쓰이고 있는 거야. 말만 “알겠어”로 끝나고 같은 일이 되풀이된다면 다시 검토할 신호야.`;
+  return PR_('pair-pull',`끌리는데 지치는 이유 — ${same?'끌림과 불편이 섞여 있는 관계':`${IDX[bi]}은 끌어당기고 ${IDX[wi]}은 지치게 하는 관계`}`,[p1,p2,p3,p4],C,`헤어지고 싶다가도 다시 끌릴 때 ${a}님과 ${b}님이 이 고리를 끊거나 좋은 쪽으로 쓰려면 어떻게 하면 좋을지 알려 줘`);
+}
+
+function pairConcl(C){
+  const {tone}=C,sc=Math.round(C.score);
+  return {
+    high:`결론부터 말하면 잘 맞는 편이야. 점수(${sc}점)와 영역별 구조가 모두 끌림과 편안함을 받쳐 줘. 다만 잘 맞는다는 건 부딪힘이 없다는 뜻이 아니라, 부딪혔을 때 풀 바탕이 있다는 뜻이야.`,
+    good:`결론부터 말하면 맞는 쪽에 가까워. 점수(${sc}점)가 보여 주듯 장점이 분명하고, 약한 영역만 합의로 메우면 체감이 크게 좋아질 구조야.`,
+    mid:`결론부터 말하면 잘 맞는 곳과 안 맞는 곳이 갈리는 궁합이야. 점수(${sc}점)는 그 사이에 있어서, 끌리는 건 이상하지 않고 안 맞는 곳을 합의로 다루느냐에 따라 체감이 크게 달라져.`,
+    hard:`결론부터 말하면 저절로 편해지는 궁합은 아니야. 점수(${sc}점)가 낮은 영역에서 같은 불편이 반복되기 쉬워서, 끌림만으로 이어 가기보다 바뀔 행동을 먼저 확인해야 해.`
+  }[tone]||'';
+}
+const WEAK_CHECK={
+attr:'서운함을 말했을 때 상대가 “그랬구나” 하고 먼저 확인해 주는 횟수가 늘고, 같은 서운함이 되풀이되는 간격이 길어지는 것',
+talk:'다툰 뒤 대화로 돌아오는 데 걸리는 시간이 짧아지고, 말이 끊긴 쪽이 “지금은 쉬고 몇 시에 다시 얘기하자”라고 시간을 정해 말하는 것',
+life:'합의한 돈·시간 기준이 한 달 동안 말 없이 지켜지고, 기준을 어길 때 변명보다 먼저 알려 주는 것',
+long:'다음 달 일정과 큰 선택을 둘이 같이 정하는 자리가 생기고, 한쪽이 통보하는 일이 줄어드는 것'
+};
+/* 마지막 판단: 7가지 질문에 앞의 분석을 종합해서 답한다 */
+function pairSeven(C){
+  const {PA,PB,a,b,m,idx}=C,st=areaStats(C);
+  const mm=k=>Math.round(+m[k]);
+  const love=(mm('love')+mm('personality'))/2,life=(mm('money')+mm('future'))/2,gap=Math.round(love-life);
+  const out=[];
+  out.push(`서로에게 주는 좋은 영향은 ${IDX_PRO[idx.best]}에서 나와. 구체적으로는 ${a}님의 ${TOOL[PA.stem]}과 ${b}님의 ${TOOL[PB.stem]}이 서로의 빈 곳을 덮어 줘.`);
+  out.push(mm(idx.worst)>=75
+    ?`힘든 순간이 와도 끌리는 건 끌림이 큰 영역(${IDX[idx.best]} ${mm(idx.best)}점)과 상대적으로 덜 받쳐 주는 영역(${IDX[idx.worst]} ${mm(idx.worst)}점)이 서로 다른 곳에서 나오기 때문이야. 점수가 낮은 건 아니지만, 이 영역은 합의가 없으면 가장 먼저 흔들려.`
+    :`힘들면서도 끌리는 건 끌리게 하는 영역(${IDX[idx.best]} ${mm(idx.best)}점)과 지치게 하는 영역(${IDX[idx.worst]} ${mm(idx.worst)}점)이 서로 다른 곳에서 나오기 때문이야. 앞에서 본 것처럼 한쪽이 좋다고 다른 쪽이 해결되지 않아.`);
+  out.push(Math.abs(gap)<8
+    ?`끌림·대화(연애 흐름 ${mm('love')}, 성향 조화 ${mm('personality')})와 생활·장기(돈 감각 ${mm('money')}, 앞으로의 방향 ${mm('future')})가 비슷한 수준이라, 끌림이 생활보다 앞서거나 뒤처지는 구조는 아니야. 그래서 어느 한쪽 기분만으로 관계를 판단하면 놓치는 게 생겨.`
+    :gap>0
+      ?`끌림·대화(연애 흐름 ${mm('love')}, 성향 조화 ${mm('personality')})가 생활·장기(돈 감각 ${mm('money')}, 앞으로의 방향 ${mm('future')})보다 앞서 있어. 만나는 순간의 끌림은 큰데 돈·시간·방향을 맞추는 일에서 편안함이 따라오지 못하는 지점이 갈림길이야.`
+      :`생활·장기(돈 감각 ${mm('money')}, 앞으로의 방향 ${mm('future')})가 끌림·대화(연애 흐름 ${mm('love')}, 성향 조화 ${mm('personality')})보다 앞서 있어. 설렘의 크기보다 함께 지내는 편안함이 더 큰 관계라서, 설렘이 줄어든 걸 관계가 식은 것으로 오해하지 않는 게 중요해.`);
+  out.push(`계속 만나면 반복되기 쉬운 부담은 ${IDX_CON[idx.worst]}이야.${st.weak?` 합의 없이 두면 ${st.weak.n} 영역에서 같은 장면이 되풀이돼.`:''}`);
+  out.push(`이어 가려면 각자 앞에서 정한 행동 한 가지씩을 이번 달 안에 실제로 해 보는 데서 시작해야 해.${st.weak?` 특히 ${st.weak.n} 영역은 합의한 기준을 말로만 두지 말고 문장으로 남겨 두는 게 첫 단계야.`:''}`);
+  out.push(`좋아지고 있다고 볼 수 있는 변화는 ${WEAK_CHECK[(st.weak&&st.weak.k)||'talk']}이야. 이 변화가 4주 넘게 확인되면 점수가 아니라 실제 행동으로 근거가 쌓이는 거야.`);
+  return out;
+}
+
+function pairEndConcl(C){
+  const {tone,idx}=C,B=IDX[idx.best],W=IDX[idx.worst];
+  return {
+    high:`다시 묻는다면 답은 잘 맞는 편이라는 거야. 근거는 ${B}이 관계를 받쳐 준다는 점이고, 조건은 ${W}에서 합의를 지키는 거야.`,
+    good:`다시 묻는다면 답은 맞는 쪽에 가깝다는 거야. ${B}이 관계를 끌고, ${W}은 합의로 메워야 해.`,
+    mid:`다시 묻는다면 답은 영역마다 갈린다는 거야. ${B}은 맞고 ${W}은 덜 맞아서, 기준은 점수가 아니라 덜 맞는 쪽이 실제로 바뀌는지야.`,
+    hard:`다시 묻는다면 답은 지금 구조로는 안 맞는 부분이 더 크게 보인다는 거야. ${B}처럼 맞는 쪽이 있어서 끌리는 것이고, 판단은 ${W} 쪽의 행동 변화가 확인되는지에 달려 있어.`
+  }[tone]||'';
+}
 
 /* ===== 4단계: 검사와 반환 ===== */
 const BAD=/undefined|NaN|\[object|\$\{|\{[0-9a-z]{4}\}|null/;
 function tidy(t){return String(t).replace(/\s+([.,?!])/g,'$1').replace(/\.{2,}/g,'.').replace(/([.?!”])\s*\./g,'$1').replace(/[ \t]{2,}/g,' ').trim();}
 /* 검사에 걸린 행은 던지지 않고 __bad 표시만 한다. 연결부가 그 행만 v5.13의 같은 행으로 바꾼다 */
+function bg(s){const x=s.replace(/[\s“”"'.,]/g,'').replace(/[0-9]+/g,'#'),o=new Set();for(let i=0;i<x.length-1;i++)o.add(x.slice(i,i+2));return o;}
+function jac(a,b){let n=0;a.forEach(v=>{if(b.has(v))n++;});return n/Math.max(1,a.size+b.size-n);}
 function audit(rows,label){
-  const seen=new Set();
+  const seen=new Set(),keptBg=[];
   rows.forEach(r=>{
+    let firstDone=false;
     r.paragraphs=r.paragraphs.map(p=>{
-      const kept=sentences(tidy(p)).filter(s=>{const k=s.replace(/[\s“”"'.]/g,'');if(k.length<18)return true;if(seen.has(k))return false;seen.add(k);return true;});
+      const kept=sentences(tidy(p)).filter(s=>{const k=s.replace(/[\s“”"'.]/g,'');if(k.length<18)return true;if(seen.has(k))return false;seen.add(k);if(k.length>=24){const g=bg(s);if(firstDone&&keptBg.some(h=>jac(g,h)>=0.62))return false;keptBg.push(g);}firstDone=true;return true;});
       return kept.join(' ');
     }).filter(Boolean);
     r.body=r.body?tidy(r.body):r.paragraphs.join('\n\n');
