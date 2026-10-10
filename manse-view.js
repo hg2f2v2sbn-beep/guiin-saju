@@ -17,7 +17,11 @@
   }
   function pct(c){
     const total=Object.values((c&&c.elCount)||{}).reduce((s,n)=>s+(+n||0),0)||1;
-    const out={}; ELS.forEach(e=>out[e]=Math.round((((c&&c.elCount)||{})[e]||0)/total*100)); return out;
+    /* 표시용 반올림: 원본 elCount 는 그대로 두고, 합계가 100%가 되도록 소수 큰 항목부터 1씩 올림(최대잉여법). 계산 로직에는 쓰지 않는다. */
+    const raw=ELS.map((e,i)=>{const x=((((c&&c.elCount)||{})[e])||0)/total*100;return {e,i,x,n:Math.floor(x+1e-9)};});
+    let left=100-raw.reduce((s,r)=>s+r.n,0);
+    raw.slice().sort((a,b)=>(b.x-b.n)-(a.x-a.n)||a.i-b.i).slice(0,Math.max(0,left)).forEach(r=>r.n++);
+    const out={}; raw.forEach(r=>out[r.e]=r.n); return out;
   }
   function orderedElements(c){ return Object.entries(pct(c)).sort((a,b)=>b[1]-a[1]); }
   function ageNow(input, now){

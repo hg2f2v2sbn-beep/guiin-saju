@@ -2095,7 +2095,7 @@ function secInside(P){
   return r;
 }
 const PEOPLE_TOP={비겁:'가까워질수록 네 기준과 방식이 분명하게 드러나서, 친해진 사람은 네가 무엇을 양보하지 않는지 알게 되기 쉬워.',식상:'가까워질수록 생각과 감정을 말로 꺼내는 양이 늘어서, 처음의 차분함보다 표현이 풍부한 모습이 나오는 편이야.',재성:'가까워질수록 상대의 사정과 상황을 현실적으로 챙기게 돼서, 말보다 실질적인 도움으로 마음을 보여 주는 편이야.',관성:'가까워질수록 약속과 예의를 지키는 모습이 더 분명해지고, 상대에게도 같은 성실함을 기대하게 되는 편이야.',인성:'가까워질수록 상대를 이해하려는 질문과 관찰이 늘고, 마음을 여는 데 시간이 걸리는 대신 한번 열면 깊게 이야기하는 편이야.'};
-const PEOPLE_REL={충:o=>`가까운 자리의 모습과 ${o}의 모습이 서로 반대로 당겨서, 곁의 사람이 어느 쪽이 진짜 너인지 헷갈릴 수 있어`,형:o=>`${o}과의 형이 비슷한 불편을 가까운 사이에서도 되풀이하게 만들어서, 친해질수록 같은 지점에서 부딪히는 경향이 있어`,파:o=>`${o}과의 파가 정해 둔 관계의 틀을 한 번씩 흔들어서, 가까운 사이에서도 약속이 중간에 바뀌는 일에 민감한 편이야`,해:o=>`${o}과의 해가 좋은 뜻으로 한 말을 다르게 전달하게 만들어서, 가까운 사이일수록 말의 뜻을 한 번 더 확인하는 게 도움이 돼`,합:o=>`${o}과 합이 있어서 가까운 자리가 그쪽 영향을 받아 움직이기 쉬워`};
+const PEOPLE_REL={충:o=>`가까운 자리의 모습과 ${o}의 모습이 서로 반대로 당겨서, 곁의 사람이 어느 쪽이 진짜 너인지 헷갈릴 수 있어`,형:o=>`${J(o,'과/와')}의 형이 비슷한 불편을 가까운 사이에서도 되풀이하게 만들어서, 친해질수록 같은 지점에서 부딪히는 경향이 있어`,파:o=>`${J(o,'과/와')}의 파가 정해 둔 관계의 틀을 한 번씩 흔들어서, 가까운 사이에서도 약속이 중간에 바뀌는 일에 민감한 편이야`,해:o=>`${J(o,'과/와')}의 해가 좋은 뜻으로 한 말을 다르게 전달하게 만들어서, 가까운 사이일수록 말의 뜻을 한 번 더 확인하는 게 도움이 돼`,합:o=>`${J(o,'과/와')} 합이 있어서 가까운 자리가 그쪽 영향을 받아 움직이기 쉬워`};
 const LOVE_REL={충:o=>`일주와 ${o}의 충은 연애에서도 마음과 상황이 따로 움직이는 순간을 만들 수 있어서, 결정을 하루 미루고 확인하는 습관이 도움이 돼.`,형:o=>`일주와 ${o}의 형은 연애에서 같은 서운함이 모양만 바꿔 돌아오는 느낌을 줄 수 있어서, 반복되는 지점을 한 줄로 적어 두면 좋아.`,파:o=>`일주와 ${o}의 파는 정해 둔 약속이 중간에 틀어지는 일에 예민하게 만들 수 있어서, 약속을 바꿀 때는 이유를 먼저 말해 주는 게 중요해.`,해:o=>`일주와 ${o}의 해는 잘해 주려던 마음이 다르게 닿는 일을 만들 수 있어서, 마음을 전할 때 뜻을 한 번 더 확인하는 질문이 도움이 돼.`};
 function secPeople(P){
   const D=P.D,mgd=MG[P.mg],dg=DG[P.dayGod];
@@ -2403,7 +2403,7 @@ function pairCtx(x){
   const ca=x.a||x.d?.a,cb=x.b||x.d?.b,d=x.d||{},m=x.m||d.m||{};
   const PA=analyze(ca),PB=analyze(cb),a=PA.name,b=PB.name;
   const score=Math.round(Number.isFinite(+m.score)?+m.score:(Number.isFinite(+d.score)?+d.score:0)),tone=toneOf(score);
-  const idxKeys=['love','personality','money','future','distance'].filter(k=>Number.isFinite(+m[k]));
+  const idxKeys=['love','personality','money','future'].filter(k=>Number.isFinite(+m[k]));
   const byIdx=idxKeys.slice().sort((p,q)=>m[q]-m[p]);
   const hits=dedupeHits(d),cross=d.cross||{},patt=stressPattern(PA.stress,PB.stress);
   const dir=(PG,PR)=>{const cg=CUR[PG.give],cw=CUR[PR.want];const match=PG.give===PR.want;const same=!match&&cg.fam===cw.fam;return {match,same,fg:cg.fam,fr:cw.fam};};
@@ -2444,7 +2444,7 @@ function stressChainOnly(C){
 }
 function pairEv(C,extra){
   const {m,PA,PB,a,b}=C;
-  const ev=[`총점 ${C.score}`,`연애 ${m.love} · 성향 ${m.personality} · 돈 ${m.money} · 방향 ${m.future} · 거리 ${m.distance}`];
+  const ev=[`총점 ${C.score}`,`연애 ${m.love} · 성향 ${m.personality} · 돈 ${m.money} · 방향 ${m.future} · 오행 비율 차이 ${m.distance}(0~200, 낮을수록 비슷)`];
   ev.push(`${a} ${PA.stem}${PA.el} 일간 · 월간 ${PA.mg} · 일지 ${PA.dayGod}`,`${b} ${PB.stem}${PB.el} 일간 · 월간 ${PB.mg} · 일지 ${PB.dayGod}`);
   if(C.cross.aSeesB)ev.push(`${a}→${b} 십성 ${C.cross.aSeesB} · ${b}→${a} ${C.cross.bSeesA}`);
   return [...ev,...(extra||[])].join(' · ');
@@ -2473,7 +2473,7 @@ function portrait(P,n,v){
 }
 function pairCore(C){
   const {PA,PB,a,b,score,m,tone,idx}=C;
-  const p1=P_(`${a}님과 ${b}님의 총점은 ${score}점이야. ${TONE_TXT[tone]}`,`세부 지수는 연애 흐름 ${m.love}, 성향 조화 ${m.personality}, 돈 감각 ${m.money}, 앞으로의 방향 ${m.future}, 거리감 ${m.distance}인데, ${IDX[idx.best]}(${m[idx.best]})이 가장 높고 ${IDX[idx.worst]}(${m[idx.worst]})이 가장 낮아.`,`점수는 두 원국이 맞물리는 구조를 정리한 지표라서 마음이나 앞으로의 결과를 정하는 숫자로 읽지 않았으면 해.`);
+  const p1=P_(`${a}님과 ${b}님의 총점은 ${score}점이야. ${TONE_TXT[tone]}`,`세부 지수는 연애 흐름 ${m.love}, 성향 조화 ${m.personality}, 돈 감각 ${m.money}, 앞으로의 방향 ${m.future}인데, ${IDX[idx.best]}(${m[idx.best]})이 가장 높고 ${IDX[idx.worst]}(${m[idx.worst]})이 가장 낮아. 이 지수들은 55~96 범위이고, 두 사람의 오행 비율 차이(${m.distance}, 0~200 범위에서 낮을수록 비슷)는 총점을 계산할 때 쓰이는 별개의 수치라 지수와 같은 눈금으로 비교하지 않았어.`,`점수는 두 원국이 맞물리는 구조를 정리한 지표라서 마음이나 앞으로의 결과를 정하는 숫자로 읽지 않았으면 해.`);
   const p2=portrait(PA,a,0),p3=portrait(PB,b,1);
   const fr=frictionBrief(C);
   const strong=P_(`두 사람의 가장 큰 장점은 ${IDX_PRO[idx.best]}이야.`,C.cross.aSeesB&&C.cross.bSeesA?`${J(a,'은/는')} ${J(b,'을/를')} ${J(SEES[C.cross.aSeesB].short,'으로/로')} 느끼고, ${J(b,'은/는')} ${J(a,'을/를')} ${J(SEES[C.cross.bSeesA].short,'으로/로')} 느끼는 구조라서 서로에게 끌리는 이유가 분명해.`:'');
@@ -2554,7 +2554,7 @@ function pairCooling(C){
 function pairSpace(C){
   const {PA,PB,a,b,m}=C,sa=PA.want==='space'||PA.give==='space',sb=PB.want==='space'||PB.give==='space';
   const ps=[];
-  const lv=m.distance>=70?'거리감 지수가 높은 편이라 가까움과 혼자 있는 시간의 균형을 비교적 편하게 맞출 수 있어.':m.distance<=55?'거리감 지수가 낮은 편이라 각자 기대하는 가까움의 정도가 달라 의식적인 조율이 필요해.':'거리감 지수는 중간 정도라 서로의 기대를 말로 확인하면 잘 맞춰 갈 수 있어.';
+  const lv=`두 사람의 오행 비율 차이는 ${m.distance}(0~200 범위, 낮을수록 비슷)로 ${elemDiffLabel(m.distance)}. 이 수치는 타고난 기질 구성이 얼마나 비슷한지 보여 주는 참고 수치이고, 가까움이나 혼자 있는 시간에 대한 기대를 직접 재는 지표는 아니야. 그래서 아래 내용은 실제 기대 차이를 말로 확인하는 쪽으로 읽어 줘.`;
   ps.push(P_(lv,sa&&sb?`두 사람 모두 자기 시간과 선택을 존중받는 걸 중요하게 여겨서 서로를 풀어 주는 장점이 있지만, 아무도 먼저 다가가지 않아서 자연스럽게 멀어지는 시기를 조심해야 해.`:sa?`${J(a,'은/는')} 자기 시간과 결정권이 보장될 때 마음이 열리는 사람이고, ${J(b,'은/는')} ${J(w3(CUR[PB.want]),'이/가')} 중요한 사람이라 ${a}의 혼자 있는 시간이 ${b}에게는 거리 두기로 읽힐 수 있어.`:sb?`${J(b,'은/는')} 자기 시간과 결정권이 보장될 때 마음이 열리는 사람이고, ${J(a,'은/는')} ${J(w3(CUR[PA.want]),'이/가')} 중요한 사람이라 ${b}의 혼자 있는 시간이 ${a}에게는 거리 두기로 읽힐 수 있어.`:`두 사람 모두 혼자 있는 시간이 가장 중요한 필요는 아니라서 함께하는 시간이 자연스럽게 늘어나는 편이야. 다만 그만큼 서로의 일정이 겹치고 개인 시간이 줄어도 모르고 지나가기 쉬워.`));
   if(C.tempoDiff){const f=PA.tempo==='fast'?a:b,s=PA.tempo==='fast'?b:a;ps.push(`속도도 달라. ${J(f,'은/는')} 결정과 행동이 빠르고 ${J(s,'은/는')} 천천히 무르익어서, ${J(f,'이/가')} 먼저 답을 정해 두면 ${J(s,'은/는')} 따라가야 하는 기분을 느낄 수 있어. ${J(f,'은/는')} 결정 전에 “아직 정한 건 아니고 이런 생각이야”라고 먼저 말해 주면 부담이 줄어.`);}
   else ps.push(`결정과 행동의 속도는 비슷한 편이라 일정을 정할 때 한쪽이 끌려가는 느낌은 적어. 다만 같은 속도로 움직이다 보니 둘 다 놓친 부분은 아무도 챙기지 못하니, 중요한 약속은 한 사람이 최종 확인하기로 정해 두면 좋아.`);
@@ -2616,13 +2616,13 @@ function pairSections(x){
 const AREAS=[
  {k:'attr',n:'끌림',idx:['love'],lab:'연애 흐름'},
  {k:'talk',n:'대화',idx:['personality'],lab:'성향 조화'},
- {k:'life',n:'생활',idx:['money','distance'],lab:'돈 감각·거리감'},
+ {k:'life',n:'생활',idx:['money'],lab:'돈 감각'},
  {k:'long',n:'장기 유지',idx:['future'],lab:'앞으로의 방향'}
 ];
 const AREA_TXT={
 attr:{강:'서로를 향한 호감이 자연스럽게 생기고 가까워지는 속도도 빠르게 읽혀. 다만 끌림은 관계를 시작하게 하는 힘이지 유지하게 하는 힘은 아니야.',중:'끌림은 있지만 압도적이지는 않아서, 관계가 이어지려면 호감 말고 다른 영역이 같이 받쳐 줘야 해.',약:'끌림이 저절로 이어지는 구조는 아니라서, 설렘에 기대기보다 함께 있는 시간의 질로 관계를 만들어야 해.'},
 talk:{강:'말뜻이 비교적 잘 통해서 설명하는 데 드는 힘이 적은 편이야. 편하다는 이유로 말을 아끼면 이 장점은 줄어들어.',중:'말이 통하는 날과 어긋나는 날이 갈려서, 중요한 이야기는 따로 시간을 잡고 해야 해.',약:'같은 말이 다르게 닿는 일이 잦은 구조라, 서운함이 생기면 해석하기 전에 무슨 뜻인지 먼저 물어야 해.'},
-life:{강:'돈을 쓰는 기준과 가까움을 조절하는 방식이 큰 충돌 없이 맞물리는 편이라 일상이 덜 소모적일 수 있어.',중:'생활 방식은 맞는 부분과 합의가 필요한 부분이 섞여 있어서, 돈·연락·시간은 미리 정해 둘수록 편해.',약:'돈 감각이나 거리에 대한 기대가 달라서 일상에서 마찰이 나기 쉬워. 이 영역은 마음이 아니라 합의로 풀어야 해.'},
+life:{강:'돈을 쓰고 나누는 기준이 큰 충돌 없이 맞물리는 편이라 일상의 비용 문제로 덜 소모될 수 있어.',중:'돈을 쓰고 나누는 기준에서 맞는 부분과 합의가 필요한 부분이 섞여 있어서, 돈과 일정은 미리 정해 둘수록 편해.',약:'돈을 쓰고 나누는 기준이 달라서 일상에서 마찰이 나기 쉬워. 이 영역은 마음이 아니라 합의로 풀어야 해.'},
 long:{강:'앞으로의 방향과 생활 리듬을 맞춰 갈 바탕이 있는 편으로 읽혀. 다만 바탕이 있다는 건 같이 가기로 정해졌다는 뜻이 아니라 가기 쉬운 길이라는 뜻이야.',중:'방향이 맞을 때와 어긋날 때가 섞여 있어서, 중요한 선택은 시기마다 다시 이야기해야 해.',약:'앞으로의 방향과 속도를 맞추는 데 대화가 많이 필요한 구조로 읽혀. 마음이 커도 방향 합의 없이는 같은 문제가 반복돼.'}
 };
 const WEIGHT_X={
@@ -2639,6 +2639,8 @@ const WEIGHT_X={
 'long>talk':'방향은 맞는데 말이 엇갈리면 같은 곳을 보면서도 서로 이해받지 못한다고 느낄 수 있어.',
 'long>life':'방향은 맞는데 생활 합의가 약하면 큰 계획보다 작은 일상 마찰이 먼저 지치게 해.'
 };
+/* m.distance 는 두 사람 오행 비율 차이의 합(0~200, 낮을수록 비슷). 점수식의 elementFit=14-round(d/8) 구간에 맞춰 설명용 구간만 나눈다(계산식 불변). */
+function elemDiffLabel(d){d=+d;return d<=32?'오행 비율이 비슷한 편이야':d<=72?'오행 비율 차이가 중간쯤이야':'오행 비율 차이가 큰 편이야';}
 const lvOf=v=>v>=75?'강':v>=60?'중':'약';
 function areaStats(C){
   const {m}=C;
@@ -2650,7 +2652,7 @@ function areaHit(C,A){
   const {hits,a,b,tension,combine,patt,tempoDiff,PA,PB}=C;
   if(A.k==='attr'){const h=hits.find(x=>x.type==='합');if(h)return A.lv==='약'?`원국에는 ${zp(a,b,h)} 사이에 ${J(h.raw,'이/가')} 있어서 끌리는 계기는 있지만, 지수가 낮은 만큼 그 계기가 관계 전체의 끌림으로 이어진다고 보기는 어려워.`:`원국에서도 ${zp(a,b,h)} 사이에 ${J(h.raw,'이/가')} 있어서 끌림을 뒷받침해.`;const t=hits.find(x=>x.type!=='합'&&(x.ak==='day'||x.bk==='day'));if(t)return `다만 ${zp(a,b,t)} 사이에는 ${J(t.raw,'이/가')} 있어서, 끌리면서도 마음이 흔들리는 순간이 같이 올 수 있어.`;return '';}
   if(A.k==='talk'){return {HC:'갈등이 생기면 한쪽은 다가가고 한쪽은 물러나는 반응이 겹쳐서 대화가 끊기기 쉬워.',CH:'갈등이 생기면 한쪽은 다가가고 한쪽은 물러나는 반응이 겹쳐서 대화가 끊기기 쉬워.',HH:'둘 다 바로 반응하는 쪽이라 말이 빨리 커질 수 있어.',CC:'둘 다 조용히 삼키는 쪽이라 말하지 않은 채 쌓이는 일이 생길 수 있어.',mirror:'두 사람의 반응 방식이 같아서 이해는 빠르지만 같은 지점에서 함께 멈출 수 있어.',MIX:'한 사람의 반응이 다른 사람의 반응을 부르는 구조야.'}[patt]||'';}
-  if(A.k==='life'){return tempoDiff?`결정과 행동의 속도가 달라서 일정을 정할 때 한쪽이 끌려간다고 느낄 수 있어.`:(PA.want!==PB.want?`원하는 마음 놓임의 방식이 달라서 같은 날을 보내도 만족하는 지점이 다를 수 있어.`:`원하는 방식이 같아서 서로 건네는 순서만 정하면 돼.`);}
+  if(A.k==='life'){const ed=`오행 비율 차이는 ${C.m.distance}로 ${elemDiffLabel(C.m.distance)}. `;return ed+(tempoDiff?`결정과 행동의 속도가 달라서 일정을 정할 때 한쪽이 끌려간다고 느낄 수 있어.`:(PA.want!==PB.want?`원하는 마음 놓임의 방식이 달라서 같은 날을 보내도 만족하는 지점이 다를 수 있어.`:`원하는 방식이 같아서 서로 건네는 순서만 정하면 돼.`));}
   if(A.k==='long'){return tension>=10?`원국에서 여러 층이 부딪혀서 중요한 선택을 할 때 의견이 자주 갈릴 수 있어.`:tension>=6?`원국에서 부딪히는 지점이 있어서 큰 선택은 미리 이야기해 두는 편이 좋아.`:(combine>=1?`원국에서 합이 받쳐 줘서 방향을 모으는 데 도움이 돼.`:'');}
   return '';
 }
@@ -2677,7 +2679,7 @@ function adjustables(C){
   const f=PA.tempo==='fast'?a:b,s=PA.tempo==='fast'?b:a;
   if(!ab.match||!ba.match)adj.push({k:'express',t:'마음을 건네는 방식과 받고 싶은 방식의 차이',how:`각자 “내가 마음 놓이는 건 이거야”를 한 문장으로 정해 말하고, 상대는 일주일에 한두 번 그 방식으로 건네기로 합의해. ${a}님은 ${w3(CUR[PA.want])}이 확인될 때, ${b}님은 ${w3(CUR[PB.want])}이 확인될 때 마음이 놓여.`});
   if(tempoDiff)adj.push({k:'tempo',t:'결정과 행동 속도의 차이',how:`${f}님은 결정하기 전에 “아직 정한 건 아니고 이런 생각이야”를 먼저 말하고, ${s}님은 바로 답하지 못해도 답할 날짜를 먼저 알려 주는 것으로 합의해.`});
-  if(m.distance<65||PA.want==='space'||PB.want==='space')adj.push({k:'contact',t:'연락과 혼자 있는 시간의 기대 차이',how:`연락은 하루 몇 번, 어느 시간대, 바쁜 날에는 끝나는 시간만 알리기처럼 횟수와 시간대로 정해. 혼자 있는 시간은 이유를 캐묻지 않고 존중하되 끝나는 시간만 한 줄로 알려 주는 것으로 합의해.`});
+  if(C.opp||PA.want==='space'||PB.want==='space')adj.push({k:'contact',t:'연락과 혼자 있는 시간의 기대 차이',how:`연락은 하루 몇 번, 어느 시간대, 바쁜 날에는 끝나는 시간만 알리기처럼 횟수와 시간대로 정해. 혼자 있는 시간은 이유를 캐묻지 않고 존중하되 끝나는 시간만 한 줄로 알려 주는 것으로 합의해.`});
   if(m.money<70)adj.push({k:'money',t:'돈을 쓰고 나누는 기준',how:`같이 쓰는 돈은 한도와 정산일을 사전에 정하고, 한쪽이 일정을 바꾸거나 취소해서 생긴 추가 비용은 바꾼 사람이 책임지는 기준을 정해.`});
   if(sameW)adj.push({k:'turn',t:'같은 것을 서로 원하는 구조',how:`누가 먼저 건네느냐로 다투지 않게 번갈아 건네는 순서를 정하고, 순서가 지켜졌는지 2주 뒤에 확인해.`});
   if(tension>=6||['HH','HC','CH','CC'].includes(patt))str.push({k:'react',t:patt==='CC'?'서로 말하지 않고 쌓는 반응 습관':patt==='HH'?'둘 다 바로 커지는 반응 습관':(patt==='HC'||patt==='CH')?'한쪽은 다가가고 한쪽은 물러나는 반응 습관':'갈등이 커질 때 서로의 반응이 서로를 키우는 습관',how:'합의만으로 사라지지 않고, 각자 압박을 받을 때 나오는 첫 반응을 직접 바꿔야 줄어들어.'});
@@ -2709,7 +2711,7 @@ function openAnswers(C){
 function pairWeight(C){
   const {a,b,m}=C,st=areaStats(C);
   const ps=[];
-  ps.push(`끌림, 대화, 생활, 장기 유지는 서로 다른 문제야. 기존 점수 항목을 이렇게 묶어서 읽었어. 끌림은 연애 흐름, 대화는 성향 조화, 생활은 돈 감각과 거리감, 장기 유지는 앞으로의 방향이야.`);
+  ps.push(`끌림, 대화, 생활, 장기 유지는 서로 다른 문제야. 기존 점수 항목을 이렇게 묶어서 읽었어. 끌림은 연애 흐름, 대화는 성향 조화, 생활은 돈 감각, 장기 유지는 앞으로의 방향이야.`);
   st.arr.forEach(A=>ps.push(P_(`${A.n}(${A.lab} ${A.v}점, ${A.lv==='강'?'강한 편':A.lv==='중'?'중간':'약한 편'}) — ${AREA_TXT[A.k][A.lv]}`,areaHit(C,A))));
   ps.push(weightLine(C,st));
   const hb=helpBurden(C);

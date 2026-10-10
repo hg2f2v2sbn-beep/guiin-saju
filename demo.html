@@ -6534,8 +6534,9 @@ function syncAskContext(){
   const dm=chart?.dayMaster?.stem||chart?.pillars?.day?.stem||'';
   title.textContent=guiinSelectedConsultation?.pair?name+' × '+guiinSelectedConsultation.pair.b.input.name+' 궁합 상담 중':name+' 사주 상담 중';
   meta.textContent=dm?`일간 ${dm} · 계산된 원국과 현재 흐름을 함께 참고합니다.`:'계산된 원국과 현재 흐름을 함께 참고합니다.';
-  if(heroTitle)heroTitle.textContent=name+'님의 사주로 물어보세요.';
-  if(heroCopy)heroCopy.textContent='계산된 원국과 현재 흐름을 바탕으로 필요한 내용을 이어서 설명해드려요.';
+  const pairSel=guiinSelectedConsultation?.pair?String(guiinSelectedConsultation.pair.b?.input?.name||'').trim():'';
+  if(heroTitle)heroTitle.textContent=pairSel?name+'님과 '+pairSel+'님의 궁합으로 물어보세요.':name+'님의 사주로 물어보세요.';
+  if(heroCopy)heroCopy.textContent=pairSel?'두 사람의 계산된 원국과 궁합 결과를 바탕으로 필요한 내용을 이어서 설명해드려요.':'계산된 원국과 현재 흐름을 바탕으로 필요한 내용을 이어서 설명해드려요.';
   if(welcome)welcome.textContent=guiinSelectedConsultation?.pair?'두 사람의 계산된 원국과 궁합 결과를 함께 놓고 답할게. 어떤 장면이 가장 궁금해?':`${name}의 계산된 사주를 기준으로 답할게. 직업, 재물, 연애, 올해 흐름 중 무엇이 궁금해?`;
 }
 
