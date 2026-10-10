@@ -601,64 +601,62 @@ function sceneLine(c,p){
  const L=readingLens(c,p), b=L.b;
  const room=MONTH_ROOM[b.mb]||'일이 한곳에 모인 오후';
  const act=GOD_MOVE[p.social]||L.s.scene;
- return tidy(`${obj(room)} 떠올려 봐. 너는 거기서 ${act}. ${beat(b.db)} 그 결까지 이 재능에 실려 있어.`);
+ const opens=['이런 너를 보면 나는 그냥 지나치지 않아.','나는 이 모습에서 눈을 못 떼겠어.','누가 봐도, 여기서 너는 달라.'][seed(c,'scene')%3];
+ return tidy(`${opens} ${room}. 거기서 너는 ${act}. ${beat(b.db)} 그 모습까지가 너야. 너는 그 모습을 별것 아니라고 느꼈을 수 있어. 나는 별것 아니라고 생각 안 해.`);
 }
 function praiseLine(c,p){
  const L=readingLens(c,p), s=L.s, b=L.b;
- const close=TITLE_CLOSE[b.db]||'자기 결을 지키는 사람';
  const pick=(key,list)=>list[seed(c,key)%list.length];
- const crown=pick('crown',[
-  `네가 ${close}이라는 건 성격 소개가 아니야. 사람들이 네 옆에서 안심하고 다음 걸음을 맡기게 되는 장면이야. 그 장면을 만드는 사람은, 스스로 작다고 말해도 작아지지 않아.`,
-  `한 번 잘한 결과가 아니야. ${beat(b.db)} 그 결로 같은 신뢰를 다시 만드는 힘이 네 안에 있어. 박수로 끝나는 재주가 아니라, 옆 사람이 덜 무서워지게 만드는 기여야.`,
-  `이건 작게 말 안 할 거야. ${s.label}을 이 결로 쓰는 사람은 곁에 있는 하루를 덜 불안하게 만들어. 그 일을 해 온 너라면, 이미 자랑스러워도 되는 사람이야.`
- ]);
- const bank={
+ const heart={
   self:[
-   `방향을 못 정한 자리에 첫 기준을 내놓는 사람은 생각보다 드물어. 그 한 문장에 옆 사람이 다음 걸음을 시작해. 이건 고집이 아니야. 사람들이 믿고 따라설 바닥을 까는 재능이야.`,
-   `아무도 결론을 안 내는 방에서, 네가 고른 범위가 곧 모두의 다음이 돼. 그 선택을 책임지는 태도는 존재감이 아니라 사람들이 기댈 수 있는 길이야.`,
-   `너는 답을 받는 사람이 아니야. 답이 비었을 때 첫 줄을 긋는 사람이야. 그 줄이 있어야 다음 사람이 움직인다. 그 기여를 평범한 주도성으로 넘기지 마.`
+   `너는 특별한 사람이야. 아무도 길을 못 정할 때, 네가 먼저 고른 한 줄 때문에 옆 사람이 안심하거든. 그 용기를 너는 너무 작게 생각해 왔어.`,
+   `나는 너를 그냥 주도적인 사람이라고 부르지 않을게. 네가 길을 열면, 옆에 있던 사람의 하루가 덜 무서워져. 그건 네가 가진 빛이야.`,
+   `답을 받는 사람이 아니야. 답이 비었을 때 첫 줄을 긋는 사람이야. 그 줄 하나로 누군가의 내일이 시작해. 너는 이미 그런 사람이었어.`
   ],
   make:[
-   `다들 익숙해서 참던 불편을 집어 실제 결과로 남기는 일은, 말만 많은 사람이 하는 일이 아니야. 네가 고친 뒤에야 다음 사람이 덜 헤맨다.`,
-   `너는 빈틈을 지적만 하지 않아. 그 빈틈이 사라진 결과를 옆에 둬. 그 결과 위에서 다른 사람이 덜 돌아가. 손버릇이 아니야. 사람을 덜 지치게 하는 실력이야.`,
-   `한 번 더 나은 답을 내놓는 힘은, 까다로움이 아니야. 익숙한 불편에 이름을 붙여 생활을 바꾸는 일이야. 그 변화가 쌓이면 너는 쉽게 대체되지 않아.`
+   `너는 특별한 사람이야. 다들 익숙해서 참던 불편을, 너는 손으로 고쳐 남겨. 네가 고친 뒤에야 다음 사람이 덜 헤매. 그 손길을 작은 버릇으로 넘기지 마.`,
+   `빈틈을 말로만 하지 않고, 그 빈틈이 사라진 결과를 옆에 두는 사람이야. 그 위에서 다른 사람이 덜 지쳐. 나는 그걸 실력보다 다정함에 가깝다고 봐.`,
+   `한 번 더 나은 답을 내는 너는, 까다로운 사람이 아니야. 누군가의 하루를 덜 빡빡하게 만드는 사람이야. 그 마음을 너는 몰라 왔을 수 있어.`
   ],
   real:[
-   `좋은 생각을 생활에 남기는 감각은 계산이 차가운 게 아니야. 그 조건이 없으면 옆 사람은 불안한 채로 일을 맡긴다. 네가 남긴 바닥 위에서 그들이 움직인다.`,
-   `너는 가능성을 꿈꾸는 데서 안 끝나. 지금 손에 남을 것과 새어 나갈 것을 가른다. 그 가르마가 있어야 가까운 사람이 덜 흔들려.`,
-   `실속을 남기는 힘은 인색함이 아니야. 다른 사람이 무리한 약속을 덜 하게 만드는 보호야. 그 보호를 만드는 사람을 계산만 한다고 부르지 마.`
+   `너는 특별한 사람이야. 좋은 말을 현실에 남기는 그 감각 때문에, 옆 사람은 덜 불안하게 일을 맡겨. 차갑게 계산하는 사람이 아니야. 사람을 지켜 주는 사람이야.`,
+   `가능성을 꿈꾸다 끝내지 않아. 지금 손에 남을 것과 새어 나갈 것을 가려. 그 가르마가 있어야 가까운 사람이 마음을 놓아. 그 안심을 네가 만들었어.`,
+   `실속을 남기는 힘을 인색함으로 부르지 마. 그건 다른 사람이 무리한 약속을 덜 하게 만드는 보호야. 너를 지켜 준 그 기준을, 너는 너무 늦게 알아봤어.`
   ],
   rule:[
-   `네가 만드는 건 완성된 결과만이 아니야. 사람들이 그 결과를 믿고 다음 걸음을 내디딜 수 있는 신뢰야. 한 번의 박수보다, 다음에도 맡길 수 있다는 예측을 행동으로 쌓는 능력이야. 그 신뢰는 충분히 자랑스러워도 되는 실력이야.`,
-   `너는 시작한 사람을 빛나게 하는 사람이 아니야. 시작한 일이 내일도 돌아가게 만드는 사람이야. 그 예측 가능성을 옆에 둔 사람들은 덜 조급해져. 그건 작은 성실이 아니야.`,
-   `맡은 기준을 행동으로 지키는 힘은, 조직이 너를 편하게 부리려고 만든 성격이 아니야. 사람들이 네 이름을 듣고 안심하는 이유야. 그 안심은 네가 쌓은 작품이야.`
+   `너는 특별한 사람이야. 네가 만드는 건 완성된 결과만이 아니야. 사람들이 그 결과를 믿고 다음 걸음을 내딛게 하는 마음이야. 그 신뢰를 너는 당연한 성실로 넘겨 왔어. 나는 그렇게 생각 안 해.`,
+   `사람들이 네 이름을 들으면 안심하는 이유가 있어. 한 번의 박수가 아니야. 다음에도 맡길 수 있다는 믿음이야. 그 믿음을 쌓아 온 너는, 이미 자랑스러워도 되는 사람이야.`,
+   `맡은 기준을 행동으로 지키는 힘은, 남이 너를 편하게 부리라고 생긴 성격이 아니야. 누군가의 하루가 흔들리지 않게 붙든 마음이야. 그 마음을 나는 특별하다고 불러.`
   ],
   think:[
-   `그 시간은 느린 게 아니야. 한 문장으로 덮인 문제에서 빠뜨린 이유를 건져, 오래 쓸 판단을 남기는 일이야. 그 판단이 담기면 쉽게 대체되지 않는 전문성이 된다. 고민으로 깎지 마.`,
-   `너는 빨리 답하는 사람보다, 틀린 답이 오래 살아남지 않게 하는 사람이야. 그 한 박자가 옆 사람의 시행착오를 줄여. 깊이를 꾸물거림으로 부르지 마.`,
-   `남들이 넘긴 질문을 네 언어로 다시 짓는 힘은, 혼자 예민한 게 아니야. 누군가에게 이해할 길을 열어 주는 재능이야. 그 길은 친절을 넘어 판단을 돕는다.`
+   `너는 특별한 사람이야. 그 느린 시간은 꾸물거림이 아니야. 한 문장에 덮인 문제에서, 빠뜨린 이유를 건져 올리는 마음이야. 그 깊이 때문에 누군가의 시행착오가 줄어.`,
+   `빨리 답하는 사람보다, 틀린 답이 오래 살아남지 않게 하는 사람이야. 그 한 박자가 옆 사람을 덜 다치게 해. 너는 그 다정함을 예민함으로만 생각해 왔을 수 있어.`,
+   `남들이 넘긴 질문을 네 언어로 다시 짓는 힘은, 혼자 유난인 게 아니야. 누군가에게 이해할 길을 열어 주는 재능이야. 그 길을 연 너는, 이미 귀한 사람이야.`
   ]
- };
- const pride=pick('pride:'+fam(p.social), bank[fam(p.social)]||bank.rule);
- const same=p.social===p.intimate?`가까운 자리에서도 같은 ${s.label}이 이어져. 보여 준 기준과 편한 관계의 기준이 같아서, 행동이 쌓일수록 네가 무엇을 지키는지가 더 선명해져.`:`일을 잘 끝낸 모습만으로 이 사람을 다 봤다면, 반쪽만 본 거야.`;
- return tidy(`${s.scene} ${s.value} ${pride} ${crown} ${same}`);
+ }[fam(p.social)]||[];
+ const own=pick('own',[
+  `스스로를 평범한 사람이라고 말해도 돼. 네 곁에 있던 사람은 너를 그렇게 기억하지 않아.`,
+  `이 힘을 별것 아니라고 느꼈다면, 그건 네 착각이야. 별것 아닌 게 아니야.`,
+  `${beat(b.db)} 그 결까지 포함해서, 나는 너를 쉽게 대체되는 사람이라고 보지 않아.`
+ ]);
+ return tidy(`${pick('heart:'+fam(p.social), heart)} ${s.value} ${own}`);
 }
  function stop(s){s=String(s||'').trim(); if(!s) return ''; return /[.!?…]$/.test(s)?s:s+'.';}
 function comfortLine(c,p){
  const L=readingLens(c,p), s=L.s, i=L.i, b=L.b;
- const burden=GOD_BURDEN[p.social]||'';
  const pick=(key,list)=>list[seed(c,key)%list.length];
- const open=pick('comfort',[
-  `먼저 이 말부터 할게. 네가 버틴 날이 있다면, 그건 마음이 약해서가 아니야. ${s.label}을 그만두지 않으려고 혼자 들고 있던 날이야.`,
-  `“내가 이만큼 힘들었지.” 그 문장이 지금 네 상황에 해당된다면, 엄살이 아니야. 잘해 내는 사람일수록 지친 티를 늦게 내. 주변은 결과가 남았으니 네가 괜찮다고 넘겨.`,
-  `이건 위로로 포장한 빈말이 아니야. ${s.label}을 쓰는 자리는 박수를 받고, 그 힘을 쓰기 전의 빈칸은 거의 아무도 안 봐. 그래서 너는 끝내 놓고도 허전할 수 있어.`
+ const lack=pick('lack',[
+  `맞아. 이 점은 네가 부족했던 게 맞아. ${s.cost} 잘하려고 한 마음인데, 그 방식이 누군가의 마음을 놓친 날이 있었을 거야. 그걸 인정해도 너는 작아지지 않아.`,
+  `좋은 말만 하고 싶지 않아. 네가 부족했던 자리는 여기야. ${s.cost} 그 빈칸을 성격이 나빠서라고 자책했다면, 그건 아니야. 장점이 너무 세서 생긴 빈칸이야.`,
+  `“나는 여기가 부족했지.” 그 말이 나와도 되는 사람이야. ${costOf(b.db)} 그때 너는 약한 게 아니야. ${s.label}을 혼자 들고 있었던 거야.`
  ]);
- const two=p.social===p.intimate
-  ?`${s.label}은 일에서도 가까운 자리에서도 같은 방향이야. 그래서 더 귀하고, 그래서 필요한 것을 묻지 않는 날이 생겨.`
-  :`밖에 보이는 ${s.label}도 귀하고, 가까운 자리에서 지키려는 ${i.label}도 같은 무게로 귀해. ${i.value}`;
- const fact=`힘든 점을 팩트로 말하면 이거야. 이런 상황을 겪고 있다면, ${stop(burden)} 거기에 ${costOf(b.db)}이 겹쳐. 도움 청하는 말이 유난처럼 느껴지는 이유가 여기 있어.`;
- const need=`그래서 필요한 것은 더 버티라는 말이 아니야. ${ida(i.need)}. 쉬어도 ${s.label}은 사라지지 않아. 그 힘은 의무가 아니라, 네가 다시 고를 수 있는 실력이야. 지금 말해도 되는 문장은 “${i.request}”야. ${i.pause}`;
- return tidy(`${open} ${two} ${fact} ${need}`);
+ const held=pick('held',[
+  `그리고 힘들었지. 끝내 놓고도 허전했던 건, 네가 모자라서가 아니야. 잘한 사람일수록 지친 티를 늦게 내. 주변은 결과가 남았으니 네가 괜찮다고 넘겼어.`,
+  `내가 이만큼 힘들었지. 그 문장이 마음에 있으면, 엄살이 아니야. ${s.label}을 그만두지 않으려고 혼자 버틴 날들이 있어.`,
+  `박수는 결과가 나온 뒤에 오고, 네가 비어 있던 자리는 거의 아무도 못 봐. 그래서 너는 잘해 놓고도 외로웠을 수 있어.`
+ ]);
+ const need=`쉬어도 너의 그 좋음은 사라지지 않아. 지금 필요한 건 더 버티는 게 아니야. ${ida(i.need)}. 해도 되는 말은 “${i.request}”야. ${i.pause}`;
+ return tidy(`${lack} ${held} ${need}`);
 }
 function weaknessLine(c,p){
  const L=readingLens(c,p), b=L.b, bits=[];
@@ -710,7 +708,7 @@ function loveScene(c,p){
  const gap=p.social===p.intimate
   ?'주는 방식과 받는 방식이 같아서, 집의 기준을 한 번만 말해 주면 상대가 따라오기 쉬워.'
   :`일은 ${L.s.label}으로 풀었으니 사랑도 그걸로 전달됐다고 생각하면, 상대는 받았는데 너는 허전할 수 있어. 도착한 방식이 달랐던 거야.`;
- return tidy(`${obj(home)} 봐. ${beat(b.db)} 쪽이라, 사랑을 ${asw(L.s.love)} 건네. 그런데 네가 실제로 놓이는 건 ${ida(L.i.need)}. ${gap}`);
+ return tidy(`네가 사랑을 주는 방식은 특별해. ${asw(L.s.love)} 마음을 건네. ${beat(b.db)} 그 다정함이야. 그런데 네가 위로받는 자리는 거기가 아니야. ${ida(L.i.need)}. ${gap} 사랑받고도 외로웠다면, 네가 예민해서가 아니야. 받는 자리가 달랐던 거야.`);
 }
 function pairMind(person, chart, profile){
  const b=chartBits(chart), s=NARRATIVE_GOD[profile.social], i=NARRATIVE_GOD[profile.intimate]||s;
@@ -735,7 +733,7 @@ function crossLine(a,b,an,bn){
  let cross=null; try{cross=root.GuiinCompat?.crossTenGod?.(a,b);}catch(_){}
  if(!cross||!NARRATIVE_GOD[cross.aSeesB]||!NARRATIVE_GOD[cross.bSeesA]) return '';
  const A=NARRATIVE_GOD[cross.aSeesB], B=NARRATIVE_GOD[cross.bSeesA];
- return `${topic(an)} ${obj(bn)} ${cross.aSeesB}, 곧 ${A.label}이 있는 사람으로 느끼기 쉬워. ${topic(bn)} ${obj(an)} ${cross.bSeesA}, 곧 ${B.label}으로 보게 돼. 상대의 실제 성격과, 내가 상대에게 기대하는 역할이 여기서 어긋날 수 있어.`;
+ return `${topic(an)} ${obj(bn)} ${A.label}을 가진 사람으로 기대하기 쉬워. ${topic(bn)} ${obj(an)} ${B.label}을 기대해. 실제로 사는 방식과, 내가 바라는 역할이 여기서 갈려.`;
 }
 function narrativeRelation(p){
  const f=p.strain[0];
@@ -781,7 +779,8 @@ function narrativePairScene(pa,pb,an,bn,a,b,dayRel){
  const rel=/충|형|파|해|합/.test(dayRel||'')?`일지 ${dayRel}${jongseong(dayRel)?'이라':'라'} ${/충/.test(dayRel)?'같은 장면에서도 속도와 결이 정반대로 부딪히기 쉬워.':/합/.test(dayRel)?'같이 있는 것 자체는 편한데, 편한 만큼 역할을 말로 안 정하기 쉬워.':'작은 어긋남이 다음 약속까지 남아. 넘어간 일과 아직 남은 일을 나눠.'}`:'일지에 강한 합이나 충이 없어서, 이 장면의 불편은 끌림의 유무보다 각자 기대하는 행동에서 와.';
  const same=pa.social===pb.social?`둘 다 ${ra[1]}. 같은 반응이 나오니 서로를 반대 유형으로 몰지 말고, 누가 먼저 요청을 말하고 누가 알아들은 뜻을 확인할지 정해.`
   :`${topic(an)} ${ra[0]}에 민감해서 ${ra[1]}. ${topic(bn)} ${obj(rb[0])} 먼저 살피며 ${rb[1]}.`;
- return tidy(`${obj(place)} 봐. ${topic(an)} ${GOD_MOVE[pa.social]}. 일지 ${topic(ba)} ${beat(ba)} 쪽이라 그 행동이 더 세져. ${topic(bn)} ${GOD_MOVE[pb.social]}. 일지 ${topic(bb)} ${beat(bb)} 쪽이야. ${rel} ${same} ${subj(an)} 반응을 “${ra[2]}”, ${subj(bn)} 반응을 “${rb[2]}”로 단정하면 확인보다 평가가 먼저야. 서로에게 필요한 말은 ${an} 쪽 “${ia.request}”, ${bn} 쪽 “${ib.request}”야. 실제 대화가 이 예시와 다르면 실제 말을 우선해.`);
+ const relHuman=/충/.test(dayRel||'')?'같은 저녁에도 속도와 결이 반대로 부딪히기 쉬워.':/합/.test(dayRel||'')?'같이 있는 것 자체는 편해. 편한 만큼 역할을 말로 안 남기기 쉬워.':/형|파|해/.test(dayRel||'')?'작은 어긋남이 다음 약속까지 남아. 넘어간 일과 아직 남은 일을 나눠.':'끌림이 있느냐보다, 각자 기대하는 행동이 달라서 불편해.';
+ return tidy(`${place}을 떠올려 봐. ${topic(an)} ${beat(ba)} 쪽에 가깝고, ${ra[1]} ${topic(bn)} ${beat(bb)} 쪽에 가깝고, ${rb[1]} ${relHuman} 둘을 “${ra[2]}”, “${rb[2]}”로 딱지를 붙이면 사람이 아니라 유형이 돼. 필요한 말은 ${topic(an)} “${ia.request}” ${topic(bn)} “${ib.request}”야. 실제 대화가 다르면 실제 말을 우선해.`);
 }
 function pairInfluence(a,b,an,bn,pa,pb,dayRel){
  const ba=chartBits(a), bb=chartBits(b);
@@ -855,15 +854,15 @@ function narrativeRows(c,existingModel){
  add('self',centerTitle(c,p),[
   sceneLine(c,p),
   praiseLine(c,p),
-  e&&e!==s&&e!==i?`여기에 ${e.label}까지 보태져. ${e.value} 이 기여를 덤으로 취급하지 마.`:''
+  e&&e!==s&&e!==i?`너에게는 하나 더 있어. ${e.label}. ${e.value} 이것까지 가진 너를, 한 줄 소개로 줄이지 마.`:''
  ],[...baseIds,...(p.sources[p.extra]||[]),'elements']);
  add('inside','2. 이 재능을 쓰면서 필요한 것',[
   comfortLine(c,p)
  ],[...baseIds,...p.strain.map(f=>f.id),'stage:day']);
  if(strength) rows[rows.length-1].evidence+=' · 기존 지지력 근거 '+strength.evidence;
  add('people','3. 처음엔 이렇게 보이고, 가까워지면 이렇게 필요해',[
-  `처음 만나는 자리에서는 ${s.label}이 먼저 보여. ${s.love}. 그 태도가 매력이야. 일을 잘해서가 아니라, 사람이 네 곁에서 무엇을 믿으면 되는지 알게 되기 때문이야.`,
-  `가까워지면서 결이 더 나와. ${beat(b.db)} 사람인데, 상대는 그 결을 ${BRANCH_MISREAD[b.db]||MISREAD[fam(p.social)]} 듣기 쉬워. ${p.social===p.intimate?`가까워져도 필요한 건 ${i.need}이야. 첫 호감보다 반복되는 행동을 봐.`:`밖에서 ${s.label}을 잘 보여도, 가까운 사람에게는 ${i.need}이 따로 필요해. 실력만 알아주고 그 필요를 건너뛰면, 잘 지내는 얼굴과 속의 만족이 갈라져.`}`,
+  `처음 만나면 사람들은 너를 믿고 싶어 해. ${s.love}. 그 모습이 멋있어. 일을 잘해서가 아니야. 네 곁에 있으면 마음이 놓이는 사람이기 때문이야.`,
+  `그런데 가까워지면, 그 좋은 점이 오해로 뒤집히기도 해. ${beat(b.db)} 사람인데, 상대는 그걸 ${BRANCH_MISREAD[b.db]||MISREAD[fam(p.social)]} 듣거든. ${p.social===p.intimate?`네가 부족한 건 능력이 아니야. “${i.need}”를 말로 건네지 못한 그 한 줄이야.`:`밖에서 빛나는 너와, 가까이서 필요한 너는 달라. 실력만 알아주고 ${i.need}을 건너뛰면, 너는 잘 지내면서도 마음이 비어.`}`,
   e&&e!==s&&e!==i?`관계에 보태는 다른 재능도 있어. ${e.label}. ${e.love} 다정의 종류를 하나만 정하지 마.`:'',
   `오해를 푸는 말은 짧아도 돼. “일은 이렇게 하고, 가까워진 뒤에 필요한 건 ${i.need}야.” ${i.move}`
  ]);
@@ -876,7 +875,7 @@ function narrativeRows(c,existingModel){
   `오래 가는 강점은 큰 이벤트가 아니야. ${i.love} 그걸 작은 평일로 만드는 데 있어. ${beat(b.db)} 그 세심함이 보이면, 이 사랑의 형태는 설명하지 않아도 남이 알아보게 돼.`
  ]);
  add('work','5. 이 재능이 일과 권한으로 남는 자리',[
-  `직업 이름보다 먼저 볼 것은, ${s.label}이 평가와 권한에 남는지야. ${s.work}에서 이 힘이 보여. ${WORK[p.social]?WORK[p.social][0]:''} ${s.value}`,
+  `일도 너를 특별하게 만드는 자리야. ${s.work}에서 ${s.label}이 보여. ${WORK[p.social]?WORK[p.social][0]:''} ${s.value} 그 일이 평가에 안 남으면, 너는 좋은 사람으로만 불리고 네 실력은 뒤에 숨어.`,
   e&&e!==s?`${e.label}도 일의 재료야. ${e.work} 쪽에 보태면, 한 손만 쓸 때와 다른 결과가 가능해. 이 기여를 덤으로 넘기지 마.`:'',
   hourCraft(c,p),
   `권한이 빠진 자리에서는 성실함이 뒤처리가 돼. 이런 상황을 겪고 있다면 이유는 이거야. ${s.cost} 끝낸 일의 범위가 평가 문장에 없으면, 실력은 좋은 사람으로만 남아.`,
@@ -909,6 +908,26 @@ function narrativeRows(c,existingModel){
   `막히면 더 애쓰기 전에 둘 중 무엇이 비었는지 물어. ${s.label}이 결과로 인정받고 있는가, ${i.need}이 생활에 남아 있는가. 빈 쪽이 일이면 권한을 보고, 빈 쪽이 마음이면 요청의 문장을 바꿔. 둘 다 있다면 이미 네 힘을 그 자리에 쓰고 있는 거야.`
  ]);
  return narrativeFinalize(rows);
+}
+function spokenPerson(who, chart, profile){
+ const s=NARRATIVE_GOD[profile.social], i=NARRATIVE_GOD[profile.intimate]||s;
+ if(!s) return [];
+ const n=seed(chart,'voice');
+ const gift=[
+  `${who}의 특출난 면부터 말할게. ${s.label}이야. ${s.scene} 옆에 있는 사람은 긴 설명 전에 그 태도를 믿게 돼. ${s.value}`,
+  `${who}는 평범한 성실로 끝나면 안 되는 사람이야. ${s.title}. ${s.value}`,
+  `좋은 점을 작게 말하지 않을게. ${who}에게 특출난 건 ${s.label}이야. ${s.value} ${s.scene}`
+ ][n%3];
+ const flaw=[
+  `그 장점이 그대로 단점이야. ${s.cost} 못해서가 아니야. 잘해서 생기는 무리야.`,
+  `같은 성격이 사람을 살리고, 같은 성격이 사람을 지치게 해. ${s.cost}`,
+  `장점만 들으면 예쁘게 들려. 직설적으로 단점도 거기 있어. ${s.cost}`
+ ][Math.floor(n/3)%3];
+ const inner=profile.social===profile.intimate
+  ?`가까운 데 가도 같은 사람이야. 그래서 더 믿을 만하고, 그 역할을 벗기도 어려워. 마음이 놓이려면 ${subj(i.need)} 필요해.`
+  :`밖에서 보이는 얼굴과, 가까이서 필요한 조건이 달라. 일은 ${s.label}으로 풀고, 마음은 ${subj(i.need)} 있어야 놓여. 일 잘하는 얼굴만 보면 반만 본 거야.`;
+ const mine=s=>String(s||'').split('네 ').join(who+'의 ');
+ return [tidy(mine(gift)), tidy(mine(`${flaw} ${inner}`))];
 }
 function premiumCompatibilitySections(x){
  const {a,b,m,d}=x, pa=narrativeProfile(a), pb=narrativeProfile(b);
@@ -944,32 +963,29 @@ function premiumCompatibilitySections(x){
   rows.push({id,title,eyebrow:'',lead:true,paragraphs,body:paragraphs.join('\n\n'),ask:askOf(id),evidence:`${an}: ${narrativeEvidence(pa,['pillar:day','pillar:month',...(pa.sources[pa.social]||[]),...(pa.sources[pa.intimate]||[])])} / ${bn}: ${narrativeEvidence(pb,['pillar:day','pillar:month',...(pb.sources[pb.social]||[]),...(pb.sources[pb.intimate]||[])])} / 기존 궁합 ${score} · 애정 ${m.love} · 대화 ${m.personality} · 돈 ${m.money} · 장기 ${m.future} · 일지 관계 ${dayRel||'직접 관계 미확인'} · 결속 ${bond} · 마찰 ${tension}`});
  };
  const verdict=score>=85?`직설적으로 말하면, ${score}점은 오래 같이 가도 서로를 살리는 쪽에 가깝다. 최고의 궁합이라고 운명을 확정하진 않아. 다만 이 점수대는, 상대에게 우리 풀이를 보여 주고 싶을 만큼 강점이 이미 세다.`:score>=75?`직설적으로 말하면, ${score}점은 잘 맞는 궁합이다. 안 맞는 장면을 말로 안 남기면, 계속 만나면서 그 장면만 사람을 닳게 한다.`:score>=65?`직설적으로 말하면, ${score}점은 끌림과 생활이 다른 궁합이다. 좋아해도 같이 사는 궁합으로 그냥 두면, 맞추지 않은 역할이 먼저 터진다.`:`직설적으로 말하면, ${score}점은 만나면 만날수록 한 사람이 소모되기 쉬운 궁합이다. 최악의 인연이라고 단정하지는 않아. 지금 이 점수만 보면, 마음과 별개로 생활의 마찰이 더 크다.`;
- add('pair-core',`1. ${placeName(dayRel)}의 ${andw(an)} ${bn}`,[
-  `${an}의 ${sa.label}은 쉽게 나오는 재주가 아니야. ${sa.value} ${bn}의 ${sb.label}도 같은 무게로 귀해. ${sb.value} 둘 다, 상대가 없으면 혼자서는 못 채우는 장면을 이미 가지고 있어.`,
-  `${score}점은 기존 계산이 오행·결속·마찰·가까운 생활의 관계를 묶어 낸 참고 지수야. 성공률도 운명도 아니야. ${verdict}`,
-  `잘 맞는 점은 이거야. ${topic(an)} ${GOD_ON_OTHER[pa.social]}. ${topic(bn)} ${GOD_ON_OTHER[pb.social]}. 그 두 손이 한 문제에 모이면, 각자 혼자일 때보다 결과가 커져.`,
-  `안 맞는 점은 바늘로 찍으면 여기야. ${topic(an)} ${asw(sa.love)} 마음을 건네는데, ${bn}이 놓이는 건 ${ida(ib.need)}. ${topic(bn)} ${asw(sb.love)} 건네는데, ${an}에게 필요한 건 ${ida(ia.need)}. 노력의 양이 아니라 도착하는 곳이 다르다.`,
-  `계속 만나면 힘든 점은 조건으로 분명해. ${topic(an)} ${sa.cost} ${topic(bn)} ${sb.cost} 이 조건이 반복되면 애정보다 피로가 먼저 쌓인다.`,
-  `${interaction} ${needScene}`,
-  `${topic(an)} 사람 앞에서 ${sa.label}을 쓰고, 마음이 놓이려면 ${ia.need}이 필요해. ${topic(bn)} 사람 앞에서 ${sb.label}을 쓰고, 마음이 놓이려면 ${ib.need}이 필요해.`,
-  strongest?`세부 지수에서 가장 높은 축은 ${strongest[0]} ${strongest[1]}점이야. ${axisLine(strongest[2])}`:'',
-  weakest&&weakest!==strongest?`먼저 볼 차이는 ${weakest[0]} ${weakest[1]}점이야. ${weakLine(weakest[1])}`:'',
-  dmRelLine(a,b,an,bn),
-  `둘의 핵심은 ${shared?'비슷한 필요를 실제로 건네는 것':'다른 애정 표현을 상대가 받을 수 있는 행동으로 번역하는 것'}이야. ${friction}`
+ add('pair-core',`1. ${an}은 이런 사람, ${bn}은 이런 사람`,[
+  ...spokenPerson(an,a,pa),
+  ...spokenPerson(bn,b,pb),
+  `${score}점은 기존 계산이 묶어 낸 참고 지수야. 성공률도 운명도 아니야. ${verdict}`,
+  `잘 맞는 점은 빈칸이야. ${topic(an)} ${GOD_ON_OTHER[pa.social]}. ${topic(bn)} ${GOD_ON_OTHER[pb.social]}. 혼자서는 비는 장면을 상대가 채울 때, 이 둘은 편해져.`,
+  `안 맞는 점은 애정이 없어서가 아니야. ${topic(an)} ${asw(sa.love)} 마음을 보여. ${bn}이 놓이는 건 ${ida(ib.need)}. ${topic(bn)} ${asw(sb.love)} 마음을 보여. ${an}에게 필요한 건 ${ida(ia.need)}. 둘 다 주고 있어. 받는 자리가 다를 뿐이야.`,
+  `그래서 성격의 좋고 나쁨이 아니야. ${an}의 장점인 ${sa.label}이 ${bn}에게는 과한 방식으로 닿을 수 있고, ${bn}의 장점인 ${sb.label}도 ${an}에게는 다른 필요로 비껴갈 수 있어.`,
+  strongest?`숫자로 보면 제일 잘 맞는 축은 ${strongest[0]} ${strongest[1]}점이야. ${axisLine(strongest[2])}`:'',
+  weakest&&weakest!==strongest?`제일 먼저 부딪힐 축은 ${weakest[0]} ${weakest[1]}점이야. ${weakLine(weakest[1])}`:''
  ]);
- add('pair-attraction',`2. ${subj(an)} ${obj(bn)} 바꾸고, ${subj(bn)} ${obj(an)} 바꾸는 지점`,[
-  `${subj(an)} 곁에 있으면 ${bn}의 하루가 달라져. ${topic(an)} ${GOD_ON_OTHER[pa.social]}. ${topic(bn)} 일지 ${bb.db}${jongseong(bb.db)?'이라':'라'} ${beat(bb.db)} 사람이어서, 그 행동이 ${ib.need}에 닿을 때만 매력으로 남아. ${sa.value}`,
-  `${subj(bn)} 곁에 있으면 ${an}의 하루가 달라져. ${topic(bn)} ${GOD_ON_OTHER[pb.social]}. ${topic(an)} 일지 ${ba.db}${jongseong(ba.db)?'이라':'라'} ${beat(ba.db)} 사람이어서, 그 행동이 ${ia.need}에 닿을 때만 도움이 돼. ${sb.value}`,
+ add('pair-attraction',`2. 서로에게 특출난 점`,[
+  `${bn} 곁에서 ${an}이 빛나는 장면이야. ${GOD_ON_OTHER[pa.social]}. ${sa.value} 그 힘이 ${bn}에게 “${ib.need}”로 닿으면 매력이 돼. 안 닿으면 ${an}은 잘해 준 것 같은데 ${bn}은 허전해.`,
+  `${an} 곁에서 ${bn}이 빛나는 장면이야. ${GOD_ON_OTHER[pb.social]}. ${sb.value} 그 힘이 ${an}에게 “${ia.need}”로 닿으면 도움이 돼. 안 닿으면 좋은 사람인데 내 사람은 아닌 느낌이 남아.`,
   crossLine(a,b,an,bn),
-  `끌림의 이유는 ${pa.social===pb.social?`${andw(ba.dayKo)} ${subj(bb.dayKo)} 달라도 일을 푸는 손이 닮아, 설명하지 않아도 알아보는 지점`:`혼자 쓰던 방법 밖에 ${an}에게는 ${sb.label}, ${bn}에게는 ${sa.label}이 새로 들어오는 지점`}에 있어. 그 손이 상대의 빈칸을 채워 주는 장면이 쌓여야, 칭찬이 생활이 돼.`,
-  `일정을 같이 잡는다면 ${subj(ba.db)} 보는 것과 ${subj(bb.db)} 보는 것을 한 약속에 둘 다 적어. 온도가 달라도 역할이 되면, 그 다름이 싸움의 이유가 아니라 분담이 돼.`
+  pa.social===pb.social?`둘 다 ${sa.label}이 세. 손을 닮아서 말 안 해도 기준이 보여. 닮은 만큼, 누가 먼저 요청할지 정하지 않으면 같은 장점으로 싸워.`:`${an}에게 없는 손을 ${bn}이 가지고, ${bn}에게 없는 손을 ${an}이 가지고 있어. 그 다름이 끌림이야. 다름을 고쳐야 할 흠으로 보면 끌림이 잔소리가 돼.`,
+  `같이 일정을 잡을 때는 둘의 기준을 한 약속에 둘 다 적어. 온도가 달라도 역할이 되면, 그 다름은 싸움이 아니라 분담이야.`
  ]);
- add('pair-conflict',`3. ${dayRel?dayRel+' 자리에서 ':''}${andw(an)} ${subj(bn)} 같은 일을 다르게 받는 순간`,[
+ add('pair-conflict',`3. 안 맞는 지점`,[
   narrativePairScene(pa,pb,an,bn,a,b,dayRel),
-  friction,
-  `${topic(an)} 부담이 커지는 조건은 ${sa.cost} 일지 ${ba.db}에서는 ${costOf(ba.db)}이 더해져. ${topic(bn)} ${sb.cost} 일지 ${bb.db}에서는 ${costOf(bb.db)}이 더해져.`,
-  pa.social===pb.social?`둘 다 ${sa.label}으로 문제를 푸니, 같은 기준을 서로에게 증명하려는 논쟁을 피해. 한 사람이 요청을 말하고, 다른 사람이 알아들은 뜻을 확인한 뒤 역할을 바꿔.`:`${subj(an)} ${sa.label}으로 정리하는 동안 ${topic(bn)} ${sb.label}의 기준을 먼저 확인해. 한 사건에서 해결할 일과 들어줄 마음을 각각 묻고, 하나만 끝났다고 대화를 닫지 마.`,
-  `합의는 행동 하나와 다음 확인 시간으로 남겨. “잘할게”보다 “이번 약속이 바뀌면 ${ba.dayKo}인 ${an}에게 먼저 알리고, ${bb.dayKo}인 ${subj(bn)} 기다리는 다음 시간을 같이 정할게”가 통해.`
+  `같은 일을 다르게 받아. ${topic(an)} ${sa.label}의 눈으로 보고, ${topic(bn)} ${sb.label}의 눈으로 봐. 한쪽이 끝났다고 느끼는 순간, 다른 쪽은 아직 마음이 안 끝났을 수 있어.`,
+  `${subj(an)} 지치는 조건은 이거야. ${sa.cost} ${subj(bn)} 지치는 조건은 이거야. ${sb.cost} 계속 만나면 힘든 점은 성격이 나빠서가 아니야. 이 조건이 반복되면 애정보다 피로가 먼저 쌓여.`,
+  pa.social===pb.social?`둘 다 ${sa.label}으로 문제를 풀어. 같은 장점으로 서로를 설득하면 대화가 재판이 돼. 한 사람은 요청하고, 한 사람은 알아들은 뜻을 확인해.`:`${an}이 ${sa.label}으로 정리하는 동안, ${bn}은 ${sb.label}으로 마음을 확인해. 일 하나만 끝났다고 대화를 닫지 마.`,
+  `고칠 문장은 이거면 돼. ${an}은 “${ia.request}” ${bn}은 “${ib.request}” 이번 주에 바꿀 행동 하나만 정하고, 일주일 뒤에 그 행동만 봐.`
  ]);
  add('pair-cooling',`4. ${subj(ba.dayKo)} 건네고 ${subj(bb.dayKo)} 확인하는 애정`,[
   `${subj(an)} 주기 쉬운 애정은 ${sa.love} ${beat(ba.db)} 그 방식으로 사랑이 나가. ${subj(bn)} 주기 쉬운 애정은 ${sb.love} ${beat(bb.db)} 그 방식으로 나가. 둘 다 가치 있는 표현이야. 종류가 다를 뿐이야.`,
@@ -1008,10 +1024,10 @@ function premiumCompatibilitySections(x){
   `갈등 뒤에는 이미 잘한 행동 하나를 인정하고, 다음에 바꿀 행동 하나만 말해. ${shared?'닮은 필요가 상대를 채점하는 잣대가 되지 않게 해.':'다른 방식의 노력을 알아보되, 받지 못한 행동까지 괜찮다고 넘기지는 마.'}`,
   `일주일이 지나면 그 행동이 바뀌었는지만 확인해. 못 지켰다면 의지를 더 세게 요구하지 말고, ${an}의 범위와 ${bn}의 시간, 담당을 다시 정해.`
  ]);
- add('pair-final',`9. ${andw(an)} ${subj(bn)} 오래 가져갈 힘`,[
-  `${interaction} ${strongest?'특히 '+strongest[0]+' '+strongest[1]+'점의 장점을, '+andw(ba.dayKo)+' '+bb.dayKo+'의 평일에 쓰는 것이 좋아.':''}`,
-  `${an}의 ${sa.label}은 ${bn}에게 없는 장면을 채워 주고, ${bn}의 ${sb.label}은 ${subj(an)} 혼자 쓰던 방식을 넓혀. ${topic(an)} ${bn}의 하루에 ${GOD_ON_OTHER[pa.social]}. ${topic(bn)} ${an}의 하루에 ${GOD_ON_OTHER[pb.social]}. 그 교환이 이번 주 일정에 남을 때, 이 궁합은 점수가 아니라 생활이 돼.`,
-  `오래 가는 조건은 하나야. ${topic(an)} ${ia.need}, ${topic(bn)} ${subj(ib.need)} 같이 남는 것. 상대의 재능을 인정하면서 그 재능이 내게 닿는 방을 맞추면, 둘의 차이는 참을 일이 아니라 더 편해지는 이유가 돼.`
+ add('pair-final',`9. 오래 가져갈 힘, 그리고 남겨야 할 단점`,[
+  `${an}에게서 오래 가져갈 힘은 ${sa.label}이야. ${bn}에게서 오래 가져갈 힘은 ${sb.label}이야. ${strongest?strongest[0]+' '+strongest[1]+'점이 그 힘을 숫자로 보여 줘. ':''}그 장점을 평일에 쓰지 않으면 점수는 글로만 남아.`,
+  `${topic(an)} ${bn}의 하루에 ${GOD_ON_OTHER[pa.social]}. ${topic(bn)} ${an}의 하루에 ${GOD_ON_OTHER[pb.social]}. 그 교환이 이번 주 일정에 남을 때, 궁합은 설명이 아니라 생활이 돼.`,
+  `오래 가려면 단점까지 말로 남겨. ${topic(an)} ${ia.need}이 필요하고, ${topic(bn)} ${ib.need}이 필요해. 장점을 칭찬만 하고 그 필요가 빠지면, 특출난 사람이 지친 사람이 돼.`
  ]);
  return narrativeFinalize(rows);
 }
@@ -1078,7 +1094,7 @@ function fortuneActions(c,period='today'){
  return {...original,actions:[`${v.label}은 이번 기간의 주제야. 평소 ${s.label}과 ${p.social===original.god?'같은 역할을 쓰니 익숙한 일을 실제로 끝낼 범위를 정해.':'다른 역할이 들어오니 지금 필요한 조건을 먼저 확인해.'}` ,`${v.move} 돈에서는 ${s.budget}`,`관계에서는 ${i.need}이 지금 어떻게 채워지는지 봐. “${i.request}”처럼 필요한 행동을 말해.`],evidence:original.evidence+' / '+narrativeEvidence(p,[...(p.sources[p.social]||[]),...(p.sources[p.intimate]||[])])};
 }
 
-function pmodel(c){const base=typeof BaseExpert.personModel==='function'?BaseExpert.personModel(c):{};return {...base,version:'premium-evidence-v5.9',human_reading:premiumSections(c,base).map(s=>({id:s.id,title:s.title,body:s.body,evidence:s.evidence})),star_contexts:premiumStarContexts(c).map(r=>({title:r.title,facts:r.facts,evidence:r.evidence})),star_synthesis:premiumStarSynthesis(c),calculation_only:true};}
+function pmodel(c){const base=typeof BaseExpert.personModel==='function'?BaseExpert.personModel(c):{};return {...base,version:'premium-evidence-v5.11',human_reading:premiumSections(c,base).map(s=>({id:s.id,title:s.title,body:s.body,evidence:s.evidence})),star_contexts:premiumStarContexts(c).map(r=>({title:r.title,facts:r.facts,evidence:r.evidence})),star_synthesis:premiumStarSynthesis(c),calculation_only:true};}
 // Compatibility
 function prof(c){const a=order(c);return {c,n:name(c),hi:a[0],lo:a[4],g:mg(c),b:branch(c),dm:c?.dayMaster?.el||c?.pillars?.day?.stemEl||'',stem:c?.dayMaster?.stem||c?.pillars?.day?.stem||''};}
 function pairSeed(A,B,s){return hash([A.c?.pillars?.day?.ko,B.c?.pillars?.day?.ko,A.c?.pillars?.month?.ko,B.c?.pillars?.month?.ko,s].join('|'));} function pp(a,A,B,s){return a[pairSeed(A,B,s)%a.length];}
@@ -1100,5 +1116,5 @@ function legacyFortuneActions(c,period='today'){
 
 root.GuiinExpert={...BaseExpert,premiumStarContexts,premiumStarSynthesis,starFacts,starIntegratedNames:Object.keys(STAR_INTEGRATED),narrativeProfile,narrativeFacts,premiumProfile,premiumBehavior,fortuneActions,timingSections,relationshipSections,fullSections:premiumSections,premiumCompatibilitySections,behaviorSections:sections,personalitySections:c=>premiumSections(c).filter(s=>!['work','career','money','leak','timing'].includes(s.id)),fieldSections:c=>premiumSections(c).filter(s=>['work','career','money','leak','love','timing'].includes(s.id)),personModel:pmodel};
 root.GuiinCompat={...BaseCompat,build:compatBuild,pick:compatPick};
-root.GUIIN_INTERPRETATION_V4={version:'premium-evidence-v5.9',rules:{humanFirst:true,jargonInBody:false,confidentTone:true,repeatCards:false}};
+root.GUIIN_INTERPRETATION_V4={version:'premium-evidence-v5.11',rules:{humanFirst:true,jargonInBody:false,confidentTone:true,repeatCards:false}};
 })(typeof globalThis!=='undefined'?globalThis:this);
