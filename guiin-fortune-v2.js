@@ -148,8 +148,14 @@
     const ref=date instanceof Date?date:nowKst();
     return (ref.getTime()-birthMs)/(365.2425*86400000);
   }
+  function kstDayKey(d){
+    try{return new Intl.DateTimeFormat("en-CA",{timeZone:"Asia/Seoul",year:"numeric",month:"2-digit",day:"2-digit"}).format(d);}catch(_){return String(Math.floor((d.getTime()+9*3600000)/86400000));}
+  }
   function currentLuck(chart,date=nowKst()){
-    const age=exactAgeYears(chart,date),rows=chart?.luck||[];
+    /* 오늘을 조회할 때는 날짜 정오(nowKst)가 아니라 실제 현재 시각으로 판정해, 대운 전환 시각 이후 몇 시간 동안 이전 대운이 남지 않게 한다. 다른 날짜는 전달된 값 그대로 사용 */
+    let ref=date;
+    try{const real=new Date();if(date instanceof Date&&kstDayKey(date)===kstDayKey(real))ref=real;}catch(_){}
+    const age=exactAgeYears(chart,ref),rows=chart?.luck||[];
     if(age==null||!rows.length)return rows[0]||null;
     for(let i=0;i<rows.length;i++){
       const row=rows[i];

@@ -2206,7 +2206,7 @@ function secSelf(P){
   const t=`1. ${P.c.pillars.day.ko} 일주 — ${D.head} 사람, 사회에서는 ${MG_TAG[P.mg]} 얼굴`;
   const r=R('self',t,[p1,p2,p3,valuePara(P),p4,identityPara(P)],P,['DM','DP','ML','MG','VEC','STR','CLM'],`내가 가진 ${J(TOOL[P.stem],'이/가')} 지금 하는 일에서 어떻게 더 잘 쓰이는지 내 상황으로 알려 줘`);
   const gs=GRP[P.top];
-  r.body=P_(`${J(P.name,'은/는')} ${D.img}에 가까운 ${P.stem}${P.el} 일간이야. ${D.trait}.`,`${J(PDM[P.stem].gift,'이/가')} 곁의 사람에게 믿음을 줘.`,OI[P.mgG][P.dayG],`십성 배치는 ${gs.mode} 쪽으로 힘이 모여.`);
+  r.body=P_(`${J(P.name,'은/는')} ${P.stem}${P.el} 일간에 ${P.season&&P.season!=='환절'?P.season+'생이고, ':''}${gs.mode} 힘(${P.top} ${P.pct[P.top]}%)이 중심인 사람이야.`,`${J(PDM[P.stem].gift,'이/가')} 곁의 사람에게 믿음을 줘.`,`아래 본문에서는 이 중심이 일할 때, 가까운 사람 앞에서, 지칠 때 각각 어떻게 달라지는지 하나씩 풀어 줄게.`);
   r.lead=true;
   if(P.unknownHour)r.evidence+=' · 출생 시각 미입력으로 시주는 제외';
   return r;
