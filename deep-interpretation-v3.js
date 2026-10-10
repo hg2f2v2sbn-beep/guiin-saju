@@ -236,10 +236,21 @@
     ELS.forEach(e=>o[e]=Math.round((Number(src[e]||0)/t)*100));return o;
   }
   function sorted(c){const p=pct(c);return ELS.slice().sort((a,b)=>p[b]-p[a]).map(e=>[e,p[e]]);}
-  function currentLuck(c,year=new Date().getFullYear()){
-    const age=year-Number(c?.input?.year||year);
-    return (c?.luck||[]).find(x=>age>=Number(x.fromAgeExact??x.fromAge)&&age<Number(x.toAgeExact??(Number(x.toAge)+1)))
-      ||(c?.luck||[]).find(x=>age>=Number(x.fromAge)&&age<=Number(x.toAge))||null;
+  function currentLuck(c,when){
+    /* 현재 대운: 출생 시각부터 지금까지 경과한 정확한 시간으로 선택한다(index.html·guiin-fortune-v2와 같은 기준). */
+    try{
+      const rows=c&&c.luck||[];if(!rows.length)return null;
+      const i=c.input||{},h=i.hourUnknown?12:Number(i.hour??12),mi=i.hourUnknown?0:Number(i.minute??0);
+      const birth=Date.UTC(Number(i.year),Number(i.month||1)-1,Number(i.day||1),Number.isFinite(h)?h:12,Number.isFinite(mi)?mi:0)-9*3600000;
+      let ref=when instanceof Date?when:new Date();
+      if(typeof when==="number"&&when!==new Date().getFullYear())ref=new Date(Date.UTC(when,6,1));
+      const age=(ref.getTime()-birth)/(365.2425*86400000);
+      for(let n=0;n<rows.length;n++){
+        const r=rows[n],start=Number(r.fromAgeExact??r.fromAge),next=Number(rows[n+1]?.fromAgeExact??rows[n+1]?.fromAge),legacy=Number(r.toAgeExact??r.toAge),end=Number.isFinite(next)?next:legacy;
+        if(Number.isFinite(start)&&Number.isFinite(end)&&age>=start&&age<end)return r;
+      }
+      return rows.find(x=>age>=Number(x.fromAge)&&age<=Number(x.toAge))||rows[0]||null;
+    }catch(_e){return (c&&c.luck||[])[0]||null;}
   }
   function yearGod(c,year=new Date().getFullYear()){
     try{

@@ -2343,15 +2343,15 @@ function starPara(P,s,deep,idx,ord,before){
     return P_(open,`${useSum}.`,topUse?(nu===0?`네 중심 힘이 ${J(P.top,'이라/라')} ${topUse}.`:`두 번째로 큰 ${J(P.second,'이/가')} 곁에서 받치는 구조라 ${topUse}.`):'');
   }
   const basis=s.basis?`(${String(s.basis).replace(/year/g,'년지').replace(/month/g,'월지').replace(/day/g,'일지').replace(/hour/g,'시지').replace(/↔/g,'·')})`:'';
-  const o=ord||0,bf=(before||[]);
+  const o=ord||0,bf=(before||[]),NB=(w)=>{const j=J(s.name,w);return s.name+basis+j.slice(s.name.length);};
   const firsts=[
     `${pos.n}${basis}에 ${J(s.name,'이/가')} 성립했어. ${J(pos.n,'은/는')} ${J(pos.w,'을/를')} 보여 주는 자리라서, ${J(b.g,'이/가')} ${pos.tag} 쪽에서 작동한다는 뜻이야.`,
     `${J(s.name,'은/는')} ${pos.n}${basis}에서 잡혔어. ${J(pos.w,'이/가')} 걸린 자리라서 ${J(b.t,'을/를')} 쓰는 곳도 ${pos.tag} 쪽이야.`,
     `${pos.n}${basis}에 ${J(s.name,'이/가')} 놓였어. 이 자리는 ${pos.w+'에'} 해당해서, ${J(b.g,'이/가')} ${pos.tag}에서 먼저 드러나.`
   ];
   const first=bf.length?[
-    `같은 ${pos.n}에는 ${bf[0]}도 있는데, ${J(s.name,'은/는')}${basis} 결이 달라서 ${J(b.g,'이/가')} 따로 작동해. ${J(b.t,'은/는')} ${pos.tag} 쪽에서 쓰여.`,
-    `${pos.n}에 ${J(bf[0],'과/와')} 함께 ${J(s.name,'이/가')}${basis} 겹쳐 있어서, ${pos.tag}에서 ${J(b.t,'이/가')} 한 겹 더해져.`
+    `같은 ${pos.n}에는 ${bf[0]}도 있는데, ${NB('은/는')} 결이 달라서 ${J(b.g,'이/가')} 따로 작동해. ${J(b.t,'은/는')} ${pos.tag} 쪽에서 쓰여.`,
+    `${pos.n}에 ${J(bf[0],'과/와')} 함께 ${NB('이/가')} 겹쳐 있어서, ${pos.tag}에서 ${J(b.t,'이/가')} 한 겹 더해져.`
   ][o%2]:firsts[o%3];
   const link=gd?`그 자리의 십성이 ${J(gd,'이라/라')} ${GODACT[gd]} 방향으로 이 재능이 쓰이는 모양이야.`:'';
   const gk=[P.top,P.second,null][o%3],topUse=gk?STAR_USE[cat][gk]:'';

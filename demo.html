@@ -2453,6 +2453,14 @@ function dominantElements(c){
  const p=pctElements(c), sorted=Object.entries(p).sort((a,b)=>b[1]-a[1]);
  return {p,top:sorted[0],second:sorted[1],low:sorted[sorted.length-1]};
 }
+function guiinLuckDateText(c,exactAge){
+ try{
+  const i=c?.input||{},h=i.hourUnknown?12:Number(i.hour??12),m=i.hourUnknown?0:Number(i.minute??0);
+  const birth=Date.UTC(Number(i.year),Number(i.month||1)-1,Number(i.day||1),Number.isFinite(h)?h:12,Number.isFinite(m)?m:0)-9*3600000;
+  const t=new Date(birth+Number(exactAge)*365.2425*86400000+9*3600000);
+  return `${t.getUTCFullYear()}.${String(t.getUTCMonth()+1).padStart(2,'0')}.${String(t.getUTCDate()).padStart(2,'0')}`;
+ }catch(_e){return '';}
+}
 function currentLuck(c){
  try{
   const i=c?.input||{},rows=c?.luck||[]; if(!rows.length)return null;
@@ -3372,7 +3380,7 @@ function flowReport(c){
  const currentGod=lk?.god||'';
  const godPlain={비견:'내 기준과 독립성이 커지는 시기',겁재:'사람·경쟁·분배 문제가 더 눈에 들어오는 시기',식신:'꾸준히 만들고 쌓는 힘이 중요해지는 시기',상관:'답답한 걸 바꾸고 표현하고 싶은 마음이 커지는 시기',편재:'사람과 기회가 넓어지는 대신 선택도 많아지는 시기',정재:'생활과 돈의 기반을 안정시키는 일이 중요해지는 시기',편관:'책임과 압박이 커져 우선순위가 중요해지는 시기',정관:'약속·책임·사회적 역할이 커지는 시기',편인:'혼자 깊게 생각하고 전문성을 파고드는 힘이 커지는 시기',정인:'배우고 회복하고 기반을 다지는 힘이 커지는 시기'};
  const nextLuck=(()=>{try{const arr=c.luck||[];if(!lk)return null;const idx=arr.findIndex(x=>x.ko===lk.ko&&x.fromAge===lk.fromAge);return idx>=0?arr[idx+1]||null:null}catch(_e){return null}})();
- const luckRows=(c.luck||[]).map(x=>{const cur=lk&&x.ko===lk.ko&&x.fromAge===lk.fromAge;return `<div class="luckRow ${cur?'current':''}"><b>${x.fromAge}~${x.toAge}세 · ${x.ko} 대운 ${cur?'· 현재':''}</b><p>${x.god} · ${krJoin(GOD_DESC[x.god]||'환경과 역할 변화','이/가')} 이 시기의 장기 배경으로 작용해.</p></div>`}).join('');
+ const luckRows=(c.luck||[]).map(x=>{const cur=lk&&x.ko===lk.ko&&x.fromAge===lk.fromAge;return `<div class="luckRow ${cur?'current':''}"><b>${x.fromAge}~${x.toAge}세 · ${x.ko} 대운 ${cur?'· 현재':''}</b> <small>(전환 약 ${guiinLuckDateText(c,x.fromAgeExact)})</small><p>${x.god} · ${krJoin(GOD_DESC[x.god]||'환경과 역할 변화','이/가')} 이 시기의 장기 배경으로 작용해.</p></div>`}).join('');
  return `<div class="deepCard card"><div class="miniTitle">지금 내 운의 핵심</div><h3>${esc(c.input.name)}님은 지금 ${krJoin(flowHeadline,'으로/로')} 읽혀.</h3>
  <p class="reportLead">현재 만 ${age}세 기준 ${lk?`<b>${lk.ko} 대운(${lk.fromAge}~${lk.toAge}세)</b>`:'현재 대운'} 위에 ${nowYear}년 <b>${yrGod||'세운'}</b> 주제가 겹쳐 있어.</p>
  <p>${lk?`현재 ${esc(lk.ko)} 대운의 ${krJoin(esc(currentGod),'은/는')} 쉽게 말하면 <b>${esc(godPlain[currentGod]||'삶의 역할과 우선순위가 바뀌는 시기')}</b>야. 원래 ${esc(sig.dv.tone)} 성향이 있는데, 이 대운이 그 성향을 더 키우거나 반대로 다른 방식으로 쓰게 만들 수 있어. 그래서 대운 이름만 따로 보지 않고 원국과 함께 연결해서 읽어야 해.`:'현재 대운을 원국과 함께 연결해서 읽어야 해.'}</p>
@@ -3381,7 +3389,7 @@ function flowReport(c){
  <div class="easyPoint tip"><b>지금 현실에서 해볼 것</b><p>① ${actions[0]} ② ${actions[1]} ③ ${actions[2]}</p></div>
  <p>${trs.length?`올해는 원국과 ${trs.map(r=>r.type).join('·')} 신호도 겹쳐 있어. 사건을 예언하는 뜻은 아니고, 평소보다 조정이 필요한 장면이 더 눈에 띌 수 있다는 뜻으로 보면 돼.`:'강한 관계 신호가 없더라도 현재 대운과 세운의 주제 자체는 충분히 참고할 수 있어.'}</p>
  ${nextLuck?`<div class="easyPoint support"><b>다음 대운에서는</b><p>${nextLuck.ko} 대운(${nextLuck.god})으로 넘어가면서 지금과는 다른 숙제가 커질 수 있어. “좋아진다/나빠진다”보다, 지금 쌓고 있는 힘 중 무엇을 다음 시기에 가져갈지 보는 게 더 중요해.</p></div>`:''}
- <div class="evidenceLine"><b>대운 시작</b> · ${c.startAgeText||c.startAge+'세'} · ${c.forward?'순행':'역행'}</div></div>
+ <div class="evidenceLine"><b>대운 시작</b> · ${c.startAgeText||c.startAge+'세'} · ${c.forward?'순행':'역행'}<br>표시 나이는 대운수를 반올림한 값이고, 전환 시점은 출생 시각부터 정확히 계산한 날짜야. 연 단위나 세는나이로 표시하는 곳과는 같은 대운이어도 전환 시기가 몇 주에서 1년 가까이 다르게 보일 수 있어.</div></div>
  <div class="deepCard card"><h3>10년 단위로 보면 이렇게 흘러가</h3><div class="luckGrid">${luckRows}</div></div>`+guiinTimingDeepHTML(c);
 }
 
