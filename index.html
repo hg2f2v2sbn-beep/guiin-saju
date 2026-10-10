@@ -1700,7 +1700,7 @@ html{-webkit-text-size-adjust:100%;text-size-adjust:100%}
 @media(max-width:360px){.homeProductReview .productReviewTop{align-items:flex-start}.homeProductReview .productPrice{font-size:14px}.homeProductReview h3{font-size:14px}}
 .tilePrice{display:inline-block;margin-top:3px;color:#a16f16;font-size:9px;font-weight:950;letter-spacing:-.01em}
 </style>
-<style id="GUIIN_RELEASE_MOBILE">.guiinContextAsk>b{display:none}.guiinHumanCard p{white-space:pre-line;line-height:1.85;overflow-wrap:anywhere}.screen{min-width:0}.authForm{min-width:0}.authInput{box-sizing:border-box;min-width:0;font-size:16px}#signupIdStatus{margin:4px 0 12px;overflow-wrap:anywhere}details.r23Evidence div{overflow-wrap:anywhere}button:disabled{cursor:wait}@media(max-width:420px){.topbar{gap:8px}.authCard{padding:16px}#matchView .r24Compare{grid-template-columns:1fr}.brandline{font-size:22px}}.bottomnav,.bottomNav{padding-bottom:env(safe-area-inset-bottom,0px)}</style>
+<style id="GUIIN_RELEASE_MOBILE">.guiinContextAsk>b{display:none}.guiinHumanCard p{white-space:pre-line;line-height:1.85;overflow-wrap:anywhere}.guiinMidAsk{display:block;width:100%;margin:14px 0 4px;padding:12px 14px;border:0;border-radius:14px;background:rgba(212,175,55,.14);color:inherit;text-align:left;line-height:1.55;font:inherit;cursor:pointer}.screen{min-width:0}.authForm{min-width:0}.authInput{box-sizing:border-box;min-width:0;font-size:16px}#signupIdStatus{margin:4px 0 12px;overflow-wrap:anywhere}details.r23Evidence div{overflow-wrap:anywhere}button:disabled{cursor:wait}@media(max-width:420px){.topbar{gap:8px}.authCard{padding:16px}#matchView .r24Compare{grid-template-columns:1fr}.brandline{font-size:22px}}.bottomnav,.bottomNav{padding-bottom:env(safe-area-inset-bottom,0px)}</style>
 <style id="guiinStableLongResults">
 /* Keep actual card heights in long reports: estimated skipped heights made rapid scrolling show an empty frame. */
 #resultView .easyLongCard,#resultView .deepCard,#matchView .easyLongCard,#matchView .deepCard,#yearView .easyLongCard,#yearView .deepCard {content-visibility:visible;contain-intrinsic-size:none;}
@@ -12020,7 +12020,7 @@ try{Object.assign(window,{guiinPaymentCenterStart});}catch(_e){}
  }
 })();
 </script>
-<script src="guiin-interpretation-v4.js?v=guiin-v53-20261010-r2"></script>
+<script src="guiin-interpretation-v4.js?v=guiin-v59-20261010"></script>
 <script id="GUIIN_RELEASE_INTEGRATION">
 /* Release QA integration: calculation, permission and navigation functions stay authoritative. */
 (function(){
@@ -12030,7 +12030,8 @@ try{Object.assign(window,{guiinPaymentCenterStart});}catch(_e){}
  const html=rows=>{const prefix='guiin-read-'+(++reportSequence)+'-';const list=rows||[];const toc=list.length>1?'<nav class=guiinReadingTOC aria-label=리포트목차>'+list.map(s=>'<a href="#'+prefix+esc(s.id)+'">'+esc(s.title)+'</a>').join('')+'</nav>':'';return toc+list.map(s=>{
   const ps=Array.isArray(s.paragraphs)?s.paragraphs:String(s.body||'').split(/\n\n+/).filter(Boolean);
   const body=ps.map((text,i)=>'<p>'+(i===0&&s.lead?'<strong>'+esc(text)+'</strong>':esc(text))+'</p>').join('');
-  return `<article id="${prefix+esc(s.id)}" class="expertSection guiinHumanCard" data-human-section="${esc(s.id)}">${s.eyebrow&&s.eyebrow!==s.title?`<div class="eyebrow">${esc(s.eyebrow)}</div>`:""}<h3>${esc(s.title)}</h3>${body}<details class="r23Evidence"><summary>명리 근거 보기</summary><div>${esc(s.evidence)}</div></details></article>`;
+  const ask=s.ask?`<button type="button" class="guiinMidAsk" data-q="${esc(s.ask)}" onclick="openTailQuestion(this.dataset.q)">이어서 물어보기 · ${esc(s.ask)}</button>`:'';
+  return `<article id="${prefix+esc(s.id)}" class="expertSection guiinHumanCard" data-human-section="${esc(s.id)}">${s.eyebrow&&s.eyebrow!==s.title?`<div class="eyebrow">${esc(s.eyebrow)}</div>`:""}<h3>${esc(s.title)}</h3>${body}${ask}<details class="r23Evidence"><summary>명리 근거 보기</summary><div>${esc(s.evidence)}</div></details></article>`;
  }).join('');};
  document.addEventListener('click',e=>{const a=e.target.closest?.('.guiinReadingTOC a');if(!a)return;e.preventDefault();const node=document.getElementById(a.getAttribute('href').slice(1));node?.scrollIntoView({behavior:'smooth',block:'start'});});
  const legacy={longSummaryHTML,personalityReport,fieldsReport,flowReport,fortuneRows};
