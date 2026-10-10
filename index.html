@@ -2286,11 +2286,25 @@ function tailQuestionsHTML(topic='사주'){
   :topic==='오늘'
   ?['오늘 내가 제일 조심할 건 뭐야?','오늘 일운을 더 자세히 봐줘','오늘 연애운에서 내가 먼저 할 행동은?']
   :['내 성격에서 내가 놓치기 쉬운 점은?','지금 직업운에서 먼저 바꿀 건 뭐야?','연애에서 내가 반복하는 패턴을 봐줘'];
- return `<div class="tailQuestions card"><h3>조금 더 물어보고 싶다면</h3><p>내 사주를 이어서 1:1로 물어볼 수 있어요.</p><div class="tailQuestionChips">${qs.map(q=>`<button type="button" data-q="${esc(q)}" onclick="openTailQuestion(this.dataset.q)">${esc(q)}</button>`).join('')}</div></div>`;
+ return `<div class="tailQuestions card"><h3>조금 더 물어보고 싶다면</h3><p>${topic==='궁합'?'두 사람의 궁합을 이어서 물어볼 수 있어요. 질문은 입력창에만 채우고, 보내기는 직접 해 주세요.':'내 사주를 이어서 1:1로 물어볼 수 있어요. 질문은 입력창에만 채우고, 보내기는 직접 해 주세요.'}</p><div class="tailQuestionChips">${qs.map(q=>`<button type="button" data-q="${esc(q)}" onclick="openTailQuestion(this.dataset.q,this)">${esc(q)}</button>`).join('')}</div></div>`;
 }
-function openTailQuestion(q){
- go('ask');
- const input=$('askQ');if(input){input.value=q;input.focus();}
+function openTailQuestion(q, el){
+ const inMatch=!!(el&&el.closest&&el.closest('#matchView'));
+ const kind=inMatch?'compatibility':'personal';
+ if(typeof guiinOpenResultConsultation==='function'){
+  const pair=kind==='compatibility'?(typeof matchMeta!=='undefined'?matchMeta:null):null;
+  const primary=(pair&&pair.a)|| (typeof chart!=='undefined'?chart:null);
+  const selected=typeof guiinSelectedConsultation!=='undefined'?guiinSelectedConsultation:null;
+  const sameKind=!!(selected&&selected.kind===kind);
+  const samePeople=kind!=='compatibility'||!!(selected&&selected.pair&&pair&&selected.pair.b&&pair.b&&selected.primary?.input?.name===primary?.input?.name&&selected.pair.b.input?.name===pair.b.input?.name&&String(selected.primary?.input?.year)===String(primary?.input?.year)&&String(selected.pair.b.input?.year)===String(pair.b.input?.year));
+  if(!(sameKind&&samePeople)){
+   guiinOpenResultConsultation(kind, q||'');
+   return;
+  }
+  go('ask');
+  if(typeof syncAskContext==='function') syncAskContext();
+ }else go('ask');
+ const input=$('askQ'); if(input){input.value=q||'';input.focus();}
 }
 
 function setFormMessage(id,msg,type='error'){
@@ -12020,7 +12034,7 @@ try{Object.assign(window,{guiinPaymentCenterStart});}catch(_e){}
  }
 })();
 </script>
-<script src="guiin-interpretation-v4.js?v=guiin-v61-20261010"></script>
+<script src="guiin-interpretation-v4.js?v=guiin-v62-20261010"></script>
 <script id="GUIIN_RELEASE_INTEGRATION">
 /* Release QA integration: calculation, permission and navigation functions stay authoritative. */
 (function(){
@@ -12030,7 +12044,7 @@ try{Object.assign(window,{guiinPaymentCenterStart});}catch(_e){}
  const html=rows=>{const prefix='guiin-read-'+(++reportSequence)+'-';const list=rows||[];const toc=list.length>1?'<nav class=guiinReadingTOC aria-label=리포트목차>'+list.map(s=>'<a href="#'+prefix+esc(s.id)+'">'+esc(s.title)+'</a>').join('')+'</nav>':'';return toc+list.map(s=>{
   const ps=Array.isArray(s.paragraphs)?s.paragraphs:String(s.body||'').split(/\n\n+/).filter(Boolean);
   const body=ps.map((text,i)=>'<p>'+(i===0&&s.lead?'<strong>'+esc(text)+'</strong>':esc(text))+'</p>').join('');
-  const ask=s.ask?`<button type="button" class="guiinMidAsk" data-q="${esc(s.ask)}" onclick="openTailQuestion(this.dataset.q)">이어서 물어보기 · ${esc(s.ask)}</button>`:'';
+  const ask=s.ask?`<button type="button" class="guiinMidAsk" data-q="${esc(s.ask)}" onclick="openTailQuestion(this.dataset.q,this)">이어서 물어보기 · ${esc(s.ask)}</button>`:'';
   return `<article id="${prefix+esc(s.id)}" class="expertSection guiinHumanCard" data-human-section="${esc(s.id)}">${s.eyebrow&&s.eyebrow!==s.title?`<div class="eyebrow">${esc(s.eyebrow)}</div>`:""}<h3>${esc(s.title)}</h3>${body}${ask}<details class="r23Evidence"><summary>명리 근거 보기</summary><div>${esc(s.evidence)}</div></details></article>`;
  }).join('');};
  document.addEventListener('click',e=>{const a=e.target.closest?.('.guiinReadingTOC a');if(!a)return;e.preventDefault();const node=document.getElementById(a.getAttribute('href').slice(1));node?.scrollIntoView({behavior:'smooth',block:'start'});});
